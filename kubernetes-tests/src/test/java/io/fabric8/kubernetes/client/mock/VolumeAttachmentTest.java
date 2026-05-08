@@ -31,7 +31,7 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class VolumeAttachmentTest {
   KubernetesMockServer server;
   private KubernetesClient client;
@@ -86,7 +86,7 @@ class VolumeAttachmentTest {
         .once();
 
     // When
-    boolean isDeleted = client.storage().volumeAttachments().withName("va1").delete().size() == 1;
+    boolean isDeleted = client.storage().volumeAttachments().withName("va1").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

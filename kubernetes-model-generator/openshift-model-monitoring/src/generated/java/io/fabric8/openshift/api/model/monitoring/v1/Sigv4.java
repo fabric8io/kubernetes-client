@@ -39,6 +39,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "accessKey",
+    "externalId",
     "profile",
     "region",
     "roleArn",
@@ -72,6 +73,8 @@ public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
 
     @JsonProperty("accessKey")
     private SecretKeySelector accessKey;
+    @JsonProperty("externalId")
+    private String externalId;
     @JsonProperty("profile")
     private String profile;
     @JsonProperty("region")
@@ -91,9 +94,10 @@ public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
     public Sigv4() {
     }
 
-    public Sigv4(SecretKeySelector accessKey, String profile, String region, String roleArn, SecretKeySelector secretKey, Boolean useFIPSSTSEndpoint) {
+    public Sigv4(SecretKeySelector accessKey, String externalId, String profile, String region, String roleArn, SecretKeySelector secretKey, Boolean useFIPSSTSEndpoint) {
         super();
         this.accessKey = accessKey;
+        this.externalId = externalId;
         this.profile = profile;
         this.region = region;
         this.roleArn = roleArn;
@@ -115,6 +119,22 @@ public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
     @JsonProperty("accessKey")
     public void setAccessKey(SecretKeySelector accessKey) {
         this.accessKey = accessKey;
+    }
+
+    /**
+     * externalId defines the external ID used when assuming an AWS role. Can only be used with roleArn. It requires Prometheus &gt;= v3.11.0 or Alertmanager &gt;= v0.33.0. Currently not supported by Thanos.
+     */
+    @JsonProperty("externalId")
+    public String getExternalId() {
+        return externalId;
+    }
+
+    /**
+     * externalId defines the external ID used when assuming an AWS role. Can only be used with roleArn. It requires Prometheus &gt;= v3.11.0 or Alertmanager &gt;= v0.33.0. Currently not supported by Thanos.
+     */
+    @JsonProperty("externalId")
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
     }
 
     /**

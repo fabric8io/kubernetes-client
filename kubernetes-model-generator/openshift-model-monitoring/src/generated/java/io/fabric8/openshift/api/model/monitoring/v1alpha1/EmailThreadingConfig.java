@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.scheduling.v1alpha1;
+package io.fabric8.openshift.api.model.monitoring.v1alpha1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -32,14 +32,10 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-/**
- * PodGroup represents a set of pods with a common scheduling policy.
- */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "name",
-    "policy"
+    "threadByDate"
 })
 @ToString
 @EqualsAndHashCode
@@ -63,67 +59,48 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PodGroup implements Editable<PodGroupBuilder>, KubernetesResource
+public class EmailThreadingConfig implements Editable<EmailThreadingConfigBuilder>, KubernetesResource
 {
 
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("policy")
-    private PodGroupPolicy policy;
+    @JsonProperty("threadByDate")
+    private String threadByDate;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public PodGroup() {
+    public EmailThreadingConfig() {
     }
 
-    public PodGroup(String name, PodGroupPolicy policy) {
+    public EmailThreadingConfig(String threadByDate) {
         super();
-        this.name = name;
-        this.policy = policy;
+        this.threadByDate = threadByDate;
     }
 
     /**
-     * Name is a unique identifier for the PodGroup within the Workload. It must be a DNS label. This field is immutable.
+     * threadByDate defines what granularity of current date to thread by. Accepted values: Daily, None. (None means group by alert group key, no date).
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("threadByDate")
+    public String getThreadByDate() {
+        return threadByDate;
     }
 
     /**
-     * Name is a unique identifier for the PodGroup within the Workload. It must be a DNS label. This field is immutable.
+     * threadByDate defines what granularity of current date to thread by. Accepted values: Daily, None. (None means group by alert group key, no date).
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * PodGroup represents a set of pods with a common scheduling policy.
-     */
-    @JsonProperty("policy")
-    public PodGroupPolicy getPolicy() {
-        return policy;
-    }
-
-    /**
-     * PodGroup represents a set of pods with a common scheduling policy.
-     */
-    @JsonProperty("policy")
-    public void setPolicy(PodGroupPolicy policy) {
-        this.policy = policy;
+    @JsonProperty("threadByDate")
+    public void setThreadByDate(String threadByDate) {
+        this.threadByDate = threadByDate;
     }
 
     @JsonIgnore
-    public PodGroupBuilder edit() {
-        return new PodGroupBuilder(this);
+    public EmailThreadingConfigBuilder edit() {
+        return new EmailThreadingConfigBuilder(this);
     }
 
     @JsonIgnore
-    public PodGroupBuilder toBuilder() {
+    public EmailThreadingConfigBuilder toBuilder() {
         return edit();
     }
 

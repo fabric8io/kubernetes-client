@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class ErrorMessageTest {
 
   KubernetesMockServer server;

@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 public class NodeTest {
 
   KubernetesMockServer server;
@@ -69,13 +69,13 @@ public class NodeTest {
     server.expect().withPath("/api/v1/nodes/node1").andReturn(200, new PodBuilder().build()).once();
     server.expect().withPath("/api/v1/nodes/node2").andReturn(200, new PodBuilder().build()).once();
 
-    boolean deleted = client.nodes().withName("node1").delete().size() == 1;
+    boolean deleted = client.nodes().withName("node1").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.nodes().withName("node2").delete().size() == 1;
+    deleted = client.nodes().withName("node2").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.nodes().withName("node3").delete().size() == 1;
+    deleted = client.nodes().withName("node3").withGracePeriod(0).delete().size() == 1;
     assertFalse(deleted);
   }
 

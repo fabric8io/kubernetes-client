@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.scheduling.v1alpha1;
+package io.fabric8.kubernetes.api.model.resource.v1alpha3;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,12 +33,14 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * GangSchedulingPolicy defines the parameters for gang scheduling.
+ * ResourcePoolStatusRequestSpec defines the filters for the pool status request.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "minCount"
+    "driver",
+    "limit",
+    "poolName"
 })
 @ToString
 @EqualsAndHashCode
@@ -62,48 +64,86 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GangSchedulingPolicy implements Editable<GangSchedulingPolicyBuilder>, KubernetesResource
+public class ResourcePoolStatusRequestSpec implements Editable<ResourcePoolStatusRequestSpecBuilder>, KubernetesResource
 {
 
-    @JsonProperty("minCount")
-    private Integer minCount;
+    @JsonProperty("driver")
+    private String driver;
+    @JsonProperty("limit")
+    private Integer limit;
+    @JsonProperty("poolName")
+    private String poolName;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public GangSchedulingPolicy() {
+    public ResourcePoolStatusRequestSpec() {
     }
 
-    public GangSchedulingPolicy(Integer minCount) {
+    public ResourcePoolStatusRequestSpec(String driver, Integer limit, String poolName) {
         super();
-        this.minCount = minCount;
+        this.driver = driver;
+        this.limit = limit;
+        this.poolName = poolName;
     }
 
     /**
-     * MinCount is the minimum number of pods that must be schedulable or scheduled at the same time for the scheduler to admit the entire group. It must be a positive integer.
+     * Driver specifies the DRA driver name to filter pools. Only pools from ResourceSlices with this driver will be included. Must be a DNS subdomain (e.g., "gpu.example.com").
      */
-    @JsonProperty("minCount")
-    public Integer getMinCount() {
-        return minCount;
+    @JsonProperty("driver")
+    public String getDriver() {
+        return driver;
     }
 
     /**
-     * MinCount is the minimum number of pods that must be schedulable or scheduled at the same time for the scheduler to admit the entire group. It must be a positive integer.
+     * Driver specifies the DRA driver name to filter pools. Only pools from ResourceSlices with this driver will be included. Must be a DNS subdomain (e.g., "gpu.example.com").
      */
-    @JsonProperty("minCount")
-    public void setMinCount(Integer minCount) {
-        this.minCount = minCount;
+    @JsonProperty("driver")
+    public void setDriver(String driver) {
+        this.driver = driver;
+    }
+
+    /**
+     * Limit optionally specifies the maximum number of pools to return in the status. If more pools match the filter criteria, the response will be truncated (i.e., len(status.pools) &lt; status.poolCount).<br><p> <br><p> Default: 100 Minimum: 1 Maximum: 1000
+     */
+    @JsonProperty("limit")
+    public Integer getLimit() {
+        return limit;
+    }
+
+    /**
+     * Limit optionally specifies the maximum number of pools to return in the status. If more pools match the filter criteria, the response will be truncated (i.e., len(status.pools) &lt; status.poolCount).<br><p> <br><p> Default: 100 Minimum: 1 Maximum: 1000
+     */
+    @JsonProperty("limit")
+    public void setLimit(Integer limit) {
+        this.limit = limit;
+    }
+
+    /**
+     * PoolName optionally filters to a specific pool name. If not specified, all pools from the specified driver are included. When specified, must be a non-empty valid resource pool name (DNS subdomains separated by "/").
+     */
+    @JsonProperty("poolName")
+    public String getPoolName() {
+        return poolName;
+    }
+
+    /**
+     * PoolName optionally filters to a specific pool name. If not specified, all pools from the specified driver are included. When specified, must be a non-empty valid resource pool name (DNS subdomains separated by "/").
+     */
+    @JsonProperty("poolName")
+    public void setPoolName(String poolName) {
+        this.poolName = poolName;
     }
 
     @JsonIgnore
-    public GangSchedulingPolicyBuilder edit() {
-        return new GangSchedulingPolicyBuilder(this);
+    public ResourcePoolStatusRequestSpecBuilder edit() {
+        return new ResourcePoolStatusRequestSpecBuilder(this);
     }
 
     @JsonIgnore
-    public GangSchedulingPolicyBuilder toBuilder() {
+    public ResourcePoolStatusRequestSpecBuilder toBuilder() {
         return edit();
     }
 

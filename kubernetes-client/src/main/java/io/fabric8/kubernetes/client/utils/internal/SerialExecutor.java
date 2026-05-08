@@ -55,6 +55,7 @@ public class SerialExecutor implements Executor {
   public synchronized void execute(final Runnable r) {
     if (shutdown) {
       logger.debug("Task submitted after the executor was shutdown");
+      return;
     }
     tasks.offer(() -> {
       try {

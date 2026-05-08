@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.duck.v1.Addressable;
+import io.fabric8.knative.duck.v1.AppliedEventPolicyRef;
 import io.fabric8.knative.duck.v1.AuthStatus;
 import io.fabric8.knative.duck.v1.CloudEventAttributes;
 import io.fabric8.knative.pkg.apis.Condition;
@@ -52,6 +53,7 @@ import lombok.experimental.Accessors;
     "conditions",
     "jsonata",
     "observedGeneration",
+    "policies",
     "sinkAudience",
     "sinkCACerts",
     "sinkUri"
@@ -101,6 +103,9 @@ public class EventTransformStatus implements Editable<EventTransformStatusBuilde
     private JsonataEventTransformationStatus jsonata;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
+    @JsonProperty("policies")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<AppliedEventPolicyRef> policies = new ArrayList<>();
     @JsonProperty("sinkAudience")
     private String sinkAudience;
     @JsonProperty("sinkCACerts")
@@ -116,7 +121,7 @@ public class EventTransformStatus implements Editable<EventTransformStatusBuilde
     public EventTransformStatus() {
     }
 
-    public EventTransformStatus(Addressable address, List<Addressable> addresses, Map<String, String> annotations, AuthStatus auth, List<CloudEventAttributes> ceAttributes, List<Condition> conditions, JsonataEventTransformationStatus jsonata, Long observedGeneration, String sinkAudience, String sinkCACerts, String sinkUri) {
+    public EventTransformStatus(Addressable address, List<Addressable> addresses, Map<String, String> annotations, AuthStatus auth, List<CloudEventAttributes> ceAttributes, List<Condition> conditions, JsonataEventTransformationStatus jsonata, Long observedGeneration, List<AppliedEventPolicyRef> policies, String sinkAudience, String sinkCACerts, String sinkUri) {
         super();
         this.address = address;
         this.addresses = addresses;
@@ -126,6 +131,7 @@ public class EventTransformStatus implements Editable<EventTransformStatusBuilde
         this.conditions = conditions;
         this.jsonata = jsonata;
         this.observedGeneration = observedGeneration;
+        this.policies = policies;
         this.sinkAudience = sinkAudience;
         this.sinkCACerts = sinkCACerts;
         this.sinkUri = sinkUri;
@@ -261,6 +267,23 @@ public class EventTransformStatus implements Editable<EventTransformStatusBuilde
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
+    }
+
+    /**
+     * Policies holds the list of applied EventPolicies
+     */
+    @JsonProperty("policies")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<AppliedEventPolicyRef> getPolicies() {
+        return policies;
+    }
+
+    /**
+     * Policies holds the list of applied EventPolicies
+     */
+    @JsonProperty("policies")
+    public void setPolicies(List<AppliedEventPolicyRef> policies) {
+        this.policies = policies;
     }
 
     /**

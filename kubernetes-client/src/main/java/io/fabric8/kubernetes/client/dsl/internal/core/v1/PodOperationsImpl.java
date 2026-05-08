@@ -374,17 +374,30 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   private ExecWebSocketListener setupConnectionToPod(URI uri) {
     ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(getContext(), this.context.getExecutor(),
         this.getKubernetesSerialization());
+    long requestTimeoutMs = getRequestConfig().getRequestTimeout();
     CompletableFuture<WebSocket> startedFuture = httpClient.newWebSocketBuilder()
         .subprotocol("v4.channel.k8s.io")
         .uri(uri)
-        .connectTimeout(getRequestConfig().getRequestTimeout(), TimeUnit.MILLISECONDS)
+        .connectTimeout(requestTimeoutMs, TimeUnit.MILLISECONDS)
         .buildAsync(execWebSocketListener);
     startedFuture.whenComplete((w, t) -> {
       if (t != null) {
         execWebSocketListener.onError(w, t);
       }
     });
-    Utils.waitUntilReadyOrFail(startedFuture, getRequestConfig().getRequestTimeout(), TimeUnit.MILLISECONDS);
+    final long startNanos = System.nanoTime();
+    try {
+      Utils.waitUntilReadyOrFail(startedFuture, requestTimeoutMs, TimeUnit.MILLISECONDS);
+    } catch (RuntimeException e) {
+      // Diagnostic for #7737: capture state when the WS-upgrade future fails to complete.
+      LOG.error("Exec WebSocket upgrade did not complete after {}ms (timeout {}ms). uri={} futureDone={} thread={}",
+          (System.nanoTime() - startNanos) / 1_000_000L,
+          requestTimeoutMs,
+          uri,
+          startedFuture.isDone(),
+          Thread.currentThread().getName());
+      throw e;
+    }
     return execWebSocketListener;
   }
 

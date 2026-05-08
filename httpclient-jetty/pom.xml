@@ -21,7 +21,7 @@
   <parent>
     <artifactId>kubernetes-client-project</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>7.7-SNAPSHOT</version>
+    <version>999-SNAPSHOT</version>
   </parent>
 
   <artifactId>kubernetes-httpclient-jetty</artifactId>
@@ -88,7 +88,7 @@
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
-      <artifactId>mockito-inline</artifactId>
+      <artifactId>mockito-core</artifactId>
     </dependency>
     <dependency>
       <groupId>org.assertj</groupId>
@@ -106,6 +106,30 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-test</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <excludedGroups>simultaneous-connections</excludedGroups>
+              <failIfNoSpecifiedTests>false</failIfNoSpecifiedTests>
+            </configuration>
+          </execution>
+          <execution>
+            <id>simultaneous-connections-test</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <groups>simultaneous-connections</groups>
+              <forkCount>1</forkCount>
+              <reuseForks>false</reuseForks>
+              <failIfNoSpecifiedTests>false</failIfNoSpecifiedTests>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>

@@ -164,6 +164,19 @@ class MockWebServerTest extends Specification {
 		assert result == null
 	}
 
+	def "shutdown, called twice on the same instance, should be idempotent"() {
+		given:
+		def s = new MockWebServer()
+		s.start()
+		s.shutdown()
+
+		when:
+		s.shutdown()
+
+		then:
+		noExceptionThrown()
+	}
+
 	def "takeRequest, should wait until request is received"() {
 		given:
 		def conditions = new PollingConditions(timeout: 10)

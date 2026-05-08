@@ -48,6 +48,7 @@ import lombok.experimental.Accessors;
     "serviceAccountName",
     "serviceAccountUID",
     "signerName",
+    "stubPKCS10Request",
     "unverifiedUserAnnotations"
 })
 @ToString
@@ -95,6 +96,8 @@ public class PodCertificateRequestSpec implements Editable<PodCertificateRequest
     private String serviceAccountUID;
     @JsonProperty("signerName")
     private String signerName;
+    @JsonProperty("stubPKCS10Request")
+    private String stubPKCS10Request;
     @JsonProperty("unverifiedUserAnnotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> unverifiedUserAnnotations = new LinkedHashMap<>();
@@ -107,7 +110,7 @@ public class PodCertificateRequestSpec implements Editable<PodCertificateRequest
     public PodCertificateRequestSpec() {
     }
 
-    public PodCertificateRequestSpec(Integer maxExpirationSeconds, String nodeName, String nodeUID, String pkixPublicKey, String podName, String podUID, String proofOfPossession, String serviceAccountName, String serviceAccountUID, String signerName, Map<String, String> unverifiedUserAnnotations) {
+    public PodCertificateRequestSpec(Integer maxExpirationSeconds, String nodeName, String nodeUID, String pkixPublicKey, String podName, String podUID, String proofOfPossession, String serviceAccountName, String serviceAccountUID, String signerName, String stubPKCS10Request, Map<String, String> unverifiedUserAnnotations) {
         super();
         this.maxExpirationSeconds = maxExpirationSeconds;
         this.nodeName = nodeName;
@@ -119,6 +122,7 @@ public class PodCertificateRequestSpec implements Editable<PodCertificateRequest
         this.serviceAccountName = serviceAccountName;
         this.serviceAccountUID = serviceAccountUID;
         this.signerName = signerName;
+        this.stubPKCS10Request = stubPKCS10Request;
         this.unverifiedUserAnnotations = unverifiedUserAnnotations;
     }
 
@@ -171,7 +175,7 @@ public class PodCertificateRequestSpec implements Editable<PodCertificateRequest
     }
 
     /**
-     * pkixPublicKey is the PKIX-serialized public key the signer will issue the certificate to.<br><p> <br><p> The key must be one of RSA3072, RSA4096, ECDSAP256, ECDSAP384, ECDSAP521, or ED25519. Note that this list may be expanded in the future.<br><p> <br><p> Signer implementations do not need to support all key types supported by kube-apiserver and kubelet.  If a signer does not support the key type used for a given PodCertificateRequest, it must deny the request by setting a status.conditions entry with a type of "Denied" and a reason of "UnsupportedKeyType". It may also suggest a key type that it does support in the message field.
+     * The PKIX-serialized public key the signer will issue the certificate to.<br><p> <br><p> The key must be one of RSA3072, RSA4096, ECDSAP256, ECDSAP384, ECDSAP521, or ED25519. Note that this list may be expanded in the future.<br><p> <br><p> Signer implementations do not need to support all key types supported by kube-apiserver and kubelet.  If a signer does not support the key type used for a given PodCertificateRequest, it must deny the request by setting a status.conditions entry with a type of "Denied" and a reason of "UnsupportedKeyType". It may also suggest a key type that it does support in the message field.<br><p> <br><p> Deprecated: This field is replaced by StubPKCS10Request. If StubPKCS10Request is set, this field must be empty.  Signer implementations should extract the public key from the StubPKCS10Request field.
      */
     @JsonProperty("pkixPublicKey")
     public String getPkixPublicKey() {
@@ -179,7 +183,7 @@ public class PodCertificateRequestSpec implements Editable<PodCertificateRequest
     }
 
     /**
-     * pkixPublicKey is the PKIX-serialized public key the signer will issue the certificate to.<br><p> <br><p> The key must be one of RSA3072, RSA4096, ECDSAP256, ECDSAP384, ECDSAP521, or ED25519. Note that this list may be expanded in the future.<br><p> <br><p> Signer implementations do not need to support all key types supported by kube-apiserver and kubelet.  If a signer does not support the key type used for a given PodCertificateRequest, it must deny the request by setting a status.conditions entry with a type of "Denied" and a reason of "UnsupportedKeyType". It may also suggest a key type that it does support in the message field.
+     * The PKIX-serialized public key the signer will issue the certificate to.<br><p> <br><p> The key must be one of RSA3072, RSA4096, ECDSAP256, ECDSAP384, ECDSAP521, or ED25519. Note that this list may be expanded in the future.<br><p> <br><p> Signer implementations do not need to support all key types supported by kube-apiserver and kubelet.  If a signer does not support the key type used for a given PodCertificateRequest, it must deny the request by setting a status.conditions entry with a type of "Denied" and a reason of "UnsupportedKeyType". It may also suggest a key type that it does support in the message field.<br><p> <br><p> Deprecated: This field is replaced by StubPKCS10Request. If StubPKCS10Request is set, this field must be empty.  Signer implementations should extract the public key from the StubPKCS10Request field.
      */
     @JsonProperty("pkixPublicKey")
     public void setPkixPublicKey(String pkixPublicKey) {
@@ -219,7 +223,7 @@ public class PodCertificateRequestSpec implements Editable<PodCertificateRequest
     }
 
     /**
-     * proofOfPossession proves that the requesting kubelet holds the private key corresponding to pkixPublicKey.<br><p> <br><p> It is contructed by signing the ASCII bytes of the pod's UID using `pkixPublicKey`.<br><p> <br><p> kube-apiserver validates the proof of possession during creation of the PodCertificateRequest.<br><p> <br><p> If the key is an RSA key, then the signature is over the ASCII bytes of the pod UID, using RSASSA-PSS from RFC 8017 (as implemented by the golang function crypto/rsa.SignPSS with nil options).<br><p> <br><p> If the key is an ECDSA key, then the signature is as described by [SEC 1, Version 2.0](https://www.secg.org/sec1-v2.pdf) (as implemented by the golang library function crypto/ecdsa.SignASN1)<br><p> <br><p> If the key is an ED25519 key, the the signature is as described by the [ED25519 Specification](https://ed25519.cr.yp.to/) (as implemented by the golang library crypto/ed25519.Sign).
+     * A proof that the requesting kubelet holds the private key corresponding to pkixPublicKey.<br><p> <br><p> It is contructed by signing the ASCII bytes of the pod's UID using `pkixPublicKey`.<br><p> <br><p> kube-apiserver validates the proof of possession during creation of the PodCertificateRequest.<br><p> <br><p> If the key is an RSA key, then the signature is over the ASCII bytes of the pod UID, using RSASSA-PSS from RFC 8017 (as implemented by the golang function crypto/rsa.SignPSS with nil options).<br><p> <br><p> If the key is an ECDSA key, then the signature is as described by [SEC 1, Version 2.0](https://www.secg.org/sec1-v2.pdf) (as implemented by the golang library function crypto/ecdsa.SignASN1)<br><p> <br><p> If the key is an ED25519 key, the the signature is as described by the [ED25519 Specification](https://ed25519.cr.yp.to/) (as implemented by the golang library crypto/ed25519.Sign).<br><p> <br><p> Deprecated: This field is replaced by StubPKCS10Request. If StubPKCS10Request is set, this field must be empty.
      */
     @JsonProperty("proofOfPossession")
     public String getProofOfPossession() {
@@ -227,7 +231,7 @@ public class PodCertificateRequestSpec implements Editable<PodCertificateRequest
     }
 
     /**
-     * proofOfPossession proves that the requesting kubelet holds the private key corresponding to pkixPublicKey.<br><p> <br><p> It is contructed by signing the ASCII bytes of the pod's UID using `pkixPublicKey`.<br><p> <br><p> kube-apiserver validates the proof of possession during creation of the PodCertificateRequest.<br><p> <br><p> If the key is an RSA key, then the signature is over the ASCII bytes of the pod UID, using RSASSA-PSS from RFC 8017 (as implemented by the golang function crypto/rsa.SignPSS with nil options).<br><p> <br><p> If the key is an ECDSA key, then the signature is as described by [SEC 1, Version 2.0](https://www.secg.org/sec1-v2.pdf) (as implemented by the golang library function crypto/ecdsa.SignASN1)<br><p> <br><p> If the key is an ED25519 key, the the signature is as described by the [ED25519 Specification](https://ed25519.cr.yp.to/) (as implemented by the golang library crypto/ed25519.Sign).
+     * A proof that the requesting kubelet holds the private key corresponding to pkixPublicKey.<br><p> <br><p> It is contructed by signing the ASCII bytes of the pod's UID using `pkixPublicKey`.<br><p> <br><p> kube-apiserver validates the proof of possession during creation of the PodCertificateRequest.<br><p> <br><p> If the key is an RSA key, then the signature is over the ASCII bytes of the pod UID, using RSASSA-PSS from RFC 8017 (as implemented by the golang function crypto/rsa.SignPSS with nil options).<br><p> <br><p> If the key is an ECDSA key, then the signature is as described by [SEC 1, Version 2.0](https://www.secg.org/sec1-v2.pdf) (as implemented by the golang library function crypto/ecdsa.SignASN1)<br><p> <br><p> If the key is an ED25519 key, the the signature is as described by the [ED25519 Specification](https://ed25519.cr.yp.to/) (as implemented by the golang library crypto/ed25519.Sign).<br><p> <br><p> Deprecated: This field is replaced by StubPKCS10Request. If StubPKCS10Request is set, this field must be empty.
      */
     @JsonProperty("proofOfPossession")
     public void setProofOfPossession(String proofOfPossession) {
@@ -280,6 +284,22 @@ public class PodCertificateRequestSpec implements Editable<PodCertificateRequest
     @JsonProperty("signerName")
     public void setSignerName(String signerName) {
         this.signerName = signerName;
+    }
+
+    /**
+     * A PKCS#10 certificate signing request (DER-serialized) generated by Kubelet using the subject private key.<br><p> <br><p> Most signer implementations will ignore the contents of the CSR except to extract the subject public key. The API server automatically verifies the CSR signature during admission, so the signer does not need to repeat the verification.  CSRs generated by kubelet are completely empty.<br><p> <br><p> The subject public key must be one of RSA3072, RSA4096, ECDSAP256, ECDSAP384, ECDSAP521, or ED25519. Note that this list may be expanded in the future.<br><p> <br><p> Signer implementations do not need to support all key types supported by kube-apiserver and kubelet.  If a signer does not support the key type used for a given PodCertificateRequest, it must deny the request by setting a status.conditions entry with a type of "Denied" and a reason of "UnsupportedKeyType". It may also suggest a key type that it does support in the message field.
+     */
+    @JsonProperty("stubPKCS10Request")
+    public String getStubPKCS10Request() {
+        return stubPKCS10Request;
+    }
+
+    /**
+     * A PKCS#10 certificate signing request (DER-serialized) generated by Kubelet using the subject private key.<br><p> <br><p> Most signer implementations will ignore the contents of the CSR except to extract the subject public key. The API server automatically verifies the CSR signature during admission, so the signer does not need to repeat the verification.  CSRs generated by kubelet are completely empty.<br><p> <br><p> The subject public key must be one of RSA3072, RSA4096, ECDSAP256, ECDSAP384, ECDSAP521, or ED25519. Note that this list may be expanded in the future.<br><p> <br><p> Signer implementations do not need to support all key types supported by kube-apiserver and kubelet.  If a signer does not support the key type used for a given PodCertificateRequest, it must deny the request by setting a status.conditions entry with a type of "Denied" and a reason of "UnsupportedKeyType". It may also suggest a key type that it does support in the message field.
+     */
+    @JsonProperty("stubPKCS10Request")
+    public void setStubPKCS10Request(String stubPKCS10Request) {
+        this.stubPKCS10Request = stubPKCS10Request;
     }
 
     /**

@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 public class PodTemplateTest {
 
   KubernetesMockServer server;
@@ -139,7 +139,7 @@ public class PodTemplateTest {
         .once();
 
     // When
-    boolean isDeleted = client.v1().podTemplates().inNamespace("test").withName("pt1").delete().size() == 1;
+    boolean isDeleted = client.v1().podTemplates().inNamespace("test").withName("pt1").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);

@@ -208,7 +208,7 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
     }
 
     /**
-     * matchers defines the list of matchers that the alert's labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: &lt;object namespace&gt;` matcher.
+     * matchers defines the list of matchers that the alert's labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: &lt;object namespace&gt;` matcher, unless configured otherwise in Alertmanager's AlertmanagerConfigMatcherStrategyType.
      */
     @JsonProperty("matchers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -217,7 +217,7 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
     }
 
     /**
-     * matchers defines the list of matchers that the alert's labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: &lt;object namespace&gt;` matcher.
+     * matchers defines the list of matchers that the alert's labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: &lt;object namespace&gt;` matcher, unless configured otherwise in Alertmanager's AlertmanagerConfigMatcherStrategyType.
      */
     @JsonProperty("matchers")
     public void setMatchers(List<Matcher> matchers) {

@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "httpConfig",
     "jira",
+    "mattermost",
     "opsGenieApiKey",
     "opsGenieApiUrl",
     "pagerdutyUrl",
@@ -81,6 +82,8 @@ public class AlertmanagerGlobalConfig implements Editable<AlertmanagerGlobalConf
     private HTTPConfigWithProxy httpConfig;
     @JsonProperty("jira")
     private GlobalJiraConfig jira;
+    @JsonProperty("mattermost")
+    private GlobalMattermostConfig mattermost;
     @JsonProperty("opsGenieApiKey")
     private SecretKeySelector opsGenieApiKey;
     @JsonProperty("opsGenieApiUrl")
@@ -112,10 +115,11 @@ public class AlertmanagerGlobalConfig implements Editable<AlertmanagerGlobalConf
     public AlertmanagerGlobalConfig() {
     }
 
-    public AlertmanagerGlobalConfig(HTTPConfigWithProxy httpConfig, GlobalJiraConfig jira, SecretKeySelector opsGenieApiKey, SecretKeySelector opsGenieApiUrl, String pagerdutyUrl, String resolveTimeout, GlobalRocketChatConfig rocketChat, SecretKeySelector slackApiUrl, GlobalSMTPConfig smtp, GlobalTelegramConfig telegram, GlobalVictorOpsConfig victorops, GlobalWebexConfig webex, GlobalWeChatConfig wechat) {
+    public AlertmanagerGlobalConfig(HTTPConfigWithProxy httpConfig, GlobalJiraConfig jira, GlobalMattermostConfig mattermost, SecretKeySelector opsGenieApiKey, SecretKeySelector opsGenieApiUrl, String pagerdutyUrl, String resolveTimeout, GlobalRocketChatConfig rocketChat, SecretKeySelector slackApiUrl, GlobalSMTPConfig smtp, GlobalTelegramConfig telegram, GlobalVictorOpsConfig victorops, GlobalWebexConfig webex, GlobalWeChatConfig wechat) {
         super();
         this.httpConfig = httpConfig;
         this.jira = jira;
+        this.mattermost = mattermost;
         this.opsGenieApiKey = opsGenieApiKey;
         this.opsGenieApiUrl = opsGenieApiUrl;
         this.pagerdutyUrl = pagerdutyUrl;
@@ -159,6 +163,22 @@ public class AlertmanagerGlobalConfig implements Editable<AlertmanagerGlobalConf
     @JsonProperty("jira")
     public void setJira(GlobalJiraConfig jira) {
         this.jira = jira;
+    }
+
+    /**
+     * AlertmanagerGlobalConfig configures parameters that are valid in all other configuration contexts. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+     */
+    @JsonProperty("mattermost")
+    public GlobalMattermostConfig getMattermost() {
+        return mattermost;
+    }
+
+    /**
+     * AlertmanagerGlobalConfig configures parameters that are valid in all other configuration contexts. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+     */
+    @JsonProperty("mattermost")
+    public void setMattermost(GlobalMattermostConfig mattermost) {
+        this.mattermost = mattermost;
     }
 
     /**

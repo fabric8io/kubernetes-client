@@ -31,7 +31,7 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class CSIStorageCapacityTest {
   KubernetesMockServer server;
   private KubernetesClient client;

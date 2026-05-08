@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@EnableKubernetesMockClient(crud = true)
+@EnableKubernetesMockClient(crud = true, https = false)
 class MetadataCrudTest {
 
   KubernetesMockServer server;

@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient(crud = true)
+@EnableKubernetesMockClient(crud = true, https = false)
 public class SecretCrudTest {
 
   KubernetesClient client;

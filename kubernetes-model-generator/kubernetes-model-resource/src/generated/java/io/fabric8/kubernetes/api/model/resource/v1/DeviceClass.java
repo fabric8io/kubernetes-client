@@ -37,7 +37,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * DeviceClass is a vendor- or admin-provided resource that contains device configuration and selectors. It can be referenced in the device requests of a claim to apply these presets. Cluster scoped.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+ * DeviceClass is a vendor- or admin-provided resource that contains device configuration and selectors. It can be referenced in the device requests of a claim to apply these presets. Cluster scoped.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -135,7 +135,7 @@ public class DeviceClass implements Editable<DeviceClassBuilder>, HasMetadata
     }
 
     /**
-     * DeviceClass is a vendor- or admin-provided resource that contains device configuration and selectors. It can be referenced in the device requests of a claim to apply these presets. Cluster scoped.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+     * DeviceClass is a vendor- or admin-provided resource that contains device configuration and selectors. It can be referenced in the device requests of a claim to apply these presets. Cluster scoped.
      */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
@@ -143,7 +143,7 @@ public class DeviceClass implements Editable<DeviceClassBuilder>, HasMetadata
     }
 
     /**
-     * DeviceClass is a vendor- or admin-provided resource that contains device configuration and selectors. It can be referenced in the device requests of a claim to apply these presets. Cluster scoped.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+     * DeviceClass is a vendor- or admin-provided resource that contains device configuration and selectors. It can be referenced in the device requests of a claim to apply these presets. Cluster scoped.
      */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
@@ -151,7 +151,7 @@ public class DeviceClass implements Editable<DeviceClassBuilder>, HasMetadata
     }
 
     /**
-     * DeviceClass is a vendor- or admin-provided resource that contains device configuration and selectors. It can be referenced in the device requests of a claim to apply these presets. Cluster scoped.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+     * DeviceClass is a vendor- or admin-provided resource that contains device configuration and selectors. It can be referenced in the device requests of a claim to apply these presets. Cluster scoped.
      */
     @JsonProperty("spec")
     public DeviceClassSpec getSpec() {
@@ -159,7 +159,7 @@ public class DeviceClass implements Editable<DeviceClassBuilder>, HasMetadata
     }
 
     /**
-     * DeviceClass is a vendor- or admin-provided resource that contains device configuration and selectors. It can be referenced in the device requests of a claim to apply these presets. Cluster scoped.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+     * DeviceClass is a vendor- or admin-provided resource that contains device configuration and selectors. It can be referenced in the device requests of a claim to apply these presets. Cluster scoped.
      */
     @JsonProperty("spec")
     public void setSpec(DeviceClassSpec spec) {

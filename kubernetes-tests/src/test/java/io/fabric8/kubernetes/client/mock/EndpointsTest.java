@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 public class EndpointsTest {
 
   KubernetesMockServer server;
@@ -128,13 +128,13 @@ public class EndpointsTest {
     server.expect().withPath("/api/v1/namespaces/ns1/endpoints/endpoint2").andReturn(200, new EndpointsBuilder().build())
         .once();
 
-    boolean deleted = client.endpoints().inNamespace("test").withName("endpoint1").delete().size() == 1;
+    boolean deleted = client.endpoints().inNamespace("test").withName("endpoint1").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.endpoints().withName("endpoint2").delete().size() == 1;
+    deleted = client.endpoints().withName("endpoint2").withGracePeriod(0).delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.endpoints().inNamespace("ns1").withName("endpoint2").delete().size() == 1;
+    deleted = client.endpoints().inNamespace("ns1").withName("endpoint2").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
   }
 

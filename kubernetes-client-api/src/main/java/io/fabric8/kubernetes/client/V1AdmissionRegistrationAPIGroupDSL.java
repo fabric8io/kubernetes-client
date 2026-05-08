@@ -15,6 +15,10 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingAdmissionPolicy;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingAdmissionPolicyBinding;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingAdmissionPolicyBindingList;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingAdmissionPolicyList;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfiguration;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookConfigurationList;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingAdmissionPolicy;
@@ -49,4 +53,21 @@ public interface V1AdmissionRegistrationAPIGroupDSL extends Client {
    * @return NonNamespaceOperation for ValidatingAdmissionPolicy
    */
   NonNamespaceOperation<ValidatingAdmissionPolicy, ValidatingAdmissionPolicyList, Resource<ValidatingAdmissionPolicy>> validatingAdmissionPolicies();
+
+  /**
+   * DSL entrypoint for admissionregistration.k8s.io/v1 MutatingAdmissionPolicy.
+   * MutatingAdmissionPolicy describes the definition of an admission mutation policy that mutates an object
+   * coming into the admission chain.
+   *
+   * @return NonNamespaceOperation for MutatingAdmissionPolicy
+   */
+  NonNamespaceOperation<MutatingAdmissionPolicy, MutatingAdmissionPolicyList, Resource<MutatingAdmissionPolicy>> mutatingAdmissionPolicies();
+
+  /**
+   * DSL entrypoint for admissionregistration.k8s.io/v1 MutatingAdmissionPolicyBinding.
+   * MutatingAdmissionPolicyBinding binds the MutatingAdmissionPolicy with parameterized resources.
+   *
+   * @return NonNamespaceOperation for MutatingAdmissionPolicyBinding
+   */
+  NonNamespaceOperation<MutatingAdmissionPolicyBinding, MutatingAdmissionPolicyBindingList, Resource<MutatingAdmissionPolicyBinding>> mutatingAdmissionPolicyBindings();
 }

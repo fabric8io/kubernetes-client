@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class LeaderElectionTest {
 
   KubernetesMockServer server;
@@ -192,6 +192,7 @@ class LeaderElectionTest {
     // Given
     final CountDownLatch leaderLatch = new CountDownLatch(1);
     final AtomicReference<String> newLeaderRecord = new AtomicReference<>();
+    final AtomicReference<String> leaderOnStart = new AtomicReference<>();
     final CountDownLatch stoppedLeading = new CountDownLatch(1);
     final ExecutorService executorService = Executors.newSingleThreadExecutor();
     // When
@@ -204,7 +205,10 @@ class LeaderElectionTest {
                 .withRenewDeadline(Duration.ofSeconds(10L))
                 .withRetryPeriod(Duration.ofSeconds(2L))
                 .withLeaderCallbacks(new LeaderCallbacks(
-                    leaderLatch::countDown,
+                    () -> {
+                      leaderOnStart.set(newLeaderRecord.get());
+                      leaderLatch.countDown();
+                    },
                     stoppedLeading::countDown,
                     newLeaderRecord::set))
                 .build())
@@ -212,7 +216,7 @@ class LeaderElectionTest {
             .run()));
     // Then
     assertTrue(leaderLatch.await(10, TimeUnit.SECONDS));
-    assertEquals(id, newLeaderRecord.get());
+    assertEquals(id, leaderOnStart.get());
     assertEquals(0, leaderLatch.getCount());
     leaderElectorTask.cancel(true);
     executorService.shutdownNow();

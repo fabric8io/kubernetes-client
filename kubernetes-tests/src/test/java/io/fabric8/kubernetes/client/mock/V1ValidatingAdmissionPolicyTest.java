@@ -31,7 +31,7 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class V1ValidatingAdmissionPolicyTest {
 
   KubernetesMockServer server;
@@ -44,7 +44,8 @@ class V1ValidatingAdmissionPolicyTest {
     assertThat(items).isNotNull().hasSize(1);
     AssertionsForClassTypes.assertThat(items.get(0))
         .isInstanceOf(ValidatingAdmissionPolicy.class)
-        .hasFieldOrPropertyWithValue("metadata.name", "demo-policy.example.com");
+        .hasFieldOrPropertyWithValue("metadata.name", "demo-policy.example.com")
+        .hasFieldOrPropertyWithValue("spec.failurePolicy", "Fail");
   }
 
   @Test
@@ -113,7 +114,7 @@ class V1ValidatingAdmissionPolicyTest {
 
     // When
     boolean isDeleted = client.admissionRegistration().v1().validatingAdmissionPolicies()
-        .withName("demo-policy.example.com").delete().size() == 1;
+        .withName("demo-policy.example.com").withGracePeriod(0).delete().size() == 1;
 
     // Then
     AssertionsForClassTypes.assertThat(isDeleted).isTrue();

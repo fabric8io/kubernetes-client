@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class UserTest {
 
   KubernetesMockServer server;
@@ -79,12 +79,12 @@ class UserTest {
     server.expect().withPath("/apis/user.openshift.io/v1/users/user1").andReturn(200, new UserBuilder().build()).once();
     server.expect().withPath("/apis/user.openshift.io/v1/users/User2").andReturn(200, new UserBuilder().build()).once();
 
-    boolean deleted = client.users().withName("user1").delete().size() == 1;
+    boolean deleted = client.users().withName("user1").withGracePeriod(0).delete().size() == 1;
 
-    deleted = client.users().withName("User2").delete().size() == 1;
+    deleted = client.users().withName("User2").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.users().withName("User3").delete().size() == 1;
+    deleted = client.users().withName("User3").withGracePeriod(0).delete().size() == 1;
     assertFalse(deleted);
   }
 }

@@ -207,7 +207,7 @@ public class ExactDeviceRequest implements Editable<ExactDeviceRequestBuilder>, 
     }
 
     /**
-     * If specified, the request's tolerations.<br><p> <br><p> Tolerations for NoSchedule are required to allocate a device which has a taint with that effect. The same applies to NoExecute.<br><p> <br><p> In addition, should any of the allocated devices get tainted with NoExecute after allocation and that effect is not tolerated, then all pods consuming the ResourceClaim get deleted to evict them. The scheduler will not let new pods reserve the claim while it has these tainted devices. Once all pods are evicted, the claim will get deallocated.<br><p> <br><p> The maximum number of tolerations is 16.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceTaints feature gate.
+     * If specified, the request's tolerations.<br><p> <br><p> Tolerations for NoSchedule are required to allocate a device which has a taint with that effect. The same applies to NoExecute.<br><p> <br><p> In addition, should any of the allocated devices get tainted with NoExecute after allocation and that effect is not tolerated, then all pods consuming the ResourceClaim get deleted to evict them. The scheduler will not let new pods reserve the claim while it has these tainted devices. Once all pods are evicted, the claim will get deallocated.<br><p> <br><p> The maximum number of tolerations is 16.<br><p> <br><p> This is a beta field and requires enabling the DRADeviceTaints feature gate.
      */
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -216,7 +216,7 @@ public class ExactDeviceRequest implements Editable<ExactDeviceRequestBuilder>, 
     }
 
     /**
-     * If specified, the request's tolerations.<br><p> <br><p> Tolerations for NoSchedule are required to allocate a device which has a taint with that effect. The same applies to NoExecute.<br><p> <br><p> In addition, should any of the allocated devices get tainted with NoExecute after allocation and that effect is not tolerated, then all pods consuming the ResourceClaim get deleted to evict them. The scheduler will not let new pods reserve the claim while it has these tainted devices. Once all pods are evicted, the claim will get deallocated.<br><p> <br><p> The maximum number of tolerations is 16.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceTaints feature gate.
+     * If specified, the request's tolerations.<br><p> <br><p> Tolerations for NoSchedule are required to allocate a device which has a taint with that effect. The same applies to NoExecute.<br><p> <br><p> In addition, should any of the allocated devices get tainted with NoExecute after allocation and that effect is not tolerated, then all pods consuming the ResourceClaim get deleted to evict them. The scheduler will not let new pods reserve the claim while it has these tainted devices. Once all pods are evicted, the claim will get deallocated.<br><p> <br><p> The maximum number of tolerations is 16.<br><p> <br><p> This is a beta field and requires enabling the DRADeviceTaints feature gate.
      */
     @JsonProperty("tolerations")
     public void setTolerations(List<DeviceToleration> tolerations) {

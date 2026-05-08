@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class VisitResourcesTest {
   KubernetesMockServer server;
   private KubernetesClient client;

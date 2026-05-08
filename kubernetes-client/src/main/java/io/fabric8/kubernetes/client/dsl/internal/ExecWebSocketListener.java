@@ -260,35 +260,44 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
     closed.set(true);
     HttpResponse<?> response = null;
 
-    try {
-      if (t instanceof WebSocketHandshakeException) {
-        response = ((WebSocketHandshakeException) t).getResponse();
-        if (response != null) {
-          Status status = OperationSupport.createStatus(response, serialization);
-          status.setMessage(t.getMessage());
-          t = new KubernetesClientException(status).initCause(t);
-        }
-      }
-      cleanUpOnce();
-    } finally {
-      if (exitCode.isDone()) {
-        LOGGER.debug("Exec failure after done", t);
-      } else {
-        try {
-          if (listener != null) {
-            ExecListener.Response execResponse = null;
-            if (response != null) {
-              execResponse = new SimpleResponse(response);
-            }
-            listener.onFailure(t, execResponse);
-          } else {
-            LOGGER.error("Exec Failure", t);
-          }
-        } finally {
-          exitCode.completeExceptionally(t);
-        }
+    if (t instanceof WebSocketHandshakeException) {
+      response = ((WebSocketHandshakeException) t).getResponse();
+      if (response != null) {
+        Status status = OperationSupport.createStatus(response, serialization);
+        status.setMessage(t.getMessage());
+        t = new KubernetesClientException(status.getMessage(), t, status.getCode(), status, response.request());
       }
     }
+    executorService.shutdownNow();
+    // Defer failure handling through serialExecutor so any in-flight async writes and a
+    // queued channel-3 exit-status task complete first; otherwise a peer-close arriving
+    // immediately after the exit-status frame would cancel the still-pending
+    // handleExitStatus and overwrite the parsed exit code with the close exception.
+    final Throwable finalT = t;
+    final HttpResponse<?> finalResponse = response;
+    serialExecutor.execute(() -> {
+      try {
+        if (exitCode.isDone()) {
+          LOGGER.debug("Exec failure after done", finalT);
+        } else {
+          try {
+            if (listener != null) {
+              ExecListener.Response execResponse = null;
+              if (finalResponse != null) {
+                execResponse = new SimpleResponse(finalResponse);
+              }
+              listener.onFailure(finalT, execResponse);
+            } else {
+              LOGGER.error("Exec Failure", finalT);
+            }
+          } finally {
+            exitCode.completeExceptionally(finalT);
+          }
+        }
+      } finally {
+        serialExecutor.shutdownNow();
+      }
+    });
   }
 
   @Override
@@ -315,7 +324,9 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
         case 2:
           if (terminateOnError) {
             String stringValue = toString(bytes);
-            exitCode.completeExceptionally(new KubernetesClientException(stringValue));
+            // Defer through serialExecutor so any pending channel 1 async writes
+            // are flushed before the exitCode future completes exceptionally.
+            serialExecutor.execute(() -> exitCode.completeExceptionally(new KubernetesClientException(stringValue)));
             close = true;
           } else {
             error.handle(byteString, webSocket);
@@ -326,7 +337,9 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
           try {
             errorChannel.handle(bytes, webSocket);
           } finally {
-            handleExitStatus(byteString);
+            // Defer through serialExecutor so any pending async writes (channel 1/2/errorChannel)
+            // are flushed before the exitCode future completes.
+            serialExecutor.execute(() -> handleExitStatus(byteString));
           }
           break;
         default:

@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class TypedClusterScopeCustomResourceApiTest {
 
   KubernetesMockServer server;
@@ -91,7 +91,7 @@ class TypedClusterScopeCustomResourceApiTest {
 
     starClient = client.resources(Star.class);
 
-    boolean isDeleted = starClient.inNamespace("test").withName("sun").delete().size() == 1;
+    boolean isDeleted = starClient.inNamespace("test").withName("sun").withGracePeriod(0).delete().size() == 1;
     assertTrue(isDeleted);
   }
 

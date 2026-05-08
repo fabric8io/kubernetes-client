@@ -112,7 +112,7 @@ import java.util.stream.Stream;
 import static java.net.HttpURLConnection.HTTP_OK;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class OpenShiftResourcesTest {
   KubernetesMockServer server;
   OpenShiftClient client;
@@ -227,7 +227,7 @@ class OpenShiftResourcesTest {
         .once();
 
     // When
-    boolean resourceDeleted = client.resources(resourceClass).withName("foo").delete().size() == 1;
+    boolean resourceDeleted = client.resources(resourceClass).withName("foo").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertThat(resourceDeleted).isTrue();

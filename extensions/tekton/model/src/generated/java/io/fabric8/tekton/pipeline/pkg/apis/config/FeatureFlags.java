@@ -174,7 +174,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     }
 
     /**
-     * FeatureFlags holds the features configurations
+     * Deprecated: see DefaultSendCloudEventsForRuns
      */
     @JsonProperty("awaitSidecarReadiness")
     public Boolean getAwaitSidecarReadiness() {
@@ -182,7 +182,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     }
 
     /**
-     * FeatureFlags holds the features configurations
+     * Deprecated: see DefaultSendCloudEventsForRuns
      */
     @JsonProperty("awaitSidecarReadiness")
     public void setAwaitSidecarReadiness(Boolean awaitSidecarReadiness) {

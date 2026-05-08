@@ -29,7 +29,7 @@ import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class APIRequestCountTest {
   private OpenShiftClient client;
   KubernetesMockServer server;
@@ -77,7 +77,7 @@ class APIRequestCountTest {
         .once();
 
     // When
-    boolean isDeleted = client.apiRequestCounts().withName("secrets.v1").delete().size() == 1;
+    boolean isDeleted = client.apiRequestCounts().withName("secrets.v1").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

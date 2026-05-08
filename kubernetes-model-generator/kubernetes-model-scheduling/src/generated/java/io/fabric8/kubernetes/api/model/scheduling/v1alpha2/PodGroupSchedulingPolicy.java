@@ -1,9 +1,7 @@
 
-package io.fabric8.kubernetes.api.model.scheduling.v1alpha1;
+package io.fabric8.kubernetes.api.model.scheduling.v1alpha2;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -35,13 +33,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * WorkloadSpec defines the desired state of a Workload.
+ * PodGroupSchedulingPolicy defines the scheduling configuration for a PodGroup. Exactly one policy must be set.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "controllerRef",
-    "podGroups"
+    "basic",
+    "gang"
 })
 @ToString
 @EqualsAndHashCode
@@ -65,69 +63,67 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class WorkloadSpec implements Editable<WorkloadSpecBuilder>, KubernetesResource
+public class PodGroupSchedulingPolicy implements Editable<PodGroupSchedulingPolicyBuilder>, KubernetesResource
 {
 
-    @JsonProperty("controllerRef")
-    private TypedLocalObjectReference controllerRef;
-    @JsonProperty("podGroups")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<PodGroup> podGroups = new ArrayList<>();
+    @JsonProperty("basic")
+    private BasicSchedulingPolicy basic;
+    @JsonProperty("gang")
+    private GangSchedulingPolicy gang;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public WorkloadSpec() {
+    public PodGroupSchedulingPolicy() {
     }
 
-    public WorkloadSpec(TypedLocalObjectReference controllerRef, List<PodGroup> podGroups) {
+    public PodGroupSchedulingPolicy(BasicSchedulingPolicy basic, GangSchedulingPolicy gang) {
         super();
-        this.controllerRef = controllerRef;
-        this.podGroups = podGroups;
+        this.basic = basic;
+        this.gang = gang;
     }
 
     /**
-     * WorkloadSpec defines the desired state of a Workload.
+     * PodGroupSchedulingPolicy defines the scheduling configuration for a PodGroup. Exactly one policy must be set.
      */
-    @JsonProperty("controllerRef")
-    public TypedLocalObjectReference getControllerRef() {
-        return controllerRef;
+    @JsonProperty("basic")
+    public BasicSchedulingPolicy getBasic() {
+        return basic;
     }
 
     /**
-     * WorkloadSpec defines the desired state of a Workload.
+     * PodGroupSchedulingPolicy defines the scheduling configuration for a PodGroup. Exactly one policy must be set.
      */
-    @JsonProperty("controllerRef")
-    public void setControllerRef(TypedLocalObjectReference controllerRef) {
-        this.controllerRef = controllerRef;
+    @JsonProperty("basic")
+    public void setBasic(BasicSchedulingPolicy basic) {
+        this.basic = basic;
     }
 
     /**
-     * PodGroups is the list of pod groups that make up the Workload. The maximum number of pod groups is 8. This field is immutable.
+     * PodGroupSchedulingPolicy defines the scheduling configuration for a PodGroup. Exactly one policy must be set.
      */
-    @JsonProperty("podGroups")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<PodGroup> getPodGroups() {
-        return podGroups;
+    @JsonProperty("gang")
+    public GangSchedulingPolicy getGang() {
+        return gang;
     }
 
     /**
-     * PodGroups is the list of pod groups that make up the Workload. The maximum number of pod groups is 8. This field is immutable.
+     * PodGroupSchedulingPolicy defines the scheduling configuration for a PodGroup. Exactly one policy must be set.
      */
-    @JsonProperty("podGroups")
-    public void setPodGroups(List<PodGroup> podGroups) {
-        this.podGroups = podGroups;
+    @JsonProperty("gang")
+    public void setGang(GangSchedulingPolicy gang) {
+        this.gang = gang;
     }
 
     @JsonIgnore
-    public WorkloadSpecBuilder edit() {
-        return new WorkloadSpecBuilder(this);
+    public PodGroupSchedulingPolicyBuilder edit() {
+        return new PodGroupSchedulingPolicyBuilder(this);
     }
 
     @JsonIgnore
-    public WorkloadSpecBuilder toBuilder() {
+    public PodGroupSchedulingPolicyBuilder toBuilder() {
         return edit();
     }
 

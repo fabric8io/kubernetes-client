@@ -28,7 +28,7 @@ import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class MachineSetTest {
   private OpenShiftClient client;
   KubernetesMockServer server;
@@ -76,7 +76,8 @@ class MachineSetTest {
         .once();
 
     // When
-    boolean isDeleted = client.machine().machineSets().inNamespace("ns1").withName("cluster").delete().size() == 1;
+    boolean isDeleted = client.machine().machineSets().inNamespace("ns1").withName("cluster").withGracePeriod(0).delete()
+        .size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

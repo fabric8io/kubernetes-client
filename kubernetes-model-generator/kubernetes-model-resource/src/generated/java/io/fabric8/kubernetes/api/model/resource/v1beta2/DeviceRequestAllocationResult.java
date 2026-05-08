@@ -141,7 +141,7 @@ public class DeviceRequestAllocationResult implements Editable<DeviceRequestAllo
     }
 
     /**
-     * BindingConditions contains a copy of the BindingConditions from the corresponding ResourceSlice at the time of allocation.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
+     * BindingConditions contains a copy of the BindingConditions from the corresponding ResourceSlice at the time of allocation.<br><p> <br><p> This is a beta field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
      */
     @JsonProperty("bindingConditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -150,7 +150,7 @@ public class DeviceRequestAllocationResult implements Editable<DeviceRequestAllo
     }
 
     /**
-     * BindingConditions contains a copy of the BindingConditions from the corresponding ResourceSlice at the time of allocation.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
+     * BindingConditions contains a copy of the BindingConditions from the corresponding ResourceSlice at the time of allocation.<br><p> <br><p> This is a beta field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
      */
     @JsonProperty("bindingConditions")
     public void setBindingConditions(List<String> bindingConditions) {
@@ -158,7 +158,7 @@ public class DeviceRequestAllocationResult implements Editable<DeviceRequestAllo
     }
 
     /**
-     * BindingFailureConditions contains a copy of the BindingFailureConditions from the corresponding ResourceSlice at the time of allocation.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
+     * BindingFailureConditions contains a copy of the BindingFailureConditions from the corresponding ResourceSlice at the time of allocation.<br><p> <br><p> This is a beta field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
      */
     @JsonProperty("bindingFailureConditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -167,7 +167,7 @@ public class DeviceRequestAllocationResult implements Editable<DeviceRequestAllo
     }
 
     /**
-     * BindingFailureConditions contains a copy of the BindingFailureConditions from the corresponding ResourceSlice at the time of allocation.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
+     * BindingFailureConditions contains a copy of the BindingFailureConditions from the corresponding ResourceSlice at the time of allocation.<br><p> <br><p> This is a beta field and requires enabling the DRADeviceBindingConditions and DRAResourceClaimDeviceStatus feature gates.
      */
     @JsonProperty("bindingFailureConditions")
     public void setBindingFailureConditions(List<String> bindingFailureConditions) {
@@ -272,7 +272,7 @@ public class DeviceRequestAllocationResult implements Editable<DeviceRequestAllo
     }
 
     /**
-     * A copy of all tolerations specified in the request at the time when the device got allocated.<br><p> <br><p> The maximum number of tolerations is 16.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceTaints feature gate.
+     * A copy of all tolerations specified in the request at the time when the device got allocated.<br><p> <br><p> The maximum number of tolerations is 16.<br><p> <br><p> This is a beta field and requires enabling the DRADeviceTaints feature gate.
      */
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -281,7 +281,7 @@ public class DeviceRequestAllocationResult implements Editable<DeviceRequestAllo
     }
 
     /**
-     * A copy of all tolerations specified in the request at the time when the device got allocated.<br><p> <br><p> The maximum number of tolerations is 16.<br><p> <br><p> This is an alpha field and requires enabling the DRADeviceTaints feature gate.
+     * A copy of all tolerations specified in the request at the time when the device got allocated.<br><p> <br><p> The maximum number of tolerations is 16.<br><p> <br><p> This is a beta field and requires enabling the DRADeviceTaints feature gate.
      */
     @JsonProperty("tolerations")
     public void setTolerations(List<DeviceToleration> tolerations) {

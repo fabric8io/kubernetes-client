@@ -132,6 +132,7 @@ import lombok.experimental.Accessors;
     "serviceMonitorNamespaceSelector",
     "serviceMonitorSelector",
     "serviceName",
+    "shardingStrategy",
     "shards",
     "storage",
     "targetLimit",
@@ -364,6 +365,8 @@ public class CommonPrometheusFields implements Editable<CommonPrometheusFieldsBu
     private LabelSelector serviceMonitorSelector;
     @JsonProperty("serviceName")
     private String serviceName;
+    @JsonProperty("shardingStrategy")
+    private ShardingStrategy shardingStrategy;
     @JsonProperty("shards")
     private Integer shards;
     @JsonProperty("storage")
@@ -405,7 +408,7 @@ public class CommonPrometheusFields implements Editable<CommonPrometheusFieldsBu
     public CommonPrometheusFields() {
     }
 
-    public CommonPrometheusFields(List<Argument> additionalArgs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, Boolean automountServiceAccountToken, String bodySizeLimit, List<String> configMaps, List<Container> containers, Boolean convertClassicHistogramsToNHCB, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableOTLPReceiver, Boolean enableRemoteWriteReceiver, Boolean enableServiceLinks, String enforcedBodySizeLimit, Long enforcedKeepDroppedTargets, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, List<ObjectReference> excludedFromEnforcement, Map<String, String> externalLabels, String externalUrl, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean hostUsers, Boolean ignoreNamespaceSelectors, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, Boolean listenLocal, String logFormat, String logLevel, Integer maximumStartupDurationSeconds, Integer minReadySeconds, String nameEscapingScheme, String nameValidationScheme, Map<String, String> nodeSelector, OTLPConfig otlp, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, String podManagementPolicy, EmbeddedObjectMetadata podMetadata, LabelSelector podMonitorNamespaceSelector, LabelSelector podMonitorSelector, List<String> podTargetLabels, String portName, String priorityClassName, LabelSelector probeNamespaceSelector, LabelSelector probeSelector, String prometheusExternalLabelName, String reloadStrategy, List<RemoteWriteSpec> remoteWrite, List<String> remoteWriteReceiverMessageVersions, String replicaExternalLabelName, Integer replicas, ResourceRequirements resources, String routePrefix, RuntimeConfig runtime, Long sampleLimit, String schedulerName, List<ScrapeClass> scrapeClasses, Boolean scrapeClassicHistograms, LabelSelector scrapeConfigNamespaceSelector, LabelSelector scrapeConfigSelector, String scrapeFailureLogFile, String scrapeInterval, Boolean scrapeNativeHistograms, List<String> scrapeProtocols, String scrapeTimeout, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceDiscoveryRole, LabelSelector serviceMonitorNamespaceSelector, LabelSelector serviceMonitorSelector, String serviceName, Integer shards, StorageSpec storage, Long targetLimit, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, TracingConfig tracingConfig, TSDBSpec tsdb, StatefulSetUpdateStrategy updateStrategy, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, PrometheusWebSpec web) {
+    public CommonPrometheusFields(List<Argument> additionalArgs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, Boolean automountServiceAccountToken, String bodySizeLimit, List<String> configMaps, List<Container> containers, Boolean convertClassicHistogramsToNHCB, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableOTLPReceiver, Boolean enableRemoteWriteReceiver, Boolean enableServiceLinks, String enforcedBodySizeLimit, Long enforcedKeepDroppedTargets, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, List<ObjectReference> excludedFromEnforcement, Map<String, String> externalLabels, String externalUrl, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean hostUsers, Boolean ignoreNamespaceSelectors, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, Boolean listenLocal, String logFormat, String logLevel, Integer maximumStartupDurationSeconds, Integer minReadySeconds, String nameEscapingScheme, String nameValidationScheme, Map<String, String> nodeSelector, OTLPConfig otlp, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, String podManagementPolicy, EmbeddedObjectMetadata podMetadata, LabelSelector podMonitorNamespaceSelector, LabelSelector podMonitorSelector, List<String> podTargetLabels, String portName, String priorityClassName, LabelSelector probeNamespaceSelector, LabelSelector probeSelector, String prometheusExternalLabelName, String reloadStrategy, List<RemoteWriteSpec> remoteWrite, List<String> remoteWriteReceiverMessageVersions, String replicaExternalLabelName, Integer replicas, ResourceRequirements resources, String routePrefix, RuntimeConfig runtime, Long sampleLimit, String schedulerName, List<ScrapeClass> scrapeClasses, Boolean scrapeClassicHistograms, LabelSelector scrapeConfigNamespaceSelector, LabelSelector scrapeConfigSelector, String scrapeFailureLogFile, String scrapeInterval, Boolean scrapeNativeHistograms, List<String> scrapeProtocols, String scrapeTimeout, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceDiscoveryRole, LabelSelector serviceMonitorNamespaceSelector, LabelSelector serviceMonitorSelector, String serviceName, ShardingStrategy shardingStrategy, Integer shards, StorageSpec storage, Long targetLimit, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, TracingConfig tracingConfig, TSDBSpec tsdb, StatefulSetUpdateStrategy updateStrategy, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, PrometheusWebSpec web) {
         super();
         this.additionalArgs = additionalArgs;
         this.additionalScrapeConfigs = additionalScrapeConfigs;
@@ -495,6 +498,7 @@ public class CommonPrometheusFields implements Editable<CommonPrometheusFieldsBu
         this.serviceMonitorNamespaceSelector = serviceMonitorNamespaceSelector;
         this.serviceMonitorSelector = serviceMonitorSelector;
         this.serviceName = serviceName;
+        this.shardingStrategy = shardingStrategy;
         this.shards = shards;
         this.storage = storage;
         this.targetLimit = targetLimit;
@@ -1933,6 +1937,22 @@ public class CommonPrometheusFields implements Editable<CommonPrometheusFieldsBu
     @JsonProperty("serviceName")
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
+    }
+
+    /**
+     * CommonPrometheusFields are the options available to both the Prometheus server and agent.
+     */
+    @JsonProperty("shardingStrategy")
+    public ShardingStrategy getShardingStrategy() {
+        return shardingStrategy;
+    }
+
+    /**
+     * CommonPrometheusFields are the options available to both the Prometheus server and agent.
+     */
+    @JsonProperty("shardingStrategy")
+    public void setShardingStrategy(ShardingStrategy shardingStrategy) {
+        this.shardingStrategy = shardingStrategy;
     }
 
     /**
