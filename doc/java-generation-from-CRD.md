@@ -228,7 +228,7 @@ Force the generated Enum constants to be uppercase.
 <configuration>
   <enumUppercase>true</enumUppercase>
 </configuration>
-````
+```
 
 **Gradle:**
 
@@ -256,7 +256,7 @@ public enum Material {
 }
 ```
 
-#### 2\. Package Overrides
+#### 2. Package Overrides
 
 Override the default package name generated from the CRD group and version.
 
@@ -298,7 +298,7 @@ public class ToySpec implements KubernetesResource {
 }
 ```
 
-#### 3\. Always Preserve Unknown Fields
+#### 3. Always Preserve Unknown Fields
 
 Ensure that unknown fields in the JSON/YAML are captured in a map instead of being ignored.
 
@@ -328,16 +328,24 @@ javaGen {
 
 ```java
 public class ToySpec implements KubernetesResource {
-    
-    @com.fasterxml.jackson.annotation.JsonAnyGetter
-    @com.fasterxml.jackson.annotation.JsonAnySetter
+
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private java.util.Map<java.lang.String, java.lang.Object> additionalProperties = new java.util.HashMap<>();
 
+    @com.fasterxml.jackson.annotation.JsonAnyGetter
+    public java.util.Map<java.lang.String, java.lang.Object> getAdditionalProperties() {
+        return additionalProperties;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonAnySetter
+    public void setAdditionalProperty(java.lang.String key, java.lang.Object value) {
+        this.additionalProperties.put(key, value);
+    }
     // ...
 }
 ```
 
-#### 4\. Filter Source Files
+#### 4. Filter Source Files
 
 Process only specific files from the source directory.
 
@@ -366,7 +374,9 @@ javaGen {
 --files-suffixes=.yaml --files-suffixes=.yml
 ```
 
-#### 5\. Existing Java Types
+> **Note:** This option only controls which source files are processed — it does not affect the generated code.
+
+#### 5. Existing Java Types
 
 Map a specific CRD type to an existing Java class instead of generating a new one. This is useful when you want to reuse existing POJOs.
 
