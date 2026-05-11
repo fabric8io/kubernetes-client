@@ -68,7 +68,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        kubernetes: [v1.36.0,v1.35.4,v1.34.2,v1.33.0,v1.32.4,v1.31.8,v1.30.12,v1.29.14]
+        kubernetes: [v1.36.0,v1.35.4,v1.34.7,v1.33.11,v1.32.13,v1.31.14,v1.30.14,v1.29.15]
     steps:
       - name: Checkout
         uses: actions/checkout@v6
