@@ -247,12 +247,12 @@ Below are examples of how to configure common options for Maven, Gradle, and the
 
 #### 1. Uppercase Enums
 
-Force the generated Enum constants to be uppercase.
+Defaults to `true`, set to `false` to preserve the case from the CRD.
 
 **Maven:**
 ```xml
 <configuration>
-  <enumUppercase>true</enumUppercase>
+  <enumUppercase>false</enumUppercase>
 </configuration>
 ```
 
@@ -260,29 +260,17 @@ Force the generated Enum constants to be uppercase.
 
 ```groovy
 javaGen {
-  enumUppercase = true
+  enumUppercase = false
 }
 ```
 
 **CLI:**
 
 ```bash
---enum-uppercase
+--enum-uppercase=false
 ```
 
-**Generated Code (default):**
-
-```java
-public enum Material {
-    @com.fasterxml.jackson.annotation.JsonProperty("plastic")
-    plastic("plastic"),
-    @com.fasterxml.jackson.annotation.JsonProperty("wood")
-    wood("wood");
-    // ...
-}
-```
-
-**Generated Code (with `enumUppercase = true`):**
+**Generated Code (default — uppercase):**
 
 ```java
 public enum Material {
@@ -290,6 +278,18 @@ public enum Material {
     PLASTIC("plastic"),
     @com.fasterxml.jackson.annotation.JsonProperty("wood")
     WOOD("wood");
+    // ...
+}
+```
+
+**Generated Code (with `enumUppercase = false`):**
+
+```java
+public enum Material {
+    @com.fasterxml.jackson.annotation.JsonProperty("plastic")
+    plastic("plastic"),
+    @com.fasterxml.jackson.annotation.JsonProperty("wood")
+    wood("wood");
     // ...
 }
 ```
@@ -367,7 +367,9 @@ javaGen {
 ```java
 public class ToySpec implements KubernetesResource {
 
-    // added to capture un-specified fields and values
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    private java.util.Map<java.lang.String, java.lang.Object> additionalProperties = new java.util.HashMap<>();
+
     @com.fasterxml.jackson.annotation.JsonAnyGetter
     public java.util.Map<java.lang.String, java.lang.Object> getAdditionalProperties() {
         return additionalProperties;
