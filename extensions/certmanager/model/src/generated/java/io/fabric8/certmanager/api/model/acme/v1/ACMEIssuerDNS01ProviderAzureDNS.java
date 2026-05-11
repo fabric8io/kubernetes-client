@@ -46,7 +46,8 @@ import lombok.experimental.Accessors;
     "managedIdentity",
     "resourceGroupName",
     "subscriptionID",
-    "tenantID"
+    "tenantID",
+    "zoneType"
 })
 @ToString
 @EqualsAndHashCode
@@ -89,6 +90,8 @@ public class ACMEIssuerDNS01ProviderAzureDNS implements Editable<ACMEIssuerDNS01
     private String subscriptionID;
     @JsonProperty("tenantID")
     private String tenantID;
+    @JsonProperty("zoneType")
+    private String zoneType;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -98,7 +101,7 @@ public class ACMEIssuerDNS01ProviderAzureDNS implements Editable<ACMEIssuerDNS01
     public ACMEIssuerDNS01ProviderAzureDNS() {
     }
 
-    public ACMEIssuerDNS01ProviderAzureDNS(String clientID, SecretKeySelector clientSecretSecretRef, String environment, String hostedZoneName, AzureManagedIdentity managedIdentity, String resourceGroupName, String subscriptionID, String tenantID) {
+    public ACMEIssuerDNS01ProviderAzureDNS(String clientID, SecretKeySelector clientSecretSecretRef, String environment, String hostedZoneName, AzureManagedIdentity managedIdentity, String resourceGroupName, String subscriptionID, String tenantID, String zoneType) {
         super();
         this.clientID = clientID;
         this.clientSecretSecretRef = clientSecretSecretRef;
@@ -108,6 +111,7 @@ public class ACMEIssuerDNS01ProviderAzureDNS implements Editable<ACMEIssuerDNS01
         this.resourceGroupName = resourceGroupName;
         this.subscriptionID = subscriptionID;
         this.tenantID = tenantID;
+        this.zoneType = zoneType;
     }
 
     /**
@@ -236,6 +240,22 @@ public class ACMEIssuerDNS01ProviderAzureDNS implements Editable<ACMEIssuerDNS01
     @JsonProperty("tenantID")
     public void setTenantID(String tenantID) {
         this.tenantID = tenantID;
+    }
+
+    /**
+     * ZoneType determines which type of Azure DNS zone to use.<br><p> <br><p> Valid values are:<br><p>   - AzurePublicZone  (default): Use a public Azure DNS zone.<br><p>   - AzurePrivateZone: Use an Azure Private DNS zone.<br><p> <br><p> If not specified, AzurePublicZone is used.<br><p> <br><p> Support for Azure Private DNS zones is currently experimental and may change in future releases.
+     */
+    @JsonProperty("zoneType")
+    public String getZoneType() {
+        return zoneType;
+    }
+
+    /**
+     * ZoneType determines which type of Azure DNS zone to use.<br><p> <br><p> Valid values are:<br><p>   - AzurePublicZone  (default): Use a public Azure DNS zone.<br><p>   - AzurePrivateZone: Use an Azure Private DNS zone.<br><p> <br><p> If not specified, AzurePublicZone is used.<br><p> <br><p> Support for Azure Private DNS zones is currently experimental and may change in future releases.
+     */
+    @JsonProperty("zoneType")
+    public void setZoneType(String zoneType) {
+        this.zoneType = zoneType;
     }
 
     @JsonIgnore

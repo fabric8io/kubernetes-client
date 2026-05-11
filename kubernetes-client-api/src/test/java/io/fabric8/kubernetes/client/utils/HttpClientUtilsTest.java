@@ -103,6 +103,39 @@ class HttpClientUtilsTest {
   }
 
   @Test
+  void testApplyCommonConfigurationWithTlsServerName() {
+    // Given
+    Config config = new ConfigBuilder()
+        .withMasterUrl("https://127.0.0.1:6443")
+        .withTlsServerName("api.example.cluster.local")
+        .withTrustCerts(true)
+        .build();
+    Builder builder = Mockito.mock(HttpClient.Builder.class, Mockito.RETURNS_SELF);
+
+    // When
+    HttpClientUtils.applyCommonConfiguration(config, builder, null);
+
+    // Then
+    Mockito.verify(builder).tlsServerName("api.example.cluster.local");
+  }
+
+  @Test
+  void testApplyCommonConfigurationWithoutTlsServerName() {
+    // Given
+    Config config = new ConfigBuilder()
+        .withMasterUrl("https://127.0.0.1:6443")
+        .withTrustCerts(true)
+        .build();
+    Builder builder = Mockito.mock(HttpClient.Builder.class, Mockito.RETURNS_SELF);
+
+    // When
+    HttpClientUtils.applyCommonConfiguration(config, builder, null);
+
+    // Then
+    Mockito.verify(builder, Mockito.never()).tlsServerName(Mockito.anyString());
+  }
+
+  @Test
   void testCreateApplicableInterceptors() {
     // Given
     Config config = new ConfigBuilder().build();

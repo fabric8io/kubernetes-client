@@ -155,7 +155,7 @@ public class OAuth2 implements Editable<OAuth2Builder>, KubernetesResource
     }
 
     /**
-     * `endpointParams` configures the HTTP parameters to append to the token URL.
+     * endpointParams configures the HTTP parameters to append to the token URL.
      */
     @JsonProperty("endpointParams")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -164,7 +164,7 @@ public class OAuth2 implements Editable<OAuth2Builder>, KubernetesResource
     }
 
     /**
-     * `endpointParams` configures the HTTP parameters to append to the token URL.
+     * endpointParams configures the HTTP parameters to append to the token URL.
      */
     @JsonProperty("endpointParams")
     public void setEndpointParams(Map<String, String> endpointParams) {
@@ -172,7 +172,7 @@ public class OAuth2 implements Editable<OAuth2Builder>, KubernetesResource
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -180,7 +180,7 @@ public class OAuth2 implements Editable<OAuth2Builder>, KubernetesResource
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -188,7 +188,7 @@ public class OAuth2 implements Editable<OAuth2Builder>, KubernetesResource
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -197,7 +197,7 @@ public class OAuth2 implements Editable<OAuth2Builder>, KubernetesResource
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -205,7 +205,7 @@ public class OAuth2 implements Editable<OAuth2Builder>, KubernetesResource
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -213,7 +213,7 @@ public class OAuth2 implements Editable<OAuth2Builder>, KubernetesResource
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
@@ -221,7 +221,7 @@ public class OAuth2 implements Editable<OAuth2Builder>, KubernetesResource
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
@@ -229,7 +229,7 @@ public class OAuth2 implements Editable<OAuth2Builder>, KubernetesResource
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
@@ -237,7 +237,7 @@ public class OAuth2 implements Editable<OAuth2Builder>, KubernetesResource
     }
 
     /**
-     * `scopes` defines the OAuth2 scopes used for the token request.
+     * scopes defines the OAuth2 scopes used for the token request.
      */
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -246,7 +246,7 @@ public class OAuth2 implements Editable<OAuth2Builder>, KubernetesResource
     }
 
     /**
-     * `scopes` defines the OAuth2 scopes used for the token request.
+     * scopes defines the OAuth2 scopes used for the token request.
      */
     @JsonProperty("scopes")
     public void setScopes(List<String> scopes) {
@@ -270,7 +270,7 @@ public class OAuth2 implements Editable<OAuth2Builder>, KubernetesResource
     }
 
     /**
-     * `tokenURL` configures the URL to fetch the token from.
+     * tokenUrl defines the URL to fetch the token from.
      */
     @JsonProperty("tokenUrl")
     public String getTokenUrl() {
@@ -278,7 +278,7 @@ public class OAuth2 implements Editable<OAuth2Builder>, KubernetesResource
     }
 
     /**
-     * `tokenURL` configures the URL to fetch the token from.
+     * tokenUrl defines the URL to fetch the token from.
      */
     @JsonProperty("tokenUrl")
     public void setTokenUrl(String tokenUrl) {

@@ -1,9 +1,7 @@
 
 package io.fabric8.kubernetes.api.model.resource.v1alpha3;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -41,10 +39,8 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "device",
-    "deviceClassName",
     "driver",
-    "pool",
-    "selectors"
+    "pool"
 })
 @ToString
 @EqualsAndHashCode
@@ -73,15 +69,10 @@ public class DeviceTaintSelector implements Editable<DeviceTaintSelectorBuilder>
 
     @JsonProperty("device")
     private String device;
-    @JsonProperty("deviceClassName")
-    private String deviceClassName;
     @JsonProperty("driver")
     private String driver;
     @JsonProperty("pool")
     private String pool;
-    @JsonProperty("selectors")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DeviceSelector> selectors = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -91,13 +82,11 @@ public class DeviceTaintSelector implements Editable<DeviceTaintSelectorBuilder>
     public DeviceTaintSelector() {
     }
 
-    public DeviceTaintSelector(String device, String deviceClassName, String driver, String pool, List<DeviceSelector> selectors) {
+    public DeviceTaintSelector(String device, String driver, String pool) {
         super();
         this.device = device;
-        this.deviceClassName = deviceClassName;
         this.driver = driver;
         this.pool = pool;
-        this.selectors = selectors;
     }
 
     /**
@@ -114,22 +103,6 @@ public class DeviceTaintSelector implements Editable<DeviceTaintSelectorBuilder>
     @JsonProperty("device")
     public void setDevice(String device) {
         this.device = device;
-    }
-
-    /**
-     * If DeviceClassName is set, the selectors defined there must be satisfied by a device to be selected. This field corresponds to class.metadata.name.
-     */
-    @JsonProperty("deviceClassName")
-    public String getDeviceClassName() {
-        return deviceClassName;
-    }
-
-    /**
-     * If DeviceClassName is set, the selectors defined there must be satisfied by a device to be selected. This field corresponds to class.metadata.name.
-     */
-    @JsonProperty("deviceClassName")
-    public void setDeviceClassName(String deviceClassName) {
-        this.deviceClassName = deviceClassName;
     }
 
     /**
@@ -162,23 +135,6 @@ public class DeviceTaintSelector implements Editable<DeviceTaintSelectorBuilder>
     @JsonProperty("pool")
     public void setPool(String pool) {
         this.pool = pool;
-    }
-
-    /**
-     * Selectors contains the same selection criteria as a ResourceClaim. Currently, CEL expressions are supported. All of these selectors must be satisfied.
-     */
-    @JsonProperty("selectors")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<DeviceSelector> getSelectors() {
-        return selectors;
-    }
-
-    /**
-     * Selectors contains the same selection criteria as a ResourceClaim. Currently, CEL expressions are supported. All of these selectors must be satisfied.
-     */
-    @JsonProperty("selectors")
-    public void setSelectors(List<DeviceSelector> selectors) {
-        this.selectors = selectors;
     }
 
     @JsonIgnore

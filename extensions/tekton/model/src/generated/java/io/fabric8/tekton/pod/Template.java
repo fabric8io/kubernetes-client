@@ -54,6 +54,7 @@ import lombok.experimental.Accessors;
     "env",
     "hostAliases",
     "hostNetwork",
+    "hostUsers",
     "imagePullSecrets",
     "nodeSelector",
     "priorityClassName",
@@ -107,6 +108,8 @@ public class Template implements Editable<TemplateBuilder>, KubernetesResource
     private List<HostAlias> hostAliases = new ArrayList<>();
     @JsonProperty("hostNetwork")
     private Boolean hostNetwork;
+    @JsonProperty("hostUsers")
+    private Boolean hostUsers;
     @JsonProperty("imagePullSecrets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<LocalObjectReference> imagePullSecrets = new ArrayList<>();
@@ -139,7 +142,7 @@ public class Template implements Editable<TemplateBuilder>, KubernetesResource
     public Template() {
     }
 
-    public Template(Affinity affinity, Boolean automountServiceAccountToken, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<EnvVar> env, List<HostAlias> hostAliases, Boolean hostNetwork, List<LocalObjectReference> imagePullSecrets, Map<String, String> nodeSelector, String priorityClassName, String runtimeClassName, String schedulerName, PodSecurityContext securityContext, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes) {
+    public Template(Affinity affinity, Boolean automountServiceAccountToken, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<EnvVar> env, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean hostUsers, List<LocalObjectReference> imagePullSecrets, Map<String, String> nodeSelector, String priorityClassName, String runtimeClassName, String schedulerName, PodSecurityContext securityContext, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes) {
         super();
         this.affinity = affinity;
         this.automountServiceAccountToken = automountServiceAccountToken;
@@ -149,6 +152,7 @@ public class Template implements Editable<TemplateBuilder>, KubernetesResource
         this.env = env;
         this.hostAliases = hostAliases;
         this.hostNetwork = hostNetwork;
+        this.hostUsers = hostUsers;
         this.imagePullSecrets = imagePullSecrets;
         this.nodeSelector = nodeSelector;
         this.priorityClassName = priorityClassName;
@@ -288,6 +292,22 @@ public class Template implements Editable<TemplateBuilder>, KubernetesResource
     @JsonProperty("hostNetwork")
     public void setHostNetwork(Boolean hostNetwork) {
         this.hostNetwork = hostNetwork;
+    }
+
+    /**
+     * HostUsers indicates whether the pod will use the host's user namespace. Optional: Default to true. If set to true or not present, the pod will be run in the host user namespace, useful for when the pod needs a feature only available to the host user namespace, such as loading a kernel module with CAP_SYS_MODULE. When set to false, a new user namespace is created for the pod. Setting false is useful to mitigating container breakout vulnerabilities such as allowing containers to run as root without their user having root privileges on the host. This field depends on the kubernetes feature gate UserNamespacesSupport being enabled.
+     */
+    @JsonProperty("hostUsers")
+    public Boolean getHostUsers() {
+        return hostUsers;
+    }
+
+    /**
+     * HostUsers indicates whether the pod will use the host's user namespace. Optional: Default to true. If set to true or not present, the pod will be run in the host user namespace, useful for when the pod needs a feature only available to the host user namespace, such as loading a kernel module with CAP_SYS_MODULE. When set to false, a new user namespace is created for the pod. Setting false is useful to mitigating container breakout vulnerabilities such as allowing containers to run as root without their user having root privileges on the host. This field depends on the kubernetes feature gate UserNamespacesSupport being enabled.
+     */
+    @JsonProperty("hostUsers")
+    public void setHostUsers(Boolean hostUsers) {
+        this.hostUsers = hostUsers;
     }
 
     /**

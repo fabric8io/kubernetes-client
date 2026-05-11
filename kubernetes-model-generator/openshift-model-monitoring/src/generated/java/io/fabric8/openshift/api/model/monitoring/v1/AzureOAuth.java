@@ -90,7 +90,7 @@ public class AzureOAuth implements Editable<AzureOAuthBuilder>, KubernetesResour
     }
 
     /**
-     * `clientID` is the clientId of the Azure Active Directory application that is being used to authenticate.
+     * clientId defines the clientId of the Azure Active Directory application that is being used to authenticate.
      */
     @JsonProperty("clientId")
     public String getClientId() {
@@ -98,7 +98,7 @@ public class AzureOAuth implements Editable<AzureOAuthBuilder>, KubernetesResour
     }
 
     /**
-     * `clientID` is the clientId of the Azure Active Directory application that is being used to authenticate.
+     * clientId defines the clientId of the Azure Active Directory application that is being used to authenticate.
      */
     @JsonProperty("clientId")
     public void setClientId(String clientId) {
@@ -122,7 +122,7 @@ public class AzureOAuth implements Editable<AzureOAuthBuilder>, KubernetesResour
     }
 
     /**
-     * `tenantId` is the tenant ID of the Azure Active Directory application that is being used to authenticate.
+     * tenantId is the tenant ID of the Azure Active Directory application that is being used to authenticate.
      */
     @JsonProperty("tenantId")
     public String getTenantId() {
@@ -130,7 +130,7 @@ public class AzureOAuth implements Editable<AzureOAuthBuilder>, KubernetesResour
     }
 
     /**
-     * `tenantId` is the tenant ID of the Azure Active Directory application that is being used to authenticate.
+     * tenantId is the tenant ID of the Azure Active Directory application that is being used to authenticate.
      */
     @JsonProperty("tenantId")
     public void setTenantId(String tenantId) {

@@ -60,7 +60,7 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
 
   private static final Long DEFAULT_SERVER_GC_WAIT_TIMEOUT = 60 * 1000L; // 60 seconds
 
-  private static final Logger LOG = LoggerFactory.getLogger(RollingUpdater.class);
+  private static final Logger logger = LoggerFactory.getLogger(RollingUpdater.class);
 
   protected final Client client;
   protected final String namespace;
@@ -107,7 +107,7 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
               .build();
           pods().inNamespace(namespace).withName(pod.getMetadata().getName()).replace(updated);
         } catch (KubernetesClientException e) {
-          LOG.warn("Unable to add deployment key to pod: {}", e.getMessage());
+          logger.warn("Unable to add deployment key to pod: {}", e.getMessage());
         }
       }
 
@@ -214,20 +214,20 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
       return count == requiredPodCount;
     });
 
-    Future<?> logger = Utils.scheduleAtFixedRate(Runnable::run,
-        () -> LOG.debug("Only {}/{} pod(s) ready for {}: {} in namespace: {} seconds so waiting...",
+    Future<?> logFuture = Utils.scheduleAtFixedRate(Runnable::run,
+        () -> logger.debug("Only {}/{} pod(s) ready for {}: {} in namespace: {} seconds so waiting...",
             podCount.get(), requiredPodCount, obj.getKind(), obj.getMetadata().getName(), namespace),
         0, loggingIntervalMillis, TimeUnit.MILLISECONDS);
 
     try {
       if (!Utils.waitUntilReady(future, rollingTimeoutMillis, TimeUnit.MILLISECONDS)) {
-        LOG.warn("Only {}/{} pod(s) ready for {}: {} in namespace: {}  after waiting for {} seconds so giving up",
+        logger.warn("Only {}/{} pod(s) ready for {}: {} in namespace: {}  after waiting for {} seconds so giving up",
             podCount.get(), requiredPodCount, obj.getKind(), obj.getMetadata().getName(), namespace,
             TimeUnit.MILLISECONDS.toSeconds(rollingTimeoutMillis));
       }
     } finally {
       future.cancel(true);
-      logger.cancel(true);
+      logFuture.cancel(true);
     }
   }
 
@@ -236,15 +236,15 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
    * Lets wait until the resource is actually deleted in the server
    */
   private void waitUntilDeleted(final String namespace, final String name) {
-    Future<?> logger = Utils.scheduleAtFixedRate(Runnable::run,
-        () -> LOG.debug("Found resource {}/{} not yet deleted on server, so waiting...", namespace, name),
+    Future<?> logFuture = Utils.scheduleAtFixedRate(Runnable::run,
+        () -> logger.debug("Found resource {}/{} not yet deleted on server, so waiting...", namespace, name),
         0, loggingIntervalMillis, TimeUnit.MILLISECONDS);
     try {
       resources().inNamespace(namespace)
           .withName(name)
           .waitUntilCondition(Objects::isNull, DEFAULT_SERVER_GC_WAIT_TIMEOUT, TimeUnit.MILLISECONDS);
     } finally {
-      logger.cancel(true); // since we're using the common pool, we must shutdown manually
+      logFuture.cancel(true); // since we're using the common pool, we must shutdown manually
     }
   }
 

@@ -84,7 +84,7 @@ public class ListenerNamespaces implements Editable<ListenerNamespacesBuilder>, 
     }
 
     /**
-     * From indicates where ListenerSets can attach to this Gateway. Possible values are:<br><p> <br><p> &#42; Same: Only ListenerSets in the same namespace may be attached to this Gateway. &#42; Selector: ListenerSets in namespaces selected by the selector may be attached to this Gateway. &#42; All: ListenerSets in all namespaces may be attached to this Gateway. &#42; None: Only listeners defined in the Gateway's spec are allowed<br><p> <br><p> While this feature is experimental, the default value None
+     * From indicates where ListenerSets can attach to this Gateway. Possible values are:<br><p> <br><p> &#42; Same: Only ListenerSets in the same namespace may be attached to this Gateway. &#42; Selector: ListenerSets in namespaces selected by the selector may be attached to this Gateway. &#42; All: ListenerSets in all namespaces may be attached to this Gateway. &#42; None: Only listeners defined in the Gateway's spec are allowed<br><p> <br><p> The default value None
      */
     @JsonProperty("from")
     public String getFrom() {
@@ -92,7 +92,7 @@ public class ListenerNamespaces implements Editable<ListenerNamespacesBuilder>, 
     }
 
     /**
-     * From indicates where ListenerSets can attach to this Gateway. Possible values are:<br><p> <br><p> &#42; Same: Only ListenerSets in the same namespace may be attached to this Gateway. &#42; Selector: ListenerSets in namespaces selected by the selector may be attached to this Gateway. &#42; All: ListenerSets in all namespaces may be attached to this Gateway. &#42; None: Only listeners defined in the Gateway's spec are allowed<br><p> <br><p> While this feature is experimental, the default value None
+     * From indicates where ListenerSets can attach to this Gateway. Possible values are:<br><p> <br><p> &#42; Same: Only ListenerSets in the same namespace may be attached to this Gateway. &#42; Selector: ListenerSets in namespaces selected by the selector may be attached to this Gateway. &#42; All: ListenerSets in all namespaces may be attached to this Gateway. &#42; None: Only listeners defined in the Gateway's spec are allowed<br><p> <br><p> The default value None
      */
     @JsonProperty("from")
     public void setFrom(String from) {

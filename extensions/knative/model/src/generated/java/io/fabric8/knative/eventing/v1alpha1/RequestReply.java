@@ -38,7 +38,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * RequestRepluy represents synchronous interface to sending and receiving events from a Broker.
+ * RequestReply represents synchronous interface to sending and receiving events from a Broker.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -140,7 +140,7 @@ public class RequestReply implements Editable<RequestReplyBuilder>, HasMetadata,
     }
 
     /**
-     * RequestRepluy represents synchronous interface to sending and receiving events from a Broker.
+     * RequestReply represents synchronous interface to sending and receiving events from a Broker.
      */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
@@ -148,7 +148,7 @@ public class RequestReply implements Editable<RequestReplyBuilder>, HasMetadata,
     }
 
     /**
-     * RequestRepluy represents synchronous interface to sending and receiving events from a Broker.
+     * RequestReply represents synchronous interface to sending and receiving events from a Broker.
      */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
@@ -156,7 +156,7 @@ public class RequestReply implements Editable<RequestReplyBuilder>, HasMetadata,
     }
 
     /**
-     * RequestRepluy represents synchronous interface to sending and receiving events from a Broker.
+     * RequestReply represents synchronous interface to sending and receiving events from a Broker.
      */
     @JsonProperty("spec")
     public RequestReplySpec getSpec() {
@@ -164,7 +164,7 @@ public class RequestReply implements Editable<RequestReplyBuilder>, HasMetadata,
     }
 
     /**
-     * RequestRepluy represents synchronous interface to sending and receiving events from a Broker.
+     * RequestReply represents synchronous interface to sending and receiving events from a Broker.
      */
     @JsonProperty("spec")
     public void setSpec(RequestReplySpec spec) {
@@ -172,7 +172,7 @@ public class RequestReply implements Editable<RequestReplyBuilder>, HasMetadata,
     }
 
     /**
-     * RequestRepluy represents synchronous interface to sending and receiving events from a Broker.
+     * RequestReply represents synchronous interface to sending and receiving events from a Broker.
      */
     @JsonProperty("status")
     public RequestReplyStatus getStatus() {
@@ -180,7 +180,7 @@ public class RequestReply implements Editable<RequestReplyBuilder>, HasMetadata,
     }
 
     /**
-     * RequestRepluy represents synchronous interface to sending and receiving events from a Broker.
+     * RequestReply represents synchronous interface to sending and receiving events from a Broker.
      */
     @JsonProperty("status")
     public void setStatus(RequestReplyStatus status) {

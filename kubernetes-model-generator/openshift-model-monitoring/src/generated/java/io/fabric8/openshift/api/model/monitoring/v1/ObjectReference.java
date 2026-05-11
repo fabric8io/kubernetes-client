@@ -93,7 +93,7 @@ public class ObjectReference implements Editable<ObjectReferenceBuilder>, Kubern
     }
 
     /**
-     * Group of the referent. When not specified, it defaults to `monitoring.coreos.com`
+     * group of the referent. When not specified, it defaults to `monitoring.coreos.com`
      */
     @JsonProperty("group")
     public String getGroup() {
@@ -101,7 +101,7 @@ public class ObjectReference implements Editable<ObjectReferenceBuilder>, Kubern
     }
 
     /**
-     * Group of the referent. When not specified, it defaults to `monitoring.coreos.com`
+     * group of the referent. When not specified, it defaults to `monitoring.coreos.com`
      */
     @JsonProperty("group")
     public void setGroup(String group) {
@@ -109,7 +109,7 @@ public class ObjectReference implements Editable<ObjectReferenceBuilder>, Kubern
     }
 
     /**
-     * Name of the referent. When not set, all resources in the namespace are matched.
+     * name of the referent. When not set, all resources in the namespace are matched.
      */
     @JsonProperty("name")
     public String getName() {
@@ -117,7 +117,7 @@ public class ObjectReference implements Editable<ObjectReferenceBuilder>, Kubern
     }
 
     /**
-     * Name of the referent. When not set, all resources in the namespace are matched.
+     * name of the referent. When not set, all resources in the namespace are matched.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -125,7 +125,7 @@ public class ObjectReference implements Editable<ObjectReferenceBuilder>, Kubern
     }
 
     /**
-     * Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+     * namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
      */
     @JsonProperty("namespace")
     public String getNamespace() {
@@ -133,7 +133,7 @@ public class ObjectReference implements Editable<ObjectReferenceBuilder>, Kubern
     }
 
     /**
-     * Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+     * namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
      */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
@@ -141,7 +141,7 @@ public class ObjectReference implements Editable<ObjectReferenceBuilder>, Kubern
     }
 
     /**
-     * Resource of the referent.
+     * resource of the referent.
      */
     @JsonProperty("resource")
     public String getResource() {
@@ -149,7 +149,7 @@ public class ObjectReference implements Editable<ObjectReferenceBuilder>, Kubern
     }
 
     /**
-     * Resource of the referent.
+     * resource of the referent.
      */
     @JsonProperty("resource")
     public void setResource(String resource) {

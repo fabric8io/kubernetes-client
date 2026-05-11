@@ -1,5 +1,5 @@
 # Default
-*                     @manusa @oscerd @rohanKanojia @shawkins
+*                     @manusa @ash-thakur-rh @shawkins
 
 # Java generator
 /java-generator/      @andreaTP @shawkins
@@ -7,3 +7,5 @@
 # CRD Generator
 /crd-generator/       @andreaTP @metacosm
 
+# Chaos test
+/chaos-test/          @andreaTP

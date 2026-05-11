@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "addresses",
+    "attachedListenerSets",
     "conditions",
     "listeners"
 })
@@ -71,6 +72,8 @@ public class GatewayStatus implements Editable<GatewayStatusBuilder>, Kubernetes
     @JsonProperty("addresses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<GatewayStatusAddress> addresses = new ArrayList<>();
+    @JsonProperty("attachedListenerSets")
+    private Integer attachedListenerSets;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<>();
@@ -86,9 +89,10 @@ public class GatewayStatus implements Editable<GatewayStatusBuilder>, Kubernetes
     public GatewayStatus() {
     }
 
-    public GatewayStatus(List<GatewayStatusAddress> addresses, List<Condition> conditions, List<ListenerStatus> listeners) {
+    public GatewayStatus(List<GatewayStatusAddress> addresses, Integer attachedListenerSets, List<Condition> conditions, List<ListenerStatus> listeners) {
         super();
         this.addresses = addresses;
+        this.attachedListenerSets = attachedListenerSets;
         this.conditions = conditions;
         this.listeners = listeners;
     }
@@ -108,6 +112,22 @@ public class GatewayStatus implements Editable<GatewayStatusBuilder>, Kubernetes
     @JsonProperty("addresses")
     public void setAddresses(List<GatewayStatusAddress> addresses) {
         this.addresses = addresses;
+    }
+
+    /**
+     * AttachedListenerSets represents the total number of ListenerSets that have been successfully attached to this Gateway.<br><p> <br><p> A ListenerSet is successfully attached to a Gateway when all the following conditions are met: - The ListenerSet is selected by the Gateway's AllowedListeners field - The ListenerSet has a valid ParentRef selecting the Gateway - The ListenerSet's status has the condition "Accepted: true"<br><p> <br><p> Uses for this field include troubleshooting AttachedListenerSets attachment and measuring blast radius/impact of changes to a Gateway.
+     */
+    @JsonProperty("attachedListenerSets")
+    public Integer getAttachedListenerSets() {
+        return attachedListenerSets;
+    }
+
+    /**
+     * AttachedListenerSets represents the total number of ListenerSets that have been successfully attached to this Gateway.<br><p> <br><p> A ListenerSet is successfully attached to a Gateway when all the following conditions are met: - The ListenerSet is selected by the Gateway's AllowedListeners field - The ListenerSet has a valid ParentRef selecting the Gateway - The ListenerSet's status has the condition "Accepted: true"<br><p> <br><p> Uses for this field include troubleshooting AttachedListenerSets attachment and measuring blast radius/impact of changes to a Gateway.
+     */
+    @JsonProperty("attachedListenerSets")
+    public void setAttachedListenerSets(Integer attachedListenerSets) {
+        this.attachedListenerSets = attachedListenerSets;
     }
 
     /**

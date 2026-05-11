@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "httpConfig",
     "jira",
+    "mattermost",
     "opsGenieApiKey",
     "opsGenieApiUrl",
     "pagerdutyUrl",
@@ -78,9 +79,11 @@ public class AlertmanagerGlobalConfig implements Editable<AlertmanagerGlobalConf
 {
 
     @JsonProperty("httpConfig")
-    private HTTPConfig httpConfig;
+    private HTTPConfigWithProxy httpConfig;
     @JsonProperty("jira")
     private GlobalJiraConfig jira;
+    @JsonProperty("mattermost")
+    private GlobalMattermostConfig mattermost;
     @JsonProperty("opsGenieApiKey")
     private SecretKeySelector opsGenieApiKey;
     @JsonProperty("opsGenieApiUrl")
@@ -112,10 +115,11 @@ public class AlertmanagerGlobalConfig implements Editable<AlertmanagerGlobalConf
     public AlertmanagerGlobalConfig() {
     }
 
-    public AlertmanagerGlobalConfig(HTTPConfig httpConfig, GlobalJiraConfig jira, SecretKeySelector opsGenieApiKey, SecretKeySelector opsGenieApiUrl, String pagerdutyUrl, String resolveTimeout, GlobalRocketChatConfig rocketChat, SecretKeySelector slackApiUrl, GlobalSMTPConfig smtp, GlobalTelegramConfig telegram, GlobalVictorOpsConfig victorops, GlobalWebexConfig webex, GlobalWeChatConfig wechat) {
+    public AlertmanagerGlobalConfig(HTTPConfigWithProxy httpConfig, GlobalJiraConfig jira, GlobalMattermostConfig mattermost, SecretKeySelector opsGenieApiKey, SecretKeySelector opsGenieApiUrl, String pagerdutyUrl, String resolveTimeout, GlobalRocketChatConfig rocketChat, SecretKeySelector slackApiUrl, GlobalSMTPConfig smtp, GlobalTelegramConfig telegram, GlobalVictorOpsConfig victorops, GlobalWebexConfig webex, GlobalWeChatConfig wechat) {
         super();
         this.httpConfig = httpConfig;
         this.jira = jira;
+        this.mattermost = mattermost;
         this.opsGenieApiKey = opsGenieApiKey;
         this.opsGenieApiUrl = opsGenieApiUrl;
         this.pagerdutyUrl = pagerdutyUrl;
@@ -133,7 +137,7 @@ public class AlertmanagerGlobalConfig implements Editable<AlertmanagerGlobalConf
      * AlertmanagerGlobalConfig configures parameters that are valid in all other configuration contexts. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
      */
     @JsonProperty("httpConfig")
-    public HTTPConfig getHttpConfig() {
+    public HTTPConfigWithProxy getHttpConfig() {
         return httpConfig;
     }
 
@@ -141,7 +145,7 @@ public class AlertmanagerGlobalConfig implements Editable<AlertmanagerGlobalConf
      * AlertmanagerGlobalConfig configures parameters that are valid in all other configuration contexts. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
      */
     @JsonProperty("httpConfig")
-    public void setHttpConfig(HTTPConfig httpConfig) {
+    public void setHttpConfig(HTTPConfigWithProxy httpConfig) {
         this.httpConfig = httpConfig;
     }
 
@@ -159,6 +163,22 @@ public class AlertmanagerGlobalConfig implements Editable<AlertmanagerGlobalConf
     @JsonProperty("jira")
     public void setJira(GlobalJiraConfig jira) {
         this.jira = jira;
+    }
+
+    /**
+     * AlertmanagerGlobalConfig configures parameters that are valid in all other configuration contexts. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+     */
+    @JsonProperty("mattermost")
+    public GlobalMattermostConfig getMattermost() {
+        return mattermost;
+    }
+
+    /**
+     * AlertmanagerGlobalConfig configures parameters that are valid in all other configuration contexts. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
+     */
+    @JsonProperty("mattermost")
+    public void setMattermost(GlobalMattermostConfig mattermost) {
+        this.mattermost = mattermost;
     }
 
     /**
@@ -194,7 +214,7 @@ public class AlertmanagerGlobalConfig implements Editable<AlertmanagerGlobalConf
     }
 
     /**
-     * The default Pagerduty URL.
+     * pagerdutyUrl defines the default Pagerduty URL.
      */
     @JsonProperty("pagerdutyUrl")
     public String getPagerdutyUrl() {
@@ -202,7 +222,7 @@ public class AlertmanagerGlobalConfig implements Editable<AlertmanagerGlobalConf
     }
 
     /**
-     * The default Pagerduty URL.
+     * pagerdutyUrl defines the default Pagerduty URL.
      */
     @JsonProperty("pagerdutyUrl")
     public void setPagerdutyUrl(String pagerdutyUrl) {
@@ -210,7 +230,7 @@ public class AlertmanagerGlobalConfig implements Editable<AlertmanagerGlobalConf
     }
 
     /**
-     * ResolveTimeout is the default value used by alertmanager if the alert does not include EndsAt, after this time passes it can declare the alert as resolved if it has not been updated. This has no impact on alerts from Prometheus, as they always include EndsAt.
+     * resolveTimeout defines the default value used by alertmanager if the alert does not include EndsAt, after this time passes it can declare the alert as resolved if it has not been updated. This has no impact on alerts from Prometheus, as they always include EndsAt.
      */
     @JsonProperty("resolveTimeout")
     public String getResolveTimeout() {
@@ -218,7 +238,7 @@ public class AlertmanagerGlobalConfig implements Editable<AlertmanagerGlobalConf
     }
 
     /**
-     * ResolveTimeout is the default value used by alertmanager if the alert does not include EndsAt, after this time passes it can declare the alert as resolved if it has not been updated. This has no impact on alerts from Prometheus, as they always include EndsAt.
+     * resolveTimeout defines the default value used by alertmanager if the alert does not include EndsAt, after this time passes it can declare the alert as resolved if it has not been updated. This has no impact on alerts from Prometheus, as they always include EndsAt.
      */
     @JsonProperty("resolveTimeout")
     public void setResolveTimeout(String resolveTimeout) {

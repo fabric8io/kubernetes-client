@@ -85,7 +85,7 @@ public class HostPort implements Editable<HostPortBuilder>, KubernetesResource
     }
 
     /**
-     * Defines the host's address, it can be a DNS name or a literal IP address.
+     * host defines the host's address, it can be a DNS name or a literal IP address.
      */
     @JsonProperty("host")
     public String getHost() {
@@ -93,7 +93,7 @@ public class HostPort implements Editable<HostPortBuilder>, KubernetesResource
     }
 
     /**
-     * Defines the host's address, it can be a DNS name or a literal IP address.
+     * host defines the host's address, it can be a DNS name or a literal IP address.
      */
     @JsonProperty("host")
     public void setHost(String host) {
@@ -101,7 +101,7 @@ public class HostPort implements Editable<HostPortBuilder>, KubernetesResource
     }
 
     /**
-     * Defines the host's port, it can be a literal port number or a port name.
+     * port defines the host's port, it can be a literal port number or a port name.
      */
     @JsonProperty("port")
     public String getPort() {
@@ -109,7 +109,7 @@ public class HostPort implements Editable<HostPortBuilder>, KubernetesResource
     }
 
     /**
-     * Defines the host's port, it can be a literal port number or a port name.
+     * port defines the host's port, it can be a literal port number or a port name.
      */
     @JsonProperty("port")
     public void setPort(String port) {

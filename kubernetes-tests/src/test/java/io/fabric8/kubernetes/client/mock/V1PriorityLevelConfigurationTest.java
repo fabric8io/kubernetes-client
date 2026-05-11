@@ -31,7 +31,7 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class V1PriorityLevelConfigurationTest {
   KubernetesMockServer server;
   private KubernetesClient client;
@@ -111,7 +111,7 @@ class V1PriorityLevelConfigurationTest {
 
     // When
     boolean isDeleted = client.flowControl().v1().priorityLevelConfigurations().withName("prioritylevelconfiguration1")
-        .delete().size() == 1;
+        .withGracePeriod(0).delete().size() == 1;
 
     // Then
     AssertionsForClassTypes.assertThat(isDeleted).isTrue();

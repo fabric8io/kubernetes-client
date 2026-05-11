@@ -33,7 +33,7 @@ import java.util.Collection;
  */
 public class URLJavaGenerator implements JavaGenerator {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(URLJavaGenerator.class);
+  private static final Logger logger = LoggerFactory.getLogger(URLJavaGenerator.class);
 
   private final Collection<URL> urls;
   private final File downloadDirectory;
@@ -64,16 +64,16 @@ public class URLJavaGenerator implements JavaGenerator {
       throw new JavaGeneratorException(
           "Download directory " + downloadDirectory.getAbsolutePath() + " is not a valid directory");
     }
-    LOGGER.info("Downloading CRDs from URLs: {}", urls);
+    logger.info("Downloading CRDs from URLs: {}", urls);
     urls.forEach(this::downloadCRD);
-    LOGGER.info("Generating Java classes from downloaded CRDs");
+    logger.info("Generating Java classes from downloaded CRDs");
     delegate.run(outputDirectory);
   }
 
   private void downloadCRD(URL url) {
     final File finalDestination = new File(downloadDirectory, new File(url.getFile()).getName());
     if (finalDestination.exists()) {
-      LOGGER.warn("Skipping download of {} because it already exists at {}", url, finalDestination);
+      logger.warn("Skipping download of {} because it already exists at {}", url, finalDestination);
       return;
     }
     try (ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream());

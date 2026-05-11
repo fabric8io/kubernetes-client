@@ -83,6 +83,7 @@ class InformTest {
         .once();
     final CountDownLatch deleteLatch = new CountDownLatch(1);
     final CountDownLatch addLatch = new CountDownLatch(1);
+    final CountDownLatch nonEmptyList = new CountDownLatch(1);
     final ResourceEventHandler<Pod> handler = new ResourceEventHandler<Pod>() {
 
       @Override
@@ -100,12 +101,20 @@ class InformTest {
 
       }
 
+      @Override
+      public void onList(String resourceVersion, boolean remainedEmpty) {
+        if (!remainedEmpty) {
+          nonEmptyList.countDown();
+        }
+      }
+
     };
     // When
     SharedIndexInformer<Pod> informer = client.pods().withLabel("my-label").inform(handler);
 
     assertTrue(deleteLatch.await(10, TimeUnit.SECONDS));
     assertTrue(addLatch.await(10, TimeUnit.SECONDS));
+    assertTrue(nonEmptyList.await(10, TimeUnit.SECONDS));
 
     informer.stop();
   }

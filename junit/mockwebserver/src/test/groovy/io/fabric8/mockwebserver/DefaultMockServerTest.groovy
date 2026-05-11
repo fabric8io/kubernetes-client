@@ -346,12 +346,12 @@ class DefaultMockServerTest extends Specification {
 		and: "A WebSocket request"
 		def wsReq =wsClient.webSocket().connect(server.port, server.getHostName(), "/api/v1/users/watch")
 		and: "A WebSocket listener"
-		wsReq.onComplete { ws ->
-			ws.result().textMessageHandler { text ->
+		wsReq.onSuccess { ws ->
+			ws.textMessageHandler { text ->
 				receivedMessages.add(text)
 			}
-			ws.result().closeHandler { _ ->
-				ws.result().close()
+			ws.closeHandler { _ ->
+				ws.close()
 			}
 		}
 		and: "An instance of PollingConditions"
@@ -385,12 +385,12 @@ class DefaultMockServerTest extends Specification {
 		and: "A WebSocket request"
 		def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/api/v1/users/watch")
 		and: "A WebSocket listener"
-		wsReq.onComplete { ws ->
-			ws.result().binaryMessageHandler { buffer ->
+		wsReq.onSuccess { ws ->
+			ws.binaryMessageHandler { buffer ->
 				receivedMessages.add(buffer.getBytes(0, buffer.length()))
 			}
-			ws.result().closeHandler { _ ->
-				ws.result().close()
+			ws.closeHandler { _ ->
+				ws.close()
 			}
 		}
 		and: "An instance of PollingConditions"
@@ -421,12 +421,12 @@ class DefaultMockServerTest extends Specification {
 		and: "A WebSocket request"
 		def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/api/v1/users/watch")
 		and: "A WebSocket listener"
-		wsReq.onComplete { ws ->
-			ws.result().textMessageHandler { text ->
+		wsReq.onSuccess { ws ->
+			ws.textMessageHandler { text ->
 				receivedMessages.add(text)
 			}
-			ws.result().writeTextMessage("create root")
-			ws.result().writeTextMessage("delete root")
+			ws.writeTextMessage("create root")
+			ws.writeTextMessage("delete root")
 		}
 		and: "An instance of PollingConditions"
 		def conditions = new PollingConditions(timeout: 10)
@@ -452,8 +452,8 @@ class DefaultMockServerTest extends Specification {
 		and: "A WebSocket request"
 		def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/api/v1/users/watch")
 		and: "A WebSocket listener"
-		wsReq.onComplete { ws ->
-			ws.result().writeTextMessage("unexpected message")
+		wsReq.onSuccess { ws ->
+			ws.writeTextMessage("unexpected message")
 		}
 		and: "An instance of PollingConditions"
 		def conditions = new PollingConditions(timeout: 10)
@@ -498,7 +498,7 @@ class DefaultMockServerTest extends Specification {
 
 	def "when using a body provider it should work as for static responses"() {
 		given: "A counter"
-		def counter = new AtomicInteger(0);
+		def counter = new AtomicInteger(0)
 		and: "An expectation with body provider"
 		server.expect().get().withPath("/api/v1/users")
 				.andReply(200, {req -> "admin-" + counter.getAndIncrement()})
@@ -529,7 +529,7 @@ class DefaultMockServerTest extends Specification {
 		given: "An expectation with response provider"
 		server.expect().get().withPath("/api/v1/users")
 				.andReply(new ResponseProvider<Object>() {
-					def counter = new AtomicInteger(0);
+					def counter = new AtomicInteger(0)
 					def headers = new Headers.Builder().build()
 
 					int getStatusCode(RecordedRequest request) {
@@ -613,13 +613,13 @@ class DefaultMockServerTest extends Specification {
 		and: "A WebSocket request"
 		def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/api/v1/users/watch")
 		and: "A WebSocket listener"
-		wsReq.andThen { ws ->
-			ws.result().textMessageHandler { text ->
+		wsReq.onSuccess { ws ->
+			ws.textMessageHandler { text ->
 				receivedMessages.add(text)
 			}
 		}
 		and: "HTTP requests after WS connection initiated"
-		wsReq.onComplete {
+		wsReq.onSuccess { ws ->
 			client.get(server.port, server.getHostName(), "/api/v1/create").send()
 					.compose { _ -> client.get(server.port, server.getHostName(), "/api/v1/delete").send() }
 		}
@@ -651,8 +651,8 @@ class DefaultMockServerTest extends Specification {
 		and: "A WebSocket request"
 		def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/api/v1/users/watch")
 		and: "A WebSocket listener that sends an HTTP request after WS connection initiated"
-		wsReq.andThen { ws ->
-			ws.result().textMessageHandler { text ->
+		wsReq.onSuccess { ws ->
+			ws.textMessageHandler { text ->
 				if (text == "READY") {
 					client.get(server.port, server.getHostName(), "/api/v1/create").send()
 				} else {

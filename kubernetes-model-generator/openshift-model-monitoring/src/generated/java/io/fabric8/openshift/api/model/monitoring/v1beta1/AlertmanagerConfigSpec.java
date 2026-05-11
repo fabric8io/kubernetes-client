@@ -99,7 +99,7 @@ public class AlertmanagerConfigSpec implements Editable<AlertmanagerConfigSpecBu
     }
 
     /**
-     * List of inhibition rules. The rules will only apply to alerts matching the resource's namespace.
+     * inhibitRules defines the list of inhibition rules. The rules will only apply to alerts matching the resource's namespace.
      */
     @JsonProperty("inhibitRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -108,7 +108,7 @@ public class AlertmanagerConfigSpec implements Editable<AlertmanagerConfigSpecBu
     }
 
     /**
-     * List of inhibition rules. The rules will only apply to alerts matching the resource's namespace.
+     * inhibitRules defines the list of inhibition rules. The rules will only apply to alerts matching the resource's namespace.
      */
     @JsonProperty("inhibitRules")
     public void setInhibitRules(List<InhibitRule> inhibitRules) {
@@ -116,7 +116,7 @@ public class AlertmanagerConfigSpec implements Editable<AlertmanagerConfigSpecBu
     }
 
     /**
-     * List of receivers.
+     * receivers defines the list of receivers.
      */
     @JsonProperty("receivers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -125,7 +125,7 @@ public class AlertmanagerConfigSpec implements Editable<AlertmanagerConfigSpecBu
     }
 
     /**
-     * List of receivers.
+     * receivers defines the list of receivers.
      */
     @JsonProperty("receivers")
     public void setReceivers(List<Receiver> receivers) {
@@ -149,7 +149,7 @@ public class AlertmanagerConfigSpec implements Editable<AlertmanagerConfigSpecBu
     }
 
     /**
-     * List of TimeInterval specifying when the routes should be muted or active.
+     * timeIntervals defines the list of timeIntervals specifying when the routes should be muted.
      */
     @JsonProperty("timeIntervals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -158,7 +158,7 @@ public class AlertmanagerConfigSpec implements Editable<AlertmanagerConfigSpecBu
     }
 
     /**
-     * List of TimeInterval specifying when the routes should be muted or active.
+     * timeIntervals defines the list of timeIntervals specifying when the routes should be muted.
      */
     @JsonProperty("timeIntervals")
     public void setTimeIntervals(List<TimeInterval> timeIntervals) {

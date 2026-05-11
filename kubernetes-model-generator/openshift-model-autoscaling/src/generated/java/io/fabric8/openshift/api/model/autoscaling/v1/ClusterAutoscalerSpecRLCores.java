@@ -33,7 +33,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * Minimum and maximum number of cores in cluster, in the format &lt;min&gt;:&lt;max&gt;. Cluster autoscaler will not scale the cluster beyond these numbers.
+ * Minimum and maximum number of cores in cluster, in the format &lt;min&gt;:&lt;max&gt;.<br><p> Cluster autoscaler will not scale the cluster beyond these numbers.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -86,7 +86,7 @@ public class ClusterAutoscalerSpecRLCores implements Editable<ClusterAutoscalerS
     }
 
     /**
-     * Minimum and maximum number of cores in cluster, in the format &lt;min&gt;:&lt;max&gt;. Cluster autoscaler will not scale the cluster beyond these numbers.
+     * Minimum and maximum number of cores in cluster, in the format &lt;min&gt;:&lt;max&gt;.<br><p> Cluster autoscaler will not scale the cluster beyond these numbers.
      */
     @JsonProperty("max")
     public Integer getMax() {
@@ -94,7 +94,7 @@ public class ClusterAutoscalerSpecRLCores implements Editable<ClusterAutoscalerS
     }
 
     /**
-     * Minimum and maximum number of cores in cluster, in the format &lt;min&gt;:&lt;max&gt;. Cluster autoscaler will not scale the cluster beyond these numbers.
+     * Minimum and maximum number of cores in cluster, in the format &lt;min&gt;:&lt;max&gt;.<br><p> Cluster autoscaler will not scale the cluster beyond these numbers.
      */
     @JsonProperty("max")
     public void setMax(Integer max) {
@@ -102,7 +102,7 @@ public class ClusterAutoscalerSpecRLCores implements Editable<ClusterAutoscalerS
     }
 
     /**
-     * Minimum and maximum number of cores in cluster, in the format &lt;min&gt;:&lt;max&gt;. Cluster autoscaler will not scale the cluster beyond these numbers.
+     * Minimum and maximum number of cores in cluster, in the format &lt;min&gt;:&lt;max&gt;.<br><p> Cluster autoscaler will not scale the cluster beyond these numbers.
      */
     @JsonProperty("min")
     public Integer getMin() {
@@ -110,7 +110,7 @@ public class ClusterAutoscalerSpecRLCores implements Editable<ClusterAutoscalerS
     }
 
     /**
-     * Minimum and maximum number of cores in cluster, in the format &lt;min&gt;:&lt;max&gt;. Cluster autoscaler will not scale the cluster beyond these numbers.
+     * Minimum and maximum number of cores in cluster, in the format &lt;min&gt;:&lt;max&gt;.<br><p> Cluster autoscaler will not scale the cluster beyond these numbers.
      */
     @JsonProperty("min")
     public void setMin(Integer min) {

@@ -232,7 +232,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * `enableHttp2` can be used to disable HTTP2 when scraping the target.
+     * enableHttp2 can be used to disable HTTP2.
      */
     @JsonProperty("enableHttp2")
     public Boolean getEnableHttp2() {
@@ -240,7 +240,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * `enableHttp2` can be used to disable HTTP2 when scraping the target.
+     * enableHttp2 can be used to disable HTTP2.
      */
     @JsonProperty("enableHttp2")
     public void setEnableHttp2(Boolean enableHttp2) {
@@ -248,7 +248,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * When true, the pods which are not running (e.g. either in Failed or Succeeded state) are dropped during the target discovery.<br><p> <br><p> If unset, the filtering is enabled.<br><p> <br><p> More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-phase
+     * filterRunning when true, the pods which are not running (e.g. either in Failed or Succeeded state) are dropped during the target discovery.<br><p> <br><p> If unset, the filtering is enabled.<br><p> <br><p> More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-phase
      */
     @JsonProperty("filterRunning")
     public Boolean getFilterRunning() {
@@ -256,7 +256,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * When true, the pods which are not running (e.g. either in Failed or Succeeded state) are dropped during the target discovery.<br><p> <br><p> If unset, the filtering is enabled.<br><p> <br><p> More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-phase
+     * filterRunning when true, the pods which are not running (e.g. either in Failed or Succeeded state) are dropped during the target discovery.<br><p> <br><p> If unset, the filtering is enabled.<br><p> <br><p> More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-phase
      */
     @JsonProperty("filterRunning")
     public void setFilterRunning(Boolean filterRunning) {
@@ -264,7 +264,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * `followRedirects` defines whether the scrape requests should follow HTTP 3xx redirects.
+     * followRedirects defines whether the client should follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
@@ -272,7 +272,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * `followRedirects` defines whether the scrape requests should follow HTTP 3xx redirects.
+     * followRedirects defines whether the client should follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
@@ -280,7 +280,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * When true, `honorLabels` preserves the metric's labels when they collide with the target's labels.
+     * honorLabels when true preserves the metric's labels when they collide with the target's labels.
      */
     @JsonProperty("honorLabels")
     public Boolean getHonorLabels() {
@@ -288,7 +288,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * When true, `honorLabels` preserves the metric's labels when they collide with the target's labels.
+     * honorLabels when true preserves the metric's labels when they collide with the target's labels.
      */
     @JsonProperty("honorLabels")
     public void setHonorLabels(Boolean honorLabels) {
@@ -296,7 +296,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * `honorTimestamps` controls whether Prometheus preserves the timestamps when exposed by the target.
+     * honorTimestamps defines whether Prometheus preserves the timestamps when exposed by the target.
      */
     @JsonProperty("honorTimestamps")
     public Boolean getHonorTimestamps() {
@@ -304,7 +304,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * `honorTimestamps` controls whether Prometheus preserves the timestamps when exposed by the target.
+     * honorTimestamps defines whether Prometheus preserves the timestamps when exposed by the target.
      */
     @JsonProperty("honorTimestamps")
     public void setHonorTimestamps(Boolean honorTimestamps) {
@@ -312,7 +312,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * Interval at which Prometheus scrapes the metrics from the target.<br><p> <br><p> If empty, Prometheus uses the global scrape interval.
+     * interval at which Prometheus scrapes the metrics from the target.<br><p> <br><p> If empty, Prometheus uses the global scrape interval.
      */
     @JsonProperty("interval")
     public String getInterval() {
@@ -320,7 +320,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * Interval at which Prometheus scrapes the metrics from the target.<br><p> <br><p> If empty, Prometheus uses the global scrape interval.
+     * interval at which Prometheus scrapes the metrics from the target.<br><p> <br><p> If empty, Prometheus uses the global scrape interval.
      */
     @JsonProperty("interval")
     public void setInterval(String interval) {
@@ -328,7 +328,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * `metricRelabelings` configures the relabeling rules to apply to the samples before ingestion.
+     * metricRelabelings defines the relabeling rules to apply to the samples before ingestion.
      */
     @JsonProperty("metricRelabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -337,7 +337,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * `metricRelabelings` configures the relabeling rules to apply to the samples before ingestion.
+     * metricRelabelings defines the relabeling rules to apply to the samples before ingestion.
      */
     @JsonProperty("metricRelabelings")
     public void setMetricRelabelings(List<RelabelConfig> metricRelabelings) {
@@ -345,7 +345,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -353,7 +353,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -377,7 +377,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * `params` define optional HTTP URL parameters.
+     * params define optional HTTP URL parameters.
      */
     @JsonProperty("params")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -386,7 +386,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * `params` define optional HTTP URL parameters.
+     * params define optional HTTP URL parameters.
      */
     @JsonProperty("params")
     public void setParams(Map<String, List<String>> params) {
@@ -394,7 +394,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * HTTP path from which to scrape for metrics.<br><p> <br><p> If empty, Prometheus uses the default value (e.g. `/metrics`).
+     * path defines the HTTP path from which to scrape for metrics.<br><p> <br><p> If empty, Prometheus uses the default value (e.g. `/metrics`).
      */
     @JsonProperty("path")
     public String getPath() {
@@ -402,7 +402,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * HTTP path from which to scrape for metrics.<br><p> <br><p> If empty, Prometheus uses the default value (e.g. `/metrics`).
+     * path defines the HTTP path from which to scrape for metrics.<br><p> <br><p> If empty, Prometheus uses the default value (e.g. `/metrics`).
      */
     @JsonProperty("path")
     public void setPath(String path) {
@@ -410,7 +410,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * The `Pod` port name which exposes the endpoint.<br><p> <br><p> It takes precedence over the `portNumber` and `targetPort` fields.
+     * port defines the `Pod` port name which exposes the endpoint.<br><p> <br><p> If the pod doesn't expose a port with the same name, it will result in no targets being discovered.<br><p> <br><p> If a `Pod` has multiple `Port`s with the same name (which is not recommended), one target instance per unique port number will be generated.<br><p> <br><p> It takes precedence over the `portNumber` and `targetPort` fields.
      */
     @JsonProperty("port")
     public String getPort() {
@@ -418,7 +418,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * The `Pod` port name which exposes the endpoint.<br><p> <br><p> It takes precedence over the `portNumber` and `targetPort` fields.
+     * port defines the `Pod` port name which exposes the endpoint.<br><p> <br><p> If the pod doesn't expose a port with the same name, it will result in no targets being discovered.<br><p> <br><p> If a `Pod` has multiple `Port`s with the same name (which is not recommended), one target instance per unique port number will be generated.<br><p> <br><p> It takes precedence over the `portNumber` and `targetPort` fields.
      */
     @JsonProperty("port")
     public void setPort(String port) {
@@ -426,7 +426,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * The `Pod` port number which exposes the endpoint.
+     * portNumber defines the `Pod` port number which exposes the endpoint.<br><p> <br><p> The `Pod` must declare the specified `Port` in its spec or the target will be dropped by Prometheus.<br><p> <br><p> This cannot be used to enable scraping of an undeclared port. To scrape targets on a port which isn't exposed, you need to use relabeling to override the `__address__` label (but beware of duplicate targets if the `Pod` has other declared ports).<br><p> <br><p> In practice Prometheus will select targets for which the matches the target's __meta_kubernetes_pod_container_port_number.
      */
     @JsonProperty("portNumber")
     public Integer getPortNumber() {
@@ -434,7 +434,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * The `Pod` port number which exposes the endpoint.
+     * portNumber defines the `Pod` port number which exposes the endpoint.<br><p> <br><p> The `Pod` must declare the specified `Port` in its spec or the target will be dropped by Prometheus.<br><p> <br><p> This cannot be used to enable scraping of an undeclared port. To scrape targets on a port which isn't exposed, you need to use relabeling to override the `__address__` label (but beware of duplicate targets if the `Pod` has other declared ports).<br><p> <br><p> In practice Prometheus will select targets for which the matches the target's __meta_kubernetes_pod_container_port_number.
      */
     @JsonProperty("portNumber")
     public void setPortNumber(Integer portNumber) {
@@ -442,7 +442,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -451,7 +451,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -459,7 +459,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -467,7 +467,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
@@ -475,7 +475,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
@@ -483,7 +483,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
@@ -491,7 +491,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * `relabelings` configures the relabeling rules to apply the target's metadata labels.<br><p> <br><p> The Operator automatically adds relabelings for a few standard Kubernetes fields.<br><p> <br><p> The original scrape job's name is available via the `__tmp_prometheus_job_name` label.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+     * relabelings defines the relabeling rules to apply the target's metadata labels.<br><p> <br><p> The Operator automatically adds relabelings for a few standard Kubernetes fields.<br><p> <br><p> The original scrape job's name is available via the `__tmp_prometheus_job_name` label.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
      */
     @JsonProperty("relabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -500,7 +500,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * `relabelings` configures the relabeling rules to apply the target's metadata labels.<br><p> <br><p> The Operator automatically adds relabelings for a few standard Kubernetes fields.<br><p> <br><p> The original scrape job's name is available via the `__tmp_prometheus_job_name` label.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+     * relabelings defines the relabeling rules to apply the target's metadata labels.<br><p> <br><p> The Operator automatically adds relabelings for a few standard Kubernetes fields.<br><p> <br><p> The original scrape job's name is available via the `__tmp_prometheus_job_name` label.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
      */
     @JsonProperty("relabelings")
     public void setRelabelings(List<RelabelConfig> relabelings) {
@@ -508,7 +508,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * HTTP scheme to use for scraping.<br><p> <br><p> `http` and `https` are the expected values unless you rewrite the `__scheme__` label via relabeling.<br><p> <br><p> If empty, Prometheus uses the default value `http`.
+     * scheme defines the HTTP scheme to use for scraping.
      */
     @JsonProperty("scheme")
     public String getScheme() {
@@ -516,7 +516,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * HTTP scheme to use for scraping.<br><p> <br><p> `http` and `https` are the expected values unless you rewrite the `__scheme__` label via relabeling.<br><p> <br><p> If empty, Prometheus uses the default value `http`.
+     * scheme defines the HTTP scheme to use for scraping.
      */
     @JsonProperty("scheme")
     public void setScheme(String scheme) {
@@ -524,7 +524,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * Timeout after which Prometheus considers the scrape to be failed.<br><p> <br><p> If empty, Prometheus uses the global scrape timeout unless it is less than the target's scrape interval value in which the latter is used. The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
+     * scrapeTimeout defines the timeout after which Prometheus considers the scrape to be failed.<br><p> <br><p> If empty, Prometheus uses the global scrape timeout unless it is less than the target's scrape interval value in which the latter is used. The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
      */
     @JsonProperty("scrapeTimeout")
     public String getScrapeTimeout() {
@@ -532,7 +532,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * Timeout after which Prometheus considers the scrape to be failed.<br><p> <br><p> If empty, Prometheus uses the global scrape timeout unless it is less than the target's scrape interval value in which the latter is used. The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
+     * scrapeTimeout defines the timeout after which Prometheus considers the scrape to be failed.<br><p> <br><p> If empty, Prometheus uses the global scrape timeout unless it is less than the target's scrape interval value in which the latter is used. The value cannot be greater than the scrape interval otherwise the operator will reject the resource.
      */
     @JsonProperty("scrapeTimeout")
     public void setScrapeTimeout(String scrapeTimeout) {
@@ -572,7 +572,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * `trackTimestampsStaleness` defines whether Prometheus tracks staleness of the metrics that have an explicit timestamp present in scraped data. Has no effect if `honorTimestamps` is false.<br><p> <br><p> It requires Prometheus &gt;= v2.48.0.
+     * trackTimestampsStaleness defines whether Prometheus tracks staleness of the metrics that have an explicit timestamp present in scraped data. Has no effect if `honorTimestamps` is false.<br><p> <br><p> It requires Prometheus &gt;= v2.48.0.
      */
     @JsonProperty("trackTimestampsStaleness")
     public Boolean getTrackTimestampsStaleness() {
@@ -580,7 +580,7 @@ public class PodMetricsEndpoint implements Editable<PodMetricsEndpointBuilder>, 
     }
 
     /**
-     * `trackTimestampsStaleness` defines whether Prometheus tracks staleness of the metrics that have an explicit timestamp present in scraped data. Has no effect if `honorTimestamps` is false.<br><p> <br><p> It requires Prometheus &gt;= v2.48.0.
+     * trackTimestampsStaleness defines whether Prometheus tracks staleness of the metrics that have an explicit timestamp present in scraped data. Has no effect if `honorTimestamps` is false.<br><p> <br><p> It requires Prometheus &gt;= v2.48.0.
      */
     @JsonProperty("trackTimestampsStaleness")
     public void setTrackTimestampsStaleness(Boolean trackTimestampsStaleness) {

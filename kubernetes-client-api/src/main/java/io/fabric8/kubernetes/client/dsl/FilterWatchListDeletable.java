@@ -21,7 +21,9 @@ public interface FilterWatchListDeletable<T, L, R>
     extends Filterable<FilterWatchListDeletable<T, L, R>>, Listable<L>,
     WatchAndWaitable<T>,
     DeletableWithOptions,
-    Informable<T> {
+    Informable<T>,
+    MetadataListable,
+    TableListable {
 
   /**
    * Accumulate a filter on the context, when done {@link FilterNested#endFilter()} or and must be called

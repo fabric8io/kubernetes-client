@@ -25,17 +25,16 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Consumer;
 
 /**
  * Wraps a {@link Cache} and a {@link SharedProcessor} to distribute events related to changes and syncs
  */
 public class ProcessorStore<T extends HasMetadata> {
 
-  private CacheImpl<T> cache;
-  private SharedProcessor<T> processor;
-  private AtomicBoolean synced = new AtomicBoolean();
-  private List<String> deferredAdd = new ArrayList<>();
+  private final CacheImpl<T> cache;
+  private final SharedProcessor<T> processor;
+  private final AtomicBoolean synced = new AtomicBoolean();
+  private final List<String> deferredAdd = new ArrayList<>();
 
   public ProcessorStore(CacheImpl<T> cache, SharedProcessor<T> processor) {
     this.cache = cache;
@@ -95,16 +94,21 @@ public class ProcessorStore<T extends HasMetadata> {
     return cache.getByKey(key);
   }
 
-  public void retainAll(Set<String> nextKeys, Consumer<Executor> cacheStateComplete) {
+  /**
+   * Syncs the cache with the given set of keys from the latest list operation.
+   * Emits deferred add notifications if this is the first sync, and emits delete notifications
+   * for any cached items whose keys are not in {@code nextKeys}.
+   *
+   * @param nextKeys the set of keys from the latest list result
+   * @return {@code true} if the cache was empty before processing deletions, {@code false} otherwise
+   */
+  public boolean syncList(Set<String> nextKeys) {
     if (synced.compareAndSet(false, true)) {
       deferredAdd.stream().map(cache::getByKey).filter(Objects::nonNull)
           .forEach(v -> this.processor.distribute(new ProcessorListener.AddNotification<>(v), false));
       deferredAdd.clear();
     }
     List<T> current = cache.list();
-    if (nextKeys.isEmpty() && current.isEmpty()) {
-      this.processor.distribute(l -> l.getHandler().onNothing(), false);
-    }
     current.forEach(v -> {
       String key = cache.getKey(v);
       if (!nextKeys.contains(key)) {
@@ -112,9 +116,21 @@ public class ProcessorStore<T extends HasMetadata> {
         this.processor.distribute(new ProcessorListener.DeleteNotification<>(v, true), false);
       }
     });
-    if (cacheStateComplete != null) {
-      cacheStateComplete.accept(this.processor.getSerialExecutor()::execute);
-    }
+    return current.isEmpty();
+  }
+
+  /**
+   * Distributes the onList event to all registered handlers and returns the serial executor
+   * used for event processing. Callers can use the returned executor to schedule work that
+   * must run after all handler notifications have been processed.
+   *
+   * @param resourceVersion the latest resource version known to the list operation
+   * @param remainedEmpty {@code true} if the cache was empty both before and after the list operation
+   * @return the serial executor that processes handler notifications
+   */
+  public Executor onList(String resourceVersion, boolean remainedEmpty) {
+    this.processor.distribute(l -> l.getHandler().onList(resourceVersion, remainedEmpty), false);
+    return this.processor.getSerialExecutor();
   }
 
   public String getKey(T obj) {

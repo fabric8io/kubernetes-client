@@ -25,6 +25,8 @@ import io.fabric8.kubernetes.api.model.storage.StorageClass;
 import io.fabric8.kubernetes.api.model.storage.StorageClassList;
 import io.fabric8.kubernetes.api.model.storage.VolumeAttachment;
 import io.fabric8.kubernetes.api.model.storage.VolumeAttachmentList;
+import io.fabric8.kubernetes.api.model.storage.VolumeAttributesClass;
+import io.fabric8.kubernetes.api.model.storage.VolumeAttributesClassList;
 import io.fabric8.kubernetes.client.Client;
 
 public interface V1StorageAPIGroupDSL extends Client {
@@ -63,4 +65,11 @@ public interface V1StorageAPIGroupDSL extends Client {
    * @return {@link NonNamespaceOperation} for VolumeAttachment resource
    */
   NonNamespaceOperation<VolumeAttachment, VolumeAttachmentList, Resource<VolumeAttachment>> volumeAttachments();
+
+  /**
+   * DSL entrypoint for storage.k8s.io/v1 VolumeAttributesClass
+   *
+   * @return {@link NonNamespaceOperation} for VolumeAttributesClass resource
+   */
+  NonNamespaceOperation<VolumeAttributesClass, VolumeAttributesClassList, Resource<VolumeAttributesClass>> volumeAttributesClasses();
 }

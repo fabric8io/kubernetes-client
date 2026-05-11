@@ -29,8 +29,8 @@ import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.SecretReference;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
-import io.fabric8.kubernetes.api.model.clusterapi.v1beta1.Condition;
-import io.fabric8.kubernetes.api.model.clusterapi.v1beta1.MachineAddress;
+import io.fabric8.kubernetes.api.model.clusterapi.core.v1beta1.Condition;
+import io.fabric8.kubernetes.api.model.clusterapi.core.v1beta1.MachineAddress;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -53,7 +53,8 @@ import lombok.experimental.Accessors;
     "phase",
     "ready",
     "renderedData",
-    "userData"
+    "userData",
+    "v1beta2"
 })
 @ToString
 @EqualsAndHashCode
@@ -104,6 +105,8 @@ public class Metal3MachineStatus implements Editable<Metal3MachineStatusBuilder>
     private ObjectReference renderedData;
     @JsonProperty("userData")
     private SecretReference userData;
+    @JsonProperty("v1beta2")
+    private Metal3MachineV1Beta2Status v1beta2;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -113,7 +116,7 @@ public class Metal3MachineStatus implements Editable<Metal3MachineStatusBuilder>
     public Metal3MachineStatus() {
     }
 
-    public Metal3MachineStatus(List<MachineAddress> addresses, List<Condition> conditions, String failureMessage, String failureReason, String lastUpdated, SecretReference metaData, SecretReference networkData, String phase, Boolean ready, ObjectReference renderedData, SecretReference userData) {
+    public Metal3MachineStatus(List<MachineAddress> addresses, List<Condition> conditions, String failureMessage, String failureReason, String lastUpdated, SecretReference metaData, SecretReference networkData, String phase, Boolean ready, ObjectReference renderedData, SecretReference userData, Metal3MachineV1Beta2Status v1beta2) {
         super();
         this.addresses = addresses;
         this.conditions = conditions;
@@ -126,6 +129,7 @@ public class Metal3MachineStatus implements Editable<Metal3MachineStatusBuilder>
         this.ready = ready;
         this.renderedData = renderedData;
         this.userData = userData;
+        this.v1beta2 = v1beta2;
     }
 
     /**
@@ -304,6 +308,22 @@ public class Metal3MachineStatus implements Editable<Metal3MachineStatusBuilder>
     @JsonProperty("userData")
     public void setUserData(SecretReference userData) {
         this.userData = userData;
+    }
+
+    /**
+     * Metal3MachineStatus defines the observed state of Metal3Machine.
+     */
+    @JsonProperty("v1beta2")
+    public Metal3MachineV1Beta2Status getV1beta2() {
+        return v1beta2;
+    }
+
+    /**
+     * Metal3MachineStatus defines the observed state of Metal3Machine.
+     */
+    @JsonProperty("v1beta2")
+    public void setV1beta2(Metal3MachineV1Beta2Status v1beta2) {
+        this.v1beta2 = v1beta2;
     }
 
     @JsonIgnore

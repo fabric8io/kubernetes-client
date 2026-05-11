@@ -95,7 +95,7 @@ public class StorageSpec implements Editable<StorageSpecBuilder>, KubernetesReso
     }
 
     /**
-     * Deprecated: subPath usage will be removed in a future release.
+     * disableMountSubPath deprecated: subPath usage will be removed in a future release.
      */
     @JsonProperty("disableMountSubPath")
     public Boolean getDisableMountSubPath() {
@@ -103,7 +103,7 @@ public class StorageSpec implements Editable<StorageSpecBuilder>, KubernetesReso
     }
 
     /**
-     * Deprecated: subPath usage will be removed in a future release.
+     * disableMountSubPath deprecated: subPath usage will be removed in a future release.
      */
     @JsonProperty("disableMountSubPath")
     public void setDisableMountSubPath(Boolean disableMountSubPath) {

@@ -84,7 +84,7 @@ public class AlertingSpec implements Editable<AlertingSpecBuilder>, KubernetesRe
     }
 
     /**
-     * Alertmanager endpoints where Prometheus should send alerts to.
+     * alertmanagers endpoints where Prometheus should send alerts to.
      */
     @JsonProperty("alertmanagers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -93,7 +93,7 @@ public class AlertingSpec implements Editable<AlertingSpecBuilder>, KubernetesRe
     }
 
     /**
-     * Alertmanager endpoints where Prometheus should send alerts to.
+     * alertmanagers endpoints where Prometheus should send alerts to.
      */
     @JsonProperty("alertmanagers")
     public void setAlertmanagers(List<AlertmanagerEndpoints> alertmanagers) {

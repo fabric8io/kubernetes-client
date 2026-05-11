@@ -94,7 +94,7 @@ public class ParamRef implements Editable<ParamRefBuilder>, KubernetesResource
     }
 
     /**
-     * `name` is the name of the resource being referenced.<br><p> <br><p> `name` and `selector` are mutually exclusive properties. If one is set, the other must be unset.
+     * name is the name of the resource being referenced.<br><p> <br><p> `name` and `selector` are mutually exclusive properties. If one is set, the other must be unset.
      */
     @JsonProperty("name")
     public String getName() {
@@ -102,7 +102,7 @@ public class ParamRef implements Editable<ParamRefBuilder>, KubernetesResource
     }
 
     /**
-     * `name` is the name of the resource being referenced.<br><p> <br><p> `name` and `selector` are mutually exclusive properties. If one is set, the other must be unset.
+     * name is the name of the resource being referenced.<br><p> <br><p> `name` and `selector` are mutually exclusive properties. If one is set, the other must be unset.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -126,7 +126,7 @@ public class ParamRef implements Editable<ParamRefBuilder>, KubernetesResource
     }
 
     /**
-     * `parameterNotFoundAction` controls the behavior of the binding when the resource exists, and name or selector is valid, but there are no parameters matched by the binding. If the value is set to `Allow`, then no matched parameters will be treated as successful validation by the binding. If set to `Deny`, then no matched parameters will be subject to the `failurePolicy` of the policy.<br><p> <br><p> Allowed values are `Allow` or `Deny` Default to `Deny`
+     * parameterNotFoundAction controls the behavior of the binding when the resource exists, and name or selector is valid, but there are no parameters matched by the binding. If the value is set to `Allow`, then no matched parameters will be treated as successful validation by the binding. If set to `Deny`, then no matched parameters will be subject to the `failurePolicy` of the policy.<br><p> <br><p> Allowed values are `Allow` or `Deny` Default to `Deny`
      */
     @JsonProperty("parameterNotFoundAction")
     public String getParameterNotFoundAction() {
@@ -134,7 +134,7 @@ public class ParamRef implements Editable<ParamRefBuilder>, KubernetesResource
     }
 
     /**
-     * `parameterNotFoundAction` controls the behavior of the binding when the resource exists, and name or selector is valid, but there are no parameters matched by the binding. If the value is set to `Allow`, then no matched parameters will be treated as successful validation by the binding. If set to `Deny`, then no matched parameters will be subject to the `failurePolicy` of the policy.<br><p> <br><p> Allowed values are `Allow` or `Deny` Default to `Deny`
+     * parameterNotFoundAction controls the behavior of the binding when the resource exists, and name or selector is valid, but there are no parameters matched by the binding. If the value is set to `Allow`, then no matched parameters will be treated as successful validation by the binding. If set to `Deny`, then no matched parameters will be subject to the `failurePolicy` of the policy.<br><p> <br><p> Allowed values are `Allow` or `Deny` Default to `Deny`
      */
     @JsonProperty("parameterNotFoundAction")
     public void setParameterNotFoundAction(String parameterNotFoundAction) {

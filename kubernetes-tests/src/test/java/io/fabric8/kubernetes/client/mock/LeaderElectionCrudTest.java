@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 
 import static io.fabric8.kubernetes.client.mock.LeaderElectionTest.testAndAssertSingleLeader;
 
-@EnableKubernetesMockClient(crud = true)
+@EnableKubernetesMockClient(crud = true, https = false)
 @DisplayName("LeaderElection runs on Kubernetes Mock Server in CRUD mode")
 class LeaderElectionCrudTest {
 

@@ -67,7 +67,7 @@ public class OperationSupport {
   public static final String STRATEGIC_MERGE_JSON_PATCH = "application/strategic-merge-patch+json";
   public static final String JSON_MERGE_PATCH = "application/merge-patch+json";
 
-  private static final Logger LOG = LoggerFactory.getLogger(OperationSupport.class);
+  private static final Logger logger = LoggerFactory.getLogger(OperationSupport.class);
   private static final String CLIENT_STATUS_FLAG = "CLIENT_STATUS_FLAG";
 
   protected OperationContext context;
@@ -570,9 +570,9 @@ public class OperationSupport {
     List<String> warnings = response.headers("Warning");
     if (warnings != null && !warnings.isEmpty()) {
       if (context.fieldValidation == Validation.WARN) {
-        LOG.warn("Received warning(s) from request {}: {}", request.uri(), warnings);
+        logger.warn("Received warning(s) from request {}: {}", request.uri(), warnings);
       } else {
-        LOG.debug("Received warning(s) from request {}: {}", request.uri(), warnings);
+        logger.debug("Received warning(s) from request {}: {}", request.uri(), warnings);
       }
     }
     if (response.isSuccessful()) {
@@ -600,7 +600,7 @@ public class OperationSupport {
           }
         }
       } catch (IOException | RuntimeException e) {
-        LOG.debug("Exception convertion response to Status", e);
+        logger.debug("Exception convertion response to Status", e);
       }
       if (response.message() != null) {
         statusMessage = response.message();

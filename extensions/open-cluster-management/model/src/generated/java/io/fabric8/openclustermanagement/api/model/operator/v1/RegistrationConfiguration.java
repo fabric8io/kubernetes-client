@@ -37,9 +37,12 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "addOnKubeClientRegistrationDriver",
     "bootstrapKubeConfigs",
     "clientCertExpirationSeconds",
     "clusterAnnotations",
+    "clusterClaimConfiguration",
+    "clusterLabels",
     "featureGates",
     "kubeAPIBurst",
     "kubeAPIQPS",
@@ -70,6 +73,8 @@ import lombok.experimental.Accessors;
 public class RegistrationConfiguration implements Editable<RegistrationConfigurationBuilder>, KubernetesResource
 {
 
+    @JsonProperty("addOnKubeClientRegistrationDriver")
+    private AddOnRegistrationDriver addOnKubeClientRegistrationDriver;
     @JsonProperty("bootstrapKubeConfigs")
     private BootstrapKubeConfigs bootstrapKubeConfigs;
     @JsonProperty("clientCertExpirationSeconds")
@@ -77,6 +82,11 @@ public class RegistrationConfiguration implements Editable<RegistrationConfigura
     @JsonProperty("clusterAnnotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> clusterAnnotations = new LinkedHashMap<>();
+    @JsonProperty("clusterClaimConfiguration")
+    private ClusterClaimConfiguration clusterClaimConfiguration;
+    @JsonProperty("clusterLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> clusterLabels = new LinkedHashMap<>();
     @JsonProperty("featureGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<FeatureGate> featureGates = new ArrayList<>();
@@ -95,15 +105,28 @@ public class RegistrationConfiguration implements Editable<RegistrationConfigura
     public RegistrationConfiguration() {
     }
 
-    public RegistrationConfiguration(BootstrapKubeConfigs bootstrapKubeConfigs, Integer clientCertExpirationSeconds, Map<String, String> clusterAnnotations, List<FeatureGate> featureGates, Integer kubeAPIBurst, Integer kubeAPIQPS, RegistrationDriver registrationDriver) {
+    public RegistrationConfiguration(AddOnRegistrationDriver addOnKubeClientRegistrationDriver, BootstrapKubeConfigs bootstrapKubeConfigs, Integer clientCertExpirationSeconds, Map<String, String> clusterAnnotations, ClusterClaimConfiguration clusterClaimConfiguration, Map<String, String> clusterLabels, List<FeatureGate> featureGates, Integer kubeAPIBurst, Integer kubeAPIQPS, RegistrationDriver registrationDriver) {
         super();
+        this.addOnKubeClientRegistrationDriver = addOnKubeClientRegistrationDriver;
         this.bootstrapKubeConfigs = bootstrapKubeConfigs;
         this.clientCertExpirationSeconds = clientCertExpirationSeconds;
         this.clusterAnnotations = clusterAnnotations;
+        this.clusterClaimConfiguration = clusterClaimConfiguration;
+        this.clusterLabels = clusterLabels;
         this.featureGates = featureGates;
         this.kubeAPIBurst = kubeAPIBurst;
         this.kubeAPIQPS = kubeAPIQPS;
         this.registrationDriver = registrationDriver;
+    }
+
+    @JsonProperty("addOnKubeClientRegistrationDriver")
+    public AddOnRegistrationDriver getAddOnKubeClientRegistrationDriver() {
+        return addOnKubeClientRegistrationDriver;
+    }
+
+    @JsonProperty("addOnKubeClientRegistrationDriver")
+    public void setAddOnKubeClientRegistrationDriver(AddOnRegistrationDriver addOnKubeClientRegistrationDriver) {
+        this.addOnKubeClientRegistrationDriver = addOnKubeClientRegistrationDriver;
     }
 
     @JsonProperty("bootstrapKubeConfigs")
@@ -149,6 +172,33 @@ public class RegistrationConfiguration implements Editable<RegistrationConfigura
         this.clusterAnnotations = clusterAnnotations;
     }
 
+    @JsonProperty("clusterClaimConfiguration")
+    public ClusterClaimConfiguration getClusterClaimConfiguration() {
+        return clusterClaimConfiguration;
+    }
+
+    @JsonProperty("clusterClaimConfiguration")
+    public void setClusterClaimConfiguration(ClusterClaimConfiguration clusterClaimConfiguration) {
+        this.clusterClaimConfiguration = clusterClaimConfiguration;
+    }
+
+    /**
+     * ClusterLabels is labels set on ManagedCluster when creating only, other actors can update it afterwards.
+     */
+    @JsonProperty("clusterLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, String> getClusterLabels() {
+        return clusterLabels;
+    }
+
+    /**
+     * ClusterLabels is labels set on ManagedCluster when creating only, other actors can update it afterwards.
+     */
+    @JsonProperty("clusterLabels")
+    public void setClusterLabels(Map<String, String> clusterLabels) {
+        this.clusterLabels = clusterLabels;
+    }
+
     /**
      * FeatureGates represents the list of feature gates for registration If it is set empty, default feature gates will be used. If it is set, featuregate/Foo is an example of one item in FeatureGates:<br><p>   1. If featuregate/Foo does not exist, registration-operator will discard it<br><p>   2. If featuregate/Foo exists and is false by default. It is now possible to set featuregate/Foo=[false|true]<br><p>   3. If featuregate/Foo exists and is true by default. If a cluster-admin upgrading from 1 to 2 wants to continue having featuregate/Foo=false,<br><p>  	he can set featuregate/Foo=false before upgrading. Let's say the cluster-admin wants featuregate/Foo=false.
      */
@@ -167,7 +217,7 @@ public class RegistrationConfiguration implements Editable<RegistrationConfigura
     }
 
     /**
-     * KubeAPIBurst indicates the maximum burst of the throttle while talking with apiserver of hub cluster from the spoke cluster. If it is set empty, use the default value: 100
+     * KubeAPIBurst indicates the maximum burst of the throttle while talking with apiserver on the spoke cluster. If it is set empty, use the default value: 100
      */
     @JsonProperty("kubeAPIBurst")
     public Integer getKubeAPIBurst() {
@@ -175,7 +225,7 @@ public class RegistrationConfiguration implements Editable<RegistrationConfigura
     }
 
     /**
-     * KubeAPIBurst indicates the maximum burst of the throttle while talking with apiserver of hub cluster from the spoke cluster. If it is set empty, use the default value: 100
+     * KubeAPIBurst indicates the maximum burst of the throttle while talking with apiserver on the spoke cluster. If it is set empty, use the default value: 100
      */
     @JsonProperty("kubeAPIBurst")
     public void setKubeAPIBurst(Integer kubeAPIBurst) {
@@ -183,7 +233,7 @@ public class RegistrationConfiguration implements Editable<RegistrationConfigura
     }
 
     /**
-     * KubeAPIQPS indicates the maximum QPS while talking with apiserver of hub cluster from the spoke cluster. If it is set empty, use the default value: 50
+     * KubeAPIQPS indicates the maximum QPS while talking with apiserver on the spoke cluster. If it is set empty, use the default value: 50
      */
     @JsonProperty("kubeAPIQPS")
     public Integer getKubeAPIQPS() {
@@ -191,7 +241,7 @@ public class RegistrationConfiguration implements Editable<RegistrationConfigura
     }
 
     /**
-     * KubeAPIQPS indicates the maximum QPS while talking with apiserver of hub cluster from the spoke cluster. If it is set empty, use the default value: 50
+     * KubeAPIQPS indicates the maximum QPS while talking with apiserver on the spoke cluster. If it is set empty, use the default value: 50
      */
     @JsonProperty("kubeAPIQPS")
     public void setKubeAPIQPS(Integer kubeAPIQPS) {

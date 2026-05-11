@@ -156,7 +156,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Whether to enable HTTP2. It requires Prometheus &gt;= v2.41.0
+     * enableHTTP2 defines whether to enable HTTP2. It requires Prometheus &gt;= v2.41.0
      */
     @JsonProperty("enableHTTP2")
     public Boolean getEnableHTTP2() {
@@ -164,7 +164,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Whether to enable HTTP2. It requires Prometheus &gt;= v2.41.0
+     * enableHTTP2 defines whether to enable HTTP2. It requires Prometheus &gt;= v2.41.0
      */
     @JsonProperty("enableHTTP2")
     public void setEnableHTTP2(Boolean enableHTTP2) {
@@ -172,7 +172,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Filters can be used optionally to filter the instance list by other criteria. Available filter criteria can be found here: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstances.html Filter API documentation: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Filter.html It requires Prometheus &gt;= v2.3.0
+     * filters can be used optionally to filter the instance list by other criteria. Available filter criteria can be found here: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstances.html Filter API documentation: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Filter.html It requires Prometheus &gt;= v2.3.0
      */
     @JsonProperty("filters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -181,7 +181,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Filters can be used optionally to filter the instance list by other criteria. Available filter criteria can be found here: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstances.html Filter API documentation: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Filter.html It requires Prometheus &gt;= v2.3.0
+     * filters can be used optionally to filter the instance list by other criteria. Available filter criteria can be found here: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstances.html Filter API documentation: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Filter.html It requires Prometheus &gt;= v2.3.0
      */
     @JsonProperty("filters")
     public void setFilters(List<Filter> filters) {
@@ -189,7 +189,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects. It requires Prometheus &gt;= v2.41.0
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects. It requires Prometheus &gt;= v2.41.0
      */
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
@@ -197,7 +197,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects. It requires Prometheus &gt;= v2.41.0
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects. It requires Prometheus &gt;= v2.41.0
      */
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
@@ -205,7 +205,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -213,7 +213,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -221,7 +221,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
+     * port defines the port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
      */
     @JsonProperty("port")
     public Integer getPort() {
@@ -229,7 +229,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
+     * port defines the port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
      */
     @JsonProperty("port")
     public void setPort(Integer port) {
@@ -237,7 +237,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -246,7 +246,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -254,7 +254,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -262,7 +262,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
@@ -270,7 +270,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
@@ -278,7 +278,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
@@ -286,7 +286,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * RefreshInterval configures the refresh interval at which Prometheus will re-read the instance list.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
@@ -294,7 +294,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * RefreshInterval configures the refresh interval at which Prometheus will re-read the instance list.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
@@ -302,7 +302,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The AWS region.
+     * region defines the AWS region.
      */
     @JsonProperty("region")
     public String getRegion() {
@@ -310,7 +310,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * The AWS region.
+     * region defines the AWS region.
      */
     @JsonProperty("region")
     public void setRegion(String region) {
@@ -318,7 +318,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * AWS Role ARN, an alternative to using AWS API keys.
+     * roleARN defines an alternative to using AWS API keys.
      */
     @JsonProperty("roleARN")
     public String getRoleARN() {
@@ -326,7 +326,7 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
     }
 
     /**
-     * AWS Role ARN, an alternative to using AWS API keys.
+     * roleARN defines an alternative to using AWS API keys.
      */
     @JsonProperty("roleARN")
     public void setRoleARN(String roleARN) {

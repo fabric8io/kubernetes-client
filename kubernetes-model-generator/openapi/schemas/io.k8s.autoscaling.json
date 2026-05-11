@@ -44,6 +44,14 @@
         "mode": {
           "description": "Whether autoscaler is enabled for the container. The default is \"Auto\".",
           "type": "string"
+        },
+        "oomBumpUpRatio": {
+          "description": "oomBumpUpRatio is the ratio to increase memory when OOM is detected.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+        },
+        "oomMinBumpUp": {
+          "description": "oomMinBumpUp is the minimum increase in memory when OOM is detected.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
         }
       },
       "x-fabric8-info": {
@@ -154,7 +162,7 @@
           "format": "int32"
         },
         "updateMode": {
-          "description": "Controls when autoscaler applies changes to the pod resources. The default is 'Auto'.",
+          "description": "Controls when autoscaler applies changes to the pod resources. The default is 'Recreate'.",
           "type": "string"
         }
       },
@@ -375,7 +383,7 @@
           "$ref": "#/definitions/io.k8s.autoscaling.v1.HistogramCheckpoint"
         },
         "firstSampleStart": {
-          "description": "Timestamp of the fist sample from the histograms.",
+          "description": "Timestamp of the first sample from the histograms.",
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
         },
         "lastSampleStart": {
@@ -885,7 +893,7 @@
           "$ref": "#/definitions/io.k8s.autoscaling.v1beta1.HistogramCheckpoint"
         },
         "firstSampleStart": {
-          "description": "Timestamp of the fist sample from the histograms.",
+          "description": "Timestamp of the first sample from the histograms.",
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
         },
         "lastSampleStart": {
@@ -1365,7 +1373,7 @@
           "$ref": "#/definitions/io.k8s.autoscaling.v1beta2.HistogramCheckpoint"
         },
         "firstSampleStart": {
-          "description": "Timestamp of the fist sample from the histograms.",
+          "description": "Timestamp of the first sample from the histograms.",
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
         },
         "lastSampleStart": {

@@ -117,7 +117,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder>, Kube
     }
 
     /**
-     * Total number of available pods (ready for at least minReadySeconds) targeted by this Prometheus deployment.
+     * availableReplicas defines the total number of available pods (ready for at least minReadySeconds) targeted by this Prometheus deployment.
      */
     @JsonProperty("availableReplicas")
     public Integer getAvailableReplicas() {
@@ -125,7 +125,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder>, Kube
     }
 
     /**
-     * Total number of available pods (ready for at least minReadySeconds) targeted by this Prometheus deployment.
+     * availableReplicas defines the total number of available pods (ready for at least minReadySeconds) targeted by this Prometheus deployment.
      */
     @JsonProperty("availableReplicas")
     public void setAvailableReplicas(Integer availableReplicas) {
@@ -133,7 +133,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder>, Kube
     }
 
     /**
-     * The current state of the Prometheus deployment.
+     * conditions defines the current state of the Prometheus deployment.
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -142,7 +142,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder>, Kube
     }
 
     /**
-     * The current state of the Prometheus deployment.
+     * conditions defines the current state of the Prometheus deployment.
      */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
@@ -150,7 +150,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder>, Kube
     }
 
     /**
-     * Represents whether any actions on the underlying managed objects are being performed. Only delete actions will be performed.
+     * paused defines whether any actions on the underlying managed objects are being performed. Only delete actions will be performed.
      */
     @JsonProperty("paused")
     public Boolean getPaused() {
@@ -158,7 +158,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder>, Kube
     }
 
     /**
-     * Represents whether any actions on the underlying managed objects are being performed. Only delete actions will be performed.
+     * paused defines whether any actions on the underlying managed objects are being performed. Only delete actions will be performed.
      */
     @JsonProperty("paused")
     public void setPaused(Boolean paused) {
@@ -166,7 +166,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder>, Kube
     }
 
     /**
-     * Total number of non-terminated pods targeted by this Prometheus deployment (their labels match the selector).
+     * replicas defines the total number of non-terminated pods targeted by this Prometheus deployment (their labels match the selector).
      */
     @JsonProperty("replicas")
     public Integer getReplicas() {
@@ -174,7 +174,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder>, Kube
     }
 
     /**
-     * Total number of non-terminated pods targeted by this Prometheus deployment (their labels match the selector).
+     * replicas defines the total number of non-terminated pods targeted by this Prometheus deployment (their labels match the selector).
      */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
@@ -182,7 +182,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder>, Kube
     }
 
     /**
-     * The selector used to match the pods targeted by this Prometheus resource.
+     * selector used to match the pods targeted by this Prometheus resource.
      */
     @JsonProperty("selector")
     public String getSelector() {
@@ -190,7 +190,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder>, Kube
     }
 
     /**
-     * The selector used to match the pods targeted by this Prometheus resource.
+     * selector used to match the pods targeted by this Prometheus resource.
      */
     @JsonProperty("selector")
     public void setSelector(String selector) {
@@ -198,7 +198,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder>, Kube
     }
 
     /**
-     * The list has one entry per shard. Each entry provides a summary of the shard status.
+     * shardStatuses defines the list has one entry per shard. Each entry provides a summary of the shard status.
      */
     @JsonProperty("shardStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -207,7 +207,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder>, Kube
     }
 
     /**
-     * The list has one entry per shard. Each entry provides a summary of the shard status.
+     * shardStatuses defines the list has one entry per shard. Each entry provides a summary of the shard status.
      */
     @JsonProperty("shardStatuses")
     public void setShardStatuses(List<ShardStatus> shardStatuses) {
@@ -215,7 +215,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder>, Kube
     }
 
     /**
-     * Shards is the most recently observed number of shards.
+     * shards defines the most recently observed number of shards.
      */
     @JsonProperty("shards")
     public Integer getShards() {
@@ -223,7 +223,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder>, Kube
     }
 
     /**
-     * Shards is the most recently observed number of shards.
+     * shards defines the most recently observed number of shards.
      */
     @JsonProperty("shards")
     public void setShards(Integer shards) {
@@ -231,7 +231,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder>, Kube
     }
 
     /**
-     * Total number of unavailable pods targeted by this Prometheus deployment.
+     * unavailableReplicas defines the total number of unavailable pods targeted by this Prometheus deployment.
      */
     @JsonProperty("unavailableReplicas")
     public Integer getUnavailableReplicas() {
@@ -239,7 +239,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder>, Kube
     }
 
     /**
-     * Total number of unavailable pods targeted by this Prometheus deployment.
+     * unavailableReplicas defines the total number of unavailable pods targeted by this Prometheus deployment.
      */
     @JsonProperty("unavailableReplicas")
     public void setUnavailableReplicas(Integer unavailableReplicas) {
@@ -247,7 +247,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder>, Kube
     }
 
     /**
-     * Total number of non-terminated pods targeted by this Prometheus deployment that have the desired version spec.
+     * updatedReplicas defines the total number of non-terminated pods targeted by this Prometheus deployment that have the desired version spec.
      */
     @JsonProperty("updatedReplicas")
     public Integer getUpdatedReplicas() {
@@ -255,7 +255,7 @@ public class PrometheusStatus implements Editable<PrometheusStatusBuilder>, Kube
     }
 
     /**
-     * Total number of non-terminated pods targeted by this Prometheus deployment that have the desired version spec.
+     * updatedReplicas defines the total number of non-terminated pods targeted by this Prometheus deployment that have the desired version spec.
      */
     @JsonProperty("updatedReplicas")
     public void setUpdatedReplicas(Integer updatedReplicas) {

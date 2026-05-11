@@ -40,7 +40,9 @@ import lombok.experimental.Accessors;
     "cloud",
     "managedIdentity",
     "oauth",
-    "sdk"
+    "scope",
+    "sdk",
+    "workloadIdentity"
 })
 @ToString
 @EqualsAndHashCode
@@ -73,8 +75,12 @@ public class AzureAD implements Editable<AzureADBuilder>, KubernetesResource
     private ManagedIdentity managedIdentity;
     @JsonProperty("oauth")
     private AzureOAuth oauth;
+    @JsonProperty("scope")
+    private String scope;
     @JsonProperty("sdk")
     private AzureSDK sdk;
+    @JsonProperty("workloadIdentity")
+    private AzureWorkloadIdentity workloadIdentity;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -84,16 +90,18 @@ public class AzureAD implements Editable<AzureADBuilder>, KubernetesResource
     public AzureAD() {
     }
 
-    public AzureAD(String cloud, ManagedIdentity managedIdentity, AzureOAuth oauth, AzureSDK sdk) {
+    public AzureAD(String cloud, ManagedIdentity managedIdentity, AzureOAuth oauth, String scope, AzureSDK sdk, AzureWorkloadIdentity workloadIdentity) {
         super();
         this.cloud = cloud;
         this.managedIdentity = managedIdentity;
         this.oauth = oauth;
+        this.scope = scope;
         this.sdk = sdk;
+        this.workloadIdentity = workloadIdentity;
     }
 
     /**
-     * The Azure Cloud. Options are 'AzurePublic', 'AzureChina', or 'AzureGovernment'.
+     * cloud defines the Azure Cloud. Options are 'AzurePublic', 'AzureChina', or 'AzureGovernment'.
      */
     @JsonProperty("cloud")
     public String getCloud() {
@@ -101,7 +109,7 @@ public class AzureAD implements Editable<AzureADBuilder>, KubernetesResource
     }
 
     /**
-     * The Azure Cloud. Options are 'AzurePublic', 'AzureChina', or 'AzureGovernment'.
+     * cloud defines the Azure Cloud. Options are 'AzurePublic', 'AzureChina', or 'AzureGovernment'.
      */
     @JsonProperty("cloud")
     public void setCloud(String cloud) {
@@ -141,6 +149,22 @@ public class AzureAD implements Editable<AzureADBuilder>, KubernetesResource
     }
 
     /**
+     * scope is the custom OAuth 2.0 scope to request when acquiring tokens. It requires Prometheus &gt;= 3.9.0. Currently not supported by Thanos.
+     */
+    @JsonProperty("scope")
+    public String getScope() {
+        return scope;
+    }
+
+    /**
+     * scope is the custom OAuth 2.0 scope to request when acquiring tokens. It requires Prometheus &gt;= 3.9.0. Currently not supported by Thanos.
+     */
+    @JsonProperty("scope")
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
+
+    /**
      * AzureAD defines the configuration for remote write's azuread parameters.
      */
     @JsonProperty("sdk")
@@ -154,6 +178,22 @@ public class AzureAD implements Editable<AzureADBuilder>, KubernetesResource
     @JsonProperty("sdk")
     public void setSdk(AzureSDK sdk) {
         this.sdk = sdk;
+    }
+
+    /**
+     * AzureAD defines the configuration for remote write's azuread parameters.
+     */
+    @JsonProperty("workloadIdentity")
+    public AzureWorkloadIdentity getWorkloadIdentity() {
+        return workloadIdentity;
+    }
+
+    /**
+     * AzureAD defines the configuration for remote write's azuread parameters.
+     */
+    @JsonProperty("workloadIdentity")
+    public void setWorkloadIdentity(AzureWorkloadIdentity workloadIdentity) {
+        this.workloadIdentity = workloadIdentity;
     }
 
     @JsonIgnore

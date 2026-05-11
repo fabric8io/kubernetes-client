@@ -118,7 +118,7 @@ public class WebhookConfig implements Editable<WebhookConfigBuilder>, Kubernetes
     }
 
     /**
-     * Maximum number of alerts to be sent per webhook message. When 0, all alerts are included.
+     * maxAlerts defines the maximum number of alerts to be sent per webhook message. When 0, all alerts are included in the webhook payload.
      */
     @JsonProperty("maxAlerts")
     public Integer getMaxAlerts() {
@@ -126,7 +126,7 @@ public class WebhookConfig implements Editable<WebhookConfigBuilder>, Kubernetes
     }
 
     /**
-     * Maximum number of alerts to be sent per webhook message. When 0, all alerts are included.
+     * maxAlerts defines the maximum number of alerts to be sent per webhook message. When 0, all alerts are included in the webhook payload.
      */
     @JsonProperty("maxAlerts")
     public void setMaxAlerts(Integer maxAlerts) {
@@ -134,7 +134,7 @@ public class WebhookConfig implements Editable<WebhookConfigBuilder>, Kubernetes
     }
 
     /**
-     * Whether or not to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
@@ -142,7 +142,7 @@ public class WebhookConfig implements Editable<WebhookConfigBuilder>, Kubernetes
     }
 
     /**
-     * Whether or not to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
@@ -150,7 +150,7 @@ public class WebhookConfig implements Editable<WebhookConfigBuilder>, Kubernetes
     }
 
     /**
-     * The maximum time to wait for a webhook request to complete, before failing the request and allowing it to be retried. It requires Alertmanager &gt;= v0.28.0.
+     * timeout defines the maximum time to wait for a webhook request to complete, before failing the request and allowing it to be retried. It requires Alertmanager &gt;= v0.28.0.
      */
     @JsonProperty("timeout")
     public String getTimeout() {
@@ -158,7 +158,7 @@ public class WebhookConfig implements Editable<WebhookConfigBuilder>, Kubernetes
     }
 
     /**
-     * The maximum time to wait for a webhook request to complete, before failing the request and allowing it to be retried. It requires Alertmanager &gt;= v0.28.0.
+     * timeout defines the maximum time to wait for a webhook request to complete, before failing the request and allowing it to be retried. It requires Alertmanager &gt;= v0.28.0.
      */
     @JsonProperty("timeout")
     public void setTimeout(String timeout) {
@@ -166,7 +166,7 @@ public class WebhookConfig implements Editable<WebhookConfigBuilder>, Kubernetes
     }
 
     /**
-     * The URL to send HTTP POST requests to. `urlSecret` takes precedence over `url`. One of `urlSecret` and `url` should be defined.
+     * url defines the URL to send HTTP POST requests to. urlSecret takes precedence over url. One of urlSecret and url should be defined.
      */
     @JsonProperty("url")
     public String getUrl() {
@@ -174,7 +174,7 @@ public class WebhookConfig implements Editable<WebhookConfigBuilder>, Kubernetes
     }
 
     /**
-     * The URL to send HTTP POST requests to. `urlSecret` takes precedence over `url`. One of `urlSecret` and `url` should be defined.
+     * url defines the URL to send HTTP POST requests to. urlSecret takes precedence over url. One of urlSecret and url should be defined.
      */
     @JsonProperty("url")
     public void setUrl(String url) {

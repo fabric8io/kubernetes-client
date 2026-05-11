@@ -86,7 +86,7 @@ public class ClusterDecision implements Editable<ClusterDecisionBuilder>, Kubern
     }
 
     /**
-     * ClusterName is the name of the ManagedCluster. If it is not empty, its value should be unique cross all placement decisions for the Placement.
+     * clusterName is the name of the ManagedCluster. If it is not empty, its value should be unique across all placement decisions for the Placement.
      */
     @JsonProperty("clusterName")
     public String getClusterName() {
@@ -94,7 +94,7 @@ public class ClusterDecision implements Editable<ClusterDecisionBuilder>, Kubern
     }
 
     /**
-     * ClusterName is the name of the ManagedCluster. If it is not empty, its value should be unique cross all placement decisions for the Placement.
+     * clusterName is the name of the ManagedCluster. If it is not empty, its value should be unique across all placement decisions for the Placement.
      */
     @JsonProperty("clusterName")
     public void setClusterName(String clusterName) {
@@ -102,7 +102,7 @@ public class ClusterDecision implements Editable<ClusterDecisionBuilder>, Kubern
     }
 
     /**
-     * Reason represents the reason why the ManagedCluster is selected.
+     * reason represents the reason why the ManagedCluster is selected.
      */
     @JsonProperty("reason")
     public String getReason() {
@@ -110,7 +110,7 @@ public class ClusterDecision implements Editable<ClusterDecisionBuilder>, Kubern
     }
 
     /**
-     * Reason represents the reason why the ManagedCluster is selected.
+     * reason represents the reason why the ManagedCluster is selected.
      */
     @JsonProperty("reason")
     public void setReason(String reason) {

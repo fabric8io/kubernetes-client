@@ -104,7 +104,7 @@ public class ThanosRulerStatus implements Editable<ThanosRulerStatusBuilder>, Ku
     }
 
     /**
-     * Total number of available pods (ready for at least minReadySeconds) targeted by this ThanosRuler deployment.
+     * availableReplicas defines the total number of available pods (ready for at least minReadySeconds) targeted by this ThanosRuler deployment.
      */
     @JsonProperty("availableReplicas")
     public Integer getAvailableReplicas() {
@@ -112,7 +112,7 @@ public class ThanosRulerStatus implements Editable<ThanosRulerStatusBuilder>, Ku
     }
 
     /**
-     * Total number of available pods (ready for at least minReadySeconds) targeted by this ThanosRuler deployment.
+     * availableReplicas defines the total number of available pods (ready for at least minReadySeconds) targeted by this ThanosRuler deployment.
      */
     @JsonProperty("availableReplicas")
     public void setAvailableReplicas(Integer availableReplicas) {
@@ -120,7 +120,7 @@ public class ThanosRulerStatus implements Editable<ThanosRulerStatusBuilder>, Ku
     }
 
     /**
-     * The current state of the ThanosRuler object.
+     * conditions defines the current state of the ThanosRuler object.
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -129,7 +129,7 @@ public class ThanosRulerStatus implements Editable<ThanosRulerStatusBuilder>, Ku
     }
 
     /**
-     * The current state of the ThanosRuler object.
+     * conditions defines the current state of the ThanosRuler object.
      */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
@@ -137,7 +137,7 @@ public class ThanosRulerStatus implements Editable<ThanosRulerStatusBuilder>, Ku
     }
 
     /**
-     * Represents whether any actions on the underlying managed objects are being performed. Only delete actions will be performed.
+     * paused defines whether any actions on the underlying managed objects are being performed. Only delete actions will be performed.
      */
     @JsonProperty("paused")
     public Boolean getPaused() {
@@ -145,7 +145,7 @@ public class ThanosRulerStatus implements Editable<ThanosRulerStatusBuilder>, Ku
     }
 
     /**
-     * Represents whether any actions on the underlying managed objects are being performed. Only delete actions will be performed.
+     * paused defines whether any actions on the underlying managed objects are being performed. Only delete actions will be performed.
      */
     @JsonProperty("paused")
     public void setPaused(Boolean paused) {
@@ -153,7 +153,7 @@ public class ThanosRulerStatus implements Editable<ThanosRulerStatusBuilder>, Ku
     }
 
     /**
-     * Total number of non-terminated pods targeted by this ThanosRuler deployment (their labels match the selector).
+     * replicas defines the total number of non-terminated pods targeted by this ThanosRuler deployment (their labels match the selector).
      */
     @JsonProperty("replicas")
     public Integer getReplicas() {
@@ -161,7 +161,7 @@ public class ThanosRulerStatus implements Editable<ThanosRulerStatusBuilder>, Ku
     }
 
     /**
-     * Total number of non-terminated pods targeted by this ThanosRuler deployment (their labels match the selector).
+     * replicas defines the total number of non-terminated pods targeted by this ThanosRuler deployment (their labels match the selector).
      */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
@@ -169,7 +169,7 @@ public class ThanosRulerStatus implements Editable<ThanosRulerStatusBuilder>, Ku
     }
 
     /**
-     * Total number of unavailable pods targeted by this ThanosRuler deployment.
+     * unavailableReplicas defines the total number of unavailable pods targeted by this ThanosRuler deployment.
      */
     @JsonProperty("unavailableReplicas")
     public Integer getUnavailableReplicas() {
@@ -177,7 +177,7 @@ public class ThanosRulerStatus implements Editable<ThanosRulerStatusBuilder>, Ku
     }
 
     /**
-     * Total number of unavailable pods targeted by this ThanosRuler deployment.
+     * unavailableReplicas defines the total number of unavailable pods targeted by this ThanosRuler deployment.
      */
     @JsonProperty("unavailableReplicas")
     public void setUnavailableReplicas(Integer unavailableReplicas) {
@@ -185,7 +185,7 @@ public class ThanosRulerStatus implements Editable<ThanosRulerStatusBuilder>, Ku
     }
 
     /**
-     * Total number of non-terminated pods targeted by this ThanosRuler deployment that have the desired version spec.
+     * updatedReplicas defines the total number of non-terminated pods targeted by this ThanosRuler deployment that have the desired version spec.
      */
     @JsonProperty("updatedReplicas")
     public Integer getUpdatedReplicas() {
@@ -193,7 +193,7 @@ public class ThanosRulerStatus implements Editable<ThanosRulerStatusBuilder>, Ku
     }
 
     /**
-     * Total number of non-terminated pods targeted by this ThanosRuler deployment that have the desired version spec.
+     * updatedReplicas defines the total number of non-terminated pods targeted by this ThanosRuler deployment that have the desired version spec.
      */
     @JsonProperty("updatedReplicas")
     public void setUpdatedReplicas(Integer updatedReplicas) {

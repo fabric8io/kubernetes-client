@@ -231,7 +231,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * &#42;Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.&#42;<br><p> <br><p> Deprecated: this will be removed in a future release.
+     * bearerToken is deprecated: this will be removed in a future release. &#42;Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.&#42;
      */
     @JsonProperty("bearerToken")
     public String getBearerToken() {
@@ -239,7 +239,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * &#42;Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.&#42;<br><p> <br><p> Deprecated: this will be removed in a future release.
+     * bearerToken is deprecated: this will be removed in a future release. &#42;Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.&#42;
      */
     @JsonProperty("bearerToken")
     public void setBearerToken(String bearerToken) {
@@ -247,7 +247,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * File from which to read bearer token for the URL.<br><p> <br><p> Deprecated: this will be removed in a future release. Prefer using `authorization`.
+     * bearerTokenFile defines the file from which to read bearer token for the URL.<br><p> <br><p> Deprecated: this will be removed in a future release. Prefer using `authorization`.
      */
     @JsonProperty("bearerTokenFile")
     public String getBearerTokenFile() {
@@ -255,7 +255,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * File from which to read bearer token for the URL.<br><p> <br><p> Deprecated: this will be removed in a future release. Prefer using `authorization`.
+     * bearerTokenFile defines the file from which to read bearer token for the URL.<br><p> <br><p> Deprecated: this will be removed in a future release. Prefer using `authorization`.
      */
     @JsonProperty("bearerTokenFile")
     public void setBearerTokenFile(String bearerTokenFile) {
@@ -263,7 +263,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public Boolean getEnableHTTP2() {
@@ -271,7 +271,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public void setEnableHTTP2(Boolean enableHTTP2) {
@@ -279,7 +279,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects.<br><p> <br><p> It requires Prometheus &gt;= v2.26.0 or Thanos &gt;= v0.24.0.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.<br><p> <br><p> It requires Prometheus &gt;= v2.26.0 or Thanos &gt;= v0.24.0.
      */
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
@@ -287,7 +287,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects.<br><p> <br><p> It requires Prometheus &gt;= v2.26.0 or Thanos &gt;= v0.24.0.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.<br><p> <br><p> It requires Prometheus &gt;= v2.26.0 or Thanos &gt;= v0.24.0.
      */
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
@@ -295,7 +295,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * Custom HTTP headers to be sent along with each remote write request. Be aware that headers that are set by Prometheus itself can't be overwritten.<br><p> <br><p> It requires Prometheus &gt;= v2.25.0 or Thanos &gt;= v0.24.0.
+     * headers defines the custom HTTP headers to be sent along with each remote write request. Be aware that headers that are set by Prometheus itself can't be overwritten.<br><p> <br><p> It requires Prometheus &gt;= v2.25.0 or Thanos &gt;= v0.24.0.
      */
     @JsonProperty("headers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -304,7 +304,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * Custom HTTP headers to be sent along with each remote write request. Be aware that headers that are set by Prometheus itself can't be overwritten.<br><p> <br><p> It requires Prometheus &gt;= v2.25.0 or Thanos &gt;= v0.24.0.
+     * headers defines the custom HTTP headers to be sent along with each remote write request. Be aware that headers that are set by Prometheus itself can't be overwritten.<br><p> <br><p> It requires Prometheus &gt;= v2.25.0 or Thanos &gt;= v0.24.0.
      */
     @JsonProperty("headers")
     public void setHeaders(Map<String, String> headers) {
@@ -312,7 +312,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * The Remote Write message's version to use when writing to the endpoint.<br><p> <br><p> `Version1.0` corresponds to the `prometheus.WriteRequest` protobuf message introduced in Remote Write 1.0. `Version2.0` corresponds to the `io.prometheus.write.v2.Request` protobuf message introduced in Remote Write 2.0.<br><p> <br><p> When `Version2.0` is selected, Prometheus will automatically be configured to append the metadata of scraped metrics to the WAL.<br><p> <br><p> Before setting this field, consult with your remote storage provider what message version it supports.<br><p> <br><p> It requires Prometheus &gt;= v2.54.0 or Thanos &gt;= v0.37.0.
+     * messageVersion defines the Remote Write message's version to use when writing to the endpoint.<br><p> <br><p> `Version1.0` corresponds to the `prometheus.WriteRequest` protobuf message introduced in Remote Write 1.0. `Version2.0` corresponds to the `io.prometheus.write.v2.Request` protobuf message introduced in Remote Write 2.0.<br><p> <br><p> When `Version2.0` is selected, Prometheus will automatically be configured to append the metadata of scraped metrics to the WAL.<br><p> <br><p> Before setting this field, consult with your remote storage provider what message version it supports.<br><p> <br><p> It requires Prometheus &gt;= v2.54.0 or Thanos &gt;= v0.37.0.
      */
     @JsonProperty("messageVersion")
     public String getMessageVersion() {
@@ -320,7 +320,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * The Remote Write message's version to use when writing to the endpoint.<br><p> <br><p> `Version1.0` corresponds to the `prometheus.WriteRequest` protobuf message introduced in Remote Write 1.0. `Version2.0` corresponds to the `io.prometheus.write.v2.Request` protobuf message introduced in Remote Write 2.0.<br><p> <br><p> When `Version2.0` is selected, Prometheus will automatically be configured to append the metadata of scraped metrics to the WAL.<br><p> <br><p> Before setting this field, consult with your remote storage provider what message version it supports.<br><p> <br><p> It requires Prometheus &gt;= v2.54.0 or Thanos &gt;= v0.37.0.
+     * messageVersion defines the Remote Write message's version to use when writing to the endpoint.<br><p> <br><p> `Version1.0` corresponds to the `prometheus.WriteRequest` protobuf message introduced in Remote Write 1.0. `Version2.0` corresponds to the `io.prometheus.write.v2.Request` protobuf message introduced in Remote Write 2.0.<br><p> <br><p> When `Version2.0` is selected, Prometheus will automatically be configured to append the metadata of scraped metrics to the WAL.<br><p> <br><p> Before setting this field, consult with your remote storage provider what message version it supports.<br><p> <br><p> It requires Prometheus &gt;= v2.54.0 or Thanos &gt;= v0.37.0.
      */
     @JsonProperty("messageVersion")
     public void setMessageVersion(String messageVersion) {
@@ -344,7 +344,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * The name of the remote write queue, it must be unique if specified. The name is used in metrics and logging in order to differentiate queues.<br><p> <br><p> It requires Prometheus &gt;= v2.15.0 or Thanos &gt;= 0.24.0.
+     * name of the remote write queue, it must be unique if specified. The name is used in metrics and logging in order to differentiate queues.<br><p> <br><p> It requires Prometheus &gt;= v2.15.0 or Thanos &gt;= 0.24.0.
      */
     @JsonProperty("name")
     public String getName() {
@@ -352,7 +352,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * The name of the remote write queue, it must be unique if specified. The name is used in metrics and logging in order to differentiate queues.<br><p> <br><p> It requires Prometheus &gt;= v2.15.0 or Thanos &gt;= 0.24.0.
+     * name of the remote write queue, it must be unique if specified. The name is used in metrics and logging in order to differentiate queues.<br><p> <br><p> It requires Prometheus &gt;= v2.15.0 or Thanos &gt;= 0.24.0.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -360,7 +360,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -368,7 +368,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -392,7 +392,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -401,7 +401,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -409,7 +409,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -417,7 +417,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
@@ -425,7 +425,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
@@ -433,7 +433,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
@@ -457,7 +457,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * Timeout for requests to the remote write endpoint.
+     * remoteTimeout defines the timeout for requests to the remote write endpoint.
      */
     @JsonProperty("remoteTimeout")
     public String getRemoteTimeout() {
@@ -465,7 +465,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * Timeout for requests to the remote write endpoint.
+     * remoteTimeout defines the timeout for requests to the remote write endpoint.
      */
     @JsonProperty("remoteTimeout")
     public void setRemoteTimeout(String remoteTimeout) {
@@ -473,7 +473,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * When enabled:<br><p>     - The remote-write mechanism will resolve the hostname via DNS.<br><p>     - It will randomly select one of the resolved IP addresses and connect to it.<br><p> <br><p> When disabled (default behavior):<br><p>     - The Go standard library will handle hostname resolution.<br><p>     - It will attempt connections to each resolved IP address sequentially.<br><p> <br><p> Note: The connection timeout applies to the entire resolution and connection process.<br><p>       If disabled, the timeout is distributed across all connection attempts.<br><p> <br><p> It requires Prometheus &gt;= v3.1.0 or Thanos &gt;= v0.38.0.
+     * roundRobinDNS controls the DNS resolution behavior for remote-write connections. When enabled:<br><p>   - The remote-write mechanism will resolve the hostname via DNS.<br><p>   - It will randomly select one of the resolved IP addresses and connect to it.<br><p> <br><p> When disabled (default behavior):<br><p>   - The Go standard library will handle hostname resolution.<br><p>   - It will attempt connections to each resolved IP address sequentially.<br><p> <br><p> Note: The connection timeout applies to the entire resolution and connection process.<br><p> <br><p> 	If disabled, the timeout is distributed across all connection attempts.<br><p> <br><p> It requires Prometheus &gt;= v3.1.0 or Thanos &gt;= v0.38.0.
      */
     @JsonProperty("roundRobinDNS")
     public Boolean getRoundRobinDNS() {
@@ -481,7 +481,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * When enabled:<br><p>     - The remote-write mechanism will resolve the hostname via DNS.<br><p>     - It will randomly select one of the resolved IP addresses and connect to it.<br><p> <br><p> When disabled (default behavior):<br><p>     - The Go standard library will handle hostname resolution.<br><p>     - It will attempt connections to each resolved IP address sequentially.<br><p> <br><p> Note: The connection timeout applies to the entire resolution and connection process.<br><p>       If disabled, the timeout is distributed across all connection attempts.<br><p> <br><p> It requires Prometheus &gt;= v3.1.0 or Thanos &gt;= v0.38.0.
+     * roundRobinDNS controls the DNS resolution behavior for remote-write connections. When enabled:<br><p>   - The remote-write mechanism will resolve the hostname via DNS.<br><p>   - It will randomly select one of the resolved IP addresses and connect to it.<br><p> <br><p> When disabled (default behavior):<br><p>   - The Go standard library will handle hostname resolution.<br><p>   - It will attempt connections to each resolved IP address sequentially.<br><p> <br><p> Note: The connection timeout applies to the entire resolution and connection process.<br><p> <br><p> 	If disabled, the timeout is distributed across all connection attempts.<br><p> <br><p> It requires Prometheus &gt;= v3.1.0 or Thanos &gt;= v0.38.0.
      */
     @JsonProperty("roundRobinDNS")
     public void setRoundRobinDNS(Boolean roundRobinDNS) {
@@ -489,7 +489,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * Enables sending of exemplars over remote write. Note that exemplar-storage itself must be enabled using the `spec.enableFeatures` option for exemplars to be scraped in the first place.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0 or Thanos &gt;= v0.24.0.
+     * sendExemplars enables sending of exemplars over remote write. Note that exemplar-storage itself must be enabled using the `spec.enableFeatures` option for exemplars to be scraped in the first place.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0 or Thanos &gt;= v0.24.0.
      */
     @JsonProperty("sendExemplars")
     public Boolean getSendExemplars() {
@@ -497,7 +497,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * Enables sending of exemplars over remote write. Note that exemplar-storage itself must be enabled using the `spec.enableFeatures` option for exemplars to be scraped in the first place.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0 or Thanos &gt;= v0.24.0.
+     * sendExemplars enables sending of exemplars over remote write. Note that exemplar-storage itself must be enabled using the `spec.enableFeatures` option for exemplars to be scraped in the first place.<br><p> <br><p> It requires Prometheus &gt;= v2.27.0 or Thanos &gt;= v0.24.0.
      */
     @JsonProperty("sendExemplars")
     public void setSendExemplars(Boolean sendExemplars) {
@@ -505,7 +505,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * Enables sending of native histograms, also known as sparse histograms over remote write.<br><p> <br><p> It requires Prometheus &gt;= v2.40.0 or Thanos &gt;= v0.30.0.
+     * sendNativeHistograms enables sending of native histograms, also known as sparse histograms over remote write.<br><p> <br><p> It requires Prometheus &gt;= v2.40.0 or Thanos &gt;= v0.30.0.
      */
     @JsonProperty("sendNativeHistograms")
     public Boolean getSendNativeHistograms() {
@@ -513,7 +513,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * Enables sending of native histograms, also known as sparse histograms over remote write.<br><p> <br><p> It requires Prometheus &gt;= v2.40.0 or Thanos &gt;= v0.30.0.
+     * sendNativeHistograms enables sending of native histograms, also known as sparse histograms over remote write.<br><p> <br><p> It requires Prometheus &gt;= v2.40.0 or Thanos &gt;= v0.30.0.
      */
     @JsonProperty("sendNativeHistograms")
     public void setSendNativeHistograms(Boolean sendNativeHistograms) {
@@ -553,7 +553,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * The URL of the endpoint to send samples to.
+     * url defines the URL of the endpoint to send samples to.<br><p> <br><p> It must use the HTTP or HTTPS scheme.
      */
     @JsonProperty("url")
     public String getUrl() {
@@ -561,7 +561,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * The URL of the endpoint to send samples to.
+     * url defines the URL of the endpoint to send samples to.<br><p> <br><p> It must use the HTTP or HTTPS scheme.
      */
     @JsonProperty("url")
     public void setUrl(String url) {
@@ -569,7 +569,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * The list of remote write relabel configurations.
+     * writeRelabelConfigs defines the list of remote write relabel configurations.
      */
     @JsonProperty("writeRelabelConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -578,7 +578,7 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
     }
 
     /**
-     * The list of remote write relabel configurations.
+     * writeRelabelConfigs defines the list of remote write relabel configurations.
      */
     @JsonProperty("writeRelabelConfigs")
     public void setWriteRelabelConfigs(List<RelabelConfig> writeRelabelConfigs) {

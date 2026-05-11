@@ -147,7 +147,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * The API server address consisting of a hostname or IP address followed by an optional port number. If left empty, Prometheus is assumed to run inside of the cluster. It will discover API servers automatically and use the pod's CA certificate and bearer token file at /var/run/secrets/kubernetes.io/serviceaccount/.
+     * apiServer defines the API server address consisting of a hostname or IP address followed by an optional port number. If left empty, Prometheus is assumed to run inside of the cluster. It will discover API servers automatically and use the pod's CA certificate and bearer token file at /var/run/secrets/kubernetes.io/serviceaccount/.
      */
     @JsonProperty("apiServer")
     public String getApiServer() {
@@ -155,7 +155,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * The API server address consisting of a hostname or IP address followed by an optional port number. If left empty, Prometheus is assumed to run inside of the cluster. It will discover API servers automatically and use the pod's CA certificate and bearer token file at /var/run/secrets/kubernetes.io/serviceaccount/.
+     * apiServer defines the API server address consisting of a hostname or IP address followed by an optional port number. If left empty, Prometheus is assumed to run inside of the cluster. It will discover API servers automatically and use the pod's CA certificate and bearer token file at /var/run/secrets/kubernetes.io/serviceaccount/.
      */
     @JsonProperty("apiServer")
     public void setApiServer(String apiServer) {
@@ -211,7 +211,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public Boolean getEnableHTTP2() {
@@ -219,7 +219,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public void setEnableHTTP2(Boolean enableHTTP2) {
@@ -227,7 +227,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
@@ -235,7 +235,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
@@ -259,7 +259,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -267,7 +267,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -291,7 +291,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -300,7 +300,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -308,7 +308,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -316,7 +316,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
@@ -324,7 +324,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
@@ -332,7 +332,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
@@ -340,7 +340,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * Role of the Kubernetes entities that should be discovered. Role `Endpointslice` requires Prometheus &gt;= v2.21.0
+     * role defines the Kubernetes role of the entities that should be discovered. Role `Endpointslice` requires Prometheus &gt;= v2.21.0
      */
     @JsonProperty("role")
     public String getRole() {
@@ -348,7 +348,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * Role of the Kubernetes entities that should be discovered. Role `Endpointslice` requires Prometheus &gt;= v2.21.0
+     * role defines the Kubernetes role of the entities that should be discovered. Role `Endpointslice` requires Prometheus &gt;= v2.21.0
      */
     @JsonProperty("role")
     public void setRole(String role) {
@@ -356,7 +356,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * Selector to select objects. It requires Prometheus &gt;= v2.17.0
+     * selectors defines the selector to select objects. It requires Prometheus &gt;= v2.17.0
      */
     @JsonProperty("selectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -365,7 +365,7 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
     }
 
     /**
-     * Selector to select objects. It requires Prometheus &gt;= v2.17.0
+     * selectors defines the selector to select objects. It requires Prometheus &gt;= v2.17.0
      */
     @JsonProperty("selectors")
     public void setSelectors(List<K8SSelectorConfig> selectors) {

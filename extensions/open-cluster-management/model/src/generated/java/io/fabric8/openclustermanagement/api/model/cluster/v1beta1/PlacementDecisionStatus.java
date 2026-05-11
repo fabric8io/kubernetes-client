@@ -85,7 +85,7 @@ public class PlacementDecisionStatus implements Editable<PlacementDecisionStatus
     }
 
     /**
-     * Decisions is a slice of decisions according to a placement The number of decisions should not be larger than 100
+     * decisions is a slice of decisions according to a placement The number of decisions should not be larger than 100
      */
     @JsonProperty("decisions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -94,7 +94,7 @@ public class PlacementDecisionStatus implements Editable<PlacementDecisionStatus
     }
 
     /**
-     * Decisions is a slice of decisions according to a placement The number of decisions should not be larger than 100
+     * decisions is a slice of decisions according to a placement The number of decisions should not be larger than 100
      */
     @JsonProperty("decisions")
     public void setDecisions(List<ClusterDecision> decisions) {

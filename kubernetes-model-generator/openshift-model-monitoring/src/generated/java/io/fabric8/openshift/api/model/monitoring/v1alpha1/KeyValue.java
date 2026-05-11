@@ -86,7 +86,7 @@ public class KeyValue implements Editable<KeyValueBuilder>, KubernetesResource
     }
 
     /**
-     * Key of the tuple.
+     * key defines the key of the tuple. This is the identifier or name part of the key-value pair.
      */
     @JsonProperty("key")
     public String getKey() {
@@ -94,7 +94,7 @@ public class KeyValue implements Editable<KeyValueBuilder>, KubernetesResource
     }
 
     /**
-     * Key of the tuple.
+     * key defines the key of the tuple. This is the identifier or name part of the key-value pair.
      */
     @JsonProperty("key")
     public void setKey(String key) {
@@ -102,7 +102,7 @@ public class KeyValue implements Editable<KeyValueBuilder>, KubernetesResource
     }
 
     /**
-     * Value of the tuple.
+     * value defines the value of the tuple. This is the data or content associated with the key.
      */
     @JsonProperty("value")
     public String getValue() {
@@ -110,7 +110,7 @@ public class KeyValue implements Editable<KeyValueBuilder>, KubernetesResource
     }
 
     /**
-     * Value of the tuple.
+     * value defines the value of the tuple. This is the data or content associated with the key.
      */
     @JsonProperty("value")
     public void setValue(String value) {

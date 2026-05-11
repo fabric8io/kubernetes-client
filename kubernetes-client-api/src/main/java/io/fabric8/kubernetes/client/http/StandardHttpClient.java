@@ -48,7 +48,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
   // pads the fail-safe timeout to ensure we don't inadvertently timeout a request
   private static final long MAX_ADDITIONAL_REQUEST_TIMEOUT = TimeUnit.SECONDS.toMillis(5);
 
-  private static final Logger LOG = LoggerFactory.getLogger(StandardHttpClient.class);
+  private static final Logger logger = LoggerFactory.getLogger(StandardHttpClient.class);
 
   protected StandardHttpClientBuilder<C, F, T> builder;
   protected AtomicBoolean closed;
@@ -174,7 +174,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
         final int code = httpResponse.code();
         if (code == 429 || code >= 500) {
           retryInterval = Math.max(retryAfterMillis(httpResponse), retryInterval);
-          LOG.debug(
+          logger.debug(
               "HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis",
               request.uri(), code, retryInterval);
           return retryInterval;
@@ -185,7 +185,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
       builder.interceptors.forEach((s, interceptor) -> interceptor.afterConnectionFailure(request, actualCause));
       if (actualCause instanceof IOException) {
         // TODO: may not be specific enough - incorrect ssl settings for example will get caught here
-        LOG.debug(
+        logger.debug(
             String.format("HTTP operation on url: %s should be retried after %d millis because of IOException",
                 request.uri(), retryInterval),
             actualCause);

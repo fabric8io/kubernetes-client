@@ -1,0 +1,5 @@
+io.fabric8.kubernetes.api.builder
+io.fabric8.kubernetes.model
+io.fabric8.kubernetes.model.annotation
+io.fabric8.kubernetes.model.jackson
+io.fabric8.kubernetes.model.util

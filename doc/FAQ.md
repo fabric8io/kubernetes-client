@@ -226,6 +226,28 @@ The alternative to replace is either serverSideApply - with the same caveats as 
 > When using informers - do not make modifications to the resources obtained from the cache - especially to the resourceVersion.
 > If you use the unlock function it will make changes to a copy of your item.
 
+### Why are my tests for failure scenarios (4xx/5xx) running slow?
+
+The Fabric8 Kubernetes Client has an automatic retry policy that retries requests upon receiving non-successful HTTP status codes.
+By default, the client retries up to 10 times with an exponential backoff interval.
+
+When testing failure scenarios with the mock server, this retry behavior can cause tests to run much slower than expected.
+For example, if you set up a mock expectation to return a `429` or `500` status code with `.once()`, the client will retry the request after receiving the error response.
+This may also lead to unexpected results, as subsequent retries may receive a different (typically `404`) response from the mock server.
+
+To speed up tests that assert error responses, disable the automatic retries:
+
+```java
+client.getConfiguration().setRequestRetryBackoffLimit(0);
+```
+
+In production, the retry behavior can be configured using system properties or environment variables:
+
+| System Property                              | Environment Variable                        | Default |
+|----------------------------------------------|---------------------------------------------|---------|
+| `kubernetes.request.retry.backoffLimit`      | `KUBERNETES_REQUEST_RETRY_BACKOFFLIMIT`     | `10`    |
+| `kubernetes.request.retry.backoffInterval`   | `KUBERNETES_REQUEST_RETRY_BACKOFFINTERVAL`  | `100`ms |
+
 ### What credentials does the client use for authentication?
 
 By default, KubernetesClient tries to look up for Kubernetes Cluster information in the following sources:

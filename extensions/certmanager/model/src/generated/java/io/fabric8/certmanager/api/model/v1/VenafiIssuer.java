@@ -33,7 +33,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * Configures an issuer to sign certificates using a Venafi TPP or Cloud policy zone.
+ * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -90,7 +90,7 @@ public class VenafiIssuer implements Editable<VenafiIssuerBuilder>, KubernetesRe
     }
 
     /**
-     * Configures an issuer to sign certificates using a Venafi TPP or Cloud policy zone.
+     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
      */
     @JsonProperty("cloud")
     public VenafiCloud getCloud() {
@@ -98,7 +98,7 @@ public class VenafiIssuer implements Editable<VenafiIssuerBuilder>, KubernetesRe
     }
 
     /**
-     * Configures an issuer to sign certificates using a Venafi TPP or Cloud policy zone.
+     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
      */
     @JsonProperty("cloud")
     public void setCloud(VenafiCloud cloud) {
@@ -106,7 +106,7 @@ public class VenafiIssuer implements Editable<VenafiIssuerBuilder>, KubernetesRe
     }
 
     /**
-     * Configures an issuer to sign certificates using a Venafi TPP or Cloud policy zone.
+     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
      */
     @JsonProperty("tpp")
     public VenafiTPP getTpp() {
@@ -114,7 +114,7 @@ public class VenafiIssuer implements Editable<VenafiIssuerBuilder>, KubernetesRe
     }
 
     /**
-     * Configures an issuer to sign certificates using a Venafi TPP or Cloud policy zone.
+     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
      */
     @JsonProperty("tpp")
     public void setTpp(VenafiTPP tpp) {
@@ -122,7 +122,7 @@ public class VenafiIssuer implements Editable<VenafiIssuerBuilder>, KubernetesRe
     }
 
     /**
-     * Zone is the Venafi Policy Zone to use for this issuer. All requests made to the Venafi platform will be restricted by the named zone policy. This field is required.
+     * Zone is the Certificate Manager Policy Zone to use for this issuer. All requests made to the Certificate Manager platform will be restricted by the named zone policy. This field is required.
      */
     @JsonProperty("zone")
     public String getZone() {
@@ -130,7 +130,7 @@ public class VenafiIssuer implements Editable<VenafiIssuerBuilder>, KubernetesRe
     }
 
     /**
-     * Zone is the Venafi Policy Zone to use for this issuer. All requests made to the Venafi platform will be restricted by the named zone policy. This field is required.
+     * Zone is the Certificate Manager Policy Zone to use for this issuer. All requests made to the Certificate Manager platform will be restricted by the named zone policy. This field is required.
      */
     @JsonProperty("zone")
     public void setZone(String zone) {

@@ -206,7 +206,7 @@ public class ReplicaSetStatus implements Editable<ReplicaSetStatusBuilder>, Kube
     }
 
     /**
-     * The number of terminating pods for this replica set. Terminating pods have a non-null .metadata.deletionTimestamp and have not yet reached the Failed or Succeeded .status.phase.<br><p> <br><p> This is an alpha field. Enable DeploymentReplicaSetTerminatingReplicas to be able to use this field.
+     * The number of terminating pods for this replica set. Terminating pods have a non-null .metadata.deletionTimestamp and have not yet reached the Failed or Succeeded .status.phase.<br><p> <br><p> This is a beta field and requires enabling DeploymentReplicaSetTerminatingReplicas feature (enabled by default).
      */
     @JsonProperty("terminatingReplicas")
     public Integer getTerminatingReplicas() {
@@ -214,7 +214,7 @@ public class ReplicaSetStatus implements Editable<ReplicaSetStatusBuilder>, Kube
     }
 
     /**
-     * The number of terminating pods for this replica set. Terminating pods have a non-null .metadata.deletionTimestamp and have not yet reached the Failed or Succeeded .status.phase.<br><p> <br><p> This is an alpha field. Enable DeploymentReplicaSetTerminatingReplicas to be able to use this field.
+     * The number of terminating pods for this replica set. Terminating pods have a non-null .metadata.deletionTimestamp and have not yet reached the Failed or Succeeded .status.phase.<br><p> <br><p> This is a beta field and requires enabling DeploymentReplicaSetTerminatingReplicas feature (enabled by default).
      */
     @JsonProperty("terminatingReplicas")
     public void setTerminatingReplicas(Integer terminatingReplicas) {

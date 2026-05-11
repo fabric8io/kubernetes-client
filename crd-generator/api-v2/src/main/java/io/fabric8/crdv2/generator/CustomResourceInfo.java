@@ -34,7 +34,7 @@ import java.util.Optional;
 
 public class CustomResourceInfo {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CustomResourceInfo.class);
+  private static final Logger logger = LoggerFactory.getLogger(CustomResourceInfo.class);
   private final String group;
   private final String version;
   private final String kind;
@@ -175,7 +175,7 @@ public class CustomResourceInfo {
 
       SpecAndStatus specAndStatus = CRDUtils.resolveSpecAndStatusTypes(customResource);
       if (specAndStatus.isUnreliable()) {
-        LOGGER.warn(
+        logger.warn(
             "Cannot reliably determine status types for {} because it isn't parameterized with only spec and status types. Status replicas detection will be deactivated.",
             customResource.getCanonicalName());
       }
@@ -224,17 +224,17 @@ public class CustomResourceInfo {
       return (HasMetadata) defaultConstructor.newInstance();
     }
 
-    LOGGER.trace(
+    logger.trace(
         "Default constructor for CustomResource class {} is not accessible. Modifying accessibility...",
         customResource.getCanonicalName());
 
     boolean accessible = defaultConstructor.trySetAccessible();
     if (!accessible) {
-      LOGGER.warn(
+      logger.warn(
           "Default constructor for CustomResource class {} is not accessible.",
           customResource.getCanonicalName());
     } else {
-      LOGGER.debug(
+      logger.debug(
           "Modified constructor for CustomResource class {} to make it accessible.", customResource.getCanonicalName());
     }
     return (HasMetadata) defaultConstructor.newInstance();

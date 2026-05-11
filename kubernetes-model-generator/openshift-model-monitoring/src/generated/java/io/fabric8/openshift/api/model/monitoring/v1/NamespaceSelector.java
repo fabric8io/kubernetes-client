@@ -88,7 +88,7 @@ public class NamespaceSelector implements Editable<NamespaceSelectorBuilder>, Ku
     }
 
     /**
-     * Boolean describing whether all namespaces are selected in contrast to a list restricting them.
+     * any defines the boolean describing whether all namespaces are selected in contrast to a list restricting them.
      */
     @JsonProperty("any")
     public Boolean getAny() {
@@ -96,7 +96,7 @@ public class NamespaceSelector implements Editable<NamespaceSelectorBuilder>, Ku
     }
 
     /**
-     * Boolean describing whether all namespaces are selected in contrast to a list restricting them.
+     * any defines the boolean describing whether all namespaces are selected in contrast to a list restricting them.
      */
     @JsonProperty("any")
     public void setAny(Boolean any) {
@@ -104,7 +104,7 @@ public class NamespaceSelector implements Editable<NamespaceSelectorBuilder>, Ku
     }
 
     /**
-     * List of namespace names to select from.
+     * matchNames defines the list of namespace names to select from.
      */
     @JsonProperty("matchNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -113,7 +113,7 @@ public class NamespaceSelector implements Editable<NamespaceSelectorBuilder>, Ku
     }
 
     /**
-     * List of namespace names to select from.
+     * matchNames defines the list of namespace names to select from.
      */
     @JsonProperty("matchNames")
     public void setMatchNames(List<String> matchNames) {

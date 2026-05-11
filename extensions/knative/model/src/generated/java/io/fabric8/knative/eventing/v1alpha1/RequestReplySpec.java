@@ -1,9 +1,7 @@
 
 package io.fabric8.knative.eventing.v1alpha1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -43,7 +41,6 @@ import lombok.experimental.Accessors;
     "correlationAttribute",
     "delivery",
     "replyAttribute",
-    "secrets",
     "timeout"
 })
 @ToString
@@ -79,9 +76,6 @@ public class RequestReplySpec implements Editable<RequestReplySpecBuilder>, Kube
     private DeliverySpec delivery;
     @JsonProperty("replyAttribute")
     private String replyAttribute;
-    @JsonProperty("secrets")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> secrets = new ArrayList<>();
     @JsonProperty("timeout")
     private String timeout;
     @JsonIgnore
@@ -93,13 +87,12 @@ public class RequestReplySpec implements Editable<RequestReplySpecBuilder>, Kube
     public RequestReplySpec() {
     }
 
-    public RequestReplySpec(KReference brokerRef, String correlationAttribute, DeliverySpec delivery, String replyAttribute, List<String> secrets, String timeout) {
+    public RequestReplySpec(KReference brokerRef, String correlationAttribute, DeliverySpec delivery, String replyAttribute, String timeout) {
         super();
         this.brokerRef = brokerRef;
         this.correlationAttribute = correlationAttribute;
         this.delivery = delivery;
         this.replyAttribute = replyAttribute;
-        this.secrets = secrets;
         this.timeout = timeout;
     }
 
@@ -141,17 +134,6 @@ public class RequestReplySpec implements Editable<RequestReplySpecBuilder>, Kube
     @JsonProperty("replyAttribute")
     public void setReplyAttribute(String replyAttribute) {
         this.replyAttribute = replyAttribute;
-    }
-
-    @JsonProperty("secrets")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<String> getSecrets() {
-        return secrets;
-    }
-
-    @JsonProperty("secrets")
-    public void setSecrets(List<String> secrets) {
-        this.secrets = secrets;
     }
 
     @JsonProperty("timeout")

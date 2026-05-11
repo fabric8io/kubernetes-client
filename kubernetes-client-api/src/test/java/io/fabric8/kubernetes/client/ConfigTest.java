@@ -87,6 +87,8 @@ class ConfigTest {
   private static final String TEST_KUBECONFIG_EXEC_WIN_FILE_CERT_AUTH_EC_INVALID = Utils
       .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-win-cert-auth-ec-invalid"));
   private static final String TEST_CERT_GENERATOR_FILE = Utils.filePath(ConfigTest.class.getResource("/cert-generator"));
+  private static final String TEST_KUBECONFIG_TLS_SERVER_NAME_FILE = Utils
+      .filePath(ConfigTest.class.getResource("/test-kubeconfig-tls-server-name"));
 
   @Nested
   @DisplayName("System Properties Configured")
@@ -1098,5 +1100,40 @@ class ConfigTest {
     } finally {
       System.clearProperty("kubeconfig");
     }
+  }
+
+  @Test
+  @DisplayName("kubeconfig with tls-server-name, then read tlsServerName from cluster config")
+  void whenKubeConfigWithTlsServerName_thenLoadTlsServerName() {
+    try {
+      // Given
+      System.setProperty("kubeconfig", TEST_KUBECONFIG_TLS_SERVER_NAME_FILE);
+      // When
+      Config config = new ConfigBuilder().build();
+      // Then
+      assertThat(config)
+          .isNotNull()
+          .hasFieldOrPropertyWithValue("masterUrl", "https://127.0.0.1:6443/")
+          .hasFieldOrPropertyWithValue("tlsServerName", "api.example.cluster.local")
+          .hasFieldOrPropertyWithValue("trustCerts", true);
+    } finally {
+      System.clearProperty("kubeconfig");
+    }
+  }
+
+  @Test
+  @DisplayName("ConfigBuilder with tlsServerName, then set tlsServerName in Config")
+  void whenTlsServerNameProvidedViaBuilder_thenSetTlsServerName() {
+    // Given + When
+    Config config = new ConfigBuilder()
+        .withMasterUrl("https://127.0.0.1:6443")
+        .withTlsServerName("custom.server.name")
+        .withTrustCerts(true)
+        .build();
+    // Then
+    assertThat(config)
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("masterUrl", "https://127.0.0.1:6443/")
+        .hasFieldOrPropertyWithValue("tlsServerName", "custom.server.name");
   }
 }

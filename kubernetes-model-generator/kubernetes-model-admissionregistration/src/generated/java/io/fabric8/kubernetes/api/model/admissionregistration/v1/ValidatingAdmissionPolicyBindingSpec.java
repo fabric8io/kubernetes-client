@@ -129,7 +129,7 @@ public class ValidatingAdmissionPolicyBindingSpec implements Editable<Validating
     }
 
     /**
-     * PolicyName references a ValidatingAdmissionPolicy name which the ValidatingAdmissionPolicyBinding binds to. If the referenced resource does not exist, this binding is considered invalid and will be ignored Required.
+     * policyName references a ValidatingAdmissionPolicy name which the ValidatingAdmissionPolicyBinding binds to. If the referenced resource does not exist, this binding is considered invalid and will be ignored Required.
      */
     @JsonProperty("policyName")
     public String getPolicyName() {
@@ -137,7 +137,7 @@ public class ValidatingAdmissionPolicyBindingSpec implements Editable<Validating
     }
 
     /**
-     * PolicyName references a ValidatingAdmissionPolicy name which the ValidatingAdmissionPolicyBinding binds to. If the referenced resource does not exist, this binding is considered invalid and will be ignored Required.
+     * policyName references a ValidatingAdmissionPolicy name which the ValidatingAdmissionPolicyBinding binds to. If the referenced resource does not exist, this binding is considered invalid and will be ignored Required.
      */
     @JsonProperty("policyName")
     public void setPolicyName(String policyName) {

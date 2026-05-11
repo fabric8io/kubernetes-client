@@ -137,16 +137,15 @@ class StandardHttpClientTest {
     IntStream.range(0, 3).forEach(i -> client.expect(".*", new IOException("Unreachable!")));
     client.expect(".*", new TestHttpResponse<AsyncBody>().withCode(403));
 
+    long start = System.currentTimeMillis();
     CompletableFuture<HttpResponse<AsyncBody>> consumeFuture = client.consumeBytes(
         client.newHttpRequestBuilder().uri("http://localhost").build(),
         (value, asyncBody) -> {
 
         });
 
-    long start = System.currentTimeMillis();
-
     // should ultimately error with the final 500
-    assertEquals(403, consumeFuture.get().code());
+    assertEquals(403, consumeFuture.get(2, TimeUnit.MINUTES).code());
     long stop = System.currentTimeMillis();
 
     // should take longer than the delay
@@ -285,6 +284,58 @@ class StandardHttpClientTest {
         Arguments.of(
             Collections.singletonList(ZonedDateTime.now().plusSeconds(10).format(DateTimeFormatter.RFC_1123_DATE_TIME)), 1001,
             10000));
+  }
+
+  @Test
+  void runtimeExceptionIsNotRetried() {
+    client = client.newBuilder().tag(new RequestConfigBuilder()
+        .withRequestRetryBackoffLimit(3)
+        .withRequestRetryBackoffInterval(50).build())
+        .build();
+
+    client.expect(".*", new RuntimeException("connection closed"));
+    client.expect(".*", new TestHttpResponse<AsyncBody>().withCode(200));
+
+    CompletableFuture<HttpResponse<AsyncBody>> consumeFuture = client.consumeBytes(
+        client.newHttpRequestBuilder().uri("http://localhost").build(),
+        (value, asyncBody) -> {
+        });
+
+    assertThatThrownBy(() -> consumeFuture.get(10, TimeUnit.SECONDS))
+        .isInstanceOf(ExecutionException.class)
+        .cause()
+        .isInstanceOf(RuntimeException.class)
+        .hasMessage("connection closed");
+    // No retry should occur for a plain RuntimeException
+    assertThat(client.getRecordedConsumeBytesDirects()).hasSize(1);
+  }
+
+  @Test
+  void iOExceptionIsRetried() throws Exception {
+    client = client.newBuilder().tag(new RequestConfigBuilder()
+        .withRequestRetryBackoffLimit(3)
+        .withRequestRetryBackoffInterval(50).build())
+        .build();
+
+    client.expect(".*", new IOException("connection closed"));
+    client.expect(".*", new TestHttpResponse<AsyncBody>().withCode(200));
+
+    CompletableFuture<HttpResponse<AsyncBody>> consumeFuture = client.consumeBytes(
+        client.newHttpRequestBuilder().uri("http://localhost").build(),
+        (value, asyncBody) -> {
+        });
+
+    assertEquals(200, consumeFuture.get(10, TimeUnit.SECONDS).code());
+    // Retry should occur: 1 failed attempt + 1 successful retry
+    assertThat(client.getRecordedConsumeBytesDirects()).hasSize(2);
+  }
+
+  @Test
+  void shouldRetryReturnsMinus1ForRuntimeException() {
+    final long result = client.shouldRetry(
+        (StandardHttpRequest) client.newHttpRequestBuilder().uri("http://localhost").build(),
+        r -> null, null, new RuntimeException("connection closed"), 1000);
+    assertThat(result).isEqualTo(-1);
   }
 
   @Test

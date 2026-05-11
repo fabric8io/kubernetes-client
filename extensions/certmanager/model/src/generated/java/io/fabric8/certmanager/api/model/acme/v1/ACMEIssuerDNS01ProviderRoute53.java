@@ -107,7 +107,7 @@ public class ACMEIssuerDNS01ProviderRoute53 implements Editable<ACMEIssuerDNS01P
     }
 
     /**
-     * The AccessKeyID is used for authentication. Cannot be set when SecretAccessKeyID is set. If neither the Access Key nor Key ID are set, we fall-back to using env vars, shared credentials file or AWS Instance metadata, see: https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials
+     * The AccessKeyID is used for authentication. Cannot be set when SecretAccessKeyID is set. If neither the Access Key nor Key ID are set, we fall back to using env vars, shared credentials file, or AWS Instance metadata, see: https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials
      */
     @JsonProperty("accessKeyID")
     public String getAccessKeyID() {
@@ -115,7 +115,7 @@ public class ACMEIssuerDNS01ProviderRoute53 implements Editable<ACMEIssuerDNS01P
     }
 
     /**
-     * The AccessKeyID is used for authentication. Cannot be set when SecretAccessKeyID is set. If neither the Access Key nor Key ID are set, we fall-back to using env vars, shared credentials file or AWS Instance metadata, see: https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials
+     * The AccessKeyID is used for authentication. Cannot be set when SecretAccessKeyID is set. If neither the Access Key nor Key ID are set, we fall back to using env vars, shared credentials file, or AWS Instance metadata, see: https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials
      */
     @JsonProperty("accessKeyID")
     public void setAccessKeyID(String accessKeyID) {

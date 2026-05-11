@@ -168,7 +168,7 @@ public class TaskRunStatus implements Editable<TaskRunStatusBuilder>, Kubernetes
     }
 
     /**
-     * CloudEvents describe the state of each cloud event requested via a CloudEventResource.<br><p> <br><p> Deprecated: Removed in v0.44.0.
+     * CloudEvents describe the state of each cloud event requested via a CloudEventResource.<br><p> <br><p> Deprecated: No content written to it. To be Removed (since v0.44.0). Use kubectl describe (CloudEventSent/CloudEventFailed k8s Events) or the tekton_events_sent_total Prometheus metric for delivery visibility instead.
      */
     @JsonProperty("cloudEvents")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -177,7 +177,7 @@ public class TaskRunStatus implements Editable<TaskRunStatusBuilder>, Kubernetes
     }
 
     /**
-     * CloudEvents describe the state of each cloud event requested via a CloudEventResource.<br><p> <br><p> Deprecated: Removed in v0.44.0.
+     * CloudEvents describe the state of each cloud event requested via a CloudEventResource.<br><p> <br><p> Deprecated: No content written to it. To be Removed (since v0.44.0). Use kubectl describe (CloudEventSent/CloudEventFailed k8s Events) or the tekton_events_sent_total Prometheus metric for delivery visibility instead.
      */
     @JsonProperty("cloudEvents")
     public void setCloudEvents(List<CloudEventDelivery> cloudEvents) {

@@ -16,6 +16,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
     @JsonSubTypes.Type(EnvoyFilterEnvoyConfigObjectMatchCluster.class),
     @JsonSubTypes.Type(EnvoyFilterEnvoyConfigObjectMatchListener.class),
     @JsonSubTypes.Type(EnvoyFilterEnvoyConfigObjectMatchRouteConfiguration.class),
+    @JsonSubTypes.Type(EnvoyFilterEnvoyConfigObjectMatchWaypoint.class),
 })
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")

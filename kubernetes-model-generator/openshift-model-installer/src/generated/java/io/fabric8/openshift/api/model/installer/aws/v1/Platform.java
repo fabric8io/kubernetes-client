@@ -43,7 +43,6 @@ import lombok.experimental.Accessors;
     "amiID",
     "bestEffortDeleteIgnition",
     "defaultMachinePlatform",
-    "experimentalPropagateUserTags",
     "hostedZone",
     "hostedZoneRole",
     "lbType",
@@ -88,8 +87,6 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     private Boolean bestEffortDeleteIgnition;
     @JsonProperty("defaultMachinePlatform")
     private MachinePool defaultMachinePlatform;
-    @JsonProperty("experimentalPropagateUserTags")
-    private Boolean experimentalPropagateUserTags;
     @JsonProperty("hostedZone")
     private String hostedZone;
     @JsonProperty("hostedZoneRole")
@@ -126,12 +123,11 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     public Platform() {
     }
 
-    public Platform(String amiID, Boolean bestEffortDeleteIgnition, MachinePool defaultMachinePlatform, Boolean experimentalPropagateUserTags, String hostedZone, String hostedZoneRole, String lbType, Boolean preserveBootstrapIgnition, Boolean propagateUserTags, String publicIpv4Pool, String region, List<ServiceEndpoint> serviceEndpoints, List<String> subnets, String userProvisionedDNS, Map<String, String> userTags, VPC vpc) {
+    public Platform(String amiID, Boolean bestEffortDeleteIgnition, MachinePool defaultMachinePlatform, String hostedZone, String hostedZoneRole, String lbType, Boolean preserveBootstrapIgnition, Boolean propagateUserTags, String publicIpv4Pool, String region, List<ServiceEndpoint> serviceEndpoints, List<String> subnets, String userProvisionedDNS, Map<String, String> userTags, VPC vpc) {
         super();
         this.amiID = amiID;
         this.bestEffortDeleteIgnition = bestEffortDeleteIgnition;
         this.defaultMachinePlatform = defaultMachinePlatform;
-        this.experimentalPropagateUserTags = experimentalPropagateUserTags;
         this.hostedZone = hostedZone;
         this.hostedZoneRole = hostedZoneRole;
         this.lbType = lbType;
@@ -192,22 +188,6 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     @JsonProperty("defaultMachinePlatform")
     public void setDefaultMachinePlatform(MachinePool defaultMachinePlatform) {
         this.defaultMachinePlatform = defaultMachinePlatform;
-    }
-
-    /**
-     * The field is deprecated. ExperimentalPropagateUserTags is an experimental flag that directs in-cluster operators to include the specified user tags in the tags of the AWS resources that the operators create.
-     */
-    @JsonProperty("experimentalPropagateUserTags")
-    public Boolean getExperimentalPropagateUserTags() {
-        return experimentalPropagateUserTags;
-    }
-
-    /**
-     * The field is deprecated. ExperimentalPropagateUserTags is an experimental flag that directs in-cluster operators to include the specified user tags in the tags of the AWS resources that the operators create.
-     */
-    @JsonProperty("experimentalPropagateUserTags")
-    public void setExperimentalPropagateUserTags(Boolean experimentalPropagateUserTags) {
-        this.experimentalPropagateUserTags = experimentalPropagateUserTags;
     }
 
     /**

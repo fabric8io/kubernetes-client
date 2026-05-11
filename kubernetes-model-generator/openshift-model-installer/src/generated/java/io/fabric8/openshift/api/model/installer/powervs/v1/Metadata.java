@@ -49,6 +49,7 @@ import lombok.experimental.Accessors;
     "serviceEndpoints",
     "serviceInstanceGUID",
     "transitGatewayName",
+    "vpcName",
     "vpcRegion",
     "zone"
 })
@@ -94,6 +95,8 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
     private String serviceInstanceGUID;
     @JsonProperty("transitGatewayName")
     private String transitGatewayName;
+    @JsonProperty("vpcName")
+    private String vpcName;
     @JsonProperty("vpcRegion")
     private String vpcRegion;
     @JsonProperty("zone")
@@ -107,7 +110,7 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
     public Metadata() {
     }
 
-    public Metadata(String baseDomain, String cisInstanceCRN, String dnsInstanceCRN, String powerVSResourceGroup, String region, List<PowerVSServiceEndpoint> serviceEndpoints, String serviceInstanceGUID, String transitGatewayName, String vpcRegion, String zone) {
+    public Metadata(String baseDomain, String cisInstanceCRN, String dnsInstanceCRN, String powerVSResourceGroup, String region, List<PowerVSServiceEndpoint> serviceEndpoints, String serviceInstanceGUID, String transitGatewayName, String vpcName, String vpcRegion, String zone) {
         super();
         this.baseDomain = baseDomain;
         this.cisInstanceCRN = cisInstanceCRN;
@@ -117,6 +120,7 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
         this.serviceEndpoints = serviceEndpoints;
         this.serviceInstanceGUID = serviceInstanceGUID;
         this.transitGatewayName = transitGatewayName;
+        this.vpcName = vpcName;
         this.vpcRegion = vpcRegion;
         this.zone = zone;
     }
@@ -248,6 +252,22 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
     @JsonProperty("transitGatewayName")
     public void setTransitGatewayName(String transitGatewayName) {
         this.transitGatewayName = transitGatewayName;
+    }
+
+    /**
+     * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+     */
+    @JsonProperty("vpcName")
+    public String getVpcName() {
+        return vpcName;
+    }
+
+    /**
+     * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
+     */
+    @JsonProperty("vpcName")
+    public void setVpcName(String vpcName) {
+        this.vpcName = vpcName;
     }
 
     /**

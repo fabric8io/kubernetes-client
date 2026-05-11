@@ -40,7 +40,7 @@ import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class V1DynamicResourceAllocationTest {
   private KubernetesClient client;
   KubernetesMockServer server;
@@ -109,7 +109,7 @@ class V1DynamicResourceAllocationTest {
 
     // When
     boolean isDeleted = client.dynamicResourceAllocation().v1().resourceClaims()
-        .inNamespace("test").withName("claim-to-delete").delete().size() == 1;
+        .inNamespace("test").withName("claim-to-delete").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -181,7 +181,7 @@ class V1DynamicResourceAllocationTest {
 
     // When
     boolean isDeleted = client.dynamicResourceAllocation().v1().resourceClaimTemplates()
-        .inNamespace("test").withName("template-to-delete").delete().size() == 1;
+        .inNamespace("test").withName("template-to-delete").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -250,7 +250,7 @@ class V1DynamicResourceAllocationTest {
 
     // When
     boolean isDeleted = client.dynamicResourceAllocation().v1().deviceClasses()
-        .withName("device-class-to-delete").delete().size() == 1;
+        .withName("device-class-to-delete").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();
@@ -319,7 +319,7 @@ class V1DynamicResourceAllocationTest {
 
     // When
     boolean isDeleted = client.dynamicResourceAllocation().v1().resourcesSlices()
-        .withName("slice-to-delete").delete().size() == 1;
+        .withName("slice-to-delete").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

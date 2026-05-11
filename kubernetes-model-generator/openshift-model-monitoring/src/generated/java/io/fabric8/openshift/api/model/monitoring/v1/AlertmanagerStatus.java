@@ -108,7 +108,7 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder>, 
     }
 
     /**
-     * Total number of available pods (ready for at least minReadySeconds) targeted by this Alertmanager cluster.
+     * availableReplicas defines the total number of available pods (ready for at least minReadySeconds) targeted by this Alertmanager cluster.
      */
     @JsonProperty("availableReplicas")
     public Integer getAvailableReplicas() {
@@ -116,7 +116,7 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder>, 
     }
 
     /**
-     * Total number of available pods (ready for at least minReadySeconds) targeted by this Alertmanager cluster.
+     * availableReplicas defines the total number of available pods (ready for at least minReadySeconds) targeted by this Alertmanager cluster.
      */
     @JsonProperty("availableReplicas")
     public void setAvailableReplicas(Integer availableReplicas) {
@@ -124,7 +124,7 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder>, 
     }
 
     /**
-     * The current state of the Alertmanager object.
+     * conditions defines the current state of the Alertmanager object.
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -133,7 +133,7 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder>, 
     }
 
     /**
-     * The current state of the Alertmanager object.
+     * conditions defines the current state of the Alertmanager object.
      */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
@@ -141,7 +141,7 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder>, 
     }
 
     /**
-     * Represents whether any actions on the underlying managed objects are being performed. Only delete actions will be performed.
+     * paused defines whether any actions on the underlying managed objects are being performed. Only delete actions will be performed.
      */
     @JsonProperty("paused")
     public Boolean getPaused() {
@@ -149,7 +149,7 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder>, 
     }
 
     /**
-     * Represents whether any actions on the underlying managed objects are being performed. Only delete actions will be performed.
+     * paused defines whether any actions on the underlying managed objects are being performed. Only delete actions will be performed.
      */
     @JsonProperty("paused")
     public void setPaused(Boolean paused) {
@@ -157,7 +157,7 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder>, 
     }
 
     /**
-     * Total number of non-terminated pods targeted by this Alertmanager object (their labels match the selector).
+     * replicas defines the total number of non-terminated pods targeted by this Alertmanager object (their labels match the selector).
      */
     @JsonProperty("replicas")
     public Integer getReplicas() {
@@ -165,7 +165,7 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder>, 
     }
 
     /**
-     * Total number of non-terminated pods targeted by this Alertmanager object (their labels match the selector).
+     * replicas defines the total number of non-terminated pods targeted by this Alertmanager object (their labels match the selector).
      */
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
@@ -173,7 +173,7 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder>, 
     }
 
     /**
-     * The selector used to match the pods targeted by this Alertmanager object.
+     * selector used to match the pods targeted by this Alertmanager object.
      */
     @JsonProperty("selector")
     public String getSelector() {
@@ -181,7 +181,7 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder>, 
     }
 
     /**
-     * The selector used to match the pods targeted by this Alertmanager object.
+     * selector used to match the pods targeted by this Alertmanager object.
      */
     @JsonProperty("selector")
     public void setSelector(String selector) {
@@ -189,7 +189,7 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder>, 
     }
 
     /**
-     * Total number of unavailable pods targeted by this Alertmanager object.
+     * unavailableReplicas defines the total number of unavailable pods targeted by this Alertmanager object.
      */
     @JsonProperty("unavailableReplicas")
     public Integer getUnavailableReplicas() {
@@ -197,7 +197,7 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder>, 
     }
 
     /**
-     * Total number of unavailable pods targeted by this Alertmanager object.
+     * unavailableReplicas defines the total number of unavailable pods targeted by this Alertmanager object.
      */
     @JsonProperty("unavailableReplicas")
     public void setUnavailableReplicas(Integer unavailableReplicas) {
@@ -205,7 +205,7 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder>, 
     }
 
     /**
-     * Total number of non-terminated pods targeted by this Alertmanager object that have the desired version spec.
+     * updatedReplicas defines the total number of non-terminated pods targeted by this Alertmanager object that have the desired version spec.
      */
     @JsonProperty("updatedReplicas")
     public Integer getUpdatedReplicas() {
@@ -213,7 +213,7 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder>, 
     }
 
     /**
-     * Total number of non-terminated pods targeted by this Alertmanager object that have the desired version spec.
+     * updatedReplicas defines the total number of non-terminated pods targeted by this Alertmanager object that have the desired version spec.
      */
     @JsonProperty("updatedReplicas")
     public void setUpdatedReplicas(Integer updatedReplicas) {

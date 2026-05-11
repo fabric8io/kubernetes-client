@@ -31,6 +31,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OIDCClientReference is a reference to a platform component client configuration.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -86,7 +89,7 @@ public class OIDCClientReference implements Editable<OIDCClientReferenceBuilder>
     }
 
     /**
-     * clientID is the identifier of the OIDC client from the OIDC provider
+     * clientID is a required field that specifies the client identifier, from the identity provider, that the platform component is using for authentication requests made to the identity provider.<br><p> <br><p> clientID must not be empty.
      */
     @JsonProperty("clientID")
     public String getClientID() {
@@ -94,7 +97,7 @@ public class OIDCClientReference implements Editable<OIDCClientReferenceBuilder>
     }
 
     /**
-     * clientID is the identifier of the OIDC client from the OIDC provider
+     * clientID is a required field that specifies the client identifier, from the identity provider, that the platform component is using for authentication requests made to the identity provider.<br><p> <br><p> clientID must not be empty.
      */
     @JsonProperty("clientID")
     public void setClientID(String clientID) {
@@ -102,7 +105,7 @@ public class OIDCClientReference implements Editable<OIDCClientReferenceBuilder>
     }
 
     /**
-     * URL is the serving URL of the token issuer. Must use the https:// scheme.
+     * issuerURL is a required field that specifies the URL of the identity provider that this client is configured to make requests against.<br><p> <br><p> issuerURL must use the 'https' scheme.
      */
     @JsonProperty("issuerURL")
     public String getIssuerURL() {
@@ -110,7 +113,7 @@ public class OIDCClientReference implements Editable<OIDCClientReferenceBuilder>
     }
 
     /**
-     * URL is the serving URL of the token issuer. Must use the https:// scheme.
+     * issuerURL is a required field that specifies the URL of the identity provider that this client is configured to make requests against.<br><p> <br><p> issuerURL must use the 'https' scheme.
      */
     @JsonProperty("issuerURL")
     public void setIssuerURL(String issuerURL) {
@@ -118,7 +121,7 @@ public class OIDCClientReference implements Editable<OIDCClientReferenceBuilder>
     }
 
     /**
-     * OIDCName refers to the `name` of the provider from `oidcProviders`
+     * oidcProviderName is a required reference to the 'name' of the identity provider configured in 'oidcProviders' that this client is associated with.<br><p> <br><p> oidcProviderName must not be an empty string ("").
      */
     @JsonProperty("oidcProviderName")
     public String getOidcProviderName() {
@@ -126,7 +129,7 @@ public class OIDCClientReference implements Editable<OIDCClientReferenceBuilder>
     }
 
     /**
-     * OIDCName refers to the `name` of the provider from `oidcProviders`
+     * oidcProviderName is a required reference to the 'name' of the identity provider configured in 'oidcProviders' that this client is associated with.<br><p> <br><p> oidcProviderName must not be an empty string ("").
      */
     @JsonProperty("oidcProviderName")
     public void setOidcProviderName(String oidcProviderName) {

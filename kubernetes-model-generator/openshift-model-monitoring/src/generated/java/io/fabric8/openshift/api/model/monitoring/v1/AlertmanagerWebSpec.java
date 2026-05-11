@@ -93,7 +93,7 @@ public class AlertmanagerWebSpec implements Editable<AlertmanagerWebSpecBuilder>
     }
 
     /**
-     * Maximum number of GET requests processed concurrently. This corresponds to the Alertmanager's `--web.get-concurrency` flag.
+     * getConcurrency defines the maximum number of GET requests processed concurrently. This corresponds to the Alertmanager's `--web.get-concurrency` flag.
      */
     @JsonProperty("getConcurrency")
     public Long getGetConcurrency() {
@@ -101,7 +101,7 @@ public class AlertmanagerWebSpec implements Editable<AlertmanagerWebSpecBuilder>
     }
 
     /**
-     * Maximum number of GET requests processed concurrently. This corresponds to the Alertmanager's `--web.get-concurrency` flag.
+     * getConcurrency defines the maximum number of GET requests processed concurrently. This corresponds to the Alertmanager's `--web.get-concurrency` flag.
      */
     @JsonProperty("getConcurrency")
     public void setGetConcurrency(Long getConcurrency) {
@@ -125,7 +125,7 @@ public class AlertmanagerWebSpec implements Editable<AlertmanagerWebSpecBuilder>
     }
 
     /**
-     * Timeout for HTTP requests. This corresponds to the Alertmanager's `--web.timeout` flag.
+     * timeout for HTTP requests. This corresponds to the Alertmanager's `--web.timeout` flag.
      */
     @JsonProperty("timeout")
     public Long getTimeout() {
@@ -133,7 +133,7 @@ public class AlertmanagerWebSpec implements Editable<AlertmanagerWebSpecBuilder>
     }
 
     /**
-     * Timeout for HTTP requests. This corresponds to the Alertmanager's `--web.timeout` flag.
+     * timeout for HTTP requests. This corresponds to the Alertmanager's `--web.timeout` flag.
      */
     @JsonProperty("timeout")
     public void setTimeout(Long timeout) {

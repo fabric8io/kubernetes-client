@@ -43,6 +43,7 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
   protected boolean followRedirects;
   protected boolean preferHttp11;
   protected TlsVersion[] tlsVersions;
+  protected String tlsServerName;
   protected boolean authenticatorNone;
   protected C client;
   protected F clientFactory;
@@ -120,6 +121,12 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
   }
 
   @Override
+  public T tlsServerName(String tlsServerName) {
+    this.tlsServerName = tlsServerName;
+    return (T) this;
+  }
+
+  @Override
   public T preferHttp11() {
     this.preferHttp11 = true;
     return (T) this;
@@ -150,6 +157,7 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
     copy.proxyAddress = this.proxyAddress;
     copy.proxyAuthorization = this.proxyAuthorization;
     copy.tlsVersions = this.tlsVersions;
+    copy.tlsServerName = this.tlsServerName;
     copy.preferHttp11 = this.preferHttp11;
     copy.followRedirects = this.followRedirects;
     copy.authenticatorNone = this.authenticatorNone;

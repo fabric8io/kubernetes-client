@@ -85,7 +85,7 @@ public class PodDNSConfigOption implements Editable<PodDNSConfigOptionBuilder>, 
     }
 
     /**
-     * Name is required and must be unique.
+     * name is required and must be unique.
      */
     @JsonProperty("name")
     public String getName() {
@@ -93,7 +93,7 @@ public class PodDNSConfigOption implements Editable<PodDNSConfigOptionBuilder>, 
     }
 
     /**
-     * Name is required and must be unique.
+     * name is required and must be unique.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -101,7 +101,7 @@ public class PodDNSConfigOption implements Editable<PodDNSConfigOptionBuilder>, 
     }
 
     /**
-     * Value is optional.
+     * value is optional.
      */
     @JsonProperty("value")
     public String getValue() {
@@ -109,7 +109,7 @@ public class PodDNSConfigOption implements Editable<PodDNSConfigOptionBuilder>, 
     }
 
     /**
-     * Value is optional.
+     * value is optional.
      */
     @JsonProperty("value")
     public void setValue(String value) {

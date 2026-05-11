@@ -127,7 +127,7 @@ public class DiscordConfig implements Editable<DiscordConfigBuilder>, Kubernetes
     }
 
     /**
-     * The avatar url of the message sender.
+     * avatarURL defines the avatar url of the message sender.
      */
     @JsonProperty("avatarURL")
     public String getAvatarURL() {
@@ -135,7 +135,7 @@ public class DiscordConfig implements Editable<DiscordConfigBuilder>, Kubernetes
     }
 
     /**
-     * The avatar url of the message sender.
+     * avatarURL defines the avatar url of the message sender.
      */
     @JsonProperty("avatarURL")
     public void setAvatarURL(String avatarURL) {
@@ -143,7 +143,7 @@ public class DiscordConfig implements Editable<DiscordConfigBuilder>, Kubernetes
     }
 
     /**
-     * The template of the content's body.
+     * content defines the template of the content's body.
      */
     @JsonProperty("content")
     public String getContent() {
@@ -151,7 +151,7 @@ public class DiscordConfig implements Editable<DiscordConfigBuilder>, Kubernetes
     }
 
     /**
-     * The template of the content's body.
+     * content defines the template of the content's body.
      */
     @JsonProperty("content")
     public void setContent(String content) {
@@ -175,7 +175,7 @@ public class DiscordConfig implements Editable<DiscordConfigBuilder>, Kubernetes
     }
 
     /**
-     * The template of the message's body.
+     * message defines the template of the message's body.
      */
     @JsonProperty("message")
     public String getMessage() {
@@ -183,7 +183,7 @@ public class DiscordConfig implements Editable<DiscordConfigBuilder>, Kubernetes
     }
 
     /**
-     * The template of the message's body.
+     * message defines the template of the message's body.
      */
     @JsonProperty("message")
     public void setMessage(String message) {
@@ -191,7 +191,7 @@ public class DiscordConfig implements Editable<DiscordConfigBuilder>, Kubernetes
     }
 
     /**
-     * Whether or not to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
@@ -199,7 +199,7 @@ public class DiscordConfig implements Editable<DiscordConfigBuilder>, Kubernetes
     }
 
     /**
-     * Whether or not to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
@@ -207,7 +207,7 @@ public class DiscordConfig implements Editable<DiscordConfigBuilder>, Kubernetes
     }
 
     /**
-     * The template of the message's title.
+     * title defines the template of the message's title.
      */
     @JsonProperty("title")
     public String getTitle() {
@@ -215,7 +215,7 @@ public class DiscordConfig implements Editable<DiscordConfigBuilder>, Kubernetes
     }
 
     /**
-     * The template of the message's title.
+     * title defines the template of the message's title.
      */
     @JsonProperty("title")
     public void setTitle(String title) {
@@ -223,7 +223,7 @@ public class DiscordConfig implements Editable<DiscordConfigBuilder>, Kubernetes
     }
 
     /**
-     * The username of the message sender.
+     * username defines the username of the message sender.
      */
     @JsonProperty("username")
     public String getUsername() {
@@ -231,7 +231,7 @@ public class DiscordConfig implements Editable<DiscordConfigBuilder>, Kubernetes
     }
 
     /**
-     * The username of the message sender.
+     * username defines the username of the message sender.
      */
     @JsonProperty("username")
     public void setUsername(String username) {

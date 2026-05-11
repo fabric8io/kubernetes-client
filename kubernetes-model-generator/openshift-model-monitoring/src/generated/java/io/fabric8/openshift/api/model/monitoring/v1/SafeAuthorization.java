@@ -102,7 +102,7 @@ public class SafeAuthorization implements Editable<SafeAuthorizationBuilder>, Ku
     }
 
     /**
-     * Defines the authentication type. The value is case-insensitive.<br><p> <br><p> "Basic" is not a supported value.<br><p> <br><p> Default: "Bearer"
+     * type defines the authentication type. The value is case-insensitive.<br><p> <br><p> "Basic" is not a supported value.<br><p> <br><p> Default: "Bearer"
      */
     @JsonProperty("type")
     public String getType() {
@@ -110,7 +110,7 @@ public class SafeAuthorization implements Editable<SafeAuthorizationBuilder>, Ku
     }
 
     /**
-     * Defines the authentication type. The value is case-insensitive.<br><p> <br><p> "Basic" is not a supported value.<br><p> <br><p> Default: "Bearer"
+     * type defines the authentication type. The value is case-insensitive.<br><p> <br><p> "Basic" is not a supported value.<br><p> <br><p> Default: "Bearer"
      */
     @JsonProperty("type")
     public void setType(String type) {

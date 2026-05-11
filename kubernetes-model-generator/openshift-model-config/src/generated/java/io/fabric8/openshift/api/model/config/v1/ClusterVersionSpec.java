@@ -125,7 +125,7 @@ public class ClusterVersionSpec implements Editable<ClusterVersionSpecBuilder>, 
     }
 
     /**
-     * channel is an identifier for explicitly requesting that a non-default set of updates be applied to this cluster. The default channel will be contain stable updates that are appropriate for production clusters.
+     * channel is an identifier for explicitly requesting a non-default set of updates to be applied to this cluster. The default channel will contain stable updates that are appropriate for production clusters.
      */
     @JsonProperty("channel")
     public String getChannel() {
@@ -133,7 +133,7 @@ public class ClusterVersionSpec implements Editable<ClusterVersionSpecBuilder>, 
     }
 
     /**
-     * channel is an identifier for explicitly requesting that a non-default set of updates be applied to this cluster. The default channel will be contain stable updates that are appropriate for production clusters.
+     * channel is an identifier for explicitly requesting a non-default set of updates to be applied to this cluster. The default channel will contain stable updates that are appropriate for production clusters.
      */
     @JsonProperty("channel")
     public void setChannel(String channel) {

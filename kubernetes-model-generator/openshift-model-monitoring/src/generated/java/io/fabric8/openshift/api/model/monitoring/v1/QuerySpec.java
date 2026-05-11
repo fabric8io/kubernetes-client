@@ -93,7 +93,7 @@ public class QuerySpec implements Editable<QuerySpecBuilder>, KubernetesResource
     }
 
     /**
-     * The delta difference allowed for retrieving metrics during expression evaluations.
+     * lookbackDelta defines the delta difference allowed for retrieving metrics during expression evaluations.
      */
     @JsonProperty("lookbackDelta")
     public String getLookbackDelta() {
@@ -101,7 +101,7 @@ public class QuerySpec implements Editable<QuerySpecBuilder>, KubernetesResource
     }
 
     /**
-     * The delta difference allowed for retrieving metrics during expression evaluations.
+     * lookbackDelta defines the delta difference allowed for retrieving metrics during expression evaluations.
      */
     @JsonProperty("lookbackDelta")
     public void setLookbackDelta(String lookbackDelta) {
@@ -109,7 +109,7 @@ public class QuerySpec implements Editable<QuerySpecBuilder>, KubernetesResource
     }
 
     /**
-     * Number of concurrent queries that can be run at once.
+     * maxConcurrency defines the number of concurrent queries that can be run at once.
      */
     @JsonProperty("maxConcurrency")
     public Integer getMaxConcurrency() {
@@ -117,7 +117,7 @@ public class QuerySpec implements Editable<QuerySpecBuilder>, KubernetesResource
     }
 
     /**
-     * Number of concurrent queries that can be run at once.
+     * maxConcurrency defines the number of concurrent queries that can be run at once.
      */
     @JsonProperty("maxConcurrency")
     public void setMaxConcurrency(Integer maxConcurrency) {
@@ -125,7 +125,7 @@ public class QuerySpec implements Editable<QuerySpecBuilder>, KubernetesResource
     }
 
     /**
-     * Maximum number of samples a single query can load into memory. Note that queries will fail if they would load more samples than this into memory, so this also limits the number of samples a query can return.
+     * maxSamples defines the maximum number of samples a single query can load into memory. Note that queries will fail if they would load more samples than this into memory, so this also limits the number of samples a query can return.
      */
     @JsonProperty("maxSamples")
     public Integer getMaxSamples() {
@@ -133,7 +133,7 @@ public class QuerySpec implements Editable<QuerySpecBuilder>, KubernetesResource
     }
 
     /**
-     * Maximum number of samples a single query can load into memory. Note that queries will fail if they would load more samples than this into memory, so this also limits the number of samples a query can return.
+     * maxSamples defines the maximum number of samples a single query can load into memory. Note that queries will fail if they would load more samples than this into memory, so this also limits the number of samples a query can return.
      */
     @JsonProperty("maxSamples")
     public void setMaxSamples(Integer maxSamples) {
@@ -141,7 +141,7 @@ public class QuerySpec implements Editable<QuerySpecBuilder>, KubernetesResource
     }
 
     /**
-     * Maximum time a query may take before being aborted.
+     * timeout defines the maximum time a query may take before being aborted.
      */
     @JsonProperty("timeout")
     public String getTimeout() {
@@ -149,7 +149,7 @@ public class QuerySpec implements Editable<QuerySpecBuilder>, KubernetesResource
     }
 
     /**
-     * Maximum time a query may take before being aborted.
+     * timeout defines the maximum time a query may take before being aborted.
      */
     @JsonProperty("timeout")
     public void setTimeout(String timeout) {

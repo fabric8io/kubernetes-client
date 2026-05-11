@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class ConfigMapTest {
 
   KubernetesMockServer server;
@@ -82,7 +82,7 @@ class ConfigMapTest {
         .always();
 
     MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps = client.configMaps();
-    assertTrue(configMaps.delete().size() == 1);
+    assertTrue(configMaps.withGracePeriod(0).delete().size() == 1);
 
     server.expect()
         .delete()

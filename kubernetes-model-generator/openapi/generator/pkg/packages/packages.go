@@ -36,7 +36,6 @@ var OpenShiftPackagePatterns = []string{
 	"github.com/openshift/hive/apis/hive/v...",
 	"github.com/openshift/installer/pkg/types", // Add manually each package since some subpackages are problematic with go modules
 	"github.com/openshift/installer/pkg/types/aws",
-	"github.com/openshift/installer/pkg/types/azure",
 	"github.com/openshift/installer/pkg/types/baremetal",
 	"github.com/openshift/installer/pkg/types/external",
 	"github.com/openshift/installer/pkg/types/gcp",
@@ -45,6 +44,7 @@ var OpenShiftPackagePatterns = []string{
 	"github.com/openshift/installer/pkg/types/nutanix",
 	"github.com/openshift/installer/pkg/types/openstack",
 	"github.com/openshift/installer/pkg/types/ovirt",
+	"github.com/openshift/installer/pkg/types/powervc",
 	"github.com/openshift/installer/pkg/types/powervs",
 	"github.com/openshift/installer/pkg/types/vsphere",
 	"github.com/operator-framework/api/pkg/operators/v...",

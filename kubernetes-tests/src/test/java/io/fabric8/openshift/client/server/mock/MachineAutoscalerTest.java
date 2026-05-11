@@ -28,7 +28,7 @@ import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class MachineAutoscalerTest {
   KubernetesMockServer server;
   private OpenShiftClient client;
@@ -82,7 +82,7 @@ class MachineAutoscalerTest {
     // When
     Boolean isDeleted = client.openShiftAutoscaling().v1beta1().machineAutoscalers()
         .inNamespace("ns1")
-        .withName("ma").delete().size() == 1;
+        .withName("ma").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

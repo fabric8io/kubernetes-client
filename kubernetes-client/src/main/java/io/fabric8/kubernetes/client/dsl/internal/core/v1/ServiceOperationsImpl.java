@@ -43,6 +43,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
@@ -120,8 +121,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     return servicesList;
   }
 
-  private Pod matchingPod() {
-    Service item = requireFromServer();
+  private Pod matchingPod(Service item) {
     Map<String, String> labels = item.getSpec().getSelector();
     PodList list = new PodOperationsImpl(context.getClient()).inNamespace(item.getMetadata().getNamespace()).withLabels(labels)
         .list();
@@ -131,41 +131,44 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
 
   @Override
   public PortForward portForward(int port, ReadableByteChannel in, WritableByteChannel out) {
-    Pod m = matchingPod();
+    Service s = requireFromServer();
+    Pod m = matchingPod(s);
     return new PodOperationsImpl(context.getClient())
         .inNamespace(m.getMetadata().getNamespace())
         .withName(m.getMetadata().getName())
-        .portForward(port, in, out);
-  }
-
-  @Override
-  public LocalPortForward portForward(int port, int localPort) {
-    Pod m = matchingPod();
-    return new PodOperationsImpl(context.getClient())
-        .inNamespace(m.getMetadata().getNamespace())
-        .withName(m.getMetadata().getName())
-        .portForward(port, localPort);
-  }
-
-  @Override
-  public LocalPortForward portForward(int port, InetAddress localInetAddress, int localPort) {
-    Pod m = matchingPod();
-    return new PodOperationsImpl(context.getClient())
-        .inNamespace(m.getMetadata().getNamespace())
-        .withName(m.getMetadata().getName())
-        .portForward(port, localInetAddress, localPort);
+        .portForward(getTargetPortAsInt(s, port), in, out);
   }
 
   @Override
   public LocalPortForward portForward(int port) {
-    Pod m = matchingPod();
+    return portForward(port, 0);
+  }
+
+  @Override
+  public LocalPortForward portForward(int port, int localPort) {
+    return portForward(port, null, localPort);
+  }
+
+  @Override
+  public LocalPortForward portForward(int port, InetAddress localInetAddress, int localPort) {
+    Service s = requireFromServer();
+    Pod m = matchingPod(s);
     return new PodOperationsImpl(context.getClient())
         .inNamespace(m.getMetadata().getNamespace())
         .withName(m.getMetadata().getName())
-        .portForward(port);
+        .portForward(getTargetPortAsInt(s, port), localInetAddress, localPort);
   }
 
-  public class ServiceToUrlSortComparator implements Comparator<ServiceToURLProvider> {
+  private int getTargetPortAsInt(Service service, int port) {
+    return service.getSpec().getPorts().stream()
+        .filter(p -> p.getPort().equals(port))
+        .map(p -> p.getTargetPort().getIntVal())
+        .filter(Objects::nonNull)
+        .findFirst()
+        .orElse(port);
+  }
+
+  public static final class ServiceToUrlSortComparator implements Comparator<ServiceToURLProvider> {
     @Override
     public int compare(ServiceToURLProvider first, ServiceToURLProvider second) {
       return first.getPriority() - second.getPriority();

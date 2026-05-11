@@ -15,8 +15,10 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -41,6 +43,18 @@ class KubernetesClientExceptionTest {
         .hasFieldOrPropertyWithValue("resourcePlural", expectedPlural)
         .hasFieldOrPropertyWithValue("namespace", expectedNamespace)
         .hasFieldOrPropertyWithValue("name", expectedName);
+  }
+
+  @Test
+  @DisplayName("Exception with null HttpRequest does not throw and yields empty metadata")
+  void exceptionWithNullHttpRequestYieldsEmptyMetadata() {
+    final KubernetesClientException result = new KubernetesClientException(null, null, -1, null, (HttpRequest) null);
+    assertThat(result)
+        .hasFieldOrPropertyWithValue("group", null)
+        .hasFieldOrPropertyWithValue("version", null)
+        .hasFieldOrPropertyWithValue("resourcePlural", null)
+        .hasFieldOrPropertyWithValue("namespace", null)
+        .hasFieldOrPropertyWithValue("name", null);
   }
 
   static Stream<Arguments> exceptionFromHttpRequestContainsExpectedMetadataInput() {

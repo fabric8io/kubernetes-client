@@ -34,6 +34,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * OIDCClientStatus represents the current state of platform components and how they interact with the configured identity providers.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -100,7 +103,7 @@ public class OIDCClientStatus implements Editable<OIDCClientStatusBuilder>, Kube
     }
 
     /**
-     * componentName is the name of the component that will consume a client configuration.
+     * componentName is a required field that specifies the name of the platform component using the identity provider as an authentication mode. It is used in combination with componentNamespace as a unique identifier.<br><p> <br><p> componentName must not be an empty string ("") and must not exceed 256 characters in length.
      */
     @JsonProperty("componentName")
     public String getComponentName() {
@@ -108,7 +111,7 @@ public class OIDCClientStatus implements Editable<OIDCClientStatusBuilder>, Kube
     }
 
     /**
-     * componentName is the name of the component that will consume a client configuration.
+     * componentName is a required field that specifies the name of the platform component using the identity provider as an authentication mode. It is used in combination with componentNamespace as a unique identifier.<br><p> <br><p> componentName must not be an empty string ("") and must not exceed 256 characters in length.
      */
     @JsonProperty("componentName")
     public void setComponentName(String componentName) {
@@ -116,7 +119,7 @@ public class OIDCClientStatus implements Editable<OIDCClientStatusBuilder>, Kube
     }
 
     /**
-     * componentNamespace is the namespace of the component that will consume a client configuration.
+     * componentNamespace is a required field that specifies the namespace in which the platform component using the identity provider as an authentication mode is running. It is used in combination with componentName as a unique identifier.<br><p> <br><p> componentNamespace must not be an empty string ("") and must not exceed 63 characters in length.
      */
     @JsonProperty("componentNamespace")
     public String getComponentNamespace() {
@@ -124,7 +127,7 @@ public class OIDCClientStatus implements Editable<OIDCClientStatusBuilder>, Kube
     }
 
     /**
-     * componentNamespace is the namespace of the component that will consume a client configuration.
+     * componentNamespace is a required field that specifies the namespace in which the platform component using the identity provider as an authentication mode is running. It is used in combination with componentName as a unique identifier.<br><p> <br><p> componentNamespace must not be an empty string ("") and must not exceed 63 characters in length.
      */
     @JsonProperty("componentNamespace")
     public void setComponentNamespace(String componentNamespace) {
@@ -149,7 +152,7 @@ public class OIDCClientStatus implements Editable<OIDCClientStatusBuilder>, Kube
     }
 
     /**
-     * consumingUsers is a slice of ServiceAccounts that need to have read permission on the `clientSecret` secret.
+     * consumingUsers is an optional list of ServiceAccounts requiring read permissions on the `clientSecret` secret.<br><p> <br><p> consumingUsers must not exceed 5 entries.
      */
     @JsonProperty("consumingUsers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -158,7 +161,7 @@ public class OIDCClientStatus implements Editable<OIDCClientStatusBuilder>, Kube
     }
 
     /**
-     * consumingUsers is a slice of ServiceAccounts that need to have read permission on the `clientSecret` secret.
+     * consumingUsers is an optional list of ServiceAccounts requiring read permissions on the `clientSecret` secret.<br><p> <br><p> consumingUsers must not exceed 5 entries.
      */
     @JsonProperty("consumingUsers")
     public void setConsumingUsers(List<String> consumingUsers) {
@@ -166,7 +169,7 @@ public class OIDCClientStatus implements Editable<OIDCClientStatusBuilder>, Kube
     }
 
     /**
-     * currentOIDCClients is a list of clients that the component is currently using.
+     * currentOIDCClients is an optional list of clients that the component is currently using. Entries must have unique issuerURL/clientID pairs.
      */
     @JsonProperty("currentOIDCClients")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -175,7 +178,7 @@ public class OIDCClientStatus implements Editable<OIDCClientStatusBuilder>, Kube
     }
 
     /**
-     * currentOIDCClients is a list of clients that the component is currently using.
+     * currentOIDCClients is an optional list of clients that the component is currently using. Entries must have unique issuerURL/clientID pairs.
      */
     @JsonProperty("currentOIDCClients")
     public void setCurrentOIDCClients(List<OIDCClientReference> currentOIDCClients) {

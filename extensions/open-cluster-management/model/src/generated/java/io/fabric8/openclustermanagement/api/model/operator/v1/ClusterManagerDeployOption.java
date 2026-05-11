@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "default",
     "hosted",
     "mode"
 })
@@ -66,6 +67,8 @@ import lombok.experimental.Accessors;
 public class ClusterManagerDeployOption implements Editable<ClusterManagerDeployOptionBuilder>, KubernetesResource
 {
 
+    @JsonProperty("default")
+    private DefaultClusterManagerConfiguration _default;
     @JsonProperty("hosted")
     private HostedClusterManagerConfiguration hosted;
     @JsonProperty("mode")
@@ -79,10 +82,27 @@ public class ClusterManagerDeployOption implements Editable<ClusterManagerDeploy
     public ClusterManagerDeployOption() {
     }
 
-    public ClusterManagerDeployOption(HostedClusterManagerConfiguration hosted, String mode) {
+    public ClusterManagerDeployOption(DefaultClusterManagerConfiguration _default, HostedClusterManagerConfiguration hosted, String mode) {
         super();
+        this._default = _default;
         this.hosted = hosted;
         this.mode = mode;
+    }
+
+    /**
+     * ClusterManagerDeployOption describes the deployment options for cluster-manager
+     */
+    @JsonProperty("default")
+    public DefaultClusterManagerConfiguration getDefault() {
+        return _default;
+    }
+
+    /**
+     * ClusterManagerDeployOption describes the deployment options for cluster-manager
+     */
+    @JsonProperty("default")
+    public void setDefault(DefaultClusterManagerConfiguration _default) {
+        this._default = _default;
     }
 
     /**

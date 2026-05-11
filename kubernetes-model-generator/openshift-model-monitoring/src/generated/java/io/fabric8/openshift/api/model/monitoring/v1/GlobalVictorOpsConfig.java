@@ -102,7 +102,7 @@ public class GlobalVictorOpsConfig implements Editable<GlobalVictorOpsConfigBuil
     }
 
     /**
-     * The default VictorOps API URL.
+     * apiURL defines the default VictorOps API URL.
      */
     @JsonProperty("apiURL")
     public String getApiURL() {
@@ -110,7 +110,7 @@ public class GlobalVictorOpsConfig implements Editable<GlobalVictorOpsConfigBuil
     }
 
     /**
-     * The default VictorOps API URL.
+     * apiURL defines the default VictorOps API URL.
      */
     @JsonProperty("apiURL")
     public void setApiURL(String apiURL) {

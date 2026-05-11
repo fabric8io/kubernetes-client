@@ -126,7 +126,7 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
     }
 
     /**
-     * ActiveTimeIntervals is a list of MuteTimeInterval names when this route should be active.
+     * activeTimeIntervals is a list of MuteTimeInterval names when this route should be active.
      */
     @JsonProperty("activeTimeIntervals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -135,7 +135,7 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
     }
 
     /**
-     * ActiveTimeIntervals is a list of MuteTimeInterval names when this route should be active.
+     * activeTimeIntervals is a list of MuteTimeInterval names when this route should be active.
      */
     @JsonProperty("activeTimeIntervals")
     public void setActiveTimeIntervals(List<String> activeTimeIntervals) {
@@ -143,7 +143,7 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
     }
 
     /**
-     * Boolean indicating whether an alert should continue matching subsequent sibling nodes. It will always be overridden to true for the first-level route by the Prometheus operator.
+     * continue defines the boolean indicating whether an alert should continue matching subsequent sibling nodes. It will always be overridden to true for the first-level route by the Prometheus operator.
      */
     @JsonProperty("continue")
     public Boolean getContinue() {
@@ -151,7 +151,7 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
     }
 
     /**
-     * Boolean indicating whether an alert should continue matching subsequent sibling nodes. It will always be overridden to true for the first-level route by the Prometheus operator.
+     * continue defines the boolean indicating whether an alert should continue matching subsequent sibling nodes. It will always be overridden to true for the first-level route by the Prometheus operator.
      */
     @JsonProperty("continue")
     public void setContinue(Boolean _continue) {
@@ -159,7 +159,7 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
     }
 
     /**
-     * List of labels to group by. Labels must not be repeated (unique list). Special label "..." (aggregate by all possible labels), if provided, must be the only element in the list.
+     * groupBy defines the list of labels to group by. Labels must not be repeated (unique list). Special label "..." (aggregate by all possible labels), if provided, must be the only element in the list.
      */
     @JsonProperty("groupBy")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -168,7 +168,7 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
     }
 
     /**
-     * List of labels to group by. Labels must not be repeated (unique list). Special label "..." (aggregate by all possible labels), if provided, must be the only element in the list.
+     * groupBy defines the list of labels to group by. Labels must not be repeated (unique list). Special label "..." (aggregate by all possible labels), if provided, must be the only element in the list.
      */
     @JsonProperty("groupBy")
     public void setGroupBy(List<String> groupBy) {
@@ -176,7 +176,7 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
     }
 
     /**
-     * How long to wait before sending an updated notification. Must match the regular expression`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$` Example: "5m"
+     * groupInterval defines how long to wait before sending an updated notification. Must be greater than 0. Example: "5m"
      */
     @JsonProperty("groupInterval")
     public String getGroupInterval() {
@@ -184,7 +184,7 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
     }
 
     /**
-     * How long to wait before sending an updated notification. Must match the regular expression`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$` Example: "5m"
+     * groupInterval defines how long to wait before sending an updated notification. Must be greater than 0. Example: "5m"
      */
     @JsonProperty("groupInterval")
     public void setGroupInterval(String groupInterval) {
@@ -192,7 +192,7 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
     }
 
     /**
-     * How long to wait before sending the initial notification. Must match the regular expression`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$` Example: "30s"
+     * groupWait defines how long to wait before sending the initial notification. Example: "30s"
      */
     @JsonProperty("groupWait")
     public String getGroupWait() {
@@ -200,7 +200,7 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
     }
 
     /**
-     * How long to wait before sending the initial notification. Must match the regular expression`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$` Example: "30s"
+     * groupWait defines how long to wait before sending the initial notification. Example: "30s"
      */
     @JsonProperty("groupWait")
     public void setGroupWait(String groupWait) {
@@ -208,7 +208,7 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
     }
 
     /**
-     * List of matchers that the alert's labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: &lt;object namespace&gt;` matcher.
+     * matchers defines the list of matchers that the alert's labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: &lt;object namespace&gt;` matcher.
      */
     @JsonProperty("matchers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -217,7 +217,7 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
     }
 
     /**
-     * List of matchers that the alert's labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: &lt;object namespace&gt;` matcher.
+     * matchers defines the list of matchers that the alert's labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: &lt;object namespace&gt;` matcher.
      */
     @JsonProperty("matchers")
     public void setMatchers(List<Matcher> matchers) {
@@ -225,7 +225,7 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
     }
 
     /**
-     * Note: this comment applies to the field definition above but appears below otherwise it gets included in the generated manifest. CRD schema doesn't support self-referential types for now (see https://github.com/kubernetes/kubernetes/issues/62872). We have to use an alternative type to circumvent the limitation. The downside is that the Kube API can't validate the data beyond the fact that it is a valid JSON representation. MuteTimeIntervals is a list of MuteTimeInterval names that will mute this route when matched,
+     * muteTimeIntervals is a list of MuteTimeInterval names that will mute this route when matched,
      */
     @JsonProperty("muteTimeIntervals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -234,7 +234,7 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
     }
 
     /**
-     * Note: this comment applies to the field definition above but appears below otherwise it gets included in the generated manifest. CRD schema doesn't support self-referential types for now (see https://github.com/kubernetes/kubernetes/issues/62872). We have to use an alternative type to circumvent the limitation. The downside is that the Kube API can't validate the data beyond the fact that it is a valid JSON representation. MuteTimeIntervals is a list of MuteTimeInterval names that will mute this route when matched,
+     * muteTimeIntervals is a list of MuteTimeInterval names that will mute this route when matched,
      */
     @JsonProperty("muteTimeIntervals")
     public void setMuteTimeIntervals(List<String> muteTimeIntervals) {
@@ -242,7 +242,7 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
     }
 
     /**
-     * Name of the receiver for this route. If not empty, it should be listed in the `receivers` field.
+     * receiver defines the name of the receiver for this route. If not empty, it should be listed in the `receivers` field.
      */
     @JsonProperty("receiver")
     public String getReceiver() {
@@ -250,7 +250,7 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
     }
 
     /**
-     * Name of the receiver for this route. If not empty, it should be listed in the `receivers` field.
+     * receiver defines the name of the receiver for this route. If not empty, it should be listed in the `receivers` field.
      */
     @JsonProperty("receiver")
     public void setReceiver(String receiver) {
@@ -258,7 +258,7 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
     }
 
     /**
-     * How long to wait before repeating the last notification. Must match the regular expression`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$` Example: "4h"
+     * repeatInterval defines how long to wait before repeating the last notification. Must be greater than 0. Example: "4h"
      */
     @JsonProperty("repeatInterval")
     public String getRepeatInterval() {
@@ -266,7 +266,7 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
     }
 
     /**
-     * How long to wait before repeating the last notification. Must match the regular expression`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$` Example: "4h"
+     * repeatInterval defines how long to wait before repeating the last notification. Must be greater than 0. Example: "4h"
      */
     @JsonProperty("repeatInterval")
     public void setRepeatInterval(String repeatInterval) {
@@ -274,7 +274,7 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
     }
 
     /**
-     * Child routes.
+     * routes defines the child routes.
      */
     @JsonProperty("routes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -283,7 +283,7 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
     }
 
     /**
-     * Child routes.
+     * routes defines the child routes.
      */
     @JsonProperty("routes")
     public void setRoutes(List<JsonNode> routes) {

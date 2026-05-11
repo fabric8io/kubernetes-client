@@ -28,7 +28,7 @@ import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class ResourceClaimTemplateTest {
   private KubernetesClient client;
   KubernetesMockServer server;
@@ -79,7 +79,7 @@ class ResourceClaimTemplateTest {
 
     // When
     boolean isDeleted = client.dynamicResourceAllocation().v1alpha2().resourceClaimTemplates().inNamespace("test")
-        .withName("cluster").delete().size() == 1;
+        .withName("cluster").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

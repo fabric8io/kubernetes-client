@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class NetworkingV1beta1IngressTest {
 
   KubernetesClient client;
@@ -138,13 +138,13 @@ class NetworkingV1beta1IngressTest {
     server.expect().withPath("/apis/networking.k8s.io/v1beta1/namespaces/ns1/ingresses/ingress2")
         .andReturn(200, new IngressBuilder().build()).once();
 
-    boolean deleted = client.network().ingress().withName("ingress1").delete().size() == 1;
+    boolean deleted = client.network().ingress().withName("ingress1").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.network().ingress().withName("ingress2").delete().size() == 1;
+    deleted = client.network().ingress().withName("ingress2").withGracePeriod(0).delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.network().ingress().inNamespace("ns1").withName("ingress2").delete().size() == 1;
+    deleted = client.network().ingress().inNamespace("ns1").withName("ingress2").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
   }
 

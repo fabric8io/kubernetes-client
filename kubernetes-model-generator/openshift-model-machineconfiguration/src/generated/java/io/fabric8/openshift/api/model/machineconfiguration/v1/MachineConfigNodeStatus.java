@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "conditions",
     "configVersion",
+    "irreconcilableChanges",
     "observedGeneration",
     "pinnedImageSets"
 })
@@ -75,6 +76,9 @@ public class MachineConfigNodeStatus implements Editable<MachineConfigNodeStatus
     private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("configVersion")
     private MachineConfigNodeStatusMachineConfigVersion configVersion;
+    @JsonProperty("irreconcilableChanges")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<IrreconcilableChangeDiff> irreconcilableChanges = new ArrayList<>();
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("pinnedImageSets")
@@ -89,10 +93,11 @@ public class MachineConfigNodeStatus implements Editable<MachineConfigNodeStatus
     public MachineConfigNodeStatus() {
     }
 
-    public MachineConfigNodeStatus(List<Condition> conditions, MachineConfigNodeStatusMachineConfigVersion configVersion, Long observedGeneration, List<MachineConfigNodeStatusPinnedImageSet> pinnedImageSets) {
+    public MachineConfigNodeStatus(List<Condition> conditions, MachineConfigNodeStatusMachineConfigVersion configVersion, List<IrreconcilableChangeDiff> irreconcilableChanges, Long observedGeneration, List<MachineConfigNodeStatusPinnedImageSet> pinnedImageSets) {
         super();
         this.conditions = conditions;
         this.configVersion = configVersion;
+        this.irreconcilableChanges = irreconcilableChanges;
         this.observedGeneration = observedGeneration;
         this.pinnedImageSets = pinnedImageSets;
     }
@@ -128,6 +133,23 @@ public class MachineConfigNodeStatus implements Editable<MachineConfigNodeStatus
     @JsonProperty("configVersion")
     public void setConfigVersion(MachineConfigNodeStatusMachineConfigVersion configVersion) {
         this.configVersion = configVersion;
+    }
+
+    /**
+     * irreconcilableChanges is an optional field that contains the observed differences between this nodes configuration and the target rendered MachineConfig. This field will be set when there are changes to the target rendered MachineConfig that can only be applied to new nodes joining the cluster. Entries must be unique, keyed on the fieldPath field. Must not exceed 32 entries.
+     */
+    @JsonProperty("irreconcilableChanges")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<IrreconcilableChangeDiff> getIrreconcilableChanges() {
+        return irreconcilableChanges;
+    }
+
+    /**
+     * irreconcilableChanges is an optional field that contains the observed differences between this nodes configuration and the target rendered MachineConfig. This field will be set when there are changes to the target rendered MachineConfig that can only be applied to new nodes joining the cluster. Entries must be unique, keyed on the fieldPath field. Must not exceed 32 entries.
+     */
+    @JsonProperty("irreconcilableChanges")
+    public void setIrreconcilableChanges(List<IrreconcilableChangeDiff> irreconcilableChanges) {
+        this.irreconcilableChanges = irreconcilableChanges;
     }
 
     /**

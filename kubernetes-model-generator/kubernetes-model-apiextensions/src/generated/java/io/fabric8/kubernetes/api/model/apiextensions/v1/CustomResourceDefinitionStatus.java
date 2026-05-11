@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "acceptedNames",
     "conditions",
+    "observedGeneration",
     "storedVersions"
 })
 @ToString
@@ -74,6 +75,8 @@ public class CustomResourceDefinitionStatus implements Editable<CustomResourceDe
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CustomResourceDefinitionCondition> conditions = new ArrayList<>();
+    @JsonProperty("observedGeneration")
+    private Long observedGeneration;
     @JsonProperty("storedVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> storedVersions = new ArrayList<>();
@@ -86,10 +89,11 @@ public class CustomResourceDefinitionStatus implements Editable<CustomResourceDe
     public CustomResourceDefinitionStatus() {
     }
 
-    public CustomResourceDefinitionStatus(CustomResourceDefinitionNames acceptedNames, List<CustomResourceDefinitionCondition> conditions, List<String> storedVersions) {
+    public CustomResourceDefinitionStatus(CustomResourceDefinitionNames acceptedNames, List<CustomResourceDefinitionCondition> conditions, Long observedGeneration, List<String> storedVersions) {
         super();
         this.acceptedNames = acceptedNames;
         this.conditions = conditions;
+        this.observedGeneration = observedGeneration;
         this.storedVersions = storedVersions;
     }
 
@@ -124,6 +128,22 @@ public class CustomResourceDefinitionStatus implements Editable<CustomResourceDe
     @JsonProperty("conditions")
     public void setConditions(List<CustomResourceDefinitionCondition> conditions) {
         this.conditions = conditions;
+    }
+
+    /**
+     * The generation observed by the CRD controller.
+     */
+    @JsonProperty("observedGeneration")
+    public Long getObservedGeneration() {
+        return observedGeneration;
+    }
+
+    /**
+     * The generation observed by the CRD controller.
+     */
+    @JsonProperty("observedGeneration")
+    public void setObservedGeneration(Long observedGeneration) {
+        this.observedGeneration = observedGeneration;
     }
 
     /**

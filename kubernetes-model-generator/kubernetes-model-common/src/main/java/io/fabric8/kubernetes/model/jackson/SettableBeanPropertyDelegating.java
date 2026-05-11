@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.model.jackson;
 
+import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
@@ -73,6 +74,14 @@ public class SettableBeanPropertyDelegating extends SettableBeanProperty.Delegat
   @Override
   public boolean isMerging() {
     return delegate.isMerging();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public JacksonInject.Value getInjectionDefinition() {
+    return delegate.getInjectionDefinition();
   }
 
   /**

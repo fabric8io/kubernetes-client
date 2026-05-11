@@ -109,7 +109,7 @@ public class NamedRuleWithOperations implements Editable<NamedRuleWithOperations
     }
 
     /**
-     * APIGroups is the API groups the resources belong to. '&#42;' is all groups. If '&#42;' is present, the length of the slice must be one. Required.
+     * apiGroups is the API groups the resources belong to. '&#42;' is all groups. If '&#42;' is present, the length of the slice must be one. Required.
      */
     @JsonProperty("apiGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -118,7 +118,7 @@ public class NamedRuleWithOperations implements Editable<NamedRuleWithOperations
     }
 
     /**
-     * APIGroups is the API groups the resources belong to. '&#42;' is all groups. If '&#42;' is present, the length of the slice must be one. Required.
+     * apiGroups is the API groups the resources belong to. '&#42;' is all groups. If '&#42;' is present, the length of the slice must be one. Required.
      */
     @JsonProperty("apiGroups")
     public void setApiGroups(List<String> apiGroups) {
@@ -126,7 +126,7 @@ public class NamedRuleWithOperations implements Editable<NamedRuleWithOperations
     }
 
     /**
-     * APIVersions is the API versions the resources belong to. '&#42;' is all versions. If '&#42;' is present, the length of the slice must be one. Required.
+     * apiVersions is the API versions the resources belong to. '&#42;' is all versions. If '&#42;' is present, the length of the slice must be one. Required.
      */
     @JsonProperty("apiVersions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -135,7 +135,7 @@ public class NamedRuleWithOperations implements Editable<NamedRuleWithOperations
     }
 
     /**
-     * APIVersions is the API versions the resources belong to. '&#42;' is all versions. If '&#42;' is present, the length of the slice must be one. Required.
+     * apiVersions is the API versions the resources belong to. '&#42;' is all versions. If '&#42;' is present, the length of the slice must be one. Required.
      */
     @JsonProperty("apiVersions")
     public void setApiVersions(List<String> apiVersions) {
@@ -143,7 +143,7 @@ public class NamedRuleWithOperations implements Editable<NamedRuleWithOperations
     }
 
     /**
-     * Operations is the operations the admission hook cares about - CREATE, UPDATE, DELETE, CONNECT or &#42; for all of those operations and any future admission operations that are added. If '&#42;' is present, the length of the slice must be one. Required.
+     * operations is the operations the admission hook cares about - CREATE, UPDATE, DELETE, CONNECT or &#42; for all of those operations and any future admission operations that are added. If '&#42;' is present, the length of the slice must be one. Required.
      */
     @JsonProperty("operations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -152,7 +152,7 @@ public class NamedRuleWithOperations implements Editable<NamedRuleWithOperations
     }
 
     /**
-     * Operations is the operations the admission hook cares about - CREATE, UPDATE, DELETE, CONNECT or &#42; for all of those operations and any future admission operations that are added. If '&#42;' is present, the length of the slice must be one. Required.
+     * operations is the operations the admission hook cares about - CREATE, UPDATE, DELETE, CONNECT or &#42; for all of those operations and any future admission operations that are added. If '&#42;' is present, the length of the slice must be one. Required.
      */
     @JsonProperty("operations")
     public void setOperations(List<String> operations) {
@@ -160,7 +160,7 @@ public class NamedRuleWithOperations implements Editable<NamedRuleWithOperations
     }
 
     /**
-     * ResourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.
+     * resourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.
      */
     @JsonProperty("resourceNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -169,7 +169,7 @@ public class NamedRuleWithOperations implements Editable<NamedRuleWithOperations
     }
 
     /**
-     * ResourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.
+     * resourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.
      */
     @JsonProperty("resourceNames")
     public void setResourceNames(List<String> resourceNames) {
@@ -177,7 +177,7 @@ public class NamedRuleWithOperations implements Editable<NamedRuleWithOperations
     }
 
     /**
-     * Resources is a list of resources this rule applies to.<br><p> <br><p> For example: 'pods' means pods. 'pods/log' means the log subresource of pods. '&#42;' means all resources, but not subresources. 'pods/&#42;' means all subresources of pods. '&#42;/scale' means all scale subresources. '&#42;/&#42;' means all resources and their subresources.<br><p> <br><p> If wildcard is present, the validation rule will ensure resources do not overlap with each other.<br><p> <br><p> Depending on the enclosing object, subresources might not be allowed. Required.
+     * resources is a list of resources this rule applies to.<br><p> <br><p> For example: 'pods' means pods. 'pods/log' means the log subresource of pods. '&#42;' means all resources, but not subresources. 'pods/&#42;' means all subresources of pods. '&#42;/scale' means all scale subresources. '&#42;/&#42;' means all resources and their subresources.<br><p> <br><p> If wildcard is present, the validation rule will ensure resources do not overlap with each other.<br><p> <br><p> Depending on the enclosing object, subresources might not be allowed. Required.
      */
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -186,7 +186,7 @@ public class NamedRuleWithOperations implements Editable<NamedRuleWithOperations
     }
 
     /**
-     * Resources is a list of resources this rule applies to.<br><p> <br><p> For example: 'pods' means pods. 'pods/log' means the log subresource of pods. '&#42;' means all resources, but not subresources. 'pods/&#42;' means all subresources of pods. '&#42;/scale' means all scale subresources. '&#42;/&#42;' means all resources and their subresources.<br><p> <br><p> If wildcard is present, the validation rule will ensure resources do not overlap with each other.<br><p> <br><p> Depending on the enclosing object, subresources might not be allowed. Required.
+     * resources is a list of resources this rule applies to.<br><p> <br><p> For example: 'pods' means pods. 'pods/log' means the log subresource of pods. '&#42;' means all resources, but not subresources. 'pods/&#42;' means all subresources of pods. '&#42;/scale' means all scale subresources. '&#42;/&#42;' means all resources and their subresources.<br><p> <br><p> If wildcard is present, the validation rule will ensure resources do not overlap with each other.<br><p> <br><p> Depending on the enclosing object, subresources might not be allowed. Required.
      */
     @JsonProperty("resources")
     public void setResources(List<String> resources) {

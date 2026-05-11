@@ -187,6 +187,18 @@ public class Serialization {
   }
 
   /**
+   * Unmarshals a {@link String}
+   *
+   * @param str The {@link String}.
+   * @param type The target type reference, supporting generic types.
+   * @param <T> template argument denoting type
+   * @return returns de-serialized object
+   */
+  public static <T> T unmarshal(String str, TypeReference<T> type) {
+    return kubernetesSerialization.unmarshal(str, type);
+  }
+
+  /**
    * Unmarshals an {@link InputStream}.
    *
    * @param is The {@link InputStream}.

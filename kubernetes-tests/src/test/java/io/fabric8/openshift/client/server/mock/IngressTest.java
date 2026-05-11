@@ -30,7 +30,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class IngressTest {
   private OpenShiftClient client;
   KubernetesMockServer server;
@@ -88,7 +88,7 @@ class IngressTest {
         .once();
 
     // When
-    boolean isDeleted = client.config().ingresses().withName("cluster").delete().size() == 1;
+    boolean isDeleted = client.config().ingresses().withName("cluster").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertThat(isDeleted).isTrue();

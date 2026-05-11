@@ -37,7 +37,8 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "accessKey",
     "secret",
-    "secretKey"
+    "secretKey",
+    "serviceAccountName"
 })
 @ToString
 @EqualsAndHashCode
@@ -70,6 +71,8 @@ public class Auth implements Editable<AuthBuilder>, KubernetesResource
     private Secret secret;
     @JsonProperty("secretKey")
     private String secretKey;
+    @JsonProperty("serviceAccountName")
+    private String serviceAccountName;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -79,11 +82,12 @@ public class Auth implements Editable<AuthBuilder>, KubernetesResource
     public Auth() {
     }
 
-    public Auth(String accessKey, Secret secret, String secretKey) {
+    public Auth(String accessKey, Secret secret, String secretKey, String serviceAccountName) {
         super();
         this.accessKey = accessKey;
         this.secret = secret;
         this.secretKey = secretKey;
+        this.serviceAccountName = serviceAccountName;
     }
 
     /**
@@ -126,6 +130,16 @@ public class Auth implements Editable<AuthBuilder>, KubernetesResource
     @JsonProperty("secretKey")
     public void setSecretKey(String secretKey) {
         this.secretKey = secretKey;
+    }
+
+    @JsonProperty("serviceAccountName")
+    public String getServiceAccountName() {
+        return serviceAccountName;
+    }
+
+    @JsonProperty("serviceAccountName")
+    public void setServiceAccountName(String serviceAccountName) {
+        this.serviceAccountName = serviceAccountName;
     }
 
     @JsonIgnore

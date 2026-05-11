@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 public class KubeAPIServerExtension
     implements BeforeAllCallback, AfterAllCallback, BeforeEachCallback, AfterEachCallback {
 
-  private static final Logger log = LoggerFactory.getLogger(KubeAPIServerExtension.class);
+  private static final Logger logger = LoggerFactory.getLogger(KubeAPIServerExtension.class);
 
   private KubeAPIServer kubeApiServer;
   private List<ClientInjectionHandler> clientInjectionHandlers;
@@ -80,7 +80,7 @@ public class KubeAPIServerExtension
 
       annotation.ifPresent(a -> {
         if (!willInjectClient && !a.updateKubeConfigFile()) {
-          log.warn(
+          logger.warn(
               "Neither kube config file will be updated or client info will be injected into the test. "
                   +
                   "This is probably a misconfiguration since server won't be easily accessible.");

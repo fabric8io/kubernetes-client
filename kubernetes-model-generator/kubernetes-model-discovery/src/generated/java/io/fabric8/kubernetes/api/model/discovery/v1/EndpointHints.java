@@ -90,7 +90,7 @@ public class EndpointHints implements Editable<EndpointHintsBuilder>, Kubernetes
     }
 
     /**
-     * forNodes indicates the node(s) this endpoint should be consumed by when using topology aware routing. May contain a maximum of 8 entries. This is an Alpha feature and is only used when the PreferSameTrafficDistribution feature gate is enabled.
+     * forNodes indicates the node(s) this endpoint should be consumed by when using topology aware routing. May contain a maximum of 8 entries.
      */
     @JsonProperty("forNodes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -99,7 +99,7 @@ public class EndpointHints implements Editable<EndpointHintsBuilder>, Kubernetes
     }
 
     /**
-     * forNodes indicates the node(s) this endpoint should be consumed by when using topology aware routing. May contain a maximum of 8 entries. This is an Alpha feature and is only used when the PreferSameTrafficDistribution feature gate is enabled.
+     * forNodes indicates the node(s) this endpoint should be consumed by when using topology aware routing. May contain a maximum of 8 entries.
      */
     @JsonProperty("forNodes")
     public void setForNodes(List<ForNode> forNodes) {

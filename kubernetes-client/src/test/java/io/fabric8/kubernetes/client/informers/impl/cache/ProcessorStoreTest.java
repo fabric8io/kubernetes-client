@@ -94,13 +94,13 @@ class ProcessorStoreTest {
     List<Pod> pods = Arrays.asList(pod, pod2);
     processorStore.update(pods);
 
-    processorStore.retainAll(pods.stream().map(Cache::metaNamespaceKeyFunc).collect(Collectors.toSet()), null);
+    processorStore.syncList(pods.stream().map(Cache::metaNamespaceKeyFunc).collect(Collectors.toSet()));
 
     // resync two values
     processorStore.resync();
 
     // relist with deletes
-    processorStore.retainAll(Collections.emptySet(), null);
+    processorStore.syncList(Collections.emptySet());
 
     Mockito.verify(processor, Mockito.times(6)).distribute(notificationCaptor.capture(), syncCaptor.capture());
 

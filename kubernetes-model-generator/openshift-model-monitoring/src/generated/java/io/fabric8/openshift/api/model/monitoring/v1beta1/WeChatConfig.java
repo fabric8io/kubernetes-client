@@ -122,7 +122,7 @@ public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesRe
     }
 
     /**
-     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     * agentID defines the application agent ID within WeChat Work. This identifies which WeChat Work application will send the notifications.
      */
     @JsonProperty("agentID")
     public String getAgentID() {
@@ -130,7 +130,7 @@ public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesRe
     }
 
     /**
-     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     * agentID defines the application agent ID within WeChat Work. This identifies which WeChat Work application will send the notifications.
      */
     @JsonProperty("agentID")
     public void setAgentID(String agentID) {
@@ -154,7 +154,7 @@ public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesRe
     }
 
     /**
-     * The WeChat API URL.
+     * apiURL defines the WeChat API URL. When not specified, defaults to the standard WeChat Work API endpoint.
      */
     @JsonProperty("apiURL")
     public String getApiURL() {
@@ -162,7 +162,7 @@ public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesRe
     }
 
     /**
-     * The WeChat API URL.
+     * apiURL defines the WeChat API URL. When not specified, defaults to the standard WeChat Work API endpoint.
      */
     @JsonProperty("apiURL")
     public void setApiURL(String apiURL) {
@@ -170,7 +170,7 @@ public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesRe
     }
 
     /**
-     * The corp id for authentication.
+     * corpID defines the corp id for authentication. This is the unique identifier for your WeChat Work organization.
      */
     @JsonProperty("corpID")
     public String getCorpID() {
@@ -178,7 +178,7 @@ public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesRe
     }
 
     /**
-     * The corp id for authentication.
+     * corpID defines the corp id for authentication. This is the unique identifier for your WeChat Work organization.
      */
     @JsonProperty("corpID")
     public void setCorpID(String corpID) {
@@ -202,7 +202,7 @@ public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesRe
     }
 
     /**
-     * API request data as defined by the WeChat API.
+     * message defines the API request data as defined by the WeChat API. This contains the actual notification content to be sent.
      */
     @JsonProperty("message")
     public String getMessage() {
@@ -210,7 +210,7 @@ public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesRe
     }
 
     /**
-     * API request data as defined by the WeChat API.
+     * message defines the API request data as defined by the WeChat API. This contains the actual notification content to be sent.
      */
     @JsonProperty("message")
     public void setMessage(String message) {
@@ -218,7 +218,7 @@ public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesRe
     }
 
     /**
-     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     * messageType defines the type of message to send. Valid values include "text", "markdown", and other WeChat Work supported message types.
      */
     @JsonProperty("messageType")
     public String getMessageType() {
@@ -226,7 +226,7 @@ public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesRe
     }
 
     /**
-     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     * messageType defines the type of message to send. Valid values include "text", "markdown", and other WeChat Work supported message types.
      */
     @JsonProperty("messageType")
     public void setMessageType(String messageType) {
@@ -234,7 +234,7 @@ public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Whether or not to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
@@ -242,7 +242,7 @@ public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Whether or not to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
@@ -250,7 +250,7 @@ public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesRe
     }
 
     /**
-     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     * toParty defines the target department(s) to receive the notification. Can be a single department ID or multiple department IDs separated by '|'.
      */
     @JsonProperty("toParty")
     public String getToParty() {
@@ -258,7 +258,7 @@ public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesRe
     }
 
     /**
-     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     * toParty defines the target department(s) to receive the notification. Can be a single department ID or multiple department IDs separated by '|'.
      */
     @JsonProperty("toParty")
     public void setToParty(String toParty) {
@@ -266,7 +266,7 @@ public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesRe
     }
 
     /**
-     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     * toTag defines the target tag(s) to receive the notification. Can be a single tag ID or multiple tag IDs separated by '|'.
      */
     @JsonProperty("toTag")
     public String getToTag() {
@@ -274,7 +274,7 @@ public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesRe
     }
 
     /**
-     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     * toTag defines the target tag(s) to receive the notification. Can be a single tag ID or multiple tag IDs separated by '|'.
      */
     @JsonProperty("toTag")
     public void setToTag(String toTag) {
@@ -282,7 +282,7 @@ public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesRe
     }
 
     /**
-     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     * toUser defines the target user(s) to receive the notification. Can be a single user ID or multiple user IDs separated by '|'.
      */
     @JsonProperty("toUser")
     public String getToUser() {
@@ -290,7 +290,7 @@ public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesRe
     }
 
     /**
-     * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+     * toUser defines the target user(s) to receive the notification. Can be a single user ID or multiple user IDs separated by '|'.
      */
     @JsonProperty("toUser")
     public void setToUser(String toUser) {

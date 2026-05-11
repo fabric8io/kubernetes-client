@@ -81,7 +81,7 @@ public class GlobalTelegramConfig implements Editable<GlobalTelegramConfigBuilde
     }
 
     /**
-     * The default Telegram API URL.<br><p> <br><p> It requires Alertmanager &gt;= v0.24.0.
+     * apiURL defines he default Telegram API URL.<br><p> <br><p> It requires Alertmanager &gt;= v0.24.0.
      */
     @JsonProperty("apiURL")
     public String getApiURL() {
@@ -89,7 +89,7 @@ public class GlobalTelegramConfig implements Editable<GlobalTelegramConfigBuilde
     }
 
     /**
-     * The default Telegram API URL.<br><p> <br><p> It requires Alertmanager &gt;= v0.24.0.
+     * apiURL defines he default Telegram API URL.<br><p> <br><p> It requires Alertmanager &gt;= v0.24.0.
      */
     @JsonProperty("apiURL")
     public void setApiURL(String apiURL) {

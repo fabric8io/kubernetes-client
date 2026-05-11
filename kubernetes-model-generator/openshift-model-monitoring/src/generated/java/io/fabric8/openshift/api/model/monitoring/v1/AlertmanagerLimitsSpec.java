@@ -85,7 +85,7 @@ public class AlertmanagerLimitsSpec implements Editable<AlertmanagerLimitsSpecBu
     }
 
     /**
-     * The maximum size of an individual silence as stored on disk. This corresponds to the Alertmanager's `--silences.max-per-silence-bytes` flag. It requires Alertmanager &gt;= v0.28.0.
+     * maxPerSilenceBytes defines the maximum size of an individual silence as stored on disk. This corresponds to the Alertmanager's `--silences.max-per-silence-bytes` flag. It requires Alertmanager &gt;= v0.28.0.
      */
     @JsonProperty("maxPerSilenceBytes")
     public String getMaxPerSilenceBytes() {
@@ -93,7 +93,7 @@ public class AlertmanagerLimitsSpec implements Editable<AlertmanagerLimitsSpecBu
     }
 
     /**
-     * The maximum size of an individual silence as stored on disk. This corresponds to the Alertmanager's `--silences.max-per-silence-bytes` flag. It requires Alertmanager &gt;= v0.28.0.
+     * maxPerSilenceBytes defines the maximum size of an individual silence as stored on disk. This corresponds to the Alertmanager's `--silences.max-per-silence-bytes` flag. It requires Alertmanager &gt;= v0.28.0.
      */
     @JsonProperty("maxPerSilenceBytes")
     public void setMaxPerSilenceBytes(String maxPerSilenceBytes) {
@@ -101,7 +101,7 @@ public class AlertmanagerLimitsSpec implements Editable<AlertmanagerLimitsSpecBu
     }
 
     /**
-     * The maximum number active and pending silences. This corresponds to the Alertmanager's `--silences.max-silences` flag. It requires Alertmanager &gt;= v0.28.0.
+     * maxSilences defines the maximum number active and pending silences. This corresponds to the Alertmanager's `--silences.max-silences` flag. It requires Alertmanager &gt;= v0.28.0.
      */
     @JsonProperty("maxSilences")
     public Integer getMaxSilences() {
@@ -109,7 +109,7 @@ public class AlertmanagerLimitsSpec implements Editable<AlertmanagerLimitsSpecBu
     }
 
     /**
-     * The maximum number active and pending silences. This corresponds to the Alertmanager's `--silences.max-silences` flag. It requires Alertmanager &gt;= v0.28.0.
+     * maxSilences defines the maximum number active and pending silences. This corresponds to the Alertmanager's `--silences.max-silences` flag. It requires Alertmanager &gt;= v0.28.0.
      */
     @JsonProperty("maxSilences")
     public void setMaxSilences(Integer maxSilences) {

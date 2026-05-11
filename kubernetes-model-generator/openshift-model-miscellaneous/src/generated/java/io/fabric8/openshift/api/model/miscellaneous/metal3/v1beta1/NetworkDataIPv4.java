@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "fromPoolAnnotation",
     "fromPoolRef",
     "id",
     "ipAddressFromIPPool",
@@ -72,6 +73,8 @@ import lombok.experimental.Accessors;
 public class NetworkDataIPv4 implements Editable<NetworkDataIPv4Builder>, KubernetesResource
 {
 
+    @JsonProperty("fromPoolAnnotation")
+    private FromPoolAnnotation fromPoolAnnotation;
     @JsonProperty("fromPoolRef")
     private TypedLocalObjectReference fromPoolRef;
     @JsonProperty("id")
@@ -92,13 +95,30 @@ public class NetworkDataIPv4 implements Editable<NetworkDataIPv4Builder>, Kubern
     public NetworkDataIPv4() {
     }
 
-    public NetworkDataIPv4(TypedLocalObjectReference fromPoolRef, String id, String ipAddressFromIPPool, String link, List<NetworkDataRoutev4> routes) {
+    public NetworkDataIPv4(FromPoolAnnotation fromPoolAnnotation, TypedLocalObjectReference fromPoolRef, String id, String ipAddressFromIPPool, String link, List<NetworkDataRoutev4> routes) {
         super();
+        this.fromPoolAnnotation = fromPoolAnnotation;
         this.fromPoolRef = fromPoolRef;
         this.id = id;
         this.ipAddressFromIPPool = ipAddressFromIPPool;
         this.link = link;
         this.routes = routes;
+    }
+
+    /**
+     * NetworkDataIPv4 represents an ipv4 static network object.
+     */
+    @JsonProperty("fromPoolAnnotation")
+    public FromPoolAnnotation getFromPoolAnnotation() {
+        return fromPoolAnnotation;
+    }
+
+    /**
+     * NetworkDataIPv4 represents an ipv4 static network object.
+     */
+    @JsonProperty("fromPoolAnnotation")
+    public void setFromPoolAnnotation(FromPoolAnnotation fromPoolAnnotation) {
+        this.fromPoolAnnotation = fromPoolAnnotation;
     }
 
     /**

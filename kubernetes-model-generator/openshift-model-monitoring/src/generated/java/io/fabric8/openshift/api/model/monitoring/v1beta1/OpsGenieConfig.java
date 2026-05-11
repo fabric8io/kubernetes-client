@@ -138,7 +138,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * Comma separated list of actions that will be available for the alert.
+     * actions defines a comma separated list of actions that will be available for the alert. These appear as action buttons in the OpsGenie interface.
      */
     @JsonProperty("actions")
     public String getActions() {
@@ -146,7 +146,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * Comma separated list of actions that will be available for the alert.
+     * actions defines a comma separated list of actions that will be available for the alert. These appear as action buttons in the OpsGenie interface.
      */
     @JsonProperty("actions")
     public void setActions(String actions) {
@@ -170,7 +170,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * The URL to send OpsGenie API requests to.
+     * apiURL defines the URL to send OpsGenie API requests to. When not specified, defaults to the standard OpsGenie API endpoint.
      */
     @JsonProperty("apiURL")
     public String getApiURL() {
@@ -178,7 +178,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * The URL to send OpsGenie API requests to.
+     * apiURL defines the URL to send OpsGenie API requests to. When not specified, defaults to the standard OpsGenie API endpoint.
      */
     @JsonProperty("apiURL")
     public void setApiURL(String apiURL) {
@@ -186,7 +186,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * Description of the incident.
+     * description defines the detailed description of the incident. This provides additional context beyond the message field.
      */
     @JsonProperty("description")
     public String getDescription() {
@@ -194,7 +194,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * Description of the incident.
+     * description defines the detailed description of the incident. This provides additional context beyond the message field.
      */
     @JsonProperty("description")
     public void setDescription(String description) {
@@ -202,7 +202,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * A set of arbitrary key/value pairs that provide further detail about the incident.
+     * details defines a set of arbitrary key/value pairs that provide further detail about the incident. These appear as additional fields in the OpsGenie alert.
      */
     @JsonProperty("details")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -211,7 +211,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * A set of arbitrary key/value pairs that provide further detail about the incident.
+     * details defines a set of arbitrary key/value pairs that provide further detail about the incident. These appear as additional fields in the OpsGenie alert.
      */
     @JsonProperty("details")
     public void setDetails(List<KeyValue> details) {
@@ -219,7 +219,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * Optional field that can be used to specify which domain alert is related to.
+     * entity defines an optional field that can be used to specify which domain alert is related to. This helps group related alerts together in OpsGenie.
      */
     @JsonProperty("entity")
     public String getEntity() {
@@ -227,7 +227,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * Optional field that can be used to specify which domain alert is related to.
+     * entity defines an optional field that can be used to specify which domain alert is related to. This helps group related alerts together in OpsGenie.
      */
     @JsonProperty("entity")
     public void setEntity(String entity) {
@@ -251,7 +251,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * Alert text limited to 130 characters.
+     * message defines the alert text limited to 130 characters. This appears as the main alert title in OpsGenie.
      */
     @JsonProperty("message")
     public String getMessage() {
@@ -259,7 +259,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * Alert text limited to 130 characters.
+     * message defines the alert text limited to 130 characters. This appears as the main alert title in OpsGenie.
      */
     @JsonProperty("message")
     public void setMessage(String message) {
@@ -267,7 +267,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * Additional alert note.
+     * note defines an additional alert note. This provides supplementary information about the alert.
      */
     @JsonProperty("note")
     public String getNote() {
@@ -275,7 +275,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * Additional alert note.
+     * note defines an additional alert note. This provides supplementary information about the alert.
      */
     @JsonProperty("note")
     public void setNote(String note) {
@@ -283,7 +283,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * Priority level of alert. Possible values are P1, P2, P3, P4, and P5.
+     * priority defines the priority level of alert. Possible values are P1, P2, P3, P4, and P5, where P1 is highest priority.
      */
     @JsonProperty("priority")
     public String getPriority() {
@@ -291,7 +291,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * Priority level of alert. Possible values are P1, P2, P3, P4, and P5.
+     * priority defines the priority level of alert. Possible values are P1, P2, P3, P4, and P5, where P1 is highest priority.
      */
     @JsonProperty("priority")
     public void setPriority(String priority) {
@@ -299,7 +299,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * List of responders responsible for notifications.
+     * responders defines the list of responders responsible for notifications. These determine who gets notified when the alert is created.
      */
     @JsonProperty("responders")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -308,7 +308,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * List of responders responsible for notifications.
+     * responders defines the list of responders responsible for notifications. These determine who gets notified when the alert is created.
      */
     @JsonProperty("responders")
     public void setResponders(List<OpsGenieConfigResponder> responders) {
@@ -316,7 +316,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * Whether or not to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
@@ -324,7 +324,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * Whether or not to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
@@ -332,7 +332,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * Backlink to the sender of the notification.
+     * source defines the backlink to the sender of the notification. This helps identify where the alert originated from.
      */
     @JsonProperty("source")
     public String getSource() {
@@ -340,7 +340,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * Backlink to the sender of the notification.
+     * source defines the backlink to the sender of the notification. This helps identify where the alert originated from.
      */
     @JsonProperty("source")
     public void setSource(String source) {
@@ -348,7 +348,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * Comma separated list of tags attached to the notifications.
+     * tags defines a comma separated list of tags attached to the notifications. These help categorize and filter alerts within OpsGenie.
      */
     @JsonProperty("tags")
     public String getTags() {
@@ -356,7 +356,7 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
     }
 
     /**
-     * Comma separated list of tags attached to the notifications.
+     * tags defines a comma separated list of tags attached to the notifications. These help categorize and filter alerts within OpsGenie.
      */
     @JsonProperty("tags")
     public void setTags(String tags) {

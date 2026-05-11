@@ -46,6 +46,7 @@ import lombok.experimental.Accessors;
     "registrationConfiguration",
     "registrationImagePullSpec",
     "resourceRequirement",
+    "serverConfiguration",
     "workConfiguration",
     "workImagePullSpec"
 })
@@ -90,6 +91,8 @@ public class ClusterManagerSpec implements Editable<ClusterManagerSpecBuilder>, 
     private String registrationImagePullSpec;
     @JsonProperty("resourceRequirement")
     private ResourceRequirement resourceRequirement;
+    @JsonProperty("serverConfiguration")
+    private ServerConfiguration serverConfiguration;
     @JsonProperty("workConfiguration")
     private WorkConfiguration workConfiguration;
     @JsonProperty("workImagePullSpec")
@@ -103,7 +106,7 @@ public class ClusterManagerSpec implements Editable<ClusterManagerSpecBuilder>, 
     public ClusterManagerSpec() {
     }
 
-    public ClusterManagerSpec(AddOnManagerConfiguration addOnManagerConfiguration, String addOnManagerImagePullSpec, ClusterManagerDeployOption deployOption, NodePlacement nodePlacement, String placementImagePullSpec, RegistrationHubConfiguration registrationConfiguration, String registrationImagePullSpec, ResourceRequirement resourceRequirement, WorkConfiguration workConfiguration, String workImagePullSpec) {
+    public ClusterManagerSpec(AddOnManagerConfiguration addOnManagerConfiguration, String addOnManagerImagePullSpec, ClusterManagerDeployOption deployOption, NodePlacement nodePlacement, String placementImagePullSpec, RegistrationHubConfiguration registrationConfiguration, String registrationImagePullSpec, ResourceRequirement resourceRequirement, ServerConfiguration serverConfiguration, WorkConfiguration workConfiguration, String workImagePullSpec) {
         super();
         this.addOnManagerConfiguration = addOnManagerConfiguration;
         this.addOnManagerImagePullSpec = addOnManagerImagePullSpec;
@@ -113,6 +116,7 @@ public class ClusterManagerSpec implements Editable<ClusterManagerSpecBuilder>, 
         this.registrationConfiguration = registrationConfiguration;
         this.registrationImagePullSpec = registrationImagePullSpec;
         this.resourceRequirement = resourceRequirement;
+        this.serverConfiguration = serverConfiguration;
         this.workConfiguration = workConfiguration;
         this.workImagePullSpec = workImagePullSpec;
     }
@@ -134,7 +138,7 @@ public class ClusterManagerSpec implements Editable<ClusterManagerSpecBuilder>, 
     }
 
     /**
-     * AddOnManagerImagePullSpec represents the desired image configuration of addon manager controller/webhook installed on hub.
+     * addOnManagerImagePullSpec represents the desired image configuration of addon manager controller/webhook installed on hub.
      */
     @JsonProperty("addOnManagerImagePullSpec")
     public String getAddOnManagerImagePullSpec() {
@@ -142,7 +146,7 @@ public class ClusterManagerSpec implements Editable<ClusterManagerSpecBuilder>, 
     }
 
     /**
-     * AddOnManagerImagePullSpec represents the desired image configuration of addon manager controller/webhook installed on hub.
+     * addOnManagerImagePullSpec represents the desired image configuration of addon manager controller/webhook installed on hub.
      */
     @JsonProperty("addOnManagerImagePullSpec")
     public void setAddOnManagerImagePullSpec(String addOnManagerImagePullSpec) {
@@ -182,7 +186,7 @@ public class ClusterManagerSpec implements Editable<ClusterManagerSpecBuilder>, 
     }
 
     /**
-     * PlacementImagePullSpec represents the desired image configuration of placement controller/webhook installed on hub.
+     * placementImagePullSpec represents the desired image configuration of placement controller/webhook installed on hub.
      */
     @JsonProperty("placementImagePullSpec")
     public String getPlacementImagePullSpec() {
@@ -190,7 +194,7 @@ public class ClusterManagerSpec implements Editable<ClusterManagerSpecBuilder>, 
     }
 
     /**
-     * PlacementImagePullSpec represents the desired image configuration of placement controller/webhook installed on hub.
+     * placementImagePullSpec represents the desired image configuration of placement controller/webhook installed on hub.
      */
     @JsonProperty("placementImagePullSpec")
     public void setPlacementImagePullSpec(String placementImagePullSpec) {
@@ -214,7 +218,7 @@ public class ClusterManagerSpec implements Editable<ClusterManagerSpecBuilder>, 
     }
 
     /**
-     * RegistrationImagePullSpec represents the desired image of registration controller/webhook installed on hub.
+     * registrationImagePullSpec represents the desired image of registration controller/webhook installed on hub.
      */
     @JsonProperty("registrationImagePullSpec")
     public String getRegistrationImagePullSpec() {
@@ -222,7 +226,7 @@ public class ClusterManagerSpec implements Editable<ClusterManagerSpecBuilder>, 
     }
 
     /**
-     * RegistrationImagePullSpec represents the desired image of registration controller/webhook installed on hub.
+     * registrationImagePullSpec represents the desired image of registration controller/webhook installed on hub.
      */
     @JsonProperty("registrationImagePullSpec")
     public void setRegistrationImagePullSpec(String registrationImagePullSpec) {
@@ -248,6 +252,22 @@ public class ClusterManagerSpec implements Editable<ClusterManagerSpecBuilder>, 
     /**
      * ClusterManagerSpec represents a desired deployment configuration of controllers that govern registration and work distribution for attached Klusterlets.
      */
+    @JsonProperty("serverConfiguration")
+    public ServerConfiguration getServerConfiguration() {
+        return serverConfiguration;
+    }
+
+    /**
+     * ClusterManagerSpec represents a desired deployment configuration of controllers that govern registration and work distribution for attached Klusterlets.
+     */
+    @JsonProperty("serverConfiguration")
+    public void setServerConfiguration(ServerConfiguration serverConfiguration) {
+        this.serverConfiguration = serverConfiguration;
+    }
+
+    /**
+     * ClusterManagerSpec represents a desired deployment configuration of controllers that govern registration and work distribution for attached Klusterlets.
+     */
     @JsonProperty("workConfiguration")
     public WorkConfiguration getWorkConfiguration() {
         return workConfiguration;
@@ -262,7 +282,7 @@ public class ClusterManagerSpec implements Editable<ClusterManagerSpecBuilder>, 
     }
 
     /**
-     * WorkImagePullSpec represents the desired image configuration of work controller/webhook installed on hub.
+     * workImagePullSpec represents the desired image configuration of work controller/webhook installed on hub.
      */
     @JsonProperty("workImagePullSpec")
     public String getWorkImagePullSpec() {
@@ -270,7 +290,7 @@ public class ClusterManagerSpec implements Editable<ClusterManagerSpecBuilder>, 
     }
 
     /**
-     * WorkImagePullSpec represents the desired image configuration of work controller/webhook installed on hub.
+     * workImagePullSpec represents the desired image configuration of work controller/webhook installed on hub.
      */
     @JsonProperty("workImagePullSpec")
     public void setWorkImagePullSpec(String workImagePullSpec) {

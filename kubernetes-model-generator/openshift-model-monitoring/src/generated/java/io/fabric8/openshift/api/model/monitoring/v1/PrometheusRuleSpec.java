@@ -84,7 +84,7 @@ public class PrometheusRuleSpec implements Editable<PrometheusRuleSpecBuilder>, 
     }
 
     /**
-     * Content of Prometheus rule file
+     * groups defines the content of Prometheus rule file
      */
     @JsonProperty("groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -93,7 +93,7 @@ public class PrometheusRuleSpec implements Editable<PrometheusRuleSpecBuilder>, 
     }
 
     /**
-     * Content of Prometheus rule file
+     * groups defines the content of Prometheus rule file
      */
     @JsonProperty("groups")
     public void setGroups(List<RuleGroup> groups) {

@@ -34,6 +34,7 @@ import lombok.experimental.Accessors;
     "resourceVersion",
     "resourceVersionMatch",
     "sendInitialEvents",
+    "shardSelector",
     "timeoutSeconds",
     "watch"
 })
@@ -73,6 +74,8 @@ public class ListOptions implements Editable<ListOptionsBuilder>, KubernetesReso
     private String resourceVersionMatch;
     @JsonProperty("sendInitialEvents")
     private Boolean sendInitialEvents;
+    @JsonProperty("shardSelector")
+    private String shardSelector;
     @JsonProperty("timeoutSeconds")
     private Long timeoutSeconds;
     @JsonProperty("watch")
@@ -86,7 +89,7 @@ public class ListOptions implements Editable<ListOptionsBuilder>, KubernetesReso
     public ListOptions() {
     }
 
-    public ListOptions(Boolean allowWatchBookmarks, String apiVersion, String _continue, String fieldSelector, String kind, String labelSelector, Long limit, String resourceVersion, String resourceVersionMatch, Boolean sendInitialEvents, Long timeoutSeconds, Boolean watch) {
+    public ListOptions(Boolean allowWatchBookmarks, String apiVersion, String _continue, String fieldSelector, String kind, String labelSelector, Long limit, String resourceVersion, String resourceVersionMatch, Boolean sendInitialEvents, String shardSelector, Long timeoutSeconds, Boolean watch) {
         super();
         this.allowWatchBookmarks = allowWatchBookmarks;
         this.apiVersion = apiVersion;
@@ -98,6 +101,7 @@ public class ListOptions implements Editable<ListOptionsBuilder>, KubernetesReso
         this.resourceVersion = resourceVersion;
         this.resourceVersionMatch = resourceVersionMatch;
         this.sendInitialEvents = sendInitialEvents;
+        this.shardSelector = shardSelector;
         this.timeoutSeconds = timeoutSeconds;
         this.watch = watch;
     }
@@ -200,6 +204,16 @@ public class ListOptions implements Editable<ListOptionsBuilder>, KubernetesReso
     @JsonProperty("sendInitialEvents")
     public void setSendInitialEvents(Boolean sendInitialEvents) {
         this.sendInitialEvents = sendInitialEvents;
+    }
+
+    @JsonProperty("shardSelector")
+    public String getShardSelector() {
+        return shardSelector;
+    }
+
+    @JsonProperty("shardSelector")
+    public void setShardSelector(String shardSelector) {
+        this.shardSelector = shardSelector;
     }
 
     @JsonProperty("timeoutSeconds")

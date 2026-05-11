@@ -32,7 +32,7 @@ import java.util.Set;
 
 public class CustomResourceInfo {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CustomResourceInfo.class);
+  private static final Logger logger = LoggerFactory.getLogger(CustomResourceInfo.class);
   public static final boolean DESCRIBE_TYPE_DEFS = false;
   private final String group;
   private final String version;
@@ -171,7 +171,7 @@ public class CustomResourceInfo {
 
       SpecAndStatus specAndStatus = Types.resolveSpecAndStatusTypes(definition);
       if (specAndStatus.isUnreliable()) {
-        LOGGER.warn(
+        logger.warn(
             "Cannot reliably determine status types for {} because it isn't parameterized with only spec and status types. Status replicas detection will be deactivated.",
             customResource.getCanonicalName());
       }

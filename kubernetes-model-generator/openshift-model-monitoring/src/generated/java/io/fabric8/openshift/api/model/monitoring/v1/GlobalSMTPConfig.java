@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
     "authPassword",
     "authSecret",
     "authUsername",
+    "forceImplicitTLS",
     "from",
     "hello",
     "requireTLS",
@@ -81,6 +82,8 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     private SecretKeySelector authSecret;
     @JsonProperty("authUsername")
     private String authUsername;
+    @JsonProperty("forceImplicitTLS")
+    private Boolean forceImplicitTLS;
     @JsonProperty("from")
     private String from;
     @JsonProperty("hello")
@@ -100,12 +103,13 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     public GlobalSMTPConfig() {
     }
 
-    public GlobalSMTPConfig(String authIdentity, SecretKeySelector authPassword, SecretKeySelector authSecret, String authUsername, String from, String hello, Boolean requireTLS, HostPort smartHost, SafeTLSConfig tlsConfig) {
+    public GlobalSMTPConfig(String authIdentity, SecretKeySelector authPassword, SecretKeySelector authSecret, String authUsername, Boolean forceImplicitTLS, String from, String hello, Boolean requireTLS, HostPort smartHost, SafeTLSConfig tlsConfig) {
         super();
         this.authIdentity = authIdentity;
         this.authPassword = authPassword;
         this.authSecret = authSecret;
         this.authUsername = authUsername;
+        this.forceImplicitTLS = forceImplicitTLS;
         this.from = from;
         this.hello = hello;
         this.requireTLS = requireTLS;
@@ -114,7 +118,7 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     }
 
     /**
-     * SMTP Auth using PLAIN
+     * authIdentity represents SMTP Auth using PLAIN
      */
     @JsonProperty("authIdentity")
     public String getAuthIdentity() {
@@ -122,7 +126,7 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     }
 
     /**
-     * SMTP Auth using PLAIN
+     * authIdentity represents SMTP Auth using PLAIN
      */
     @JsonProperty("authIdentity")
     public void setAuthIdentity(String authIdentity) {
@@ -162,7 +166,7 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     }
 
     /**
-     * SMTP Auth using CRAM-MD5, LOGIN and PLAIN. If empty, Alertmanager doesn't authenticate to the SMTP server.
+     * authUsername represents SMTP Auth using CRAM-MD5, LOGIN and PLAIN. If empty, Alertmanager doesn't authenticate to the SMTP server.
      */
     @JsonProperty("authUsername")
     public String getAuthUsername() {
@@ -170,7 +174,7 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     }
 
     /**
-     * SMTP Auth using CRAM-MD5, LOGIN and PLAIN. If empty, Alertmanager doesn't authenticate to the SMTP server.
+     * authUsername represents SMTP Auth using CRAM-MD5, LOGIN and PLAIN. If empty, Alertmanager doesn't authenticate to the SMTP server.
      */
     @JsonProperty("authUsername")
     public void setAuthUsername(String authUsername) {
@@ -178,7 +182,23 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     }
 
     /**
-     * The default SMTP From header field.
+     * forceImplicitTLS defines whether to force use of implicit TLS (direct TLS connection) for better security. true: force use of implicit TLS (direct TLS connection on any port) false: force disable implicit TLS (use explicit TLS/STARTTLS if required) nil (default): auto-detect based on port (465=implicit, other=explicit) for backward compatibility It requires Alertmanager &gt;= v0.31.0.
+     */
+    @JsonProperty("forceImplicitTLS")
+    public Boolean getForceImplicitTLS() {
+        return forceImplicitTLS;
+    }
+
+    /**
+     * forceImplicitTLS defines whether to force use of implicit TLS (direct TLS connection) for better security. true: force use of implicit TLS (direct TLS connection on any port) false: force disable implicit TLS (use explicit TLS/STARTTLS if required) nil (default): auto-detect based on port (465=implicit, other=explicit) for backward compatibility It requires Alertmanager &gt;= v0.31.0.
+     */
+    @JsonProperty("forceImplicitTLS")
+    public void setForceImplicitTLS(Boolean forceImplicitTLS) {
+        this.forceImplicitTLS = forceImplicitTLS;
+    }
+
+    /**
+     * from defines the default SMTP From header field.
      */
     @JsonProperty("from")
     public String getFrom() {
@@ -186,7 +206,7 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     }
 
     /**
-     * The default SMTP From header field.
+     * from defines the default SMTP From header field.
      */
     @JsonProperty("from")
     public void setFrom(String from) {
@@ -194,7 +214,7 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     }
 
     /**
-     * The default hostname to identify to the SMTP server.
+     * hello defines the default hostname to identify to the SMTP server.
      */
     @JsonProperty("hello")
     public String getHello() {
@@ -202,7 +222,7 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     }
 
     /**
-     * The default hostname to identify to the SMTP server.
+     * hello defines the default hostname to identify to the SMTP server.
      */
     @JsonProperty("hello")
     public void setHello(String hello) {
@@ -210,7 +230,7 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     }
 
     /**
-     * The default SMTP TLS requirement. Note that Go does not support unencrypted connections to remote SMTP endpoints.
+     * requireTLS defines the default SMTP TLS requirement. Note that Go does not support unencrypted connections to remote SMTP endpoints.
      */
     @JsonProperty("requireTLS")
     public Boolean getRequireTLS() {
@@ -218,7 +238,7 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
     }
 
     /**
-     * The default SMTP TLS requirement. Note that Go does not support unencrypted connections to remote SMTP endpoints.
+     * requireTLS defines the default SMTP TLS requirement. Note that Go does not support unencrypted connections to remote SMTP endpoints.
      */
     @JsonProperty("requireTLS")
     public void setRequireTLS(Boolean requireTLS) {

@@ -38,7 +38,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * ResourceClaim describes a request for access to resources in the cluster, for use by workloads. For example, if a workload needs an accelerator device with specific properties, this is how that request is expressed. The status stanza tracks whether this claim has been satisfied and what specific resources have been allocated.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+ * ResourceClaim describes a request for access to resources in the cluster, for use by workloads. For example, if a workload needs an accelerator device with specific properties, this is how that request is expressed. The status stanza tracks whether this claim has been satisfied and what specific resources have been allocated.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -140,7 +140,7 @@ public class ResourceClaim implements Editable<ResourceClaimBuilder>, HasMetadat
     }
 
     /**
-     * ResourceClaim describes a request for access to resources in the cluster, for use by workloads. For example, if a workload needs an accelerator device with specific properties, this is how that request is expressed. The status stanza tracks whether this claim has been satisfied and what specific resources have been allocated.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+     * ResourceClaim describes a request for access to resources in the cluster, for use by workloads. For example, if a workload needs an accelerator device with specific properties, this is how that request is expressed. The status stanza tracks whether this claim has been satisfied and what specific resources have been allocated.
      */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
@@ -148,7 +148,7 @@ public class ResourceClaim implements Editable<ResourceClaimBuilder>, HasMetadat
     }
 
     /**
-     * ResourceClaim describes a request for access to resources in the cluster, for use by workloads. For example, if a workload needs an accelerator device with specific properties, this is how that request is expressed. The status stanza tracks whether this claim has been satisfied and what specific resources have been allocated.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+     * ResourceClaim describes a request for access to resources in the cluster, for use by workloads. For example, if a workload needs an accelerator device with specific properties, this is how that request is expressed. The status stanza tracks whether this claim has been satisfied and what specific resources have been allocated.
      */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
@@ -156,7 +156,7 @@ public class ResourceClaim implements Editable<ResourceClaimBuilder>, HasMetadat
     }
 
     /**
-     * ResourceClaim describes a request for access to resources in the cluster, for use by workloads. For example, if a workload needs an accelerator device with specific properties, this is how that request is expressed. The status stanza tracks whether this claim has been satisfied and what specific resources have been allocated.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+     * ResourceClaim describes a request for access to resources in the cluster, for use by workloads. For example, if a workload needs an accelerator device with specific properties, this is how that request is expressed. The status stanza tracks whether this claim has been satisfied and what specific resources have been allocated.
      */
     @JsonProperty("spec")
     public ResourceClaimSpec getSpec() {
@@ -164,7 +164,7 @@ public class ResourceClaim implements Editable<ResourceClaimBuilder>, HasMetadat
     }
 
     /**
-     * ResourceClaim describes a request for access to resources in the cluster, for use by workloads. For example, if a workload needs an accelerator device with specific properties, this is how that request is expressed. The status stanza tracks whether this claim has been satisfied and what specific resources have been allocated.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+     * ResourceClaim describes a request for access to resources in the cluster, for use by workloads. For example, if a workload needs an accelerator device with specific properties, this is how that request is expressed. The status stanza tracks whether this claim has been satisfied and what specific resources have been allocated.
      */
     @JsonProperty("spec")
     public void setSpec(ResourceClaimSpec spec) {
@@ -172,7 +172,7 @@ public class ResourceClaim implements Editable<ResourceClaimBuilder>, HasMetadat
     }
 
     /**
-     * ResourceClaim describes a request for access to resources in the cluster, for use by workloads. For example, if a workload needs an accelerator device with specific properties, this is how that request is expressed. The status stanza tracks whether this claim has been satisfied and what specific resources have been allocated.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+     * ResourceClaim describes a request for access to resources in the cluster, for use by workloads. For example, if a workload needs an accelerator device with specific properties, this is how that request is expressed. The status stanza tracks whether this claim has been satisfied and what specific resources have been allocated.
      */
     @JsonProperty("status")
     public ResourceClaimStatus getStatus() {
@@ -180,7 +180,7 @@ public class ResourceClaim implements Editable<ResourceClaimBuilder>, HasMetadat
     }
 
     /**
-     * ResourceClaim describes a request for access to resources in the cluster, for use by workloads. For example, if a workload needs an accelerator device with specific properties, this is how that request is expressed. The status stanza tracks whether this claim has been satisfied and what specific resources have been allocated.<br><p> <br><p> This is an alpha type and requires enabling the DynamicResourceAllocation feature gate.
+     * ResourceClaim describes a request for access to resources in the cluster, for use by workloads. For example, if a workload needs an accelerator device with specific properties, this is how that request is expressed. The status stanza tracks whether this claim has been satisfied and what specific resources have been allocated.
      */
     @JsonProperty("status")
     public void setStatus(ResourceClaimStatus status) {

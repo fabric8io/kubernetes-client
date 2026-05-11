@@ -86,7 +86,7 @@ public class PagerDutyLinkConfig implements Editable<PagerDutyLinkConfigBuilder>
     }
 
     /**
-     * Text that describes the purpose of the link, and can be used as the link's text.
+     * alt defines the text that describes the purpose of the link, and can be used as the link's text.
      */
     @JsonProperty("alt")
     public String getAlt() {
@@ -94,7 +94,7 @@ public class PagerDutyLinkConfig implements Editable<PagerDutyLinkConfigBuilder>
     }
 
     /**
-     * Text that describes the purpose of the link, and can be used as the link's text.
+     * alt defines the text that describes the purpose of the link, and can be used as the link's text.
      */
     @JsonProperty("alt")
     public void setAlt(String alt) {
@@ -102,7 +102,7 @@ public class PagerDutyLinkConfig implements Editable<PagerDutyLinkConfigBuilder>
     }
 
     /**
-     * Href is the URL of the link to be attached
+     * href defines the URL of the link to be attached
      */
     @JsonProperty("href")
     public String getHref() {
@@ -110,7 +110,7 @@ public class PagerDutyLinkConfig implements Editable<PagerDutyLinkConfigBuilder>
     }
 
     /**
-     * Href is the URL of the link to be attached
+     * href defines the URL of the link to be attached
      */
     @JsonProperty("href")
     public void setHref(String href) {

@@ -89,7 +89,7 @@ public class FileSDConfig implements Editable<FileSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * List of files to be used for file discovery. Recommendation: use absolute paths. While relative paths work, the prometheus-operator project makes no guarantees about the working directory where the configuration file is stored. Files must be mounted using Prometheus.ConfigMaps or Prometheus.Secrets.
+     * files defines the list of files to be used for file discovery. Recommendation: use absolute paths. While relative paths work, the prometheus-operator project makes no guarantees about the working directory where the configuration file is stored. Files must be mounted using Prometheus.ConfigMaps or Prometheus.Secrets.
      */
     @JsonProperty("files")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -98,7 +98,7 @@ public class FileSDConfig implements Editable<FileSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * List of files to be used for file discovery. Recommendation: use absolute paths. While relative paths work, the prometheus-operator project makes no guarantees about the working directory where the configuration file is stored. Files must be mounted using Prometheus.ConfigMaps or Prometheus.Secrets.
+     * files defines the list of files to be used for file discovery. Recommendation: use absolute paths. While relative paths work, the prometheus-operator project makes no guarantees about the working directory where the configuration file is stored. Files must be mounted using Prometheus.ConfigMaps or Prometheus.Secrets.
      */
     @JsonProperty("files")
     public void setFiles(List<String> files) {
@@ -106,7 +106,7 @@ public class FileSDConfig implements Editable<FileSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * RefreshInterval configures the refresh interval at which Prometheus will reload the content of the files.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
@@ -114,7 +114,7 @@ public class FileSDConfig implements Editable<FileSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * RefreshInterval configures the refresh interval at which Prometheus will reload the content of the files.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {

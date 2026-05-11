@@ -33,7 +33,7 @@ import java.util.stream.Stream;
  */
 final class ContainerUtil {
 
-  private static final Logger LOGGER = StatusLogger.getLogger();
+  private static final Logger logger = StatusLogger.getLogger();
   private static final Pattern DOCKER_ID_PATTERN = Pattern.compile("[0-9a-fA-F]{64}");
   static final Path CGROUP_PATH = Paths.get("/proc/self/cgroup");
 
@@ -61,13 +61,13 @@ final class ContainerUtil {
               .filter(Objects::nonNull)
               .findFirst()
               .orElse(null);
-          LOGGER.debug("Found container id {}", id);
+          logger.debug("Found container id {}", id);
           return id;
         }
       }
-      LOGGER.warn("Unable to access container information");
+      logger.warn("Unable to access container information");
     } catch (IOException ioe) {
-      LOGGER.warn("Error obtaining container id: {}", ioe.getMessage());
+      logger.warn("Error obtaining container id: {}", ioe.getMessage());
     }
     return null;
   }

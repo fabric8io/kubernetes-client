@@ -34,7 +34,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * VenafiCloud defines connection configuration details for Venafi Cloud
+ * VenafiCloud defines connection configuration details for CyberArk Certificate Manager SaaS
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -87,7 +87,7 @@ public class VenafiCloud implements Editable<VenafiCloudBuilder>, KubernetesReso
     }
 
     /**
-     * VenafiCloud defines connection configuration details for Venafi Cloud
+     * VenafiCloud defines connection configuration details for CyberArk Certificate Manager SaaS
      */
     @JsonProperty("apiTokenSecretRef")
     public SecretKeySelector getApiTokenSecretRef() {
@@ -95,7 +95,7 @@ public class VenafiCloud implements Editable<VenafiCloudBuilder>, KubernetesReso
     }
 
     /**
-     * VenafiCloud defines connection configuration details for Venafi Cloud
+     * VenafiCloud defines connection configuration details for CyberArk Certificate Manager SaaS
      */
     @JsonProperty("apiTokenSecretRef")
     public void setApiTokenSecretRef(SecretKeySelector apiTokenSecretRef) {
@@ -103,7 +103,7 @@ public class VenafiCloud implements Editable<VenafiCloudBuilder>, KubernetesReso
     }
 
     /**
-     * URL is the base URL for Venafi Cloud. Defaults to "https://api.venafi.cloud/".
+     * URL is the base URL for CyberArk Certificate Manager SaaS. Defaults to "https://api.venafi.cloud/".
      */
     @JsonProperty("url")
     public String getUrl() {
@@ -111,7 +111,7 @@ public class VenafiCloud implements Editable<VenafiCloudBuilder>, KubernetesReso
     }
 
     /**
-     * URL is the base URL for Venafi Cloud. Defaults to "https://api.venafi.cloud/".
+     * URL is the base URL for CyberArk Certificate Manager SaaS. Defaults to "https://api.venafi.cloud/".
      */
     @JsonProperty("url")
     public void setUrl(String url) {

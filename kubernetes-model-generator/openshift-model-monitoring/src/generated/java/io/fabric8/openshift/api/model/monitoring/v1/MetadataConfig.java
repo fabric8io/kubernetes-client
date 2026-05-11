@@ -89,7 +89,7 @@ public class MetadataConfig implements Editable<MetadataConfigBuilder>, Kubernet
     }
 
     /**
-     * MaxSamplesPerSend is the maximum number of metadata samples per send.<br><p> <br><p> It requires Prometheus &gt;= v2.29.0.
+     * maxSamplesPerSend defines the maximum number of metadata samples per send.<br><p> <br><p> It requires Prometheus &gt;= v2.29.0.
      */
     @JsonProperty("maxSamplesPerSend")
     public Integer getMaxSamplesPerSend() {
@@ -97,7 +97,7 @@ public class MetadataConfig implements Editable<MetadataConfigBuilder>, Kubernet
     }
 
     /**
-     * MaxSamplesPerSend is the maximum number of metadata samples per send.<br><p> <br><p> It requires Prometheus &gt;= v2.29.0.
+     * maxSamplesPerSend defines the maximum number of metadata samples per send.<br><p> <br><p> It requires Prometheus &gt;= v2.29.0.
      */
     @JsonProperty("maxSamplesPerSend")
     public void setMaxSamplesPerSend(Integer maxSamplesPerSend) {
@@ -105,7 +105,7 @@ public class MetadataConfig implements Editable<MetadataConfigBuilder>, Kubernet
     }
 
     /**
-     * Defines whether metric metadata is sent to the remote storage or not.
+     * send defines whether metric metadata is sent to the remote storage or not.
      */
     @JsonProperty("send")
     public Boolean getSend() {
@@ -113,7 +113,7 @@ public class MetadataConfig implements Editable<MetadataConfigBuilder>, Kubernet
     }
 
     /**
-     * Defines whether metric metadata is sent to the remote storage or not.
+     * send defines whether metric metadata is sent to the remote storage or not.
      */
     @JsonProperty("send")
     public void setSend(Boolean send) {
@@ -121,7 +121,7 @@ public class MetadataConfig implements Editable<MetadataConfigBuilder>, Kubernet
     }
 
     /**
-     * Defines how frequently metric metadata is sent to the remote storage.
+     * sendInterval defines how frequently metric metadata is sent to the remote storage.
      */
     @JsonProperty("sendInterval")
     public String getSendInterval() {
@@ -129,7 +129,7 @@ public class MetadataConfig implements Editable<MetadataConfigBuilder>, Kubernet
     }
 
     /**
-     * Defines how frequently metric metadata is sent to the remote storage.
+     * sendInterval defines how frequently metric metadata is sent to the remote storage.
      */
     @JsonProperty("sendInterval")
     public void setSendInterval(String sendInterval) {

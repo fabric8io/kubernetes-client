@@ -120,5 +120,17 @@ spec:
                     - type: string
                   x-kubernetes-int-or-string: true
                   default: 11
+                sixteen:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                      - "all"
+                      - "foo"
+                      - "bar"
+                      - "baz"
+                  default:
+                    - "all"
+
       served: true
       storage: true

@@ -46,7 +46,9 @@ import lombok.experimental.Accessors;
     "controlledValues",
     "maxAllowed",
     "minAllowed",
-    "mode"
+    "mode",
+    "oomBumpUpRatio",
+    "oomMinBumpUp"
 })
 @ToString
 @EqualsAndHashCode
@@ -88,6 +90,10 @@ public class ContainerResourcePolicy implements Editable<ContainerResourcePolicy
     private Map<String, Quantity> minAllowed = new LinkedHashMap<>();
     @JsonProperty("mode")
     private String mode;
+    @JsonProperty("oomBumpUpRatio")
+    private Quantity oomBumpUpRatio;
+    @JsonProperty("oomMinBumpUp")
+    private Quantity oomMinBumpUp;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -97,7 +103,7 @@ public class ContainerResourcePolicy implements Editable<ContainerResourcePolicy
     public ContainerResourcePolicy() {
     }
 
-    public ContainerResourcePolicy(String containerName, List<String> controlledResources, String controlledValues, Map<String, Quantity> maxAllowed, Map<String, Quantity> minAllowed, String mode) {
+    public ContainerResourcePolicy(String containerName, List<String> controlledResources, String controlledValues, Map<String, Quantity> maxAllowed, Map<String, Quantity> minAllowed, String mode, Quantity oomBumpUpRatio, Quantity oomMinBumpUp) {
         super();
         this.containerName = containerName;
         this.controlledResources = controlledResources;
@@ -105,6 +111,8 @@ public class ContainerResourcePolicy implements Editable<ContainerResourcePolicy
         this.maxAllowed = maxAllowed;
         this.minAllowed = minAllowed;
         this.mode = mode;
+        this.oomBumpUpRatio = oomBumpUpRatio;
+        this.oomMinBumpUp = oomMinBumpUp;
     }
 
     /**
@@ -204,6 +212,38 @@ public class ContainerResourcePolicy implements Editable<ContainerResourcePolicy
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;
+    }
+
+    /**
+     * ContainerResourcePolicy controls how autoscaler computes the recommended resources for a specific container.
+     */
+    @JsonProperty("oomBumpUpRatio")
+    public Quantity getOomBumpUpRatio() {
+        return oomBumpUpRatio;
+    }
+
+    /**
+     * ContainerResourcePolicy controls how autoscaler computes the recommended resources for a specific container.
+     */
+    @JsonProperty("oomBumpUpRatio")
+    public void setOomBumpUpRatio(Quantity oomBumpUpRatio) {
+        this.oomBumpUpRatio = oomBumpUpRatio;
+    }
+
+    /**
+     * ContainerResourcePolicy controls how autoscaler computes the recommended resources for a specific container.
+     */
+    @JsonProperty("oomMinBumpUp")
+    public Quantity getOomMinBumpUp() {
+        return oomMinBumpUp;
+    }
+
+    /**
+     * ContainerResourcePolicy controls how autoscaler computes the recommended resources for a specific container.
+     */
+    @JsonProperty("oomMinBumpUp")
+    public void setOomMinBumpUp(Quantity oomMinBumpUp) {
+        this.oomMinBumpUp = oomMinBumpUp;
     }
 
     @JsonIgnore

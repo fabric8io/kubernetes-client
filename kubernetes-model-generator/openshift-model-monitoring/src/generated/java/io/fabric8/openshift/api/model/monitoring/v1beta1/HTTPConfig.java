@@ -47,6 +47,7 @@ import lombok.experimental.Accessors;
     "authorization",
     "basicAuth",
     "bearerTokenSecret",
+    "enableHttp2",
     "followRedirects",
     "noProxy",
     "oauth2",
@@ -87,6 +88,8 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     private BasicAuth basicAuth;
     @JsonProperty("bearerTokenSecret")
     private SecretKeySelector bearerTokenSecret;
+    @JsonProperty("enableHttp2")
+    private Boolean enableHttp2;
     @JsonProperty("followRedirects")
     private Boolean followRedirects;
     @JsonProperty("noProxy")
@@ -113,11 +116,12 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     public HTTPConfig() {
     }
 
-    public HTTPConfig(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean followRedirects, String noProxy, OAuth2 oauth2, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyURL, String proxyUrl, SafeTLSConfig tlsConfig) {
+    public HTTPConfig(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean enableHttp2, Boolean followRedirects, String noProxy, OAuth2 oauth2, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyURL, String proxyUrl, SafeTLSConfig tlsConfig) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
         this.bearerTokenSecret = bearerTokenSecret;
+        this.enableHttp2 = enableHttp2;
         this.followRedirects = followRedirects;
         this.noProxy = noProxy;
         this.oauth2 = oauth2;
@@ -177,7 +181,23 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * FollowRedirects specifies whether the client should follow HTTP 3xx redirects.
+     * enableHttp2 can be used to disable HTTP2.
+     */
+    @JsonProperty("enableHttp2")
+    public Boolean getEnableHttp2() {
+        return enableHttp2;
+    }
+
+    /**
+     * enableHttp2 can be used to disable HTTP2.
+     */
+    @JsonProperty("enableHttp2")
+    public void setEnableHttp2(Boolean enableHttp2) {
+        this.enableHttp2 = enableHttp2;
+    }
+
+    /**
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects. When true, the client will automatically follow redirect responses.
      */
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
@@ -185,7 +205,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * FollowRedirects specifies whether the client should follow HTTP 3xx redirects.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects. When true, the client will automatically follow redirect responses.
      */
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
@@ -193,7 +213,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -201,7 +221,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -225,7 +245,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -234,7 +254,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -242,7 +262,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -250,7 +270,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
@@ -258,7 +278,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * Optional proxy URL.<br><p> <br><p> If defined, this field takes precedence over `proxyUrl`.
+     * proxyURL defines an optional proxy URL for HTTP requests. If defined, this field takes precedence over `proxyUrl`.
      */
     @JsonProperty("proxyURL")
     public String getProxyURL() {
@@ -266,7 +286,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * Optional proxy URL.<br><p> <br><p> If defined, this field takes precedence over `proxyUrl`.
+     * proxyURL defines an optional proxy URL for HTTP requests. If defined, this field takes precedence over `proxyUrl`.
      */
     @JsonProperty("proxyURL")
     public void setProxyURL(String proxyURL) {
@@ -274,7 +294,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
@@ -282,7 +302,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {

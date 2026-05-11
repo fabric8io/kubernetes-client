@@ -89,7 +89,7 @@ public class MuteTimeInterval implements Editable<MuteTimeIntervalBuilder>, Kube
     }
 
     /**
-     * Name of the time interval
+     * name of the time interval
      */
     @JsonProperty("name")
     public String getName() {
@@ -97,7 +97,7 @@ public class MuteTimeInterval implements Editable<MuteTimeIntervalBuilder>, Kube
     }
 
     /**
-     * Name of the time interval
+     * name of the time interval
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -105,7 +105,7 @@ public class MuteTimeInterval implements Editable<MuteTimeIntervalBuilder>, Kube
     }
 
     /**
-     * TimeIntervals is a list of TimeInterval
+     * timeIntervals defines a list of TimeInterval
      */
     @JsonProperty("timeIntervals")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -114,7 +114,7 @@ public class MuteTimeInterval implements Editable<MuteTimeIntervalBuilder>, Kube
     }
 
     /**
-     * TimeIntervals is a list of TimeInterval
+     * timeIntervals defines a list of TimeInterval
      */
     @JsonProperty("timeIntervals")
     public void setTimeIntervals(List<TimeInterval> timeIntervals) {

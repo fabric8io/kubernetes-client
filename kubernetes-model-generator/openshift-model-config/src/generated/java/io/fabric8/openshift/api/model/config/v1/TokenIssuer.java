@@ -89,7 +89,7 @@ public class TokenIssuer implements Editable<TokenIssuerBuilder>, KubernetesReso
     }
 
     /**
-     * audiences is an array of audiences that the token was issued for. Valid tokens must include at least one of these values in their "aud" claim. Must be set to exactly one value.
+     * audiences is a required field that configures the acceptable audiences the JWT token, issued by the identity provider, must be issued to. At least one of the entries must match the 'aud' claim in the JWT token.<br><p> <br><p> audiences must contain at least one entry and must not exceed ten entries.
      */
     @JsonProperty("audiences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -98,7 +98,7 @@ public class TokenIssuer implements Editable<TokenIssuerBuilder>, KubernetesReso
     }
 
     /**
-     * audiences is an array of audiences that the token was issued for. Valid tokens must include at least one of these values in their "aud" claim. Must be set to exactly one value.
+     * audiences is a required field that configures the acceptable audiences the JWT token, issued by the identity provider, must be issued to. At least one of the entries must match the 'aud' claim in the JWT token.<br><p> <br><p> audiences must contain at least one entry and must not exceed ten entries.
      */
     @JsonProperty("audiences")
     public void setAudiences(List<String> audiences) {
@@ -116,7 +116,7 @@ public class TokenIssuer implements Editable<TokenIssuerBuilder>, KubernetesReso
     }
 
     /**
-     * URL is the serving URL of the token issuer. Must use the https:// scheme.
+     * issuerURL is a required field that configures the URL used to issue tokens by the identity provider. The Kubernetes API server determines how authentication tokens should be handled by matching the 'iss' claim in the JWT to the issuerURL of configured identity providers.<br><p> <br><p> Must be at least 1 character and must not exceed 512 characters in length. Must be a valid URL that uses the 'https' scheme and does not contain a query, fragment or user.
      */
     @JsonProperty("issuerURL")
     public String getIssuerURL() {
@@ -124,7 +124,7 @@ public class TokenIssuer implements Editable<TokenIssuerBuilder>, KubernetesReso
     }
 
     /**
-     * URL is the serving URL of the token issuer. Must use the https:// scheme.
+     * issuerURL is a required field that configures the URL used to issue tokens by the identity provider. The Kubernetes API server determines how authentication tokens should be handled by matching the 'iss' claim in the JWT to the issuerURL of configured identity providers.<br><p> <br><p> Must be at least 1 character and must not exceed 512 characters in length. Must be a valid URL that uses the 'https' scheme and does not contain a query, fragment or user.
      */
     @JsonProperty("issuerURL")
     public void setIssuerURL(String issuerURL) {

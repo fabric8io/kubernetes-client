@@ -26,7 +26,7 @@ import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class PodSecurityPolicyReviewTest {
   private OpenShiftClient client;
   KubernetesMockServer server;

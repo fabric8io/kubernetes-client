@@ -173,7 +173,7 @@ public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Client id is used by Kuma Control Plane to compute Monitoring Assignment for specific Prometheus backend.
+     * clientID is used by Kuma Control Plane to compute Monitoring Assignment for specific Prometheus backend. It requires Prometheus &gt;= v2.50.0.
      */
     @JsonProperty("clientID")
     public String getClientID() {
@@ -181,7 +181,7 @@ public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Client id is used by Kuma Control Plane to compute Monitoring Assignment for specific Prometheus backend.
+     * clientID is used by Kuma Control Plane to compute Monitoring Assignment for specific Prometheus backend. It requires Prometheus &gt;= v2.50.0.
      */
     @JsonProperty("clientID")
     public void setClientID(String clientID) {
@@ -189,7 +189,7 @@ public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public Boolean getEnableHTTP2() {
@@ -197,7 +197,7 @@ public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public void setEnableHTTP2(Boolean enableHTTP2) {
@@ -205,7 +205,7 @@ public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * The time after which the monitoring assignments are refreshed.
+     * fetchTimeout defines the time after which the monitoring assignments are refreshed.
      */
     @JsonProperty("fetchTimeout")
     public String getFetchTimeout() {
@@ -213,7 +213,7 @@ public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * The time after which the monitoring assignments are refreshed.
+     * fetchTimeout defines the time after which the monitoring assignments are refreshed.
      */
     @JsonProperty("fetchTimeout")
     public void setFetchTimeout(String fetchTimeout) {
@@ -221,7 +221,7 @@ public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
@@ -229,7 +229,7 @@ public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
@@ -237,7 +237,7 @@ public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -245,7 +245,7 @@ public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -269,7 +269,7 @@ public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -278,7 +278,7 @@ public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -286,7 +286,7 @@ public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -294,7 +294,7 @@ public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
@@ -302,7 +302,7 @@ public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
@@ -310,7 +310,7 @@ public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
@@ -318,7 +318,7 @@ public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * The time to wait between polling update requests.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
@@ -326,7 +326,7 @@ public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * The time to wait between polling update requests.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
@@ -334,7 +334,7 @@ public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Address of the Kuma Control Plane's MADS xDS server.
+     * server defines the address of the Kuma Control Plane's MADS xDS server.
      */
     @JsonProperty("server")
     public String getServer() {
@@ -342,7 +342,7 @@ public class KumaSDConfig implements Editable<KumaSDConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Address of the Kuma Control Plane's MADS xDS server.
+     * server defines the address of the Kuma Control Plane's MADS xDS server.
      */
     @JsonProperty("server")
     public void setServer(String server) {

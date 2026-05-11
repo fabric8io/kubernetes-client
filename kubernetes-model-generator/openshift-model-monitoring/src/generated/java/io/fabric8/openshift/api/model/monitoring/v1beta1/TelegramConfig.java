@@ -118,7 +118,7 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder>, Kubernet
     }
 
     /**
-     * The Telegram API URL i.e. https://api.telegram.org. If not specified, default API URL will be used.
+     * apiURL defines the Telegram API URL, e.g. https://api.telegram.org. If not specified, the default Telegram API URL will be used.
      */
     @JsonProperty("apiURL")
     public String getApiURL() {
@@ -126,7 +126,7 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder>, Kubernet
     }
 
     /**
-     * The Telegram API URL i.e. https://api.telegram.org. If not specified, default API URL will be used.
+     * apiURL defines the Telegram API URL, e.g. https://api.telegram.org. If not specified, the default Telegram API URL will be used.
      */
     @JsonProperty("apiURL")
     public void setApiURL(String apiURL) {
@@ -150,7 +150,7 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder>, Kubernet
     }
 
     /**
-     * File to read the Telegram bot token from. It is mutually exclusive with `botToken`. Either `botToken` or `botTokenFile` is required.<br><p> <br><p> It requires Alertmanager &gt;= v0.26.0.
+     * botTokenFile defines the file to read the Telegram bot token from. It is mutually exclusive with `botToken`. Either `botToken` or `botTokenFile` is required. It requires Alertmanager &gt;= v0.26.0.
      */
     @JsonProperty("botTokenFile")
     public String getBotTokenFile() {
@@ -158,7 +158,7 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder>, Kubernet
     }
 
     /**
-     * File to read the Telegram bot token from. It is mutually exclusive with `botToken`. Either `botToken` or `botTokenFile` is required.<br><p> <br><p> It requires Alertmanager &gt;= v0.26.0.
+     * botTokenFile defines the file to read the Telegram bot token from. It is mutually exclusive with `botToken`. Either `botToken` or `botTokenFile` is required. It requires Alertmanager &gt;= v0.26.0.
      */
     @JsonProperty("botTokenFile")
     public void setBotTokenFile(String botTokenFile) {
@@ -166,7 +166,7 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder>, Kubernet
     }
 
     /**
-     * The Telegram chat ID.
+     * chatID defines the Telegram chat ID where messages will be sent. This can be a user ID, group ID, or channel ID (with @ prefix for public channels).
      */
     @JsonProperty("chatID")
     public Long getChatID() {
@@ -174,7 +174,7 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder>, Kubernet
     }
 
     /**
-     * The Telegram chat ID.
+     * chatID defines the Telegram chat ID where messages will be sent. This can be a user ID, group ID, or channel ID (with @ prefix for public channels).
      */
     @JsonProperty("chatID")
     public void setChatID(Long chatID) {
@@ -182,7 +182,7 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder>, Kubernet
     }
 
     /**
-     * Disable telegram notifications
+     * disableNotifications controls whether Telegram notifications are sent silently. When true, users will receive the message without notification sounds.
      */
     @JsonProperty("disableNotifications")
     public Boolean getDisableNotifications() {
@@ -190,7 +190,7 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder>, Kubernet
     }
 
     /**
-     * Disable telegram notifications
+     * disableNotifications controls whether Telegram notifications are sent silently. When true, users will receive the message without notification sounds.
      */
     @JsonProperty("disableNotifications")
     public void setDisableNotifications(Boolean disableNotifications) {
@@ -214,7 +214,7 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder>, Kubernet
     }
 
     /**
-     * Message template
+     * message defines the message template for the Telegram notification. This is the content that will be sent to the specified chat.
      */
     @JsonProperty("message")
     public String getMessage() {
@@ -222,7 +222,7 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder>, Kubernet
     }
 
     /**
-     * Message template
+     * message defines the message template for the Telegram notification. This is the content that will be sent to the specified chat.
      */
     @JsonProperty("message")
     public void setMessage(String message) {
@@ -230,7 +230,7 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder>, Kubernet
     }
 
     /**
-     * The Telegram Group Topic ID. It requires Alertmanager &gt;= 0.26.0.
+     * messageThreadID defines the Telegram Group Topic ID for threaded messages. This allows sending messages to specific topics within Telegram groups. It requires Alertmanager &gt;= 0.26.0.
      */
     @JsonProperty("messageThreadID")
     public Long getMessageThreadID() {
@@ -238,7 +238,7 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder>, Kubernet
     }
 
     /**
-     * The Telegram Group Topic ID. It requires Alertmanager &gt;= 0.26.0.
+     * messageThreadID defines the Telegram Group Topic ID for threaded messages. This allows sending messages to specific topics within Telegram groups. It requires Alertmanager &gt;= 0.26.0.
      */
     @JsonProperty("messageThreadID")
     public void setMessageThreadID(Long messageThreadID) {
@@ -246,7 +246,7 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder>, Kubernet
     }
 
     /**
-     * Parse mode for telegram message
+     * parseMode defines the parse mode for telegram message formatting. Valid values are "MarkdownV2", "Markdown", and "HTML". This determines how text formatting is interpreted in the message.
      */
     @JsonProperty("parseMode")
     public String getParseMode() {
@@ -254,7 +254,7 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder>, Kubernet
     }
 
     /**
-     * Parse mode for telegram message
+     * parseMode defines the parse mode for telegram message formatting. Valid values are "MarkdownV2", "Markdown", and "HTML". This determines how text formatting is interpreted in the message.
      */
     @JsonProperty("parseMode")
     public void setParseMode(String parseMode) {
@@ -262,7 +262,7 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder>, Kubernet
     }
 
     /**
-     * Whether to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
@@ -270,7 +270,7 @@ public class TelegramConfig implements Editable<TelegramConfigBuilder>, Kubernet
     }
 
     /**
-     * Whether to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {

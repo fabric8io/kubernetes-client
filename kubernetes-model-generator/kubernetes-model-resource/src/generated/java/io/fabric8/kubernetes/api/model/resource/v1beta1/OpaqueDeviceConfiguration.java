@@ -87,7 +87,7 @@ public class OpaqueDeviceConfiguration implements Editable<OpaqueDeviceConfigura
     }
 
     /**
-     * Driver is used to determine which kubelet plugin needs to be passed these configuration parameters.<br><p> <br><p> An admission policy provided by the driver developer could use this to decide whether it needs to validate them.<br><p> <br><p> Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver.
+     * Driver is used to determine which kubelet plugin needs to be passed these configuration parameters.<br><p> <br><p> An admission policy provided by the driver developer could use this to decide whether it needs to validate them.<br><p> <br><p> Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. It should use only lower case characters.
      */
     @JsonProperty("driver")
     public String getDriver() {
@@ -95,7 +95,7 @@ public class OpaqueDeviceConfiguration implements Editable<OpaqueDeviceConfigura
     }
 
     /**
-     * Driver is used to determine which kubelet plugin needs to be passed these configuration parameters.<br><p> <br><p> An admission policy provided by the driver developer could use this to decide whether it needs to validate them.<br><p> <br><p> Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver.
+     * Driver is used to determine which kubelet plugin needs to be passed these configuration parameters.<br><p> <br><p> An admission policy provided by the driver developer could use this to decide whether it needs to validate them.<br><p> <br><p> Must be a DNS subdomain and should end with a DNS domain owned by the vendor of the driver. It should use only lower case characters.
      */
     @JsonProperty("driver")
     public void setDriver(String driver) {

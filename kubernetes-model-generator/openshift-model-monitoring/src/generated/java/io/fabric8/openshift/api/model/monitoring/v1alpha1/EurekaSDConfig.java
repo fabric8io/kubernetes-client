@@ -165,7 +165,7 @@ public class EurekaSDConfig implements Editable<EurekaSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public Boolean getEnableHTTP2() {
@@ -173,7 +173,7 @@ public class EurekaSDConfig implements Editable<EurekaSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public void setEnableHTTP2(Boolean enableHTTP2) {
@@ -181,7 +181,7 @@ public class EurekaSDConfig implements Editable<EurekaSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
@@ -189,7 +189,7 @@ public class EurekaSDConfig implements Editable<EurekaSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
@@ -197,7 +197,7 @@ public class EurekaSDConfig implements Editable<EurekaSDConfigBuilder>, Kubernet
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -205,7 +205,7 @@ public class EurekaSDConfig implements Editable<EurekaSDConfigBuilder>, Kubernet
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -229,7 +229,7 @@ public class EurekaSDConfig implements Editable<EurekaSDConfigBuilder>, Kubernet
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -238,7 +238,7 @@ public class EurekaSDConfig implements Editable<EurekaSDConfigBuilder>, Kubernet
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -246,7 +246,7 @@ public class EurekaSDConfig implements Editable<EurekaSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -254,7 +254,7 @@ public class EurekaSDConfig implements Editable<EurekaSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
@@ -262,7 +262,7 @@ public class EurekaSDConfig implements Editable<EurekaSDConfigBuilder>, Kubernet
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
@@ -270,7 +270,7 @@ public class EurekaSDConfig implements Editable<EurekaSDConfigBuilder>, Kubernet
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
@@ -278,7 +278,7 @@ public class EurekaSDConfig implements Editable<EurekaSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Refresh interval to re-read the instance list.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
@@ -286,7 +286,7 @@ public class EurekaSDConfig implements Editable<EurekaSDConfigBuilder>, Kubernet
     }
 
     /**
-     * Refresh interval to re-read the instance list.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
@@ -294,7 +294,7 @@ public class EurekaSDConfig implements Editable<EurekaSDConfigBuilder>, Kubernet
     }
 
     /**
-     * The URL to connect to the Eureka server.
+     * server defines the URL to connect to the Eureka server.
      */
     @JsonProperty("server")
     public String getServer() {
@@ -302,7 +302,7 @@ public class EurekaSDConfig implements Editable<EurekaSDConfigBuilder>, Kubernet
     }
 
     /**
-     * The URL to connect to the Eureka server.
+     * server defines the URL to connect to the Eureka server.
      */
     @JsonProperty("server")
     public void setServer(String server) {

@@ -1,0 +1,86 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: Cancel PR Workflows
+description: Cancels all other in-progress and queued workflow runs for the same PR commit
+
+# Purpose:
+#   Prerequisite workflows (style-checks, generate-model) are fast checks that must pass before
+#   any PR is mergeable. When a prereq fails, there's no point running expensive workflows
+#   (build, e2e tests, etc.) since the PR will need changes regardless. This action cancels all
+#   other in-progress and queued workflow runs for the same PR commit to save CI resources.
+#
+# Usage:
+#   Add a "cancel-on-failure" job to any prerequisite workflow:
+#
+#     cancel-on-failure:
+#       name: Cancel PR workflows on failure
+#       runs-on: ubuntu-latest
+#       if: ${{ failure() && github.event_name == 'pull_request' }}
+#       needs: [<prereq-job>]
+#       steps:
+#         - uses: actions/checkout@v6
+#         - uses: ./.github/actions/cancel-pr-workflows
+#
+#   The calling workflow needs `actions: write` permission.
+#
+# Design notes:
+# - Only prereq workflows use this action. Other workflows should NOT use it — only checks that
+#   are true prerequisites (i.e., the PR can never merge if they fail) should cancel other work.
+# - Race condition between prereqs is benign: if both style-checks and generate-model fail at
+#   the same time, each cancel-on-failure job may try to cancel the other. The try/catch ensures
+#   this doesn't cause errors (the run may have already completed or been cancelled).
+# - There is a small race window where heavy workflows may run briefly before being cancelled,
+#   since all PR workflows start in parallel. This is acceptable given the prereqs are fast.
+# - The job-level `if` should include `github.event_name == 'pull_request'` to avoid spinning up
+#   a runner on push-to-main failures (where cancellation is not needed).
+
+runs:
+  using: composite
+  steps:
+    - name: Cancel other workflow runs
+      if: ${{ github.event_name == 'pull_request' }}
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const owner = context.repo.owner;
+          const repo = context.repo.repo;
+          const headSha = context.payload.pull_request.head.sha;
+          const currentRunId = context.runId;
+
+          for (const status of ['in_progress', 'queued']) {
+            const { data: { workflow_runs } } = await github.rest.actions.listWorkflowRunsForRepo({
+              owner,
+              repo,
+              head_sha: headSha,
+              status,
+            });
+
+            for (const run of workflow_runs) {
+              if (run.id !== currentRunId) {
+                console.log(`Cancelling ${status} run ${run.id} (${run.name})`);
+                try {
+                  await github.rest.actions.cancelWorkflowRun({
+                    owner,
+                    repo,
+                    run_id: run.id,
+                  });
+                } catch (e) {
+                  console.log(`Failed to cancel run ${run.id}: ${e.message}`);
+                }
+              }
+            }
+          }

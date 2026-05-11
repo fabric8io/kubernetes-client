@@ -81,7 +81,7 @@ public class AzureSDK implements Editable<AzureSDKBuilder>, KubernetesResource
     }
 
     /**
-     * `tenantId` is the tenant ID of the azure active directory application that is being used to authenticate.
+     * tenantId defines the tenant ID of the azure active directory application that is being used to authenticate.
      */
     @JsonProperty("tenantId")
     public String getTenantId() {
@@ -89,7 +89,7 @@ public class AzureSDK implements Editable<AzureSDKBuilder>, KubernetesResource
     }
 
     /**
-     * `tenantId` is the tenant ID of the azure active directory application that is being used to authenticate.
+     * tenantId defines the tenant ID of the azure active directory application that is being used to authenticate.
      */
     @JsonProperty("tenantId")
     public void setTenantId(String tenantId) {

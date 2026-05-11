@@ -94,7 +94,7 @@ public class Image implements Editable<ImageBuilder>, KubernetesResource
     }
 
     /**
-     * Checksum is the checksum for the image. Required for all formats except for "live-iso".
+     * Checksum is the checksum for the image. Required for all formats except for "live-iso" and OCI images (oci://).
      */
     @JsonProperty("checksum")
     public String getChecksum() {
@@ -102,7 +102,7 @@ public class Image implements Editable<ImageBuilder>, KubernetesResource
     }
 
     /**
-     * Checksum is the checksum for the image. Required for all formats except for "live-iso".
+     * Checksum is the checksum for the image. Required for all formats except for "live-iso" and OCI images (oci://).
      */
     @JsonProperty("checksum")
     public void setChecksum(String checksum) {

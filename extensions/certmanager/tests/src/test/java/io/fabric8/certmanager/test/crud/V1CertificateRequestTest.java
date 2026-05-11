@@ -15,7 +15,7 @@
  */
 package io.fabric8.certmanager.test.crud;
 
-import io.fabric8.certmanager.api.model.meta.v1.ObjectReferenceBuilder;
+import io.fabric8.certmanager.api.model.meta.v1.IssuerReferenceBuilder;
 import io.fabric8.certmanager.api.model.v1.CertificateRequest;
 import io.fabric8.certmanager.api.model.v1.CertificateRequestBuilder;
 import io.fabric8.certmanager.client.CertManagerClient;
@@ -60,7 +60,7 @@ class V1CertificateRequestTest {
         .withIsCA(false)
         .addToUsages("signing", "digital signature", "server auth")
         .withDuration(Duration.parse("90d"))
-        .withIssuerRef(new ObjectReferenceBuilder()
+        .withIssuerRef(new IssuerReferenceBuilder()
             .withName("ca-issuer")
             .withKind("Issuer")
             .withGroup("cert-manager.io")

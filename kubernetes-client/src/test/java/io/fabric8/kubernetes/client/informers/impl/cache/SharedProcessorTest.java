@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SharedProcessorTest {
@@ -59,7 +60,7 @@ class SharedProcessorTest {
     ProcessorListener.Notification<Pod> addNotification = new ProcessorListener.AddNotification<>(foo1);
 
     // nothing should happen
-    sharedProcessor.distribute(addNotification, false);
+    assertDoesNotThrow(() -> sharedProcessor.distribute(addNotification, false));
   }
 
   private static class ExpectingNotificationHandler<T> extends ProcessorListener<T> {

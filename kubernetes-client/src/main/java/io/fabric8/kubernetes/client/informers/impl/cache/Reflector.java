@@ -41,7 +41,7 @@ import java.util.function.LongSupplier;
 
 public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T>> {
 
-  private static final Logger log = LoggerFactory.getLogger(Reflector.class);
+  private static final Logger logger = LoggerFactory.getLogger(Reflector.class);
 
   private static long MIN_TIMEOUT = TimeUnit.MINUTES.toSeconds(5);
 
@@ -140,17 +140,8 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       Set<String> nextKeys = new ConcurrentSkipListSet<>();
       CompletableFuture<? extends Watch> startWatcher = processList(nextKeys, null).thenCompose(result -> {
         final String latestResourceVersion = result.getMetadata().getResourceVersion();
-        log.debug("Listing items ({}) for {} at v{}", nextKeys.size(), this, latestResourceVersion);
         CompletableFuture<?> cf = new CompletableFuture<>();
-        store.retainAll(nextKeys, executor -> {
-          boolean startWatchImmediately = cachedListing && lastSyncResourceVersion == null;
-          lastSyncResourceVersion = latestResourceVersion;
-          if (startWatchImmediately) {
-            cf.complete(null);
-          } else {
-            executor.execute(() -> cf.complete(null));
-          }
-        });
+        syncList(nextKeys, latestResourceVersion, cf);
         return cf.thenCompose(ignored -> startWatcher(latestResourceVersion));
       });
       theFuture = establishWatch(startWatcher);
@@ -167,12 +158,34 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     return theFuture;
   }
 
+  /**
+   * There are 4 steps here
+   * <ol>
+   * <li>sync the underlying store based upon the keySet
+   * <li>update the last sync version
+   * <li>emit the onList event
+   * <li>signal the watch to start
+   * </ol>
+   */
+  private void syncList(Set<String> nextKeys, final String latestResourceVersion, CompletableFuture<?> cf) {
+    logger.debug("Listing items ({}) for {} at v{}", nextKeys.size(), this, latestResourceVersion);
+    boolean wasEmpty = store.syncList(nextKeys);
+    boolean startWatchImmediately = cachedListing && lastSyncResourceVersion == null;
+    lastSyncResourceVersion = latestResourceVersion;
+    Executor executor = store.onList(latestResourceVersion, wasEmpty && nextKeys.isEmpty());
+    if (startWatchImmediately) {
+      cf.complete(null);
+    } else {
+      executor.execute(() -> cf.complete(null));
+    }
+  }
+
   private CompletableFuture<Void> establishWatch(CompletableFuture<? extends Watch> future) {
     return future.thenAccept(w -> {
       if (w != null) {
         if (!isStopped()) {
-          if (log.isDebugEnabled()) {
-            log.debug("Watch started for {}", Reflector.this);
+          if (logger.isDebugEnabled()) {
+            logger.debug("Watch started for {}", Reflector.this);
           }
           watching = true;
         } else {
@@ -184,10 +197,10 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   private void onException(String operation, Throwable t) {
     if (handler.retryAfterException(startFuture.isDone() && !startFuture.isCompletedExceptionally(), t)) {
-      log.warn("{} failed for {}, will retry", operation, Reflector.this, t);
+      logger.warn("{} failed for {}, will retry", operation, Reflector.this, t);
       reconnect();
     } else {
-      log.error("{} failed for {}, will stop", operation, Reflector.this, t);
+      logger.error("{} failed for {}, will stop", operation, Reflector.this, t);
       startFuture.completeExceptionally(t);
       stopFuture.completeExceptionally(t);
     }
@@ -230,7 +243,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
 
   private void stopWatch(Watch w) {
-    log.debug("Stopping watcher for {} at v{}", this, lastSyncResourceVersion);
+    logger.debug("Stopping watcher for {} at v{}", this, lastSyncResourceVersion);
     w.close();
     watchStopped(); // proactively report as stopped
   }
@@ -239,7 +252,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     if (isStopped()) {
       return CompletableFuture.completedFuture(null);
     }
-    log.debug("Starting watcher for {} at v{}", this, latestResourceVersion);
+    logger.debug("Starting watcher for {} at v{}", this, latestResourceVersion);
     // there's no need to stop the old watch, that will happen automatically when this call completes
     CompletableFuture<AbstractWatchManager<T>> future = listerWatcher.submitWatch(
         new ListOptionsBuilder().withResourceVersion(latestResourceVersion)
@@ -306,8 +319,8 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       if (resource == null) {
         throw new KubernetesClientException("Unrecognized resource for " + Reflector.this);
       }
-      if (log.isDebugEnabled()) {
-        log.debug("Event received {} {} resourceVersion v{} for {}", action.name(),
+      if (logger.isDebugEnabled()) {
+        logger.debug("Event received {} {} resourceVersion v{} for {}", action.name(),
             resource.getKind(),
             resource.getMetadata().getResourceVersion(), Reflector.this);
       }
@@ -321,11 +334,9 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
           case BOOKMARK:
             // done with the initial events, trigger that we are ready and switch to regular
             // watching
-            log.debug("Listing items ({}) for {} at v{}", watchListState.nextKeys.size(), this,
-                resource.getMetadata().getResourceVersion());
-            store.retainAll(watchListState.nextKeys, ignored -> watchListState.listDone.complete(null));
+            syncList(watchListState.nextKeys, resource.getMetadata().getResourceVersion(), watchListState.listDone);
             watchListState = null;
-            break;
+            return; // don't fall through to the general action handling as the lastSyncResourceVersion was already set
           case MODIFIED:
           case DELETED:
             onClose(new WatcherException("Unexpected event before list ending bookmark: " + action));
@@ -355,8 +366,8 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       // not the user, it is expected that the watch retry will handle this
       watchStopped();
       if (exception.isHttpGone()) {
-        if (log.isDebugEnabled()) {
-          log.debug("Watch restarting due to http gone for {}", Reflector.this);
+        if (logger.isDebugEnabled()) {
+          logger.debug("Watch restarting due to http gone for {}", Reflector.this);
         }
         // start a whole new list/watch cycle
         reconnect();
@@ -368,7 +379,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     @Override
     public void onClose() {
       watchStopped();
-      log.debug("Watch gracefully closed for {}", Reflector.this);
+      logger.debug("Watch gracefully closed for {}", Reflector.this);
     }
 
     @Override

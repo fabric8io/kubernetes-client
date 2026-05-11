@@ -159,7 +159,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * Relabeling configs applied before sending alerts to a specific Alertmanager. It requires Prometheus &gt;= v2.51.0.
+     * alertRelabelings defines the relabeling configs applied before sending alerts to a specific Alertmanager. It requires Prometheus &gt;= v2.51.0.
      */
     @JsonProperty("alertRelabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -168,7 +168,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * Relabeling configs applied before sending alerts to a specific Alertmanager. It requires Prometheus &gt;= v2.51.0.
+     * alertRelabelings defines the relabeling configs applied before sending alerts to a specific Alertmanager. It requires Prometheus &gt;= v2.51.0.
      */
     @JsonProperty("alertRelabelings")
     public void setAlertRelabelings(List<RelabelConfig> alertRelabelings) {
@@ -176,7 +176,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * Version of the Alertmanager API that Prometheus uses to send alerts. It can be "V1" or "V2". The field has no effect for Prometheus &gt;= v3.0.0 because only the v2 API is supported.
+     * apiVersion defines the version of the Alertmanager API that Prometheus uses to send alerts. It can be "V1" or "V2". The field has no effect for Prometheus &gt;= v3.0.0 because only the v2 API is supported.
      */
     @JsonProperty("apiVersion")
     public String getApiVersion() {
@@ -184,7 +184,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * Version of the Alertmanager API that Prometheus uses to send alerts. It can be "V1" or "V2". The field has no effect for Prometheus &gt;= v3.0.0 because only the v2 API is supported.
+     * apiVersion defines the version of the Alertmanager API that Prometheus uses to send alerts. It can be "V1" or "V2". The field has no effect for Prometheus &gt;= v3.0.0 because only the v2 API is supported.
      */
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
@@ -224,7 +224,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * File to read bearer token for Alertmanager.<br><p> <br><p> Cannot be set at the same time as `basicAuth`, `authorization`, or `sigv4`.<br><p> <br><p> Deprecated: this will be removed in a future release. Prefer using `authorization`.
+     * bearerTokenFile defines the file to read bearer token for Alertmanager.<br><p> <br><p> Cannot be set at the same time as `basicAuth`, `authorization`, or `sigv4`.<br><p> <br><p> Deprecated: this will be removed in a future release. Prefer using `authorization`.
      */
     @JsonProperty("bearerTokenFile")
     public String getBearerTokenFile() {
@@ -232,7 +232,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * File to read bearer token for Alertmanager.<br><p> <br><p> Cannot be set at the same time as `basicAuth`, `authorization`, or `sigv4`.<br><p> <br><p> Deprecated: this will be removed in a future release. Prefer using `authorization`.
+     * bearerTokenFile defines the file to read bearer token for Alertmanager.<br><p> <br><p> Cannot be set at the same time as `basicAuth`, `authorization`, or `sigv4`.<br><p> <br><p> Deprecated: this will be removed in a future release. Prefer using `authorization`.
      */
     @JsonProperty("bearerTokenFile")
     public void setBearerTokenFile(String bearerTokenFile) {
@@ -240,7 +240,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHttp2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHttp2")
     public Boolean getEnableHttp2() {
@@ -248,7 +248,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHttp2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHttp2")
     public void setEnableHttp2(Boolean enableHttp2) {
@@ -256,7 +256,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * Name of the Endpoints object in the namespace.
+     * name of the Endpoints object in the namespace.
      */
     @JsonProperty("name")
     public String getName() {
@@ -264,7 +264,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * Name of the Endpoints object in the namespace.
+     * name of the Endpoints object in the namespace.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -272,7 +272,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * Namespace of the Endpoints object.<br><p> <br><p> If not set, the object will be discovered in the namespace of the Prometheus object.
+     * namespace of the Endpoints object.<br><p> <br><p> If not set, the object will be discovered in the namespace of the Prometheus object.
      */
     @JsonProperty("namespace")
     public String getNamespace() {
@@ -280,7 +280,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * Namespace of the Endpoints object.<br><p> <br><p> If not set, the object will be discovered in the namespace of the Prometheus object.
+     * namespace of the Endpoints object.<br><p> <br><p> If not set, the object will be discovered in the namespace of the Prometheus object.
      */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
@@ -288,7 +288,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -296,7 +296,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -304,7 +304,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * Prefix for the HTTP path alerts are pushed to.
+     * pathPrefix defines the prefix for the HTTP path alerts are pushed to.
      */
     @JsonProperty("pathPrefix")
     public String getPathPrefix() {
@@ -312,7 +312,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * Prefix for the HTTP path alerts are pushed to.
+     * pathPrefix defines the prefix for the HTTP path alerts are pushed to.
      */
     @JsonProperty("pathPrefix")
     public void setPathPrefix(String pathPrefix) {
@@ -336,7 +336,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -345,7 +345,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -353,7 +353,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -361,7 +361,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
@@ -369,7 +369,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
@@ -377,7 +377,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
@@ -385,7 +385,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * Relabel configuration applied to the discovered Alertmanagers.
+     * relabelings defines the relabel configuration applied to the discovered Alertmanagers.
      */
     @JsonProperty("relabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -394,7 +394,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * Relabel configuration applied to the discovered Alertmanagers.
+     * relabelings defines the relabel configuration applied to the discovered Alertmanagers.
      */
     @JsonProperty("relabelings")
     public void setRelabelings(List<RelabelConfig> relabelings) {
@@ -402,7 +402,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * Scheme to use when firing alerts.
+     * scheme defines the HTTP scheme to use when sending alerts.
      */
     @JsonProperty("scheme")
     public String getScheme() {
@@ -410,7 +410,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * Scheme to use when firing alerts.
+     * scheme defines the HTTP scheme to use when sending alerts.
      */
     @JsonProperty("scheme")
     public void setScheme(String scheme) {
@@ -434,7 +434,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * Timeout is a per-target Alertmanager timeout when pushing alerts.
+     * timeout defines a per-target Alertmanager timeout when pushing alerts.
      */
     @JsonProperty("timeout")
     public String getTimeout() {
@@ -442,7 +442,7 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
     }
 
     /**
-     * Timeout is a per-target Alertmanager timeout when pushing alerts.
+     * timeout defines a per-target Alertmanager timeout when pushing alerts.
      */
     @JsonProperty("timeout")
     public void setTimeout(String timeout) {

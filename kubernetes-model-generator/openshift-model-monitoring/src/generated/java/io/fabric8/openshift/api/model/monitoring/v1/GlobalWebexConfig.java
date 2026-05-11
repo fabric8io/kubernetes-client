@@ -81,7 +81,7 @@ public class GlobalWebexConfig implements Editable<GlobalWebexConfigBuilder>, Ku
     }
 
     /**
-     * The default Webex API URL.<br><p> <br><p> It requires Alertmanager &gt;= v0.25.0.
+     * apiURL defines the is the default Webex API URL.<br><p> <br><p> It requires Alertmanager &gt;= v0.25.0.
      */
     @JsonProperty("apiURL")
     public String getApiURL() {
@@ -89,7 +89,7 @@ public class GlobalWebexConfig implements Editable<GlobalWebexConfigBuilder>, Ku
     }
 
     /**
-     * The default Webex API URL.<br><p> <br><p> It requires Alertmanager &gt;= v0.25.0.
+     * apiURL defines the is the default Webex API URL.<br><p> <br><p> It requires Alertmanager &gt;= v0.25.0.
      */
     @JsonProperty("apiURL")
     public void setApiURL(String apiURL) {

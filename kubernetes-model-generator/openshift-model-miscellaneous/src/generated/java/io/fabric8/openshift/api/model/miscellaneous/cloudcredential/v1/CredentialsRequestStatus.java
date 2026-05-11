@@ -43,6 +43,7 @@ import lombok.experimental.Accessors;
     "conditions",
     "lastSyncCloudCredsSecretResourceVersion",
     "lastSyncGeneration",
+    "lastSyncInfrastructureResourceVersion",
     "lastSyncTimestamp",
     "providerStatus",
     "provisioned"
@@ -79,6 +80,8 @@ public class CredentialsRequestStatus implements Editable<CredentialsRequestStat
     private String lastSyncCloudCredsSecretResourceVersion;
     @JsonProperty("lastSyncGeneration")
     private Long lastSyncGeneration;
+    @JsonProperty("lastSyncInfrastructureResourceVersion")
+    private String lastSyncInfrastructureResourceVersion;
     @JsonProperty("lastSyncTimestamp")
     private String lastSyncTimestamp;
     @JsonProperty("providerStatus")
@@ -95,11 +98,12 @@ public class CredentialsRequestStatus implements Editable<CredentialsRequestStat
     public CredentialsRequestStatus() {
     }
 
-    public CredentialsRequestStatus(List<CredentialsRequestCondition> conditions, String lastSyncCloudCredsSecretResourceVersion, Long lastSyncGeneration, String lastSyncTimestamp, Object providerStatus, Boolean provisioned) {
+    public CredentialsRequestStatus(List<CredentialsRequestCondition> conditions, String lastSyncCloudCredsSecretResourceVersion, Long lastSyncGeneration, String lastSyncInfrastructureResourceVersion, String lastSyncTimestamp, Object providerStatus, Boolean provisioned) {
         super();
         this.conditions = conditions;
         this.lastSyncCloudCredsSecretResourceVersion = lastSyncCloudCredsSecretResourceVersion;
         this.lastSyncGeneration = lastSyncGeneration;
+        this.lastSyncInfrastructureResourceVersion = lastSyncInfrastructureResourceVersion;
         this.lastSyncTimestamp = lastSyncTimestamp;
         this.providerStatus = providerStatus;
         this.provisioned = provisioned;
@@ -152,6 +156,22 @@ public class CredentialsRequestStatus implements Editable<CredentialsRequestStat
     @JsonProperty("lastSyncGeneration")
     public void setLastSyncGeneration(Long lastSyncGeneration) {
         this.lastSyncGeneration = lastSyncGeneration;
+    }
+
+    /**
+     * LastSyncInfrastructureResourceVersion is the resource version of the Infrastructure resource. It is used to determine if the user provided tags have been updated since the last sync.
+     */
+    @JsonProperty("lastSyncInfrastructureResourceVersion")
+    public String getLastSyncInfrastructureResourceVersion() {
+        return lastSyncInfrastructureResourceVersion;
+    }
+
+    /**
+     * LastSyncInfrastructureResourceVersion is the resource version of the Infrastructure resource. It is used to determine if the user provided tags have been updated since the last sync.
+     */
+    @JsonProperty("lastSyncInfrastructureResourceVersion")
+    public void setLastSyncInfrastructureResourceVersion(String lastSyncInfrastructureResourceVersion) {
+        this.lastSyncInfrastructureResourceVersion = lastSyncInfrastructureResourceVersion;
     }
 
     /**

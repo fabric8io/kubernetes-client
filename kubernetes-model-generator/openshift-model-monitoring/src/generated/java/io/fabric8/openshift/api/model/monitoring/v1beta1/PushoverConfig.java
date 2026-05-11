@@ -43,6 +43,7 @@ import lombok.experimental.Accessors;
     "html",
     "httpConfig",
     "message",
+    "monospace",
     "priority",
     "retry",
     "sendResolved",
@@ -91,6 +92,8 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     private HTTPConfig httpConfig;
     @JsonProperty("message")
     private String message;
+    @JsonProperty("monospace")
+    private Boolean monospace;
     @JsonProperty("priority")
     private String priority;
     @JsonProperty("retry")
@@ -124,13 +127,14 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     public PushoverConfig() {
     }
 
-    public PushoverConfig(String device, String expire, Boolean html, HTTPConfig httpConfig, String message, String priority, String retry, Boolean sendResolved, String sound, String title, SecretKeySelector token, String tokenFile, String ttl, String url, String urlTitle, SecretKeySelector userKey, String userKeyFile) {
+    public PushoverConfig(String device, String expire, Boolean html, HTTPConfig httpConfig, String message, Boolean monospace, String priority, String retry, Boolean sendResolved, String sound, String title, SecretKeySelector token, String tokenFile, String ttl, String url, String urlTitle, SecretKeySelector userKey, String userKeyFile) {
         super();
         this.device = device;
         this.expire = expire;
         this.html = html;
         this.httpConfig = httpConfig;
         this.message = message;
+        this.monospace = monospace;
         this.priority = priority;
         this.retry = retry;
         this.sendResolved = sendResolved;
@@ -146,7 +150,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * The name of a device to send the notification to
+     * device defines the name of a specific device to send the notification to. If not specified, the notification is sent to all user's devices.
      */
     @JsonProperty("device")
     public String getDevice() {
@@ -154,7 +158,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * The name of a device to send the notification to
+     * device defines the name of a specific device to send the notification to. If not specified, the notification is sent to all user's devices.
      */
     @JsonProperty("device")
     public void setDevice(String device) {
@@ -162,7 +166,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * How long your notification will continue to be retried for, unless the user acknowledges the notification.
+     * expire defines how long your notification will continue to be retried for, unless the user acknowledges the notification. Only applies to priority 2 notifications.
      */
     @JsonProperty("expire")
     public String getExpire() {
@@ -170,7 +174,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * How long your notification will continue to be retried for, unless the user acknowledges the notification.
+     * expire defines how long your notification will continue to be retried for, unless the user acknowledges the notification. Only applies to priority 2 notifications.
      */
     @JsonProperty("expire")
     public void setExpire(String expire) {
@@ -178,7 +182,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * Whether notification message is HTML or plain text.
+     * html defines whether notification message is HTML or plain text. When true, the message can include HTML formatting tags. html and monospace formatting are mutually exclusive.
      */
     @JsonProperty("html")
     public Boolean getHtml() {
@@ -186,7 +190,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * Whether notification message is HTML or plain text.
+     * html defines whether notification message is HTML or plain text. When true, the message can include HTML formatting tags. html and monospace formatting are mutually exclusive.
      */
     @JsonProperty("html")
     public void setHtml(Boolean html) {
@@ -210,7 +214,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * Notification message.
+     * message defines the notification message content. This is the main body text of the Pushover notification.
      */
     @JsonProperty("message")
     public String getMessage() {
@@ -218,7 +222,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * Notification message.
+     * message defines the notification message content. This is the main body text of the Pushover notification.
      */
     @JsonProperty("message")
     public void setMessage(String message) {
@@ -226,7 +230,23 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * Priority, see https://pushover.net/api#priority
+     * monospace optional HTML/monospace formatting for the message, see https://pushover.net/api#html html and monospace formatting are mutually exclusive.
+     */
+    @JsonProperty("monospace")
+    public Boolean getMonospace() {
+        return monospace;
+    }
+
+    /**
+     * monospace optional HTML/monospace formatting for the message, see https://pushover.net/api#html html and monospace formatting are mutually exclusive.
+     */
+    @JsonProperty("monospace")
+    public void setMonospace(Boolean monospace) {
+        this.monospace = monospace;
+    }
+
+    /**
+     * priority defines the notification priority level. See https://pushover.net/api#priority for valid values and behavior.
      */
     @JsonProperty("priority")
     public String getPriority() {
@@ -234,7 +254,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * Priority, see https://pushover.net/api#priority
+     * priority defines the notification priority level. See https://pushover.net/api#priority for valid values and behavior.
      */
     @JsonProperty("priority")
     public void setPriority(String priority) {
@@ -242,7 +262,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * How often the Pushover servers will send the same notification to the user. Must be at least 30 seconds.
+     * retry defines how often the Pushover servers will send the same notification to the user. Must be at least 30 seconds. Only applies to priority 2 notifications.
      */
     @JsonProperty("retry")
     public String getRetry() {
@@ -250,7 +270,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * How often the Pushover servers will send the same notification to the user. Must be at least 30 seconds.
+     * retry defines how often the Pushover servers will send the same notification to the user. Must be at least 30 seconds. Only applies to priority 2 notifications.
      */
     @JsonProperty("retry")
     public void setRetry(String retry) {
@@ -258,7 +278,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * Whether or not to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
@@ -266,7 +286,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * Whether or not to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
@@ -274,7 +294,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * The name of one of the sounds supported by device clients to override the user's default sound choice
+     * sound defines the name of one of the sounds supported by device clients. This overrides the user's default sound choice for this notification.
      */
     @JsonProperty("sound")
     public String getSound() {
@@ -282,7 +302,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * The name of one of the sounds supported by device clients to override the user's default sound choice
+     * sound defines the name of one of the sounds supported by device clients. This overrides the user's default sound choice for this notification.
      */
     @JsonProperty("sound")
     public void setSound(String sound) {
@@ -290,7 +310,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * Notification title.
+     * title defines the notification title displayed in the Pushover message. This appears as the bold header text in the notification.
      */
     @JsonProperty("title")
     public String getTitle() {
@@ -298,7 +318,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * Notification title.
+     * title defines the notification title displayed in the Pushover message. This appears as the bold header text in the notification.
      */
     @JsonProperty("title")
     public void setTitle(String title) {
@@ -322,7 +342,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * The token file that contains the registered application's API token, see https://pushover.net/apps. Either `token` or `tokenFile` is required. It requires Alertmanager &gt;= v0.26.0.
+     * tokenFile defines the token file that contains the registered application's API token. See https://pushover.net/apps for application registration. Either `token` or `tokenFile` is required. It requires Alertmanager &gt;= v0.26.0.
      */
     @JsonProperty("tokenFile")
     public String getTokenFile() {
@@ -330,7 +350,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * The token file that contains the registered application's API token, see https://pushover.net/apps. Either `token` or `tokenFile` is required. It requires Alertmanager &gt;= v0.26.0.
+     * tokenFile defines the token file that contains the registered application's API token. See https://pushover.net/apps for application registration. Either `token` or `tokenFile` is required. It requires Alertmanager &gt;= v0.26.0.
      */
     @JsonProperty("tokenFile")
     public void setTokenFile(String tokenFile) {
@@ -338,7 +358,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * The time to live definition for the alert notification
+     * ttl defines the time to live for the alert notification. This determines how long the notification remains active before expiring.
      */
     @JsonProperty("ttl")
     public String getTtl() {
@@ -346,7 +366,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * The time to live definition for the alert notification
+     * ttl defines the time to live for the alert notification. This determines how long the notification remains active before expiring.
      */
     @JsonProperty("ttl")
     public void setTtl(String ttl) {
@@ -354,7 +374,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * A supplementary URL shown alongside the message.
+     * url defines a supplementary URL shown alongside the message. This creates a clickable link within the Pushover notification.
      */
     @JsonProperty("url")
     public String getUrl() {
@@ -362,7 +382,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * A supplementary URL shown alongside the message.
+     * url defines a supplementary URL shown alongside the message. This creates a clickable link within the Pushover notification.
      */
     @JsonProperty("url")
     public void setUrl(String url) {
@@ -370,7 +390,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * A title for supplementary URL, otherwise just the URL is shown
+     * urlTitle defines a title for the supplementary URL. If not specified, the raw URL is shown instead.
      */
     @JsonProperty("urlTitle")
     public String getUrlTitle() {
@@ -378,7 +398,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * A title for supplementary URL, otherwise just the URL is shown
+     * urlTitle defines a title for the supplementary URL. If not specified, the raw URL is shown instead.
      */
     @JsonProperty("urlTitle")
     public void setUrlTitle(String urlTitle) {
@@ -402,7 +422,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * The user key file that contains the recipient user's user key. Either `userKey` or `userKeyFile` is required. It requires Alertmanager &gt;= v0.26.0.
+     * userKeyFile defines the user key file that contains the recipient user's user key. Either `userKey` or `userKeyFile` is required. It requires Alertmanager &gt;= v0.26.0.
      */
     @JsonProperty("userKeyFile")
     public String getUserKeyFile() {
@@ -410,7 +430,7 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
     }
 
     /**
-     * The user key file that contains the recipient user's user key. Either `userKey` or `userKeyFile` is required. It requires Alertmanager &gt;= v0.26.0.
+     * userKeyFile defines the user key file that contains the recipient user's user key. Either `userKey` or `userKeyFile` is required. It requires Alertmanager &gt;= v0.26.0.
      */
     @JsonProperty("userKeyFile")
     public void setUserKeyFile(String userKeyFile) {

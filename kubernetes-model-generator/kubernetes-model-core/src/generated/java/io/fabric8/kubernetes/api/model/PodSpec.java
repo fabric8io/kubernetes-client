@@ -56,6 +56,7 @@ import lombok.experimental.Accessors;
     "runtimeClassName",
     "schedulerName",
     "schedulingGates",
+    "schedulingGroup",
     "securityContext",
     "serviceAccount",
     "serviceAccountName",
@@ -150,6 +151,8 @@ public class PodSpec implements Editable<PodSpecBuilder>, KubernetesResource
     @JsonProperty("schedulingGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PodSchedulingGate> schedulingGates = new ArrayList<>();
+    @JsonProperty("schedulingGroup")
+    private PodSchedulingGroup schedulingGroup;
     @JsonProperty("securityContext")
     private PodSecurityContext securityContext;
     @JsonProperty("serviceAccount")
@@ -182,7 +185,7 @@ public class PodSpec implements Editable<PodSpecBuilder>, KubernetesResource
     public PodSpec() {
     }
 
-    public PodSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, Boolean hostUsers, String hostname, String hostnameOverride, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, String priorityClassName, List<PodReadinessGate> readinessGates, List<PodResourceClaim> resourceClaims, ResourceRequirements resources, String restartPolicy, String runtimeClassName, String schedulerName, List<PodSchedulingGate> schedulingGates, PodSecurityContext securityContext, String serviceAccount, String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, String subdomain, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes) {
+    public PodSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, Boolean hostUsers, String hostname, String hostnameOverride, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, String priorityClassName, List<PodReadinessGate> readinessGates, List<PodResourceClaim> resourceClaims, ResourceRequirements resources, String restartPolicy, String runtimeClassName, String schedulerName, List<PodSchedulingGate> schedulingGates, PodSchedulingGroup schedulingGroup, PodSecurityContext securityContext, String serviceAccount, String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, String subdomain, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;
         this.affinity = affinity;
@@ -215,6 +218,7 @@ public class PodSpec implements Editable<PodSpecBuilder>, KubernetesResource
         this.runtimeClassName = runtimeClassName;
         this.schedulerName = schedulerName;
         this.schedulingGates = schedulingGates;
+        this.schedulingGroup = schedulingGroup;
         this.securityContext = securityContext;
         this.serviceAccount = serviceAccount;
         this.serviceAccountName = serviceAccountName;
@@ -423,7 +427,7 @@ public class PodSpec implements Editable<PodSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Use the host's user namespace. Optional: Default to true. If set to true or not present, the pod will be run in the host user namespace, useful for when the pod needs a feature only available to the host user namespace, such as loading a kernel module with CAP_SYS_MODULE. When set to false, a new userns is created for the pod. Setting false is useful for mitigating container breakout vulnerabilities even allowing users to run their containers as root without actually having root privileges on the host. This field is alpha-level and is only honored by servers that enable the UserNamespacesSupport feature.
+     * Use the host's user namespace. Optional: Default to true. If set to true or not present, the pod will be run in the host user namespace, useful for when the pod needs a feature only available to the host user namespace, such as loading a kernel module with CAP_SYS_MODULE. When set to false, a new userns is created for the pod. Setting false is useful for mitigating container breakout vulnerabilities even allowing users to run their containers as root without actually having root privileges on the host.
      */
     @JsonProperty("hostUsers")
     public Boolean getHostUsers() {
@@ -431,7 +435,7 @@ public class PodSpec implements Editable<PodSpecBuilder>, KubernetesResource
     }
 
     /**
-     * Use the host's user namespace. Optional: Default to true. If set to true or not present, the pod will be run in the host user namespace, useful for when the pod needs a feature only available to the host user namespace, such as loading a kernel module with CAP_SYS_MODULE. When set to false, a new userns is created for the pod. Setting false is useful for mitigating container breakout vulnerabilities even allowing users to run their containers as root without actually having root privileges on the host. This field is alpha-level and is only honored by servers that enable the UserNamespacesSupport feature.
+     * Use the host's user namespace. Optional: Default to true. If set to true or not present, the pod will be run in the host user namespace, useful for when the pod needs a feature only available to the host user namespace, such as loading a kernel module with CAP_SYS_MODULE. When set to false, a new userns is created for the pod. Setting false is useful for mitigating container breakout vulnerabilities even allowing users to run their containers as root without actually having root privileges on the host.
      */
     @JsonProperty("hostUsers")
     public void setHostUsers(Boolean hostUsers) {
@@ -636,7 +640,7 @@ public class PodSpec implements Editable<PodSpecBuilder>, KubernetesResource
     }
 
     /**
-     * ResourceClaims defines which ResourceClaims must be allocated and reserved before the Pod is allowed to start. The resources will be made available to those containers which consume them by name.<br><p> <br><p> This is an alpha field and requires enabling the DynamicResourceAllocation feature gate.<br><p> <br><p> This field is immutable.
+     * ResourceClaims defines which ResourceClaims must be allocated and reserved before the Pod is allowed to start. The resources will be made available to those containers which consume them by name.<br><p> <br><p> This is a stable field but requires that the DynamicResourceAllocation feature gate is enabled.<br><p> <br><p> This field is immutable.
      */
     @JsonProperty("resourceClaims")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -645,7 +649,7 @@ public class PodSpec implements Editable<PodSpecBuilder>, KubernetesResource
     }
 
     /**
-     * ResourceClaims defines which ResourceClaims must be allocated and reserved before the Pod is allowed to start. The resources will be made available to those containers which consume them by name.<br><p> <br><p> This is an alpha field and requires enabling the DynamicResourceAllocation feature gate.<br><p> <br><p> This field is immutable.
+     * ResourceClaims defines which ResourceClaims must be allocated and reserved before the Pod is allowed to start. The resources will be made available to those containers which consume them by name.<br><p> <br><p> This is a stable field but requires that the DynamicResourceAllocation feature gate is enabled.<br><p> <br><p> This field is immutable.
      */
     @JsonProperty("resourceClaims")
     public void setResourceClaims(List<PodResourceClaim> resourceClaims) {
@@ -731,6 +735,22 @@ public class PodSpec implements Editable<PodSpecBuilder>, KubernetesResource
     @JsonProperty("schedulingGates")
     public void setSchedulingGates(List<PodSchedulingGate> schedulingGates) {
         this.schedulingGates = schedulingGates;
+    }
+
+    /**
+     * PodSpec is a description of a pod.
+     */
+    @JsonProperty("schedulingGroup")
+    public PodSchedulingGroup getSchedulingGroup() {
+        return schedulingGroup;
+    }
+
+    /**
+     * PodSpec is a description of a pod.
+     */
+    @JsonProperty("schedulingGroup")
+    public void setSchedulingGroup(PodSchedulingGroup schedulingGroup) {
+        this.schedulingGroup = schedulingGroup;
     }
 
     /**

@@ -108,7 +108,7 @@ public class MockResponse implements Response {
    */
   public MockResponse setChunkedBody(Buffer body, int maxChunkSize) {
     removeHeader("Content-Length");
-    setHeader("Transfer-encoding", "chunked");
+    setHeader("Transfer-Encoding", "chunked");
 
     final Buffer chunkedBody = new Buffer();
     final byte[] bodyBytes = body.getBytes();

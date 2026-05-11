@@ -1,13 +1,16 @@
 
 package io.fabric8.openshift.api.model.tuned.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
@@ -37,7 +40,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-
+    "conditions"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,8 +67,39 @@ import lombok.experimental.Accessors;
 public class TunedStatus implements Editable<TunedStatusBuilder>, KubernetesResource
 {
 
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<StatusCondition> conditions = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+
+    /**
+     * No args constructor for use in serialization
+     */
+    public TunedStatus() {
+    }
+
+    public TunedStatus(List<StatusCondition> conditions) {
+        super();
+        this.conditions = conditions;
+    }
+
+    /**
+     * conditions represents the state of the Tuned profile
+     */
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<StatusCondition> getConditions() {
+        return conditions;
+    }
+
+    /**
+     * conditions represents the state of the Tuned profile
+     */
+    @JsonProperty("conditions")
+    public void setConditions(List<StatusCondition> conditions) {
+        this.conditions = conditions;
+    }
 
     @JsonIgnore
     public TunedStatusBuilder edit() {

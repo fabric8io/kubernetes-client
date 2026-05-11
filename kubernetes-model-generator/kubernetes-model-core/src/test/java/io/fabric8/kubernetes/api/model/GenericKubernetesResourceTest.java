@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.model.util.Helper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -118,6 +119,78 @@ class GenericKubernetesResourceTest {
 
     assertThat(gkr)
         .isNotEqualTo(gkr1);
+  }
+
+  @Test
+  @DisplayName("implements Editable interface")
+  void implementsEditable() {
+    // Given
+    final GenericKubernetesResource gkr = new GenericKubernetesResource();
+    gkr.setApiVersion("example.com/v1");
+    gkr.setKind("MyResource");
+    gkr.setMetadata(new ObjectMetaBuilder().withName("test").withNamespace("ns1").build());
+    gkr.setAdditionalProperties(Collections.singletonMap("spec", Collections.singletonMap("field", "value")));
+
+    // When + Then
+    assertThat(gkr).isInstanceOf(Editable.class);
+  }
+
+  @Test
+  @DisplayName("edit should return builder with same state")
+  void editReturnsBuilderWithSameState() {
+    // Given
+    final GenericKubernetesResource gkr = new GenericKubernetesResource();
+    gkr.setApiVersion("example.com/v1");
+    gkr.setKind("MyResource");
+    gkr.setMetadata(new ObjectMetaBuilder().withName("test").withNamespace("ns1").build());
+
+    // When
+    final GenericKubernetesResource result = gkr.edit().build();
+
+    // Then
+    assertThat(result)
+        .hasFieldOrPropertyWithValue("apiVersion", "example.com/v1")
+        .hasFieldOrPropertyWithValue("Kind", "MyResource")
+        .hasFieldOrPropertyWithValue("metadata.name", "test")
+        .hasFieldOrPropertyWithValue("metadata.namespace", "ns1");
+  }
+
+  @Test
+  @DisplayName("edit should return builder that can modify metadata")
+  void editReturnsModifiableBuilder() {
+    // Given
+    final GenericKubernetesResource gkr = new GenericKubernetesResource();
+    gkr.setApiVersion("example.com/v1");
+    gkr.setKind("MyResource");
+    gkr.setMetadata(new ObjectMetaBuilder().withName("test").build());
+
+    // When
+    final GenericKubernetesResource result = gkr.edit()
+        .editMetadata().addToLabels("key", "value").endMetadata()
+        .build();
+
+    // Then
+    assertThat(result.getMetadata().getLabels()).containsEntry("key", "value");
+  }
+
+  @Test
+  @DisplayName("toBuilder should return same result as edit")
+  void toBuilderReturnsSameAsEdit() {
+    // Given
+    final GenericKubernetesResource gkr = new GenericKubernetesResource();
+    gkr.setApiVersion("example.com/v1");
+    gkr.setKind("MyResource");
+    gkr.setMetadata(new ObjectMetaBuilder().withName("test").build());
+
+    // When
+    final GenericKubernetesResource fromEdit = gkr.edit().build();
+    final GenericKubernetesResource fromToBuilder = gkr.toBuilder().build();
+
+    // Then
+    assertThat(fromEdit)
+        .hasFieldOrPropertyWithValue("apiVersion", fromToBuilder.getApiVersion())
+        .hasFieldOrPropertyWithValue("Kind", fromToBuilder.getKind())
+        .hasFieldOrPropertyWithValue("metadata.name", fromToBuilder.getMetadata().getName());
   }
 
   @Test

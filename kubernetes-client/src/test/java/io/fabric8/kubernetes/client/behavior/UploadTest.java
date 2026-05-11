@@ -32,7 +32,6 @@ import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocketResponse;
 import io.fabric8.kubernetes.client.http.WebSocketUpgradeResponse;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -53,9 +52,6 @@ import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -144,14 +140,11 @@ class UploadTest {
   @DisplayName("Successful")
   class Success {
 
-    private ScheduledExecutorService executorService;
-
     private WebSocket webSocket;
     private Path toUpload;
 
     @BeforeEach
     void setUp() {
-      executorService = Executors.newSingleThreadScheduledExecutor();
       final AtomicInteger tarByteCount = new AtomicInteger(0);
       webSocket = mock(WebSocket.class);
       when(webSocket.send(any())).thenAnswer(i -> {
@@ -163,8 +156,7 @@ class UploadTest {
         if (s.asHttpRequest().uri().getQuery().contains("command=wc -c")) {
           l.onMessage(webSocket, ByteBuffer.wrap(("\u0001" + tarByteCount.get() + "\n").getBytes(StandardCharsets.UTF_8)));
         }
-        // Needs a short delay to be able to process the previous message (TODO: this should be fixed in the production code)
-        executorService.schedule(() -> l.onMessage(webSocket, exitZeroEvent()), 100, TimeUnit.MILLISECONDS);
+        l.onMessage(webSocket, exitZeroEvent());
         return CompletableFuture.completedFuture(new WebSocketResponse(new WebSocketUpgradeResponse(null), webSocket));
       };
       // 3 Operations:
@@ -175,11 +167,6 @@ class UploadTest {
         informPodReady("success-pod");
         httpClient.wsExpect("/api/v1/namespaces/.+/pods/success-pod/exec", future);
       });
-    }
-
-    @AfterEach
-    void tearDown() {
-      executorService.shutdownNow();
     }
 
     @Nested

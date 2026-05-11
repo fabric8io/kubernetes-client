@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class RuntimeClassTest {
 
   KubernetesMockServer server;
@@ -109,7 +109,7 @@ class RuntimeClassTest {
         .once();
 
     // When
-    boolean isDeleted = client.runtimeClasses().withName("test-class").delete().size() == 1;
+    boolean isDeleted = client.runtimeClasses().withName("test-class").withGracePeriod(0).delete().size() == 1;
 
     // Then
     assertTrue(isDeleted);

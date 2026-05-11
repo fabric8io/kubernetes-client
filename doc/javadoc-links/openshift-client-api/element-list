@@ -1,0 +1,4 @@
+io.fabric8.openshift.client
+io.fabric8.openshift.client.dsl
+io.fabric8.openshift.client.dsl.buildconfig
+io.fabric8.openshift.client.readiness

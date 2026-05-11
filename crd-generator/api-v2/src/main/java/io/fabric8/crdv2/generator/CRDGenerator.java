@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
 
 public class CRDGenerator {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CRDGenerator.class);
+  private static final Logger logger = LoggerFactory.getLogger(CRDGenerator.class);
   private final Map<String, AbstractCustomResourceHandler> handlers = new HashMap<>(2);
   private CRDOutput<? extends OutputStream> output;
   private boolean parallel;
@@ -90,7 +90,7 @@ public class CRDGenerator {
 
   public CRDGenerator withPostProcessor(CRDPostProcessor postProcessor) {
     if (postProcessor == null) {
-      LOGGER.warn("CRDPostProcessor is null, using default CRDPostProcessor instead");
+      logger.warn("CRDPostProcessor is null, using default CRDPostProcessor instead");
     } else {
       this.postProcessor = postProcessor;
     }
@@ -112,7 +112,7 @@ public class CRDGenerator {
                   s -> new CustomResourceHandler());
               break;
             default:
-              LOGGER.warn("Ignoring unsupported CRD version: {}", version);
+              logger.warn("Ignoring unsupported CRD version: {}", version);
           }
         }
       }
@@ -178,12 +178,12 @@ public class CRDGenerator {
    */
   public CRDGenerationInfo detailedGenerate() {
     if (getCustomResourceInfos().isEmpty()) {
-      LOGGER.warn("No resources were registered with the 'customResources' method to be generated");
+      logger.warn("No resources were registered with the 'customResources' method to be generated");
       return CRDGenerationInfo.EMPTY;
     }
 
     if (output == null) {
-      LOGGER.warn(
+      logger.warn(
           "No output option was selected either using 'inOutputDir' or 'withOutput' methods. Skipping generation.");
       return CRDGenerationInfo.EMPTY;
     }
@@ -205,8 +205,8 @@ public class CRDGenerator {
 
     for (CustomResourceInfo info : infos.values()) {
       if (info != null) {
-        if (LOGGER.isInfoEnabled()) {
-          LOGGER.info("Generating '{}' version '{}' with {} (spec: {} / status {})...",
+        if (logger.isInfoEnabled()) {
+          logger.info("Generating '{}' version '{}' with {} (spec: {} / status {})...",
               info.crdName(), info.version(), info.crClassName(),
               info.specClassName().orElse("undetermined"),
               info.statusClassName().orElse("undetermined"));

@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
+import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -47,7 +48,8 @@ import lombok.experimental.Accessors;
     "sidecarOverrides",
     "stepOverrides",
     "taskPodTemplate",
-    "taskServiceAccountName"
+    "taskServiceAccountName",
+    "timeout"
 })
 @ToString
 @EqualsAndHashCode
@@ -90,6 +92,8 @@ public class PipelineTaskRunSpec implements Editable<PipelineTaskRunSpecBuilder>
     private Template taskPodTemplate;
     @JsonProperty("taskServiceAccountName")
     private String taskServiceAccountName;
+    @JsonProperty("timeout")
+    private Duration timeout;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -99,7 +103,7 @@ public class PipelineTaskRunSpec implements Editable<PipelineTaskRunSpecBuilder>
     public PipelineTaskRunSpec() {
     }
 
-    public PipelineTaskRunSpec(ResourceRequirements computeResources, PipelineTaskMetadata metadata, String pipelineTaskName, List<TaskRunSidecarOverride> sidecarOverrides, List<TaskRunStepOverride> stepOverrides, Template taskPodTemplate, String taskServiceAccountName) {
+    public PipelineTaskRunSpec(ResourceRequirements computeResources, PipelineTaskMetadata metadata, String pipelineTaskName, List<TaskRunSidecarOverride> sidecarOverrides, List<TaskRunStepOverride> stepOverrides, Template taskPodTemplate, String taskServiceAccountName, Duration timeout) {
         super();
         this.computeResources = computeResources;
         this.metadata = metadata;
@@ -108,6 +112,7 @@ public class PipelineTaskRunSpec implements Editable<PipelineTaskRunSpecBuilder>
         this.stepOverrides = stepOverrides;
         this.taskPodTemplate = taskPodTemplate;
         this.taskServiceAccountName = taskServiceAccountName;
+        this.timeout = timeout;
     }
 
     /**
@@ -222,6 +227,22 @@ public class PipelineTaskRunSpec implements Editable<PipelineTaskRunSpecBuilder>
     @JsonProperty("taskServiceAccountName")
     public void setTaskServiceAccountName(String taskServiceAccountName) {
         this.taskServiceAccountName = taskServiceAccountName;
+    }
+
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
+    @JsonProperty("timeout")
+    public Duration getTimeout() {
+        return timeout;
+    }
+
+    /**
+     * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
+     */
+    @JsonProperty("timeout")
+    public void setTimeout(Duration timeout) {
+        this.timeout = timeout;
     }
 
     @JsonIgnore

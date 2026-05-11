@@ -49,7 +49,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class PortForwarderWebsocket {
 
-  private static final Logger LOG = LoggerFactory.getLogger(PortForwarderWebsocket.class);
+  private static final Logger logger = LoggerFactory.getLogger(PortForwarderWebsocket.class);
 
   private final HttpClient client;
   private final Executor executor;
@@ -146,7 +146,7 @@ public class PortForwarderWebsocket {
             handles.add(forward(resourceBaseUrl, port, socket, socket));
           } catch (IOException e) {
             if (alive.get()) {
-              LOG.error("Error while listening for connections", e);
+              logger.error("Error while listening for connections", e);
             }
             Utils.closeQuietly(localPortForwardHandle);
           }

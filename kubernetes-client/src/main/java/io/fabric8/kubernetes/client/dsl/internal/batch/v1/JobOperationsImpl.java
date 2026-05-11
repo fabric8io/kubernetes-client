@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
@@ -64,6 +65,16 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
   @Override
   public JobOperationsImpl newInstance(OperationContext context) {
     return new JobOperationsImpl(podControllerOperationContext, context);
+  }
+
+  @Override
+  public JobOperationsImpl withTimeout(long timeout, TimeUnit unit) {
+    return newInstance(context.withTimeout(timeout, unit));
+  }
+
+  @Override
+  public JobOperationsImpl withTimeoutInMillis(long timeoutInMillis) {
+    return withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
   }
 
   @Override

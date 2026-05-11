@@ -46,6 +46,7 @@ import lombok.experimental.Accessors;
     "capacity",
     "clusterClaims",
     "conditions",
+    "managedNamespaces",
     "version"
 })
 @ToString
@@ -85,6 +86,9 @@ public class ManagedClusterStatus implements Editable<ManagedClusterStatusBuilde
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<>();
+    @JsonProperty("managedNamespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ClusterSetManagedNamespaceConfig> managedNamespaces = new ArrayList<>();
     @JsonProperty("version")
     private ManagedClusterVersion version;
     @JsonIgnore
@@ -96,17 +100,18 @@ public class ManagedClusterStatus implements Editable<ManagedClusterStatusBuilde
     public ManagedClusterStatus() {
     }
 
-    public ManagedClusterStatus(Map<String, Quantity> allocatable, Map<String, Quantity> capacity, List<ManagedClusterClaim> clusterClaims, List<Condition> conditions, ManagedClusterVersion version) {
+    public ManagedClusterStatus(Map<String, Quantity> allocatable, Map<String, Quantity> capacity, List<ManagedClusterClaim> clusterClaims, List<Condition> conditions, List<ClusterSetManagedNamespaceConfig> managedNamespaces, ManagedClusterVersion version) {
         super();
         this.allocatable = allocatable;
         this.capacity = capacity;
         this.clusterClaims = clusterClaims;
         this.conditions = conditions;
+        this.managedNamespaces = managedNamespaces;
         this.version = version;
     }
 
     /**
-     * Allocatable represents the total allocatable resources on the managed cluster.
+     * allocatable represents the total allocatable resources on the managed cluster.
      */
     @JsonProperty("allocatable")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -115,7 +120,7 @@ public class ManagedClusterStatus implements Editable<ManagedClusterStatusBuilde
     }
 
     /**
-     * Allocatable represents the total allocatable resources on the managed cluster.
+     * allocatable represents the total allocatable resources on the managed cluster.
      */
     @JsonProperty("allocatable")
     public void setAllocatable(Map<String, Quantity> allocatable) {
@@ -123,7 +128,7 @@ public class ManagedClusterStatus implements Editable<ManagedClusterStatusBuilde
     }
 
     /**
-     * Capacity represents the total resource capacity from all nodeStatuses on the managed cluster.
+     * capacity represents the total resource capacity from all nodeStatuses on the managed cluster.
      */
     @JsonProperty("capacity")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -132,7 +137,7 @@ public class ManagedClusterStatus implements Editable<ManagedClusterStatusBuilde
     }
 
     /**
-     * Capacity represents the total resource capacity from all nodeStatuses on the managed cluster.
+     * capacity represents the total resource capacity from all nodeStatuses on the managed cluster.
      */
     @JsonProperty("capacity")
     public void setCapacity(Map<String, Quantity> capacity) {
@@ -140,7 +145,7 @@ public class ManagedClusterStatus implements Editable<ManagedClusterStatusBuilde
     }
 
     /**
-     * ClusterClaims represents cluster information that a managed cluster claims, for example a unique cluster identifier (id.k8s.io) and kubernetes version (kubeversion.open-cluster-management.io). They are written from the managed cluster. The set of claims is not uniform across a fleet, some claims can be vendor or version specific and may not be included from all managed clusters.
+     * clusterClaims represents cluster information that a managed cluster claims, for example a unique cluster identifier (id.k8s.io) and kubernetes version (kubeversion.open-cluster-management.io). They are written from the managed cluster. The set of claims is not uniform across a fleet, some claims can be vendor or version specific and may not be included from all managed clusters.
      */
     @JsonProperty("clusterClaims")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -149,7 +154,7 @@ public class ManagedClusterStatus implements Editable<ManagedClusterStatusBuilde
     }
 
     /**
-     * ClusterClaims represents cluster information that a managed cluster claims, for example a unique cluster identifier (id.k8s.io) and kubernetes version (kubeversion.open-cluster-management.io). They are written from the managed cluster. The set of claims is not uniform across a fleet, some claims can be vendor or version specific and may not be included from all managed clusters.
+     * clusterClaims represents cluster information that a managed cluster claims, for example a unique cluster identifier (id.k8s.io) and kubernetes version (kubeversion.open-cluster-management.io). They are written from the managed cluster. The set of claims is not uniform across a fleet, some claims can be vendor or version specific and may not be included from all managed clusters.
      */
     @JsonProperty("clusterClaims")
     public void setClusterClaims(List<ManagedClusterClaim> clusterClaims) {
@@ -157,7 +162,7 @@ public class ManagedClusterStatus implements Editable<ManagedClusterStatusBuilde
     }
 
     /**
-     * Conditions contains the different condition statuses for this managed cluster.
+     * conditions contains the different condition statuses for this managed cluster.
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -166,11 +171,28 @@ public class ManagedClusterStatus implements Editable<ManagedClusterStatusBuilde
     }
 
     /**
-     * Conditions contains the different condition statuses for this managed cluster.
+     * conditions contains the different condition statuses for this managed cluster.
      */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
+    }
+
+    /**
+     * managedNamespaces are a list of namespaces managed by the clustersets the cluster belongs to.
+     */
+    @JsonProperty("managedNamespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<ClusterSetManagedNamespaceConfig> getManagedNamespaces() {
+        return managedNamespaces;
+    }
+
+    /**
+     * managedNamespaces are a list of namespaces managed by the clustersets the cluster belongs to.
+     */
+    @JsonProperty("managedNamespaces")
+    public void setManagedNamespaces(List<ClusterSetManagedNamespaceConfig> managedNamespaces) {
+        this.managedNamespaces = managedNamespaces;
     }
 
     /**

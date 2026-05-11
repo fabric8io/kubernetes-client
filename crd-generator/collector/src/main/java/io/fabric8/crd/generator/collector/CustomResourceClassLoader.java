@@ -35,7 +35,7 @@ import java.util.Set;
  */
 class CustomResourceClassLoader {
 
-  private static final Logger log = LoggerFactory.getLogger(CustomResourceClassLoader.class);
+  private static final Logger logger = LoggerFactory.getLogger(CustomResourceClassLoader.class);
 
   private final Set<String> classpathElements = new LinkedHashSet<>();
 
@@ -109,18 +109,18 @@ class CustomResourceClassLoader {
           }).toArray(URL[]::new);
       String urlsAsString = Arrays.toString(urls);
       if (parentClassLoader != null) {
-        log.trace("Using URLClassLoader with parent ClassLoader {} and {}", parentClassLoader, urlsAsString);
+        logger.trace("Using URLClassLoader with parent ClassLoader {} and {}", parentClassLoader, urlsAsString);
         return new URLClassLoader(urls, parentClassLoader);
       } else {
-        log.trace("Using URLClassLoader with {}", urlsAsString);
+        logger.trace("Using URLClassLoader with {}", urlsAsString);
         return new URLClassLoader(urls);
       }
     } else {
       if (parentClassLoader != null) {
-        log.trace("Using given ClassLoader {}", parentClassLoader);
+        logger.trace("Using given ClassLoader {}", parentClassLoader);
         return parentClassLoader;
       } else {
-        log.trace("Using default ClassLoader");
+        logger.trace("Using default ClassLoader");
         return getDefaultClassLoader();
       }
     }

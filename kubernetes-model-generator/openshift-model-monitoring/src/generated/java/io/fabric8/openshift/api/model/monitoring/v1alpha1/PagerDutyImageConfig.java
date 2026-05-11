@@ -90,7 +90,7 @@ public class PagerDutyImageConfig implements Editable<PagerDutyImageConfigBuilde
     }
 
     /**
-     * Alt is the optional alternative text for the image.
+     * alt is the optional alternative text for the image.
      */
     @JsonProperty("alt")
     public String getAlt() {
@@ -98,7 +98,7 @@ public class PagerDutyImageConfig implements Editable<PagerDutyImageConfigBuilde
     }
 
     /**
-     * Alt is the optional alternative text for the image.
+     * alt is the optional alternative text for the image.
      */
     @JsonProperty("alt")
     public void setAlt(String alt) {
@@ -106,7 +106,7 @@ public class PagerDutyImageConfig implements Editable<PagerDutyImageConfigBuilde
     }
 
     /**
-     * Optional URL; makes the image a clickable link.
+     * href defines the optional URL; makes the image a clickable link.
      */
     @JsonProperty("href")
     public String getHref() {
@@ -114,7 +114,7 @@ public class PagerDutyImageConfig implements Editable<PagerDutyImageConfigBuilde
     }
 
     /**
-     * Optional URL; makes the image a clickable link.
+     * href defines the optional URL; makes the image a clickable link.
      */
     @JsonProperty("href")
     public void setHref(String href) {
@@ -122,7 +122,7 @@ public class PagerDutyImageConfig implements Editable<PagerDutyImageConfigBuilde
     }
 
     /**
-     * Src of the image being attached to the incident
+     * src of the image being attached to the incident
      */
     @JsonProperty("src")
     public String getSrc() {
@@ -130,7 +130,7 @@ public class PagerDutyImageConfig implements Editable<PagerDutyImageConfigBuilde
     }
 
     /**
-     * Src of the image being attached to the incident
+     * src of the image being attached to the incident
      */
     @JsonProperty("src")
     public void setSrc(String src) {

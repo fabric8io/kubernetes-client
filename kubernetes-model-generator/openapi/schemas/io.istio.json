@@ -946,7 +946,7 @@
       ],
       "properties": {
         "ObjectTypes": {
-          "description": "Types that are valid to be assigned to ObjectTypes:\n\n\t*EnvoyFilter_EnvoyConfigObjectMatch_Listener\n\t*EnvoyFilter_EnvoyConfigObjectMatch_RouteConfiguration\n\t*EnvoyFilter_EnvoyConfigObjectMatch_Cluster",
+          "description": "Types that are valid to be assigned to ObjectTypes:\n\n\t*EnvoyFilter_EnvoyConfigObjectMatch_Listener\n\t*EnvoyFilter_EnvoyConfigObjectMatch_RouteConfiguration\n\t*EnvoyFilter_EnvoyConfigObjectMatch_Cluster\n\t*EnvoyFilter_EnvoyConfigObjectMatch_Waypoint",
           "default": {},
           "$ref": "#/definitions/io.istio.api.networking.v1alpha3.IsEnvoyFilter_EnvoyConfigObjectMatch_ObjectTypes"
         },
@@ -1025,6 +1025,26 @@
         "Group": "",
         "Version": "v1alpha3",
         "Kind": "EnvoyFilter_EnvoyConfigObjectMatch_RouteConfiguration",
+        "Scope": "Namespaced"
+      },
+      "x-kubernetes-fabric8-implements": "IsEnvoyFilter_EnvoyConfigObjectMatch_ObjectTypes"
+    },
+    "io.istio.api.networking.v1alpha3.EnvoyFilter_EnvoyConfigObjectMatch_Waypoint": {
+      "type": "object",
+      "required": [
+        "waypoint"
+      ],
+      "properties": {
+        "waypoint": {
+          "description": "Match on waypoint attributes. Only work when patch context is WAYPOINT. $hide_from_docs",
+          "$ref": "#/definitions/io.istio.api.networking.v1alpha3.EnvoyFilter_WaypointMatch"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha3",
+        "Kind": "EnvoyFilter_EnvoyConfigObjectMatch_Waypoint",
         "Scope": "Namespaced"
       },
       "x-kubernetes-fabric8-implements": "IsEnvoyFilter_EnvoyConfigObjectMatch_ObjectTypes"
@@ -1202,7 +1222,7 @@
         "Kind": "EnvoyFilter_PatchContext",
         "Scope": "Namespaced"
       },
-      "x-kubernetes-fabric8-enum-values": "ANY(0),GATEWAY(3),SIDECAR_INBOUND(1),SIDECAR_OUTBOUND(2)",
+      "x-kubernetes-fabric8-enum-values": "ANY(0),GATEWAY(3),SIDECAR_INBOUND(1),SIDECAR_OUTBOUND(2),WAYPOINT(4)",
       "x-kubernetes-fabric8-type": "enum"
     },
     "io.istio.api.networking.v1alpha3.EnvoyFilter_Patch_FilterClass": {
@@ -1347,6 +1367,87 @@
         "Group": "",
         "Version": "v1alpha3",
         "Kind": "EnvoyFilter_RouteConfigurationMatch_VirtualHostMatch",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.istio.api.networking.v1alpha3.EnvoyFilter_WaypointMatch": {
+      "description": "$hide_from_docs",
+      "type": "object",
+      "properties": {
+        "filter": {
+          "description": "The name of a specific filter to apply the patch to. Set this to `envoy.filters.network.http_connection_manager` to add a filter or apply a patch to the HTTP connection manager.",
+          "$ref": "#/definitions/io.istio.api.networking.v1alpha3.EnvoyFilter_WaypointMatch_FilterMatch"
+        },
+        "portNumber": {
+          "description": "The service port to match on. If not specified, matches all ports.",
+          "type": "integer",
+          "format": "int64"
+        },
+        "route": {
+          "description": "Match a specific route.",
+          "$ref": "#/definitions/io.istio.api.networking.v1alpha3.EnvoyFilter_WaypointMatch_RouteMatch"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha3",
+        "Kind": "EnvoyFilter_WaypointMatch",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.istio.api.networking.v1alpha3.EnvoyFilter_WaypointMatch_FilterMatch": {
+      "description": "Conditions to match a specific filter within a filter chain.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "The filter name to match on. For standard Envoy filters, [canonical filter](https://www.envoyproxy.io/docs/envoy/latest/version_history/v1.14.0#deprecated) names should be used.",
+          "type": "string"
+        },
+        "subFilter": {
+          "description": "The next level filter within this filter to match on. Typically used for HTTP Connection Manager filters.",
+          "$ref": "#/definitions/io.istio.api.networking.v1alpha3.EnvoyFilter_WaypointMatch_FilterMatch_SubFilterMatch"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha3",
+        "Kind": "EnvoyFilter_WaypointMatch_FilterMatch",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.istio.api.networking.v1alpha3.EnvoyFilter_WaypointMatch_FilterMatch_SubFilterMatch": {
+      "description": "Conditions to match a specific filter within another filter. This field is typically useful to match a HTTP filter inside the `envoy.filters.network.http_connection_manager` network filter.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "The filter name to match on.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha3",
+        "Kind": "EnvoyFilter_WaypointMatch_FilterMatch_SubFilterMatch",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.istio.api.networking.v1alpha3.EnvoyFilter_WaypointMatch_RouteMatch": {
+      "description": "Conditions specified in `RouteMatch` must be met for the patch to be applied to a route.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "The Route objects generated by default are named as default.  Route objects generated using a virtual service will carry the name used in the virtual service's HTTP routes.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha3",
+        "Kind": "EnvoyFilter_WaypointMatch_RouteMatch",
         "Scope": "Namespaced"
       }
     },
@@ -2195,7 +2296,7 @@
         "Kind": "IsEnvoyFilter_EnvoyConfigObjectMatch_ObjectTypes",
         "Scope": "Namespaced"
       },
-      "x-kubernetes-fabric8-implementation": "EnvoyFilter_EnvoyConfigObjectMatch_Cluster,EnvoyFilter_EnvoyConfigObjectMatch_Listener,EnvoyFilter_EnvoyConfigObjectMatch_RouteConfiguration",
+      "x-kubernetes-fabric8-implementation": "EnvoyFilter_EnvoyConfigObjectMatch_Cluster,EnvoyFilter_EnvoyConfigObjectMatch_Listener,EnvoyFilter_EnvoyConfigObjectMatch_RouteConfiguration,EnvoyFilter_EnvoyConfigObjectMatch_Waypoint",
       "x-kubernetes-fabric8-type": "interface"
     },
     "io.istio.api.networking.v1alpha3.IsHTTPBody_Specifier": {
@@ -5055,7 +5156,7 @@
         "Kind": "IsTracing_CustomTag_Type",
         "Scope": "Namespaced"
       },
-      "x-kubernetes-fabric8-implementation": "Tracing_CustomTag_Environment,Tracing_CustomTag_Header,Tracing_CustomTag_Literal",
+      "x-kubernetes-fabric8-implementation": "Tracing_CustomTag_Environment,Tracing_CustomTag_Formatter,Tracing_CustomTag_Header,Tracing_CustomTag_Literal",
       "x-kubernetes-fabric8-type": "interface"
     },
     "io.istio.api.telemetry.v1alpha1.MetricSelector": {
@@ -5356,7 +5457,7 @@
       ],
       "properties": {
         "Type": {
-          "description": "Types that are valid to be assigned to Type:\n\n\t*Tracing_CustomTag_Literal\n\t*Tracing_CustomTag_Environment\n\t*Tracing_CustomTag_Header",
+          "description": "Types that are valid to be assigned to Type:\n\n\t*Tracing_CustomTag_Literal\n\t*Tracing_CustomTag_Environment\n\t*Tracing_CustomTag_Header\n\t*Tracing_CustomTag_Formatter",
           "default": {},
           "$ref": "#/definitions/io.istio.api.telemetry.v1alpha1.IsTracing_CustomTag_Type"
         }
@@ -5387,6 +5488,27 @@
         "Group": "",
         "Version": "v1alpha1",
         "Kind": "Tracing_CustomTag_Environment",
+        "Scope": "Namespaced"
+      },
+      "x-kubernetes-fabric8-implements": "IsTracing_CustomTag_Type"
+    },
+    "io.istio.api.telemetry.v1alpha1.Tracing_CustomTag_Formatter": {
+      "description": "Formatter adds the value of access logging substitution formatter.",
+      "type": "object",
+      "required": [
+        "formatter"
+      ],
+      "properties": {
+        "formatter": {
+          "description": "Formatter adds the value of access logging substitution formatter.",
+          "$ref": "#/definitions/io.istio.api.telemetry.v1alpha1.Tracing_Formatter"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha1",
+        "Kind": "Tracing_CustomTag_Formatter",
         "Scope": "Namespaced"
       },
       "x-kubernetes-fabric8-implements": "IsTracing_CustomTag_Type"
@@ -5450,6 +5572,22 @@
         "Group": "",
         "Version": "v1alpha1",
         "Kind": "Tracing_Environment",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.istio.api.telemetry.v1alpha1.Tracing_Formatter": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "description": "The formatter tag value to use, same formatter as HTTP access logging (e.g. %REQUESTED_SERVER_NAME%). Unknown specifier values are replaced with the empty string.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha1",
+        "Kind": "Tracing_Formatter",
         "Scope": "Namespaced"
       }
     },

@@ -17,6 +17,8 @@ package io.fabric8.openshift.client.dsl;
 
 import io.fabric8.kubernetes.client.dsl.ScalableResource;
 
+import java.util.concurrent.TimeUnit;
+
 public interface DeployableScalableResource<T> extends ScalableResource<T>, TimeoutDeployable<T> {
 
   /**
@@ -24,5 +26,13 @@ public interface DeployableScalableResource<T> extends ScalableResource<T>, Time
    */
   @Deprecated
   T deployLatest(boolean wait);
+
+  @Override
+  DeployableScalableResource<T> withTimeout(long timeout, TimeUnit unit);
+
+  @Override
+  default DeployableScalableResource<T> withTimeoutInMillis(long timeoutInMillis) {
+    return withTimeout(timeoutInMillis, TimeUnit.MILLISECONDS);
+  }
 
 }

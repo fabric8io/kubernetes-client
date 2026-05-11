@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface CreateOrReplaceable<T> extends Replaceable<T> {
+public interface CreateOrReplaceable<T> extends Replaceable<T>, Timeoutable {
 
   /**
    * Creates a provided resource in a Kubernetes Cluster. If creation

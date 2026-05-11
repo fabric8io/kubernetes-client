@@ -90,7 +90,7 @@ public class StaticConfig implements Editable<StaticConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Labels assigned to all metrics scraped from the targets.
+     * labels defines labels assigned to all metrics scraped from the targets.
      */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -99,7 +99,7 @@ public class StaticConfig implements Editable<StaticConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Labels assigned to all metrics scraped from the targets.
+     * labels defines labels assigned to all metrics scraped from the targets.
      */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
@@ -107,7 +107,7 @@ public class StaticConfig implements Editable<StaticConfigBuilder>, KubernetesRe
     }
 
     /**
-     * List of targets for this static configuration.
+     * targets defines the list of targets for this static configuration.
      */
     @JsonProperty("targets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -116,7 +116,7 @@ public class StaticConfig implements Editable<StaticConfigBuilder>, KubernetesRe
     }
 
     /**
-     * List of targets for this static configuration.
+     * targets defines the list of targets for this static configuration.
      */
     @JsonProperty("targets")
     public void setTargets(List<String> targets) {

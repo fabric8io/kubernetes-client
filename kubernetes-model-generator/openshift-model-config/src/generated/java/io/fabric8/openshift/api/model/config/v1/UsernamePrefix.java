@@ -31,6 +31,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * UsernamePrefix configures the string that should be used as a prefix for username claim mappings.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -77,11 +80,17 @@ public class UsernamePrefix implements Editable<UsernamePrefixBuilder>, Kubernet
         this.prefixString = prefixString;
     }
 
+    /**
+     * prefixString is a required field that configures the prefix that will be applied to cluster identity username attribute during the process of mapping JWT claims to cluster identity attributes.<br><p> <br><p> prefixString must not be an empty string ("").
+     */
     @JsonProperty("prefixString")
     public String getPrefixString() {
         return prefixString;
     }
 
+    /**
+     * prefixString is a required field that configures the prefix that will be applied to cluster identity username attribute during the process of mapping JWT claims to cluster identity attributes.<br><p> <br><p> prefixString must not be an empty string ("").
+     */
     @JsonProperty("prefixString")
     public void setPrefixString(String prefixString) {
         this.prefixString = prefixString;

@@ -33,6 +33,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
@@ -170,7 +171,7 @@ class UnmatchedFieldTypeModuleTest {
   @Test
   @DisplayName("writeValueAsString, with additionalProperties overriding fields and enabled log, should log warning")
   void writeValueAsStringWithAdditionalPropertiesOverridingFieldsShouldLogWarning() throws JsonProcessingException {
-    try (MockedStatic<LoggerFactory> lfMock = mockStatic(LoggerFactory.class)) {
+    try (MockedStatic<LoggerFactory> lfMock = mockStatic(LoggerFactory.class, CALLS_REAL_METHODS)) {
       // Given
       unmatchedFieldTypeModule.setLogWarnings(true);
       final ExampleWithAnySetter exampleWithAnySetter = new ExampleWithAnySetter();
@@ -193,7 +194,7 @@ class UnmatchedFieldTypeModuleTest {
   @Test
   @DisplayName("writeValueAsString, with additionalProperties overriding fields and disabled log, should NOT log warning")
   void writeValueAsStringWithAdditionalPropertiesOverridingFieldsShouldNotLogWarning() throws JsonProcessingException {
-    try (MockedStatic<LoggerFactory> lfMock = mockStatic(LoggerFactory.class)) {
+    try (MockedStatic<LoggerFactory> lfMock = mockStatic(LoggerFactory.class, CALLS_REAL_METHODS)) {
       // Given
       final ObjectMapper om = new ObjectMapper();
       final UnmatchedFieldTypeModule module = new UnmatchedFieldTypeModule();

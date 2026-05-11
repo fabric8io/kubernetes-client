@@ -90,7 +90,7 @@ public class K8SSelectorConfig implements Editable<K8SSelectorConfigBuilder>, Ku
     }
 
     /**
-     * An optional field selector to limit the service discovery to resources which have fields with specific values. e.g: `metadata.name=foobar`
+     * field defines an optional field selector to limit the service discovery to resources which have fields with specific values. e.g: `metadata.name=foobar`
      */
     @JsonProperty("field")
     public String getField() {
@@ -98,7 +98,7 @@ public class K8SSelectorConfig implements Editable<K8SSelectorConfigBuilder>, Ku
     }
 
     /**
-     * An optional field selector to limit the service discovery to resources which have fields with specific values. e.g: `metadata.name=foobar`
+     * field defines an optional field selector to limit the service discovery to resources which have fields with specific values. e.g: `metadata.name=foobar`
      */
     @JsonProperty("field")
     public void setField(String field) {
@@ -106,7 +106,7 @@ public class K8SSelectorConfig implements Editable<K8SSelectorConfigBuilder>, Ku
     }
 
     /**
-     * An optional label selector to limit the service discovery to resources with specific labels and label values. e.g: `node.kubernetes.io/instance-type=master`
+     * label defines an optional label selector to limit the service discovery to resources with specific labels and label values. e.g: `node.kubernetes.io/instance-type=master`
      */
     @JsonProperty("label")
     public String getLabel() {
@@ -114,7 +114,7 @@ public class K8SSelectorConfig implements Editable<K8SSelectorConfigBuilder>, Ku
     }
 
     /**
-     * An optional label selector to limit the service discovery to resources with specific labels and label values. e.g: `node.kubernetes.io/instance-type=master`
+     * label defines an optional label selector to limit the service discovery to resources with specific labels and label values. e.g: `node.kubernetes.io/instance-type=master`
      */
     @JsonProperty("label")
     public void setLabel(String label) {
@@ -122,7 +122,7 @@ public class K8SSelectorConfig implements Editable<K8SSelectorConfigBuilder>, Ku
     }
 
     /**
-     * Role specifies the type of Kubernetes resource to limit the service discovery to. Accepted values are: Node, Pod, Endpoints, EndpointSlice, Service, Ingress.
+     * role defines the type of Kubernetes resource to limit the service discovery to. Accepted values are: Node, Pod, Endpoints, EndpointSlice, Service, Ingress.
      */
     @JsonProperty("role")
     public String getRole() {
@@ -130,7 +130,7 @@ public class K8SSelectorConfig implements Editable<K8SSelectorConfigBuilder>, Ku
     }
 
     /**
-     * Role specifies the type of Kubernetes resource to limit the service discovery to. Accepted values are: Node, Pod, Endpoints, EndpointSlice, Service, Ingress.
+     * role defines the type of Kubernetes resource to limit the service discovery to. Accepted values are: Node, Pod, Endpoints, EndpointSlice, Service, Ingress.
      */
     @JsonProperty("role")
     public void setRole(String role) {

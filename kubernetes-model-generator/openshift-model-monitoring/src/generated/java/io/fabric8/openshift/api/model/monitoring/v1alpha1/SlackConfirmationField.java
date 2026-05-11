@@ -94,7 +94,7 @@ public class SlackConfirmationField implements Editable<SlackConfirmationFieldBu
     }
 
     /**
-     * SlackConfirmationField protect users from destructive actions or particularly distinguished decisions by asking them to confirm their button click one more time. See https://api.slack.com/docs/interactive-message-field-guide#confirmation_fields for more information.
+     * dismissText defines the label for the cancel button in the dialog. When not specified, defaults to "Cancel". This button cancels the action.
      */
     @JsonProperty("dismissText")
     public String getDismissText() {
@@ -102,7 +102,7 @@ public class SlackConfirmationField implements Editable<SlackConfirmationFieldBu
     }
 
     /**
-     * SlackConfirmationField protect users from destructive actions or particularly distinguished decisions by asking them to confirm their button click one more time. See https://api.slack.com/docs/interactive-message-field-guide#confirmation_fields for more information.
+     * dismissText defines the label for the cancel button in the dialog. When not specified, defaults to "Cancel". This button cancels the action.
      */
     @JsonProperty("dismissText")
     public void setDismissText(String dismissText) {
@@ -110,7 +110,7 @@ public class SlackConfirmationField implements Editable<SlackConfirmationFieldBu
     }
 
     /**
-     * SlackConfirmationField protect users from destructive actions or particularly distinguished decisions by asking them to confirm their button click one more time. See https://api.slack.com/docs/interactive-message-field-guide#confirmation_fields for more information.
+     * okText defines the label for the confirmation button in the dialog. When not specified, defaults to "Okay". This button proceeds with the action.
      */
     @JsonProperty("okText")
     public String getOkText() {
@@ -118,7 +118,7 @@ public class SlackConfirmationField implements Editable<SlackConfirmationFieldBu
     }
 
     /**
-     * SlackConfirmationField protect users from destructive actions or particularly distinguished decisions by asking them to confirm their button click one more time. See https://api.slack.com/docs/interactive-message-field-guide#confirmation_fields for more information.
+     * okText defines the label for the confirmation button in the dialog. When not specified, defaults to "Okay". This button proceeds with the action.
      */
     @JsonProperty("okText")
     public void setOkText(String okText) {
@@ -126,7 +126,7 @@ public class SlackConfirmationField implements Editable<SlackConfirmationFieldBu
     }
 
     /**
-     * SlackConfirmationField protect users from destructive actions or particularly distinguished decisions by asking them to confirm their button click one more time. See https://api.slack.com/docs/interactive-message-field-guide#confirmation_fields for more information.
+     * text defines the main message displayed in the confirmation dialog. This should be a clear question or statement asking the user to confirm their action.
      */
     @JsonProperty("text")
     public String getText() {
@@ -134,7 +134,7 @@ public class SlackConfirmationField implements Editable<SlackConfirmationFieldBu
     }
 
     /**
-     * SlackConfirmationField protect users from destructive actions or particularly distinguished decisions by asking them to confirm their button click one more time. See https://api.slack.com/docs/interactive-message-field-guide#confirmation_fields for more information.
+     * text defines the main message displayed in the confirmation dialog. This should be a clear question or statement asking the user to confirm their action.
      */
     @JsonProperty("text")
     public void setText(String text) {
@@ -142,7 +142,7 @@ public class SlackConfirmationField implements Editable<SlackConfirmationFieldBu
     }
 
     /**
-     * SlackConfirmationField protect users from destructive actions or particularly distinguished decisions by asking them to confirm their button click one more time. See https://api.slack.com/docs/interactive-message-field-guide#confirmation_fields for more information.
+     * title defines the title text displayed at the top of the confirmation dialog. When not specified, a default title will be used.
      */
     @JsonProperty("title")
     public String getTitle() {
@@ -150,7 +150,7 @@ public class SlackConfirmationField implements Editable<SlackConfirmationFieldBu
     }
 
     /**
-     * SlackConfirmationField protect users from destructive actions or particularly distinguished decisions by asking them to confirm their button click one more time. See https://api.slack.com/docs/interactive-message-field-guide#confirmation_fields for more information.
+     * title defines the title text displayed at the top of the confirmation dialog. When not specified, a default title will be used.
      */
     @JsonProperty("title")
     public void setTitle(String title) {

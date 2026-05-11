@@ -101,7 +101,7 @@ public class WebHTTPConfig implements Editable<WebHTTPConfigBuilder>, Kubernetes
     }
 
     /**
-     * Enable HTTP/2 support. Note that HTTP/2 is only supported with TLS. When TLSConfig is not configured, HTTP/2 will be disabled. Whenever the value of the field changes, a rolling update will be triggered.
+     * http2 enable HTTP/2 support. Note that HTTP/2 is only supported with TLS. When TLSConfig is not configured, HTTP/2 will be disabled. Whenever the value of the field changes, a rolling update will be triggered.
      */
     @JsonProperty("http2")
     public Boolean getHttp2() {
@@ -109,7 +109,7 @@ public class WebHTTPConfig implements Editable<WebHTTPConfigBuilder>, Kubernetes
     }
 
     /**
-     * Enable HTTP/2 support. Note that HTTP/2 is only supported with TLS. When TLSConfig is not configured, HTTP/2 will be disabled. Whenever the value of the field changes, a rolling update will be triggered.
+     * http2 enable HTTP/2 support. Note that HTTP/2 is only supported with TLS. When TLSConfig is not configured, HTTP/2 will be disabled. Whenever the value of the field changes, a rolling update will be triggered.
      */
     @JsonProperty("http2")
     public void setHttp2(Boolean http2) {

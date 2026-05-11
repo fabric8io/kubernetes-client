@@ -166,7 +166,7 @@ public class KubernetesClientException extends RuntimeException {
     final String name;
 
     static RequestMetadata from(HttpRequest request) {
-      return from(request.uri());
+      return request == null ? EMPTY : from(request.uri());
     }
 
     static RequestMetadata from(URI request) {

@@ -67,9 +67,9 @@ public class HostedClusterManagerConfiguration implements Editable<HostedCluster
 {
 
     @JsonProperty("registrationWebhookConfiguration")
-    private WebhookConfiguration registrationWebhookConfiguration;
+    private HostedWebhookConfiguration registrationWebhookConfiguration;
     @JsonProperty("workWebhookConfiguration")
-    private WebhookConfiguration workWebhookConfiguration;
+    private HostedWebhookConfiguration workWebhookConfiguration;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -79,7 +79,7 @@ public class HostedClusterManagerConfiguration implements Editable<HostedCluster
     public HostedClusterManagerConfiguration() {
     }
 
-    public HostedClusterManagerConfiguration(WebhookConfiguration registrationWebhookConfiguration, WebhookConfiguration workWebhookConfiguration) {
+    public HostedClusterManagerConfiguration(HostedWebhookConfiguration registrationWebhookConfiguration, HostedWebhookConfiguration workWebhookConfiguration) {
         super();
         this.registrationWebhookConfiguration = registrationWebhookConfiguration;
         this.workWebhookConfiguration = workWebhookConfiguration;
@@ -89,7 +89,7 @@ public class HostedClusterManagerConfiguration implements Editable<HostedCluster
      * HostedClusterManagerConfiguration represents customized configurations we need to set for clustermanager in the Hosted mode.
      */
     @JsonProperty("registrationWebhookConfiguration")
-    public WebhookConfiguration getRegistrationWebhookConfiguration() {
+    public HostedWebhookConfiguration getRegistrationWebhookConfiguration() {
         return registrationWebhookConfiguration;
     }
 
@@ -97,7 +97,7 @@ public class HostedClusterManagerConfiguration implements Editable<HostedCluster
      * HostedClusterManagerConfiguration represents customized configurations we need to set for clustermanager in the Hosted mode.
      */
     @JsonProperty("registrationWebhookConfiguration")
-    public void setRegistrationWebhookConfiguration(WebhookConfiguration registrationWebhookConfiguration) {
+    public void setRegistrationWebhookConfiguration(HostedWebhookConfiguration registrationWebhookConfiguration) {
         this.registrationWebhookConfiguration = registrationWebhookConfiguration;
     }
 
@@ -105,7 +105,7 @@ public class HostedClusterManagerConfiguration implements Editable<HostedCluster
      * HostedClusterManagerConfiguration represents customized configurations we need to set for clustermanager in the Hosted mode.
      */
     @JsonProperty("workWebhookConfiguration")
-    public WebhookConfiguration getWorkWebhookConfiguration() {
+    public HostedWebhookConfiguration getWorkWebhookConfiguration() {
         return workWebhookConfiguration;
     }
 
@@ -113,7 +113,7 @@ public class HostedClusterManagerConfiguration implements Editable<HostedCluster
      * HostedClusterManagerConfiguration represents customized configurations we need to set for clustermanager in the Hosted mode.
      */
     @JsonProperty("workWebhookConfiguration")
-    public void setWorkWebhookConfiguration(WebhookConfiguration workWebhookConfiguration) {
+    public void setWorkWebhookConfiguration(HostedWebhookConfiguration workWebhookConfiguration) {
         this.workWebhookConfiguration = workWebhookConfiguration;
     }
 

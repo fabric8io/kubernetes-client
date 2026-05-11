@@ -53,6 +53,7 @@ class TestDefaultValues {
     Thirteen thirteen = cr.getSpec().getThirteen();
     IntOrString fourteen = cr.getSpec().getFourteen();
     IntOrString fifteen = cr.getSpec().getFifteen();
+    List<Sixteen> sixteen = cr.getSpec().getSixteen();
 
     // Assert
     assertEquals("one", one);
@@ -74,5 +75,8 @@ class TestDefaultValues {
     assertEquals(302L, thirteen.getValue());
     assertEquals("10Gi", fourteen.getStrVal());
     assertEquals(11, fifteen.getIntVal());
+    assertEquals(1, sixteen.size());
+    assertEquals(Sixteen.class, sixteen.get(0).getClass());
+    assertEquals(Sixteen.ALL, sixteen.get(0));
   }
 }

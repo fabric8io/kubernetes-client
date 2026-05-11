@@ -92,7 +92,7 @@ public class ShardRetentionPolicy implements Editable<ShardRetentionPolicyBuilde
     }
 
     /**
-     * Defines the retention policy when the Prometheus shards are scaled down. &#42; `Delete`, the operator will delete the pods from the scaled-down shard(s). &#42; `Retain`, the operator will keep the pods from the scaled-down shard(s), so the data can still be queried.<br><p> <br><p> If not defined, the operator assumes the `Delete` value.
+     * whenScaled defines the retention policy when the Prometheus shards are scaled down. &#42; `Delete`, the operator will delete the pods from the scaled-down shard(s). &#42; `Retain`, the operator will keep the pods from the scaled-down shard(s), so the data can still be queried.<br><p> <br><p> If not defined, the operator assumes the `Delete` value.
      */
     @JsonProperty("whenScaled")
     public String getWhenScaled() {
@@ -100,7 +100,7 @@ public class ShardRetentionPolicy implements Editable<ShardRetentionPolicyBuilde
     }
 
     /**
-     * Defines the retention policy when the Prometheus shards are scaled down. &#42; `Delete`, the operator will delete the pods from the scaled-down shard(s). &#42; `Retain`, the operator will keep the pods from the scaled-down shard(s), so the data can still be queried.<br><p> <br><p> If not defined, the operator assumes the `Delete` value.
+     * whenScaled defines the retention policy when the Prometheus shards are scaled down. &#42; `Delete`, the operator will delete the pods from the scaled-down shard(s). &#42; `Retain`, the operator will keep the pods from the scaled-down shard(s), so the data can still be queried.<br><p> <br><p> If not defined, the operator assumes the `Delete` value.
      */
     @JsonProperty("whenScaled")
     public void setWhenScaled(String whenScaled) {

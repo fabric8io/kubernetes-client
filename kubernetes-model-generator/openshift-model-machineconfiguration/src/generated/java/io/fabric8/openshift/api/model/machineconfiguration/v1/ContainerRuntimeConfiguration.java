@@ -98,7 +98,7 @@ public class ContainerRuntimeConfiguration implements Editable<ContainerRuntimeC
     }
 
     /**
-     * defaultRuntime is the name of the OCI runtime to be used as the default.
+     * defaultRuntime is the name of the OCI runtime to be used as the default for containers. Allowed values are `runc` and `crun`. When set to `runc`, OpenShift will use runc to execute the container When set to `crun`, OpenShift will use crun to execute the container When omitted, this means no opinion and the platform is left to choose a reasonable default, which is subject to change over time. Currently, the default is `crun`.
      */
     @JsonProperty("defaultRuntime")
     public String getDefaultRuntime() {
@@ -106,7 +106,7 @@ public class ContainerRuntimeConfiguration implements Editable<ContainerRuntimeC
     }
 
     /**
-     * defaultRuntime is the name of the OCI runtime to be used as the default.
+     * defaultRuntime is the name of the OCI runtime to be used as the default for containers. Allowed values are `runc` and `crun`. When set to `runc`, OpenShift will use runc to execute the container When set to `crun`, OpenShift will use crun to execute the container When omitted, this means no opinion and the platform is left to choose a reasonable default, which is subject to change over time. Currently, the default is `crun`.
      */
     @JsonProperty("defaultRuntime")
     public void setDefaultRuntime(String defaultRuntime) {

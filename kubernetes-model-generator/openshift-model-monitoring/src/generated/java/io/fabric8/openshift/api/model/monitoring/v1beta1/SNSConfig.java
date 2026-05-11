@@ -120,7 +120,7 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * The SNS API URL i.e. https://sns.us-east-2.amazonaws.com. If not specified, the SNS API URL from the SNS SDK will be used.
+     * apiURL defines the SNS API URL, e.g. https://sns.us-east-2.amazonaws.com. If not specified, the SNS API URL from the SNS SDK will be used.
      */
     @JsonProperty("apiURL")
     public String getApiURL() {
@@ -128,7 +128,7 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * The SNS API URL i.e. https://sns.us-east-2.amazonaws.com. If not specified, the SNS API URL from the SNS SDK will be used.
+     * apiURL defines the SNS API URL, e.g. https://sns.us-east-2.amazonaws.com. If not specified, the SNS API URL from the SNS SDK will be used.
      */
     @JsonProperty("apiURL")
     public void setApiURL(String apiURL) {
@@ -136,7 +136,7 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * SNS message attributes.
+     * attributes defines SNS message attributes as key-value pairs. These provide additional metadata that can be used for message filtering and routing.
      */
     @JsonProperty("attributes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -145,7 +145,7 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * SNS message attributes.
+     * attributes defines SNS message attributes as key-value pairs. These provide additional metadata that can be used for message filtering and routing.
      */
     @JsonProperty("attributes")
     public void setAttributes(Map<String, String> attributes) {
@@ -169,7 +169,7 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * The message content of the SNS notification.
+     * message defines the message content of the SNS notification. This is the actual notification text that will be sent to subscribers.
      */
     @JsonProperty("message")
     public String getMessage() {
@@ -177,7 +177,7 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * The message content of the SNS notification.
+     * message defines the message content of the SNS notification. This is the actual notification text that will be sent to subscribers.
      */
     @JsonProperty("message")
     public void setMessage(String message) {
@@ -185,7 +185,7 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * Phone number if message is delivered via SMS in E.164 format. If you don't specify this value, you must specify a value for the TopicARN or TargetARN.
+     * phoneNumber defines the phone number if message is delivered via SMS in E.164 format. If you don't specify this value, you must specify a value for the TopicARN or TargetARN.
      */
     @JsonProperty("phoneNumber")
     public String getPhoneNumber() {
@@ -193,7 +193,7 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * Phone number if message is delivered via SMS in E.164 format. If you don't specify this value, you must specify a value for the TopicARN or TargetARN.
+     * phoneNumber defines the phone number if message is delivered via SMS in E.164 format. If you don't specify this value, you must specify a value for the TopicARN or TargetARN.
      */
     @JsonProperty("phoneNumber")
     public void setPhoneNumber(String phoneNumber) {
@@ -201,7 +201,7 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * Whether or not to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
@@ -209,7 +209,7 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * Whether or not to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
@@ -233,7 +233,7 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * Subject line when the message is delivered to email endpoints.
+     * subject defines the subject line when the message is delivered to email endpoints. This field is only used when sending to email subscribers of an SNS topic.
      */
     @JsonProperty("subject")
     public String getSubject() {
@@ -241,7 +241,7 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * Subject line when the message is delivered to email endpoints.
+     * subject defines the subject line when the message is delivered to email endpoints. This field is only used when sending to email subscribers of an SNS topic.
      */
     @JsonProperty("subject")
     public void setSubject(String subject) {
@@ -249,7 +249,7 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * The  mobile platform endpoint ARN if message is delivered via mobile notifications. If you don't specify this value, you must specify a value for the topic_arn or PhoneNumber.
+     * targetARN defines the mobile platform endpoint ARN if message is delivered via mobile notifications. If you don't specify this value, you must specify a value for the TopicARN or PhoneNumber.
      */
     @JsonProperty("targetARN")
     public String getTargetARN() {
@@ -257,7 +257,7 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * The  mobile platform endpoint ARN if message is delivered via mobile notifications. If you don't specify this value, you must specify a value for the topic_arn or PhoneNumber.
+     * targetARN defines the mobile platform endpoint ARN if message is delivered via mobile notifications. If you don't specify this value, you must specify a value for the TopicARN or PhoneNumber.
      */
     @JsonProperty("targetARN")
     public void setTargetARN(String targetARN) {
@@ -265,7 +265,7 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * SNS topic ARN, i.e. arn:aws:sns:us-east-2:698519295917:My-Topic If you don't specify this value, you must specify a value for the PhoneNumber or TargetARN.
+     * topicARN defines the SNS topic ARN, e.g. arn:aws:sns:us-east-2:698519295917:My-Topic. If you don't specify this value, you must specify a value for the PhoneNumber or TargetARN.
      */
     @JsonProperty("topicARN")
     public String getTopicARN() {
@@ -273,7 +273,7 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * SNS topic ARN, i.e. arn:aws:sns:us-east-2:698519295917:My-Topic If you don't specify this value, you must specify a value for the PhoneNumber or TargetARN.
+     * topicARN defines the SNS topic ARN, e.g. arn:aws:sns:us-east-2:698519295917:My-Topic. If you don't specify this value, you must specify a value for the PhoneNumber or TargetARN.
      */
     @JsonProperty("topicARN")
     public void setTopicARN(String topicARN) {

@@ -89,7 +89,7 @@ public class Filter implements Editable<FilterBuilder>, KubernetesResource
     }
 
     /**
-     * Name of the Filter.
+     * name of the Filter.
      */
     @JsonProperty("name")
     public String getName() {
@@ -97,7 +97,7 @@ public class Filter implements Editable<FilterBuilder>, KubernetesResource
     }
 
     /**
-     * Name of the Filter.
+     * name of the Filter.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -105,7 +105,7 @@ public class Filter implements Editable<FilterBuilder>, KubernetesResource
     }
 
     /**
-     * Value to filter on.
+     * values defines values to filter on.
      */
     @JsonProperty("values")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -114,7 +114,7 @@ public class Filter implements Editable<FilterBuilder>, KubernetesResource
     }
 
     /**
-     * Value to filter on.
+     * values defines values to filter on.
      */
     @JsonProperty("values")
     public void setValues(List<String> values) {

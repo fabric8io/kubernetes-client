@@ -100,7 +100,7 @@ public class WorkloadBinding implements Editable<WorkloadBindingBuilder>, Kubern
     }
 
     /**
-     * The current state of the configuration resource when bound to the referenced Prometheus object.
+     * conditions defines the current state of the configuration resource when bound to the referenced Workload object.
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -109,7 +109,7 @@ public class WorkloadBinding implements Editable<WorkloadBindingBuilder>, Kubern
     }
 
     /**
-     * The current state of the configuration resource when bound to the referenced Prometheus object.
+     * conditions defines the current state of the configuration resource when bound to the referenced Workload object.
      */
     @JsonProperty("conditions")
     public void setConditions(List<ConfigResourceCondition> conditions) {
@@ -117,7 +117,7 @@ public class WorkloadBinding implements Editable<WorkloadBindingBuilder>, Kubern
     }
 
     /**
-     * The group of the referenced resource.
+     * group defines the group of the referenced resource.
      */
     @JsonProperty("group")
     public String getGroup() {
@@ -125,7 +125,7 @@ public class WorkloadBinding implements Editable<WorkloadBindingBuilder>, Kubern
     }
 
     /**
-     * The group of the referenced resource.
+     * group defines the group of the referenced resource.
      */
     @JsonProperty("group")
     public void setGroup(String group) {
@@ -133,7 +133,7 @@ public class WorkloadBinding implements Editable<WorkloadBindingBuilder>, Kubern
     }
 
     /**
-     * The name of the referenced object.
+     * name defines the name of the referenced object.
      */
     @JsonProperty("name")
     public String getName() {
@@ -141,7 +141,7 @@ public class WorkloadBinding implements Editable<WorkloadBindingBuilder>, Kubern
     }
 
     /**
-     * The name of the referenced object.
+     * name defines the name of the referenced object.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -149,7 +149,7 @@ public class WorkloadBinding implements Editable<WorkloadBindingBuilder>, Kubern
     }
 
     /**
-     * The namespace of the referenced object.
+     * namespace defines the namespace of the referenced object.
      */
     @JsonProperty("namespace")
     public String getNamespace() {
@@ -157,7 +157,7 @@ public class WorkloadBinding implements Editable<WorkloadBindingBuilder>, Kubern
     }
 
     /**
-     * The namespace of the referenced object.
+     * namespace defines the namespace of the referenced object.
      */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
@@ -165,7 +165,7 @@ public class WorkloadBinding implements Editable<WorkloadBindingBuilder>, Kubern
     }
 
     /**
-     * The type of resource being referenced (e.g. Prometheus or PrometheusAgent).
+     * resource defines the type of resource being referenced (e.g. Prometheus, PrometheusAgent, ThanosRuler or Alertmanager).
      */
     @JsonProperty("resource")
     public String getResource() {
@@ -173,7 +173,7 @@ public class WorkloadBinding implements Editable<WorkloadBindingBuilder>, Kubern
     }
 
     /**
-     * The type of resource being referenced (e.g. Prometheus or PrometheusAgent).
+     * resource defines the type of resource being referenced (e.g. Prometheus, PrometheusAgent, ThanosRuler or Alertmanager).
      */
     @JsonProperty("resource")
     public void setResource(String resource) {

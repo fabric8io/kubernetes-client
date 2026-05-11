@@ -152,7 +152,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * Whether the service discovery should list all instances for all projects. It is only relevant for the 'instance' role and usually requires admin permissions.
+     * allTenants defines whether the service discovery should list all instances for all projects. It is only relevant for the 'instance' role and usually requires admin permissions.
      */
     @JsonProperty("allTenants")
     public Boolean getAllTenants() {
@@ -160,7 +160,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * Whether the service discovery should list all instances for all projects. It is only relevant for the 'instance' role and usually requires admin permissions.
+     * allTenants defines whether the service discovery should list all instances for all projects. It is only relevant for the 'instance' role and usually requires admin permissions.
      */
     @JsonProperty("allTenants")
     public void setAllTenants(Boolean allTenants) {
@@ -168,7 +168,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * ApplicationCredentialID
+     * applicationCredentialId defines the OpenStack applicationCredentialId.
      */
     @JsonProperty("applicationCredentialId")
     public String getApplicationCredentialId() {
@@ -176,7 +176,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * ApplicationCredentialID
+     * applicationCredentialId defines the OpenStack applicationCredentialId.
      */
     @JsonProperty("applicationCredentialId")
     public void setApplicationCredentialId(String applicationCredentialId) {
@@ -184,7 +184,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * The ApplicationCredentialID or ApplicationCredentialName fields are required if using an application credential to authenticate. Some providers allow you to create an application credential to authenticate rather than a password.
+     * applicationCredentialName defines the ApplicationCredentialID or ApplicationCredentialName fields are required if using an application credential to authenticate. Some providers allow you to create an application credential to authenticate rather than a password.
      */
     @JsonProperty("applicationCredentialName")
     public String getApplicationCredentialName() {
@@ -192,7 +192,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * The ApplicationCredentialID or ApplicationCredentialName fields are required if using an application credential to authenticate. Some providers allow you to create an application credential to authenticate rather than a password.
+     * applicationCredentialName defines the ApplicationCredentialID or ApplicationCredentialName fields are required if using an application credential to authenticate. Some providers allow you to create an application credential to authenticate rather than a password.
      */
     @JsonProperty("applicationCredentialName")
     public void setApplicationCredentialName(String applicationCredentialName) {
@@ -216,7 +216,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * Availability of the endpoint to connect to.
+     * availability defines the availability of the endpoint to connect to.
      */
     @JsonProperty("availability")
     public String getAvailability() {
@@ -224,7 +224,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * Availability of the endpoint to connect to.
+     * availability defines the availability of the endpoint to connect to.
      */
     @JsonProperty("availability")
     public void setAvailability(String availability) {
@@ -232,7 +232,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * DomainID
+     * domainID defines The OpenStack domainID.
      */
     @JsonProperty("domainID")
     public String getDomainID() {
@@ -240,7 +240,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * DomainID
+     * domainID defines The OpenStack domainID.
      */
     @JsonProperty("domainID")
     public void setDomainID(String domainID) {
@@ -248,7 +248,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * At most one of domainId and domainName must be provided if using username with Identity V3. Otherwise, either are optional.
+     * domainName defines at most one of domainId and domainName that must be provided if using username with Identity V3. Otherwise, either are optional.
      */
     @JsonProperty("domainName")
     public String getDomainName() {
@@ -256,7 +256,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * At most one of domainId and domainName must be provided if using username with Identity V3. Otherwise, either are optional.
+     * domainName defines at most one of domainId and domainName that must be provided if using username with Identity V3. Otherwise, either are optional.
      */
     @JsonProperty("domainName")
     public void setDomainName(String domainName) {
@@ -264,7 +264,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * IdentityEndpoint specifies the HTTP endpoint that is required to work with the Identity API of the appropriate version.
+     * identityEndpoint defines the HTTP endpoint that is required to work with the Identity API of the appropriate version.
      */
     @JsonProperty("identityEndpoint")
     public String getIdentityEndpoint() {
@@ -272,7 +272,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * IdentityEndpoint specifies the HTTP endpoint that is required to work with the Identity API of the appropriate version.
+     * identityEndpoint defines the HTTP endpoint that is required to work with the Identity API of the appropriate version.
      */
     @JsonProperty("identityEndpoint")
     public void setIdentityEndpoint(String identityEndpoint) {
@@ -296,7 +296,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * The port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
+     * port defines the port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
      */
     @JsonProperty("port")
     public Integer getPort() {
@@ -304,7 +304,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * The port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
+     * port defines the port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule.
      */
     @JsonProperty("port")
     public void setPort(Integer port) {
@@ -312,7 +312,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * ProjectID
+     * projectID defines the OpenStack projectID.
      */
     @JsonProperty("projectID")
     public String getProjectID() {
@@ -320,7 +320,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * ProjectID
+     * projectID defines the OpenStack projectID.
      */
     @JsonProperty("projectID")
     public void setProjectID(String projectID) {
@@ -328,7 +328,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * The ProjectId and ProjectName fields are optional for the Identity V2 API. Some providers allow you to specify a ProjectName instead of the ProjectId. Some require both. Your provider's authentication policies will determine how these fields influence authentication.
+     * projectName defines an optional field for the Identity V2 API. Some providers allow you to specify a ProjectName instead of the ProjectId. Some require both. Your provider's authentication policies will determine how these fields influence authentication.
      */
     @JsonProperty("projectName")
     public String getProjectName() {
@@ -336,7 +336,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * The ProjectId and ProjectName fields are optional for the Identity V2 API. Some providers allow you to specify a ProjectName instead of the ProjectId. Some require both. Your provider's authentication policies will determine how these fields influence authentication.
+     * projectName defines an optional field for the Identity V2 API. Some providers allow you to specify a ProjectName instead of the ProjectId. Some require both. Your provider's authentication policies will determine how these fields influence authentication.
      */
     @JsonProperty("projectName")
     public void setProjectName(String projectName) {
@@ -344,7 +344,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * Refresh interval to re-read the instance list.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
@@ -352,7 +352,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * Refresh interval to re-read the instance list.
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
@@ -360,7 +360,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * The OpenStack Region.
+     * region defines the OpenStack Region.
      */
     @JsonProperty("region")
     public String getRegion() {
@@ -368,7 +368,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * The OpenStack Region.
+     * region defines the OpenStack Region.
      */
     @JsonProperty("region")
     public void setRegion(String region) {
@@ -376,7 +376,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * The OpenStack role of entities that should be discovered.<br><p> <br><p> Note: The `LoadBalancer` role requires Prometheus &gt;= v3.2.0.
+     * role defines the OpenStack role of entities that should be discovered.<br><p> <br><p> Note: The `LoadBalancer` role requires Prometheus &gt;= v3.2.0.
      */
     @JsonProperty("role")
     public String getRole() {
@@ -384,7 +384,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * The OpenStack role of entities that should be discovered.<br><p> <br><p> Note: The `LoadBalancer` role requires Prometheus &gt;= v3.2.0.
+     * role defines the OpenStack role of entities that should be discovered.<br><p> <br><p> Note: The `LoadBalancer` role requires Prometheus &gt;= v3.2.0.
      */
     @JsonProperty("role")
     public void setRole(String role) {
@@ -408,7 +408,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * UserID
+     * userid defines the OpenStack userid.
      */
     @JsonProperty("userid")
     public String getUserid() {
@@ -416,7 +416,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * UserID
+     * userid defines the OpenStack userid.
      */
     @JsonProperty("userid")
     public void setUserid(String userid) {
@@ -424,7 +424,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * Username is required if using Identity V2 API. Consult with your provider's control panel to discover your account's username. In Identity V3, either userid or a combination of username and domainId or domainName are needed
+     * username defines the username required if using Identity V2 API. Consult with your provider's control panel to discover your account's username. In Identity V3, either userid or a combination of username and domainId or domainName are needed
      */
     @JsonProperty("username")
     public String getUsername() {
@@ -432,7 +432,7 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
     }
 
     /**
-     * Username is required if using Identity V2 API. Consult with your provider's control panel to discover your account's username. In Identity V3, either userid or a combination of username and domainId or domainName are needed
+     * username defines the username required if using Identity V2 API. Consult with your provider's control panel to discover your account's username. In Identity V3, either userid or a combination of username and domainId or domainName are needed
      */
     @JsonProperty("username")
     public void setUsername(String username) {

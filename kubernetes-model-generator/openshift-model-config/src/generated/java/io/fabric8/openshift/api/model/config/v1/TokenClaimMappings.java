@@ -93,7 +93,7 @@ public class TokenClaimMappings implements Editable<TokenClaimMappingsBuilder>, 
     }
 
     /**
-     * extra is an optional field for configuring the mappings used to construct the extra attribute for the cluster identity. When omitted, no extra attributes will be present on the cluster identity. key values for extra mappings must be unique. A maximum of 64 extra attribute mappings may be provided.
+     * extra is an optional field for configuring the mappings used to construct the extra attribute for the cluster identity. When omitted, no extra attributes will be present on the cluster identity. key values for extra mappings must be unique. A maximum of 32 extra attribute mappings may be provided.
      */
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -102,7 +102,7 @@ public class TokenClaimMappings implements Editable<TokenClaimMappingsBuilder>, 
     }
 
     /**
-     * extra is an optional field for configuring the mappings used to construct the extra attribute for the cluster identity. When omitted, no extra attributes will be present on the cluster identity. key values for extra mappings must be unique. A maximum of 64 extra attribute mappings may be provided.
+     * extra is an optional field for configuring the mappings used to construct the extra attribute for the cluster identity. When omitted, no extra attributes will be present on the cluster identity. key values for extra mappings must be unique. A maximum of 32 extra attribute mappings may be provided.
      */
     @JsonProperty("extra")
     public void setExtra(List<ExtraMapping> extra) {

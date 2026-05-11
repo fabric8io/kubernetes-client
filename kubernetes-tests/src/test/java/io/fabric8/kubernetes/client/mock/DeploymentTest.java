@@ -55,7 +55,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class DeploymentTest {
 
   KubernetesMockServer server;
@@ -241,13 +241,13 @@ class DeploymentTest {
         .andReturn(200, new DeploymentBuilder(deployment2).editSpec().withReplicas(0).endSpec().build())
         .times(5);
 
-    boolean deleted = client.apps().deployments().withName("deployment1").delete().size() == 1;
+    boolean deleted = client.apps().deployments().withName("deployment1").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.apps().deployments().withName("deployment2").delete().size() == 1;
+    deleted = client.apps().deployments().withName("deployment2").withGracePeriod(0).delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.apps().deployments().inNamespace("ns1").withName("deployment2").delete().size() == 1;
+    deleted = client.apps().deployments().inNamespace("ns1").withName("deployment2").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
   }
 
@@ -320,7 +320,7 @@ class DeploymentTest {
     Boolean deleted = client.apps().deployments().inAnyNamespace().delete(deployment1, deployment2);
     assertTrue(deleted);
 
-    deleted = client.resource(deployment3).delete().size() == 1;
+    deleted = client.resource(deployment3).withGracePeriod(0).delete().size() == 1;
     assertFalse(deleted);
   }
 

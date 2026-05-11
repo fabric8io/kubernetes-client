@@ -138,7 +138,7 @@ public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder>, Kubern
     }
 
     /**
-     * The VictorOps API URL.
+     * apiUrl defines the VictorOps API URL. When not specified, defaults to the standard VictorOps API endpoint.
      */
     @JsonProperty("apiUrl")
     public String getApiUrl() {
@@ -146,7 +146,7 @@ public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder>, Kubern
     }
 
     /**
-     * The VictorOps API URL.
+     * apiUrl defines the VictorOps API URL. When not specified, defaults to the standard VictorOps API endpoint.
      */
     @JsonProperty("apiUrl")
     public void setApiUrl(String apiUrl) {
@@ -154,7 +154,7 @@ public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder>, Kubern
     }
 
     /**
-     * Additional custom fields for notification.
+     * customFields defines additional custom fields for notification. These provide extra metadata that will be included with the VictorOps incident.
      */
     @JsonProperty("customFields")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -163,7 +163,7 @@ public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder>, Kubern
     }
 
     /**
-     * Additional custom fields for notification.
+     * customFields defines additional custom fields for notification. These provide extra metadata that will be included with the VictorOps incident.
      */
     @JsonProperty("customFields")
     public void setCustomFields(List<KeyValue> customFields) {
@@ -171,7 +171,7 @@ public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder>, Kubern
     }
 
     /**
-     * Contains summary of the alerted problem.
+     * entityDisplayName contains a summary of the alerted problem. This appears as the main title or identifier for the incident.
      */
     @JsonProperty("entityDisplayName")
     public String getEntityDisplayName() {
@@ -179,7 +179,7 @@ public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder>, Kubern
     }
 
     /**
-     * Contains summary of the alerted problem.
+     * entityDisplayName contains a summary of the alerted problem. This appears as the main title or identifier for the incident.
      */
     @JsonProperty("entityDisplayName")
     public void setEntityDisplayName(String entityDisplayName) {
@@ -203,7 +203,7 @@ public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder>, Kubern
     }
 
     /**
-     * Describes the behavior of the alert (CRITICAL, WARNING, INFO).
+     * messageType describes the behavior of the alert. Valid values are "CRITICAL", "WARNING", and "INFO".
      */
     @JsonProperty("messageType")
     public String getMessageType() {
@@ -211,7 +211,7 @@ public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder>, Kubern
     }
 
     /**
-     * Describes the behavior of the alert (CRITICAL, WARNING, INFO).
+     * messageType describes the behavior of the alert. Valid values are "CRITICAL", "WARNING", and "INFO".
      */
     @JsonProperty("messageType")
     public void setMessageType(String messageType) {
@@ -219,7 +219,7 @@ public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder>, Kubern
     }
 
     /**
-     * The monitoring tool the state message is from.
+     * monitoringTool defines the monitoring tool the state message is from. This helps identify the source system that generated the alert.
      */
     @JsonProperty("monitoringTool")
     public String getMonitoringTool() {
@@ -227,7 +227,7 @@ public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder>, Kubern
     }
 
     /**
-     * The monitoring tool the state message is from.
+     * monitoringTool defines the monitoring tool the state message is from. This helps identify the source system that generated the alert.
      */
     @JsonProperty("monitoringTool")
     public void setMonitoringTool(String monitoringTool) {
@@ -235,7 +235,7 @@ public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder>, Kubern
     }
 
     /**
-     * A key used to map the alert to a team.
+     * routingKey defines a key used to map the alert to a team. This determines which VictorOps team will receive the alert notification.
      */
     @JsonProperty("routingKey")
     public String getRoutingKey() {
@@ -243,7 +243,7 @@ public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder>, Kubern
     }
 
     /**
-     * A key used to map the alert to a team.
+     * routingKey defines a key used to map the alert to a team. This determines which VictorOps team will receive the alert notification.
      */
     @JsonProperty("routingKey")
     public void setRoutingKey(String routingKey) {
@@ -251,7 +251,7 @@ public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder>, Kubern
     }
 
     /**
-     * Whether or not to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public Boolean getSendResolved() {
@@ -259,7 +259,7 @@ public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder>, Kubern
     }
 
     /**
-     * Whether or not to notify about resolved alerts.
+     * sendResolved defines whether or not to notify about resolved alerts.
      */
     @JsonProperty("sendResolved")
     public void setSendResolved(Boolean sendResolved) {
@@ -267,7 +267,7 @@ public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder>, Kubern
     }
 
     /**
-     * Contains long explanation of the alerted problem.
+     * stateMessage contains a long explanation of the alerted problem. This provides detailed context about the incident.
      */
     @JsonProperty("stateMessage")
     public String getStateMessage() {
@@ -275,7 +275,7 @@ public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder>, Kubern
     }
 
     /**
-     * Contains long explanation of the alerted problem.
+     * stateMessage contains a long explanation of the alerted problem. This provides detailed context about the incident.
      */
     @JsonProperty("stateMessage")
     public void setStateMessage(String stateMessage) {

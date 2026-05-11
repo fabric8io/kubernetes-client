@@ -55,7 +55,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Value.construct;
 @Deprecated(since = "7.0.0")
 public class CRDGenerator {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CRDGenerator.class);
+  private static final Logger logger = LoggerFactory.getLogger(CRDGenerator.class);
   private final Resources resources;
   private final Map<String, AbstractCustomResourceHandler> handlers = new HashMap<>(2);
   private CRDOutput<? extends OutputStream> output;
@@ -108,12 +108,12 @@ public class CRDGenerator {
                   s -> new CustomResourceHandler(resources, parallel));
               break;
             case io.fabric8.crd.generator.v1beta1.CustomResourceHandler.VERSION:
-              LOGGER.warn("CRD generator for v1beta1 is deprecated, consider using v1 instead.");
+              logger.warn("CRD generator for v1beta1 is deprecated, consider using v1 instead.");
               handlers.computeIfAbsent(io.fabric8.crd.generator.v1beta1.CustomResourceHandler.VERSION,
                   s -> new io.fabric8.crd.generator.v1beta1.CustomResourceHandler(resources, parallel));
               break;
             default:
-              LOGGER.warn("Ignoring unsupported CRD version: {}", version);
+              logger.warn("Ignoring unsupported CRD version: {}", version);
           }
         }
       }
@@ -155,12 +155,12 @@ public class CRDGenerator {
 
   public CRDGenerationInfo detailedGenerate() {
     if (getCustomResourceInfos().isEmpty()) {
-      LOGGER.warn("No resources were registered with the 'customResources' method to be generated");
+      logger.warn("No resources were registered with the 'customResources' method to be generated");
       return CRDGenerationInfo.EMPTY;
     }
 
     if (output == null) {
-      LOGGER.warn(
+      logger.warn(
           "No output option was selected either using 'inOutputDir' or 'withOutput' methods. Skipping generation.");
       return CRDGenerationInfo.EMPTY;
     }
@@ -173,8 +173,8 @@ public class CRDGenerator {
 
     for (CustomResourceInfo info : infos.values()) {
       if (info != null) {
-        if (LOGGER.isInfoEnabled()) {
-          LOGGER.info("Generating '{}' version '{}' with {} (spec: {} / status {})...",
+        if (logger.isInfoEnabled()) {
+          logger.info("Generating '{}' version '{}' with {} (spec: {} / status {})...",
               info.crdName(), info.version(), info.crClassName(),
               info.specClassName().orElse("undetermined"),
               info.statusClassName().orElse("undetermined"));

@@ -45,7 +45,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec"
+    "spec",
+    "status"
 })
 @ToString
 @EqualsAndHashCode
@@ -85,6 +86,8 @@ public class PodMonitor implements Editable<PodMonitorBuilder>, HasMetadata, Nam
     private ObjectMeta metadata;
     @JsonProperty("spec")
     private PodMonitorSpec spec;
+    @JsonProperty("status")
+    private ConfigResourceStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -94,12 +97,13 @@ public class PodMonitor implements Editable<PodMonitorBuilder>, HasMetadata, Nam
     public PodMonitor() {
     }
 
-    public PodMonitor(String apiVersion, String kind, ObjectMeta metadata, PodMonitorSpec spec) {
+    public PodMonitor(String apiVersion, String kind, ObjectMeta metadata, PodMonitorSpec spec, ConfigResourceStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
         this.metadata = metadata;
         this.spec = spec;
+        this.status = status;
     }
 
     /**
@@ -164,6 +168,22 @@ public class PodMonitor implements Editable<PodMonitorBuilder>, HasMetadata, Nam
     @JsonProperty("spec")
     public void setSpec(PodMonitorSpec spec) {
         this.spec = spec;
+    }
+
+    /**
+     * The `PodMonitor` custom resource definition (CRD) defines how `Prometheus` and `PrometheusAgent` can scrape metrics from a group of pods. Among other things, it allows to specify: &#42; The pods to scrape via label selectors. &#42; The container ports to scrape. &#42; Authentication credentials to use. &#42; Target and metric relabeling.<br><p> <br><p> `Prometheus` and `PrometheusAgent` objects select `PodMonitor` objects using label and namespace selectors.
+     */
+    @JsonProperty("status")
+    public ConfigResourceStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * The `PodMonitor` custom resource definition (CRD) defines how `Prometheus` and `PrometheusAgent` can scrape metrics from a group of pods. Among other things, it allows to specify: &#42; The pods to scrape via label selectors. &#42; The container ports to scrape. &#42; Authentication credentials to use. &#42; Target and metric relabeling.<br><p> <br><p> `Prometheus` and `PrometheusAgent` objects select `PodMonitor` objects using label and namespace selectors.
+     */
+    @JsonProperty("status")
+    public void setStatus(ConfigResourceStatus status) {
+        this.status = status;
     }
 
     @JsonIgnore

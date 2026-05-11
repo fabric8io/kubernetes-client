@@ -2,7 +2,6 @@
 package io.fabric8.openshift.api.model.monitoring.v1;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -34,7 +33,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * HTTPConfig defines a client HTTP configuration. See https://prometheus.io/docs/alerting/latest/configuration/#http_config
+ * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -42,12 +41,9 @@ import lombok.experimental.Accessors;
     "authorization",
     "basicAuth",
     "bearerTokenSecret",
+    "enableHttp2",
     "followRedirects",
-    "noProxy",
     "oauth2",
-    "proxyConnectHeader",
-    "proxyFromEnvironment",
-    "proxyUrl",
     "tlsConfig"
 })
 @ToString
@@ -81,19 +77,12 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     private BasicAuth basicAuth;
     @JsonProperty("bearerTokenSecret")
     private SecretKeySelector bearerTokenSecret;
+    @JsonProperty("enableHttp2")
+    private Boolean enableHttp2;
     @JsonProperty("followRedirects")
     private Boolean followRedirects;
-    @JsonProperty("noProxy")
-    private String noProxy;
     @JsonProperty("oauth2")
     private OAuth2 oauth2;
-    @JsonProperty("proxyConnectHeader")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, List<SecretKeySelector>> proxyConnectHeader = new LinkedHashMap<>();
-    @JsonProperty("proxyFromEnvironment")
-    private Boolean proxyFromEnvironment;
-    @JsonProperty("proxyUrl")
-    private String proxyUrl;
     @JsonProperty("tlsConfig")
     private SafeTLSConfig tlsConfig;
     @JsonIgnore
@@ -105,22 +94,19 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     public HTTPConfig() {
     }
 
-    public HTTPConfig(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean followRedirects, String noProxy, OAuth2 oauth2, Map<String, List<SecretKeySelector>> proxyConnectHeader, Boolean proxyFromEnvironment, String proxyUrl, SafeTLSConfig tlsConfig) {
+    public HTTPConfig(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean enableHttp2, Boolean followRedirects, OAuth2 oauth2, SafeTLSConfig tlsConfig) {
         super();
         this.authorization = authorization;
         this.basicAuth = basicAuth;
         this.bearerTokenSecret = bearerTokenSecret;
+        this.enableHttp2 = enableHttp2;
         this.followRedirects = followRedirects;
-        this.noProxy = noProxy;
         this.oauth2 = oauth2;
-        this.proxyConnectHeader = proxyConnectHeader;
-        this.proxyFromEnvironment = proxyFromEnvironment;
-        this.proxyUrl = proxyUrl;
         this.tlsConfig = tlsConfig;
     }
 
     /**
-     * HTTPConfig defines a client HTTP configuration. See https://prometheus.io/docs/alerting/latest/configuration/#http_config
+     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
      */
     @JsonProperty("authorization")
     public SafeAuthorization getAuthorization() {
@@ -128,7 +114,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines a client HTTP configuration. See https://prometheus.io/docs/alerting/latest/configuration/#http_config
+     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
      */
     @JsonProperty("authorization")
     public void setAuthorization(SafeAuthorization authorization) {
@@ -136,7 +122,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines a client HTTP configuration. See https://prometheus.io/docs/alerting/latest/configuration/#http_config
+     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
      */
     @JsonProperty("basicAuth")
     public BasicAuth getBasicAuth() {
@@ -144,7 +130,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines a client HTTP configuration. See https://prometheus.io/docs/alerting/latest/configuration/#http_config
+     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
      */
     @JsonProperty("basicAuth")
     public void setBasicAuth(BasicAuth basicAuth) {
@@ -152,7 +138,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines a client HTTP configuration. See https://prometheus.io/docs/alerting/latest/configuration/#http_config
+     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
      */
     @JsonProperty("bearerTokenSecret")
     public SecretKeySelector getBearerTokenSecret() {
@@ -160,7 +146,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines a client HTTP configuration. See https://prometheus.io/docs/alerting/latest/configuration/#http_config
+     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
      */
     @JsonProperty("bearerTokenSecret")
     public void setBearerTokenSecret(SecretKeySelector bearerTokenSecret) {
@@ -168,7 +154,23 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * FollowRedirects specifies whether the client should follow HTTP 3xx redirects.
+     * enableHttp2 can be used to disable HTTP2.
+     */
+    @JsonProperty("enableHttp2")
+    public Boolean getEnableHttp2() {
+        return enableHttp2;
+    }
+
+    /**
+     * enableHttp2 can be used to disable HTTP2.
+     */
+    @JsonProperty("enableHttp2")
+    public void setEnableHttp2(Boolean enableHttp2) {
+        this.enableHttp2 = enableHttp2;
+    }
+
+    /**
+     * followRedirects defines whether the client should follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
@@ -176,7 +178,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * FollowRedirects specifies whether the client should follow HTTP 3xx redirects.
+     * followRedirects defines whether the client should follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
@@ -184,23 +186,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
-     */
-    @JsonProperty("noProxy")
-    public String getNoProxy() {
-        return noProxy;
-    }
-
-    /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
-     */
-    @JsonProperty("noProxy")
-    public void setNoProxy(String noProxy) {
-        this.noProxy = noProxy;
-    }
-
-    /**
-     * HTTPConfig defines a client HTTP configuration. See https://prometheus.io/docs/alerting/latest/configuration/#http_config
+     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
      */
     @JsonProperty("oauth2")
     public OAuth2 getOauth2() {
@@ -208,7 +194,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines a client HTTP configuration. See https://prometheus.io/docs/alerting/latest/configuration/#http_config
+     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
      */
     @JsonProperty("oauth2")
     public void setOauth2(OAuth2 oauth2) {
@@ -216,56 +202,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
-     */
-    @JsonProperty("proxyConnectHeader")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, List<SecretKeySelector>> getProxyConnectHeader() {
-        return proxyConnectHeader;
-    }
-
-    /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
-     */
-    @JsonProperty("proxyConnectHeader")
-    public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
-        this.proxyConnectHeader = proxyConnectHeader;
-    }
-
-    /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
-     */
-    @JsonProperty("proxyFromEnvironment")
-    public Boolean getProxyFromEnvironment() {
-        return proxyFromEnvironment;
-    }
-
-    /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
-     */
-    @JsonProperty("proxyFromEnvironment")
-    public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
-        this.proxyFromEnvironment = proxyFromEnvironment;
-    }
-
-    /**
-     * `proxyURL` defines the HTTP proxy server to use.
-     */
-    @JsonProperty("proxyUrl")
-    public String getProxyUrl() {
-        return proxyUrl;
-    }
-
-    /**
-     * `proxyURL` defines the HTTP proxy server to use.
-     */
-    @JsonProperty("proxyUrl")
-    public void setProxyUrl(String proxyUrl) {
-        this.proxyUrl = proxyUrl;
-    }
-
-    /**
-     * HTTPConfig defines a client HTTP configuration. See https://prometheus.io/docs/alerting/latest/configuration/#http_config
+     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
      */
     @JsonProperty("tlsConfig")
     public SafeTLSConfig getTlsConfig() {
@@ -273,7 +210,7 @@ public class HTTPConfig implements Editable<HTTPConfigBuilder>, KubernetesResour
     }
 
     /**
-     * HTTPConfig defines a client HTTP configuration. See https://prometheus.io/docs/alerting/latest/configuration/#http_config
+     * HTTPConfig defines the HTTP configuration + TLS configuration (only from secret/configmap references).
      */
     @JsonProperty("tlsConfig")
     public void setTlsConfig(SafeTLSConfig tlsConfig) {

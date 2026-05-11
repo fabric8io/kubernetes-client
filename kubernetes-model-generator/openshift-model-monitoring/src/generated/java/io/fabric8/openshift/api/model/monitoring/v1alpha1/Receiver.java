@@ -48,6 +48,7 @@ import lombok.experimental.Accessors;
     "opsgenieConfigs",
     "pagerdutyConfigs",
     "pushoverConfigs",
+    "rocketchatConfigs",
     "slackConfigs",
     "snsConfigs",
     "telegramConfigs",
@@ -104,6 +105,9 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     @JsonProperty("pushoverConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PushoverConfig> pushoverConfigs = new ArrayList<>();
+    @JsonProperty("rocketchatConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<RocketChatConfig> rocketchatConfigs = new ArrayList<>();
     @JsonProperty("slackConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SlackConfig> slackConfigs = new ArrayList<>();
@@ -134,7 +138,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     public Receiver() {
     }
 
-    public Receiver(List<DiscordConfig> discordConfigs, List<EmailConfig> emailConfigs, List<MSTeamsConfig> msteamsConfigs, List<MSTeamsV2Config> msteamsv2Configs, String name, List<OpsGenieConfig> opsgenieConfigs, List<PagerDutyConfig> pagerdutyConfigs, List<PushoverConfig> pushoverConfigs, List<SlackConfig> slackConfigs, List<SNSConfig> snsConfigs, List<TelegramConfig> telegramConfigs, List<VictorOpsConfig> victoropsConfigs, List<WebexConfig> webexConfigs, List<WebhookConfig> webhookConfigs, List<WeChatConfig> wechatConfigs) {
+    public Receiver(List<DiscordConfig> discordConfigs, List<EmailConfig> emailConfigs, List<MSTeamsConfig> msteamsConfigs, List<MSTeamsV2Config> msteamsv2Configs, String name, List<OpsGenieConfig> opsgenieConfigs, List<PagerDutyConfig> pagerdutyConfigs, List<PushoverConfig> pushoverConfigs, List<RocketChatConfig> rocketchatConfigs, List<SlackConfig> slackConfigs, List<SNSConfig> snsConfigs, List<TelegramConfig> telegramConfigs, List<VictorOpsConfig> victoropsConfigs, List<WebexConfig> webexConfigs, List<WebhookConfig> webhookConfigs, List<WeChatConfig> wechatConfigs) {
         super();
         this.discordConfigs = discordConfigs;
         this.emailConfigs = emailConfigs;
@@ -144,6 +148,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
         this.opsgenieConfigs = opsgenieConfigs;
         this.pagerdutyConfigs = pagerdutyConfigs;
         this.pushoverConfigs = pushoverConfigs;
+        this.rocketchatConfigs = rocketchatConfigs;
         this.slackConfigs = slackConfigs;
         this.snsConfigs = snsConfigs;
         this.telegramConfigs = telegramConfigs;
@@ -154,7 +159,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of Discord configurations.
+     * discordConfigs defines the list of Slack configurations.
      */
     @JsonProperty("discordConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -163,7 +168,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of Discord configurations.
+     * discordConfigs defines the list of Slack configurations.
      */
     @JsonProperty("discordConfigs")
     public void setDiscordConfigs(List<DiscordConfig> discordConfigs) {
@@ -171,7 +176,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of Email configurations.
+     * emailConfigs defines the list of Email configurations.
      */
     @JsonProperty("emailConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -180,7 +185,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of Email configurations.
+     * emailConfigs defines the list of Email configurations.
      */
     @JsonProperty("emailConfigs")
     public void setEmailConfigs(List<EmailConfig> emailConfigs) {
@@ -188,7 +193,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of MSTeams configurations. It requires Alertmanager &gt;= 0.26.0.
+     * msteamsConfigs defines the list of MSTeams configurations. It requires Alertmanager &gt;= 0.26.0.
      */
     @JsonProperty("msteamsConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -197,7 +202,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of MSTeams configurations. It requires Alertmanager &gt;= 0.26.0.
+     * msteamsConfigs defines the list of MSTeams configurations. It requires Alertmanager &gt;= 0.26.0.
      */
     @JsonProperty("msteamsConfigs")
     public void setMsteamsConfigs(List<MSTeamsConfig> msteamsConfigs) {
@@ -205,7 +210,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of MSTeamsV2 configurations. It requires Alertmanager &gt;= 0.28.0.
+     * msteamsv2Configs defines the list of MSTeamsV2 configurations. It requires Alertmanager &gt;= 0.28.0.
      */
     @JsonProperty("msteamsv2Configs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -214,7 +219,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of MSTeamsV2 configurations. It requires Alertmanager &gt;= 0.28.0.
+     * msteamsv2Configs defines the list of MSTeamsV2 configurations. It requires Alertmanager &gt;= 0.28.0.
      */
     @JsonProperty("msteamsv2Configs")
     public void setMsteamsv2Configs(List<MSTeamsV2Config> msteamsv2Configs) {
@@ -222,7 +227,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * Name of the receiver. Must be unique across all items from the list.
+     * name defines the name of the receiver. Must be unique across all items from the list.
      */
     @JsonProperty("name")
     public String getName() {
@@ -230,7 +235,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * Name of the receiver. Must be unique across all items from the list.
+     * name defines the name of the receiver. Must be unique across all items from the list.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -238,7 +243,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of OpsGenie configurations.
+     * opsgenieConfigs defines the list of OpsGenie configurations.
      */
     @JsonProperty("opsgenieConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -247,7 +252,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of OpsGenie configurations.
+     * opsgenieConfigs defines the list of OpsGenie configurations.
      */
     @JsonProperty("opsgenieConfigs")
     public void setOpsgenieConfigs(List<OpsGenieConfig> opsgenieConfigs) {
@@ -255,7 +260,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of PagerDuty configurations.
+     * pagerdutyConfigs defines the List of PagerDuty configurations.
      */
     @JsonProperty("pagerdutyConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -264,7 +269,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of PagerDuty configurations.
+     * pagerdutyConfigs defines the List of PagerDuty configurations.
      */
     @JsonProperty("pagerdutyConfigs")
     public void setPagerdutyConfigs(List<PagerDutyConfig> pagerdutyConfigs) {
@@ -272,7 +277,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of Pushover configurations.
+     * pushoverConfigs defines the list of Pushover configurations.
      */
     @JsonProperty("pushoverConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -281,7 +286,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of Pushover configurations.
+     * pushoverConfigs defines the list of Pushover configurations.
      */
     @JsonProperty("pushoverConfigs")
     public void setPushoverConfigs(List<PushoverConfig> pushoverConfigs) {
@@ -289,7 +294,24 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of Slack configurations.
+     * rocketchatConfigs defines the list of RocketChat configurations. It requires Alertmanager &gt;= 0.28.0.
+     */
+    @JsonProperty("rocketchatConfigs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<RocketChatConfig> getRocketchatConfigs() {
+        return rocketchatConfigs;
+    }
+
+    /**
+     * rocketchatConfigs defines the list of RocketChat configurations. It requires Alertmanager &gt;= 0.28.0.
+     */
+    @JsonProperty("rocketchatConfigs")
+    public void setRocketchatConfigs(List<RocketChatConfig> rocketchatConfigs) {
+        this.rocketchatConfigs = rocketchatConfigs;
+    }
+
+    /**
+     * slackConfigs defines the list of Slack configurations.
      */
     @JsonProperty("slackConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -298,7 +320,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of Slack configurations.
+     * slackConfigs defines the list of Slack configurations.
      */
     @JsonProperty("slackConfigs")
     public void setSlackConfigs(List<SlackConfig> slackConfigs) {
@@ -306,7 +328,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of SNS configurations
+     * snsConfigs defines the list of SNS configurations
      */
     @JsonProperty("snsConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -315,7 +337,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of SNS configurations
+     * snsConfigs defines the list of SNS configurations
      */
     @JsonProperty("snsConfigs")
     public void setSnsConfigs(List<SNSConfig> snsConfigs) {
@@ -323,7 +345,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of Telegram configurations.
+     * telegramConfigs defines the list of Telegram configurations.
      */
     @JsonProperty("telegramConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -332,7 +354,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of Telegram configurations.
+     * telegramConfigs defines the list of Telegram configurations.
      */
     @JsonProperty("telegramConfigs")
     public void setTelegramConfigs(List<TelegramConfig> telegramConfigs) {
@@ -340,7 +362,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of VictorOps configurations.
+     * victoropsConfigs defines the list of VictorOps configurations.
      */
     @JsonProperty("victoropsConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -349,7 +371,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of VictorOps configurations.
+     * victoropsConfigs defines the list of VictorOps configurations.
      */
     @JsonProperty("victoropsConfigs")
     public void setVictoropsConfigs(List<VictorOpsConfig> victoropsConfigs) {
@@ -357,7 +379,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of Webex configurations.
+     * webexConfigs defines the list of Webex configurations.
      */
     @JsonProperty("webexConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -366,7 +388,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of Webex configurations.
+     * webexConfigs defines the list of Webex configurations.
      */
     @JsonProperty("webexConfigs")
     public void setWebexConfigs(List<WebexConfig> webexConfigs) {
@@ -374,7 +396,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of webhook configurations.
+     * webhookConfigs defines the List of webhook configurations.
      */
     @JsonProperty("webhookConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -383,7 +405,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of webhook configurations.
+     * webhookConfigs defines the List of webhook configurations.
      */
     @JsonProperty("webhookConfigs")
     public void setWebhookConfigs(List<WebhookConfig> webhookConfigs) {
@@ -391,7 +413,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of WeChat configurations.
+     * wechatConfigs defines the list of WeChat configurations.
      */
     @JsonProperty("wechatConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -400,7 +422,7 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
     }
 
     /**
-     * List of WeChat configurations.
+     * wechatConfigs defines the list of WeChat configurations.
      */
     @JsonProperty("wechatConfigs")
     public void setWechatConfigs(List<WeChatConfig> wechatConfigs) {

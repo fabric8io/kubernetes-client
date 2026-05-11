@@ -81,7 +81,7 @@ public class ManagedIdentity implements Editable<ManagedIdentityBuilder>, Kubern
     }
 
     /**
-     * The client id
+     * clientId defines the Azure User-assigned Managed identity.<br><p> <br><p> For Prometheus &gt;= 3.5.0 and Thanos &gt;= 0.40.0, this field is allowed to be empty to support system-assigned managed identities.
      */
     @JsonProperty("clientId")
     public String getClientId() {
@@ -89,7 +89,7 @@ public class ManagedIdentity implements Editable<ManagedIdentityBuilder>, Kubern
     }
 
     /**
-     * The client id
+     * clientId defines the Azure User-assigned Managed identity.<br><p> <br><p> For Prometheus &gt;= 3.5.0 and Thanos &gt;= 0.40.0, this field is allowed to be empty to support system-assigned managed identities.
      */
     @JsonProperty("clientId")
     public void setClientId(String clientId) {

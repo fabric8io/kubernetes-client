@@ -46,7 +46,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class CertManager {
 
-  private static final Logger log = LoggerFactory.getLogger(CertManager.class);
+  private static final Logger logger = LoggerFactory.getLogger(CertManager.class);
 
   public static final String API_SERVER_KEY_NAME = "apiserver.key";
   public static final String API_SERVER_CERT_NAME = "apiserver.crt";
@@ -88,7 +88,7 @@ public class CertManager {
   }
 
   private void generateAPIServerCertificates() {
-    log.info("Generating API Server certificates");
+    logger.info("Generating API Server certificates");
     generateKeyAndCertificate("CN=example.org", new File(kubeAPITestDir, API_SERVER_KEY_NAME),
         new File(kubeAPITestDir, API_SERVER_CERT_NAME),
         new GeneralName(GeneralName.iPAddress, "127.0.0.1"),
@@ -102,7 +102,7 @@ public class CertManager {
   }
 
   private void generateUserCertificates() {
-    log.info("Generating Client certificates");
+    logger.info("Generating Client certificates");
     generateKeyAndCertificate("O=system:masters,CN=kubeapitest",
         new File(kubeAPITestDir, CLIENT_KEY_NAME),
         new File(kubeAPITestDir, CLIENT_CERT_NAME));

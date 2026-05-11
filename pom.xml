@@ -23,7 +23,7 @@
 
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-client-project</artifactId>
-  <version>7.5-SNAPSHOT</version>
+  <version>999-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Fabric8 :: Kubernetes :: Project</name>
@@ -68,11 +68,6 @@
       <name>Central Portal (Snapshots)</name>
       <url>https://central.sonatype.com/repository/maven-snapshots/</url>
     </snapshotRepository>
-    <repository>
-      <id>ossrh</id>
-      <name>Sonatype OSS Repository</name>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
   </distributionManagement>
 
   <repositories>
@@ -89,39 +84,41 @@
     <useIncrementalCompilation>false</useIncrementalCompilation>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.deploy.skip>false</maven.deploy.skip>
+    <!-- Default empty argLine; JaCoCo's prepare-agent (coverage profile) sets this property -->
+    <argLine/>
 
     <!-- Core versions -->
-    <sundrio.version>0.230.1</sundrio.version>
-    <okhttp.version>4.12.0</okhttp.version>
-    <jackson.version>2.20.0</jackson.version>
+    <sundrio.version>0.230.2</sundrio.version>
+    <okhttp.version>5.3.2</okhttp.version>
+    <jackson.version>2.21.3</jackson.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
     <!-- fix as jackson-annotations version 2.20 was released, Refer: https://github.com/FasterXML/jackson-bom/blob/54f854ba1ce69c5827f8acf6d08ba2d7ce36233c/pom.xml#L53-L62 -->
-    <jackson.bundle.version.annotations>2.20</jackson.bundle.version.annotations>
+    <jackson.bundle.version.annotations>2.21</jackson.bundle.version.annotations>
     <jetty.version>11.0.26</jetty.version>
-    <maven-core.version>3.9.11</maven-core.version>
-    <maven-plugin-annotations.version>3.15.1</maven-plugin-annotations.version>
-    <vertx.version>4.5.21</vertx.version>
-    <jandex.version>3.5.0</jandex.version>
-    <snakeyaml.version>2.10</snakeyaml.version>
-    <snakeyaml.bundle.version>2.4</snakeyaml.bundle.version> <!-- Transitive Jackson -->
+    <maven-core.version>3.9.15</maven-core.version>
+    <maven-plugin-annotations.version>3.15.2</maven-plugin-annotations.version>
+    <vertx.version>4.5.27</vertx.version>
+    <vertx5.version>5.0.12</vertx5.version>
+    <jandex.version>3.5.3</jandex.version>
+    <snakeyaml.version>3.0.1</snakeyaml.version>
+    <snakeyaml.bundle.version>2.5</snakeyaml.bundle.version> <!-- Transitive Jackson -->
 
     <!-- API versions -->
     <jsr305.version>3.0.2</jsr305.version>
     <gradle-api.version>8.5</gradle-api.version>
-    <groovy-api.version>5.0.1</groovy-api.version>
+    <groovy-api.version>5.0.6</groovy-api.version>
 
     <!-- Testing versions -->
     <junit4.version>4.13.2</junit4.version>
     <junit.version>5.13.4</junit.version>
-    <assertj.core.version>3.27.6</assertj.core.version>
+    <assertj.core.version>3.27.7</assertj.core.version>
     <awaitility.version>4.3.0</awaitility.version>
-    <approvaltests.version>25.6.1</approvaltests.version>
-    <bouncycastle.version>1.82</bouncycastle.version>
+    <approvaltests.version>30.1.0</approvaltests.version>
+    <bouncycastle.version>1.84</bouncycastle.version>
     <bc-fips.version>2.1.2</bc-fips.version>
-    <bcpkix-fips.version>2.1.10</bcpkix-fips.version>
-    <keycloak.version>26.4.0</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
-    <mockito.version>5.20.0</mockito.version>
-    <mockito-inline.version>5.2.0</mockito-inline.version>
+    <bcpkix-fips.version>2.1.11</bcpkix-fips.version>
+    <keycloak.version>26.6.1</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
+    <mockito.version>5.23.0</mockito.version>
     <spock.version>2.4-M6-groovy-4.0</spock.version>
 
     <conscrypt-openjdk-uber.bundle.version>1.4.2_1</conscrypt-openjdk-uber.bundle.version>
@@ -129,47 +126,47 @@
     <aries-spifly.bundle.version>1.3.0</aries-spifly.bundle.version>
     <asm.bundle.version>8.0.1</asm.bundle.version>
     <slf4j.version>2.0.17</slf4j.version>
-    <log4j.version>2.25.2</log4j.version>
-    <lombok.version>1.18.42</lombok.version>
+    <log4j.version>2.26.0</log4j.version>
+    <lombok.version>1.18.46</lombok.version>
     <commons-compress.version>1.28.0</commons-compress.version>
-    <commons-io.version>2.20.0</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
-    <guava.version>33.5.0-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
+    <commons-io.version>2.22.0</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
+    <guava.version>33.6.0-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
     <osgi.annotations.version>1.5.1</osgi.annotations.version>
     <felix.scr.version>2.0.6</felix.scr.version>
     <jmustache.version>1.16</jmustache.version>
     <picocli.version>4.7.7</picocli.version>
-    <swagger-request-validator-core.version>2.46.0</swagger-request-validator-core.version>
-    <swagger-parser.version>2.1.35</swagger-parser.version>
+    <swagger-request-validator-core.version>2.46.1</swagger-request-validator-core.version>
+    <swagger-parser.version>2.1.41</swagger-parser.version>
 
     <!-- Maven plugin versions -->
-    <buildnumber.plugin.version>3.2.1</buildnumber.plugin.version>
-    <exec.maven-plugin.version>3.6.1</exec.maven-plugin.version>
-    <maven.compiler.plugin.version>3.14.1</maven.compiler.plugin.version>
+    <buildnumber.plugin.version>3.3.0</buildnumber.plugin.version>
+    <exec.maven-plugin.version>3.6.3</exec.maven-plugin.version>
+    <maven.compiler.plugin.version>3.15.0</maven.compiler.plugin.version>
     <maven.bundle.plugin.version>5.1.9</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>3.6.1</maven.buildhelper.plugin.version>
-    <maven.jar.plugin.version>3.4.2</maven.jar.plugin.version>
-    <maven.surefire.plugin.version>3.5.4</maven.surefire.plugin.version>
-    <maven.resources.plugin.version>3.3.1</maven.resources.plugin.version>
-    <maven.release.plugin.version>3.1.1</maven.release.plugin.version>
+    <maven.jar.plugin.version>3.5.0</maven.jar.plugin.version>
+    <maven.surefire.plugin.version>3.5.5</maven.surefire.plugin.version>
+    <maven.resources.plugin.version>3.5.0</maven.resources.plugin.version>
+    <maven.release.plugin.version>3.3.1</maven.release.plugin.version>
     <maven.javadoc.plugin.version>3.12.0</maven.javadoc.plugin.version>
-    <maven.source.plugin.version>3.3.1</maven.source.plugin.version>
+    <maven.source.plugin.version>3.4.0</maven.source.plugin.version>
     <maven.enforcer.plugin.version>3.6.2</maven.enforcer.plugin.version>
     <maven.deploy.plugin.version>3.1.4</maven.deploy.plugin.version>
     <maven.gpg.plugin.version>3.2.8</maven.gpg.plugin.version>
-    <maven.antrun.plugin.version>3.1.0</maven.antrun.plugin.version>
-    <maven.dependency.plugin.version>3.9.0</maven.dependency.plugin.version>
-    <maven.shade.plugin.version>3.6.1</maven.shade.plugin.version>
+    <maven.antrun.plugin.version>3.2.0</maven.antrun.plugin.version>
+    <maven.dependency.plugin.version>3.10.0</maven.dependency.plugin.version>
+    <maven.shade.plugin.version>3.6.2</maven.shade.plugin.version>
     <maven.install.plugin.version>3.1.4</maven.install.plugin.version>
-    <maven.invoker.plugin.version>3.9.1</maven.invoker.plugin.version>
-    <maven.plugin.plugin.version>3.15.1</maven.plugin.plugin.version>
-    <gmavenplus-plugin.version>4.2.1</gmavenplus-plugin.version>
+    <maven.invoker.plugin.version>3.10.1</maven.invoker.plugin.version>
+    <maven.plugin.plugin.version>3.15.2</maven.plugin.plugin.version>
+    <gmavenplus-plugin.version>4.3.1</gmavenplus-plugin.version>
     <gradle-api-maven-plugin.version>0.0.7</gradle-api-maven-plugin.version>
     <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
-    <jkube.version>1.18.1</jkube.version>
-    <sonar-maven-plugin.version>5.2.0.4988</sonar-maven-plugin.version>
-    <central-publishing-maven-plugin>0.9.0</central-publishing-maven-plugin>
+    <jkube.version>1.19.0</jkube.version>
+    <sonar-maven-plugin.version>5.6.0.6792</sonar-maven-plugin.version>
+    <central-publishing-maven-plugin>0.10.0</central-publishing-maven-plugin>
     <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
-    <spotless-maven-plugin.version>3.0.0</spotless-maven-plugin.version>
+    <spotless-maven-plugin.version>3.4.0</spotless-maven-plugin.version>
     <really-executable-jar-maven-plugin.version>2.1.1</really-executable-jar-maven-plugin.version>
 
     <!-- Other options -->
@@ -191,6 +188,7 @@
       ${project.build.sourceDirectory};
       ${project.build.directory}/generated-sources/annotations;
     </javadoc.sourcepath>
+    <javadoc.links>https://javadoc.io/doc</javadoc.links>
 
     <osgi.import />
     <osgi.export />
@@ -207,8 +205,11 @@
     </osgi.include.resources.default>
     <osgi.include.resources>${osgi.include.resources.default}</osgi.include.resources>
     <karaf.itest.skip>false</karaf.itest.skip>
-    <project.build.outputTimestamp>2025-09-08T10:04:20Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2026-04-29T07:19:33Z</project.build.outputTimestamp>
     <validation-api.version>2.0.1.Final</validation-api.version>
+    <revapi.version>0.15.1</revapi.version>
+    <revapi-java.version>0.28.4</revapi-java.version>
+    <revapi-reporter-json.version>0.5.1</revapi-reporter-json.version>
   </properties>
   <modules>
     <module>zjsonpatch</module>
@@ -218,6 +219,7 @@
     <module>httpclient-jetty</module>
     <module>httpclient-okhttp</module>
     <module>httpclient-vertx</module>
+    <module>httpclient-vertx-5</module>
     <module>kubernetes-client</module>
     <module>junit/mockwebserver</module>
     <module>junit/kubernetes-junit-jupiter</module>
@@ -236,6 +238,7 @@
     <module>kubernetes-client-deps-compatibility-tests</module>
     <module>log4j</module>
     <module>kubernetes-examples</module>
+    <module>bom-generator-plugin</module>
     <!-- BOM modules are added via profile activation at build time -->
   </modules>
 
@@ -270,6 +273,11 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>crd-generator-collector</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>crd-generator-cli</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -454,6 +462,11 @@
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
+        <artifactId>openshift-model-insights</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
         <artifactId>openshift-model-installer</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -485,6 +498,11 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-httpclient-vertx</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-httpclient-vertx-5</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -645,6 +663,13 @@
         <version>${project.version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>com.squareup.okhttp3</groupId>
+        <artifactId>okhttp-bom</artifactId>
+        <version>${okhttp.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
 
       <!-- Jackson dependencies, imported as a BOM -->
       <dependency>
@@ -689,11 +714,6 @@
         <groupId>com.samskivert</groupId>
         <artifactId>jmustache</artifactId>
         <version>${jmustache.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.squareup.okhttp3</groupId>
-        <artifactId>okhttp</artifactId>
-        <version>${okhttp.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.commons</groupId>
@@ -864,12 +884,6 @@
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
         <version>${mockito.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-inline</artifactId>
-        <version>${mockito-inline.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -1068,6 +1082,55 @@
           <artifactId>really-executable-jar-maven-plugin</artifactId>
           <version>${really-executable-jar-maven-plugin.version}</version>
         </plugin>
+        <plugin>
+          <groupId>org.revapi</groupId>
+          <artifactId>revapi-maven-plugin</artifactId>
+          <version>${revapi.version}</version>
+          <dependencies>
+            <dependency>
+              <groupId>org.revapi</groupId>
+              <artifactId>revapi-java</artifactId>
+              <version>${revapi-java.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>org.revapi</groupId>
+              <artifactId>revapi-reporter-json</artifactId>
+              <version>${revapi-reporter-json.version}</version>
+            </dependency>
+          </dependencies>
+          <configuration>
+            <outputIgnoreSuggestions>false</outputIgnoreSuggestions>
+            <checkDependencies>false</checkDependencies>
+            <failBuildOnProblemsFound>false</failBuildOnProblemsFound>
+            <failSeverity>breaking</failSeverity>
+            <analysisConfiguration>
+              <revapi.java>
+                <missing-classes>
+                  <behavior>ignore</behavior>
+                </missing-classes>
+              </revapi.java>
+              <revapi.differences>
+                <item>
+                  <code>java.class.nonPublicPartOfAPI</code>
+                  <classQualifiedName>io.fabric8.zjsonpatch.JsonPointer.RefToken</classQualifiedName>
+                  <justification>Internal class usage is intentional.</justification>
+                </item>
+                <item>
+                  <regex>true</regex>
+                  <code>java\.method\.varargOverloadsOnlyDifferInVarargParameter</code>
+                  <old>.*</old>
+                  <classQualifiedName>com\.fasterxml\.jackson\.databind\..*</classQualifiedName>
+                  <justification>Jackson library internal changes are not under our control.</justification>
+                </item>
+              </revapi.differences>
+              <revapi.reporter.json>
+                <minSeverity>NON_BREAKING</minSeverity>
+                <output>${project.build.directory}/revapi-report.json</output>
+                <indent>true</indent>
+              </revapi.reporter.json>
+            </analysisConfiguration>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -1081,34 +1144,15 @@
         <artifactId>jandex-maven-plugin</artifactId>
       </plugin>
       <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>default-prepare-agent</id>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>default-report</id>
-            <goals>
-              <goal>report</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <inherited>true</inherited>
         <configuration>
-          <argLine>-Xmx2048m</argLine>
+          <argLine>@{argLine} -Xmx2048m</argLine>
           <environmentVariables>
             <ENV_VAR_EXISTS>value</ENV_VAR_EXISTS>
             <ENV_VAR_EXISTS_BOOLEAN>true</ENV_VAR_EXISTS_BOOLEAN>
           </environmentVariables>
-          <parallel>suitesAndClasses</parallel>
         </configuration>
       </plugin>
 
@@ -1173,7 +1217,6 @@
                 <exclude>**/go.mod</exclude>
                 <exclude>**/go.sum</exclude>
                 <exclude>kubernetes-client/src/test/resources/**/*</exclude>
-                <exclude>kubernetes-client/src/test/resources/mockito-extensions/*</exclude>
                 <exclude>**/src/test/resources/ssl/*</exclude>
                 <exclude>**/src/test/resources/io/fabric8/java/generator/approvals/*.*.approved.txt</exclude>
                 <exclude>crd-generator/**/src/test/resources/**/*.approved.yml</exclude>
@@ -1183,6 +1226,7 @@
                 <exclude>.mvn/**/*</exclude>
                 <exclude>mvnw</exclude>
                 <exclude>mvnw.cmd</exclude>
+                <exclude>.claude/**/*</exclude>
               </excludes>
             </licenseSet>
           </licenseSets>
@@ -1232,71 +1276,100 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>io.sundr</groupId>
-        <artifactId>sundr-maven-plugin</artifactId>
-        <version>${sundrio.version}</version>
-        <configuration>
-          <boms>
-            <bom>
-              <artifactId>kubernetes-client-bom</artifactId>
-              <name>Fabric8 :: Kubernetes :: BOM</name>
-              <properties>
-                <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
-                <sonar.skip>true</sonar.skip>
-              </properties>
-              <modules>
-                <excludes>
-                  <exclude>io.fabric8:*-tests</exclude>
-                  <exclude>io.fabric8:*-itests</exclude>
-                  <exclude>io.fabric8.kubernetes:*-itests</exclude>
-                  <exclude>io.fabric8*:*-examples</exclude>
-                  <exclude>io.fabric8:crd-generator-test*</exclude>
-                  <exclude>io.fabric8:kubernetes-test</exclude>
-                </excludes>
-              </modules>
-            </bom>
-            <bom>
-              <artifactId>kubernetes-client-bom-with-deps</artifactId>
-              <name>Fabric8 :: Kubernetes :: BOM with Dependencies</name>
-              <dependencies>
-                <includes>
-                  <include>io.sundr*:*</include>
-                  <include>org.projectlombok:lombok*</include>
-                  <include>com.fasterxml.jackson*:*</include>
-                  <include>io.fabric8:kubernetes-model*</include>
-                  <include>io.fabric8:openshift-model*</include>
-                </includes>
-              </dependencies>
-              <modules>
-                <excludes>
-                  <exclude>io.fabric8:*-tests</exclude>
-                  <exclude>io.fabric8:*-itests</exclude>
-                  <exclude>io.fabric8.kubernetes:*-itests</exclude>
-                  <exclude>io.fabric8*:*-examples</exclude>
-                  <exclude>io.fabric8:crd-generator-test*</exclude>
-                  <exclude>io.fabric8:kubernetes-test</exclude>
-                </excludes>
-              </modules>
-              <properties>
-                <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
-                <sonar.skip>true</sonar.skip>
-              </properties>
-            </bom>
-          </boms>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>generate-bom</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 
   <profiles>
+    <profile>
+      <id>coverage</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>default-prepare-agent</id>
+                <goals>
+                  <goal>prepare-agent</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>default-report</id>
+                <goals>
+                  <goal>report</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>bom</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>bom-generator-plugin</artifactId>
+            <version>${project.version}</version>
+            <inherited>false</inherited>
+            <configuration>
+              <sourceProfileId>release</sourceProfileId>
+              <boms>
+                <bom>
+                  <artifactId>kubernetes-client-bom</artifactId>
+                  <name>Fabric8 :: Kubernetes :: BOM</name>
+                  <modules>
+                    <excludes>
+                      <exclude>io.fabric8:*-tests</exclude>
+                      <exclude>io.fabric8:*-itests</exclude>
+                      <exclude>io.fabric8.kubernetes:*-itests</exclude>
+                      <exclude>io.fabric8*:*-examples</exclude>
+                      <exclude>io.fabric8:crd-generator-test*</exclude>
+                      <exclude>io.fabric8:kubernetes-test</exclude>
+                      <exclude>io.fabric8:bom-generator-plugin</exclude>
+                    </excludes>
+                  </modules>
+                </bom>
+                <bom>
+                  <artifactId>kubernetes-client-bom-with-deps</artifactId>
+                  <name>Fabric8 :: Kubernetes :: BOM with Dependencies</name>
+                  <modules>
+                    <excludes>
+                      <exclude>io.fabric8:*-tests</exclude>
+                      <exclude>io.fabric8:*-itests</exclude>
+                      <exclude>io.fabric8.kubernetes:*-itests</exclude>
+                      <exclude>io.fabric8*:*-examples</exclude>
+                      <exclude>io.fabric8:crd-generator-test*</exclude>
+                      <exclude>io.fabric8:kubernetes-test</exclude>
+                      <exclude>io.fabric8:bom-generator-plugin</exclude>
+                    </excludes>
+                  </modules>
+                  <dependencies>
+                    <includes>
+                      <include>io.sundr*:*</include>
+                      <include>org.projectlombok:lombok*</include>
+                      <include>com.fasterxml.jackson*:*</include>
+                      <include>io.fabric8:kubernetes-model*</include>
+                      <include>io.fabric8:openshift-model*</include>
+                    </includes>
+                  </dependencies>
+                </bom>
+              </boms>
+            </configuration>
+            <executions>
+              <execution>
+                <id>generate-boms</id>
+                <goals>
+                  <goal>generate-boms</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>release</id>
       <properties>
@@ -1382,6 +1455,46 @@
               </dependencySourceIncludes>
               <excludePackageNames>${javadoc.package.excludes}</excludePackageNames>
               <sourcepath>${javadoc.sourcepath}</sourcepath>
+              <additionalJOption>-J-Dhttp.agent=maven-javadoc-plugin</additionalJOption>
+              <detectOfflineLinks>false</detectOfflineLinks>
+              <offlineLinks>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-model-core/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-model-core</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-model-common/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-model-common</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-client-api/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-client-api</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-client/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-client</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/openshift-client-api/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/openshift-client-api</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/openshift-client/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/openshift-client</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/com.fasterxml.jackson.core/jackson-databind/${jackson.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/jackson-databind</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/com.fasterxml.jackson.core/jackson-core/${jackson.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/jackson-core</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/org.slf4j/slf4j-api/${slf4j.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/slf4j-api</location>
+                </offlineLink>
+              </offlineLinks>
             </configuration>
             <executions>
               <execution>
@@ -1406,6 +1519,7 @@
       <id>itests</id>
       <modules>
         <module>kubernetes-itests</module>
+        <module>kubernetes-itests-envtest</module>
         <module>chaos-tests</module>
       </modules>
       <build>
@@ -1485,6 +1599,46 @@
               </dependencySourceIncludes>
               <excludePackageNames>${javadoc.package.excludes}</excludePackageNames>
               <sourcepath>${javadoc.sourcepath}</sourcepath>
+              <additionalJOption>-J-Dhttp.agent=maven-javadoc-plugin</additionalJOption>
+              <detectOfflineLinks>false</detectOfflineLinks>
+              <offlineLinks>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-model-core/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-model-core</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-model-common/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-model-common</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-client-api/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-client-api</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/kubernetes-client/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/kubernetes-client</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/openshift-client-api/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/openshift-client-api</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/${project.groupId}/openshift-client/${project.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/openshift-client</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/com.fasterxml.jackson.core/jackson-databind/${jackson.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/jackson-databind</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/com.fasterxml.jackson.core/jackson-core/${jackson.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/jackson-core</location>
+                </offlineLink>
+                <offlineLink>
+                  <url>${javadoc.links}/org.slf4j/slf4j-api/${slf4j.version}</url>
+                  <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/slf4j-api</location>
+                </offlineLink>
+              </offlineLinks>
             </configuration>
             <executions>
               <execution>
@@ -1497,6 +1651,64 @@
                 </configuration>
               </execution>
             </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>revapi-compare</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.revapi</groupId>
+            <artifactId>revapi-maven-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>jpms-module-name</id>
+      <activation>
+        <file>
+          <exists>${basedir}/src/main/resources/META-INF/services/io.fabric8.kubernetes.client.http.HttpClient$Factory</exists>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <configuration>
+              <archive>
+                <manifestEntries>
+                  <Automatic-Module-Name>${jpms.module.name}</Automatic-Module-Name>
+                </manifestEntries>
+              </archive>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>revapi-compare-jars</id>
+      <activation>
+        <property>
+          <name>revapi.newArtifactVersion</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.revapi</groupId>
+            <artifactId>revapi-maven-plugin</artifactId>
+            <configuration>
+              <oldArtifacts>
+                <artifact>${project.groupId}:${project.artifactId}:${revapi.oldArtifactVersion}</artifact>
+              </oldArtifacts>
+              <newArtifacts>
+                <artifact>${project.groupId}:${project.artifactId}:${revapi.newArtifactVersion}</artifact>
+              </newArtifacts>
+            </configuration>
           </plugin>
         </plugins>
       </build>

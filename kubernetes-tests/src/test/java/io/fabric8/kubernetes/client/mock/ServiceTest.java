@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class ServiceTest {
 
   KubernetesMockServer server;
@@ -144,7 +144,7 @@ class ServiceTest {
         .andReturn(200, service)
         .once();
 
-    boolean isDeleted = client.services().inNamespace("test").withName("httpbin").delete().size() == 1;
+    boolean isDeleted = client.services().inNamespace("test").withName("httpbin").withGracePeriod(0).delete().size() == 1;
     assertTrue(isDeleted);
   }
 

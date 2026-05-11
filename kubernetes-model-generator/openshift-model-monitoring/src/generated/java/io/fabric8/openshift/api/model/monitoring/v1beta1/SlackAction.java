@@ -122,7 +122,7 @@ public class SlackAction implements Editable<SlackActionBuilder>, KubernetesReso
     }
 
     /**
-     * SlackAction configures a single Slack action that is sent with each notification. See https://api.slack.com/docs/message-attachments#action_fields and https://api.slack.com/docs/message-buttons for more information.
+     * name defines a unique identifier for the action within the message. This value is sent back to your application when the action is triggered.
      */
     @JsonProperty("name")
     public String getName() {
@@ -130,7 +130,7 @@ public class SlackAction implements Editable<SlackActionBuilder>, KubernetesReso
     }
 
     /**
-     * SlackAction configures a single Slack action that is sent with each notification. See https://api.slack.com/docs/message-attachments#action_fields and https://api.slack.com/docs/message-buttons for more information.
+     * name defines a unique identifier for the action within the message. This value is sent back to your application when the action is triggered.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -138,7 +138,7 @@ public class SlackAction implements Editable<SlackActionBuilder>, KubernetesReso
     }
 
     /**
-     * SlackAction configures a single Slack action that is sent with each notification. See https://api.slack.com/docs/message-attachments#action_fields and https://api.slack.com/docs/message-buttons for more information.
+     * style defines the visual appearance of the action element. Valid values include "default", "primary" (green), and "danger" (red).
      */
     @JsonProperty("style")
     public String getStyle() {
@@ -146,7 +146,7 @@ public class SlackAction implements Editable<SlackActionBuilder>, KubernetesReso
     }
 
     /**
-     * SlackAction configures a single Slack action that is sent with each notification. See https://api.slack.com/docs/message-attachments#action_fields and https://api.slack.com/docs/message-buttons for more information.
+     * style defines the visual appearance of the action element. Valid values include "default", "primary" (green), and "danger" (red).
      */
     @JsonProperty("style")
     public void setStyle(String style) {
@@ -154,7 +154,7 @@ public class SlackAction implements Editable<SlackActionBuilder>, KubernetesReso
     }
 
     /**
-     * SlackAction configures a single Slack action that is sent with each notification. See https://api.slack.com/docs/message-attachments#action_fields and https://api.slack.com/docs/message-buttons for more information.
+     * text defines the user-visible label displayed on the action element. For buttons, this is the button text. For select menus, this is the placeholder text.
      */
     @JsonProperty("text")
     public String getText() {
@@ -162,7 +162,7 @@ public class SlackAction implements Editable<SlackActionBuilder>, KubernetesReso
     }
 
     /**
-     * SlackAction configures a single Slack action that is sent with each notification. See https://api.slack.com/docs/message-attachments#action_fields and https://api.slack.com/docs/message-buttons for more information.
+     * text defines the user-visible label displayed on the action element. For buttons, this is the button text. For select menus, this is the placeholder text.
      */
     @JsonProperty("text")
     public void setText(String text) {
@@ -170,7 +170,7 @@ public class SlackAction implements Editable<SlackActionBuilder>, KubernetesReso
     }
 
     /**
-     * SlackAction configures a single Slack action that is sent with each notification. See https://api.slack.com/docs/message-attachments#action_fields and https://api.slack.com/docs/message-buttons for more information.
+     * type defines the type of interactive component. Common values include "button" for clickable buttons and "select" for dropdown menus.
      */
     @JsonProperty("type")
     public String getType() {
@@ -178,7 +178,7 @@ public class SlackAction implements Editable<SlackActionBuilder>, KubernetesReso
     }
 
     /**
-     * SlackAction configures a single Slack action that is sent with each notification. See https://api.slack.com/docs/message-attachments#action_fields and https://api.slack.com/docs/message-buttons for more information.
+     * type defines the type of interactive component. Common values include "button" for clickable buttons and "select" for dropdown menus.
      */
     @JsonProperty("type")
     public void setType(String type) {
@@ -186,7 +186,7 @@ public class SlackAction implements Editable<SlackActionBuilder>, KubernetesReso
     }
 
     /**
-     * SlackAction configures a single Slack action that is sent with each notification. See https://api.slack.com/docs/message-attachments#action_fields and https://api.slack.com/docs/message-buttons for more information.
+     * url defines the URL to open when the action is triggered. Only applicable for button-type actions. When set, clicking the button opens this URL.
      */
     @JsonProperty("url")
     public String getUrl() {
@@ -194,7 +194,7 @@ public class SlackAction implements Editable<SlackActionBuilder>, KubernetesReso
     }
 
     /**
-     * SlackAction configures a single Slack action that is sent with each notification. See https://api.slack.com/docs/message-attachments#action_fields and https://api.slack.com/docs/message-buttons for more information.
+     * url defines the URL to open when the action is triggered. Only applicable for button-type actions. When set, clicking the button opens this URL.
      */
     @JsonProperty("url")
     public void setUrl(String url) {
@@ -202,7 +202,7 @@ public class SlackAction implements Editable<SlackActionBuilder>, KubernetesReso
     }
 
     /**
-     * SlackAction configures a single Slack action that is sent with each notification. See https://api.slack.com/docs/message-attachments#action_fields and https://api.slack.com/docs/message-buttons for more information.
+     * value defines the payload sent when the action is triggered. This data is included in the callback sent to your application.
      */
     @JsonProperty("value")
     public String getValue() {
@@ -210,7 +210,7 @@ public class SlackAction implements Editable<SlackActionBuilder>, KubernetesReso
     }
 
     /**
-     * SlackAction configures a single Slack action that is sent with each notification. See https://api.slack.com/docs/message-attachments#action_fields and https://api.slack.com/docs/message-buttons for more information.
+     * value defines the payload sent when the action is triggered. This data is included in the callback sent to your application.
      */
     @JsonProperty("value")
     public void setValue(String value) {

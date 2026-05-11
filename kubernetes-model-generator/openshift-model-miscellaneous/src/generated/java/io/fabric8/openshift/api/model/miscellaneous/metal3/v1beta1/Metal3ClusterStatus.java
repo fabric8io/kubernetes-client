@@ -28,7 +28,8 @@ import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
-import io.fabric8.kubernetes.api.model.clusterapi.v1beta1.Condition;
+import io.fabric8.kubernetes.api.model.clusterapi.core.v1beta1.Condition;
+import io.fabric8.kubernetes.api.model.clusterapi.core.v1beta1.FailureDomainSpec;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -42,10 +43,12 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "conditions",
+    "failureDomains",
     "failureMessage",
     "failureReason",
     "lastUpdated",
-    "ready"
+    "ready",
+    "v1beta2"
 })
 @ToString
 @EqualsAndHashCode
@@ -75,6 +78,9 @@ public class Metal3ClusterStatus implements Editable<Metal3ClusterStatusBuilder>
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<>();
+    @JsonProperty("failureDomains")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, FailureDomainSpec> failureDomains = new LinkedHashMap<>();
     @JsonProperty("failureMessage")
     private String failureMessage;
     @JsonProperty("failureReason")
@@ -83,6 +89,8 @@ public class Metal3ClusterStatus implements Editable<Metal3ClusterStatusBuilder>
     private String lastUpdated;
     @JsonProperty("ready")
     private Boolean ready;
+    @JsonProperty("v1beta2")
+    private Metal3ClusterV1Beta2Status v1beta2;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -92,13 +100,15 @@ public class Metal3ClusterStatus implements Editable<Metal3ClusterStatusBuilder>
     public Metal3ClusterStatus() {
     }
 
-    public Metal3ClusterStatus(List<Condition> conditions, String failureMessage, String failureReason, String lastUpdated, Boolean ready) {
+    public Metal3ClusterStatus(List<Condition> conditions, Map<String, FailureDomainSpec> failureDomains, String failureMessage, String failureReason, String lastUpdated, Boolean ready, Metal3ClusterV1Beta2Status v1beta2) {
         super();
         this.conditions = conditions;
+        this.failureDomains = failureDomains;
         this.failureMessage = failureMessage;
         this.failureReason = failureReason;
         this.lastUpdated = lastUpdated;
         this.ready = ready;
+        this.v1beta2 = v1beta2;
     }
 
     /**
@@ -116,6 +126,23 @@ public class Metal3ClusterStatus implements Editable<Metal3ClusterStatusBuilder>
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
+    }
+
+    /**
+     * FailureDomains specifies a list fo failure zones that can be used
+     */
+    @JsonProperty("failureDomains")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, FailureDomainSpec> getFailureDomains() {
+        return failureDomains;
+    }
+
+    /**
+     * FailureDomains specifies a list fo failure zones that can be used
+     */
+    @JsonProperty("failureDomains")
+    public void setFailureDomains(Map<String, FailureDomainSpec> failureDomains) {
+        this.failureDomains = failureDomains;
     }
 
     /**
@@ -180,6 +207,22 @@ public class Metal3ClusterStatus implements Editable<Metal3ClusterStatusBuilder>
     @JsonProperty("ready")
     public void setReady(Boolean ready) {
         this.ready = ready;
+    }
+
+    /**
+     * Metal3ClusterStatus defines the observed state of Metal3Cluster.
+     */
+    @JsonProperty("v1beta2")
+    public Metal3ClusterV1Beta2Status getV1beta2() {
+        return v1beta2;
+    }
+
+    /**
+     * Metal3ClusterStatus defines the observed state of Metal3Cluster.
+     */
+    @JsonProperty("v1beta2")
+    public void setV1beta2(Metal3ClusterV1Beta2Status v1beta2) {
+        this.v1beta2 = v1beta2;
     }
 
     @JsonIgnore

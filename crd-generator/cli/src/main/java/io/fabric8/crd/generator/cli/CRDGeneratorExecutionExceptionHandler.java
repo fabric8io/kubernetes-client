@@ -24,7 +24,7 @@ import java.util.function.Supplier;
 
 class CRDGeneratorExecutionExceptionHandler implements CommandLine.IExecutionExceptionHandler {
 
-  private static final Logger log = LoggerFactory.getLogger(CRDGeneratorExecutionExceptionHandler.class);
+  private static final Logger logger = LoggerFactory.getLogger(CRDGeneratorExecutionExceptionHandler.class);
 
   private final Supplier<String> debugTextSupplier;
 
@@ -62,11 +62,11 @@ class CRDGeneratorExecutionExceptionHandler implements CommandLine.IExecutionExc
       return CRDGeneratorExitCode.NO_CR_CLASSES_RETAINED;
     }
 
-    if (log.isDebugEnabled()) {
+    if (logger.isDebugEnabled()) {
       commandLine.getErr().println(debugTextSupplier.get());
     }
 
-    log.trace(ex.getMessage(), ex);
+    logger.trace(ex.getMessage(), ex);
     commandLine.getErr().flush();
     return CRDGeneratorExitCode.SOFTWARE;
   }

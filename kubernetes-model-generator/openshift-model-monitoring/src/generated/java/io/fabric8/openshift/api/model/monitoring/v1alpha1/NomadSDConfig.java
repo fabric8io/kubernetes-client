@@ -149,7 +149,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * The information to access the Nomad API. It is to be defined as the Nomad documentation requires.
+     * allowStale defines the information to access the Nomad API. It is to be defined as the Nomad documentation requires.
      */
     @JsonProperty("allowStale")
     public Boolean getAllowStale() {
@@ -157,7 +157,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * The information to access the Nomad API. It is to be defined as the Nomad documentation requires.
+     * allowStale defines the information to access the Nomad API. It is to be defined as the Nomad documentation requires.
      */
     @JsonProperty("allowStale")
     public void setAllowStale(Boolean allowStale) {
@@ -197,7 +197,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public Boolean getEnableHTTP2() {
@@ -205,7 +205,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * Whether to enable HTTP2.
+     * enableHTTP2 defines whether to enable HTTP2.
      */
     @JsonProperty("enableHTTP2")
     public void setEnableHTTP2(Boolean enableHTTP2) {
@@ -213,7 +213,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public Boolean getFollowRedirects() {
@@ -221,7 +221,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * Configure whether HTTP requests follow HTTP 3xx redirects.
+     * followRedirects defines whether HTTP requests follow HTTP 3xx redirects.
      */
     @JsonProperty("followRedirects")
     public void setFollowRedirects(Boolean followRedirects) {
@@ -229,7 +229,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * NomadSDConfig configurations allow retrieving scrape targets from Nomad's Service API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#nomad_sd_config
+     * namespace defines the Nomad namespace to query for service discovery. When specified, only resources within this namespace will be discovered.
      */
     @JsonProperty("namespace")
     public String getNamespace() {
@@ -237,7 +237,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * NomadSDConfig configurations allow retrieving scrape targets from Nomad's Service API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#nomad_sd_config
+     * namespace defines the Nomad namespace to query for service discovery. When specified, only resources within this namespace will be discovered.
      */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
@@ -245,7 +245,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public String getNoProxy() {
@@ -253,7 +253,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * noProxy defines a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("noProxy")
     public void setNoProxy(String noProxy) {
@@ -277,7 +277,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -286,7 +286,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests.<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyConnectHeader")
     public void setProxyConnectHeader(Map<String, List<SecretKeySelector>> proxyConnectHeader) {
@@ -294,7 +294,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public Boolean getProxyFromEnvironment() {
@@ -302,7 +302,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
+     * proxyFromEnvironment defines whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).<br><p> <br><p> It requires Prometheus &gt;= v2.43.0, Alertmanager &gt;= v0.25.0 or Thanos &gt;= v0.32.0.
      */
     @JsonProperty("proxyFromEnvironment")
     public void setProxyFromEnvironment(Boolean proxyFromEnvironment) {
@@ -310,7 +310,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public String getProxyUrl() {
@@ -318,7 +318,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * `proxyURL` defines the HTTP proxy server to use.
+     * proxyUrl defines the HTTP proxy server to use.
      */
     @JsonProperty("proxyUrl")
     public void setProxyUrl(String proxyUrl) {
@@ -326,7 +326,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * NomadSDConfig configurations allow retrieving scrape targets from Nomad's Service API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#nomad_sd_config
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public String getRefreshInterval() {
@@ -334,7 +334,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * NomadSDConfig configurations allow retrieving scrape targets from Nomad's Service API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#nomad_sd_config
+     * refreshInterval defines the time after which the provided names are refreshed. If not set, Prometheus uses its default value.
      */
     @JsonProperty("refreshInterval")
     public void setRefreshInterval(String refreshInterval) {
@@ -342,7 +342,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * NomadSDConfig configurations allow retrieving scrape targets from Nomad's Service API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#nomad_sd_config
+     * region defines the Nomad region to query for service discovery. When specified, only resources within this region will be discovered.
      */
     @JsonProperty("region")
     public String getRegion() {
@@ -350,7 +350,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * NomadSDConfig configurations allow retrieving scrape targets from Nomad's Service API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#nomad_sd_config
+     * region defines the Nomad region to query for service discovery. When specified, only resources within this region will be discovered.
      */
     @JsonProperty("region")
     public void setRegion(String region) {
@@ -358,7 +358,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * NomadSDConfig configurations allow retrieving scrape targets from Nomad's Service API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#nomad_sd_config
+     * server defines the Nomad server address to connect to for service discovery. This should be the full URL including protocol (e.g., "https://nomad.example.com:4646").
      */
     @JsonProperty("server")
     public String getServer() {
@@ -366,7 +366,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * NomadSDConfig configurations allow retrieving scrape targets from Nomad's Service API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#nomad_sd_config
+     * server defines the Nomad server address to connect to for service discovery. This should be the full URL including protocol (e.g., "https://nomad.example.com:4646").
      */
     @JsonProperty("server")
     public void setServer(String server) {
@@ -374,7 +374,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * NomadSDConfig configurations allow retrieving scrape targets from Nomad's Service API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#nomad_sd_config
+     * tagSeparator defines the separator used to join multiple tags. This determines how Nomad service tags are concatenated into Prometheus labels.
      */
     @JsonProperty("tagSeparator")
     public String getTagSeparator() {
@@ -382,7 +382,7 @@ public class NomadSDConfig implements Editable<NomadSDConfigBuilder>, Kubernetes
     }
 
     /**
-     * NomadSDConfig configurations allow retrieving scrape targets from Nomad's Service API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#nomad_sd_config
+     * tagSeparator defines the separator used to join multiple tags. This determines how Nomad service tags are concatenated into Prometheus labels.
      */
     @JsonProperty("tagSeparator")
     public void setTagSeparator(String tagSeparator) {

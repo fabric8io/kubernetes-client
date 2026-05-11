@@ -77,11 +77,17 @@ public class RetainConfig implements Editable<RetainConfigBuilder>, KubernetesRe
         this.retentionPeriod = retentionPeriod;
     }
 
+    /**
+     * retentionPeriod defines how long the scaled-down shard(s) need to be kept before being deleted.
+     */
     @JsonProperty("retentionPeriod")
     public String getRetentionPeriod() {
         return retentionPeriod;
     }
 
+    /**
+     * retentionPeriod defines how long the scaled-down shard(s) need to be kept before being deleted.
+     */
     @JsonProperty("retentionPeriod")
     public void setRetentionPeriod(String retentionPeriod) {
         this.retentionPeriod = retentionPeriod;

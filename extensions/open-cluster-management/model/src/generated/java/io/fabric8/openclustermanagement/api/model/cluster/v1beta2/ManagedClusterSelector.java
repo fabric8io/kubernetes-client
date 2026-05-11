@@ -102,7 +102,7 @@ public class ManagedClusterSelector implements Editable<ManagedClusterSelectorBu
     }
 
     /**
-     * SelectorType could only be "ExclusiveClusterSetLabel" or "LabelSelector" "ExclusiveClusterSetLabel" means to use label "cluster.open-cluster-management.io/clusterset:&lt;ManagedClusterSet Name&gt;"" to select target clusters. "LabelSelector" means use labelSelector to select target managedClusters
+     * selectorType could only be "ExclusiveClusterSetLabel" or "LabelSelector" "ExclusiveClusterSetLabel" means to use label "cluster.open-cluster-management.io/clusterset:&lt;ManagedClusterSet Name&gt;"" to select target clusters. "LabelSelector" means use labelSelector to select target managedClusters
      */
     @JsonProperty("selectorType")
     public String getSelectorType() {
@@ -110,7 +110,7 @@ public class ManagedClusterSelector implements Editable<ManagedClusterSelectorBu
     }
 
     /**
-     * SelectorType could only be "ExclusiveClusterSetLabel" or "LabelSelector" "ExclusiveClusterSetLabel" means to use label "cluster.open-cluster-management.io/clusterset:&lt;ManagedClusterSet Name&gt;"" to select target clusters. "LabelSelector" means use labelSelector to select target managedClusters
+     * selectorType could only be "ExclusiveClusterSetLabel" or "LabelSelector" "ExclusiveClusterSetLabel" means to use label "cluster.open-cluster-management.io/clusterset:&lt;ManagedClusterSet Name&gt;"" to select target clusters. "LabelSelector" means use labelSelector to select target managedClusters
      */
     @JsonProperty("selectorType")
     public void setSelectorType(String selectorType) {

@@ -24,22 +24,41 @@ import io.fabric8.mockwebserver.http.RecordedRequest;
 import io.fabric8.mockwebserver.vertx.HttpServerRequestHandler;
 import io.fabric8.mockwebserver.vertx.Protocol;
 import io.netty.handler.ssl.ClientAuth;
-import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
-import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.net.NetServerOptions;
+import io.vertx.core.net.PemKeyCertOptions;
+import io.vertx.core.net.PemTrustOptions;
 import io.vertx.core.net.SelfSignedCertificate;
+import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.asn1.x509.Extension;
+import org.bouncycastle.asn1.x509.GeneralName;
+import org.bouncycastle.asn1.x509.GeneralNames;
+import org.bouncycastle.cert.X509CertificateHolder;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
+import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
+import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
+import org.bouncycastle.operator.ContentSigner;
+import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 
 import java.io.Closeable;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.cert.X509Certificate;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -77,7 +96,9 @@ public class MockWebServer implements Closeable {
   private InetAddress inetAddress;
   private String hostName;
   private List<Protocol> protocols;
+  private boolean http2ClearTextEnabled;
   private boolean started;
+  private boolean shutdown;
 
   public MockWebServer() {
     vertx = Vertx.vertx();
@@ -89,6 +110,7 @@ public class MockWebServer implements Closeable {
     enabledSecuredTransportProtocols = new ArrayList<>();
     enabledSecuredTransportProtocols.addAll(DEFAULT_ENABLED_SECURE_TRANSPORT_PROTOCOLS);
     protocols = Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1);
+    http2ClearTextEnabled = true;
   }
 
   private void before() {
@@ -120,12 +142,15 @@ public class MockWebServer implements Closeable {
         .setWebSocketSubProtocols(Arrays.asList(SUPPORTED_WEBSOCKET_SUB_PROTOCOLS))
         .setHandle100ContinueAutomatically(true);
     if (ssl) {
-      selfSignedCertificate = SelfSignedCertificate.create(getHostName());
       options
           .setSsl(true)
-          .setEnabledSecureTransportProtocols(new HashSet<>(enabledSecuredTransportProtocols))
+          .setEnabledSecureTransportProtocols(new HashSet<>(enabledSecuredTransportProtocols));
+      selfSignedCertificate = generateSelfSignedCertificate();
+      options
           .setTrustOptions(selfSignedCertificate.trustOptions())
           .setKeyCertOptions(selfSignedCertificate.keyCertOptions());
+    } else {
+      options.setHttp2ClearTextEnabled(http2ClearTextEnabled);
     }
     httpServer = vertx.createHttpServer(options);
     httpServer.connectionHandler(event -> {
@@ -150,24 +175,16 @@ public class MockWebServer implements Closeable {
   }
 
   public synchronized void shutdown() {
-    if (!started) {
+    if (!started || shutdown) {
       return;
     }
     if (httpServer == null) {
       throw new IllegalStateException("shutdown() before start()");
     }
+    shutdown = true;
     dispatcher.shutdown();
-    final Future<Void> httpClose = httpServer.close();
-    Handler<AsyncResult<Void>> onComplete = v -> {
-      vertx.close();
-      info("done accepting connections");
-    };
-    if (httpClose.isComplete()) {
-      onComplete.handle(httpClose);
-    } else {
-      httpClose.onComplete(onComplete);
-      await(httpClose, "Unable to close MockWebServer");
-    }
+    await(httpServer.close(), "Unable to close MockWebServer");
+    info("done accepting connections");
     await(vertx.close(), "Unable to close Vertx");
   }
 
@@ -241,6 +258,16 @@ public class MockWebServer implements Closeable {
   }
 
   /**
+   * Enables or disables HTTP/2 over cleartext (h2c). Enabled by default, matching Vert.x's
+   * own default. Set to {@code false} for tests that use HTTP clients (such as the JDK
+   * HttpClient) which probe for {@code Upgrade: h2c} — accepting the upgrade can lead to
+   * non-deterministic HTTP/2 framing behaviour on large responses.
+   */
+  public void setHttp2ClearTextEnabled(boolean http2ClearTextEnabled) {
+    this.http2ClearTextEnabled = http2ClearTextEnabled;
+  }
+
+  /**
    * Returns the MockWebServer to its initial state by:
    * <ul>
    * <li>Clearing the request count.</li>
@@ -250,6 +277,74 @@ public class MockWebServer implements Closeable {
   public final void reset() {
     requestCount.set(0);
     requestQueue.clear();
+  }
+
+  private SelfSignedCertificate generateSelfSignedCertificate() {
+    try {
+      KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+      keyGen.initialize(2048);
+      KeyPair keyPair = keyGen.generateKeyPair();
+
+      X500Name name = new X500Name("CN=localhost");
+      BigInteger serialNumber = BigInteger.valueOf(System.currentTimeMillis());
+      Date validFrom = Date.from(Instant.now());
+      Date validUntil = Date.from(Instant.now().plus(365, ChronoUnit.DAYS));
+
+      JcaX509v3CertificateBuilder builder = new JcaX509v3CertificateBuilder(
+          name, serialNumber, validFrom, validUntil, name, keyPair.getPublic());
+      builder.addExtension(Extension.subjectAlternativeName, false,
+          new GeneralNames(new GeneralName[] {
+              new GeneralName(GeneralName.dNSName, "localhost"),
+              new GeneralName(GeneralName.iPAddress, "127.0.0.1")
+          }));
+
+      ContentSigner signer = new JcaContentSignerBuilder("SHA256WithRSA").build(keyPair.getPrivate());
+      X509CertificateHolder certHolder = builder.build(signer);
+      X509Certificate cert = new JcaX509CertificateConverter().getCertificate(certHolder);
+
+      File certTempFile = File.createTempFile("mockwebserver-cert-", ".pem");
+      File keyTempFile = File.createTempFile("mockwebserver-key-", ".pem");
+      certTempFile.deleteOnExit();
+      keyTempFile.deleteOnExit();
+
+      try (JcaPEMWriter certWriter = new JcaPEMWriter(new FileWriter(certTempFile));
+          JcaPEMWriter keyWriter = new JcaPEMWriter(new FileWriter(keyTempFile))) {
+        certWriter.writeObject(cert);
+        keyWriter.writeObject(keyPair.getPrivate());
+      }
+
+      return new SelfSignedCertificate() {
+        @Override
+        public String certificatePath() {
+          return certTempFile.getAbsolutePath();
+        }
+
+        @Override
+        public String privateKeyPath() {
+          return keyTempFile.getAbsolutePath();
+        }
+
+        @Override
+        public PemKeyCertOptions keyCertOptions() {
+          return new PemKeyCertOptions()
+              .setKeyPath(keyTempFile.getAbsolutePath())
+              .setCertPath(certTempFile.getAbsolutePath());
+        }
+
+        @Override
+        public PemTrustOptions trustOptions() {
+          return new PemTrustOptions().addCertPath(certTempFile.getAbsolutePath());
+        }
+
+        @Override
+        public void delete() {
+          certTempFile.delete();
+          keyTempFile.delete();
+        }
+      };
+    } catch (Exception e) {
+      throw new IllegalStateException("Failed to generate self-signed certificate with SANs", e);
+    }
   }
 
   private static <T> T await(Future<T> vertxFuture, String errorMessage) {

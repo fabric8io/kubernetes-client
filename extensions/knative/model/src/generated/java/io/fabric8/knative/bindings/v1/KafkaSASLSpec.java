@@ -37,6 +37,8 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "enable",
     "password",
+    "roleARN",
+    "tokenProvider",
     "type",
     "user"
 })
@@ -69,6 +71,10 @@ public class KafkaSASLSpec implements Editable<KafkaSASLSpecBuilder>, Kubernetes
     private Boolean enable;
     @JsonProperty("password")
     private SecretValueFromSource password;
+    @JsonProperty("roleARN")
+    private SecretValueFromSource roleARN;
+    @JsonProperty("tokenProvider")
+    private SecretValueFromSource tokenProvider;
     @JsonProperty("type")
     private SecretValueFromSource type;
     @JsonProperty("user")
@@ -82,10 +88,12 @@ public class KafkaSASLSpec implements Editable<KafkaSASLSpecBuilder>, Kubernetes
     public KafkaSASLSpec() {
     }
 
-    public KafkaSASLSpec(Boolean enable, SecretValueFromSource password, SecretValueFromSource type, SecretValueFromSource user) {
+    public KafkaSASLSpec(Boolean enable, SecretValueFromSource password, SecretValueFromSource roleARN, SecretValueFromSource tokenProvider, SecretValueFromSource type, SecretValueFromSource user) {
         super();
         this.enable = enable;
         this.password = password;
+        this.roleARN = roleARN;
+        this.tokenProvider = tokenProvider;
         this.type = type;
         this.user = user;
     }
@@ -108,6 +116,26 @@ public class KafkaSASLSpec implements Editable<KafkaSASLSpecBuilder>, Kubernetes
     @JsonProperty("password")
     public void setPassword(SecretValueFromSource password) {
         this.password = password;
+    }
+
+    @JsonProperty("roleARN")
+    public SecretValueFromSource getRoleARN() {
+        return roleARN;
+    }
+
+    @JsonProperty("roleARN")
+    public void setRoleARN(SecretValueFromSource roleARN) {
+        this.roleARN = roleARN;
+    }
+
+    @JsonProperty("tokenProvider")
+    public SecretValueFromSource getTokenProvider() {
+        return tokenProvider;
+    }
+
+    @JsonProperty("tokenProvider")
+    public void setTokenProvider(SecretValueFromSource tokenProvider) {
+        this.tokenProvider = tokenProvider;
     }
 
     @JsonProperty("type")

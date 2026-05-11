@@ -31,6 +31,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TokenClaimMapping allows specifying a JWT token claim to be used when mapping claims from an authentication token to cluster identities.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,7 +81,7 @@ public class TokenClaimMapping implements Editable<TokenClaimMappingBuilder>, Ku
     }
 
     /**
-     * claim is a JWT token claim to be used in the mapping
+     * claim is a required field that configures the JWT token claim whose value is assigned to the cluster identity field associated with this mapping.
      */
     @JsonProperty("claim")
     public String getClaim() {
@@ -86,7 +89,7 @@ public class TokenClaimMapping implements Editable<TokenClaimMappingBuilder>, Ku
     }
 
     /**
-     * claim is a JWT token claim to be used in the mapping
+     * claim is a required field that configures the JWT token claim whose value is assigned to the cluster identity field associated with this mapping.
      */
     @JsonProperty("claim")
     public void setClaim(String claim) {

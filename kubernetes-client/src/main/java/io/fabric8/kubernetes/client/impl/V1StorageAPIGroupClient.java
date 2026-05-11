@@ -25,6 +25,8 @@ import io.fabric8.kubernetes.api.model.storage.StorageClass;
 import io.fabric8.kubernetes.api.model.storage.StorageClassList;
 import io.fabric8.kubernetes.api.model.storage.VolumeAttachment;
 import io.fabric8.kubernetes.api.model.storage.VolumeAttachmentList;
+import io.fabric8.kubernetes.api.model.storage.VolumeAttributesClass;
+import io.fabric8.kubernetes.api.model.storage.VolumeAttributesClassList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -60,5 +62,10 @@ public class V1StorageAPIGroupClient extends ClientAdapter<V1StorageAPIGroupClie
   @Override
   public NonNamespaceOperation<VolumeAttachment, VolumeAttachmentList, Resource<VolumeAttachment>> volumeAttachments() {
     return resources(VolumeAttachment.class, VolumeAttachmentList.class);
+  }
+
+  @Override
+  public NonNamespaceOperation<VolumeAttributesClass, VolumeAttributesClassList, Resource<VolumeAttributesClass>> volumeAttributesClasses() {
+    return resources(VolumeAttributesClass.class, VolumeAttributesClassList.class);
   }
 }

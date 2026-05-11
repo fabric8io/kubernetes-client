@@ -44,6 +44,7 @@ import lombok.experimental.Accessors;
     "additionalNTPServers",
     "apiVIP",
     "apiVIPs",
+    "bmcVerifyCA",
     "bootstrapExternalStaticDNS",
     "bootstrapExternalStaticGateway",
     "bootstrapExternalStaticIP",
@@ -101,6 +102,8 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     @JsonProperty("apiVIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> apiVIPs = new ArrayList<>();
+    @JsonProperty("bmcVerifyCA")
+    private String bmcVerifyCA;
     @JsonProperty("bootstrapExternalStaticDNS")
     private String bootstrapExternalStaticDNS;
     @JsonProperty("bootstrapExternalStaticGateway")
@@ -158,11 +161,12 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     public Platform() {
     }
 
-    public Platform(List<String> additionalNTPServers, String apiVIP, List<String> apiVIPs, String bootstrapExternalStaticDNS, String bootstrapExternalStaticGateway, String bootstrapExternalStaticIP, String bootstrapOSImage, String bootstrapProvisioningIP, String clusterOSImage, String clusterProvisioningIP, MachinePool defaultMachinePlatform, String externalBridge, String externalMACAddress, List<Host> hosts, String ingressVIP, List<String> ingressVIPs, String libvirtURI, BareMetalPlatformLoadBalancer loadBalancer, String provisioningBridge, Boolean provisioningDHCPExternal, String provisioningDHCPRange, String provisioningHostIP, String provisioningMACAddress, String provisioningNetwork, String provisioningNetworkCIDR, String provisioningNetworkInterface) {
+    public Platform(List<String> additionalNTPServers, String apiVIP, List<String> apiVIPs, String bmcVerifyCA, String bootstrapExternalStaticDNS, String bootstrapExternalStaticGateway, String bootstrapExternalStaticIP, String bootstrapOSImage, String bootstrapProvisioningIP, String clusterOSImage, String clusterProvisioningIP, MachinePool defaultMachinePlatform, String externalBridge, String externalMACAddress, List<Host> hosts, String ingressVIP, List<String> ingressVIPs, String libvirtURI, BareMetalPlatformLoadBalancer loadBalancer, String provisioningBridge, Boolean provisioningDHCPExternal, String provisioningDHCPRange, String provisioningHostIP, String provisioningMACAddress, String provisioningNetwork, String provisioningNetworkCIDR, String provisioningNetworkInterface) {
         super();
         this.additionalNTPServers = additionalNTPServers;
         this.apiVIP = apiVIP;
         this.apiVIPs = apiVIPs;
+        this.bmcVerifyCA = bmcVerifyCA;
         this.bootstrapExternalStaticDNS = bootstrapExternalStaticDNS;
         this.bootstrapExternalStaticGateway = bootstrapExternalStaticGateway;
         this.bootstrapExternalStaticIP = bootstrapExternalStaticIP;
@@ -236,6 +240,22 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     @JsonProperty("apiVIPs")
     public void setApiVIPs(List<String> apiVIPs) {
         this.apiVIPs = apiVIPs;
+    }
+
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
+    @JsonProperty("bmcVerifyCA")
+    public String getBmcVerifyCA() {
+        return bmcVerifyCA;
+    }
+
+    /**
+     * Platform stores all the global configuration that all machinesets use.
+     */
+    @JsonProperty("bmcVerifyCA")
+    public void setBmcVerifyCA(String bmcVerifyCA) {
+        this.bmcVerifyCA = bmcVerifyCA;
     }
 
     /**

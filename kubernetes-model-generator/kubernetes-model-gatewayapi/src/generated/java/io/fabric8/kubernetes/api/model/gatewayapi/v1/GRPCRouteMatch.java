@@ -33,7 +33,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * GRPCRouteMatch defines the predicate used to match requests to a given action. Multiple match types are ANDed together, i.e. the match will evaluate to true only if all conditions are satisfied.<br><p> <br><p> For example, the match below will match a gRPC request only if its service is `foo` AND it contains the `version: v1` header:<br><p> <br><p> ``` matches:<br><p>   - method:<br><p>     type: Exact<br><p>     service: "foo"<br><p>     headers:<br><p>   - name: "version"<br><p>     value "v1"<br><p> <br><p> ```
+ * GRPCRouteMatch defines the predicate used to match requests to a given action. Multiple match types are ANDed together, i.e. the match will evaluate to true only if all conditions are satisfied.<br><p> <br><p> For example, the match below will match a gRPC request only if its service is `foo` AND it contains the `version: v1` header:<br><p> <br><p> ``` matches:<br><p>   - method:<br><p>     type: Exact<br><p>     service: "foo"<br><p>   - headers:<br><p>     name: "version"<br><p>     value "v1"<br><p> <br><p> ```
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -104,7 +104,7 @@ public class GRPCRouteMatch implements Editable<GRPCRouteMatchBuilder>, Kubernet
     }
 
     /**
-     * GRPCRouteMatch defines the predicate used to match requests to a given action. Multiple match types are ANDed together, i.e. the match will evaluate to true only if all conditions are satisfied.<br><p> <br><p> For example, the match below will match a gRPC request only if its service is `foo` AND it contains the `version: v1` header:<br><p> <br><p> ``` matches:<br><p>   - method:<br><p>     type: Exact<br><p>     service: "foo"<br><p>     headers:<br><p>   - name: "version"<br><p>     value "v1"<br><p> <br><p> ```
+     * GRPCRouteMatch defines the predicate used to match requests to a given action. Multiple match types are ANDed together, i.e. the match will evaluate to true only if all conditions are satisfied.<br><p> <br><p> For example, the match below will match a gRPC request only if its service is `foo` AND it contains the `version: v1` header:<br><p> <br><p> ``` matches:<br><p>   - method:<br><p>     type: Exact<br><p>     service: "foo"<br><p>   - headers:<br><p>     name: "version"<br><p>     value "v1"<br><p> <br><p> ```
      */
     @JsonProperty("method")
     public GRPCMethodMatch getMethod() {
@@ -112,7 +112,7 @@ public class GRPCRouteMatch implements Editable<GRPCRouteMatchBuilder>, Kubernet
     }
 
     /**
-     * GRPCRouteMatch defines the predicate used to match requests to a given action. Multiple match types are ANDed together, i.e. the match will evaluate to true only if all conditions are satisfied.<br><p> <br><p> For example, the match below will match a gRPC request only if its service is `foo` AND it contains the `version: v1` header:<br><p> <br><p> ``` matches:<br><p>   - method:<br><p>     type: Exact<br><p>     service: "foo"<br><p>     headers:<br><p>   - name: "version"<br><p>     value "v1"<br><p> <br><p> ```
+     * GRPCRouteMatch defines the predicate used to match requests to a given action. Multiple match types are ANDed together, i.e. the match will evaluate to true only if all conditions are satisfied.<br><p> <br><p> For example, the match below will match a gRPC request only if its service is `foo` AND it contains the `version: v1` header:<br><p> <br><p> ``` matches:<br><p>   - method:<br><p>     type: Exact<br><p>     service: "foo"<br><p>   - headers:<br><p>     name: "version"<br><p>     value "v1"<br><p> <br><p> ```
      */
     @JsonProperty("method")
     public void setMethod(GRPCMethodMatch method) {

@@ -25,6 +25,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "allocatedResources",
     "conditions",
     "containerStatuses",
     "ephemeralContainerStatuses",
@@ -33,6 +34,7 @@ import lombok.experimental.Accessors;
     "hostIPs",
     "initContainerStatuses",
     "message",
+    "nodeAllocatableResourceClaimStatuses",
     "nominatedNodeName",
     "observedGeneration",
     "phase",
@@ -42,6 +44,7 @@ import lombok.experimental.Accessors;
     "reason",
     "resize",
     "resourceClaimStatuses",
+    "resources",
     "startTime"
 })
 @ToString
@@ -55,6 +58,9 @@ import lombok.experimental.Accessors;
 public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
 {
 
+    @JsonProperty("allocatedResources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, Quantity> allocatedResources = new LinkedHashMap<>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PodCondition> conditions = new ArrayList<>();
@@ -76,6 +82,9 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
     private List<ContainerStatus> initContainerStatuses = new ArrayList<>();
     @JsonProperty("message")
     private String message;
+    @JsonProperty("nodeAllocatableResourceClaimStatuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<NodeAllocatableResourceClaimStatus> nodeAllocatableResourceClaimStatuses = new ArrayList<>();
     @JsonProperty("nominatedNodeName")
     private String nominatedNodeName;
     @JsonProperty("observedGeneration")
@@ -96,6 +105,8 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
     @JsonProperty("resourceClaimStatuses")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PodResourceClaimStatus> resourceClaimStatuses = new ArrayList<>();
+    @JsonProperty("resources")
+    private ResourceRequirements resources;
     @JsonProperty("startTime")
     private String startTime;
     @JsonIgnore
@@ -107,8 +118,9 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
     public PodStatus() {
     }
 
-    public PodStatus(List<PodCondition> conditions, List<ContainerStatus> containerStatuses, List<ContainerStatus> ephemeralContainerStatuses, PodExtendedResourceClaimStatus extendedResourceClaimStatus, String hostIP, List<HostIP> hostIPs, List<ContainerStatus> initContainerStatuses, String message, String nominatedNodeName, Long observedGeneration, String phase, String podIP, List<PodIP> podIPs, String qosClass, String reason, String resize, List<PodResourceClaimStatus> resourceClaimStatuses, String startTime) {
+    public PodStatus(Map<String, Quantity> allocatedResources, List<PodCondition> conditions, List<ContainerStatus> containerStatuses, List<ContainerStatus> ephemeralContainerStatuses, PodExtendedResourceClaimStatus extendedResourceClaimStatus, String hostIP, List<HostIP> hostIPs, List<ContainerStatus> initContainerStatuses, String message, List<NodeAllocatableResourceClaimStatus> nodeAllocatableResourceClaimStatuses, String nominatedNodeName, Long observedGeneration, String phase, String podIP, List<PodIP> podIPs, String qosClass, String reason, String resize, List<PodResourceClaimStatus> resourceClaimStatuses, ResourceRequirements resources, String startTime) {
         super();
+        this.allocatedResources = allocatedResources;
         this.conditions = conditions;
         this.containerStatuses = containerStatuses;
         this.ephemeralContainerStatuses = ephemeralContainerStatuses;
@@ -117,6 +129,7 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
         this.hostIPs = hostIPs;
         this.initContainerStatuses = initContainerStatuses;
         this.message = message;
+        this.nodeAllocatableResourceClaimStatuses = nodeAllocatableResourceClaimStatuses;
         this.nominatedNodeName = nominatedNodeName;
         this.observedGeneration = observedGeneration;
         this.phase = phase;
@@ -126,7 +139,25 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
         this.reason = reason;
         this.resize = resize;
         this.resourceClaimStatuses = resourceClaimStatuses;
+        this.resources = resources;
         this.startTime = startTime;
+    }
+
+    /**
+     * AllocatedResources is the total requests allocated for this pod by the node. If pod-level requests are not set, this will be the total requests aggregated across containers in the pod.
+     */
+    @JsonProperty("allocatedResources")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, Quantity> getAllocatedResources() {
+        return allocatedResources;
+    }
+
+    /**
+     * AllocatedResources is the total requests allocated for this pod by the node. If pod-level requests are not set, this will be the total requests aggregated across containers in the pod.
+     */
+    @JsonProperty("allocatedResources")
+    public void setAllocatedResources(Map<String, Quantity> allocatedResources) {
+        this.allocatedResources = allocatedResources;
     }
 
     /**
@@ -263,6 +294,23 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
     }
 
     /**
+     * NodeAllocatableResourceClaimStatuses contains the status of node-allocatable resources that were allocated for this pod through DRA claims. This includes resources currently reported in v1.Node `status.allocatable` that are not extended resources (see https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#extended-resources). Examples include "cpu", "memory", "ephemeral-storage", and hugepages.
+     */
+    @JsonProperty("nodeAllocatableResourceClaimStatuses")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<NodeAllocatableResourceClaimStatus> getNodeAllocatableResourceClaimStatuses() {
+        return nodeAllocatableResourceClaimStatuses;
+    }
+
+    /**
+     * NodeAllocatableResourceClaimStatuses contains the status of node-allocatable resources that were allocated for this pod through DRA claims. This includes resources currently reported in v1.Node `status.allocatable` that are not extended resources (see https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#extended-resources). Examples include "cpu", "memory", "ephemeral-storage", and hugepages.
+     */
+    @JsonProperty("nodeAllocatableResourceClaimStatuses")
+    public void setNodeAllocatableResourceClaimStatuses(List<NodeAllocatableResourceClaimStatus> nodeAllocatableResourceClaimStatuses) {
+        this.nodeAllocatableResourceClaimStatuses = nodeAllocatableResourceClaimStatuses;
+    }
+
+    /**
      * nominatedNodeName is set only when this pod preempts other pods on the node, but it cannot be scheduled right away as preemption victims receive their graceful termination periods. This field does not guarantee that the pod will be scheduled on this node. Scheduler may decide to place the pod elsewhere if other nodes become available sooner. Scheduler may also decide to give the resources on this node to a higher priority pod that is created after preemption. As a result, this field may be different than PodSpec.nodeName when the pod is scheduled.
      */
     @JsonProperty("nominatedNodeName")
@@ -279,7 +327,7 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
     }
 
     /**
-     * If set, this represents the .metadata.generation that the pod status was set based upon. This is an alpha field. Enable PodObservedGenerationTracking to be able to use this field.
+     * If set, this represents the .metadata.generation that the pod status was set based upon. The PodObservedGenerationTracking feature gate must be enabled to use this field.
      */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
@@ -287,7 +335,7 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
     }
 
     /**
-     * If set, this represents the .metadata.generation that the pod status was set based upon. This is an alpha field. Enable PodObservedGenerationTracking to be able to use this field.
+     * If set, this represents the .metadata.generation that the pod status was set based upon. The PodObservedGenerationTracking feature gate must be enabled to use this field.
      */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
@@ -406,6 +454,22 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
     @JsonProperty("resourceClaimStatuses")
     public void setResourceClaimStatuses(List<PodResourceClaimStatus> resourceClaimStatuses) {
         this.resourceClaimStatuses = resourceClaimStatuses;
+    }
+
+    /**
+     * PodStatus represents information about the status of a pod. Status may trail the actual state of a system, especially if the node that hosts the pod cannot contact the control plane.
+     */
+    @JsonProperty("resources")
+    public ResourceRequirements getResources() {
+        return resources;
+    }
+
+    /**
+     * PodStatus represents information about the status of a pod. Status may trail the actual state of a system, especially if the node that hosts the pod cannot contact the control plane.
+     */
+    @JsonProperty("resources")
+    public void setResources(ResourceRequirements resources) {
+        this.resources = resources;
     }
 
     /**

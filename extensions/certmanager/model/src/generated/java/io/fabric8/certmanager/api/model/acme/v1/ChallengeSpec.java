@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.certmanager.api.model.meta.v1.ObjectReference;
+import io.fabric8.certmanager.api.model.meta.v1.IssuerReference;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -58,7 +59,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
@@ -75,7 +76,7 @@ public class ChallengeSpec implements Editable<ChallengeSpecBuilder>, Kubernetes
     @JsonProperty("dnsName")
     private String dnsName;
     @JsonProperty("issuerRef")
-    private ObjectReference issuerRef;
+    private IssuerReference issuerRef;
     @JsonProperty("key")
     private String key;
     @JsonProperty("solver")
@@ -97,7 +98,7 @@ public class ChallengeSpec implements Editable<ChallengeSpecBuilder>, Kubernetes
     public ChallengeSpec() {
     }
 
-    public ChallengeSpec(String authorizationURL, String dnsName, ObjectReference issuerRef, String key, ACMEChallengeSolver solver, String token, String type, String url, Boolean wildcard) {
+    public ChallengeSpec(String authorizationURL, String dnsName, IssuerReference issuerRef, String key, ACMEChallengeSolver solver, String token, String type, String url, Boolean wildcard) {
         super();
         this.authorizationURL = authorizationURL;
         this.dnsName = dnsName;
@@ -143,12 +144,12 @@ public class ChallengeSpec implements Editable<ChallengeSpecBuilder>, Kubernetes
     }
 
     @JsonProperty("issuerRef")
-    public ObjectReference getIssuerRef() {
+    public IssuerReference getIssuerRef() {
         return issuerRef;
     }
 
     @JsonProperty("issuerRef")
-    public void setIssuerRef(ObjectReference issuerRef) {
+    public void setIssuerRef(IssuerReference issuerRef) {
         this.issuerRef = issuerRef;
     }
 

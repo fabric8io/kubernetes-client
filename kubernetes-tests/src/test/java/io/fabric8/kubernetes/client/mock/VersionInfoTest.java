@@ -28,7 +28,7 @@ import java.text.SimpleDateFormat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-@EnableKubernetesMockClient
+@EnableKubernetesMockClient(https = false)
 class VersionInfoTest {
 
   KubernetesMockServer server;

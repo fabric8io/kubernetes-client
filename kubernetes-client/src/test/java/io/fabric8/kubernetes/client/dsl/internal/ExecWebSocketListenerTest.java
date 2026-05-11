@@ -18,18 +18,37 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.StatusCause;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.ExecListener;
+import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext.StreamContext;
+import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
+import io.fabric8.kubernetes.client.http.WebSocketUpgradeResponse;
 import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
@@ -122,6 +141,260 @@ class ExecWebSocketListenerTest {
     listener.onClose(mock, 1000, "testing");
 
     assertNull(listener.exitCode().join());
+  }
+
+  @Test
+  void onMessageChannel3CompletesExitAfterPendingChannel1Writes() throws Exception {
+    final CountDownLatch writeStarted = new CountDownLatch(1);
+    final CountDownLatch releaseWrite = new CountDownLatch(1);
+    final OutputStream blockingOut = new OutputStream() {
+      @Override
+      public void write(int b) {
+      }
+
+      @Override
+      public void write(byte[] b, int off, int len) throws IOException {
+        writeStarted.countDown();
+        try {
+          if (!releaseWrite.await(5, TimeUnit.SECONDS)) {
+            throw new IOException("write was not released");
+          }
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+          throw new IOException(e);
+        }
+      }
+    };
+    final PodOperationContext context = new PodOperationContext().toBuilder()
+        .output(new StreamContext(blockingOut))
+        .build();
+    final ExecutorService asyncExecutor = Executors.newSingleThreadExecutor();
+    try {
+      final ExecWebSocketListener listener = new ExecWebSocketListener(context, asyncExecutor, new KubernetesSerialization());
+      final WebSocket mockedWebSocket = Mockito.mock(WebSocket.class);
+      listener.onOpen(mockedWebSocket);
+
+      // Channel 1 (stdout) message: queues an async write that will block until released
+      listener.onMessage(mockedWebSocket, ByteBuffer.wrap(new byte[] { (byte) 1, (byte) 'p', (byte) 'a', (byte) 'y' }));
+      assertTrue(writeStarted.await(2, TimeUnit.SECONDS), "expected the channel 1 async write to start");
+
+      // Channel 3 (exit-success) message fires while the previous write is still in flight
+      final byte[] successJson = new KubernetesSerialization().asJson(new StatusBuilder().withStatus("Success").build())
+          .getBytes(StandardCharsets.UTF_8);
+      final ByteBuffer channel3 = ByteBuffer.allocate(successJson.length + 1).put((byte) 3).put(successJson);
+      channel3.flip();
+      listener.onMessage(mockedWebSocket, channel3);
+
+      // The exitCode must NOT complete before the pending channel 1 write has been processed.
+      // Without the fix, exitCode is completed synchronously inside onMessage and this assertion fails.
+      assertThrows(TimeoutException.class, () -> listener.exitCode().get(200, TimeUnit.MILLISECONDS),
+          "exitCode must not complete before pending channel 1 async writes finish");
+
+      releaseWrite.countDown();
+      assertEquals(0, listener.exitCode().get(2, TimeUnit.SECONDS));
+    } finally {
+      asyncExecutor.shutdownNow();
+    }
+  }
+
+  @Test
+  void onErrorAfterChannel3StatusPrefersParsedExitCodeOverConnectionClose() throws Exception {
+    // Reproduces the race in PodTest.testExecWithExitCode: channel-3 status frame is
+    // received and queues handleExitStatus through the SerialExecutor; the peer then
+    // closes the connection and onError fires before the deferred task runs.
+    final Queue<Runnable> manualQueue = new ArrayDeque<>();
+    final Executor manualExecutor = manualQueue::offer;
+
+    final ExecWebSocketListener listener = new ExecWebSocketListener(new PodOperationContext(), manualExecutor,
+        new KubernetesSerialization());
+    final WebSocket mockedWebSocket = Mockito.mock(WebSocket.class);
+    listener.onOpen(mockedWebSocket);
+
+    // Channel 3: NonZeroExitCode=1 status frame
+    final byte[] failureJson = new KubernetesSerialization().asJson(new StatusBuilder()
+        .withStatus("Failure")
+        .withReason("NonZeroExitCode")
+        .withNewDetails().withCauses(new StatusCause("ExitCode", "1", "ExitCode")).endDetails()
+        .build()).getBytes(StandardCharsets.UTF_8);
+    final ByteBuffer channel3 = ByteBuffer.allocate(failureJson.length + 1)
+        .put((byte) 3).put(failureJson);
+    channel3.flip();
+    listener.onMessage(mockedWebSocket, channel3);
+    assertFalse(listener.exitCode().isDone(),
+        "exitCode must remain pending while handleExitStatus is queued in the executor");
+
+    // The connection closes before the deferred handleExitStatus has a chance to run
+    listener.onError(mockedWebSocket, new IOException("Connection was closed"));
+    assertFalse(listener.exitCode().isDone(),
+        "exitCode must not be completed exceptionally while the queued handleExitStatus is still pending");
+
+    // Drain: handleExitStatus must run first (parsed exit code), then the failure task
+    // observes exitCode is already done and only logs.
+    Runnable next;
+    while ((next = manualQueue.poll()) != null) {
+      next.run();
+    }
+
+    assertEquals(1, listener.exitCode().get(2, TimeUnit.SECONDS),
+        "exitCode must resolve to the parsed value, not the connection-close exception");
+  }
+
+  @Test
+  void onErrorWithExecListenerInvokesOnFailureWithThrowable() {
+    final Queue<Runnable> manualQueue = new ArrayDeque<>();
+    final Executor manualExecutor = manualQueue::offer;
+    final AtomicReference<Throwable> capturedThrowable = new AtomicReference<>();
+    final AtomicReference<ExecListener.Response> capturedResponse = new AtomicReference<>();
+    final ExecListener execListener = new ExecListener() {
+      @Override
+      public void onFailure(Throwable t, Response failureResponse) {
+        capturedThrowable.set(t);
+        capturedResponse.set(failureResponse);
+      }
+
+      @Override
+      public void onClose(int code, String reason) {
+      }
+    };
+    final PodOperationContext context = new PodOperationContext().toBuilder()
+        .execListener(execListener)
+        .build();
+    final ExecWebSocketListener listener = new ExecWebSocketListener(context, manualExecutor, new KubernetesSerialization());
+    listener.onOpen(Mockito.mock(WebSocket.class));
+
+    final IOException boom = new IOException("boom");
+    listener.onError(null, boom);
+
+    Runnable next;
+    while ((next = manualQueue.poll()) != null) {
+      next.run();
+    }
+
+    assertThat(capturedThrowable.get()).isSameAs(boom);
+    assertNull(capturedResponse.get(), "non-handshake errors must not provide a SimpleResponse");
+    assertThrows(KubernetesClientException.class, listener::checkError);
+  }
+
+  @Test
+  void onErrorWithWebSocketHandshakeExceptionWrapsCauseWithoutThrowing() {
+    // Reproduces the IllegalStateException reported in #7702: KubernetesClientException(Status)
+    // chains down to super(message, null) which sets cause to null (not the self-reference
+    // sentinel), so a follow-up initCause(t) blows up. The handshake response details must
+    // reach the ExecListener.onFailure callback instead.
+    final Queue<Runnable> manualQueue = new ArrayDeque<>();
+    final Executor manualExecutor = manualQueue::offer;
+    final AtomicReference<Throwable> capturedThrowable = new AtomicReference<>();
+    final AtomicReference<ExecListener.Response> capturedResponse = new AtomicReference<>();
+    final ExecListener execListener = new ExecListener() {
+      @Override
+      public void onFailure(Throwable t, Response failureResponse) {
+        capturedThrowable.set(t);
+        capturedResponse.set(failureResponse);
+      }
+
+      @Override
+      public void onClose(int code, String reason) {
+      }
+    };
+    final PodOperationContext context = new PodOperationContext().toBuilder()
+        .execListener(execListener)
+        .build();
+    final ExecWebSocketListener listener = new ExecWebSocketListener(context, manualExecutor, new KubernetesSerialization());
+    listener.onOpen(Mockito.mock(WebSocket.class));
+
+    final WebSocketUpgradeResponse upgradeResponse = new WebSocketUpgradeResponse(
+        new StandardHttpRequest.Builder().uri("https://localhost:8443/api/v1/namespaces/ns/pods/mypod").build(),
+        403);
+    final WebSocketHandshakeException handshakeException = new WebSocketHandshakeException(upgradeResponse);
+    listener.onError(null, handshakeException);
+
+    Runnable next;
+    while ((next = manualQueue.poll()) != null) {
+      next.run();
+    }
+
+    assertThat(capturedThrowable.get())
+        .isInstanceOf(KubernetesClientException.class)
+        .hasCause(handshakeException);
+    final KubernetesClientException kce = (KubernetesClientException) capturedThrowable.get();
+    assertThat(kce.getCode()).isEqualTo(403);
+    assertThat(kce.getNamespace()).isEqualTo("ns");
+    assertThat(kce.getName()).isEqualTo("mypod");
+    assertThat(capturedResponse.get()).isNotNull();
+    assertThrows(KubernetesClientException.class, listener::checkError);
+  }
+
+  @Test
+  void onErrorWithoutPendingExitStatusCompletesExitExceptionally() {
+    final Queue<Runnable> manualQueue = new ArrayDeque<>();
+    final Executor manualExecutor = manualQueue::offer;
+    final ExecWebSocketListener listener = new ExecWebSocketListener(new PodOperationContext(), manualExecutor,
+        new KubernetesSerialization());
+    listener.onOpen(Mockito.mock(WebSocket.class));
+
+    listener.onError(null, new IOException("boom"));
+    assertFalse(listener.exitCode().isDone(),
+        "exitCode completion is deferred through the SerialExecutor on error");
+
+    Runnable next;
+    while ((next = manualQueue.poll()) != null) {
+      next.run();
+    }
+
+    assertThrows(KubernetesClientException.class, listener::checkError);
+  }
+
+  @Test
+  void onMessageChannel2TerminateOnErrorCompletesExitAfterPendingChannel1Writes() throws Exception {
+    final CountDownLatch writeStarted = new CountDownLatch(1);
+    final CountDownLatch releaseWrite = new CountDownLatch(1);
+    final OutputStream blockingOut = new OutputStream() {
+      @Override
+      public void write(int b) {
+      }
+
+      @Override
+      public void write(byte[] b, int off, int len) throws IOException {
+        writeStarted.countDown();
+        try {
+          if (!releaseWrite.await(5, TimeUnit.SECONDS)) {
+            throw new IOException("write was not released");
+          }
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+          throw new IOException(e);
+        }
+      }
+    };
+    final PodOperationContext context = new PodOperationContext().toBuilder()
+        .output(new StreamContext(blockingOut))
+        .terminateOnError(true)
+        .build();
+    final ExecutorService asyncExecutor = Executors.newSingleThreadExecutor();
+    try {
+      final ExecWebSocketListener listener = new ExecWebSocketListener(context, asyncExecutor, new KubernetesSerialization());
+      final WebSocket mockedWebSocket = Mockito.mock(WebSocket.class);
+      listener.onOpen(mockedWebSocket);
+
+      // Channel 1 (stdout) message: queues an async write that will block until released
+      listener.onMessage(mockedWebSocket, ByteBuffer.wrap(new byte[] { (byte) 1, (byte) 'p', (byte) 'a', (byte) 'y' }));
+      assertTrue(writeStarted.await(2, TimeUnit.SECONDS), "expected the channel 1 async write to start");
+
+      // Channel 2 (stderr) with terminateOnError=true: completes exitCode exceptionally
+      listener.onMessage(mockedWebSocket,
+          ByteBuffer.wrap(new byte[] { (byte) 2, (byte) 'b', (byte) 'o', (byte) 'o', (byte) 'm' }));
+
+      // The exitCode must NOT complete (exceptionally) before the pending channel 1 write has been processed.
+      assertThrows(TimeoutException.class, () -> listener.exitCode().get(200, TimeUnit.MILLISECONDS),
+          "exitCode must not complete before pending channel 1 async writes finish");
+
+      releaseWrite.countDown();
+      final ExecutionException ex = assertThrows(ExecutionException.class,
+          () -> listener.exitCode().get(2, TimeUnit.SECONDS));
+      assertThat(ex.getCause()).isInstanceOf(KubernetesClientException.class);
+    } finally {
+      asyncExecutor.shutdownNow();
+    }
   }
 
 }

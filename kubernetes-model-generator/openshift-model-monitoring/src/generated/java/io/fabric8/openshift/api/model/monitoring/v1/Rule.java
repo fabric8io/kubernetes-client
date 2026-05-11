@@ -107,7 +107,7 @@ public class Rule implements Editable<RuleBuilder>, KubernetesResource
     }
 
     /**
-     * Name of the alert. Must be a valid label value. Only one of `record` and `alert` must be set.
+     * alert defines the name of the alert. Must be a valid label value. Only one of `record` and `alert` must be set.
      */
     @JsonProperty("alert")
     public String getAlert() {
@@ -115,7 +115,7 @@ public class Rule implements Editable<RuleBuilder>, KubernetesResource
     }
 
     /**
-     * Name of the alert. Must be a valid label value. Only one of `record` and `alert` must be set.
+     * alert defines the name of the alert. Must be a valid label value. Only one of `record` and `alert` must be set.
      */
     @JsonProperty("alert")
     public void setAlert(String alert) {
@@ -123,7 +123,7 @@ public class Rule implements Editable<RuleBuilder>, KubernetesResource
     }
 
     /**
-     * Annotations to add to each alert. Only valid for alerting rules.
+     * annotations defines annotations to add to each alert. Only valid for alerting rules.
      */
     @JsonProperty("annotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -132,7 +132,7 @@ public class Rule implements Editable<RuleBuilder>, KubernetesResource
     }
 
     /**
-     * Annotations to add to each alert. Only valid for alerting rules.
+     * annotations defines annotations to add to each alert. Only valid for alerting rules.
      */
     @JsonProperty("annotations")
     public void setAnnotations(Map<String, String> annotations) {
@@ -156,7 +156,7 @@ public class Rule implements Editable<RuleBuilder>, KubernetesResource
     }
 
     /**
-     * Alerts are considered firing once they have been returned for this long.
+     * for defines how alerts are considered firing once they have been returned for this long.
      */
     @JsonProperty("for")
     public String getFor() {
@@ -164,7 +164,7 @@ public class Rule implements Editable<RuleBuilder>, KubernetesResource
     }
 
     /**
-     * Alerts are considered firing once they have been returned for this long.
+     * for defines how alerts are considered firing once they have been returned for this long.
      */
     @JsonProperty("for")
     public void setFor(String _for) {
@@ -172,7 +172,7 @@ public class Rule implements Editable<RuleBuilder>, KubernetesResource
     }
 
     /**
-     * KeepFiringFor defines how long an alert will continue firing after the condition that triggered it has cleared.
+     * keep_firing_for defines how long an alert will continue firing after the condition that triggered it has cleared.
      */
     @JsonProperty("keep_firing_for")
     public String getKeepFiringFor() {
@@ -180,7 +180,7 @@ public class Rule implements Editable<RuleBuilder>, KubernetesResource
     }
 
     /**
-     * KeepFiringFor defines how long an alert will continue firing after the condition that triggered it has cleared.
+     * keep_firing_for defines how long an alert will continue firing after the condition that triggered it has cleared.
      */
     @JsonProperty("keep_firing_for")
     public void setKeepFiringFor(String keepFiringFor) {
@@ -188,7 +188,7 @@ public class Rule implements Editable<RuleBuilder>, KubernetesResource
     }
 
     /**
-     * Labels to add or overwrite.
+     * labels defines labels to add or overwrite.
      */
     @JsonProperty("labels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -197,7 +197,7 @@ public class Rule implements Editable<RuleBuilder>, KubernetesResource
     }
 
     /**
-     * Labels to add or overwrite.
+     * labels defines labels to add or overwrite.
      */
     @JsonProperty("labels")
     public void setLabels(Map<String, String> labels) {
@@ -205,7 +205,7 @@ public class Rule implements Editable<RuleBuilder>, KubernetesResource
     }
 
     /**
-     * Name of the time series to output to. Must be a valid metric name. Only one of `record` and `alert` must be set.
+     * record defines the name of the time series to output to. Must be a valid metric name. Only one of `record` and `alert` must be set.
      */
     @JsonProperty("record")
     public String getRecord() {
@@ -213,7 +213,7 @@ public class Rule implements Editable<RuleBuilder>, KubernetesResource
     }
 
     /**
-     * Name of the time series to output to. Must be a valid metric name. Only one of `record` and `alert` must be set.
+     * record defines the name of the time series to output to. Must be a valid metric name. Only one of `record` and `alert` must be set.
      */
     @JsonProperty("record")
     public void setRecord(String record) {

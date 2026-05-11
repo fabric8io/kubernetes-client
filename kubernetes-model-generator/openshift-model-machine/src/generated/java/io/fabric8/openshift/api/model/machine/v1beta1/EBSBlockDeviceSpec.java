@@ -101,7 +101,7 @@ public class EBSBlockDeviceSpec implements Editable<EBSBlockDeviceSpecBuilder>, 
     }
 
     /**
-     * Indicates whether the EBS volume is deleted on machine termination.
+     * Indicates whether the EBS volume is deleted on machine termination.<br><p> <br><p> Deprecated: setting this field has no effect.
      */
     @JsonProperty("deleteOnTermination")
     public Boolean getDeleteOnTermination() {
@@ -109,7 +109,7 @@ public class EBSBlockDeviceSpec implements Editable<EBSBlockDeviceSpecBuilder>, 
     }
 
     /**
-     * Indicates whether the EBS volume is deleted on machine termination.
+     * Indicates whether the EBS volume is deleted on machine termination.<br><p> <br><p> Deprecated: setting this field has no effect.
      */
     @JsonProperty("deleteOnTermination")
     public void setDeleteOnTermination(Boolean deleteOnTermination) {

@@ -81,7 +81,7 @@ public class GlobalJiraConfig implements Editable<GlobalJiraConfigBuilder>, Kube
     }
 
     /**
-     * The default Jira API URL.<br><p> <br><p> It requires Alertmanager &gt;= v0.28.0.
+     * apiURL defines the default Jira API URL.<br><p> <br><p> It requires Alertmanager &gt;= v0.28.0.
      */
     @JsonProperty("apiURL")
     public String getApiURL() {
@@ -89,7 +89,7 @@ public class GlobalJiraConfig implements Editable<GlobalJiraConfigBuilder>, Kube
     }
 
     /**
-     * The default Jira API URL.<br><p> <br><p> It requires Alertmanager &gt;= v0.28.0.
+     * apiURL defines the default Jira API URL.<br><p> <br><p> It requires Alertmanager &gt;= v0.28.0.
      */
     @JsonProperty("apiURL")
     public void setApiURL(String apiURL) {
