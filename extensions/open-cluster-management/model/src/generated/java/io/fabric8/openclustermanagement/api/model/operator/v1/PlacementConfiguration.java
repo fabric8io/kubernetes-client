@@ -1,5 +1,5 @@
 
-package io.fabric8.openclustermanagement.api.model.cluster.v1beta1;
+package io.fabric8.openclustermanagement.api.model.operator.v1;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
-import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -38,10 +37,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "conditions",
-    "decisionGroups",
-    "lastScoreUpdateTime",
-    "numberOfSelectedClusters"
+    "featureGates"
 })
 @ToString
 @EqualsAndHashCode
@@ -65,103 +61,50 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PlacementStatus implements Editable<PlacementStatusBuilder>, KubernetesResource
+public class PlacementConfiguration implements Editable<PlacementConfigurationBuilder>, KubernetesResource
 {
 
-    @JsonProperty("conditions")
+    @JsonProperty("featureGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Condition> conditions = new ArrayList<>();
-    @JsonProperty("decisionGroups")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DecisionGroupStatus> decisionGroups = new ArrayList<>();
-    @JsonProperty("lastScoreUpdateTime")
-    private String lastScoreUpdateTime;
-    @JsonProperty("numberOfSelectedClusters")
-    private Integer numberOfSelectedClusters;
+    private List<FeatureGate> featureGates = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public PlacementStatus() {
+    public PlacementConfiguration() {
     }
 
-    public PlacementStatus(List<Condition> conditions, List<DecisionGroupStatus> decisionGroups, String lastScoreUpdateTime, Integer numberOfSelectedClusters) {
+    public PlacementConfiguration(List<FeatureGate> featureGates) {
         super();
-        this.conditions = conditions;
-        this.decisionGroups = decisionGroups;
-        this.lastScoreUpdateTime = lastScoreUpdateTime;
-        this.numberOfSelectedClusters = numberOfSelectedClusters;
+        this.featureGates = featureGates;
     }
 
     /**
-     * Conditions contains the different condition status for this Placement.
+     * FeatureGates represents the list of feature gates for placement If it is set empty, default feature gates will be used. If it is set, featuregate/Foo is an example of one item in FeatureGates:<br><p>   1. If featuregate/Foo does not exist, registration-operator will discard it<br><p>   2. If featuregate/Foo exists and is false by default. It is now possible to set featuregate/Foo=[false|true]<br><p>   3. If featuregate/Foo exists and is true by default. If a cluster-admin upgrading from 1 to 2 wants to continue having featuregate/Foo=false,<br><p>  	he can set featuregate/Foo=false before upgrading. Let's say the cluster-admin wants featuregate/Foo=false.
      */
-    @JsonProperty("conditions")
+    @JsonProperty("featureGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Condition> getConditions() {
-        return conditions;
+    public List<FeatureGate> getFeatureGates() {
+        return featureGates;
     }
 
     /**
-     * Conditions contains the different condition status for this Placement.
+     * FeatureGates represents the list of feature gates for placement If it is set empty, default feature gates will be used. If it is set, featuregate/Foo is an example of one item in FeatureGates:<br><p>   1. If featuregate/Foo does not exist, registration-operator will discard it<br><p>   2. If featuregate/Foo exists and is false by default. It is now possible to set featuregate/Foo=[false|true]<br><p>   3. If featuregate/Foo exists and is true by default. If a cluster-admin upgrading from 1 to 2 wants to continue having featuregate/Foo=false,<br><p>  	he can set featuregate/Foo=false before upgrading. Let's say the cluster-admin wants featuregate/Foo=false.
      */
-    @JsonProperty("conditions")
-    public void setConditions(List<Condition> conditions) {
-        this.conditions = conditions;
-    }
-
-    /**
-     * List of decision groups determined by the placement and DecisionStrategy.
-     */
-    @JsonProperty("decisionGroups")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<DecisionGroupStatus> getDecisionGroups() {
-        return decisionGroups;
-    }
-
-    /**
-     * List of decision groups determined by the placement and DecisionStrategy.
-     */
-    @JsonProperty("decisionGroups")
-    public void setDecisionGroups(List<DecisionGroupStatus> decisionGroups) {
-        this.decisionGroups = decisionGroups;
-    }
-
-    @JsonProperty("lastScoreUpdateTime")
-    public String getLastScoreUpdateTime() {
-        return lastScoreUpdateTime;
-    }
-
-    @JsonProperty("lastScoreUpdateTime")
-    public void setLastScoreUpdateTime(String lastScoreUpdateTime) {
-        this.lastScoreUpdateTime = lastScoreUpdateTime;
-    }
-
-    /**
-     * numberOfSelectedClusters represents the number of selected ManagedClusters
-     */
-    @JsonProperty("numberOfSelectedClusters")
-    public Integer getNumberOfSelectedClusters() {
-        return numberOfSelectedClusters;
-    }
-
-    /**
-     * numberOfSelectedClusters represents the number of selected ManagedClusters
-     */
-    @JsonProperty("numberOfSelectedClusters")
-    public void setNumberOfSelectedClusters(Integer numberOfSelectedClusters) {
-        this.numberOfSelectedClusters = numberOfSelectedClusters;
+    @JsonProperty("featureGates")
+    public void setFeatureGates(List<FeatureGate> featureGates) {
+        this.featureGates = featureGates;
     }
 
     @JsonIgnore
-    public PlacementStatusBuilder edit() {
-        return new PlacementStatusBuilder(this);
+    public PlacementConfigurationBuilder edit() {
+        return new PlacementConfigurationBuilder(this);
     }
 
     @JsonIgnore
-    public PlacementStatusBuilder toBuilder() {
+    public PlacementConfigurationBuilder toBuilder() {
         return edit();
     }
 

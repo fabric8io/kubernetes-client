@@ -42,6 +42,7 @@ import lombok.experimental.Accessors;
     "addOnManagerImagePullSpec",
     "deployOption",
     "nodePlacement",
+    "placementConfiguration",
     "placementImagePullSpec",
     "registrationConfiguration",
     "registrationImagePullSpec",
@@ -83,6 +84,8 @@ public class ClusterManagerSpec implements Editable<ClusterManagerSpecBuilder>, 
     private ClusterManagerDeployOption deployOption;
     @JsonProperty("nodePlacement")
     private NodePlacement nodePlacement;
+    @JsonProperty("placementConfiguration")
+    private PlacementConfiguration placementConfiguration;
     @JsonProperty("placementImagePullSpec")
     private String placementImagePullSpec;
     @JsonProperty("registrationConfiguration")
@@ -106,12 +109,13 @@ public class ClusterManagerSpec implements Editable<ClusterManagerSpecBuilder>, 
     public ClusterManagerSpec() {
     }
 
-    public ClusterManagerSpec(AddOnManagerConfiguration addOnManagerConfiguration, String addOnManagerImagePullSpec, ClusterManagerDeployOption deployOption, NodePlacement nodePlacement, String placementImagePullSpec, RegistrationHubConfiguration registrationConfiguration, String registrationImagePullSpec, ResourceRequirement resourceRequirement, ServerConfiguration serverConfiguration, WorkConfiguration workConfiguration, String workImagePullSpec) {
+    public ClusterManagerSpec(AddOnManagerConfiguration addOnManagerConfiguration, String addOnManagerImagePullSpec, ClusterManagerDeployOption deployOption, NodePlacement nodePlacement, PlacementConfiguration placementConfiguration, String placementImagePullSpec, RegistrationHubConfiguration registrationConfiguration, String registrationImagePullSpec, ResourceRequirement resourceRequirement, ServerConfiguration serverConfiguration, WorkConfiguration workConfiguration, String workImagePullSpec) {
         super();
         this.addOnManagerConfiguration = addOnManagerConfiguration;
         this.addOnManagerImagePullSpec = addOnManagerImagePullSpec;
         this.deployOption = deployOption;
         this.nodePlacement = nodePlacement;
+        this.placementConfiguration = placementConfiguration;
         this.placementImagePullSpec = placementImagePullSpec;
         this.registrationConfiguration = registrationConfiguration;
         this.registrationImagePullSpec = registrationImagePullSpec;
@@ -183,6 +187,22 @@ public class ClusterManagerSpec implements Editable<ClusterManagerSpecBuilder>, 
     @JsonProperty("nodePlacement")
     public void setNodePlacement(NodePlacement nodePlacement) {
         this.nodePlacement = nodePlacement;
+    }
+
+    /**
+     * ClusterManagerSpec represents a desired deployment configuration of controllers that govern registration and work distribution for attached Klusterlets.
+     */
+    @JsonProperty("placementConfiguration")
+    public PlacementConfiguration getPlacementConfiguration() {
+        return placementConfiguration;
+    }
+
+    /**
+     * ClusterManagerSpec represents a desired deployment configuration of controllers that govern registration and work distribution for attached Klusterlets.
+     */
+    @JsonProperty("placementConfiguration")
+    public void setPlacementConfiguration(PlacementConfiguration placementConfiguration) {
+        this.placementConfiguration = placementConfiguration;
     }
 
     /**
