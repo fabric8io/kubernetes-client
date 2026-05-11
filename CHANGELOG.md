@@ -54,6 +54,7 @@
 #### New Features
 * Fix #7417: Support for Kubernetes v1.36 (ハル / Haru)
 * Fix #5495: Add more support for subresource operations with enhanced documentation and examples for the generic `subresource()` method
+* Fix #7451: Add support for server-side content negotiation (Table and PartialObjectMetadata responses)
 
 #### _**Note**_: Breaking changes
 * Fix #7417: `scheduling.k8s.io/v1alpha1` model classes removed (`Workload`, `WorkloadList`, `WorkloadSpec`, `PodGroup`, `PodGroupPolicy`, `BasicSchedulingPolicy`, `GangSchedulingPolicy`, `TypedLocalObjectReference`) — upstream rearchitected workload scheduling via KEP-5832

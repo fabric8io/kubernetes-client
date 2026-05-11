@@ -49,6 +49,7 @@ This document contains common usages of different resources using Fabric8 Kubern
   * [Serializing to yaml](#serializing-to-yaml)
   * [Running a Pod](#running-a-pod)
   * [Server Side Apply](#server-side-apply)
+  * [PartialObjectMetadata and Table (Server-Side Content Negotiation)](./server-side-content-negotiation.md)
 
 * [OpenShift Client DSL Usage](#openshift-client-dsl-usage)  
   * [Initializing OpenShift Client](#initializing-openshift-client)

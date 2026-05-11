@@ -29,9 +29,12 @@ import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
+import io.fabric8.kubernetes.api.model.PartialObjectMetadata;
+import io.fabric8.kubernetes.api.model.PartialObjectMetadataList;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.api.model.StatusDetailsBuilder;
+import io.fabric8.kubernetes.api.model.Table;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Client;
@@ -110,6 +113,15 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   private static final String READ_ONLY_EDIT_EXCEPTION_MESSAGE = "Cannot edit read-only resources";
   private static final long CREATE_OR_REPLACE_DEFAULT_TIMEOUT = 1;
   private static final TimeUnit CREATE_OR_REPLACE_DEFAULT_TIMEOUT_UNIT = TimeUnit.SECONDS;
+  private static final String ACCEPT_PARTIAL_METADATA_V1 = "application/json;as=PartialObjectMetadata;g=meta.k8s.io;v=v1,"
+      + "application/json;as=PartialObjectMetadata;g=meta.k8s.io;v=v1beta1,"
+      + "application/json";
+  private static final String ACCEPT_PARTIAL_METADATA_LIST_V1 = "application/json;as=PartialObjectMetadataList;g=meta.k8s.io;v=v1,"
+      + "application/json;as=PartialObjectMetadataList;g=meta.k8s.io;v=v1beta1,"
+      + "application/json";
+  private static final String ACCEPT_TABLE_V1 = "application/json;as=Table;v=v1;g=meta.k8s.io,"
+      + "application/json;as=Table;v=v1beta1;g=meta.k8s.io,"
+      + "application/json";
 
   private final T item;
 
@@ -461,6 +473,70 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public L list(ListOptions listOptions) {
     try {
       return waitForResult(submitList(listOptions));
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
+    }
+  }
+
+  @Override
+  public PartialObjectMetadataList listAsPartialObjectMetadata() {
+    return listAsPartialObjectMetadata(new ListOptions());
+  }
+
+  @Override
+  public PartialObjectMetadataList listAsPartialObjectMetadata(ListOptions listOptions) {
+    return listAs(listOptions, ACCEPT_PARTIAL_METADATA_LIST_V1, new TypeReference<>() {
+    });
+  }
+
+  @Override
+  public PartialObjectMetadata getAsPartialObjectMetadata() {
+    return getAs(ACCEPT_PARTIAL_METADATA_V1, PartialObjectMetadata.class);
+  }
+
+  @Override
+  public Table listAsTable() {
+    return listAsTable(new ListOptions());
+  }
+
+  @Override
+  public Table listAsTable(ListOptions listOptions) {
+    return listAs(listOptions, ACCEPT_TABLE_V1, new TypeReference<>() {
+    });
+  }
+
+  @Override
+  public Table getAsTable() {
+    return getAs(ACCEPT_TABLE_V1, Table.class);
+  }
+
+  private <R> R getAs(String accept, Class<R> type) {
+    if (Utils.isNullOrEmpty(getName())) {
+      throw new KubernetesClientException("name not specified for an operation requiring one.");
+    }
+    try {
+      URL requestUrl = getCompleteResourceUrl();
+      HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
+          .url(requestUrl)
+          .setHeader("Accept", accept);
+      return handleResponse(requestBuilder, type);
+    } catch (KubernetesClientException e) {
+      if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
+        throw e;
+      }
+      return null;
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
+    }
+  }
+
+  private <R> R listAs(ListOptions listOptions, String accept, TypeReference<R> typeRef) {
+    try {
+      URL fetchListUrl = fetchListUrl(getNamespacedUrl(), defaultListOptions(listOptions, null));
+      HttpRequest.Builder requestBuilder = withRequestTimeout(httpClient.newHttpRequestBuilder()
+          .url(fetchListUrl)
+          .setHeader("Accept", accept));
+      return waitForResult(handleResponse(httpClient, requestBuilder, typeRef));
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
     }

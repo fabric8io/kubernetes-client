@@ -15,28 +15,21 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import java.util.stream.Stream;
+import io.fabric8.kubernetes.api.model.Table;
 
-public interface FilterWatchListDeletable<T, L, R>
-    extends Filterable<FilterWatchListDeletable<T, L, R>>, Listable<L>,
-    WatchAndWaitable<T>,
-    DeletableWithOptions,
-    Informable<T>,
-    MetadataListable,
-    TableListable {
+/**
+ * Provides an operation to get a single resource as a server-rendered Table,
+ * returning column definitions and cell values instead of the full resource structure.
+ */
+public interface TableGettable {
 
   /**
-   * Accumulate a filter on the context, when done {@link FilterNested#endFilter()} or and must be called
+   * Get a resource as a Table containing server-defined column definitions and row data.
+   * Sends a multi-value Accept header with v1, v1beta1, and plain JSON fallbacks
+   * (matching kubectl behavior) so aggregated apiservers fall back gracefully.
    *
-   * @return a {@link FilterNested}
+   * @return a {@link Table} with one row for the resource, or null if not found
    */
-  FilterNested<FilterWatchListDeletable<T, L, R>> withNewFilter();
-
-  /**
-   * Perform a list operation and return the items as a stream of {@link Resource}s
-   *
-   * @return the {@link Resource} steam
-   */
-  Stream<R> resources();
+  Table getAsTable();
 
 }

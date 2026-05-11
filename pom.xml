@@ -1519,6 +1519,7 @@
       <id>itests</id>
       <modules>
         <module>kubernetes-itests</module>
+        <module>kubernetes-itests-envtest</module>
         <module>chaos-tests</module>
       </modules>
       <build>

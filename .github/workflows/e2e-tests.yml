@@ -36,7 +36,7 @@ concurrency:
 
 env:
   IT_REVISION: master
-  IT_MODULE: kubernetes-itests
+  IT_MODULE: kubernetes-itests,kubernetes-itests-envtest
   MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
 
 jobs:
