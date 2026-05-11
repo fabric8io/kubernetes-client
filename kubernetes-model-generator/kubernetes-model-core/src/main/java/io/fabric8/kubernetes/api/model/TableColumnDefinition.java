@@ -68,8 +68,9 @@ public class TableColumnDefinition {
 
   /**
    * priority is an integer defining the relative importance of this column compared to others.
-   * Lower numbers are considered higher priority. Columns that may be omitted in limited space
-   * scenarios should be given a priority greater than 0.
+   * Priority 0 columns are shown in the default view (equivalent to {@code kubectl get}); columns
+   * with a priority greater than 0 are wide-only columns shown with {@code kubectl get -o wide}
+   * and may be omitted in limited-space scenarios.
    */
   @JsonProperty("priority")
   private Integer priority;

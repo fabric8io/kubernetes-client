@@ -130,7 +130,7 @@ do {
         System.out.println(item.getMetadata().getName()));
 
     continueToken = page.getMetadata() != null
-        ? page.getMetadata().getContinue_()
+        ? page.getMetadata().getContinue()
         : null;
 
 } while (continueToken != null && !continueToken.isEmpty());
@@ -317,7 +317,7 @@ do {
         System.out.println(row.getCells().get(0))); // pod name
 
     continueToken = page.getMetadata() != null
-        ? page.getMetadata().getContinue_()
+        ? page.getMetadata().getContinue()
         : null;
 
 } while (continueToken != null && !continueToken.isEmpty());

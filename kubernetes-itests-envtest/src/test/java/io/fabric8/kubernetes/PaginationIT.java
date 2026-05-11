@@ -26,6 +26,9 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableKubeAPIServer
@@ -75,6 +78,14 @@ class PaginationIT {
             .build());
 
     assertThat(secondPage.getItems()).hasSize(1);
+    // second page is the last page, so the server should not emit another continue token
+    assertThat(secondPage.getMetadata().getContinue()).isNullOrEmpty();
+    // the union of both pages covers every ConfigMap exactly once — proves the server
+    // honored the continue token rather than restarting from the beginning
+    Set<String> visitedNames = new HashSet<>();
+    firstPage.getItems().forEach(i -> visitedNames.add(i.getMetadata().getName()));
+    secondPage.getItems().forEach(i -> visitedNames.add(i.getMetadata().getName()));
+    assertThat(visitedNames).containsExactlyInAnyOrder("cm-1", "cm-2", "cm-3");
   }
 
   @Test
@@ -96,5 +107,7 @@ class PaginationIT {
             .build());
 
     assertThat(secondPage.getRows()).hasSize(1);
+    // second page is the last page, so the server should not emit another continue token
+    assertThat(secondPage.getMetadata().getContinue()).isNullOrEmpty();
   }
 }

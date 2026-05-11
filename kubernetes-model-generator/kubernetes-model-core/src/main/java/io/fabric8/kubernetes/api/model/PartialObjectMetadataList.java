@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -31,6 +32,7 @@ import lombok.ToString;
  * This is used with the {@code Accept: application/json;as=PartialObjectMetadataList;g=meta.k8s.io;v=v1} header.
  */
 @JsonDeserialize
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "apiVersion",
