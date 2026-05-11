@@ -72,6 +72,6 @@ public class TableColumnDefinition {
    * scenarios should be given a priority greater than 0.
    */
   @JsonProperty("priority")
-  private int priority;
+  private Integer priority;
 
 }

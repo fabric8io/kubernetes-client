@@ -27,7 +27,8 @@ public interface MetadataListable {
 
   /**
    * List resources returning only their metadata (no spec or status).
-   * Uses {@code Accept: application/json;as=PartialObjectMetadataList;g=meta.k8s.io;v=v1}.
+   * Sends a multi-value Accept header with v1, v1beta1, and plain JSON fallbacks
+   * (matching kubectl behavior) so aggregated apiservers fall back gracefully.
    *
    * @return a {@link PartialObjectMetadataList} containing only resource metadata
    */
@@ -35,7 +36,8 @@ public interface MetadataListable {
 
   /**
    * List resources returning only their metadata (no spec or status), with the given options.
-   * Uses {@code Accept: application/json;as=PartialObjectMetadataList;g=meta.k8s.io;v=v1}.
+   * Sends a multi-value Accept header with v1, v1beta1, and plain JSON fallbacks
+   * (matching kubectl behavior) so aggregated apiservers fall back gracefully.
    *
    * @param options list options (label selectors, field selectors, pagination, etc.)
    * @return a {@link PartialObjectMetadataList} containing only resource metadata

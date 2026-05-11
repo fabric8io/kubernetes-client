@@ -113,9 +113,15 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   private static final String READ_ONLY_EDIT_EXCEPTION_MESSAGE = "Cannot edit read-only resources";
   private static final long CREATE_OR_REPLACE_DEFAULT_TIMEOUT = 1;
   private static final TimeUnit CREATE_OR_REPLACE_DEFAULT_TIMEOUT_UNIT = TimeUnit.SECONDS;
-  private static final String ACCEPT_PARTIAL_METADATA_LIST_V1 = "application/json;as=PartialObjectMetadataList;g=meta.k8s.io;v=v1";
-  private static final String ACCEPT_PARTIAL_METADATA_V1 = "application/json;as=PartialObjectMetadata;g=meta.k8s.io;v=v1";
-  private static final String ACCEPT_TABLE_V1 = "application/json;as=Table;v=v1;g=meta.k8s.io";
+  private static final String ACCEPT_PARTIAL_METADATA_V1 = "application/json;as=PartialObjectMetadata;g=meta.k8s.io;v=v1,"
+      + "application/json;as=PartialObjectMetadata;g=meta.k8s.io;v=v1beta1,"
+      + "application/json";
+  private static final String ACCEPT_PARTIAL_METADATA_LIST_V1 = "application/json;as=PartialObjectMetadataList;g=meta.k8s.io;v=v1,"
+      + "application/json;as=PartialObjectMetadataList;g=meta.k8s.io;v=v1beta1,"
+      + "application/json";
+  private static final String ACCEPT_TABLE_V1 = "application/json;as=Table;v=v1;g=meta.k8s.io,"
+      + "application/json;as=Table;v=v1beta1;g=meta.k8s.io,"
+      + "application/json";
 
   private final T item;
 
@@ -479,34 +485,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public PartialObjectMetadataList listAsPartialObjectMetadata(ListOptions listOptions) {
-    try {
-      URL fetchListUrl = fetchListUrl(getNamespacedUrl(), defaultListOptions(listOptions, null));
-      HttpRequest.Builder requestBuilder = withRequestTimeout(httpClient.newHttpRequestBuilder()
-          .url(fetchListUrl)
-          .setHeader("Accept", ACCEPT_PARTIAL_METADATA_LIST_V1));
-      return waitForResult(handleResponse(httpClient, requestBuilder, new TypeReference<>() {
-      }));
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
-    }
+    return listAs(listOptions, ACCEPT_PARTIAL_METADATA_LIST_V1, new TypeReference<>() {
+    });
   }
 
   @Override
   public PartialObjectMetadata getAsPartialObjectMetadata() {
-    try {
-      URL requestUrl = getCompleteResourceUrl();
-      HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
-          .url(requestUrl)
-          .setHeader("Accept", ACCEPT_PARTIAL_METADATA_V1);
-      return handleResponse(requestBuilder, PartialObjectMetadata.class);
-    } catch (KubernetesClientException e) {
-      if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
-        throw e;
-      }
-      return null;
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
-    }
+    return getAs(ACCEPT_PARTIAL_METADATA_V1, PartialObjectMetadata.class);
   }
 
   @Override
@@ -516,26 +501,25 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public Table listAsTable(ListOptions listOptions) {
-    try {
-      URL fetchListUrl = fetchListUrl(getNamespacedUrl(), defaultListOptions(listOptions, null));
-      HttpRequest.Builder requestBuilder = withRequestTimeout(httpClient.newHttpRequestBuilder()
-          .url(fetchListUrl)
-          .setHeader("Accept", ACCEPT_TABLE_V1));
-      return waitForResult(handleResponse(httpClient, requestBuilder, new TypeReference<>() {
-      }));
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
-    }
+    return listAs(listOptions, ACCEPT_TABLE_V1, new TypeReference<>() {
+    });
   }
 
   @Override
   public Table getAsTable() {
+    return getAs(ACCEPT_TABLE_V1, Table.class);
+  }
+
+  private <R> R getAs(String accept, Class<R> type) {
+    if (Utils.isNullOrEmpty(getName())) {
+      throw new KubernetesClientException("name not specified for an operation requiring one.");
+    }
     try {
       URL requestUrl = getCompleteResourceUrl();
       HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
           .url(requestUrl)
-          .setHeader("Accept", ACCEPT_TABLE_V1);
-      return handleResponse(requestBuilder, Table.class);
+          .setHeader("Accept", accept);
+      return handleResponse(requestBuilder, type);
     } catch (KubernetesClientException e) {
       if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
         throw e;
@@ -543,6 +527,18 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       return null;
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
+    }
+  }
+
+  private <R> R listAs(ListOptions listOptions, String accept, TypeReference<R> typeRef) {
+    try {
+      URL fetchListUrl = fetchListUrl(getNamespacedUrl(), defaultListOptions(listOptions, null));
+      HttpRequest.Builder requestBuilder = withRequestTimeout(httpClient.newHttpRequestBuilder()
+          .url(fetchListUrl)
+          .setHeader("Accept", accept));
+      return waitForResult(handleResponse(httpClient, requestBuilder, typeRef));
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
     }
   }
 

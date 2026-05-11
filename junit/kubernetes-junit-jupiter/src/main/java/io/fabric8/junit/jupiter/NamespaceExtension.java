@@ -27,10 +27,8 @@ import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -41,9 +39,6 @@ public class NamespaceExtension implements HasKubernetesClient, BeforeAllCallbac
 
   @Override
   public void beforeAll(ExtensionContext context) throws Exception {
-    if (hasEnableKubeAPIServerAnnotation(context)) {
-      return;
-    }
     final KubernetesClient client = new KubernetesClientBuilder().build();
     getStore(context).put(KubernetesClient.class, client);
     if (shouldCreateNamespace(context)) {
@@ -58,9 +53,6 @@ public class NamespaceExtension implements HasKubernetesClient, BeforeAllCallbac
 
   @Override
   public void beforeEach(ExtensionContext context) throws Exception {
-    if (hasEnableKubeAPIServerAnnotation(context)) {
-      return;
-    }
     for (Field field : extractFields(context, Namespace.class, f -> !Modifier.isStatic(f.getModifiers()))) {
       setFieldValue(field, context.getRequiredTestInstance(), getKubernetesNamespace(context));
     }
@@ -68,9 +60,6 @@ public class NamespaceExtension implements HasKubernetesClient, BeforeAllCallbac
 
   @Override
   public void afterAll(ExtensionContext context) {
-    if (hasEnableKubeAPIServerAnnotation(context)) {
-      return;
-    }
     final KubernetesClient client = getClient(context);
     if (shouldCreateNamespace(context)) {
       client.resource(getKubernetesNamespace(context)).withGracePeriod(0L).delete();
@@ -128,12 +117,5 @@ public class NamespaceExtension implements HasKubernetesClient, BeforeAllCallbac
       throw new IllegalStateException("No Kubernetes Namespace found");
     }
     return namespace;
-  }
-
-  private static boolean hasEnableKubeAPIServerAnnotation(ExtensionContext context) {
-    return Arrays.stream(context.getRequiredTestClass().getAnnotations())
-        .map(Annotation::annotationType)
-        .map(Class::getName)
-        .anyMatch(name -> name.equals("io.fabric8.kubeapitest.junit.EnableKubeAPIServer"));
   }
 }

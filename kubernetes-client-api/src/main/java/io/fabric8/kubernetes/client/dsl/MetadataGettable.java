@@ -25,7 +25,8 @@ public interface MetadataGettable {
 
   /**
    * Get a resource returning only its metadata (no spec or status).
-   * Uses {@code Accept: application/json;as=PartialObjectMetadata;g=meta.k8s.io;v=v1}.
+   * Sends a multi-value Accept header with v1, v1beta1, and plain JSON fallbacks
+   * (matching kubectl behavior) so aggregated apiservers fall back gracefully.
    *
    * @return a {@link PartialObjectMetadata} containing only the resource metadata, or null if not found
    */

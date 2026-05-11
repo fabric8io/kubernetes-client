@@ -19,6 +19,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,6 +43,8 @@ import lombok.ToString;
 @Setter
 @ToString
 @EqualsAndHashCode
+@Group("meta.k8s.io")
+@Version("v1")
 public class PartialObjectMetadata implements HasMetadata {
 
   @JsonProperty("apiVersion")

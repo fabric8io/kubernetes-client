@@ -26,7 +26,8 @@ public interface TableListable {
 
   /**
    * List resources as a Table containing server-defined column definitions and row data.
-   * Uses {@code Accept: application/json;as=Table;v=v1;g=meta.k8s.io}.
+   * Sends a multi-value Accept header with v1, v1beta1, and plain JSON fallbacks
+   * (matching kubectl behavior) so aggregated apiservers fall back gracefully.
    *
    * @return a {@link Table} with a row per resource
    */
@@ -34,7 +35,8 @@ public interface TableListable {
 
   /**
    * List resources as a Table with the given options.
-   * Uses {@code Accept: application/json;as=Table;v=v1;g=meta.k8s.io}.
+   * Sends a multi-value Accept header with v1, v1beta1, and plain JSON fallbacks
+   * (matching kubectl behavior) so aggregated apiservers fall back gracefully.
    *
    * @param options list options (label selectors, field selectors, pagination, etc.)
    * @return a {@link Table} with a row per resource

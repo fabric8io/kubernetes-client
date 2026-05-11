@@ -21,18 +21,13 @@ import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 
 public class KubernetesExtension implements HasKubernetesClient, BeforeAllCallback, BeforeEachCallback {
 
   @Override
   public void beforeAll(ExtensionContext context) throws Exception {
-    if (hasEnableKubeAPIServerAnnotation(context)) {
-      return;
-    }
     for (Field field : extractFields(context, KubernetesClient.class, f -> Modifier.isStatic(f.getModifiers()))) {
       setFieldValue(field, null, getClient(context).adapt((Class<Client>) field.getType()));
     }
@@ -40,9 +35,6 @@ public class KubernetesExtension implements HasKubernetesClient, BeforeAllCallba
 
   @Override
   public void beforeEach(ExtensionContext context) throws Exception {
-    if (hasEnableKubeAPIServerAnnotation(context)) {
-      return;
-    }
     for (Field field : extractFields(context, KubernetesClient.class, f -> !Modifier.isStatic(f.getModifiers()))) {
       for (Object testInstance : context.getRequiredTestInstances().getAllInstances()) {
         if (field.getDeclaringClass().isAssignableFrom(testInstance.getClass())) {
@@ -50,12 +42,5 @@ public class KubernetesExtension implements HasKubernetesClient, BeforeAllCallba
         }
       }
     }
-  }
-
-  private static boolean hasEnableKubeAPIServerAnnotation(ExtensionContext context) {
-    return Arrays.stream(context.getRequiredTestClass().getAnnotations())
-        .map(Annotation::annotationType)
-        .map(Class::getName)
-        .anyMatch(name -> name.equals("io.fabric8.kubeapitest.junit.EnableKubeAPIServer"));
   }
 }
