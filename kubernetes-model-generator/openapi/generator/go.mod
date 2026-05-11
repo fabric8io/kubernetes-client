@@ -8,9 +8,9 @@ require (
 	github.com/getkin/kin-openapi v0.137.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.7
 	github.com/kubernetes-csi/external-snapshotter/client/v8 v8.4.0
-	github.com/metal3-io/baremetal-operator/apis v0.12.4
-	github.com/metal3-io/cluster-api-provider-metal3/api v1.12.4
-	github.com/metal3-io/ip-address-manager/api v1.12.4 // indirect
+	github.com/metal3-io/baremetal-operator/apis v0.13.0
+	github.com/metal3-io/cluster-api-provider-metal3/api v1.13.0
+	github.com/metal3-io/ip-address-manager/api v1.13.0 // indirect
 	// Match latest commit in the version branch (e.g. release-4.17)
 	github.com/openshift/api v3.9.0+incompatible
 	github.com/openshift/cloud-credential-operator v0.0.0-20251126011841-0e03b7a0fa39
@@ -53,7 +53,7 @@ require (
 	open-cluster-management.io/governance-policy-propagator v0.18.0
 	open-cluster-management.io/multicloud-operators-channel v0.16.0
 	open-cluster-management.io/multicloud-operators-subscription v0.16.0
-	sigs.k8s.io/cluster-api v1.12.7
+	sigs.k8s.io/cluster-api v1.13.1
 	sigs.k8s.io/gateway-api v1.5.1
 	sigs.k8s.io/kustomize/api v0.21.1
 	// This version is older than v1.10.0 see replacements below
@@ -249,6 +249,6 @@ require (
 	sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730 // indirect
 	sigs.k8s.io/kustomize/kyaml v0.21.1 // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect
-	sigs.k8s.io/structured-merge-diff/v6 v6.3.2 // indirect
+	sigs.k8s.io/structured-merge-diff/v6 v6.4.0 // indirect
 	sigs.k8s.io/yaml v1.6.0 // indirect
 )
