@@ -270,14 +270,26 @@ javaGen {
 --enum-uppercase
 ```
 
-**Generated Code:**
+**Generated Code (default):**
 
 ```java
 public enum Material {
     @com.fasterxml.jackson.annotation.JsonProperty("plastic")
-    PLASTIC("plastic"), // Uppercase constant
+    plastic("plastic"),
     @com.fasterxml.jackson.annotation.JsonProperty("wood")
-    WOOD("wood"); // Uppercase constant
+    wood("wood");
+    // ...
+}
+```
+
+**Generated Code (with `enumUppercase = true`):**
+
+```java
+public enum Material {
+    @com.fasterxml.jackson.annotation.JsonProperty("plastic")
+    PLASTIC("plastic"),
+    @com.fasterxml.jackson.annotation.JsonProperty("wood")
+    WOOD("wood");
     // ...
 }
 ```
@@ -355,9 +367,7 @@ javaGen {
 ```java
 public class ToySpec implements KubernetesResource {
 
-    @com.fasterxml.jackson.annotation.JsonIgnore
-    private java.util.Map<java.lang.String, java.lang.Object> additionalProperties = new java.util.HashMap<>();
-
+    // added to capture un-specified fields and values
     @com.fasterxml.jackson.annotation.JsonAnyGetter
     public java.util.Map<java.lang.String, java.lang.Object> getAdditionalProperties() {
         return additionalProperties;
