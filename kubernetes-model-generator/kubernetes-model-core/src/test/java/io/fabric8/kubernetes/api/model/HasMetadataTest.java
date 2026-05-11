@@ -343,7 +343,12 @@ class HasMetadataTest {
 
   @Test
   void isSameResourceWithDifferentNameAndNamespaceReturnsFalse() {
-    checkDifferent(new TestHM(), new TestHM());
+    TestHM t1 = new TestHM();
+    TestHM t2 = new TestHM();
+    assertFalse(t1.isSameResource(t2));
+    assertFalse(t2.isSameResource(t1));
+    assertFalse(t1.isSameResource(t2, true));
+    assertFalse(t2.isSameResource(t1, true));
   }
 
   @Test
@@ -351,7 +356,10 @@ class HasMetadataTest {
     TestHM t1 = new TestHM();
     TestHM t2 = new TestHM(t1);
     t2.getMetadata().setName("otherName");
-    checkDifferent(t1, t2);
+    assertFalse(t1.isSameResource(t2));
+    assertFalse(t2.isSameResource(t1));
+    assertFalse(t1.isSameResource(t2, true));
+    assertFalse(t2.isSameResource(t1, true));
   }
 
   @Test
@@ -359,7 +367,10 @@ class HasMetadataTest {
     TestHM t1 = new TestHM();
     TestHM t2 = new TestHM(t1);
     t2.getMetadata().setNamespace("otherNamespace");
-    checkDifferent(t1, t2);
+    assertFalse(t1.isSameResource(t2));
+    assertFalse(t2.isSameResource(t1));
+    assertFalse(t1.isSameResource(t2, true));
+    assertFalse(t2.isSameResource(t1, true));
   }
 
   @Test
@@ -371,7 +382,10 @@ class HasMetadataTest {
         return "OtherKind";
       }
     };
-    checkDifferent(t1, t2);
+    assertFalse(t1.isSameResource(t2));
+    assertFalse(t2.isSameResource(t1));
+    assertFalse(t1.isSameResource(t2, true));
+    assertFalse(t2.isSameResource(t1, true));
   }
 
   @Test
@@ -379,7 +393,10 @@ class HasMetadataTest {
     TestHM t1 = new TestHM();
     TestHM t2 = new TestHM(t1);
     t1.getMetadata().setUid(UUID.randomUUID().toString());
-    checkDifferent(t1, t2);
+    assertFalse(t1.isSameResource(t2));
+    assertFalse(t2.isSameResource(t1));
+    assertFalse(t1.isSameResource(t2, true));
+    assertFalse(t2.isSameResource(t1, true));
   }
 
   @Test
@@ -389,7 +406,8 @@ class HasMetadataTest {
     final String uid = UUID.randomUUID().toString();
     t1.getMetadata().setUid(uid);
     t2.getMetadata().setUid(uid);
-    baseTests(t1, t2);
+    assertTrue(t1.isSameResource(t2));
+    assertTrue(t2.isSameResource(t1));
     assertTrue(t1.isSameResource(t2, true));
     assertTrue(t2.isSameResource(t1, true));
   }
@@ -398,7 +416,8 @@ class HasMetadataTest {
   void isSameResourceWithSameNameAndNamespaceReturnsTrueInBothModes() {
     TestHM t1 = new TestHM();
     TestHM t2 = new TestHM(t1);
-    baseTests(t1, t2);
+    assertTrue(t1.isSameResource(t2));
+    assertTrue(t2.isSameResource(t1));
     assertTrue(t1.isSameResource(t2, true));
     assertTrue(t2.isSameResource(t1, true));
   }
@@ -409,34 +428,22 @@ class HasMetadataTest {
     TestHM t2 = new TestHM(t1);
     t1.getMetadata().setResourceVersion("rv1");
     t2.getMetadata().setResourceVersion("rv1");
-    baseTests(t1, t2);
+    assertTrue(t1.isSameResource(t2));
+    assertTrue(t2.isSameResource(t1));
     assertTrue(t1.isSameResource(t2, true));
     assertTrue(t2.isSameResource(t1, true));
   }
 
   @Test
-  void isSameResourceWithDifferentResourceVersionReturnsFalseInStrictModeOnly() {
+  void isSameResourceWithDifferentResourceVersionReturnsTrueInNonStrictModeAndFalseInStrictMode() {
     TestHM t1 = new TestHM();
     TestHM t2 = new TestHM(t1);
     t1.getMetadata().setResourceVersion("rv1");
     t2.getMetadata().setResourceVersion("rv2");
-    baseTests(t1, t2);
-    assertFalse(t1.isSameResource(t2, true));
-    assertFalse(t2.isSameResource(t1, true));
-  }
-
-  private static void checkDifferent(TestHM t1, TestHM t2) {
-    assertFalse(t1.isSameResource(t2));
-    assertFalse(t2.isSameResource(t1));
-    assertFalse(t1.isSameResource(t2, true));
-    assertFalse(t2.isSameResource(t1, true));
-  }
-
-  private static void baseTests(HasMetadata t1, HasMetadata t2) {
-    assertTrue(t1.isSameResource(t1));
-    assertTrue(t1.isSameResource(t1, true));
     assertTrue(t1.isSameResource(t2));
     assertTrue(t2.isSameResource(t1));
+    assertFalse(t1.isSameResource(t2, true));
+    assertFalse(t2.isSameResource(t1, true));
   }
 
   static class TestHasMetadata implements HasMetadata {
