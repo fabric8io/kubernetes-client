@@ -401,6 +401,20 @@ public interface HasMetadata extends KubernetesResource {
    * @return the newly added {@link OwnerReference}
    */
   default OwnerReference addOwnerReference(HasMetadata owner) {
+    return addOwnerReference(owner, false, false);
+  }
+
+  /**
+   * Adds an {@link OwnerReference} to the specified owner if possible. See the owner references section of the
+   * <a href="https://kubernetes.io/docs/reference/kubernetes-api/common-definitions/object-meta/#System">ObjectMeta
+   * documentation</a> for more details
+   *
+   * @param owner the owner to add a reference to
+   * @param controller whether the owner is the managing controller for this resource
+   * @param blockOwnerDeletion whether the owner deletion should be blocked until the new owner reference to be added is removed
+   * @return the newly added {@link OwnerReference}
+   */
+  default OwnerReference addOwnerReference(HasMetadata owner, boolean controller, boolean blockOwnerDeletion) {
     if (owner == null) {
       throw new IllegalArgumentException("Cannot add a reference to a null owner to "
           + optionalMetadata().map(m -> "'" + m.getName() + "' ").orElse("unnamed ")
@@ -436,6 +450,8 @@ public interface HasMetadata extends KubernetesResource {
         .withApiVersion(owner.getApiVersion())
         .withName(metadata.getName())
         .withKind(owner.getKind())
+        .withBlockOwnerDeletion(blockOwnerDeletion)
+        .withController(controller)
         .build();
     return addOwnerReference(sanitizeAndValidate(ownerReference));
   }
@@ -538,5 +554,85 @@ public interface HasMetadata extends KubernetesResource {
       metaBuilder.withNamespace(Objects.requireNonNull(metadata.getNamespace(), REQUIRES_NON_NULL_NAMESPACE));
     }
     return metaBuilder;
+  }
+
+  /**
+   * Same as {@code isSameResource(other, false)}
+   *
+   * @see #isSameResource(HasMetadata, boolean)
+   */
+  default boolean isSameResource(HasMetadata other) {
+    return isSameResource(other, false);
+  }
+
+  /**
+   * Whether the specified HasMetadata represents the same resource on the cluster as this one, i.e. kind, uid, name and
+   * namespace all point to the same logical resource.
+   *
+   * <p>
+   * Note that this doesn't make any other assumption regarding other fields, and in particular,
+   * {@code resource1.isSameResource(resource2)} does NOT imply {@code resource1.equals(resource2)}.
+   * </p>
+   *
+   * <p>
+   * When the UID is set on either resource, identity is determined exclusively by UID comparison; kind, name, namespace and
+   * resource version are not consulted. As a consequence, a resource carrying a UID is never considered the same as one
+   * without, even if their name, namespace and kind match.
+   * </p>
+   *
+   * @param other the HasMetadata to check
+   * @param strict whether the checks should be strict:
+   *        <ul>
+   *        <li>make sure that {@code kind} is properly set for both resources and that they are equal</li>
+   *        <li>check that the {@code resourceVersion} is the same for both, if set or {@code null} for both</li>
+   *        </ul>
+   *        The only exceptions to this are if the two resources point to the same object (i.e. {@code this == other}) or if
+   *        the UID is set, in which case stricter checks will not be enforced and similarity will only be assessed on the
+   *        objects' identity (either Java identity or via UID).
+   * @return {@code true} if the specified HasMetadata points to the same cluster resource, {@code false} otherwise
+   */
+  default boolean isSameResource(HasMetadata other, boolean strict) {
+    if (this == other) {
+      return true;
+    }
+
+    if (other == null) {
+      return false;
+    }
+
+    final var metadata = this.getMetadata();
+    final var otherMetadata = other.getMetadata();
+    if (metadata == null || otherMetadata == null) {
+      return false;
+    }
+
+    // check UID first, if either is not null, if both are null, look at other fields
+    final var uid = metadata.getUid();
+    final var otherUID = otherMetadata.getUid();
+    if (uid != null || otherUID != null) {
+      return Objects.equals(uid, otherUID);
+    }
+
+    final var kind = getKind();
+    if (!Objects.equals(kind, other.getKind())) {
+      return false;
+    }
+
+    // both kinds are equal here; in strict mode, neither can be null
+    if (strict && kind == null) {
+      return false;
+    }
+
+    final var sameNameAndNS = Objects.equals(metadata.getName(), otherMetadata.getName())
+        && Objects.equals(metadata.getNamespace(), otherMetadata.getNamespace());
+    if (!sameNameAndNS) {
+      return false;
+    }
+
+    if (strict) {
+      return Objects.equals(metadata.getResourceVersion(), otherMetadata.getResourceVersion());
+    } else {
+      return true;
+    }
   }
 }

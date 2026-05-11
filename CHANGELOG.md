@@ -17,9 +17,11 @@
 * Fix #7265: fix ephemeral removal of index entries from informer caches
 
 #### Improvements
+* Fix #7426: add `HasMetadata#isSameResource` to test whether two HasMetadata instances point to the same logical cluster resource, with an optional strict mode that also requires matching kind and resourceVersion
 * Fix #7662: (mockwebserver) new `MockWebServer#setHttp2ClearTextEnabled(boolean)` setter to opt out of HTTP/2 cleartext (h2c) upgrade
 * Fix #7522: improve dependency management for kubernetes-httpclient-okhttp
 * Fix #7550: add a ResourceEventHandler onList method and deprecated onNothing
+* Fix #6922: add addOwnerReference variant to set controller and blockOwnerDeletion fields
 * Fix #3396: (mockwebserver) Enhance self-signed certificate generation to include Subject Alternative Names (SANs) for proper TLS verification by modern clients
 * Fix #6923: Make the crd-generator-maven-plugin be toolchain aware
 
@@ -43,6 +45,7 @@
 * Fix #7544: bump cluster-api-provider-metal3 from 1.9.3 to 1.12.2
 * Fix #7543: bump prometheus-operator from 0.85.0 to 0.89.0
 * Fix #7542: bump open-cluster-management.io/api from 0.16.2 to 1.2.0
+* Fix #7753: bump open-cluster-management.io/api from 1.2.0 to 1.3.0
 * Fix #7541: bump gateway-api from 1.4.0 to 1.5.0
 * Fix #7538: bump cert-manager from 1.18.2 to 1.19.4
 * Fix #7583: bump operator-framework/api from 0.33.0 to 0.41.0

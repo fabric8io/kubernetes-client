@@ -13480,6 +13480,12 @@
           "description": "reason represents the reason why the ManagedCluster is selected.",
           "type": "string",
           "default": ""
+        },
+        "score": {
+          "description": "Score is the computed score for the cluster based on configured prioritizers",
+          "type": "integer",
+          "format": "int64",
+          "default": 0
         }
       },
       "x-fabric8-info": {
@@ -13867,6 +13873,14 @@
           "default": {},
           "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta1.PrioritizerPolicy"
         },
+        "scoreRateLimit": {
+          "description": "ScoreRateLimit sets maximum rate of updates to recorded scores in placement decisions. Score changes that do not change the selected set of clusters in the placement will not be reflected in decisions more often than the given duration.",
+          "type": "string"
+        },
+        "sortBy": {
+          "description": "SortBy sets the sort order for decisions. It can be \"ClusterName\", or \"Score\". If sortBy is \"ClusterName\", decisions will be ordered alphanumerically by cluster name If sortBy is \"Score\", decisions will be ordered numerically in descending order by score, then by cluster name in the event of a tie",
+          "type": "string"
+        },
         "spreadPolicy": {
           "description": "spreadPolicy defines how placement decisions should be distributed among a set of ManagedClusters.",
           "default": {},
@@ -13911,6 +13925,10 @@
             "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta1.DecisionGroupStatus"
           }
+        },
+        "lastScoreUpdateTime": {
+          "description": "LastScoreUpdateTime records the last time that placement scores were updated.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
         },
         "numberOfSelectedClusters": {
           "description": "numberOfSelectedClusters represents the number of selected ManagedClusters",
@@ -16746,6 +16764,10 @@
           "default": {},
           "$ref": "#/definitions/io.open-cluster-management.operator.v1.NodePlacement"
         },
+        "placementConfiguration": {
+          "description": "placementConfiguration contains the configuration of placement",
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.PlacementConfiguration"
+        },
         "placementImagePullSpec": {
           "description": "placementImagePullSpec represents the desired image configuration of placement controller/webhook installed on hub.",
           "type": "string"
@@ -16919,6 +16941,11 @@
       "description": "DefaultClusterManagerConfiguration represents customized configurations for clustermanager in the Default mode.",
       "type": "object",
       "properties": {
+        "addonWebhookConfiguration": {
+          "description": "AddonWebhookConfiguration represents the customized webhook-server configuration of addons.",
+          "default": {},
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.DefaultWebhookConfiguration"
+        },
         "registrationWebhookConfiguration": {
           "description": "RegistrationWebhookConfiguration represents the customized webhook-server configuration of registration.",
           "default": {},
@@ -18084,6 +18111,26 @@
         "Group": "operator.open-cluster-management.io",
         "Version": "v1",
         "Kind": "Overrides",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.operator.v1.PlacementConfiguration": {
+      "type": "object",
+      "properties": {
+        "featureGates": {
+          "description": "FeatureGates represents the list of feature gates for placement If it is set empty, default feature gates will be used. If it is set, featuregate/Foo is an example of one item in FeatureGates:\n  1. If featuregate/Foo does not exist, registration-operator will discard it\n  2. If featuregate/Foo exists and is false by default. It is now possible to set featuregate/Foo=[false|true]\n  3. If featuregate/Foo exists and is true by default. If a cluster-admin upgrading from 1 to 2 wants to continue having featuregate/Foo=false,\n \the can set featuregate/Foo=false before upgrading. Let's say the cluster-admin wants featuregate/Foo=false.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.open-cluster-management.operator.v1.FeatureGate"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "PlacementConfiguration",
         "Scope": "Namespaced"
       }
     },

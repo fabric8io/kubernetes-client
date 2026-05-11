@@ -45,6 +45,8 @@ import lombok.experimental.Accessors;
     "numberOfClusters",
     "predicates",
     "prioritizerPolicy",
+    "scoreRateLimit",
+    "sortBy",
     "spreadPolicy",
     "tolerations"
 })
@@ -85,6 +87,10 @@ public class PlacementSpec implements Editable<PlacementSpecBuilder>, Kubernetes
     private List<ClusterPredicate> predicates = new ArrayList<>();
     @JsonProperty("prioritizerPolicy")
     private PrioritizerPolicy prioritizerPolicy;
+    @JsonProperty("scoreRateLimit")
+    private String scoreRateLimit;
+    @JsonProperty("sortBy")
+    private String sortBy;
     @JsonProperty("spreadPolicy")
     private SpreadPolicy spreadPolicy;
     @JsonProperty("tolerations")
@@ -99,13 +105,15 @@ public class PlacementSpec implements Editable<PlacementSpecBuilder>, Kubernetes
     public PlacementSpec() {
     }
 
-    public PlacementSpec(List<String> clusterSets, DecisionStrategy decisionStrategy, Integer numberOfClusters, List<ClusterPredicate> predicates, PrioritizerPolicy prioritizerPolicy, SpreadPolicy spreadPolicy, List<Toleration> tolerations) {
+    public PlacementSpec(List<String> clusterSets, DecisionStrategy decisionStrategy, Integer numberOfClusters, List<ClusterPredicate> predicates, PrioritizerPolicy prioritizerPolicy, String scoreRateLimit, String sortBy, SpreadPolicy spreadPolicy, List<Toleration> tolerations) {
         super();
         this.clusterSets = clusterSets;
         this.decisionStrategy = decisionStrategy;
         this.numberOfClusters = numberOfClusters;
         this.predicates = predicates;
         this.prioritizerPolicy = prioritizerPolicy;
+        this.scoreRateLimit = scoreRateLimit;
+        this.sortBy = sortBy;
         this.spreadPolicy = spreadPolicy;
         this.tolerations = tolerations;
     }
@@ -190,6 +198,38 @@ public class PlacementSpec implements Editable<PlacementSpecBuilder>, Kubernetes
     @JsonProperty("prioritizerPolicy")
     public void setPrioritizerPolicy(PrioritizerPolicy prioritizerPolicy) {
         this.prioritizerPolicy = prioritizerPolicy;
+    }
+
+    /**
+     * ScoreRateLimit sets maximum rate of updates to recorded scores in placement decisions. Score changes that do not change the selected set of clusters in the placement will not be reflected in decisions more often than the given duration.
+     */
+    @JsonProperty("scoreRateLimit")
+    public String getScoreRateLimit() {
+        return scoreRateLimit;
+    }
+
+    /**
+     * ScoreRateLimit sets maximum rate of updates to recorded scores in placement decisions. Score changes that do not change the selected set of clusters in the placement will not be reflected in decisions more often than the given duration.
+     */
+    @JsonProperty("scoreRateLimit")
+    public void setScoreRateLimit(String scoreRateLimit) {
+        this.scoreRateLimit = scoreRateLimit;
+    }
+
+    /**
+     * SortBy sets the sort order for decisions. It can be "ClusterName", or "Score". If sortBy is "ClusterName", decisions will be ordered alphanumerically by cluster name If sortBy is "Score", decisions will be ordered numerically in descending order by score, then by cluster name in the event of a tie
+     */
+    @JsonProperty("sortBy")
+    public String getSortBy() {
+        return sortBy;
+    }
+
+    /**
+     * SortBy sets the sort order for decisions. It can be "ClusterName", or "Score". If sortBy is "ClusterName", decisions will be ordered alphanumerically by cluster name If sortBy is "Score", decisions will be ordered numerically in descending order by score, then by cluster name in the event of a tie
+     */
+    @JsonProperty("sortBy")
+    public void setSortBy(String sortBy) {
+        this.sortBy = sortBy;
     }
 
     /**

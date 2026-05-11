@@ -39,7 +39,8 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "clusterName",
-    "reason"
+    "reason",
+    "score"
 })
 @ToString
 @EqualsAndHashCode
@@ -70,6 +71,8 @@ public class ClusterDecision implements Editable<ClusterDecisionBuilder>, Kubern
     private String clusterName;
     @JsonProperty("reason")
     private String reason;
+    @JsonProperty("score")
+    private Long score;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -79,10 +82,11 @@ public class ClusterDecision implements Editable<ClusterDecisionBuilder>, Kubern
     public ClusterDecision() {
     }
 
-    public ClusterDecision(String clusterName, String reason) {
+    public ClusterDecision(String clusterName, String reason, Long score) {
         super();
         this.clusterName = clusterName;
         this.reason = reason;
+        this.score = score;
     }
 
     /**
@@ -115,6 +119,22 @@ public class ClusterDecision implements Editable<ClusterDecisionBuilder>, Kubern
     @JsonProperty("reason")
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    /**
+     * Score is the computed score for the cluster based on configured prioritizers
+     */
+    @JsonProperty("score")
+    public Long getScore() {
+        return score;
+    }
+
+    /**
+     * Score is the computed score for the cluster based on configured prioritizers
+     */
+    @JsonProperty("score")
+    public void setScore(Long score) {
+        this.score = score;
     }
 
     @JsonIgnore
