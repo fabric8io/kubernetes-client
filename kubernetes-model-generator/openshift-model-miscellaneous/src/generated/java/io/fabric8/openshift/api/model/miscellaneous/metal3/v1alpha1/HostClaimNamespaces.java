@@ -33,17 +33,12 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-/**
- * CPU describes one processor on the host.
- */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "arch",
-    "clockMegahertz",
-    "count",
-    "flags",
-    "model"
+    "hasLabels",
+    "nameMatches",
+    "names"
 })
 @ToString
 @EqualsAndHashCode
@@ -67,126 +62,90 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CPU implements Editable<CPUBuilder>, KubernetesResource
+public class HostClaimNamespaces implements Editable<HostClaimNamespacesBuilder>, KubernetesResource
 {
 
-    @JsonProperty("arch")
-    private String arch;
-    @JsonProperty("clockMegahertz")
-    private Double clockMegahertz;
-    @JsonProperty("count")
-    private Integer count;
-    @JsonProperty("flags")
+    @JsonProperty("hasLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> flags = new ArrayList<>();
-    @JsonProperty("model")
-    private String model;
+    private List<NameValuePair> hasLabels = new ArrayList<>();
+    @JsonProperty("nameMatches")
+    private String nameMatches;
+    @JsonProperty("names")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> names = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public CPU() {
+    public HostClaimNamespaces() {
     }
 
-    public CPU(String arch, Double clockMegahertz, Integer count, List<String> flags, String model) {
+    public HostClaimNamespaces(List<NameValuePair> hasLabels, String nameMatches, List<String> names) {
         super();
-        this.arch = arch;
-        this.clockMegahertz = clockMegahertz;
-        this.count = count;
-        this.flags = flags;
-        this.model = model;
+        this.hasLabels = hasLabels;
+        this.nameMatches = nameMatches;
+        this.names = names;
     }
 
     /**
-     * CPU describes one processor on the host.
+     * HasLabels is a list of label names and their associated value. The namespace should have all of those labels. If the value is specified, it must also match.
      */
-    @JsonProperty("arch")
-    public String getArch() {
-        return arch;
-    }
-
-    /**
-     * CPU describes one processor on the host.
-     */
-    @JsonProperty("arch")
-    public void setArch(String arch) {
-        this.arch = arch;
-    }
-
-    /**
-     * CPU describes one processor on the host.
-     */
-    @JsonProperty("clockMegahertz")
-    public Double getClockMegahertz() {
-        return clockMegahertz;
-    }
-
-    /**
-     * CPU describes one processor on the host.
-     */
-    @JsonProperty("clockMegahertz")
-    public void setClockMegahertz(Double clockMegahertz) {
-        this.clockMegahertz = clockMegahertz;
-    }
-
-    /**
-     * CPU describes one processor on the host.
-     */
-    @JsonProperty("count")
-    public Integer getCount() {
-        return count;
-    }
-
-    /**
-     * CPU describes one processor on the host.
-     */
-    @JsonProperty("count")
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    /**
-     * CPU describes one processor on the host.
-     */
-    @JsonProperty("flags")
+    @JsonProperty("hasLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<String> getFlags() {
-        return flags;
+    public List<NameValuePair> getHasLabels() {
+        return hasLabels;
     }
 
     /**
-     * CPU describes one processor on the host.
+     * HasLabels is a list of label names and their associated value. The namespace should have all of those labels. If the value is specified, it must also match.
      */
-    @JsonProperty("flags")
-    public void setFlags(List<String> flags) {
-        this.flags = flags;
+    @JsonProperty("hasLabels")
+    public void setHasLabels(List<NameValuePair> hasLabels) {
+        this.hasLabels = hasLabels;
     }
 
     /**
-     * CPU describes one processor on the host.
+     * NameMatches is a string interpreted as a regular expression that must be matched by the namespace of the HostClaim.
      */
-    @JsonProperty("model")
-    public String getModel() {
-        return model;
+    @JsonProperty("nameMatches")
+    public String getNameMatches() {
+        return nameMatches;
     }
 
     /**
-     * CPU describes one processor on the host.
+     * NameMatches is a string interpreted as a regular expression that must be matched by the namespace of the HostClaim.
      */
-    @JsonProperty("model")
-    public void setModel(String model) {
-        this.model = model;
+    @JsonProperty("nameMatches")
+    public void setNameMatches(String nameMatches) {
+        this.nameMatches = nameMatches;
+    }
+
+    /**
+     * Namespaces is a list of namespace names where the hostClaim is authorized to reside in.
+     */
+    @JsonProperty("names")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getNames() {
+        return names;
+    }
+
+    /**
+     * Namespaces is a list of namespace names where the hostClaim is authorized to reside in.
+     */
+    @JsonProperty("names")
+    public void setNames(List<String> names) {
+        this.names = names;
     }
 
     @JsonIgnore
-    public CPUBuilder edit() {
-        return new CPUBuilder(this);
+    public HostClaimNamespacesBuilder edit() {
+        return new HostClaimNamespacesBuilder(this);
     }
 
     @JsonIgnore
-    public CPUBuilder toBuilder() {
+    public HostClaimNamespacesBuilder toBuilder() {
         return edit();
     }
 

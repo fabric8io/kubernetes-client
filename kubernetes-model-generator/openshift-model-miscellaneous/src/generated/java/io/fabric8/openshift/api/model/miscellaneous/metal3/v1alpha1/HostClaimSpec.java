@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.miscellaneous.metal3.v1beta1;
+package io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -34,20 +34,19 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * Metal3MachineSpec defines the desired state of Metal3Machine.
+ * HostClaimSpec defines the desired state of HostClaim.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "automatedCleaningMode",
+    "consumerRef",
     "customDeploy",
-    "dataTemplate",
     "failureDomain",
     "hostSelector",
     "image",
     "metaData",
     "networkData",
-    "providerID",
+    "poweredOn",
     "userData"
 })
 @ToString
@@ -63,7 +62,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
@@ -72,15 +71,13 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, KubernetesResource
+public class HostClaimSpec implements Editable<HostClaimSpecBuilder>, KubernetesResource
 {
 
-    @JsonProperty("automatedCleaningMode")
-    private String automatedCleaningMode;
+    @JsonProperty("consumerRef")
+    private ObjectReference consumerRef;
     @JsonProperty("customDeploy")
     private CustomDeploy customDeploy;
-    @JsonProperty("dataTemplate")
-    private ObjectReference dataTemplate;
     @JsonProperty("failureDomain")
     private String failureDomain;
     @JsonProperty("hostSelector")
@@ -91,8 +88,8 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
     private SecretReference metaData;
     @JsonProperty("networkData")
     private SecretReference networkData;
-    @JsonProperty("providerID")
-    private String providerID;
+    @JsonProperty("poweredOn")
+    private Boolean poweredOn;
     @JsonProperty("userData")
     private SecretReference userData;
     @JsonIgnore
@@ -101,41 +98,40 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
     /**
      * No args constructor for use in serialization
      */
-    public Metal3MachineSpec() {
+    public HostClaimSpec() {
     }
 
-    public Metal3MachineSpec(String automatedCleaningMode, CustomDeploy customDeploy, ObjectReference dataTemplate, String failureDomain, HostSelector hostSelector, Image image, SecretReference metaData, SecretReference networkData, String providerID, SecretReference userData) {
+    public HostClaimSpec(ObjectReference consumerRef, CustomDeploy customDeploy, String failureDomain, HostSelector hostSelector, Image image, SecretReference metaData, SecretReference networkData, Boolean poweredOn, SecretReference userData) {
         super();
-        this.automatedCleaningMode = automatedCleaningMode;
+        this.consumerRef = consumerRef;
         this.customDeploy = customDeploy;
-        this.dataTemplate = dataTemplate;
         this.failureDomain = failureDomain;
         this.hostSelector = hostSelector;
         this.image = image;
         this.metaData = metaData;
         this.networkData = networkData;
-        this.providerID = providerID;
+        this.poweredOn = poweredOn;
         this.userData = userData;
     }
 
     /**
-     * When set to disabled, automated cleaning of host disks will be skipped during provisioning and deprovisioning.
+     * HostClaimSpec defines the desired state of HostClaim.
      */
-    @JsonProperty("automatedCleaningMode")
-    public String getAutomatedCleaningMode() {
-        return automatedCleaningMode;
+    @JsonProperty("consumerRef")
+    public ObjectReference getConsumerRef() {
+        return consumerRef;
     }
 
     /**
-     * When set to disabled, automated cleaning of host disks will be skipped during provisioning and deprovisioning.
+     * HostClaimSpec defines the desired state of HostClaim.
      */
-    @JsonProperty("automatedCleaningMode")
-    public void setAutomatedCleaningMode(String automatedCleaningMode) {
-        this.automatedCleaningMode = automatedCleaningMode;
+    @JsonProperty("consumerRef")
+    public void setConsumerRef(ObjectReference consumerRef) {
+        this.consumerRef = consumerRef;
     }
 
     /**
-     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     * HostClaimSpec defines the desired state of HostClaim.
      */
     @JsonProperty("customDeploy")
     public CustomDeploy getCustomDeploy() {
@@ -143,7 +139,7 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
     }
 
     /**
-     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     * HostClaimSpec defines the desired state of HostClaim.
      */
     @JsonProperty("customDeploy")
     public void setCustomDeploy(CustomDeploy customDeploy) {
@@ -151,23 +147,7 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
     }
 
     /**
-     * Metal3MachineSpec defines the desired state of Metal3Machine.
-     */
-    @JsonProperty("dataTemplate")
-    public ObjectReference getDataTemplate() {
-        return dataTemplate;
-    }
-
-    /**
-     * Metal3MachineSpec defines the desired state of Metal3Machine.
-     */
-    @JsonProperty("dataTemplate")
-    public void setDataTemplate(ObjectReference dataTemplate) {
-        this.dataTemplate = dataTemplate;
-    }
-
-    /**
-     * FailureDomain is the failure domain unique identifier this Machine should be attached to, as defined in Cluster API.
+     * FailureDomain is the failure domain unique identifier this HostClaim should be attached to, as defined in Cluster API. It is implemented when set as a preference for binding BareMetalHost having the label infrastructure.cluster.x-k8s.io/failure-domain set to the value of the field.
      */
     @JsonProperty("failureDomain")
     public String getFailureDomain() {
@@ -175,7 +155,7 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
     }
 
     /**
-     * FailureDomain is the failure domain unique identifier this Machine should be attached to, as defined in Cluster API.
+     * FailureDomain is the failure domain unique identifier this HostClaim should be attached to, as defined in Cluster API. It is implemented when set as a preference for binding BareMetalHost having the label infrastructure.cluster.x-k8s.io/failure-domain set to the value of the field.
      */
     @JsonProperty("failureDomain")
     public void setFailureDomain(String failureDomain) {
@@ -183,7 +163,7 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
     }
 
     /**
-     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     * HostClaimSpec defines the desired state of HostClaim.
      */
     @JsonProperty("hostSelector")
     public HostSelector getHostSelector() {
@@ -191,7 +171,7 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
     }
 
     /**
-     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     * HostClaimSpec defines the desired state of HostClaim.
      */
     @JsonProperty("hostSelector")
     public void setHostSelector(HostSelector hostSelector) {
@@ -199,7 +179,7 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
     }
 
     /**
-     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     * HostClaimSpec defines the desired state of HostClaim.
      */
     @JsonProperty("image")
     public Image getImage() {
@@ -207,7 +187,7 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
     }
 
     /**
-     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     * HostClaimSpec defines the desired state of HostClaim.
      */
     @JsonProperty("image")
     public void setImage(Image image) {
@@ -215,7 +195,7 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
     }
 
     /**
-     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     * HostClaimSpec defines the desired state of HostClaim.
      */
     @JsonProperty("metaData")
     public SecretReference getMetaData() {
@@ -223,7 +203,7 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
     }
 
     /**
-     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     * HostClaimSpec defines the desired state of HostClaim.
      */
     @JsonProperty("metaData")
     public void setMetaData(SecretReference metaData) {
@@ -231,7 +211,7 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
     }
 
     /**
-     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     * HostClaimSpec defines the desired state of HostClaim.
      */
     @JsonProperty("networkData")
     public SecretReference getNetworkData() {
@@ -239,7 +219,7 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
     }
 
     /**
-     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     * HostClaimSpec defines the desired state of HostClaim.
      */
     @JsonProperty("networkData")
     public void setNetworkData(SecretReference networkData) {
@@ -247,23 +227,23 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
     }
 
     /**
-     * ProviderID will be the Metal3 machine in ProviderID format (metal3://&lt;namespace&gt;/&lt;bmh-name&gt;/&lt;m3m-name&gt;). The legacy format (metal3://&lt;bmh-uuid&gt;) will be deprecated in CAPM3 v1.13 and removed in CAPM3 v1.14.
+     * Should the compute resource be powered on? Changing this value will trigger a change in power state of the targeted host.
      */
-    @JsonProperty("providerID")
-    public String getProviderID() {
-        return providerID;
+    @JsonProperty("poweredOn")
+    public Boolean getPoweredOn() {
+        return poweredOn;
     }
 
     /**
-     * ProviderID will be the Metal3 machine in ProviderID format (metal3://&lt;namespace&gt;/&lt;bmh-name&gt;/&lt;m3m-name&gt;). The legacy format (metal3://&lt;bmh-uuid&gt;) will be deprecated in CAPM3 v1.13 and removed in CAPM3 v1.14.
+     * Should the compute resource be powered on? Changing this value will trigger a change in power state of the targeted host.
      */
-    @JsonProperty("providerID")
-    public void setProviderID(String providerID) {
-        this.providerID = providerID;
+    @JsonProperty("poweredOn")
+    public void setPoweredOn(Boolean poweredOn) {
+        this.poweredOn = poweredOn;
     }
 
     /**
-     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     * HostClaimSpec defines the desired state of HostClaim.
      */
     @JsonProperty("userData")
     public SecretReference getUserData() {
@@ -271,7 +251,7 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
     }
 
     /**
-     * Metal3MachineSpec defines the desired state of Metal3Machine.
+     * HostClaimSpec defines the desired state of HostClaim.
      */
     @JsonProperty("userData")
     public void setUserData(SecretReference userData) {
@@ -279,12 +259,12 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
     }
 
     @JsonIgnore
-    public Metal3MachineSpecBuilder edit() {
-        return new Metal3MachineSpecBuilder(this);
+    public HostClaimSpecBuilder edit() {
+        return new HostClaimSpecBuilder(this);
     }
 
     @JsonIgnore
-    public Metal3MachineSpecBuilder toBuilder() {
+    public HostClaimSpecBuilder toBuilder() {
         return edit();
     }
 

@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
     "id",
     "macAddress",
     "mtu",
+    "name",
     "vlanID",
     "vlanLink"
 })
@@ -75,6 +76,8 @@ public class NetworkDataLinkVlan implements Editable<NetworkDataLinkVlanBuilder>
     private NetworkLinkEthernetMac macAddress;
     @JsonProperty("mtu")
     private Integer mtu;
+    @JsonProperty("name")
+    private String name;
     @JsonProperty("vlanID")
     private Integer vlanID;
     @JsonProperty("vlanLink")
@@ -88,11 +91,12 @@ public class NetworkDataLinkVlan implements Editable<NetworkDataLinkVlanBuilder>
     public NetworkDataLinkVlan() {
     }
 
-    public NetworkDataLinkVlan(String id, NetworkLinkEthernetMac macAddress, Integer mtu, Integer vlanID, String vlanLink) {
+    public NetworkDataLinkVlan(String id, NetworkLinkEthernetMac macAddress, Integer mtu, String name, Integer vlanID, String vlanLink) {
         super();
         this.id = id;
         this.macAddress = macAddress;
         this.mtu = mtu;
+        this.name = name;
         this.vlanID = vlanID;
         this.vlanLink = vlanLink;
     }
@@ -143,6 +147,22 @@ public class NetworkDataLinkVlan implements Editable<NetworkDataLinkVlanBuilder>
     @JsonProperty("mtu")
     public void setMtu(Integer mtu) {
         this.mtu = mtu;
+    }
+
+    /**
+     * Name is the interface name to be used by cloud-init. When combined with MACAddress, cloud-init will rename the interface matching the MAC to this name. When MACAddress is omitted, cloud-init will use this name directly.
+     */
+    @JsonProperty("name")
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Name is the interface name to be used by cloud-init. When combined with MACAddress, cloud-init will rename the interface matching the MAC to this name. When MACAddress is omitted, cloud-init will use this name directly.
+     */
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**

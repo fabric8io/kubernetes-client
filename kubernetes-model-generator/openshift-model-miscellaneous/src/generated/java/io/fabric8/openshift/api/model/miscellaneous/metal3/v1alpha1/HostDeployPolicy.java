@@ -37,7 +37,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * BMCEventSubscription is the Schema for the fast eventing API
+ * HostDeployPolicy is the Schema for the hostdeploypolicies API.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -75,29 +75,29 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("metal3.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BMCEventSubscription implements Editable<BMCEventSubscriptionBuilder>, HasMetadata, Namespaced
+public class HostDeployPolicy implements Editable<HostDeployPolicyBuilder>, HasMetadata, Namespaced
 {
 
     @JsonProperty("apiVersion")
     private String apiVersion = "metal3.io/v1alpha1";
     @JsonProperty("kind")
-    private String kind = "BMCEventSubscription";
+    private String kind = "HostDeployPolicy";
     @JsonProperty("metadata")
     private ObjectMeta metadata;
     @JsonProperty("spec")
-    private BMCEventSubscriptionSpec spec;
+    private HostDeployPolicySpec spec;
     @JsonProperty("status")
-    private BMCEventSubscriptionStatus status;
+    private HostDeployPolicyStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public BMCEventSubscription() {
+    public HostDeployPolicy() {
     }
 
-    public BMCEventSubscription(String apiVersion, String kind, ObjectMeta metadata, BMCEventSubscriptionSpec spec, BMCEventSubscriptionStatus status) {
+    public HostDeployPolicy(String apiVersion, String kind, ObjectMeta metadata, HostDeployPolicySpec spec, HostDeployPolicyStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -139,7 +139,7 @@ public class BMCEventSubscription implements Editable<BMCEventSubscriptionBuilde
     }
 
     /**
-     * BMCEventSubscription is the Schema for the fast eventing API
+     * HostDeployPolicy is the Schema for the hostdeploypolicies API.
      */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
@@ -147,7 +147,7 @@ public class BMCEventSubscription implements Editable<BMCEventSubscriptionBuilde
     }
 
     /**
-     * BMCEventSubscription is the Schema for the fast eventing API
+     * HostDeployPolicy is the Schema for the hostdeploypolicies API.
      */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
@@ -155,44 +155,44 @@ public class BMCEventSubscription implements Editable<BMCEventSubscriptionBuilde
     }
 
     /**
-     * BMCEventSubscription is the Schema for the fast eventing API
+     * HostDeployPolicy is the Schema for the hostdeploypolicies API.
      */
     @JsonProperty("spec")
-    public BMCEventSubscriptionSpec getSpec() {
+    public HostDeployPolicySpec getSpec() {
         return spec;
     }
 
     /**
-     * BMCEventSubscription is the Schema for the fast eventing API
+     * HostDeployPolicy is the Schema for the hostdeploypolicies API.
      */
     @JsonProperty("spec")
-    public void setSpec(BMCEventSubscriptionSpec spec) {
+    public void setSpec(HostDeployPolicySpec spec) {
         this.spec = spec;
     }
 
     /**
-     * BMCEventSubscription is the Schema for the fast eventing API
+     * HostDeployPolicy is the Schema for the hostdeploypolicies API.
      */
     @JsonProperty("status")
-    public BMCEventSubscriptionStatus getStatus() {
+    public HostDeployPolicyStatus getStatus() {
         return status;
     }
 
     /**
-     * BMCEventSubscription is the Schema for the fast eventing API
+     * HostDeployPolicy is the Schema for the hostdeploypolicies API.
      */
     @JsonProperty("status")
-    public void setStatus(BMCEventSubscriptionStatus status) {
+    public void setStatus(HostDeployPolicyStatus status) {
         this.status = status;
     }
 
     @JsonIgnore
-    public BMCEventSubscriptionBuilder edit() {
-        return new BMCEventSubscriptionBuilder(this);
+    public HostDeployPolicyBuilder edit() {
+        return new HostDeployPolicyBuilder(this);
     }
 
     @JsonIgnore
-    public BMCEventSubscriptionBuilder toBuilder() {
+    public HostDeployPolicyBuilder toBuilder() {
         return edit();
     }
 

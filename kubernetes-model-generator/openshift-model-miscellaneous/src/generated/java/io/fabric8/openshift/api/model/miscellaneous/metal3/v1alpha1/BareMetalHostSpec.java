@@ -78,7 +78,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
@@ -315,7 +315,7 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder>, Ku
     }
 
     /**
-     * ExternallyProvisioned means something else has provisioned the image running on the host, and the operator should only manage the power status. This field is used for integration with already provisioned hosts and when pivoting hosts between clusters. If unsure, leave this field as false.
+     * ExternallyProvisioned means something else has provisioned the image running on the host, and the operator should only manage the power status. This field is used for integration with already provisioned hosts and when pivoting hosts between clusters.<br><p> <br><p> This field can be set to true either: 1. During initial host creation (e.g., for pre-provisioned hosts) 2. After inspection completes when the host reaches Available state<br><p> <br><p> When used in environments with Cluster API Provider Metal3 (CAPM3), ensure hosts are labeled appropriately so CAPM3's host selector can distinguish them from CAPM3-managed hosts. If unsure, leave this field as false.
      */
     @JsonProperty("externallyProvisioned")
     public Boolean getExternallyProvisioned() {
@@ -323,7 +323,7 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder>, Ku
     }
 
     /**
-     * ExternallyProvisioned means something else has provisioned the image running on the host, and the operator should only manage the power status. This field is used for integration with already provisioned hosts and when pivoting hosts between clusters. If unsure, leave this field as false.
+     * ExternallyProvisioned means something else has provisioned the image running on the host, and the operator should only manage the power status. This field is used for integration with already provisioned hosts and when pivoting hosts between clusters.<br><p> <br><p> This field can be set to true either: 1. During initial host creation (e.g., for pre-provisioned hosts) 2. After inspection completes when the host reaches Available state<br><p> <br><p> When used in environments with Cluster API Provider Metal3 (CAPM3), ensure hosts are labeled appropriately so CAPM3's host selector can distinguish them from CAPM3-managed hosts. If unsure, leave this field as false.
      */
     @JsonProperty("externallyProvisioned")
     public void setExternallyProvisioned(Boolean externallyProvisioned) {

@@ -34,16 +34,14 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * CPU describes one processor on the host.
+ * HostSelector specifies matching criteria for labels on BareMetalHosts. This is used to limit the set of BareMetalHost objects considered for claiming for a Machine.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "arch",
-    "clockMegahertz",
-    "count",
-    "flags",
-    "model"
+    "inNamespace",
+    "matchExpressions",
+    "matchLabels"
 })
 @ToString
 @EqualsAndHashCode
@@ -67,126 +65,90 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CPU implements Editable<CPUBuilder>, KubernetesResource
+public class HostSelector implements Editable<HostSelectorBuilder>, KubernetesResource
 {
 
-    @JsonProperty("arch")
-    private String arch;
-    @JsonProperty("clockMegahertz")
-    private Double clockMegahertz;
-    @JsonProperty("count")
-    private Integer count;
-    @JsonProperty("flags")
+    @JsonProperty("inNamespace")
+    private String inNamespace;
+    @JsonProperty("matchExpressions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> flags = new ArrayList<>();
-    @JsonProperty("model")
-    private String model;
+    private List<HostSelectorRequirement> matchExpressions = new ArrayList<>();
+    @JsonProperty("matchLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> matchLabels = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public CPU() {
+    public HostSelector() {
     }
 
-    public CPU(String arch, Double clockMegahertz, Integer count, List<String> flags, String model) {
+    public HostSelector(String inNamespace, List<HostSelectorRequirement> matchExpressions, Map<String, String> matchLabels) {
         super();
-        this.arch = arch;
-        this.clockMegahertz = clockMegahertz;
-        this.count = count;
-        this.flags = flags;
-        this.model = model;
+        this.inNamespace = inNamespace;
+        this.matchExpressions = matchExpressions;
+        this.matchLabels = matchLabels;
     }
 
     /**
-     * CPU describes one processor on the host.
+     * InNamespace specifies a single namespace where the BareMetalHost should reside. If not specified, the selection will be done over all available namespaces with a compliant policy.
      */
-    @JsonProperty("arch")
-    public String getArch() {
-        return arch;
+    @JsonProperty("inNamespace")
+    public String getInNamespace() {
+        return inNamespace;
     }
 
     /**
-     * CPU describes one processor on the host.
+     * InNamespace specifies a single namespace where the BareMetalHost should reside. If not specified, the selection will be done over all available namespaces with a compliant policy.
      */
-    @JsonProperty("arch")
-    public void setArch(String arch) {
-        this.arch = arch;
+    @JsonProperty("inNamespace")
+    public void setInNamespace(String inNamespace) {
+        this.inNamespace = inNamespace;
     }
 
     /**
-     * CPU describes one processor on the host.
+     * Label match expressions that must be true on a chosen BareMetalHost
      */
-    @JsonProperty("clockMegahertz")
-    public Double getClockMegahertz() {
-        return clockMegahertz;
-    }
-
-    /**
-     * CPU describes one processor on the host.
-     */
-    @JsonProperty("clockMegahertz")
-    public void setClockMegahertz(Double clockMegahertz) {
-        this.clockMegahertz = clockMegahertz;
-    }
-
-    /**
-     * CPU describes one processor on the host.
-     */
-    @JsonProperty("count")
-    public Integer getCount() {
-        return count;
-    }
-
-    /**
-     * CPU describes one processor on the host.
-     */
-    @JsonProperty("count")
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    /**
-     * CPU describes one processor on the host.
-     */
-    @JsonProperty("flags")
+    @JsonProperty("matchExpressions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<String> getFlags() {
-        return flags;
+    public List<HostSelectorRequirement> getMatchExpressions() {
+        return matchExpressions;
     }
 
     /**
-     * CPU describes one processor on the host.
+     * Label match expressions that must be true on a chosen BareMetalHost
      */
-    @JsonProperty("flags")
-    public void setFlags(List<String> flags) {
-        this.flags = flags;
+    @JsonProperty("matchExpressions")
+    public void setMatchExpressions(List<HostSelectorRequirement> matchExpressions) {
+        this.matchExpressions = matchExpressions;
     }
 
     /**
-     * CPU describes one processor on the host.
+     * Key/value pairs of labels that must exist on a chosen BareMetalHost
      */
-    @JsonProperty("model")
-    public String getModel() {
-        return model;
+    @JsonProperty("matchLabels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, String> getMatchLabels() {
+        return matchLabels;
     }
 
     /**
-     * CPU describes one processor on the host.
+     * Key/value pairs of labels that must exist on a chosen BareMetalHost
      */
-    @JsonProperty("model")
-    public void setModel(String model) {
-        this.model = model;
+    @JsonProperty("matchLabels")
+    public void setMatchLabels(Map<String, String> matchLabels) {
+        this.matchLabels = matchLabels;
     }
 
     @JsonIgnore
-    public CPUBuilder edit() {
-        return new CPUBuilder(this);
+    public HostSelectorBuilder edit() {
+        return new HostSelectorBuilder(this);
     }
 
     @JsonIgnore
-    public CPUBuilder toBuilder() {
+    public HostSelectorBuilder toBuilder() {
         return edit();
     }
 
