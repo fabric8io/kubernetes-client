@@ -574,15 +574,21 @@ public interface HasMetadata extends KubernetesResource {
    * {@code resource1.isSameResource(resource2)} does NOT imply {@code resource1.equals(resource2)}.
    * </p>
    *
+   * <p>
+   * When the UID is set on either resource, identity is determined exclusively by UID comparison; kind, name, namespace and
+   * resource version are not consulted. As a consequence, a resource carrying a UID is never considered the same as one
+   * without, even if their name, namespace and kind match.
+   * </p>
+   *
    * @param other the HasMetadata to check
    * @param strict whether the checks should be strict:
    *        <ul>
    *        <li>make sure that {@code kind} is properly set for both resources and that they are equal</li>
    *        <li>check that the {@code resourceVersion} is the same for both, if set or {@code null} for both</li>
    *        </ul>
-   *        The only exceptions to this is if the two resources point to the same object (i.e. {@code this == other}) or if the
-   *        UID is set, in which case stricter checks will not be enforced and similarity will only be assessed on the objects'
-   *        identity (either Java identity or via UID).
+   *        The only exceptions to this are if the two resources point to the same object (i.e. {@code this == other}) or if
+   *        the UID is set, in which case stricter checks will not be enforced and similarity will only be assessed on the
+   *        objects' identity (either Java identity or via UID).
    * @return {@code true} if the specified HasMetadata points to the same cluster resource, {@code false} otherwise
    */
   default boolean isSameResource(HasMetadata other, boolean strict) {
@@ -608,12 +614,11 @@ public interface HasMetadata extends KubernetesResource {
     }
 
     final var kind = getKind();
-    final var differentKind = !Objects.equals(other.getKind(), kind);
-    if (differentKind) {
+    if (!Objects.equals(kind, other.getKind())) {
       return false;
     }
 
-    // in strict mode, the kind needs to be set
+    // both kinds are equal here; in strict mode, neither can be null
     if (strict && kind == null) {
       return false;
     }

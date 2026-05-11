@@ -20,9 +20,8 @@ import io.fabric8.kubernetes.model.annotation.Plural;
 import io.fabric8.kubernetes.model.annotation.Version;
 import org.junit.jupiter.api.Test;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Optional;
-import java.util.Random;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -322,63 +321,108 @@ class HasMetadataTest {
   }
 
   @Test
-  void isSameResource() {
+  void isSameResourceWithNullReturnsFalse() {
+    assertFalse(new TestHasMetadata().isSameResource(null));
+  }
+
+  @Test
+  void isSameResourceWithSelfReturnsTrueEvenInStrictMode() {
     HasMetadata one = new TestHasMetadata();
-    assertFalse(one.isSameResource(null));
-
-    HasMetadata two = new TestHasMetadata();
     assertTrue(one.isSameResource(one));
-    assertTrue(one.isSameResource(one, true)); // should normally be false but since we're comparing the same object, it should always be true
+    // should normally be false (no metadata set) but identity wins regardless of strict mode
+    assertTrue(one.isSameResource(one, true));
+  }
 
-    assertFalse(one.isSameResource(two)); // metadata is null so cannot check if resources are the same
+  @Test
+  void isSameResourceWithNullMetadataOnEitherSideReturnsFalse() {
+    HasMetadata one = new TestHasMetadata();
+    HasMetadata two = new TestHasMetadata();
+    assertFalse(one.isSameResource(two));
     assertFalse(one.isSameResource(two, true));
+  }
 
-    // generated name and namespace
+  @Test
+  void isSameResourceWithDifferentNameAndNamespaceReturnsFalse() {
+    checkDifferent(new TestHM(), new TestHM());
+  }
+
+  @Test
+  void isSameResourceWithDifferentNameReturnsFalse() {
     TestHM t1 = new TestHM();
-    TestHM t2 = new TestHM();
-    checkDifferent(t1, t2);
-
-    // if UID is set, nothing else is checked, regardless of strict mode or not
-    t1 = new TestHM();
-    t2 = new TestHM(t1);
-    final var uid = randomString();
-    t1.getMetadata().setUid(uid);
-    checkDifferent(t1, t2);
-    t2.getMetadata().setUid(uid);
-    baseTests(t1, t2);
-    assertTrue(t1.isSameResource(t2, true));
-    assertTrue(t2.isSameResource(t1, true));
-
-    t1 = new TestHM();
-    t2 = new TestHM(t1); // initialized with same name and namespace
-    baseTests(t1, t2);
-    assertTrue(t1.isSameResource(t2, true));
-    assertTrue(t2.isSameResource(t1, true));
-
-    t1.getMetadata().setResourceVersion("t1");
-    t2.getMetadata().setResourceVersion("t1");
-    baseTests(t1, t2);
-    assertTrue(t1.isSameResource(t2, true));
-    assertTrue(t2.isSameResource(t1, true));
-
-    t2.getMetadata().setResourceVersion("t2");
-    baseTests(t1, t2);
-    assertFalse(t1.isSameResource(t2, true));
-    assertFalse(t2.isSameResource(t1, true));
-
+    TestHM t2 = new TestHM(t1);
     t2.getMetadata().setName("otherName");
     checkDifferent(t1, t2);
+  }
 
-    t1 = new TestHM();
-    t2 = new TestHM(t1); // initialized with same name and namespace
+  @Test
+  void isSameResourceWithDifferentNamespaceReturnsFalse() {
+    TestHM t1 = new TestHM();
+    TestHM t2 = new TestHM(t1);
     t2.getMetadata().setNamespace("otherNamespace");
     checkDifferent(t1, t2);
   }
 
-  private static String randomString() {
-    byte[] array = new byte[10];
-    new Random().nextBytes(array);
-    return new String(array, StandardCharsets.UTF_8);
+  @Test
+  void isSameResourceWithDifferentKindReturnsFalse() {
+    TestHM t1 = new TestHM();
+    TestHM t2 = new TestHM(t1) {
+      @Override
+      public String getKind() {
+        return "OtherKind";
+      }
+    };
+    checkDifferent(t1, t2);
+  }
+
+  @Test
+  void isSameResourceWithUidSetOnOneSideOnlyReturnsFalse() {
+    TestHM t1 = new TestHM();
+    TestHM t2 = new TestHM(t1);
+    t1.getMetadata().setUid(UUID.randomUUID().toString());
+    checkDifferent(t1, t2);
+  }
+
+  @Test
+  void isSameResourceWithSameUidReturnsTrueRegardlessOfStrictMode() {
+    TestHM t1 = new TestHM();
+    TestHM t2 = new TestHM(t1);
+    final String uid = UUID.randomUUID().toString();
+    t1.getMetadata().setUid(uid);
+    t2.getMetadata().setUid(uid);
+    baseTests(t1, t2);
+    assertTrue(t1.isSameResource(t2, true));
+    assertTrue(t2.isSameResource(t1, true));
+  }
+
+  @Test
+  void isSameResourceWithSameNameAndNamespaceReturnsTrueInBothModes() {
+    TestHM t1 = new TestHM();
+    TestHM t2 = new TestHM(t1);
+    baseTests(t1, t2);
+    assertTrue(t1.isSameResource(t2, true));
+    assertTrue(t2.isSameResource(t1, true));
+  }
+
+  @Test
+  void isSameResourceWithSameResourceVersionReturnsTrueInStrictMode() {
+    TestHM t1 = new TestHM();
+    TestHM t2 = new TestHM(t1);
+    t1.getMetadata().setResourceVersion("rv1");
+    t2.getMetadata().setResourceVersion("rv1");
+    baseTests(t1, t2);
+    assertTrue(t1.isSameResource(t2, true));
+    assertTrue(t2.isSameResource(t1, true));
+  }
+
+  @Test
+  void isSameResourceWithDifferentResourceVersionReturnsFalseInStrictModeOnly() {
+    TestHM t1 = new TestHM();
+    TestHM t2 = new TestHM(t1);
+    t1.getMetadata().setResourceVersion("rv1");
+    t2.getMetadata().setResourceVersion("rv2");
+    baseTests(t1, t2);
+    assertFalse(t1.isSameResource(t2, true));
+    assertFalse(t2.isSameResource(t1, true));
   }
 
   private static void checkDifferent(TestHM t1, TestHM t2) {
@@ -560,7 +604,7 @@ class HasMetadataTest {
     }
 
     public TestHM() {
-      super(randomString(), randomString());
+      super(UUID.randomUUID().toString(), UUID.randomUUID().toString());
     }
 
     @Override

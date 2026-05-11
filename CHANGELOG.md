@@ -17,6 +17,7 @@
 * Fix #7265: fix ephemeral removal of index entries from informer caches
 
 #### Improvements
+* Fix #7426: add `HasMetadata#isSameResource` to test whether two HasMetadata instances point to the same logical cluster resource, with an optional strict mode that also requires matching kind and resourceVersion
 * Fix #7662: (mockwebserver) new `MockWebServer#setHttp2ClearTextEnabled(boolean)` setter to opt out of HTTP/2 cleartext (h2c) upgrade
 * Fix #7522: improve dependency management for kubernetes-httpclient-okhttp
 * Fix #7550: add a ResourceEventHandler onList method and deprecated onNothing
