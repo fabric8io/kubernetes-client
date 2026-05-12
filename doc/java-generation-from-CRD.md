@@ -241,6 +241,223 @@ And the corresponding configurations of the Maven plugin are (output of `mvn hel
       The URLs to be used to download CRDs from remote locations
 ```
 
+### Configuration Examples
+
+Below are examples of how to configure common options for Maven, Gradle, and the CLI, along with snippets showing how they affect the generated Java code.
+
+#### 1. Uppercase Enums
+
+Defaults to `true`, set to `false` to preserve the case from the CRD.
+
+**Maven:**
+```xml
+<configuration>
+  <enumUppercase>false</enumUppercase>
+</configuration>
+```
+
+**Gradle:**
+
+```groovy
+javaGen {
+  enumUppercase = false
+}
+```
+
+**CLI:**
+
+```bash
+--enum-uppercase=false
+```
+
+**Generated Code (default — uppercase):**
+
+```java
+public enum Material {
+    @com.fasterxml.jackson.annotation.JsonProperty("plastic")
+    PLASTIC("plastic"),
+    @com.fasterxml.jackson.annotation.JsonProperty("wood")
+    WOOD("wood");
+    // ...
+}
+```
+
+**Generated Code (with `enumUppercase = false`):**
+
+```java
+public enum Material {
+    @com.fasterxml.jackson.annotation.JsonProperty("plastic")
+    plastic("plastic"),
+    @com.fasterxml.jackson.annotation.JsonProperty("wood")
+    wood("wood");
+    // ...
+}
+```
+
+#### 2. Package Overrides
+
+Override the default package name generated from the CRD group and version.
+
+**Maven:**
+
+```xml
+<configuration>
+  <packageOverrides>
+    <!-- Key must match the generated package name exactly -->
+    <com.example.v1>com.mycompany.custom</com.example.v1>
+  </packageOverrides>
+</configuration>
+```
+
+**Gradle:**
+
+```groovy
+javaGen {
+  packageOverrides = [
+    // Key must match the generated package name exactly
+    "com.example.v1": "com.mycompany.custom"
+  ]
+}
+```
+
+**CLI:**
+
+```bash
+--package-overrides=com.example.v1=com.mycompany.custom
+```
+
+**Generated Code:**
+
+```java
+package com.mycompany.custom; // Overridden package name
+
+public class ToySpec implements KubernetesResource {
+    // ...
+}
+```
+
+#### 3. Always Preserve Unknown Fields
+
+Ensure that unknown fields in the JSON/YAML are captured in a map instead of being ignored.
+
+**Maven:**
+
+```xml
+<configuration>
+  <alwaysPreserveUnknown>true</alwaysPreserveUnknown>
+</configuration>
+```
+
+**Gradle:**
+
+```groovy
+javaGen {
+  alwaysPreserveUnknown = true
+}
+```
+
+**CLI:**
+
+```bash
+--always-preserve-unknown
+```
+
+**Generated Code:**
+
+```java
+public class ToySpec implements KubernetesResource {
+
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    private java.util.Map<java.lang.String, java.lang.Object> additionalProperties = new java.util.HashMap<>();
+
+    @com.fasterxml.jackson.annotation.JsonAnyGetter
+    public java.util.Map<java.lang.String, java.lang.Object> getAdditionalProperties() {
+        return additionalProperties;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonAnySetter
+    public void setAdditionalProperty(java.lang.String key, java.lang.Object value) {
+        this.additionalProperties.put(key, value);
+    }
+    // ...
+}
+```
+
+#### 4. Filter Source Files
+
+Process only specific files from the source directory.
+
+**Maven:**
+
+```xml
+<configuration>
+  <filesSuffixes>
+    <suffix>.yaml</suffix>
+    <suffix>.yml</suffix>
+  </filesSuffixes>
+</configuration>
+```
+
+**Gradle:**
+
+```groovy
+javaGen {
+  filesSuffixes = [".yaml", ".yml"]
+}
+```
+
+**CLI:**
+
+```bash
+--files-suffixes=.yaml --files-suffixes=.yml
+```
+
+> **Note:** This option only controls which source files are processed — it does not affect the generated code.
+
+#### 5. Existing Java Types
+
+Map a specific CRD type to an existing Java class instead of generating a new one. This is useful when you want to reuse existing POJOs.
+
+**Maven:**
+
+```xml
+<configuration>
+  <existingJavaTypes>
+    <com.example.v1.ToySpec>com.mycompany.shared.ExistingToySpec</com.example.v1.ToySpec>
+  </existingJavaTypes>
+</configuration>
+```
+
+**Gradle:**
+
+```groovy
+javaGen {
+  existingJavaTypes = [
+    "com.example.v1.ToySpec": "com.mycompany.shared.ExistingToySpec"
+  ]
+}
+```
+
+**CLI:**
+
+```bash
+--existing-java-types=com.example.v1.ToySpec=com.mycompany.shared.ExistingToySpec
+```
+
+**Generated Code:**
+
+```java
+// The generator will skip generating 'ToySpec' and will reference the existing class instead.
+import com.mycompany.shared.ExistingToySpec;
+
+public class Toy implements HasMetadata {
+    // ...
+    private ExistingToySpec spec;
+    // ...
+}
+```
+
+
 ## Compiling the generated code
 
 The generated code depends on a few dependencies to successfully compile:
