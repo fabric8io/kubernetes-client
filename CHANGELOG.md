@@ -3,6 +3,7 @@
 ### 7.8-SNAPSHOT
 
 #### Bugs
+* Fix #7765: (kubernetes-client) `BaseOperation.informOnCondition` now stops the informer inline when the inner predicate completes the future, closing a CompletableFuture `postComplete` race where a waiter helping drain dependents could fire `informer.stop` after `cf.complete` had already triggered a spurious `?watch=true` HTTP request
 
 #### Improvements
 

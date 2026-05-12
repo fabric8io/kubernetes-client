@@ -1045,18 +1045,27 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
     informer.initialState(Stream.empty());
 
-    // prevent unnecessary watches and handle closure
+    // prevent unnecessary watches and handle closure - safety net for cancellation /
+    // exceptional completion paths that don't go through `test` below.
     future.whenComplete((r, t) -> informer.stop());
 
-    // use the cache to evaluate the list predicate, trapping any exceptions
+    // use the cache to evaluate the list predicate, trapping any exceptions.
+    // When `test` is the one completing the future, stop the informer inline on the same
+    // thread so any subsequent informer activity (e.g. the watch start that follows a list)
+    // observes the stop deterministically. Relying solely on `future.whenComplete` is racy:
+    // when a thread is blocked in `future.thenApply(...).get(...)`, the JDK lets the waiter
+    // help drain `postComplete`, and it can `claim()` the whenComplete dependent first — so
+    // `future.complete` can return on the completer thread before `informer.stop` has run.
     Consumer<List<T>> test = list -> {
       try {
         // could skip if lastResourceVersion has not changed
-        if (condition.test(list)) {
-          future.complete(list);
+        if (condition.test(list) && future.complete(list)) {
+          informer.stop();
         }
       } catch (Exception e) {
-        future.completeExceptionally(e);
+        if (future.completeExceptionally(e)) {
+          informer.stop();
+        }
       }
     };
 
