@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 7.7-SNAPSHOT
+### 7.7.0 (2026-05-12)
 
 #### Bugs
 * Fix #7747: (mockwebserver) avoid RejectedExecutionException in MockWebServer#shutdown() — linearize close sequence to remove the httpClose-listener vs await race, and make shutdown() idempotent against repeated calls (e.g. JUnit @Nested afterAll cascades)
