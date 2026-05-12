@@ -45,13 +45,17 @@ public class VertxMockWebSocket implements WebSocket {
 
   @Override
   public boolean send(String text) {
+    final String wsId = Integer.toHexString(System.identityHashCode(webSocket));
+    logger.log(Level.INFO, () -> String.format(
+        "VertxMockWebSocket.writeTextMessage entered (ws=%s, length=%d)", wsId, text.length()));
     final Future<Void> send = webSocket.writeTextMessage(text);
-    // Diagnostic for #7756: writeTextMessage completes asynchronously; without an explicit failure
-    // handler any async write error is silently dropped, which would leave the server believing the
-    // message was delivered while the client never sees it. Log and swallow (preserve behavior).
+    // Diagnostic for #7756: writeTextMessage completes asynchronously. Logging both outcomes makes
+    // the "future never completed" case distinguishable from "succeeded" or "failed" — silence
+    // after the entry log now strictly means the future never settled.
+    send.onSuccess(v -> logger.log(Level.INFO,
+        () -> String.format("VertxMockWebSocket.writeTextMessage succeeded (ws=%s, length=%d)", wsId, text.length())));
     send.onFailure(t -> logger.log(Level.SEVERE, t,
-        () -> String.format("VertxMockWebSocket.writeTextMessage future failed (ws=%s, length=%d)",
-            Integer.toHexString(System.identityHashCode(webSocket)), text.length())));
+        () -> String.format("VertxMockWebSocket.writeTextMessage future failed (ws=%s, length=%d)", wsId, text.length())));
     if (send.isComplete()) {
       return send.succeeded();
     }
@@ -60,11 +64,15 @@ public class VertxMockWebSocket implements WebSocket {
 
   @Override
   public boolean send(byte[] bytes) {
+    final String wsId = Integer.toHexString(System.identityHashCode(webSocket));
+    logger.log(Level.INFO, () -> String.format(
+        "VertxMockWebSocket.writeBinaryMessage entered (ws=%s, length=%d)", wsId, bytes.length));
     final Future<Void> send = webSocket.writeBinaryMessage(Buffer.buffer(bytes));
     // Diagnostic for #7756: see send(String) above.
+    send.onSuccess(v -> logger.log(Level.INFO,
+        () -> String.format("VertxMockWebSocket.writeBinaryMessage succeeded (ws=%s, length=%d)", wsId, bytes.length)));
     send.onFailure(t -> logger.log(Level.SEVERE, t,
-        () -> String.format("VertxMockWebSocket.writeBinaryMessage future failed (ws=%s, length=%d)",
-            Integer.toHexString(System.identityHashCode(webSocket)), bytes.length)));
+        () -> String.format("VertxMockWebSocket.writeBinaryMessage future failed (ws=%s, length=%d)", wsId, bytes.length)));
     if (send.isComplete()) {
       return send.succeeded();
     }
@@ -75,10 +83,16 @@ public class VertxMockWebSocket implements WebSocket {
   public synchronized boolean close(int code, String reason) {
     if (!closing) {
       closing = true;
-      // Diagnostic for #7756: capture async close failures (same rationale as send() above).
-      webSocket.close((short) code, reason).onFailure(t -> logger.log(Level.SEVERE, t,
-          () -> String.format("VertxMockWebSocket.close future failed (ws=%s, code=%d, reason=%s)",
-              Integer.toHexString(System.identityHashCode(webSocket)), code, reason)));
+      final String wsId = Integer.toHexString(System.identityHashCode(webSocket));
+      logger.log(Level.INFO, () -> String.format(
+          "VertxMockWebSocket.close entered (ws=%s, code=%d, reason=%s)", wsId, code, reason));
+      // Diagnostic for #7756: capture both close outcomes (success vs ClosedChannelException) so we
+      // can correlate with the matching writeBinaryMessage / writeTextMessage result on the same ws.
+      final Future<Void> closeFuture = webSocket.close((short) code, reason);
+      closeFuture.onSuccess(v -> logger.log(Level.INFO,
+          () -> String.format("VertxMockWebSocket.close succeeded (ws=%s, code=%d, reason=%s)", wsId, code, reason)));
+      closeFuture.onFailure(t -> logger.log(Level.SEVERE, t,
+          () -> String.format("VertxMockWebSocket.close future failed (ws=%s, code=%d, reason=%s)", wsId, code, reason)));
     }
     return true;
   }
