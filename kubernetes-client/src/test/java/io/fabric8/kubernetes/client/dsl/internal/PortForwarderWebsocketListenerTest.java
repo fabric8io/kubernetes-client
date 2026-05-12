@@ -22,18 +22,17 @@ import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -74,15 +73,22 @@ class PortForwarderWebsocketListenerTest {
 
   @Test
   void onOpen_shouldPipeInChannelToWebSocket() {
+    // pipe() reuses the same ByteBuffer across iterations, so an ArgumentCaptor
+    // reference races with buffer.clear()/put()/read() in the next iteration.
+    // Snapshot the bytes synchronously inside send() instead.
+    final AtomicReference<String> sent = new AtomicReference<>();
+    doAnswer(i -> {
+      ByteBuffer buf = i.getArgument(0);
+      byte[] copy = new byte[buf.remaining()];
+      buf.duplicate().get(copy);
+      sent.set(new String(copy, StandardCharsets.UTF_8));
+      return true;
+    }).when(webSocket).send(any(ByteBuffer.class));
     listener = new PortForwarderWebsocketListener(in, out, CommonThreadPool.get());
     listener.onOpen(webSocket);
-    ArgumentCaptor<ByteBuffer> contentTypeCaptor = ArgumentCaptor.forClass(ByteBuffer.class);
     // Then
-    verify(webSocket, timeout(10_000).times(1)).send(contentTypeCaptor.capture());
-    assertThat(contentTypeCaptor.getValue())
-        .extracting(StandardCharsets.UTF_8::decode)
-        .extracting(CharBuffer::toString).asString()
-        .startsWith("THIS IS A TEST");
+    verify(webSocket, timeout(10_000).times(1)).send(any(ByteBuffer.class));
+    assertThat(sent.get()).startsWith("\u0000THIS IS A TEST");
     assertThat(in.isOpen()).isTrue();
     assertThat(out.isOpen()).isTrue();
   }
