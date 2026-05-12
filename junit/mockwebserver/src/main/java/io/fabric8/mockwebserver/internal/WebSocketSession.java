@@ -33,8 +33,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class WebSocketSession extends WebSocketListener {
+
+  private static final Logger logger = Logger.getLogger(WebSocketSession.class.getName());
 
   private final List<WebSocketMessage> open;
   private final WebSocketMessage failure;
@@ -157,10 +161,25 @@ public class WebSocketSession extends WebSocketListener {
     pendingMessages.add(id);
     executor.schedule(() -> {
       if (ws != null) {
-        if (message.isBinary()) {
-          ws.send(message.getBytes());
-        } else {
-          ws.send(message.getBody());
+        try {
+          if (message.isBinary()) {
+            ws.send(message.getBytes());
+          } else {
+            ws.send(message.getBody());
+          }
+        } catch (RuntimeException e) {
+          // Diagnostic for #7756: if writeBinaryMessage / writeTextMessage throws (e.g. Vert.x
+          // IllegalStateException on a closed WebSocket), the scheduled task aborts here,
+          // pendingMessages keeps the id, and closeActiveSocketsIfApplicable() never runs, so the
+          // server never initiates a close and clients wait on listener.onClose. Capture state to
+          // confirm this is the failure mode on the next CI hit, then rethrow.
+          logger.log(Level.SEVERE, e,
+              () -> String.format(
+                  "WebSocketSession message send failed (ws=%s, binary=%s, length=%d, delayMs=%d, pending=%d, activeSockets=%d)",
+                  Integer.toHexString(System.identityHashCode(ws)),
+                  message.isBinary(), message.getBytes().length, message.getDelay(),
+                  pendingMessages.size(), activeSockets.size()));
+          throw e;
         }
         pendingMessages.remove(id);
       }
