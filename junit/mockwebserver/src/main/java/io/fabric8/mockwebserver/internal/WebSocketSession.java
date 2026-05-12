@@ -160,6 +160,13 @@ public class WebSocketSession extends WebSocketListener {
     final UUID id = UUID.randomUUID();
     pendingMessages.add(id);
     executor.schedule(() -> {
+      // Diagnostic for #7756: confirm the scheduled task actually runs. If this never logs for a
+      // hung test, the scheduled executor lost or dropped the task.
+      logger.log(Level.INFO, () -> String.format(
+          "WebSocketSession send task entered (id=%s, ws=%s, binary=%s, length=%d, delayMs=%d, pending=%d, activeSockets=%d)",
+          id, Integer.toHexString(System.identityHashCode(ws)),
+          message.isBinary(), message.getBytes().length, message.getDelay(),
+          pendingMessages.size(), activeSockets.size()));
       if (ws != null) {
         try {
           if (message.isBinary()) {
@@ -188,8 +195,14 @@ public class WebSocketSession extends WebSocketListener {
   }
 
   public void closeActiveSocketsIfApplicable() {
-    if (pendingMessages.isEmpty() && requestEvents.isEmpty() && httpRequestEvents.isEmpty()
-        && sentWebSocketMessagesRequestEvents.isEmpty()) {
+    final boolean applicable = pendingMessages.isEmpty() && requestEvents.isEmpty() && httpRequestEvents.isEmpty()
+        && sentWebSocketMessagesRequestEvents.isEmpty();
+    // Diagnostic for #7756: capture whether the close path was reached and what state it observed.
+    logger.log(Level.INFO, () -> String.format(
+        "WebSocketSession.closeActiveSocketsIfApplicable applicable=%s (pending=%d, requestEvents=%d, httpRequestEvents=%d, sentWebSocketMessagesRequestEvents=%d, activeSockets=%d)",
+        applicable, pendingMessages.size(), requestEvents.size(), httpRequestEvents.size(),
+        sentWebSocketMessagesRequestEvents.size(), activeSockets.size()));
+    if (applicable) {
       activeSockets.forEach(ws -> ws.close(1000, "Closing..."));
     }
   }
