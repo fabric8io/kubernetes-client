@@ -21,7 +21,13 @@ import io.vertx.core.Future;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.ServerWebSocket;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class VertxMockWebSocket implements WebSocket {
+
+  private static final Logger logger = Logger.getLogger(VertxMockWebSocket.class.getName());
+
   private final RecordedRequest request;
   private final ServerWebSocket webSocket;
   private volatile boolean closing;
@@ -40,6 +46,12 @@ public class VertxMockWebSocket implements WebSocket {
   @Override
   public boolean send(String text) {
     final Future<Void> send = webSocket.writeTextMessage(text);
+    // Diagnostic for #7756: writeTextMessage completes asynchronously; without an explicit failure
+    // handler any async write error is silently dropped, which would leave the server believing the
+    // message was delivered while the client never sees it. Log and swallow (preserve behavior).
+    send.onFailure(t -> logger.log(Level.SEVERE, t,
+        () -> String.format("VertxMockWebSocket.writeTextMessage future failed (ws=%s, length=%d)",
+            Integer.toHexString(System.identityHashCode(webSocket)), text.length())));
     if (send.isComplete()) {
       return send.succeeded();
     }
@@ -49,6 +61,10 @@ public class VertxMockWebSocket implements WebSocket {
   @Override
   public boolean send(byte[] bytes) {
     final Future<Void> send = webSocket.writeBinaryMessage(Buffer.buffer(bytes));
+    // Diagnostic for #7756: see send(String) above.
+    send.onFailure(t -> logger.log(Level.SEVERE, t,
+        () -> String.format("VertxMockWebSocket.writeBinaryMessage future failed (ws=%s, length=%d)",
+            Integer.toHexString(System.identityHashCode(webSocket)), bytes.length)));
     if (send.isComplete()) {
       return send.succeeded();
     }
@@ -59,7 +75,10 @@ public class VertxMockWebSocket implements WebSocket {
   public synchronized boolean close(int code, String reason) {
     if (!closing) {
       closing = true;
-      webSocket.close((short) code, reason);
+      // Diagnostic for #7756: capture async close failures (same rationale as send() above).
+      webSocket.close((short) code, reason).onFailure(t -> logger.log(Level.SEVERE, t,
+          () -> String.format("VertxMockWebSocket.close future failed (ws=%s, code=%d, reason=%s)",
+              Integer.toHexString(System.identityHashCode(webSocket)), code, reason)));
     }
     return true;
   }
