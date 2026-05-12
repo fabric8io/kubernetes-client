@@ -32,7 +32,7 @@
 * Fix #7579: bump istio.io/client-go from 1.28.0 to 1.29.1
 * Fix #7551: bump jackson-bom from 2.20.0 to 2.21.1
 * Fix #7718: bump kin-openapi from 0.135.0 to 0.137.0
-* Fix #PLACEHOLDER: bump kin-openapi from 0.137.0 to 0.138.0
+* Fix #7758: bump kin-openapi from 0.137.0 to 0.138.0
 * Fix #7723: bump knative.dev/eventing from 0.48.2 to 0.49.0
 * Fix #7723: bump knative.dev/eventing-github from 0.48.0 to 0.49.0
 * Fix #7723: bump knative.dev/eventing-gitlab from 0.48.0 to 0.49.0
