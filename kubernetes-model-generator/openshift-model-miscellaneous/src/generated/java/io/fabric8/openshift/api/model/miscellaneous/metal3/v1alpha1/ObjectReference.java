@@ -1,9 +1,7 @@
 
 package io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,17 +31,11 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-/**
- * CPU describes one processor on the host.
- */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "arch",
-    "clockMegahertz",
-    "count",
-    "flags",
-    "model"
+    "name",
+    "namespace"
 })
 @ToString
 @EqualsAndHashCode
@@ -67,126 +59,67 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CPU implements Editable<CPUBuilder>, KubernetesResource
+public class ObjectReference implements Editable<ObjectReferenceBuilder>, KubernetesResource
 {
 
-    @JsonProperty("arch")
-    private String arch;
-    @JsonProperty("clockMegahertz")
-    private Double clockMegahertz;
-    @JsonProperty("count")
-    private Integer count;
-    @JsonProperty("flags")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> flags = new ArrayList<>();
-    @JsonProperty("model")
-    private String model;
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("namespace")
+    private String namespace;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public CPU() {
+    public ObjectReference() {
     }
 
-    public CPU(String arch, Double clockMegahertz, Integer count, List<String> flags, String model) {
+    public ObjectReference(String name, String namespace) {
         super();
-        this.arch = arch;
-        this.clockMegahertz = clockMegahertz;
-        this.count = count;
-        this.flags = flags;
-        this.model = model;
+        this.name = name;
+        this.namespace = namespace;
     }
 
     /**
-     * CPU describes one processor on the host.
+     * `name` is the name of the object bound
      */
-    @JsonProperty("arch")
-    public String getArch() {
-        return arch;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
     /**
-     * CPU describes one processor on the host.
+     * `name` is the name of the object bound
      */
-    @JsonProperty("arch")
-    public void setArch(String arch) {
-        this.arch = arch;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
-     * CPU describes one processor on the host.
+     * `namespace` is the namespace of the object bound
      */
-    @JsonProperty("clockMegahertz")
-    public Double getClockMegahertz() {
-        return clockMegahertz;
+    @JsonProperty("namespace")
+    public String getNamespace() {
+        return namespace;
     }
 
     /**
-     * CPU describes one processor on the host.
+     * `namespace` is the namespace of the object bound
      */
-    @JsonProperty("clockMegahertz")
-    public void setClockMegahertz(Double clockMegahertz) {
-        this.clockMegahertz = clockMegahertz;
-    }
-
-    /**
-     * CPU describes one processor on the host.
-     */
-    @JsonProperty("count")
-    public Integer getCount() {
-        return count;
-    }
-
-    /**
-     * CPU describes one processor on the host.
-     */
-    @JsonProperty("count")
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    /**
-     * CPU describes one processor on the host.
-     */
-    @JsonProperty("flags")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<String> getFlags() {
-        return flags;
-    }
-
-    /**
-     * CPU describes one processor on the host.
-     */
-    @JsonProperty("flags")
-    public void setFlags(List<String> flags) {
-        this.flags = flags;
-    }
-
-    /**
-     * CPU describes one processor on the host.
-     */
-    @JsonProperty("model")
-    public String getModel() {
-        return model;
-    }
-
-    /**
-     * CPU describes one processor on the host.
-     */
-    @JsonProperty("model")
-    public void setModel(String model) {
-        this.model = model;
+    @JsonProperty("namespace")
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
     }
 
     @JsonIgnore
-    public CPUBuilder edit() {
-        return new CPUBuilder(this);
+    public ObjectReferenceBuilder edit() {
+        return new ObjectReferenceBuilder(this);
     }
 
     @JsonIgnore
-    public CPUBuilder toBuilder() {
+    public ObjectReferenceBuilder toBuilder() {
         return edit();
     }
 

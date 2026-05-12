@@ -37,7 +37,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * BMCEventSubscription is the Schema for the fast eventing API
+ * HostClaim is the Schema for the hostclaims API.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -75,29 +75,29 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("metal3.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BMCEventSubscription implements Editable<BMCEventSubscriptionBuilder>, HasMetadata, Namespaced
+public class HostClaim implements Editable<HostClaimBuilder>, HasMetadata, Namespaced
 {
 
     @JsonProperty("apiVersion")
     private String apiVersion = "metal3.io/v1alpha1";
     @JsonProperty("kind")
-    private String kind = "BMCEventSubscription";
+    private String kind = "HostClaim";
     @JsonProperty("metadata")
     private ObjectMeta metadata;
     @JsonProperty("spec")
-    private BMCEventSubscriptionSpec spec;
+    private HostClaimSpec spec;
     @JsonProperty("status")
-    private BMCEventSubscriptionStatus status;
+    private HostClaimStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public BMCEventSubscription() {
+    public HostClaim() {
     }
 
-    public BMCEventSubscription(String apiVersion, String kind, ObjectMeta metadata, BMCEventSubscriptionSpec spec, BMCEventSubscriptionStatus status) {
+    public HostClaim(String apiVersion, String kind, ObjectMeta metadata, HostClaimSpec spec, HostClaimStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -139,7 +139,7 @@ public class BMCEventSubscription implements Editable<BMCEventSubscriptionBuilde
     }
 
     /**
-     * BMCEventSubscription is the Schema for the fast eventing API
+     * HostClaim is the Schema for the hostclaims API.
      */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
@@ -147,7 +147,7 @@ public class BMCEventSubscription implements Editable<BMCEventSubscriptionBuilde
     }
 
     /**
-     * BMCEventSubscription is the Schema for the fast eventing API
+     * HostClaim is the Schema for the hostclaims API.
      */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
@@ -155,44 +155,44 @@ public class BMCEventSubscription implements Editable<BMCEventSubscriptionBuilde
     }
 
     /**
-     * BMCEventSubscription is the Schema for the fast eventing API
+     * HostClaim is the Schema for the hostclaims API.
      */
     @JsonProperty("spec")
-    public BMCEventSubscriptionSpec getSpec() {
+    public HostClaimSpec getSpec() {
         return spec;
     }
 
     /**
-     * BMCEventSubscription is the Schema for the fast eventing API
+     * HostClaim is the Schema for the hostclaims API.
      */
     @JsonProperty("spec")
-    public void setSpec(BMCEventSubscriptionSpec spec) {
+    public void setSpec(HostClaimSpec spec) {
         this.spec = spec;
     }
 
     /**
-     * BMCEventSubscription is the Schema for the fast eventing API
+     * HostClaim is the Schema for the hostclaims API.
      */
     @JsonProperty("status")
-    public BMCEventSubscriptionStatus getStatus() {
+    public HostClaimStatus getStatus() {
         return status;
     }
 
     /**
-     * BMCEventSubscription is the Schema for the fast eventing API
+     * HostClaim is the Schema for the hostclaims API.
      */
     @JsonProperty("status")
-    public void setStatus(BMCEventSubscriptionStatus status) {
+    public void setStatus(HostClaimStatus status) {
         this.status = status;
     }
 
     @JsonIgnore
-    public BMCEventSubscriptionBuilder edit() {
-        return new BMCEventSubscriptionBuilder(this);
+    public HostClaimBuilder edit() {
+        return new HostClaimBuilder(this);
     }
 
     @JsonIgnore
-    public BMCEventSubscriptionBuilder toBuilder() {
+    public HostClaimBuilder toBuilder() {
         return edit();
     }
 

@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -15,11 +17,12 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
@@ -37,7 +40,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * BMCEventSubscription is the Schema for the fast eventing API
+ * HostClaimList contains a list of HostClaim.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -45,8 +48,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec",
-    "status"
+    "items"
 })
 @ToString
 @EqualsAndHashCode
@@ -75,35 +77,33 @@ import lombok.experimental.Accessors;
 @Version("v1alpha1")
 @Group("metal3.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class BMCEventSubscription implements Editable<BMCEventSubscriptionBuilder>, HasMetadata, Namespaced
+public class HostClaimList implements Editable<HostClaimListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.HostClaim>
 {
 
     @JsonProperty("apiVersion")
     private String apiVersion = "metal3.io/v1alpha1";
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.HostClaim> items = new ArrayList<>();
     @JsonProperty("kind")
-    private String kind = "BMCEventSubscription";
+    private String kind = "HostClaimList";
     @JsonProperty("metadata")
-    private ObjectMeta metadata;
-    @JsonProperty("spec")
-    private BMCEventSubscriptionSpec spec;
-    @JsonProperty("status")
-    private BMCEventSubscriptionStatus status;
+    private ListMeta metadata;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public BMCEventSubscription() {
+    public HostClaimList() {
     }
 
-    public BMCEventSubscription(String apiVersion, String kind, ObjectMeta metadata, BMCEventSubscriptionSpec spec, BMCEventSubscriptionStatus status) {
+    public HostClaimList(String apiVersion, List<io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.HostClaim> items, String kind, ListMeta metadata) {
         super();
         this.apiVersion = apiVersion;
+        this.items = items;
         this.kind = kind;
         this.metadata = metadata;
-        this.spec = spec;
-        this.status = status;
     }
 
     /**
@@ -123,6 +123,23 @@ public class BMCEventSubscription implements Editable<BMCEventSubscriptionBuilde
     }
 
     /**
+     * HostClaimList contains a list of HostClaim.
+     */
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.HostClaim> getItems() {
+        return items;
+    }
+
+    /**
+     * HostClaimList contains a list of HostClaim.
+     */
+    @JsonProperty("items")
+    public void setItems(List<io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.HostClaim> items) {
+        this.items = items;
+    }
+
+    /**
      * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
@@ -139,60 +156,28 @@ public class BMCEventSubscription implements Editable<BMCEventSubscriptionBuilde
     }
 
     /**
-     * BMCEventSubscription is the Schema for the fast eventing API
+     * HostClaimList contains a list of HostClaim.
      */
     @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
+    public ListMeta getMetadata() {
         return metadata;
     }
 
     /**
-     * BMCEventSubscription is the Schema for the fast eventing API
+     * HostClaimList contains a list of HostClaim.
      */
     @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
+    public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
     }
 
-    /**
-     * BMCEventSubscription is the Schema for the fast eventing API
-     */
-    @JsonProperty("spec")
-    public BMCEventSubscriptionSpec getSpec() {
-        return spec;
-    }
-
-    /**
-     * BMCEventSubscription is the Schema for the fast eventing API
-     */
-    @JsonProperty("spec")
-    public void setSpec(BMCEventSubscriptionSpec spec) {
-        this.spec = spec;
-    }
-
-    /**
-     * BMCEventSubscription is the Schema for the fast eventing API
-     */
-    @JsonProperty("status")
-    public BMCEventSubscriptionStatus getStatus() {
-        return status;
-    }
-
-    /**
-     * BMCEventSubscription is the Schema for the fast eventing API
-     */
-    @JsonProperty("status")
-    public void setStatus(BMCEventSubscriptionStatus status) {
-        this.status = status;
+    @JsonIgnore
+    public HostClaimListBuilder edit() {
+        return new HostClaimListBuilder(this);
     }
 
     @JsonIgnore
-    public BMCEventSubscriptionBuilder edit() {
-        return new BMCEventSubscriptionBuilder(this);
-    }
-
-    @JsonIgnore
-    public BMCEventSubscriptionBuilder toBuilder() {
+    public HostClaimListBuilder toBuilder() {
         return edit();
     }
 

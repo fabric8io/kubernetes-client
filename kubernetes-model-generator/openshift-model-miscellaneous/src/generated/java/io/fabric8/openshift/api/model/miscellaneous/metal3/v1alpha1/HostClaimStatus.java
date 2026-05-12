@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -34,16 +35,16 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * CPU describes one processor on the host.
+ * HostClaimStatus defines the observed state of HostClaim.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "arch",
-    "clockMegahertz",
-    "count",
-    "flags",
-    "model"
+    "bareMetalHost",
+    "conditions",
+    "hardwareData",
+    "lastUpdated",
+    "poweredOn"
 })
 @ToString
 @EqualsAndHashCode
@@ -67,126 +68,126 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class CPU implements Editable<CPUBuilder>, KubernetesResource
+public class HostClaimStatus implements Editable<HostClaimStatusBuilder>, KubernetesResource
 {
 
-    @JsonProperty("arch")
-    private String arch;
-    @JsonProperty("clockMegahertz")
-    private Double clockMegahertz;
-    @JsonProperty("count")
-    private Integer count;
-    @JsonProperty("flags")
+    @JsonProperty("bareMetalHost")
+    private ObjectReference bareMetalHost;
+    @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> flags = new ArrayList<>();
-    @JsonProperty("model")
-    private String model;
+    private List<Condition> conditions = new ArrayList<>();
+    @JsonProperty("hardwareData")
+    private ObjectReference hardwareData;
+    @JsonProperty("lastUpdated")
+    private String lastUpdated;
+    @JsonProperty("poweredOn")
+    private Boolean poweredOn;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public CPU() {
+    public HostClaimStatus() {
     }
 
-    public CPU(String arch, Double clockMegahertz, Integer count, List<String> flags, String model) {
+    public HostClaimStatus(ObjectReference bareMetalHost, List<Condition> conditions, ObjectReference hardwareData, String lastUpdated, Boolean poweredOn) {
         super();
-        this.arch = arch;
-        this.clockMegahertz = clockMegahertz;
-        this.count = count;
-        this.flags = flags;
-        this.model = model;
+        this.bareMetalHost = bareMetalHost;
+        this.conditions = conditions;
+        this.hardwareData = hardwareData;
+        this.lastUpdated = lastUpdated;
+        this.poweredOn = poweredOn;
     }
 
     /**
-     * CPU describes one processor on the host.
+     * HostClaimStatus defines the observed state of HostClaim.
      */
-    @JsonProperty("arch")
-    public String getArch() {
-        return arch;
+    @JsonProperty("bareMetalHost")
+    public ObjectReference getBareMetalHost() {
+        return bareMetalHost;
     }
 
     /**
-     * CPU describes one processor on the host.
+     * HostClaimStatus defines the observed state of HostClaim.
      */
-    @JsonProperty("arch")
-    public void setArch(String arch) {
-        this.arch = arch;
+    @JsonProperty("bareMetalHost")
+    public void setBareMetalHost(ObjectReference bareMetalHost) {
+        this.bareMetalHost = bareMetalHost;
     }
 
     /**
-     * CPU describes one processor on the host.
+     * Conditions defines current service state of the HostClaim.
      */
-    @JsonProperty("clockMegahertz")
-    public Double getClockMegahertz() {
-        return clockMegahertz;
-    }
-
-    /**
-     * CPU describes one processor on the host.
-     */
-    @JsonProperty("clockMegahertz")
-    public void setClockMegahertz(Double clockMegahertz) {
-        this.clockMegahertz = clockMegahertz;
-    }
-
-    /**
-     * CPU describes one processor on the host.
-     */
-    @JsonProperty("count")
-    public Integer getCount() {
-        return count;
-    }
-
-    /**
-     * CPU describes one processor on the host.
-     */
-    @JsonProperty("count")
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    /**
-     * CPU describes one processor on the host.
-     */
-    @JsonProperty("flags")
+    @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<String> getFlags() {
-        return flags;
+    public List<Condition> getConditions() {
+        return conditions;
     }
 
     /**
-     * CPU describes one processor on the host.
+     * Conditions defines current service state of the HostClaim.
      */
-    @JsonProperty("flags")
-    public void setFlags(List<String> flags) {
-        this.flags = flags;
+    @JsonProperty("conditions")
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
     }
 
     /**
-     * CPU describes one processor on the host.
+     * HostClaimStatus defines the observed state of HostClaim.
      */
-    @JsonProperty("model")
-    public String getModel() {
-        return model;
+    @JsonProperty("hardwareData")
+    public ObjectReference getHardwareData() {
+        return hardwareData;
     }
 
     /**
-     * CPU describes one processor on the host.
+     * HostClaimStatus defines the observed state of HostClaim.
      */
-    @JsonProperty("model")
-    public void setModel(String model) {
-        this.model = model;
+    @JsonProperty("hardwareData")
+    public void setHardwareData(ObjectReference hardwareData) {
+        this.hardwareData = hardwareData;
+    }
+
+    /**
+     * HostClaimStatus defines the observed state of HostClaim.
+     */
+    @JsonProperty("lastUpdated")
+    public String getLastUpdated() {
+        return lastUpdated;
+    }
+
+    /**
+     * HostClaimStatus defines the observed state of HostClaim.
+     */
+    @JsonProperty("lastUpdated")
+    public void setLastUpdated(String lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    /**
+     * The currently detected power state of the host. This field may get briefly out of sync with the actual state of the hardware while provisioning processes are running.
+     */
+    @JsonProperty("poweredOn")
+    public Boolean getPoweredOn() {
+        return poweredOn;
+    }
+
+    /**
+     * The currently detected power state of the host. This field may get briefly out of sync with the actual state of the hardware while provisioning processes are running.
+     */
+    @JsonProperty("poweredOn")
+    public void setPoweredOn(Boolean poweredOn) {
+        this.poweredOn = poweredOn;
     }
 
     @JsonIgnore
-    public CPUBuilder edit() {
-        return new CPUBuilder(this);
+    public HostClaimStatusBuilder edit() {
+        return new HostClaimStatusBuilder(this);
     }
 
     @JsonIgnore
-    public CPUBuilder toBuilder() {
+    public HostClaimStatusBuilder toBuilder() {
         return edit();
     }
 

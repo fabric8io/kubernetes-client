@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "fromBootMAC",
     "interface",
     "key"
 })
@@ -66,6 +67,8 @@ import lombok.experimental.Accessors;
 public class MetaDataHostInterface implements Editable<MetaDataHostInterfaceBuilder>, KubernetesResource
 {
 
+    @JsonProperty("fromBootMAC")
+    private Boolean fromBootMAC;
     @JsonProperty("interface")
     private String _interface;
     @JsonProperty("key")
@@ -79,10 +82,27 @@ public class MetaDataHostInterface implements Editable<MetaDataHostInterfaceBuil
     public MetaDataHostInterface() {
     }
 
-    public MetaDataHostInterface(String _interface, String key) {
+    public MetaDataHostInterface(Boolean fromBootMAC, String _interface, String key) {
         super();
+        this.fromBootMAC = fromBootMAC;
         this._interface = _interface;
         this.key = key;
+    }
+
+    /**
+     * FromBootMAC will fetch the MAC address from the BareMetalHost Spec BootMACAddress field.
+     */
+    @JsonProperty("fromBootMAC")
+    public Boolean getFromBootMAC() {
+        return fromBootMAC;
+    }
+
+    /**
+     * FromBootMAC will fetch the MAC address from the BareMetalHost Spec BootMACAddress field.
+     */
+    @JsonProperty("fromBootMAC")
+    public void setFromBootMAC(Boolean fromBootMAC) {
+        this.fromBootMAC = fromBootMAC;
     }
 
     /**

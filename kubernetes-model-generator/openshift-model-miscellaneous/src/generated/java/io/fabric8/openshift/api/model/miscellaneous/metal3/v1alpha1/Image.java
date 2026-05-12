@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -41,6 +40,7 @@ import lombok.experimental.Accessors;
     "checksum",
     "checksumType",
     "format",
+    "ociAuthSecretName",
     "url"
 })
 @ToString
@@ -56,7 +56,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
@@ -74,6 +74,8 @@ public class Image implements Editable<ImageBuilder>, KubernetesResource
     private String checksumType;
     @JsonProperty("format")
     private String format;
+    @JsonProperty("ociAuthSecretName")
+    private String ociAuthSecretName;
     @JsonProperty("url")
     private String url;
     @JsonIgnore
@@ -85,11 +87,12 @@ public class Image implements Editable<ImageBuilder>, KubernetesResource
     public Image() {
     }
 
-    public Image(String checksum, String checksumType, String format, String url) {
+    public Image(String checksum, String checksumType, String format, String ociAuthSecretName, String url) {
         super();
         this.checksum = checksum;
         this.checksumType = checksumType;
         this.format = format;
+        this.ociAuthSecretName = ociAuthSecretName;
         this.url = url;
     }
 
@@ -139,6 +142,22 @@ public class Image implements Editable<ImageBuilder>, KubernetesResource
     @JsonProperty("format")
     public void setFormat(String format) {
         this.format = format;
+    }
+
+    /**
+     * OCIAuthSecretName optionally names a Docker-config secret containing registry credentials for oci:// images. Must be in the same namespace as the BareMetalHost. Allowed types: kubernetes.io/dockerconfigjson|dockercfg. Only used when Image.URL has the oci:// scheme.
+     */
+    @JsonProperty("ociAuthSecretName")
+    public String getOciAuthSecretName() {
+        return ociAuthSecretName;
+    }
+
+    /**
+     * OCIAuthSecretName optionally names a Docker-config secret containing registry credentials for oci:// images. Must be in the same namespace as the BareMetalHost. Allowed types: kubernetes.io/dockerconfigjson|dockercfg. Only used when Image.URL has the oci:// scheme.
+     */
+    @JsonProperty("ociAuthSecretName")
+    public void setOciAuthSecretName(String ociAuthSecretName) {
+        this.ociAuthSecretName = ociAuthSecretName;
     }
 
     /**

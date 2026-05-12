@@ -26,6 +26,8 @@
 * Fix #6923: Make the crd-generator-maven-plugin be toolchain aware
 
 #### Dependency Upgrade
+* Fix #7754: bump baremetal-operator/apis from 0.12.4 to 0.13.0
+* Fix #7754: bump cluster-api-provider-metal3 from 1.12.4 to 1.13.0
 * Fix #7651: bump k8s.io/apimachinery from 0.35.4 to 0.36.0
 * Fix #7579: bump istio.io/client-go from 1.28.0 to 1.29.1
 * Fix #7551: bump jackson-bom from 2.20.0 to 2.21.1

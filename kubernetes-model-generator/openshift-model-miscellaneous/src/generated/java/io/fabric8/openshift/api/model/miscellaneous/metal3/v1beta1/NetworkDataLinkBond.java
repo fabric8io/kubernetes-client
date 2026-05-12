@@ -47,6 +47,7 @@ import lombok.experimental.Accessors;
     "id",
     "macAddress",
     "mtu",
+    "name",
     "parameters"
 })
 @ToString
@@ -87,6 +88,8 @@ public class NetworkDataLinkBond implements Editable<NetworkDataLinkBondBuilder>
     private NetworkLinkEthernetMac macAddress;
     @JsonProperty("mtu")
     private Integer mtu;
+    @JsonProperty("name")
+    private String name;
     @JsonProperty("parameters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, JsonNode> parameters = new LinkedHashMap<>();
@@ -99,7 +102,7 @@ public class NetworkDataLinkBond implements Editable<NetworkDataLinkBondBuilder>
     public NetworkDataLinkBond() {
     }
 
-    public NetworkDataLinkBond(List<String> bondLinks, String bondMode, String bondXmitHashPolicy, String id, NetworkLinkEthernetMac macAddress, Integer mtu, Map<String, JsonNode> parameters) {
+    public NetworkDataLinkBond(List<String> bondLinks, String bondMode, String bondXmitHashPolicy, String id, NetworkLinkEthernetMac macAddress, Integer mtu, String name, Map<String, JsonNode> parameters) {
         super();
         this.bondLinks = bondLinks;
         this.bondMode = bondMode;
@@ -107,6 +110,7 @@ public class NetworkDataLinkBond implements Editable<NetworkDataLinkBondBuilder>
         this.id = id;
         this.macAddress = macAddress;
         this.mtu = mtu;
+        this.name = name;
         this.parameters = parameters;
     }
 
@@ -205,6 +209,22 @@ public class NetworkDataLinkBond implements Editable<NetworkDataLinkBondBuilder>
     @JsonProperty("mtu")
     public void setMtu(Integer mtu) {
         this.mtu = mtu;
+    }
+
+    /**
+     * Name is the interface name to be used by cloud-init. When combined with MACAddress, cloud-init will rename the interface matching the MAC to this name. When MACAddress is omitted, cloud-init will use this name directly.
+     */
+    @JsonProperty("name")
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Name is the interface name to be used by cloud-init. When combined with MACAddress, cloud-init will rename the interface matching the MAC to this name. When MACAddress is omitted, cloud-init will use this name directly.
+     */
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**

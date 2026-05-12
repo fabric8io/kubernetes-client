@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -35,7 +34,8 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "deleteAction"
+    "deleteAction",
+    "force"
 })
 @ToString
 @EqualsAndHashCode
@@ -50,7 +50,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
@@ -64,6 +64,8 @@ public class DetachedAnnotationArguments implements Editable<DetachedAnnotationA
 
     @JsonProperty("deleteAction")
     private String deleteAction;
+    @JsonProperty("force")
+    private Boolean force;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -73,9 +75,10 @@ public class DetachedAnnotationArguments implements Editable<DetachedAnnotationA
     public DetachedAnnotationArguments() {
     }
 
-    public DetachedAnnotationArguments(String deleteAction) {
+    public DetachedAnnotationArguments(String deleteAction, Boolean force) {
         super();
         this.deleteAction = deleteAction;
+        this.force = force;
     }
 
     /**
@@ -92,6 +95,22 @@ public class DetachedAnnotationArguments implements Editable<DetachedAnnotationA
     @JsonProperty("deleteAction")
     public void setDeleteAction(String deleteAction) {
         this.deleteAction = deleteAction;
+    }
+
+    /**
+     * Force indicates if detaching should be forced regardless of the host's state
+     */
+    @JsonProperty("force")
+    public Boolean getForce() {
+        return force;
+    }
+
+    /**
+     * Force indicates if detaching should be forced regardless of the host's state
+     */
+    @JsonProperty("force")
+    public void setForce(Boolean force) {
+        this.force = force;
     }
 
     @JsonIgnore
