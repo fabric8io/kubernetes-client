@@ -17,7 +17,7 @@
 name: Build
 
 env:
-  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e -Dit.test.bom=true
+  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e -Dit.test.bom=true -T 1C
 
 on:
   workflow_dispatch:
