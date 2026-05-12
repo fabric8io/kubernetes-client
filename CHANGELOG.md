@@ -5,6 +5,8 @@
 #### Bugs
 * Fix #7747: (mockwebserver) avoid RejectedExecutionException in MockWebServer#shutdown() — linearize close sequence to remove the httpClose-listener vs await race, and make shutdown() idempotent against repeated calls (e.g. JUnit @Nested afterAll cascades)
 * Fix #7734: (mockwebserver) avoid sending Content-Length together with Transfer-Encoding for chunked responses
+* Fix #7716: (informer) SerialExecutor.execute() now returns immediately after shutdown — no wrapper is offered, scheduleNext() is not called, and the underlying executor is not touched, fixing a post-stop NPE race exposed by SharedProcessor.distribute(...) after stop()
+* Fix #7702: ExecWebSocketListener.onError now wraps WebSocketHandshakeException via the chaining KubernetesClientException constructor instead of post-hoc initCause — handshake failures with a non-null upgrade response no longer throw IllegalStateException synchronously, so onFailure/exitCode receive the parsed Status and the original handshake exception as the cause
 * Fix #7686: (httpclient-vertx-5) StackBasedRecursionGuard.enter() no longer increments depth when refusing entry, fixing an infinite runOnContext loop that stalled InputStreamReadStream uploads under CPU contention
 * Fix #7700: ExecWebSocketListener.onError now defers failure handling through the SerialExecutor so a pending channel-3 exit-status task runs first and the parsed exit code is preserved instead of being overwritten by a peer-close exception
 * Fix #7698: (httpclient-vertx-5) InputStreamReadStream now fires endHandler when registered after the end signal has already been delivered, fixing a race for empty/fast streams
@@ -56,6 +58,8 @@
 * Fix #7736: bump prometheus-operator from 0.90.1 to 0.91.0
 * Fix #7578: bump tektoncd/pipeline from 1.9.0 to 1.10.2
 * Fix #7582: bump vertical-pod-autoscaler from 1.4.1 to 1.6.0
+* Fix #7659: bump vertx.version from 4.5.24 to 4.5.26
+* Fix #7731: bump vertx-5 version from 5.0.7 to 5.0.12
 
 #### New Features
 * Fix #7417: Support for Kubernetes v1.36 (ハル / Haru)
