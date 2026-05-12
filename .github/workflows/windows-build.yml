@@ -54,7 +54,7 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
       - name: Build Project
-        run: ./mvnw clean install
+        run: ./mvnw -T 1C clean install
       - name: Drop in-repo artifacts before cache save
         # Don't let io.fabric8:* jars installed by this run leak into the cache that future
         # runs restore. Only third-party dependencies should be cached.
