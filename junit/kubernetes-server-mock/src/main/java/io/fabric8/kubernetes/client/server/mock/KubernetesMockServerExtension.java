@@ -16,10 +16,7 @@
 package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
-import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.MockWebServer;
@@ -27,15 +24,12 @@ import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.http.Dispatcher;
 import io.fabric8.mockwebserver.internal.MockDispatcher;
-import io.vertx.core.Vertx;
-import io.vertx.core.VertxOptions;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -45,8 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -59,22 +51,10 @@ import java.util.stream.Stream;
 public class KubernetesMockServerExtension
     implements AfterEachCallback, AfterAllCallback, BeforeEachCallback, BeforeAllCallback {
 
-  // Per-JVM shared resources amortize Vert.x/Netty cold-start across the fork. The first
-  // test pays the ~7-8 s TLS/event-loop/class-load cost; subsequent tests reuse the same
-  // Vertx and MockWebServer instances rather than re-running it on every @BeforeEach.
-  private static final Object SHARED_LOCK = new Object();
-  private static volatile Vertx sharedVertx;
-  private static volatile MockWebServer sharedHttpServer;
-  private static volatile MockWebServer sharedHttpsServer;
-  private static volatile HttpClient.Factory sharedFactory;
-  private static volatile boolean shutdownHookRegistered;
-
   private KubernetesMockServer staticMock;
   private NamespacedKubernetesClient staticClient;
-  private Dispatcher staticDispatcher;
   private KubernetesMockServer instantMock;
   private NamespacedKubernetesClient instantClient;
-  private Dispatcher instantDispatcher;
 
   @Override
   public void afterEach(ExtensionContext context) {
@@ -126,37 +106,17 @@ public class KubernetesMockServerExtension
     } else {
       dispatcher = new MockDispatcher(responses);
     }
-    final MockWebServer mockWebServer = getOrCreateSharedServer(a.https());
-    // The DefaultMockServer constructor wires our fresh dispatcher (and responses map)
-    // into the shared MockWebServer via setDispatcher — atomically swapping out the
-    // previous test's dispatcher before we touch the request queue.
-    // There is a microsecond window between this constructor returning and mock.onStart()
-    // populating the responses map. A stray in-flight request from a previous test's
-    // leaked connection would see an empty responses map and get a default empty
-    // response. Acceptable because the previous test's destroy() closes its client
-    // (and therefore its connections) before this @BeforeEach runs.
     final KubernetesMockServer mock = new KubernetesMockServer(new Context(Serialization.jsonMapper()),
-        mockWebServer, responses, dispatcher, a.https());
-    // Skip mock.init() — the shared MockWebServer is already started. Run onStart()
-    // directly to register the / and /version expectations into this test's responses map.
-    mock.onStart();
-    // Now (with the new dispatcher in place) clear request count and queue carried over
-    // from the previous test in this fork.
-    mockWebServer.reset();
+        new MockWebServer(), responses, dispatcher, a.https());
+    mock.init();
     if (isStatic) {
       staticMock = mock;
-      staticDispatcher = dispatcher;
     } else {
       instantMock = mock;
-      instantDispatcher = dispatcher;
     }
     try {
-      final Consumer<KubernetesClientBuilder> userCustomizer = a.kubernetesClientBuilderCustomizer().getConstructor()
-          .newInstance();
-      final NamespacedKubernetesClient client = mock.createClient(builder -> {
-        builder.withHttpClientFactory(sharedHttpClientFactory());
-        userCustomizer.accept(builder);
-      });
+      final NamespacedKubernetesClient client = mock.createClient(
+          a.kubernetesClientBuilderCustomizer().getConstructor().newInstance());
       if (isStatic) {
         staticClient = client;
       } else {
@@ -164,129 +124,6 @@ public class KubernetesMockServerExtension
       }
     } catch (Exception e) {
       throw new IllegalArgumentException("The provided kubernetesClientBuilder is invalid", e);
-    }
-  }
-
-  /**
-   * Returns the per-JVM MockWebServer for the requested transport (HTTP or HTTPS), creating
-   * and starting it on first use. Shared across all tests in this fork to avoid paying
-   * Vert.x/Netty cold-start on each test.
-   */
-  private static MockWebServer getOrCreateSharedServer(boolean useHttps) {
-    MockWebServer existing = useHttps ? sharedHttpsServer : sharedHttpServer;
-    if (existing != null) {
-      return existing;
-    }
-    synchronized (SHARED_LOCK) {
-      existing = useHttps ? sharedHttpsServer : sharedHttpServer;
-      if (existing != null) {
-        return existing;
-      }
-      final MockWebServer fresh = new MockWebServer();
-      if (useHttps) {
-        fresh.useHttps();
-      }
-      fresh.start();
-      if (useHttps) {
-        sharedHttpsServer = fresh;
-      } else {
-        sharedHttpServer = fresh;
-      }
-      registerShutdownHook();
-      return fresh;
-    }
-  }
-
-  /**
-   * Returns the per-JVM Vertx used for the test HTTP client. Shared across all tests in
-   * this fork. Event-loop threads are daemons so they don't keep the JVM alive after the
-   * test runner exits.
-   */
-  private static Vertx getOrCreateSharedVertx() {
-    Vertx v = sharedVertx;
-    if (v != null) {
-      return v;
-    }
-    synchronized (SHARED_LOCK) {
-      if (sharedVertx == null) {
-        sharedVertx = Vertx.vertx(new VertxOptions().setUseDaemonThread(true));
-        registerShutdownHook();
-      }
-      return sharedVertx;
-    }
-  }
-
-  /**
-   * Returns an {@link HttpClient.Factory} that reuses the per-JVM shared Vertx, if the
-   * ServiceLoader-resolved factory exposes a {@code (Vertx)} constructor (true for both
-   * the Vert.x 4 and Vert.x 5 implementations). For any other factory (OkHttp, JDK, ...)
-   * the default instance is returned unchanged. The result is cached after the first call
-   * so the ServiceLoader scan and reflective probe are paid once per JVM.
-   */
-  private static HttpClient.Factory sharedHttpClientFactory() {
-    HttpClient.Factory cached = sharedFactory;
-    if (cached != null) {
-      return cached;
-    }
-    synchronized (SHARED_LOCK) {
-      if (sharedFactory != null) {
-        return sharedFactory;
-      }
-      final HttpClient.Factory defaultFactory = HttpClientUtils.getHttpClientFactory();
-      try {
-        final Constructor<?> ctor = defaultFactory.getClass().getConstructor(Vertx.class);
-        sharedFactory = (HttpClient.Factory) ctor.newInstance(getOrCreateSharedVertx());
-      } catch (NoSuchMethodException e) {
-        // Factory has no (Vertx) constructor (OkHttp, JDK, ...) — fall back to the default
-        // singleton. ServiceLoader returns the same instance for repeated lookups, so
-        // caching it here is consistent with prior behavior.
-        sharedFactory = defaultFactory;
-      } catch (ReflectiveOperationException e) {
-        throw new IllegalStateException("Failed to instantiate shared-Vertx HttpClient.Factory", e);
-      }
-      return sharedFactory;
-    }
-  }
-
-  private static void registerShutdownHook() {
-    // Called only from inside SHARED_LOCK (getOrCreateSharedServer / getOrCreateSharedVertx),
-    // so the check-then-set sequence is safe today. Keeping the synchronized block to make
-    // the invariant explicit and to keep the method safe if a future caller forgets the lock.
-    synchronized (SHARED_LOCK) {
-      if (shutdownHookRegistered) {
-        return;
-      }
-      shutdownHookRegistered = true;
-      Runtime.getRuntime().addShutdownHook(new Thread(KubernetesMockServerExtension::shutdownSharedResources,
-          "fabric8-mock-shared-shutdown"));
-    }
-  }
-
-  private static void shutdownSharedResources() {
-    final MockWebServer http = sharedHttpServer;
-    if (http != null) {
-      try {
-        http.shutdown();
-      } catch (Exception ignored) {
-        // best-effort
-      }
-    }
-    final MockWebServer https = sharedHttpsServer;
-    if (https != null) {
-      try {
-        https.shutdown();
-      } catch (Exception ignored) {
-        // best-effort
-      }
-    }
-    final Vertx v = sharedVertx;
-    if (v != null) {
-      try {
-        // Bounded wait so a stuck Vert.x close doesn't hold up JVM exit indefinitely.
-        v.close().toCompletionStage().toCompletableFuture().get(5, TimeUnit.SECONDS);
-      } catch (Exception ignored) {
-        // best-effort
-      }
     }
   }
 
@@ -306,28 +143,17 @@ public class KubernetesMockServerExtension
   }
 
   protected void destroy() {
-    // Do NOT call instantMock.destroy(): it would shut down the per-fork shared
-    // MockWebServer. The shared server is reset() at the start of each test and torn
-    // down by the JVM shutdown hook.
+    if (instantMock != null) {
+      instantMock.destroy();
+    }
     if (instantClient != null) {
       instantClient.close();
-    }
-    // Shut down the per-test dispatcher to release any WebSocket sessions it accumulated
-    // (the shared MockWebServer's setDispatcher would otherwise silently replace it next
-    // test without invoking shutdown).
-    if (instantDispatcher != null) {
-      instantDispatcher.shutdown();
     }
   }
 
   protected void destroyStatic() {
-    // Do NOT call staticMock.destroy(): see destroy().
-    if (staticClient != null) {
-      staticClient.close();
-    }
-    if (staticDispatcher != null) {
-      staticDispatcher.shutdown();
-    }
+    staticMock.destroy();
+    staticClient.close();
   }
 
   // Copied from io.fabric8.junit.jupiter.BaseExtension.extractFields TODO: remove duplication
