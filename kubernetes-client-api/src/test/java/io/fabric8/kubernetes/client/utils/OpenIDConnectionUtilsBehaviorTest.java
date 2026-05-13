@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.api.model.NamedClusterBuilder;
 import io.fabric8.kubernetes.api.model.NamedContextBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.TestSystemProperties;
+import io.fabric8.kubernetes.client.RestoreSystemProperties;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClient;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClientFactory;
@@ -68,6 +68,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.data.MapEntry.entry;
 
+@RestoreSystemProperties("kubeconfig")
 class OpenIDConnectionUtilsBehaviorTest {
 
   @TempDir
@@ -78,11 +79,9 @@ class OpenIDConnectionUtilsBehaviorTest {
   private ByteArrayOutputStream systemErr;
   private Config originalConfig;
   private Map<String, String> authProviderConfig;
-  private TestSystemProperties systemProperties;
 
   @BeforeEach
   void setUp() throws Exception {
-    systemProperties = TestSystemProperties.save("kubeconfig");
     httpClientFactory = new TestStandardHttpClientFactory(SINGLETON);
     httpClientBuilder = httpClientFactory.newBuilder();
     // Log capture
@@ -127,7 +126,6 @@ class OpenIDConnectionUtilsBehaviorTest {
   @AfterEach
   void tearDown() {
     System.setErr(originalSystemErrStream);
-    systemProperties.restore();
   }
 
   @Test

@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -24,28 +23,15 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@RestoreSystemProperties({
+    "kubeconfig",
+    "kubernetes.master",
+    "kubernetes.namespace",
+    "kubernetes.auth.token",
+    "kubernetes.auth.serviceAccount.token",
+    "kubenamespace"
+})
 class ConfigSourcePrecedenceTest {
-
-  private static final String[] MANAGED_PROPERTIES = {
-      "kubeconfig",
-      "kubernetes.master",
-      "kubernetes.namespace",
-      "kubernetes.auth.token",
-      "kubernetes.auth.serviceAccount.token",
-      "kubenamespace"
-  };
-
-  private TestSystemProperties systemProperties;
-
-  @BeforeEach
-  void storeProperties() {
-    systemProperties = TestSystemProperties.save(MANAGED_PROPERTIES);
-  }
-
-  @AfterEach
-  void restoreProperties() {
-    systemProperties.restore();
-  }
 
   @Nested
   @DisplayName("With provided kubeconfig property")

@@ -18,7 +18,7 @@ package io.fabric8.kubernetes.client.utils;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.TestSystemProperties;
+import io.fabric8.kubernetes.client.RestoreSystemProperties;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpClient.Builder;
 import io.fabric8.kubernetes.client.http.Interceptor;
@@ -63,19 +63,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
+@RestoreSystemProperties("kubernetes.backwardsCompatibilityInterceptor.disable")
 class HttpClientUtilsTest {
-
-  private TestSystemProperties systemProperties;
-
-  @BeforeEach
-  void storeProperties() {
-    systemProperties = TestSystemProperties.save("kubernetes.backwardsCompatibilityInterceptor.disable");
-  }
-
-  @AfterEach
-  void restoreProperties() {
-    systemProperties.restore();
-  }
 
   @Test
   void toProxyTypeTestUnknown() {

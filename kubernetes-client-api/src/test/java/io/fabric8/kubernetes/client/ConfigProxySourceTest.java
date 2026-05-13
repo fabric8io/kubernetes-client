@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -31,27 +30,11 @@ import java.nio.file.Files;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
+@RestoreSystemProperties({ "http.proxy", "https.proxy", "all.proxy", "kubeconfig" })
 class ConfigProxySourceTest {
-  private static final String[] MANAGED_PROPERTIES = {
-      "http.proxy",
-      "https.proxy",
-      "all.proxy",
-      "kubeconfig"
-  };
 
   @TempDir
   private File temporaryFolder;
-  private TestSystemProperties systemProperties;
-
-  @BeforeEach
-  void storeProperties() {
-    systemProperties = TestSystemProperties.save(MANAGED_PROPERTIES);
-  }
-
-  @AfterEach
-  void restoreProperties() {
-    systemProperties.restore();
-  }
 
   @Nested
   @DisplayName("HTTP Proxy")

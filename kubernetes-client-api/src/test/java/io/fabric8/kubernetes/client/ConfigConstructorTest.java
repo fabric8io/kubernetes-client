@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.client;
 import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -33,62 +32,46 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 
+@RestoreSystemProperties({
+    "http.proxy",
+    "https.proxy",
+    "kubeconfig",
+    "kubenamespace",
+    "kubernetes.auth.basic.password",
+    "kubernetes.auth.basic.username",
+    "kubernetes.auth.serviceAccount.token",
+    "kubernetes.auth.token",
+    "kubernetes.certs.ca.data",
+    "kubernetes.certs.ca.file",
+    "kubernetes.certs.client.data",
+    "kubernetes.certs.client.file",
+    "kubernetes.certs.client.key.algo",
+    "kubernetes.certs.client.key.data",
+    "kubernetes.certs.client.key.file",
+    "kubernetes.certs.client.key.passphrase",
+    "kubernetes.connection.timeout",
+    "kubernetes.disable.hostname.verification",
+    "kubernetes.keystore.file",
+    "kubernetes.keystore.passphrase",
+    "kubernetes.master",
+    "kubernetes.max.concurrent.requests",
+    "kubernetes.max.concurrent.requests.per.host",
+    "kubernetes.namespace",
+    "kubernetes.request.timeout",
+    "kubernetes.scale.timeout",
+    "kubernetes.tls.versions",
+    "kubernetes.trust.certificates",
+    "kubernetes.truststore.file",
+    "kubernetes.truststore.passphrase",
+    "kubernetes.upload.request.timeout",
+    "kubernetes.watch.reconnectInterval",
+    "kubernetes.watch.reconnectLimit",
+    "kubernetes.websocket.ping.interval",
+    "no.proxy",
+    "proxy.password",
+    "proxy.username"
+})
 class ConfigConstructorTest {
-
-  private static final String[] MANAGED_PROPERTIES = {
-      "KUBERNETES_SERVICE_HOST",
-      "KUBERNETES_SERVICE_PORT",
-      "http.proxy",
-      "https.proxy",
-      "kubeconfig",
-      "kubenamespace",
-      "kubernetes.auth.basic.password",
-      "kubernetes.auth.basic.username",
-      "kubernetes.auth.serviceAccount.token",
-      "kubernetes.auth.token",
-      "kubernetes.auth.tryServiceAccount",
-      "kubernetes.certs.ca.data",
-      "kubernetes.certs.ca.file",
-      "kubernetes.certs.client.data",
-      "kubernetes.certs.client.file",
-      "kubernetes.certs.client.key.algo",
-      "kubernetes.certs.client.key.data",
-      "kubernetes.certs.client.key.file",
-      "kubernetes.certs.client.key.passphrase",
-      "kubernetes.connection.timeout",
-      "kubernetes.disable.hostname.verification",
-      "kubernetes.keystore.file",
-      "kubernetes.keystore.passphrase",
-      "kubernetes.master",
-      "kubernetes.max.concurrent.requests",
-      "kubernetes.max.concurrent.requests.per.host",
-      "kubernetes.namespace",
-      "kubernetes.request.timeout",
-      "kubernetes.scale.timeout",
-      "kubernetes.tls.versions",
-      "kubernetes.trust.certificates",
-      "kubernetes.truststore.file",
-      "kubernetes.truststore.passphrase",
-      "kubernetes.upload.request.timeout",
-      "kubernetes.watch.reconnectInterval",
-      "kubernetes.watch.reconnectLimit",
-      "kubernetes.websocket.ping.interval",
-      "no.proxy",
-      "proxy.password",
-      "proxy.username"
-  };
-
-  private TestSystemProperties systemProperties;
-
-  @BeforeEach
-  void storeProperties() {
-    systemProperties = TestSystemProperties.save(MANAGED_PROPERTIES);
-  }
-
-  @AfterEach
-  void restoreProperties() {
-    systemProperties.restore();
-  }
 
   @ParameterizedTest
   @MethodSource("blankConfigurationProviders")

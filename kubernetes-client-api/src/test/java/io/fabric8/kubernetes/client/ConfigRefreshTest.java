@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.utils.Serialization;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,22 +30,16 @@ import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@RestoreSystemProperties({ "kubernetes.master", "kubeconfig" })
 class ConfigRefreshTest {
-
-  private static final String[] MANAGED_PROPERTIES = {
-      "kubernetes.master",
-      "kubeconfig"
-  };
 
   @TempDir
   private Path tempDir;
   private Path kubeConfigFile;
   private io.fabric8.kubernetes.api.model.Config kubeConfigOriginal;
-  private TestSystemProperties systemProperties;
 
   @BeforeEach
   void setUp() throws IOException {
-    systemProperties = TestSystemProperties.save(MANAGED_PROPERTIES);
     kubeConfigFile = tempDir.resolve("kubeconfig");
     kubeConfigOriginal = new io.fabric8.kubernetes.api.model.ConfigBuilder()
         .addNewCluster()
@@ -67,11 +60,6 @@ class ConfigRefreshTest {
         .withCurrentContext("the-context")
         .build();
     Files.writeString(kubeConfigFile, Serialization.asYaml(kubeConfigOriginal), CREATE);
-  }
-
-  @AfterEach
-  void tearDown() {
-    systemProperties.restore();
   }
 
   @Test

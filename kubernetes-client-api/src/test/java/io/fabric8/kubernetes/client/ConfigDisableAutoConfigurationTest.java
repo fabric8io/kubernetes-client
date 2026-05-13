@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.api.model.NamedContextBuilder;
 import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -30,15 +29,15 @@ import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@RestoreSystemProperties({
+    "kubernetes.disable.autoConfig",
+    "kubernetes.master",
+    "kubernetes.namespace",
+    "kubernetes.auth.serviceAccount.token",
+    "kubenamespace",
+    "kubeconfig"
+})
 class ConfigDisableAutoConfigurationTest {
-  private static final String[] MANAGED_PROPERTIES = {
-      "kubernetes.disable.autoConfig",
-      "kubernetes.master",
-      "kubernetes.namespace",
-      "kubernetes.auth.serviceAccount.token",
-      "kubenamespace",
-      "kubeconfig"
-  };
 
   private final NamedContext userConfiguredNamedContext = new NamedContextBuilder()
       .withName("context1")
@@ -47,17 +46,6 @@ class ConfigDisableAutoConfigurationTest {
       .withUser("testuser/api-test-openshiftapps-com:6443")
       .endContext()
       .build();
-  private TestSystemProperties systemProperties;
-
-  @BeforeEach
-  void storeProperties() {
-    systemProperties = TestSystemProperties.save(MANAGED_PROPERTIES);
-  }
-
-  @AfterEach
-  void restoreProperties() {
-    systemProperties.restore();
-  }
 
   @Nested
   @DisplayName("via kubernetes.disable.autoConfig=true")
