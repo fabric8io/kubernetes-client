@@ -18,36 +18,24 @@ package io.fabric8.kubernetes.client.impl;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.RestoreSystemProperties;
 import io.fabric8.kubernetes.client.ServiceToURLProvider;
-import io.fabric8.kubernetes.client.TestSystemProperties;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.mockito.Mockito.mock;
 
+@RestoreSystemProperties({ "SVC1_SERVICE_HOST", "SVC1_SERVICE_PORT", "SVC1_SERVICE_PORT_80_TCP_PROTO" })
 class URLFromEnvVarsImplTest {
-  private static final String[] MANAGED_PROPERTIES = {
-      "SVC1_SERVICE_HOST",
-      "SVC1_SERVICE_PORT",
-      "SVC1_SERVICE_PORT_80_TCP_PROTO"
-  };
 
   private URLFromEnvVarsImpl urlFromEnvVars;
   private KubernetesClient kubernetesClient;
-  private TestSystemProperties systemProperties;
 
   @BeforeEach
   void setup() {
-    systemProperties = TestSystemProperties.save(MANAGED_PROPERTIES);
     this.urlFromEnvVars = new URLFromEnvVarsImpl();
     this.kubernetesClient = mock(KubernetesClient.class);
-  }
-
-  @AfterEach
-  void tearDown() {
-    systemProperties.restore();
   }
 
   @Test

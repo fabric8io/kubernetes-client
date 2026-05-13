@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.lib.FileSystem;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.assertj.core.api.InstanceOfAssertFactories;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -44,6 +43,52 @@ import java.util.Objects;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.condition.OS.WINDOWS;
 
+@RestoreSystemProperties({
+    "KUBERNETES_SERVICE_HOST",
+    "KUBERNETES_SERVICE_PORT",
+    "http.proxy",
+    "https.proxy",
+    "kubeconfig",
+    "kubenamespace",
+    "kubernetes.auth.basic.password",
+    "kubernetes.auth.basic.username",
+    "kubernetes.auth.serviceAccount.token",
+    "kubernetes.auth.token",
+    "kubernetes.auth.tryServiceAccount",
+    "kubernetes.certs.ca.data",
+    "kubernetes.certs.ca.file",
+    "kubernetes.certs.client.data",
+    "kubernetes.certs.client.file",
+    "kubernetes.certs.client.key.algo",
+    "kubernetes.certs.client.key.data",
+    "kubernetes.certs.client.key.file",
+    "kubernetes.certs.client.key.passphrase",
+    "kubernetes.connection.timeout",
+    "kubernetes.disable.hostname.verification",
+    "kubernetes.impersonate.group",
+    "kubernetes.impersonate.username",
+    "kubernetes.keystore.file",
+    "kubernetes.keystore.passphrase",
+    "kubernetes.master",
+    "kubernetes.max.concurrent.requests",
+    "kubernetes.max.concurrent.requests.per.host",
+    "kubernetes.namespace",
+    "kubernetes.request.timeout",
+    "kubernetes.scale.timeout",
+    "kubernetes.tls.versions",
+    "kubernetes.trust.certificates",
+    "kubernetes.truststore.file",
+    "kubernetes.truststore.passphrase",
+    "kubernetes.upload.request.timeout",
+    "kubernetes.watch.reconnectInterval",
+    "kubernetes.watch.reconnectLimit",
+    "kubernetes.websocket.ping.interval",
+    "no.proxy",
+    "os.name",
+    "proxy.password",
+    "proxy.username",
+    "user.home"
+})
 class ConfigTest {
 
   private static final String TEST_KUBECONFIG_FILE = Utils.filePath(ConfigTest.class.getResource("/test-kubeconfig"));
@@ -89,65 +134,6 @@ class ConfigTest {
   private static final String TEST_CERT_GENERATOR_FILE = Utils.filePath(ConfigTest.class.getResource("/cert-generator"));
   private static final String TEST_KUBECONFIG_TLS_SERVER_NAME_FILE = Utils
       .filePath(ConfigTest.class.getResource("/test-kubeconfig-tls-server-name"));
-
-  private static final String[] MANAGED_PROPERTIES = {
-      "KUBERNETES_SERVICE_HOST",
-      "KUBERNETES_SERVICE_PORT",
-      "http.proxy",
-      "https.proxy",
-      "kubeconfig",
-      "kubenamespace",
-      "kubernetes.auth.basic.password",
-      "kubernetes.auth.basic.username",
-      "kubernetes.auth.serviceAccount.token",
-      "kubernetes.auth.token",
-      "kubernetes.auth.tryServiceAccount",
-      "kubernetes.certs.ca.data",
-      "kubernetes.certs.ca.file",
-      "kubernetes.certs.client.data",
-      "kubernetes.certs.client.file",
-      "kubernetes.certs.client.key.algo",
-      "kubernetes.certs.client.key.data",
-      "kubernetes.certs.client.key.file",
-      "kubernetes.certs.client.key.passphrase",
-      "kubernetes.connection.timeout",
-      "kubernetes.disable.hostname.verification",
-      "kubernetes.impersonate.group",
-      "kubernetes.impersonate.username",
-      "kubernetes.keystore.file",
-      "kubernetes.keystore.passphrase",
-      "kubernetes.master",
-      "kubernetes.max.concurrent.requests",
-      "kubernetes.max.concurrent.requests.per.host",
-      "kubernetes.namespace",
-      "kubernetes.request.timeout",
-      "kubernetes.scale.timeout",
-      "kubernetes.tls.versions",
-      "kubernetes.trust.certificates",
-      "kubernetes.truststore.file",
-      "kubernetes.truststore.passphrase",
-      "kubernetes.upload.request.timeout",
-      "kubernetes.watch.reconnectInterval",
-      "kubernetes.watch.reconnectLimit",
-      "kubernetes.websocket.ping.interval",
-      "no.proxy",
-      "os.name",
-      "proxy.password",
-      "proxy.username",
-      "user.home"
-  };
-
-  private TestSystemProperties systemProperties;
-
-  @BeforeEach
-  void storeProperties() {
-    systemProperties = TestSystemProperties.save(MANAGED_PROPERTIES);
-  }
-
-  @AfterEach
-  void restoreProperties() {
-    systemProperties.restore();
-  }
 
   @Nested
   @DisplayName("System Properties Configured")

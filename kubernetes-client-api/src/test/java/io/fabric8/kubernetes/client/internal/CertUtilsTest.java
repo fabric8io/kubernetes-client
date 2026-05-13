@@ -16,11 +16,9 @@
 package io.fabric8.kubernetes.client.internal;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.TestSystemProperties;
+import io.fabric8.kubernetes.client.RestoreSystemProperties;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -36,7 +34,6 @@ import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 import java.util.Collections;
-import java.util.Map;
 import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,28 +43,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@RestoreSystemProperties({
+    "javax.net.ssl.trustStore",
+    "javax.net.ssl.trustStorePassword",
+    "javax.net.ssl.keyStore",
+    "javax.net.ssl.keyStorePassword"
+})
 class CertUtilsTest {
 
   private static final String FABRIC8_STORE_PATH = Utils.filePath(CertUtilsTest.class.getResource("/ssl-test/fabric8-store"));
   private static final String FABRIC8_STORE_PASSPHRASE = "fabric8";
-  private static final String[] MANAGED_SSL_PROPERTIES = {
-      "javax.net.ssl.trustStore",
-      "javax.net.ssl.trustStorePassword",
-      "javax.net.ssl.trustStoreType",
-      "javax.net.ssl.keyStore",
-      "javax.net.ssl.keyStorePassword"
-  };
-  private TestSystemProperties systemProperties;
-
-  @BeforeEach
-  public void storeSystemProperties() {
-    systemProperties = TestSystemProperties.save(MANAGED_SSL_PROPERTIES);
-  }
-
-  @AfterEach
-  public void resetSystemPropertiesBack() {
-    systemProperties.restore();
-  }
 
   @Test
   void handleReadOnlyJavaTrustStore() throws Exception {

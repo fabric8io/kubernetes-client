@@ -17,13 +17,11 @@ package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.TestSystemProperties;
+import io.fabric8.kubernetes.client.RestoreSystemProperties;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.TestHttpResponse;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -50,25 +48,12 @@ import static org.mockito.Mockito.when;
 /**
  * Ignoring for now - the token refresh should be based upon the java 11 client or the provided client library and not okhttp
  */
+@RestoreSystemProperties({
+    KUBERNETES_AUTH_SERVICEACCOUNT_TOKEN_FILE_SYSTEM_PROPERTY,
+    KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY,
+    KUBERNETES_KUBECONFIG_FILE
+})
 class TokenRefreshInterceptorTest {
-
-  private static final String[] MANAGED_PROPERTIES = {
-      KUBERNETES_AUTH_SERVICEACCOUNT_TOKEN_FILE_SYSTEM_PROPERTY,
-      KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY,
-      KUBERNETES_KUBECONFIG_FILE
-  };
-
-  private TestSystemProperties systemProperties;
-
-  @BeforeEach
-  void storeProperties() {
-    systemProperties = TestSystemProperties.save(MANAGED_PROPERTIES);
-  }
-
-  @AfterEach
-  void restoreProperties() {
-    systemProperties.restore();
-  }
 
   @Test
   void shouldAutoconfigureAfter401() throws Exception {

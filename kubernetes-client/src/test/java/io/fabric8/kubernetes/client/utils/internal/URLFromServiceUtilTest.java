@@ -20,9 +20,7 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.ServicePort;
 import io.fabric8.kubernetes.api.model.ServicePortBuilder;
-import io.fabric8.kubernetes.client.TestSystemProperties;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import io.fabric8.kubernetes.client.RestoreSystemProperties;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -30,24 +28,8 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
+@RestoreSystemProperties({ "SVC1_SERVICE_HOST", "SVC1_PORT_443_TCP_PROTO", "SVC1_SERVICE_PORT" })
 class URLFromServiceUtilTest {
-  private static final String[] MANAGED_PROPERTIES = {
-      "SVC1_SERVICE_HOST",
-      "SVC1_PORT_443_TCP_PROTO",
-      "SVC1_SERVICE_PORT"
-  };
-
-  private TestSystemProperties systemProperties;
-
-  @BeforeEach
-  void storeProperties() {
-    systemProperties = TestSystemProperties.save(MANAGED_PROPERTIES);
-  }
-
-  @AfterEach
-  void restoreProperties() {
-    systemProperties.restore();
-  }
 
   @Test
   void resolveHostFromEnvVarOrSystemProperty_whenPropertyFound_thenReturnProperty() {
