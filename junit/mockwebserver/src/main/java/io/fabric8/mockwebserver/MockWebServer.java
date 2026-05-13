@@ -279,9 +279,7 @@ public class MockWebServer implements Closeable {
    * {@link Dispatcher}, the listener list, the SSL/TLS state, the negotiated port, and the
    * selected protocols. It is safe to call on a started server mid-life; callers that need
    * a different dispatcher or expectation set must install those themselves
-   * ({@link #setDispatcher(Dispatcher)}). Notably,
-   * {@code KubernetesMockServerExtension} relies on this contract to share a single
-   * MockWebServer across all tests in a JVM fork.
+   * ({@link #setDispatcher(Dispatcher)}).
    */
   public final void reset() {
     requestCount.set(0);
