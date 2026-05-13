@@ -424,7 +424,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
         }
         cleanUpOnce();
       } finally {
-        if (listenerNotified.compareAndSet(false, true) && listener != null) {
+        if (listener != null && listenerNotified.compareAndSet(false, true)) {
           listener.onClose(code, reason);
         }
       }

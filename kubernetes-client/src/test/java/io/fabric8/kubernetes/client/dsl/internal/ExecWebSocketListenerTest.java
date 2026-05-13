@@ -41,6 +41,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -453,6 +454,51 @@ class ExecWebSocketListenerTest {
         .as("exitCode must keep the terminateOnError value, not be overwritten by the transport close")
         .isInstanceOf(KubernetesClientException.class)
         .hasMessageContaining("boom");
+  }
+
+  @Test
+  void execListenerCallbackFiresExactlyOnceAcrossMultipleLifecycleEvents() {
+    // Locks down the once-and-only-once contract on ExecListener.onClose/onFailure that the
+    // class-level javadoc declares: even if the framework delivers multiple terminal events
+    // (e.g. a transport onError after a server-side onClose, or onError called twice), the
+    // user-supplied listener must receive exactly one notification.
+    final Queue<Runnable> manualQueue = new ArrayDeque<>();
+    final Executor manualExecutor = manualQueue::offer;
+    final AtomicInteger failureCount = new AtomicInteger();
+    final AtomicInteger closeCount = new AtomicInteger();
+    final ExecListener execListener = new ExecListener() {
+      @Override
+      public void onFailure(Throwable t, Response failureResponse) {
+        failureCount.incrementAndGet();
+      }
+
+      @Override
+      public void onClose(int code, String reason) {
+        closeCount.incrementAndGet();
+      }
+    };
+    final PodOperationContext context = new PodOperationContext().toBuilder()
+        .execListener(execListener)
+        .build();
+    final ExecWebSocketListener listener = new ExecWebSocketListener(context, manualExecutor, new KubernetesSerialization());
+    final WebSocket mockedWebSocket = Mockito.mock(WebSocket.class);
+    listener.onOpen(mockedWebSocket);
+
+    // First terminal event: transport-level error.
+    listener.onError(mockedWebSocket, new IOException("first"));
+    // Follow-up events that the framework may still deliver: a second onError, plus a late onClose.
+    listener.onError(mockedWebSocket, new IOException("second"));
+    listener.onClose(mockedWebSocket, 1000, "late");
+
+    Runnable next;
+    while ((next = manualQueue.poll()) != null) {
+      next.run();
+    }
+
+    assertEquals(1, failureCount.get(),
+        "ExecListener.onFailure must fire exactly once across repeat terminal events");
+    assertEquals(0, closeCount.get(),
+        "ExecListener.onClose must not fire once onFailure has already notified the listener");
   }
 
 }
