@@ -1,0 +1,4 @@
+io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageState
+io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageStateList
+io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageVersionMigration
+io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageVersionMigrationList

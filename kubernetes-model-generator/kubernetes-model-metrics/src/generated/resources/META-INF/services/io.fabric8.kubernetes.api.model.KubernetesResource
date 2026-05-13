@@ -1,0 +1,4 @@
+io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetrics
+io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetricsList
+io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetrics
+io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetricsList

@@ -61,6 +61,7 @@ public class GeneratorSettings {
   private Map<String, ApiVersion> apiVersions;
   private File outputDirectory;
   private File generatedSourcesDirectory;
+  private File generatedResourcesDirectory;
   private File overridesDirectory;
   /**
    * Base package for generated classes.
@@ -112,6 +113,14 @@ public class GeneratorSettings {
   private Set<String> skipGenerationRegexes;
   @Singular
   private Set<String> includeGenerationRegexes;
+  /**
+   * Additional fully-qualified {@code KubernetesResource} subclass names to include in the
+   * {@code META-INF/services/io.fabric8.kubernetes.api.model.KubernetesResource} file emitted by
+   * the model generator. Use this to register hand-written resources (e.g. {@code KubernetesList})
+   * or hand-written overrides of generated resources alongside the auto-detected generated ones.
+   */
+  @Singular
+  private List<String> additionalKubernetesResources;
   private boolean generateJavadoc;
   @Builder.Default
   private final String genericKubernetesResourceClass = "io.fabric8.kubernetes.api.model.GenericKubernetesResource";
@@ -169,6 +178,14 @@ public class GeneratorSettings {
           .resolve("src").resolve("generated").resolve("java").toFile();
     }
     return generatedSourcesDirectory;
+  }
+
+  public synchronized File getGeneratedResourcesDirectory() {
+    if (generatedResourcesDirectory == null) {
+      generatedResourcesDirectory = getOutputDirectory().toPath()
+          .resolve("src").resolve("generated").resolve("resources").toFile();
+    }
+    return generatedResourcesDirectory;
   }
 
   public synchronized File getOverridesDirectory() {

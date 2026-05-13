@@ -1,0 +1,10 @@
+io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest
+io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestList
+io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundle
+io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundleList
+io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest
+io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestList
+io.fabric8.kubernetes.api.model.certificates.v1beta1.ClusterTrustBundle
+io.fabric8.kubernetes.api.model.certificates.v1beta1.ClusterTrustBundleList
+io.fabric8.kubernetes.api.model.certificates.v1beta1.PodCertificateRequest
+io.fabric8.kubernetes.api.model.certificates.v1beta1.PodCertificateRequestList

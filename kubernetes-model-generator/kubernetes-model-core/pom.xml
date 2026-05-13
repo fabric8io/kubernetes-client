@@ -136,6 +136,9 @@
             <configuration >
               <settings combine.self="append">
                 <addBuildableReferences>false</addBuildableReferences>
+                <additionalKubernetesResources>
+                  <additionalKubernetesResource>io.fabric8.kubernetes.api.model.KubernetesList</additionalKubernetesResource>
+                </additionalKubernetesResources>
                 <schemas>
                   <schema>${project.basedir}/../openapi/schemas/cluster-api.json</schema>
                   <schema>${project.basedir}/../openapi/schemas/kubernetes-1.35.0.json</schema>

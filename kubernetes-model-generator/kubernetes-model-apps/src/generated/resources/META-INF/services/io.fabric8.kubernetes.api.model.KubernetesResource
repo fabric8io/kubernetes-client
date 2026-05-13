@@ -1,0 +1,10 @@
+io.fabric8.kubernetes.api.model.apps.ControllerRevision
+io.fabric8.kubernetes.api.model.apps.ControllerRevisionList
+io.fabric8.kubernetes.api.model.apps.DaemonSet
+io.fabric8.kubernetes.api.model.apps.DaemonSetList
+io.fabric8.kubernetes.api.model.apps.Deployment
+io.fabric8.kubernetes.api.model.apps.DeploymentList
+io.fabric8.kubernetes.api.model.apps.ReplicaSet
+io.fabric8.kubernetes.api.model.apps.ReplicaSetList
+io.fabric8.kubernetes.api.model.apps.StatefulSet
+io.fabric8.kubernetes.api.model.apps.StatefulSetList

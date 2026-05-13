@@ -1,0 +1,5 @@
+io.fabric8.kubernetes.api.model.apiextensions.v1.ConversionReview
+io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition
+io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionList
+io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition
+io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList

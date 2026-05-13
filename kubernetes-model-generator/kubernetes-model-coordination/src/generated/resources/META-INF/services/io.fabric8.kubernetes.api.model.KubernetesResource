@@ -1,0 +1,6 @@
+io.fabric8.kubernetes.api.model.coordination.v1.Lease
+io.fabric8.kubernetes.api.model.coordination.v1.LeaseList
+io.fabric8.kubernetes.api.model.coordination.v1alpha2.LeaseCandidate
+io.fabric8.kubernetes.api.model.coordination.v1alpha2.LeaseCandidateList
+io.fabric8.kubernetes.api.model.coordination.v1beta1.LeaseCandidate
+io.fabric8.kubernetes.api.model.coordination.v1beta1.LeaseCandidateList
