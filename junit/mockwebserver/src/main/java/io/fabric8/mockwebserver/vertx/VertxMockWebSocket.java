@@ -75,6 +75,9 @@ public class VertxMockWebSocket implements WebSocket {
       return send.succeeded();
     }
     if (Vertx.currentContext() != null) {
+      // TODO(#7775): a custom WebSocketListener.onMessage that re-enters send is still
+      // exposed to the original close/write race because we can't block the very event
+      // loop that has to drive the Future to completion. No known caller hits this today.
       return true;
     }
     try {
