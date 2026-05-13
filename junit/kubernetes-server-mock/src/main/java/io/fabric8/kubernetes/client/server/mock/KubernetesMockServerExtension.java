@@ -59,13 +59,14 @@ import java.util.stream.Stream;
 public class KubernetesMockServerExtension
     implements AfterEachCallback, AfterAllCallback, BeforeEachCallback, BeforeAllCallback {
 
-  // Per-JVM shared resources amortize Vert.x/Netty cold-start across all mock tests in a fork.
-  // The first test pays the class-load cost; subsequent tests reuse the same Vertx and
-  // MockWebServer instances. See issue #7675 item 10.
+  // Per-JVM shared resources amortize Vert.x/Netty cold-start across the fork. The first
+  // test pays the ~7-8 s TLS/event-loop/class-load cost; subsequent tests reuse the same
+  // Vertx and MockWebServer instances rather than re-running it on every @BeforeEach.
   private static final Object SHARED_LOCK = new Object();
   private static volatile Vertx sharedVertx;
   private static volatile MockWebServer sharedHttpServer;
   private static volatile MockWebServer sharedHttpsServer;
+  private static volatile HttpClient.Factory sharedFactory;
   private static volatile boolean shutdownHookRegistered;
 
   private KubernetesMockServer staticMock;
@@ -129,6 +130,11 @@ public class KubernetesMockServerExtension
     // The DefaultMockServer constructor wires our fresh dispatcher (and responses map)
     // into the shared MockWebServer via setDispatcher — atomically swapping out the
     // previous test's dispatcher before we touch the request queue.
+    // There is a microsecond window between this constructor returning and mock.onStart()
+    // populating the responses map. A stray in-flight request from a previous test's
+    // leaked connection would see an empty responses map and get a default empty
+    // response. Acceptable because the previous test's destroy() closes its client
+    // (and therefore its connections) before this @BeforeEach runs.
     final KubernetesMockServer mock = new KubernetesMockServer(new Context(Serialization.jsonMapper()),
         mockWebServer, responses, dispatcher, a.https());
     // Skip mock.init() — the shared MockWebServer is already started. Run onStart()
@@ -211,20 +217,34 @@ public class KubernetesMockServerExtension
   }
 
   /**
-   * Builds an {@link HttpClient.Factory} that reuses the per-JVM shared Vertx, if the
+   * Returns an {@link HttpClient.Factory} that reuses the per-JVM shared Vertx, if the
    * ServiceLoader-resolved factory exposes a {@code (Vertx)} constructor (true for both
    * the Vert.x 4 and Vert.x 5 implementations). For any other factory (OkHttp, JDK, ...)
-   * the default instance is returned unchanged.
+   * the default instance is returned unchanged. The result is cached after the first call
+   * so the ServiceLoader scan and reflective probe are paid once per JVM.
    */
   private static HttpClient.Factory sharedHttpClientFactory() {
-    final HttpClient.Factory defaultFactory = HttpClientUtils.getHttpClientFactory();
-    try {
-      final Constructor<?> ctor = defaultFactory.getClass().getConstructor(Vertx.class);
-      return (HttpClient.Factory) ctor.newInstance(getOrCreateSharedVertx());
-    } catch (NoSuchMethodException e) {
-      return defaultFactory;
-    } catch (ReflectiveOperationException e) {
-      throw new IllegalStateException("Failed to instantiate shared-Vertx HttpClient.Factory", e);
+    HttpClient.Factory cached = sharedFactory;
+    if (cached != null) {
+      return cached;
+    }
+    synchronized (SHARED_LOCK) {
+      if (sharedFactory != null) {
+        return sharedFactory;
+      }
+      final HttpClient.Factory defaultFactory = HttpClientUtils.getHttpClientFactory();
+      try {
+        final Constructor<?> ctor = defaultFactory.getClass().getConstructor(Vertx.class);
+        sharedFactory = (HttpClient.Factory) ctor.newInstance(getOrCreateSharedVertx());
+      } catch (NoSuchMethodException e) {
+        // Factory has no (Vertx) constructor (OkHttp, JDK, ...) — fall back to the default
+        // singleton. ServiceLoader returns the same instance for repeated lookups, so
+        // caching it here is consistent with prior behavior.
+        sharedFactory = defaultFactory;
+      } catch (ReflectiveOperationException e) {
+        throw new IllegalStateException("Failed to instantiate shared-Vertx HttpClient.Factory", e);
+      }
+      return sharedFactory;
     }
   }
 

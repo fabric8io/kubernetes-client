@@ -268,11 +268,20 @@ public class MockWebServer implements Closeable {
   }
 
   /**
-   * Returns the MockWebServer to its initial state by:
+   * Returns the MockWebServer's recorded-traffic state to initial:
    * <ul>
    * <li>Clearing the request count.</li>
    * <li>Clearing the request queue.</li>
    * </ul>
+   *
+   * <p>
+   * This is intentionally non-destructive w.r.t. the running HTTP server, the configured
+   * {@link Dispatcher}, the listener list, the SSL/TLS state, the negotiated port, and the
+   * selected protocols. It is safe to call on a started server mid-life; callers that need
+   * a different dispatcher or expectation set must install those themselves
+   * ({@link #setDispatcher(Dispatcher)}). Notably,
+   * {@code KubernetesMockServerExtension} relies on this contract to share a single
+   * MockWebServer across all tests in a JVM fork.
    */
   public final void reset() {
     requestCount.set(0);
