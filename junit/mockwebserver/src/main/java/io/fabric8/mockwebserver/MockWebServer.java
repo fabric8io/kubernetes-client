@@ -86,7 +86,7 @@ public class MockWebServer implements Closeable {
   private final BlockingQueue<RecordedRequest> requestQueue;
   private final AtomicInteger requestCount;
   private final List<MockWebServerListener> listeners;
-  private Dispatcher dispatcher;
+  private volatile Dispatcher dispatcher;
   private ClientAuth clientAuth;
   private final List<String> enabledSecuredTransportProtocols;
   private boolean ssl;

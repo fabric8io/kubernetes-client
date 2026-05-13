@@ -6,12 +6,15 @@
 * Fix #7765: (kubernetes-client) `BaseOperation.informOnCondition` now stops the informer inline when the inner predicate completes the future, closing a CompletableFuture `postComplete` race where a waiter helping drain dependents could fire `informer.stop` after `cf.complete` had already triggered a spurious `?watch=true` HTTP request
 
 #### Improvements
+* Fix #7675: (kubernetes-server-mock) `KubernetesMockServerExtension` now reuses a single `MockWebServer` (one for HTTP, one for HTTPS) and a single `Vertx` per JVM fork across all tests using `@EnableKubernetesMockClient`, amortizing the Vert.x/Netty cold-start cost across the suite. Per-test isolation is preserved by swapping the dispatcher and `responses` map on each `@BeforeEach` and calling `MockWebServer.reset()` to clear the request queue and request count. Wall-time savings depend on suite size; on `kubernetes-tests` per-class wall times drop by up to ~38% on small classes
+* Fix #7675: (mockwebserver) `MockWebServer.dispatcher` field marked `volatile` so the dispatcher swap performed by `KubernetesMockServerExtension` between tests is reliably visible to the Vert.x request handler thread
 
 #### Dependency Upgrade
 
 #### New Features
 
 #### _**Note**_: Breaking changes
+* Fix #7675: (kubernetes-server-mock) Tests using `@EnableKubernetesMockClient` now share a single `MockWebServer` per transport (HTTP/HTTPS) and a single `Vertx` for the duration of the JVM fork instead of constructing a fresh instance per test method. Consumer-visible behavior changes: (1) `KubernetesMockServer#getPort()` and `getHostName()` are stable across tests within a fork (previously a fresh random port per test); (2) `MockWebServer#addListener(...)` listeners persist for the lifetime of the fork (no auto-removal API exists); (3) test classes that declare both a `static` and an instance `KubernetesMockServer` field under `@TestInstance(PER_CLASS)` now see both fields point to wrappers over the same underlying server (previously: two separate servers on different ports). Tests that don't depend on these specifics are unaffected
 
 ### 7.7.0 (2026-05-12)
 
