@@ -25,6 +25,28 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class ConfigSourcePrecedenceTest {
+
+  private static final String[] MANAGED_PROPERTIES = {
+      "kubeconfig",
+      "kubernetes.master",
+      "kubernetes.namespace",
+      "kubernetes.auth.token",
+      "kubernetes.auth.serviceAccount.token",
+      "kubenamespace"
+  };
+
+  private TestSystemProperties systemProperties;
+
+  @BeforeEach
+  void storeProperties() {
+    systemProperties = TestSystemProperties.save(MANAGED_PROPERTIES);
+  }
+
+  @AfterEach
+  void restoreProperties() {
+    systemProperties.restore();
+  }
+
   @Nested
   @DisplayName("With provided kubeconfig property")
   class KubeConfigSource {
@@ -32,11 +54,6 @@ class ConfigSourcePrecedenceTest {
     void setUp() {
       System.setProperty("kubeconfig",
           Utils.filePath(ConfigSourcePrecedenceTest.class.getResource("/config-source-precedence/kube-config")));
-    }
-
-    @AfterEach
-    void tearDown() {
-      System.clearProperty("kubeconfig");
     }
 
     @Test
@@ -71,45 +88,34 @@ class ConfigSourcePrecedenceTest {
     @Test
     @DisplayName("And System Properties configured, then System Properties take precedence")
     void whenSystemPropertiesUsedForSomeFields_thenSystemPropertiesGivenPrecedence() {
-      try {
-        // Given
-        System.setProperty("kubernetes.master", "https://user-configuration-override:8443");
-        System.setProperty("kubernetes.auth.token", "token-overridden");
+      // Given
+      System.setProperty("kubernetes.master", "https://user-configuration-override:8443");
+      System.setProperty("kubernetes.auth.token", "token-overridden");
 
-        // When
-        Config config = new ConfigBuilder().build();
+      // When
+      Config config = new ConfigBuilder().build();
 
-        // Then
-        assertThat(config)
-            .hasFieldOrPropertyWithValue("masterUrl", "https://user-configuration-override:8443/")
-            .hasFieldOrPropertyWithValue("namespace", "namespace-from-kubeconfig")
-            .hasFieldOrPropertyWithValue("autoOAuthToken", "token-overridden");
-      } finally {
-        System.clearProperty("kubernetes.master");
-        System.clearProperty("kubernetes.namespace");
-        System.clearProperty("kubernetes.auth.token");
-      }
+      // Then
+      assertThat(config)
+          .hasFieldOrPropertyWithValue("masterUrl", "https://user-configuration-override:8443/")
+          .hasFieldOrPropertyWithValue("namespace", "namespace-from-kubeconfig")
+          .hasFieldOrPropertyWithValue("autoOAuthToken", "token-overridden");
     }
 
     @Test
     @DisplayName("And Service Account mounted, then kubeconfig takes precedence")
     void whenServiceAccountPropertyConfigured_thenDoNotUseServiceAccount() {
-      try {
-        // Given
-        System.setProperty("kubernetes.auth.serviceAccount.token",
-            Utils.filePath(ConfigSourcePrecedenceTest.class.getResource("/config-source-precedence/serviceaccount/token")));
-        System.setProperty("kubenamespace",
-            Utils.filePath(ConfigSourcePrecedenceTest.class.getResource("/config-source-precedence/serviceaccount/namespace")));
-        Config config = new ConfigBuilder().build();
+      // Given
+      System.setProperty("kubernetes.auth.serviceAccount.token",
+          Utils.filePath(ConfigSourcePrecedenceTest.class.getResource("/config-source-precedence/serviceaccount/token")));
+      System.setProperty("kubenamespace",
+          Utils.filePath(ConfigSourcePrecedenceTest.class.getResource("/config-source-precedence/serviceaccount/namespace")));
+      Config config = new ConfigBuilder().build();
 
-        // When + Then
-        assertThat(config)
-            .hasFieldOrPropertyWithValue("namespace", "namespace-from-kubeconfig")
-            .hasFieldOrPropertyWithValue("autoOAuthToken", "token-from-kubeconfig");
-      } finally {
-        System.clearProperty("kubernetes.auth.serviceAccount.token");
-        System.clearProperty("kubenamespace");
-      }
+      // When + Then
+      assertThat(config)
+          .hasFieldOrPropertyWithValue("namespace", "namespace-from-kubeconfig")
+          .hasFieldOrPropertyWithValue("autoOAuthToken", "token-from-kubeconfig");
     }
   }
 
@@ -160,28 +166,15 @@ class ConfigSourcePrecedenceTest {
     @Test
     @DisplayName("And System Properties configured, then System Properties takes precedence")
     void whenSystemPropertiesUsedForSomeFields_thenSystemPropertiesGivenPrecedence() {
-      try {
-        System.setProperty("kubernetes.master", "https://properties-configuration-override:8443");
-        System.setProperty("kubernetes.auth.token", "token-from-properties");
-        Config config = new ConfigBuilder().build();
+      System.setProperty("kubernetes.master", "https://properties-configuration-override:8443");
+      System.setProperty("kubernetes.auth.token", "token-from-properties");
+      Config config = new ConfigBuilder().build();
 
-        // When + Then
-        assertThat(config)
-            .hasFieldOrPropertyWithValue("masterUrl", "https://properties-configuration-override:8443/")
-            .hasFieldOrPropertyWithValue("autoOAuthToken", "token-from-properties")
-            .hasFieldOrPropertyWithValue("namespace", "namespace-from-mounted-serviceaccount");
-      } finally {
-        System.clearProperty("kubernetes.master");
-        System.clearProperty("kubernetes.namespace");
-        System.clearProperty("kubernetes.auth.token");
-      }
-    }
-
-    @AfterEach
-    void tearDown() {
-      System.clearProperty("kubernetes.auth.serviceAccount.token");
-      System.clearProperty("kubenamespace");
-      System.clearProperty("kubeconfig");
+      // When + Then
+      assertThat(config)
+          .hasFieldOrPropertyWithValue("masterUrl", "https://properties-configuration-override:8443/")
+          .hasFieldOrPropertyWithValue("autoOAuthToken", "token-from-properties")
+          .hasFieldOrPropertyWithValue("namespace", "namespace-from-mounted-serviceaccount");
     }
   }
 
@@ -220,11 +213,5 @@ class ConfigSourcePrecedenceTest {
           .hasFieldOrPropertyWithValue("autoOAuthToken", "token-set-via-properties");
     }
 
-    @AfterEach
-    void tearDown() {
-      System.clearProperty("kubernetes.master");
-      System.clearProperty("kubernetes.namespace");
-      System.clearProperty("kubernetes.auth.token");
-    }
   }
 }

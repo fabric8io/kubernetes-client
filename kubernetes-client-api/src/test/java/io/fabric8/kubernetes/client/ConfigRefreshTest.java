@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.utils.Serialization;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,13 +33,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ConfigRefreshTest {
 
+  private static final String[] MANAGED_PROPERTIES = {
+      "kubernetes.master",
+      "kubeconfig"
+  };
+
   @TempDir
   private Path tempDir;
   private Path kubeConfigFile;
   private io.fabric8.kubernetes.api.model.Config kubeConfigOriginal;
+  private TestSystemProperties systemProperties;
 
   @BeforeEach
   void setUp() throws IOException {
+    systemProperties = TestSystemProperties.save(MANAGED_PROPERTIES);
     kubeConfigFile = tempDir.resolve("kubeconfig");
     kubeConfigOriginal = new io.fabric8.kubernetes.api.model.ConfigBuilder()
         .addNewCluster()
@@ -59,6 +67,11 @@ class ConfigRefreshTest {
         .withCurrentContext("the-context")
         .build();
     Files.writeString(kubeConfigFile, Serialization.asYaml(kubeConfigOriginal), CREATE);
+  }
+
+  @AfterEach
+  void tearDown() {
+    systemProperties.restore();
   }
 
   @Test
@@ -94,52 +107,43 @@ class ConfigRefreshTest {
   @Test
   @DisplayName("When autoconfigure enabled (from properties), then refresh (returns new instance)")
   void autoConfiguredConfigFromProperties() {
-    try {
-      // Given
-      System.setProperty("kubernetes.master", "https://test.example.com/");
-      final var config = new ConfigBuilder().build();
-      System.setProperty("kubernetes.master", "https://test-updated.example.com/");
-      // When
-      final var result = config.refresh();
-      // Then
-      assertThat(result)
-          .isNotSameAs(config)
-          .hasFieldOrPropertyWithValue("autoConfigure", true)
-          .hasFieldOrPropertyWithValue("masterUrl", "https://test-updated.example.com/");
-    } finally {
-      System.clearProperty("kubernetes.master");
-    }
+    // Given
+    System.setProperty("kubernetes.master", "https://test.example.com/");
+    final var config = new ConfigBuilder().build();
+    System.setProperty("kubernetes.master", "https://test-updated.example.com/");
+    // When
+    final var result = config.refresh();
+    // Then
+    assertThat(result)
+        .isNotSameAs(config)
+        .hasFieldOrPropertyWithValue("autoConfigure", true)
+        .hasFieldOrPropertyWithValue("masterUrl", "https://test-updated.example.com/");
   }
 
   @Test
   @DisplayName("When autoconfigure enabled (from files), then refresh (returns new instance)")
   void autoConfiguredConfigFromFiles() throws IOException {
-    try {
-      // Given
-      final var kubeConfigUserFile = tempDir.resolve("kubeconfig-user");
-      final var kubeConfigUser = new io.fabric8.kubernetes.api.model.ConfigBuilder()
-          .addAllToUsers(kubeConfigOriginal.getUsers())
-          .build();
-      kubeConfigOriginal.getUsers().clear();
-      Files.writeString(kubeConfigFile, Serialization.asYaml(kubeConfigOriginal), TRUNCATE_EXISTING);
-      Files.writeString(kubeConfigUserFile, Serialization.asYaml(kubeConfigUser), CREATE);
-      System.setProperty("kubeconfig", kubeConfigFile.toFile().getAbsolutePath() + File.pathSeparator +
-          kubeConfigUserFile.toFile().getAbsolutePath());
-      final var config = new ConfigBuilder().build();
-      final var kubeConfigUserUpdated = new io.fabric8.kubernetes.api.model.ConfigBuilder(kubeConfigUser)
-          .editFirstUser().editUser().withToken("the-token-updated").endUser().endUser().build();
-      Files.writeString(kubeConfigUserFile, Serialization.asYaml(kubeConfigUserUpdated), CREATE);
-      // When
-      final var result = config.refresh();
-      // Then
-      assertThat(result)
-          .isNotSameAs(config)
-          .hasFieldOrPropertyWithValue("autoConfigure", true)
-          .hasFieldOrPropertyWithValue("autoOAuthToken", "the-token-updated");
-      ;
-    } finally {
-      System.clearProperty("kubeconfig");
-    }
+    // Given
+    final var kubeConfigUserFile = tempDir.resolve("kubeconfig-user");
+    final var kubeConfigUser = new io.fabric8.kubernetes.api.model.ConfigBuilder()
+        .addAllToUsers(kubeConfigOriginal.getUsers())
+        .build();
+    kubeConfigOriginal.getUsers().clear();
+    Files.writeString(kubeConfigFile, Serialization.asYaml(kubeConfigOriginal), TRUNCATE_EXISTING);
+    Files.writeString(kubeConfigUserFile, Serialization.asYaml(kubeConfigUser), CREATE);
+    System.setProperty("kubeconfig", kubeConfigFile.toFile().getAbsolutePath() + File.pathSeparator +
+        kubeConfigUserFile.toFile().getAbsolutePath());
+    final var config = new ConfigBuilder().build();
+    final var kubeConfigUserUpdated = new io.fabric8.kubernetes.api.model.ConfigBuilder(kubeConfigUser)
+        .editFirstUser().editUser().withToken("the-token-updated").endUser().endUser().build();
+    Files.writeString(kubeConfigUserFile, Serialization.asYaml(kubeConfigUserUpdated), CREATE);
+    // When
+    final var result = config.refresh();
+    // Then
+    assertThat(result)
+        .isNotSameAs(config)
+        .hasFieldOrPropertyWithValue("autoConfigure", true)
+        .hasFieldOrPropertyWithValue("autoOAuthToken", "the-token-updated");
   }
 
   @Test
