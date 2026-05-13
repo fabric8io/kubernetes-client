@@ -32,8 +32,26 @@ import java.nio.file.Files;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 class ConfigProxySourceTest {
+  private static final String[] MANAGED_PROPERTIES = {
+      "http.proxy",
+      "https.proxy",
+      "all.proxy",
+      "kubeconfig"
+  };
+
   @TempDir
   private File temporaryFolder;
+  private TestSystemProperties systemProperties;
+
+  @BeforeEach
+  void storeProperties() {
+    systemProperties = TestSystemProperties.save(MANAGED_PROPERTIES);
+  }
+
+  @AfterEach
+  void restoreProperties() {
+    systemProperties.restore();
+  }
 
   @Nested
   @DisplayName("HTTP Proxy")
@@ -46,11 +64,6 @@ class ConfigProxySourceTest {
         System.setProperty("http.proxy", "http://proxy-via-http-proxy-property:3128");
       }
 
-      @AfterEach
-      void tearDown() {
-        System.clearProperty("http.proxy");
-      }
-
       @Test
       @DisplayName("no other proxy configuration, then http.proxy property takes precedence")
       void noOtherConfiguration() {
@@ -61,14 +74,10 @@ class ConfigProxySourceTest {
       @Test
       @DisplayName("all.proxy property configuration, then http.proxy property takes precedence")
       void allProxySystemProperty() {
-        try {
-          System.setProperty("all.proxy", "http://proxy-via-all-proxy-property:3128");
+        System.setProperty("all.proxy", "http://proxy-via-all-proxy-property:3128");
 
-          assertThat(new ConfigBuilder().build())
-              .hasFieldOrPropertyWithValue("httpProxy", "http://proxy-via-http-proxy-property:3128");
-        } finally {
-          System.clearProperty("all.proxy");
-        }
+        assertThat(new ConfigBuilder().build())
+            .hasFieldOrPropertyWithValue("httpProxy", "http://proxy-via-http-proxy-property:3128");
       }
 
       @Test
@@ -81,17 +90,13 @@ class ConfigProxySourceTest {
       @Test
       @DisplayName("kubeconfig cluster has http proxy-url, then kubeconfig proxy-url takes precedence")
       void kubeConfigProxyUrl() throws IOException {
-        try {
-          // Given
-          System.setProperty("kubeconfig",
-              createKubeConfigWithCluster("http://kubernetes-remote-server.example:6443", "http://proxy-server.example:80")
-                  .getAbsolutePath());
-          // When + Then
-          assertThat(new ConfigBuilder().build())
-              .hasFieldOrPropertyWithValue("httpProxy", "http://proxy-server.example:80");
-        } finally {
-          System.clearProperty("kubeconfig");
-        }
+        // Given
+        System.setProperty("kubeconfig",
+            createKubeConfigWithCluster("http://kubernetes-remote-server.example:6443", "http://proxy-server.example:80")
+                .getAbsolutePath());
+        // When + Then
+        assertThat(new ConfigBuilder().build())
+            .hasFieldOrPropertyWithValue("httpProxy", "http://proxy-server.example:80");
       }
     }
 
@@ -115,43 +120,31 @@ class ConfigProxySourceTest {
       @Test
       @DisplayName("http.proxy property configuration, then user configuration via builder takes precedence")
       void httpProxySystemProperty() {
-        try {
-          System.setProperty("http.proxy", "http://proxy-via-http-proxy-property:3128");
+        System.setProperty("http.proxy", "http://proxy-via-http-proxy-property:3128");
 
-          assertThat(configBuilder.build())
-              .hasFieldOrPropertyWithValue("httpProxy", "http://proxy-via-builder:3128");
-        } finally {
-          System.clearProperty("http.proxy");
-        }
+        assertThat(configBuilder.build())
+            .hasFieldOrPropertyWithValue("httpProxy", "http://proxy-via-builder:3128");
       }
 
       @Test
       @DisplayName("all.proxy property configuration, then user configuration via builder takes precedence")
       void allProxySystemProperty() {
-        try {
-          System.setProperty("all.proxy", "http://proxy-via-all-proxy-property:3128");
+        System.setProperty("all.proxy", "http://proxy-via-all-proxy-property:3128");
 
-          assertThat(configBuilder.build())
-              .hasFieldOrPropertyWithValue("httpProxy", "http://proxy-via-builder:3128");
-        } finally {
-          System.clearProperty("all.proxy");
-        }
+        assertThat(configBuilder.build())
+            .hasFieldOrPropertyWithValue("httpProxy", "http://proxy-via-builder:3128");
       }
 
       @Test
       @DisplayName("kubeconfig cluster has proxy-url, then user configuration via builder takes precedence")
       void kubeConfigProxyUrl() throws IOException {
-        try {
-          // Given
-          System.setProperty("kubeconfig",
-              createKubeConfigWithCluster("http://kubernetes-remote-server.example:6443", "http://proxy-server.example:80")
-                  .getAbsolutePath());
-          // When + Then
-          assertThat(configBuilder.build())
-              .hasFieldOrPropertyWithValue("httpProxy", "http://proxy-via-builder:3128");
-        } finally {
-          System.clearProperty("kubeconfig");
-        }
+        // Given
+        System.setProperty("kubeconfig",
+            createKubeConfigWithCluster("http://kubernetes-remote-server.example:6443", "http://proxy-server.example:80")
+                .getAbsolutePath());
+        // When + Then
+        assertThat(configBuilder.build())
+            .hasFieldOrPropertyWithValue("httpProxy", "http://proxy-via-builder:3128");
       }
     }
 
@@ -161,11 +154,6 @@ class ConfigProxySourceTest {
       @BeforeEach
       void setup() {
         System.setProperty("all.proxy", "http://proxy-via-all-proxy-property:3128");
-      }
-
-      @AfterEach
-      void tearDown() {
-        System.clearProperty("all.proxy");
       }
 
       @Test
@@ -178,14 +166,10 @@ class ConfigProxySourceTest {
       @Test
       @DisplayName("http.proxy property configuration, then http.proxy property takes precedence")
       void allProxySystemProperty() {
-        try {
-          System.setProperty("http.proxy", "http://proxy-via-http-proxy-property:3128");
+        System.setProperty("http.proxy", "http://proxy-via-http-proxy-property:3128");
 
-          assertThat(new ConfigBuilder().build())
-              .hasFieldOrPropertyWithValue("httpProxy", "http://proxy-via-http-proxy-property:3128");
-        } finally {
-          System.clearProperty("http.proxy");
-        }
+        assertThat(new ConfigBuilder().build())
+            .hasFieldOrPropertyWithValue("httpProxy", "http://proxy-via-http-proxy-property:3128");
       }
 
       @Test
@@ -198,17 +182,13 @@ class ConfigProxySourceTest {
       @Test
       @DisplayName("kubeconfig cluster has proxy-url, then kubeconfig proxy-url takes precedence")
       void kubeConfigProxyUrl() throws IOException {
-        try {
-          // Given
-          System.setProperty("kubeconfig",
-              createKubeConfigWithCluster("http://kubernetes-remote-server.example:6443", "http://proxy-server.example:80")
-                  .getAbsolutePath());
-          // When + Then
-          assertThat(new ConfigBuilder().build())
-              .hasFieldOrPropertyWithValue("httpProxy", "http://proxy-server.example:80");
-        } finally {
-          System.clearProperty("kubeconfig");
-        }
+        // Given
+        System.setProperty("kubeconfig",
+            createKubeConfigWithCluster("http://kubernetes-remote-server.example:6443", "http://proxy-server.example:80")
+                .getAbsolutePath());
+        // When + Then
+        assertThat(new ConfigBuilder().build())
+            .hasFieldOrPropertyWithValue("httpProxy", "http://proxy-server.example:80");
       }
     }
 
@@ -220,11 +200,6 @@ class ConfigProxySourceTest {
         System.setProperty("kubeconfig",
             createKubeConfigWithCluster("http://kubernetes-remote-server.example:6443", "socks5://proxy-server.example:80")
                 .getAbsolutePath());
-      }
-
-      @AfterEach
-      void tearDown() {
-        System.clearProperty("kubeconfig");
       }
 
       @Test
@@ -252,27 +227,19 @@ class ConfigProxySourceTest {
       @Test
       @DisplayName("http.proxy property configuration, kubeconfig proxy-url takes precedence")
       void httpProxySystemProperty() {
-        try {
-          System.setProperty("http.proxy", "http://proxy-via-http-proxy-property:3128");
+        System.setProperty("http.proxy", "http://proxy-via-http-proxy-property:3128");
 
-          assertThat(new ConfigBuilder().build())
-              .hasFieldOrPropertyWithValue("httpProxy", "socks5://proxy-server.example:80");
-        } finally {
-          System.clearProperty("http.proxy");
-        }
+        assertThat(new ConfigBuilder().build())
+            .hasFieldOrPropertyWithValue("httpProxy", "socks5://proxy-server.example:80");
       }
 
       @Test
       @DisplayName("all.proxy property configuration, then kubeconfig proxy-url takes precedence")
       void allProxySystemProperty() {
-        try {
-          System.setProperty("all.proxy", "http://proxy-via-all-proxy-property:3128");
+        System.setProperty("all.proxy", "http://proxy-via-all-proxy-property:3128");
 
-          assertThat(new ConfigBuilder().build())
-              .hasFieldOrPropertyWithValue("httpProxy", "socks5://proxy-server.example:80");
-        } finally {
-          System.clearProperty("all.proxy");
-        }
+        assertThat(new ConfigBuilder().build())
+            .hasFieldOrPropertyWithValue("httpProxy", "socks5://proxy-server.example:80");
       }
 
       @Test
@@ -295,11 +262,6 @@ class ConfigProxySourceTest {
         System.setProperty("https.proxy", "http://proxy-via-http-proxy-property:3128");
       }
 
-      @AfterEach
-      void tearDown() {
-        System.clearProperty("https.proxy");
-      }
-
       @Test
       @DisplayName("no other proxy configuration, then https.proxy property takes precedence")
       void noOtherConfiguration() {
@@ -310,14 +272,10 @@ class ConfigProxySourceTest {
       @Test
       @DisplayName("all.proxy property configuration, then https.proxy property takes precedence")
       void allProxySystemProperty() {
-        try {
-          System.setProperty("all.proxy", "http://proxy-via-all-proxy-property:3128");
+        System.setProperty("all.proxy", "http://proxy-via-all-proxy-property:3128");
 
-          assertThat(new ConfigBuilder().build())
-              .hasFieldOrPropertyWithValue("httpsProxy", "http://proxy-via-http-proxy-property:3128");
-        } finally {
-          System.clearProperty("all.proxy");
-        }
+        assertThat(new ConfigBuilder().build())
+            .hasFieldOrPropertyWithValue("httpsProxy", "http://proxy-via-http-proxy-property:3128");
       }
 
       @Test
@@ -330,16 +288,12 @@ class ConfigProxySourceTest {
       @Test
       @DisplayName("kubeconfig cluster has proxy-url, then kubeconfig proxy-url takes precedence")
       void kubeConfigProxyUrl() {
-        try {
-          // Given
-          System.setProperty("kubeconfig", Utils
-              .filePath(ConfigTest.class.getResource("/config-proxy-source/kubeconfig-with-proxy-url")));
-          // When + Then
-          assertThat(new ConfigBuilder().build())
-              .hasFieldOrPropertyWithValue("httpsProxy", "socks5://proxy-via-kubeconfig-proxy-url:1080");
-        } finally {
-          System.clearProperty("kubeconfig");
-        }
+        // Given
+        System.setProperty("kubeconfig", Utils
+            .filePath(ConfigTest.class.getResource("/config-proxy-source/kubeconfig-with-proxy-url")));
+        // When + Then
+        assertThat(new ConfigBuilder().build())
+            .hasFieldOrPropertyWithValue("httpsProxy", "socks5://proxy-via-kubeconfig-proxy-url:1080");
       }
     }
 
@@ -363,42 +317,30 @@ class ConfigProxySourceTest {
       @Test
       @DisplayName("https.proxy property configuration, then user configuration via builder takes precedence")
       void httpsProxySystemProperty() {
-        try {
-          System.setProperty("https.proxy", "https://proxy-via-https-proxy-property:3128");
+        System.setProperty("https.proxy", "https://proxy-via-https-proxy-property:3128");
 
-          assertThat(configBuilder.build())
-              .hasFieldOrPropertyWithValue("httpsProxy", "https://proxy-via-builder:3128");
-        } finally {
-          System.clearProperty("https.proxy");
-        }
+        assertThat(configBuilder.build())
+            .hasFieldOrPropertyWithValue("httpsProxy", "https://proxy-via-builder:3128");
       }
 
       @Test
       @DisplayName("all.proxy property configuration, then user configuration via builder takes precedence")
       void allProxySystemProperty() {
-        try {
-          System.setProperty("all.proxy", "https://proxy-via-all-proxy-property:3128");
+        System.setProperty("all.proxy", "https://proxy-via-all-proxy-property:3128");
 
-          assertThat(configBuilder.build())
-              .hasFieldOrPropertyWithValue("httpsProxy", "https://proxy-via-builder:3128");
-        } finally {
-          System.clearProperty("all.proxy");
-        }
+        assertThat(configBuilder.build())
+            .hasFieldOrPropertyWithValue("httpsProxy", "https://proxy-via-builder:3128");
       }
 
       @Test
       @DisplayName("kubeconfig cluster has proxy-url, then user configuration via builder takes precedence")
       void kubeConfigProxyUrl() {
-        try {
-          // Given
-          System.setProperty("kubeconfig", Utils
-              .filePath(ConfigTest.class.getResource("/config-proxy-source/kubeconfig-with-proxy-url")));
-          // When + Then
-          assertThat(configBuilder.build())
-              .hasFieldOrPropertyWithValue("httpsProxy", "https://proxy-via-builder:3128");
-        } finally {
-          System.clearProperty("kubeconfig");
-        }
+        // Given
+        System.setProperty("kubeconfig", Utils
+            .filePath(ConfigTest.class.getResource("/config-proxy-source/kubeconfig-with-proxy-url")));
+        // When + Then
+        assertThat(configBuilder.build())
+            .hasFieldOrPropertyWithValue("httpsProxy", "https://proxy-via-builder:3128");
       }
     }
 
@@ -408,11 +350,6 @@ class ConfigProxySourceTest {
       @BeforeEach
       void setup() {
         System.setProperty("all.proxy", "http://proxy-via-all-proxy-property:3128");
-      }
-
-      @AfterEach
-      void tearDown() {
-        System.clearProperty("all.proxy");
       }
 
       @Test
@@ -425,14 +362,10 @@ class ConfigProxySourceTest {
       @Test
       @DisplayName("https.proxy property configuration, then https.proxy property takes precedence")
       void allProxySystemProperty() {
-        try {
-          System.setProperty("https.proxy", "http://proxy-via-http-proxy-property:3128");
+        System.setProperty("https.proxy", "http://proxy-via-http-proxy-property:3128");
 
-          assertThat(new ConfigBuilder().build())
-              .hasFieldOrPropertyWithValue("httpsProxy", "http://proxy-via-http-proxy-property:3128");
-        } finally {
-          System.clearProperty("https.proxy");
-        }
+        assertThat(new ConfigBuilder().build())
+            .hasFieldOrPropertyWithValue("httpsProxy", "http://proxy-via-http-proxy-property:3128");
       }
 
       @Test
@@ -445,17 +378,13 @@ class ConfigProxySourceTest {
       @Test
       @DisplayName("kubeconfig cluster has proxy-url, then kubeconfig proxy-url takes precedence")
       void kubeConfigProxyUrl() throws IOException {
-        try {
-          // Given
-          System.setProperty("kubeconfig",
-              createKubeConfigWithCluster("https://kubernetes-remote-server.example:6443", "https://proxy-server.example:80")
-                  .getAbsolutePath());
-          // When + Then
-          assertThat(new ConfigBuilder().build())
-              .hasFieldOrPropertyWithValue("httpsProxy", "https://proxy-server.example:80");
-        } finally {
-          System.clearProperty("kubeconfig");
-        }
+        // Given
+        System.setProperty("kubeconfig",
+            createKubeConfigWithCluster("https://kubernetes-remote-server.example:6443", "https://proxy-server.example:80")
+                .getAbsolutePath());
+        // When + Then
+        assertThat(new ConfigBuilder().build())
+            .hasFieldOrPropertyWithValue("httpsProxy", "https://proxy-server.example:80");
       }
     }
 
@@ -466,11 +395,6 @@ class ConfigProxySourceTest {
       void setup() {
         System.setProperty("kubeconfig", Utils
             .filePath(ConfigTest.class.getResource("/config-proxy-source/kubeconfig-with-proxy-url")));
-      }
-
-      @AfterEach
-      void tearDown() {
-        System.clearProperty("kubeconfig");
       }
 
       @Test
@@ -499,27 +423,19 @@ class ConfigProxySourceTest {
       @Test
       @DisplayName("https.proxy property configuration, kubeconfig proxy-url takes precedence")
       void httpsProxySystemProperty() {
-        try {
-          System.setProperty("https.proxy", "https://proxy-via-http-proxy-property:3128");
+        System.setProperty("https.proxy", "https://proxy-via-http-proxy-property:3128");
 
-          assertThat(new ConfigBuilder().build())
-              .hasFieldOrPropertyWithValue("httpsProxy", "socks5://proxy-via-kubeconfig-proxy-url:1080");
-        } finally {
-          System.clearProperty("https.proxy");
-        }
+        assertThat(new ConfigBuilder().build())
+            .hasFieldOrPropertyWithValue("httpsProxy", "socks5://proxy-via-kubeconfig-proxy-url:1080");
       }
 
       @Test
       @DisplayName("all.proxy property configuration, then kubeconfig proxy-url takes precedence")
       void allProxySystemProperty() {
-        try {
-          System.setProperty("all.proxy", "https://proxy-via-all-proxy-property:3128");
+        System.setProperty("all.proxy", "https://proxy-via-all-proxy-property:3128");
 
-          assertThat(new ConfigBuilder().build())
-              .hasFieldOrPropertyWithValue("httpsProxy", "socks5://proxy-via-kubeconfig-proxy-url:1080");
-        } finally {
-          System.clearProperty("all.proxy");
-        }
+        assertThat(new ConfigBuilder().build())
+            .hasFieldOrPropertyWithValue("httpsProxy", "socks5://proxy-via-kubeconfig-proxy-url:1080");
       }
 
       @Test

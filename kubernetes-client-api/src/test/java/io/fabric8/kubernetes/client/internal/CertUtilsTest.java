@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.internal;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.TestSystemProperties;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
@@ -35,7 +36,6 @@ import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -57,26 +57,16 @@ class CertUtilsTest {
       "javax.net.ssl.keyStore",
       "javax.net.ssl.keyStorePassword"
   };
-  private Map<String, String> originalSslProperties;
+  private TestSystemProperties systemProperties;
 
   @BeforeEach
   public void storeSystemProperties() {
-    originalSslProperties = new HashMap<>();
-    for (String property : MANAGED_SSL_PROPERTIES) {
-      originalSslProperties.put(property, System.getProperty(property));
-    }
+    systemProperties = TestSystemProperties.save(MANAGED_SSL_PROPERTIES);
   }
 
   @AfterEach
   public void resetSystemPropertiesBack() {
-    for (String property : MANAGED_SSL_PROPERTIES) {
-      String original = originalSslProperties.get(property);
-      if (original == null) {
-        System.clearProperty(property);
-      } else {
-        System.setProperty(property, original);
-      }
-    }
+    systemProperties.restore();
   }
 
   @Test

@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.utils;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.TestSystemProperties;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpClient.Builder;
 import io.fabric8.kubernetes.client.http.Interceptor;
@@ -63,6 +64,18 @@ import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 class HttpClientUtilsTest {
+
+  private TestSystemProperties systemProperties;
+
+  @BeforeEach
+  void storeProperties() {
+    systemProperties = TestSystemProperties.save("kubernetes.backwardsCompatibilityInterceptor.disable");
+  }
+
+  @AfterEach
+  void restoreProperties() {
+    systemProperties.restore();
+  }
 
   @Test
   void toProxyTypeTestUnknown() {
@@ -157,20 +170,16 @@ class HttpClientUtilsTest {
     Config config = new ConfigBuilder().build();
     System.setProperty("kubernetes.backwardsCompatibilityInterceptor.disable", "true");
 
-    try {
-      // When
-      Collection<Interceptor> interceptorList = HttpClientUtils.createApplicableInterceptors(config, null).values();
+    // When
+    Collection<Interceptor> interceptorList = HttpClientUtils.createApplicableInterceptors(config, null).values();
 
-      // Then
-      assertThat(interceptorList)
-          .isNotNull()
-          .hasSize(3)
-          .noneMatch(i -> i instanceof BackwardsCompatibilityInterceptor)
-          .hasAtLeastOneElementOfType(ImpersonatorInterceptor.class)
-          .hasAtLeastOneElementOfType(TokenRefreshInterceptor.class);
-    } finally {
-      System.clearProperty("kubernetes.backwardsCompatibilityInterceptor.disable");
-    }
+    // Then
+    assertThat(interceptorList)
+        .isNotNull()
+        .hasSize(3)
+        .noneMatch(i -> i instanceof BackwardsCompatibilityInterceptor)
+        .hasAtLeastOneElementOfType(ImpersonatorInterceptor.class)
+        .hasAtLeastOneElementOfType(TokenRefreshInterceptor.class);
   }
 
   @ParameterizedTest

@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -32,10 +33,16 @@ class ConfigAutoConfigureTest {
 
   @TempDir
   private Path tempDir;
+  private TestSystemProperties systemProperties;
+
+  @BeforeEach
+  void storeProperties() {
+    systemProperties = TestSystemProperties.save("kubeconfig");
+  }
 
   @AfterEach
   void tearDown() {
-    System.clearProperty("kubeconfig");
+    systemProperties.restore();
   }
 
   @Nested
