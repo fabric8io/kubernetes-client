@@ -33,12 +33,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class WebSocketSession extends WebSocketListener {
-
-  private static final Logger logger = Logger.getLogger(WebSocketSession.class.getName());
 
   private final List<WebSocketMessage> open;
   private final WebSocketMessage failure;
@@ -160,33 +156,11 @@ public class WebSocketSession extends WebSocketListener {
     final UUID id = UUID.randomUUID();
     pendingMessages.add(id);
     executor.schedule(() -> {
-      // Diagnostic for #7756: confirm the scheduled task actually runs. If this never logs for a
-      // hung test, the scheduled executor lost or dropped the task.
-      logger.log(Level.INFO, () -> String.format(
-          "WebSocketSession send task entered (id=%s, ws=%s, binary=%s, length=%d, delayMs=%d, pending=%d, activeSockets=%d)",
-          id, Integer.toHexString(System.identityHashCode(ws)),
-          message.isBinary(), message.getBytes().length, message.getDelay(),
-          pendingMessages.size(), activeSockets.size()));
       if (ws != null) {
-        try {
-          if (message.isBinary()) {
-            ws.send(message.getBytes());
-          } else {
-            ws.send(message.getBody());
-          }
-        } catch (RuntimeException e) {
-          // Diagnostic for #7756: if writeBinaryMessage / writeTextMessage throws (e.g. Vert.x
-          // IllegalStateException on a closed WebSocket), the scheduled task aborts here,
-          // pendingMessages keeps the id, and closeActiveSocketsIfApplicable() never runs, so the
-          // server never initiates a close and clients wait on listener.onClose. Capture state to
-          // confirm this is the failure mode on the next CI hit, then rethrow.
-          logger.log(Level.SEVERE, e,
-              () -> String.format(
-                  "WebSocketSession message send failed (ws=%s, binary=%s, length=%d, delayMs=%d, pending=%d, activeSockets=%d)",
-                  Integer.toHexString(System.identityHashCode(ws)),
-                  message.isBinary(), message.getBytes().length, message.getDelay(),
-                  pendingMessages.size(), activeSockets.size()));
-          throw e;
+        if (message.isBinary()) {
+          ws.send(message.getBytes());
+        } else {
+          ws.send(message.getBody());
         }
         pendingMessages.remove(id);
       }
@@ -195,14 +169,8 @@ public class WebSocketSession extends WebSocketListener {
   }
 
   public void closeActiveSocketsIfApplicable() {
-    final boolean applicable = pendingMessages.isEmpty() && requestEvents.isEmpty() && httpRequestEvents.isEmpty()
-        && sentWebSocketMessagesRequestEvents.isEmpty();
-    // Diagnostic for #7756: capture whether the close path was reached and what state it observed.
-    logger.log(Level.INFO, () -> String.format(
-        "WebSocketSession.closeActiveSocketsIfApplicable applicable=%s (pending=%d, requestEvents=%d, httpRequestEvents=%d, sentWebSocketMessagesRequestEvents=%d, activeSockets=%d)",
-        applicable, pendingMessages.size(), requestEvents.size(), httpRequestEvents.size(),
-        sentWebSocketMessagesRequestEvents.size(), activeSockets.size()));
-    if (applicable) {
+    if (pendingMessages.isEmpty() && requestEvents.isEmpty() && httpRequestEvents.isEmpty()
+        && sentWebSocketMessagesRequestEvents.isEmpty()) {
       activeSockets.forEach(ws -> ws.close(1000, "Closing..."));
     }
   }
