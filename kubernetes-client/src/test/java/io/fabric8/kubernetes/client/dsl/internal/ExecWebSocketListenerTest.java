@@ -41,6 +41,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -395,6 +396,109 @@ class ExecWebSocketListenerTest {
     } finally {
       asyncExecutor.shutdownNow();
     }
+  }
+
+  @Test
+  void onErrorAfterChannel2TerminateOnErrorStillNotifiesListener() {
+    // Reproduces #7779. The channel-2 stderr message with terminateOnError=true queues
+    // exitCode.completeExceptionally(...) on the SerialExecutor; the transport is then torn
+    // down before the server's reciprocal close frame arrives, so the framework delivers
+    // onError instead of onClose. Pre-fix: the deferred onError task observed exitCode was
+    // already done and went silent, so neither ExecListener.onFailure nor onClose ever
+    // fired and any latch tied to those callbacks waited forever.
+    final Queue<Runnable> manualQueue = new ArrayDeque<>();
+    final Executor manualExecutor = manualQueue::offer;
+    final AtomicReference<Throwable> capturedThrowable = new AtomicReference<>();
+    final AtomicReference<Integer> capturedCloseCode = new AtomicReference<>();
+    final ExecListener execListener = new ExecListener() {
+      @Override
+      public void onFailure(Throwable t, Response failureResponse) {
+        capturedThrowable.set(t);
+      }
+
+      @Override
+      public void onClose(int code, String reason) {
+        capturedCloseCode.set(code);
+      }
+    };
+    final PodOperationContext context = new PodOperationContext().toBuilder()
+        .execListener(execListener)
+        .terminateOnError(true)
+        .build();
+    final ExecWebSocketListener listener = new ExecWebSocketListener(context, manualExecutor, new KubernetesSerialization());
+    listener.onOpen(Mockito.mock(WebSocket.class));
+
+    // Channel 2 with terminateOnError=true: queues exitCode.completeExceptionally(...)
+    listener.onMessage(null,
+        ByteBuffer.wrap(new byte[] { (byte) 2, (byte) 'b', (byte) 'o', (byte) 'o', (byte) 'm' }));
+
+    // Transport torn down before the server's reciprocal close — framework delivers onError
+    final IOException transportClose = new IOException("Connection was closed");
+    listener.onError(null, transportClose);
+
+    // Drain: stderr task runs first (exitCode completes exceptionally), then onError task
+    // observes exitCode is already done but must still notify the listener.
+    Runnable next;
+    while ((next = manualQueue.poll()) != null) {
+      next.run();
+    }
+
+    assertThat(capturedThrowable.get())
+        .as("ExecListener.onFailure must fire so callers waiting on onClose/onFailure are not stranded")
+        .isSameAs(transportClose);
+    assertNull(capturedCloseCode.get(),
+        "exactly one of onClose/onFailure should fire; onError chose onFailure");
+    final ExecutionException ex = assertThrows(ExecutionException.class,
+        () -> listener.exitCode().get(2, TimeUnit.SECONDS));
+    assertThat(ex.getCause())
+        .as("exitCode must keep the terminateOnError value, not be overwritten by the transport close")
+        .isInstanceOf(KubernetesClientException.class)
+        .hasMessageContaining("boom");
+  }
+
+  @Test
+  void execListenerCallbackFiresExactlyOnceAcrossMultipleLifecycleEvents() {
+    // Locks down the once-and-only-once contract on ExecListener.onClose/onFailure that the
+    // class-level javadoc declares: even if the framework delivers multiple terminal events
+    // (e.g. a transport onError after a server-side onClose, or onError called twice), the
+    // user-supplied listener must receive exactly one notification.
+    final Queue<Runnable> manualQueue = new ArrayDeque<>();
+    final Executor manualExecutor = manualQueue::offer;
+    final AtomicInteger failureCount = new AtomicInteger();
+    final AtomicInteger closeCount = new AtomicInteger();
+    final ExecListener execListener = new ExecListener() {
+      @Override
+      public void onFailure(Throwable t, Response failureResponse) {
+        failureCount.incrementAndGet();
+      }
+
+      @Override
+      public void onClose(int code, String reason) {
+        closeCount.incrementAndGet();
+      }
+    };
+    final PodOperationContext context = new PodOperationContext().toBuilder()
+        .execListener(execListener)
+        .build();
+    final ExecWebSocketListener listener = new ExecWebSocketListener(context, manualExecutor, new KubernetesSerialization());
+    final WebSocket mockedWebSocket = Mockito.mock(WebSocket.class);
+    listener.onOpen(mockedWebSocket);
+
+    // First terminal event: transport-level error.
+    listener.onError(mockedWebSocket, new IOException("first"));
+    // Follow-up events that the framework may still deliver: a second onError, plus a late onClose.
+    listener.onError(mockedWebSocket, new IOException("second"));
+    listener.onClose(mockedWebSocket, 1000, "late");
+
+    Runnable next;
+    while ((next = manualQueue.poll()) != null) {
+      next.run();
+    }
+
+    assertEquals(1, failureCount.get(),
+        "ExecListener.onFailure must fire exactly once across repeat terminal events");
+    assertEquals(0, closeCount.get(),
+        "ExecListener.onClose must not fire once onFailure has already notified the listener");
   }
 
 }

@@ -141,6 +141,11 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
   private final ExecutorService executorService = Executors.newSingleThreadExecutor();
   private final SerialExecutor serialExecutor;
   private final AtomicBoolean closed = new AtomicBoolean(false);
+  // Gates the user-facing ExecListener.onClose/onFailure callbacks so exactly one fires for the
+  // lifecycle of the exec session. Distinct from `closed`, which guards transport-level state:
+  // when onError fires after exitCode is already complete (e.g. the terminateOnError + abrupt
+  // close race in #7779), `closed` is already set but the listener has not yet been notified.
+  private final AtomicBoolean listenerNotified = new AtomicBoolean(false);
   private final CompletableFuture<Integer> exitCode = new CompletableFuture<>();
   private KubernetesSerialization serialization;
 
@@ -287,20 +292,28 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
     final HttpResponse<?> finalResponse = response;
     serialExecutor.execute(() -> {
       try {
-        if (exitCode.isDone()) {
+        final boolean exitCodeAlreadyDone = exitCode.isDone();
+        if (exitCodeAlreadyDone) {
+          // exitCode was already captured (normal exit via channel 3, or terminateOnError via
+          // channel 2). Preserve the captured value — do not overwrite it with the close
+          // exception — but still notify the listener below so callers waiting on the
+          // onClose/onFailure pair are not stranded (#7779).
           LOGGER.debug("Exec failure after done", finalT);
-        } else {
-          try {
+        }
+        try {
+          if (listenerNotified.compareAndSet(false, true)) {
             if (listener != null) {
               ExecListener.Response execResponse = null;
               if (finalResponse != null) {
                 execResponse = new SimpleResponse(finalResponse);
               }
               listener.onFailure(finalT, execResponse);
-            } else {
+            } else if (!exitCodeAlreadyDone) {
               LOGGER.error("Exec Failure", finalT);
             }
-          } finally {
+          }
+        } finally {
+          if (!exitCodeAlreadyDone) {
             exitCode.completeExceptionally(finalT);
           }
         }
@@ -411,7 +424,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
         }
         cleanUpOnce();
       } finally {
-        if (listener != null) {
+        if (listener != null && listenerNotified.compareAndSet(false, true)) {
           listener.onClose(code, reason);
         }
       }
