@@ -120,7 +120,7 @@ public class GeneratorSettings {
    * or hand-written overrides of generated resources alongside the auto-detected generated ones.
    */
   @Singular
-  private List<String> additionalKubernetesResources;
+  private Set<String> additionalKubernetesResources;
   private boolean generateJavadoc;
   @Builder.Default
   private final String genericKubernetesResourceClass = "io.fabric8.kubernetes.api.model.GenericKubernetesResource";
