@@ -3,6 +3,7 @@
 ### 7.8-SNAPSHOT
 
 #### Bugs
+* Fix #7779: (kubernetes-client) ExecWebSocketListener now notifies the user-supplied ExecListener on transport-level errors that race with `terminateOnError` / channel-3 exit-status completion — `listener.onFailure` (or `onClose`) fires exactly once, gated by a dedicated flag, instead of being silently swallowed when the deferred onError task observes `exitCode.isDone()`
 * Fix #7765: (kubernetes-client) `BaseOperation.informOnCondition` now stops the informer inline when the inner predicate completes the future, closing a CompletableFuture `postComplete` race where a waiter helping drain dependents could fire `informer.stop` after `cf.complete` had already triggered a spurious `?watch=true` HTTP request
 
 #### Improvements

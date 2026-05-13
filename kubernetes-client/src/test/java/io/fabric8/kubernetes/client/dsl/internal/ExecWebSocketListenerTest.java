@@ -397,4 +397,62 @@ class ExecWebSocketListenerTest {
     }
   }
 
+  @Test
+  void onErrorAfterChannel2TerminateOnErrorStillNotifiesListener() {
+    // Reproduces #7779. The channel-2 stderr message with terminateOnError=true queues
+    // exitCode.completeExceptionally(...) on the SerialExecutor; the transport is then torn
+    // down before the server's reciprocal close frame arrives, so the framework delivers
+    // onError instead of onClose. Pre-fix: the deferred onError task observed exitCode was
+    // already done and went silent, so neither ExecListener.onFailure nor onClose ever
+    // fired and any latch tied to those callbacks waited forever.
+    final Queue<Runnable> manualQueue = new ArrayDeque<>();
+    final Executor manualExecutor = manualQueue::offer;
+    final AtomicReference<Throwable> capturedThrowable = new AtomicReference<>();
+    final AtomicReference<Integer> capturedCloseCode = new AtomicReference<>();
+    final ExecListener execListener = new ExecListener() {
+      @Override
+      public void onFailure(Throwable t, Response failureResponse) {
+        capturedThrowable.set(t);
+      }
+
+      @Override
+      public void onClose(int code, String reason) {
+        capturedCloseCode.set(code);
+      }
+    };
+    final PodOperationContext context = new PodOperationContext().toBuilder()
+        .execListener(execListener)
+        .terminateOnError(true)
+        .build();
+    final ExecWebSocketListener listener = new ExecWebSocketListener(context, manualExecutor, new KubernetesSerialization());
+    listener.onOpen(Mockito.mock(WebSocket.class));
+
+    // Channel 2 with terminateOnError=true: queues exitCode.completeExceptionally(...)
+    listener.onMessage(null,
+        ByteBuffer.wrap(new byte[] { (byte) 2, (byte) 'b', (byte) 'o', (byte) 'o', (byte) 'm' }));
+
+    // Transport torn down before the server's reciprocal close — framework delivers onError
+    final IOException transportClose = new IOException("Connection was closed");
+    listener.onError(null, transportClose);
+
+    // Drain: stderr task runs first (exitCode completes exceptionally), then onError task
+    // observes exitCode is already done but must still notify the listener.
+    Runnable next;
+    while ((next = manualQueue.poll()) != null) {
+      next.run();
+    }
+
+    assertThat(capturedThrowable.get())
+        .as("ExecListener.onFailure must fire so callers waiting on onClose/onFailure are not stranded")
+        .isSameAs(transportClose);
+    assertNull(capturedCloseCode.get(),
+        "exactly one of onClose/onFailure should fire; onError chose onFailure");
+    final ExecutionException ex = assertThrows(ExecutionException.class,
+        () -> listener.exitCode().get(2, TimeUnit.SECONDS));
+    assertThat(ex.getCause())
+        .as("exitCode must keep the terminateOnError value, not be overwritten by the transport close")
+        .isInstanceOf(KubernetesClientException.class)
+        .hasMessageContaining("boom");
+  }
+
 }
