@@ -234,11 +234,6 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
   private void closeWebSocketOnce(int code, String reason) {
     try {
       WebSocket ws = webSocketRef.get();
-      // Diagnostic for #7756: log every client-initiated sendClose. We want to confirm whether the
-      // client actually issues a close frame after receiving the error stream message (the
-      // terminateOnError path) before suspecting transport-level loss of the close frame.
-      LOGGER.error("[#7756] closeWebSocketOnce code={} reason={} wsPresent={}",
-          code, reason, ws != null);
       if (ws != null) {
         ws.sendClose(code, reason);
       }
@@ -267,11 +262,6 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
 
   @Override
   public void onError(WebSocket webSocket, Throwable t) {
-    // Diagnostic for #7756: log every transport-level error reaching the listener so we can tell
-    // whether a server-side ClosedChannelException is surfaced to the client (and if so, in what
-    // form) when the server's close frame fails to write.
-    LOGGER.error("[#7756] onError ws={} t={}",
-        Integer.toHexString(System.identityHashCode(webSocket)), t == null ? "null" : t.toString());
     closed.set(true);
     HttpResponse<?> response = null;
 
@@ -340,11 +330,6 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
         webSocket.request();
         return;
       }
-      // Diagnostic for #7756: confirm channel 2 (error stream) arrives at the client and triggers
-      // terminateOnError close. Used together with the VertxMockWebSocket close/write probes to
-      // pinpoint which side of the close handshake stalls.
-      LOGGER.error("[#7756] Exec Web Socket: onMessage streamID={} remaining={} terminateOnError={} ws={}",
-          streamID, byteString.remaining(), terminateOnError, Integer.toHexString(System.identityHashCode(webSocket)));
       switch (streamID) {
         case 1:
           out.handle(byteString, webSocket);
@@ -405,11 +390,6 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
 
   @Override
   public void onClose(WebSocket webSocket, int code, String reason) {
-    // Diagnostic for #7756: log every onClose entry (even ones suppressed by the `closed` flag) so
-    // we can tell whether the framework ever delivers onClose for a hung exec — its absence
-    // confirms the server's close frame never arrives at the client listener.
-    LOGGER.error("[#7756] onClose entered code={} reason={} alreadyClosed={} ws={}",
-        code, reason, closed.get(), Integer.toHexString(System.identityHashCode(webSocket)));
     //If we already called onClosed() or onFailed() before, we need to abort.
     if (!closed.compareAndSet(false, true)) {
       return;

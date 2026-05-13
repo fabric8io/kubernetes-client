@@ -21,12 +21,7 @@ import io.vertx.core.Future;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.ServerWebSocket;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class VertxMockWebSocket implements WebSocket {
-
-  private static final Logger logger = Logger.getLogger(VertxMockWebSocket.class.getName());
 
   private final RecordedRequest request;
   private final ServerWebSocket webSocket;
@@ -45,17 +40,7 @@ public class VertxMockWebSocket implements WebSocket {
 
   @Override
   public boolean send(String text) {
-    final String wsId = Integer.toHexString(System.identityHashCode(webSocket));
-    logger.log(Level.INFO, () -> String.format(
-        "VertxMockWebSocket.writeTextMessage entered (ws=%s, length=%d)", wsId, text.length()));
     final Future<Void> send = webSocket.writeTextMessage(text);
-    // Diagnostic for #7756: writeTextMessage completes asynchronously. Logging both outcomes makes
-    // the "future never completed" case distinguishable from "succeeded" or "failed" — silence
-    // after the entry log now strictly means the future never settled.
-    send.onSuccess(v -> logger.log(Level.INFO,
-        () -> String.format("VertxMockWebSocket.writeTextMessage succeeded (ws=%s, length=%d)", wsId, text.length())));
-    send.onFailure(t -> logger.log(Level.SEVERE, t,
-        () -> String.format("VertxMockWebSocket.writeTextMessage future failed (ws=%s, length=%d)", wsId, text.length())));
     if (send.isComplete()) {
       return send.succeeded();
     }
@@ -64,15 +49,7 @@ public class VertxMockWebSocket implements WebSocket {
 
   @Override
   public boolean send(byte[] bytes) {
-    final String wsId = Integer.toHexString(System.identityHashCode(webSocket));
-    logger.log(Level.INFO, () -> String.format(
-        "VertxMockWebSocket.writeBinaryMessage entered (ws=%s, length=%d)", wsId, bytes.length));
     final Future<Void> send = webSocket.writeBinaryMessage(Buffer.buffer(bytes));
-    // Diagnostic for #7756: see send(String) above.
-    send.onSuccess(v -> logger.log(Level.INFO,
-        () -> String.format("VertxMockWebSocket.writeBinaryMessage succeeded (ws=%s, length=%d)", wsId, bytes.length)));
-    send.onFailure(t -> logger.log(Level.SEVERE, t,
-        () -> String.format("VertxMockWebSocket.writeBinaryMessage future failed (ws=%s, length=%d)", wsId, bytes.length)));
     if (send.isComplete()) {
       return send.succeeded();
     }
@@ -83,16 +60,7 @@ public class VertxMockWebSocket implements WebSocket {
   public synchronized boolean close(int code, String reason) {
     if (!closing) {
       closing = true;
-      final String wsId = Integer.toHexString(System.identityHashCode(webSocket));
-      logger.log(Level.INFO, () -> String.format(
-          "VertxMockWebSocket.close entered (ws=%s, code=%d, reason=%s)", wsId, code, reason));
-      // Diagnostic for #7756: capture both close outcomes (success vs ClosedChannelException) so we
-      // can correlate with the matching writeBinaryMessage / writeTextMessage result on the same ws.
-      final Future<Void> closeFuture = webSocket.close((short) code, reason);
-      closeFuture.onSuccess(v -> logger.log(Level.INFO,
-          () -> String.format("VertxMockWebSocket.close succeeded (ws=%s, code=%d, reason=%s)", wsId, code, reason)));
-      closeFuture.onFailure(t -> logger.log(Level.SEVERE, t,
-          () -> String.format("VertxMockWebSocket.close future failed (ws=%s, code=%d, reason=%s)", wsId, code, reason)));
+      webSocket.close((short) code, reason);
     }
     return true;
   }
