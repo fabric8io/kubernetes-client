@@ -39,15 +39,16 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -145,12 +146,13 @@ public abstract class AbstractSimultaneousConnectionsTest {
   public void http1WebSocketConnections() throws Exception {
     withHttp1();
     final Collection<io.fabric8.mockwebserver.http.WebSocket> serverSockets = ConcurrentHashMap.newKeySet();
-    final Collection<CompletableFuture<WebSocket>> clientFutures = ConcurrentHashMap.newKeySet();
+    final List<CompletableFuture<WebSocket>> clientFutures = new ArrayList<>(MAX_HTTP_1_WS_CONNECTIONS);
     final CyclicBarrier cyclicBarrier = new CyclicBarrier(2);
     final MockResponse response = new MockResponse()
         .withWebSocketUpgrade(new WebSocketListener() {
           @Override
           public void onOpen(io.fabric8.mockwebserver.http.WebSocket webSocket, Response response) {
+            // Register before the pacing barrier so the post-loop count assertion can't race the last iteration's add.
             serverSockets.add(webSocket);
             try {
               cyclicBarrier.await(1, TimeUnit.SECONDS);
@@ -159,7 +161,9 @@ public abstract class AbstractSimultaneousConnectionsTest {
             }
           }
         });
-    IntStream.range(0, MAX_HTTP_1_WS_CONNECTIONS).forEach(i -> mockWebServer.enqueue(response));
+    for (int it = 0; it < MAX_HTTP_1_WS_CONNECTIONS; it++) {
+      mockWebServer.enqueue(response);
+    }
     try (final HttpClient client = clientBuilder.build()) {
       for (int it = 0; it < MAX_HTTP_1_WS_CONNECTIONS; it++) {
         clientFutures.add(client.newWebSocketBuilder()
