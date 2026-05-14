@@ -1,0 +1,4 @@
+io.fabric8.kubernetes.api.model.discovery.v1.EndpointSlice
+io.fabric8.kubernetes.api.model.discovery.v1.EndpointSliceList
+io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSlice
+io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSliceList

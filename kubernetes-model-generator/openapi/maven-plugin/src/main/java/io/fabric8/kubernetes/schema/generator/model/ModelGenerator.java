@@ -30,6 +30,8 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +43,7 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -78,6 +81,7 @@ class ModelGenerator {
     final Map<String, Schema<?>> schemas = utils.extractComponentSchemas();
     settings.getLogger().info(String.format("Found %s schemas", schemas.size()));
     final AtomicInteger generatedClasses = new AtomicInteger();
+    final Set<String> kubernetesResources = new TreeSet<>();
     final Map<String, Schema<?>> entries = schemas.entrySet().stream()
         .filter(GeneratorUtils.filter(settings))
         .filter(entry -> entry.getValue() instanceof ObjectSchema)
@@ -95,9 +99,32 @@ class ModelGenerator {
       processTemplate(templateContext);
       final String fileContents = modelTemplate.execute(templateContext.getContext());
       writeFile(templateContext, fileContents);
+      if (templateContext.getApiVersion() != null) {
+        kubernetesResources.add(templateContext.getClassInformation().getClassName());
+      }
       generatedClasses.incrementAndGet();
     }
+    if (settings.getAdditionalKubernetesResources() != null) {
+      kubernetesResources.addAll(settings.getAdditionalKubernetesResources());
+    }
+    writeKubernetesResourceServiceFile(kubernetesResources);
     settings.getLogger().info(String.format("Generated %s model entries", generatedClasses.get()));
+  }
+
+  private void writeKubernetesResourceServiceFile(Set<String> resources) {
+    final Path serviceFile = settings.getGeneratedResourcesDirectory().toPath()
+        .resolve("META-INF").resolve("services").resolve(settings.getKubernetesResourceClass());
+    try {
+      Files.createDirectories(serviceFile.getParent());
+      if (resources.isEmpty()) {
+        Files.deleteIfExists(serviceFile);
+        return;
+      }
+      Files.write(serviceFile, String.join("\n", resources).concat("\n").getBytes(StandardCharsets.UTF_8));
+    } catch (IOException ex) {
+      settings.getLogger().severe(ex.getMessage());
+      throw new GeneratorException("Can't write KubernetesResource service file " + serviceFile, ex);
+    }
   }
 
   private void processTemplate(TemplateContext ret) {
@@ -112,9 +139,6 @@ class ModelGenerator {
         ret.addImport("io.fabric8.kubernetes.model.annotation.Group");
         ret.put("group", "@Group(\"" + ret.getApiVersion().getGroup() + "\")");
       }
-      ret.addImport("io.sundr.transform.annotations.TemplateTransformation");
-      ret.addImport("io.sundr.transform.annotations.TemplateTransformations");
-      ret.put("kubernetesResourceClass", settings.getKubernetesResourceClass());
     }
     final String serializer = serializerForJavaClass(ret.getClassInformation().getClassName());
     if (serializer != null) {

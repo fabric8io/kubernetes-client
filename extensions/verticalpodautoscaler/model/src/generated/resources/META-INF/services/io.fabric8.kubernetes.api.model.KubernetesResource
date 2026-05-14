@@ -1,0 +1,12 @@
+io.fabric8.autoscaling.api.model.v1.VerticalPodAutoscaler
+io.fabric8.autoscaling.api.model.v1.VerticalPodAutoscalerCheckpoint
+io.fabric8.autoscaling.api.model.v1.VerticalPodAutoscalerCheckpointList
+io.fabric8.autoscaling.api.model.v1.VerticalPodAutoscalerList
+io.fabric8.autoscaling.api.model.v1beta1.VerticalPodAutoscaler
+io.fabric8.autoscaling.api.model.v1beta1.VerticalPodAutoscalerCheckpoint
+io.fabric8.autoscaling.api.model.v1beta1.VerticalPodAutoscalerCheckpointList
+io.fabric8.autoscaling.api.model.v1beta1.VerticalPodAutoscalerList
+io.fabric8.autoscaling.api.model.v1beta2.VerticalPodAutoscaler
+io.fabric8.autoscaling.api.model.v1beta2.VerticalPodAutoscalerCheckpoint
+io.fabric8.autoscaling.api.model.v1beta2.VerticalPodAutoscalerCheckpointList
+io.fabric8.autoscaling.api.model.v1beta2.VerticalPodAutoscalerList

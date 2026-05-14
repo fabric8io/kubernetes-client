@@ -1,0 +1,16 @@
+io.fabric8.openshift.api.model.console.v1.ConsoleCLIDownload
+io.fabric8.openshift.api.model.console.v1.ConsoleCLIDownloadList
+io.fabric8.openshift.api.model.console.v1.ConsoleExternalLogLink
+io.fabric8.openshift.api.model.console.v1.ConsoleExternalLogLinkList
+io.fabric8.openshift.api.model.console.v1.ConsoleLink
+io.fabric8.openshift.api.model.console.v1.ConsoleLinkList
+io.fabric8.openshift.api.model.console.v1.ConsoleNotification
+io.fabric8.openshift.api.model.console.v1.ConsoleNotificationList
+io.fabric8.openshift.api.model.console.v1.ConsolePlugin
+io.fabric8.openshift.api.model.console.v1.ConsolePluginList
+io.fabric8.openshift.api.model.console.v1.ConsoleQuickStart
+io.fabric8.openshift.api.model.console.v1.ConsoleQuickStartList
+io.fabric8.openshift.api.model.console.v1.ConsoleSample
+io.fabric8.openshift.api.model.console.v1.ConsoleSampleList
+io.fabric8.openshift.api.model.console.v1.ConsoleYAMLSample
+io.fabric8.openshift.api.model.console.v1.ConsoleYAMLSampleList

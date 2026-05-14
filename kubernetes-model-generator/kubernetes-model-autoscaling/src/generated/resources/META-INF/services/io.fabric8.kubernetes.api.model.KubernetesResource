@@ -1,0 +1,9 @@
+io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscaler
+io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscalerList
+io.fabric8.kubernetes.api.model.autoscaling.v1.Scale
+io.fabric8.kubernetes.api.model.autoscaling.v2.HorizontalPodAutoscaler
+io.fabric8.kubernetes.api.model.autoscaling.v2.HorizontalPodAutoscalerList
+io.fabric8.kubernetes.api.model.autoscaling.v2beta1.HorizontalPodAutoscaler
+io.fabric8.kubernetes.api.model.autoscaling.v2beta1.HorizontalPodAutoscalerList
+io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscaler
+io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscalerList

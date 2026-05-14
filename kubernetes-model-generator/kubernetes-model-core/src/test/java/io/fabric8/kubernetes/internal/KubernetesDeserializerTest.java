@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.internal;
 
+import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.Quantity;
@@ -94,6 +95,16 @@ class KubernetesDeserializerTest {
     Class<? extends KubernetesResource> clazz = mapping.getForKey(key);
     // then
     assertThat(clazz).isEqualTo(Pod.class);
+  }
+
+  @Test
+  void shouldLoadHandWrittenKubernetesListFromServiceFile() {
+    // given KubernetesList is hand-written and registered via the plugin's additionalKubernetesResources
+    TypeKey key = mapping.getKeyFromClass(KubernetesList.class);
+    // when
+    Class<? extends KubernetesResource> clazz = mapping.getForKey(key);
+    // then
+    assertThat(clazz).isEqualTo(KubernetesList.class);
   }
 
   @Test

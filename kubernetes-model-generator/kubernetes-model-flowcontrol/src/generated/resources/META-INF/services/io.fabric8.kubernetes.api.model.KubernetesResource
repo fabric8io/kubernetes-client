@@ -1,0 +1,16 @@
+io.fabric8.kubernetes.api.model.flowcontrol.v1.FlowSchema
+io.fabric8.kubernetes.api.model.flowcontrol.v1.FlowSchemaList
+io.fabric8.kubernetes.api.model.flowcontrol.v1.PriorityLevelConfiguration
+io.fabric8.kubernetes.api.model.flowcontrol.v1.PriorityLevelConfigurationList
+io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchema
+io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchemaList
+io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfiguration
+io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfigurationList
+io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.FlowSchema
+io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.FlowSchemaList
+io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PriorityLevelConfiguration
+io.fabric8.kubernetes.api.model.flowcontrol.v1beta2.PriorityLevelConfigurationList
+io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.FlowSchema
+io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.FlowSchemaList
+io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.PriorityLevelConfiguration
+io.fabric8.kubernetes.api.model.flowcontrol.v1beta3.PriorityLevelConfigurationList

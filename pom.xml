@@ -175,6 +175,7 @@
     <maven.compiler.release>11</maven.compiler.release>
     <skipTests>false</skipTests>
     <generate.targetDirectory>${project.basedir}/src/generated/java</generate.targetDirectory>
+    <generate.targetResourcesDirectory>${project.basedir}/src/generated/resources</generate.targetResourcesDirectory>
 
     <exec.master>https://localhost:8443</exec.master>
 
@@ -697,18 +698,6 @@
             <artifactId>tools</artifactId>
           </exclusion>
         </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>io.sundr</groupId>
-        <artifactId>transform-annotations</artifactId>
-        <version>${sundrio.version}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>io.sundr</groupId>
-        <artifactId>sundr-codegen-velocity-nodeps</artifactId>
-        <version>${sundrio.version}</version>
-        <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>com.samskivert</groupId>

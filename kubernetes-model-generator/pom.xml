@@ -122,16 +122,6 @@
       <artifactId>builder-annotations</artifactId>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>io.sundr</groupId>
-      <artifactId>transform-annotations</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.sundr</groupId>
-      <artifactId>sundr-codegen-velocity-nodeps</artifactId>
-      <scope>provided</scope>
-    </dependency>
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -236,6 +226,20 @@
                 <sources>
                   <source>${generate.targetDirectory}</source>
                 </sources>
+              </configuration>
+            </execution>
+            <execution>
+              <id>add-generated-resources</id>
+              <phase>generate-resources</phase>
+              <goals>
+                <goal>add-resource</goal>
+              </goals>
+              <configuration>
+                <resources>
+                  <resource>
+                    <directory>${generate.targetResourcesDirectory}</directory>
+                  </resource>
+                </resources>
               </configuration>
             </execution>
             <execution>

@@ -1,0 +1,8 @@
+io.fabric8.kubernetes.api.model.rbac.ClusterRole
+io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding
+io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingList
+io.fabric8.kubernetes.api.model.rbac.ClusterRoleList
+io.fabric8.kubernetes.api.model.rbac.Role
+io.fabric8.kubernetes.api.model.rbac.RoleBinding
+io.fabric8.kubernetes.api.model.rbac.RoleBindingList
+io.fabric8.kubernetes.api.model.rbac.RoleList

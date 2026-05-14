@@ -1,0 +1,6 @@
+io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPPool
+io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPPoolList
+io.fabric8.openshift.api.model.whereabouts.v1alpha1.NodeSlicePool
+io.fabric8.openshift.api.model.whereabouts.v1alpha1.NodeSlicePoolList
+io.fabric8.openshift.api.model.whereabouts.v1alpha1.OverlappingRangeIPReservation
+io.fabric8.openshift.api.model.whereabouts.v1alpha1.OverlappingRangeIPReservationList

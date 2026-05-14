@@ -1,0 +1,13 @@
+io.fabric8.kubernetes.api.model.extensions.DaemonSet
+io.fabric8.kubernetes.api.model.extensions.DaemonSetList
+io.fabric8.kubernetes.api.model.extensions.Deployment
+io.fabric8.kubernetes.api.model.extensions.DeploymentList
+io.fabric8.kubernetes.api.model.extensions.Ingress
+io.fabric8.kubernetes.api.model.extensions.IngressList
+io.fabric8.kubernetes.api.model.extensions.NetworkPolicy
+io.fabric8.kubernetes.api.model.extensions.NetworkPolicyList
+io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicy
+io.fabric8.kubernetes.api.model.extensions.PodSecurityPolicyList
+io.fabric8.kubernetes.api.model.extensions.ReplicaSet
+io.fabric8.kubernetes.api.model.extensions.ReplicaSetList
+io.fabric8.kubernetes.api.model.extensions.Scale

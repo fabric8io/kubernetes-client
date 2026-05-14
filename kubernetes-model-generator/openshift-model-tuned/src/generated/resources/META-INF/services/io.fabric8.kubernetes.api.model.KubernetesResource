@@ -1,0 +1,4 @@
+io.fabric8.openshift.api.model.tuned.v1.Profile
+io.fabric8.openshift.api.model.tuned.v1.ProfileList
+io.fabric8.openshift.api.model.tuned.v1.Tuned
+io.fabric8.openshift.api.model.tuned.v1.TunedList
