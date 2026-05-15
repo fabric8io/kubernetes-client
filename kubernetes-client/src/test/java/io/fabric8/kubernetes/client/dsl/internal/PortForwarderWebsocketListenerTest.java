@@ -31,8 +31,8 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
@@ -42,6 +42,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.timeout;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -73,22 +74,28 @@ class PortForwarderWebsocketListenerTest {
 
   @Test
   void onOpen_shouldPipeInChannelToWebSocket() {
-    // pipe() reuses the same ByteBuffer across iterations, so an ArgumentCaptor
-    // reference races with buffer.clear()/put()/read() in the next iteration.
-    // Snapshot the bytes synchronously inside send() instead.
-    final AtomicReference<String> sent = new AtomicReference<>();
+    // Snapshot the bytes synchronously inside send() and publish via a future.
+    // The ByteBuffer mutates across pipe() iterations (clear/put/read), so the
+    // bytes must be copied before the next iteration. Publishing via a future
+    // also avoids the verify(timeout) -> read race: Mockito records the
+    // invocation BEFORE the doAnswer body runs, so a verify(timeout) barrier
+    // can return while the captured value is still unset.
+    final CompletableFuture<String> sent = new CompletableFuture<>();
     doAnswer(i -> {
       ByteBuffer buf = i.getArgument(0);
       byte[] copy = new byte[buf.remaining()];
       buf.duplicate().get(copy);
-      sent.set(new String(copy, StandardCharsets.UTF_8));
+      sent.complete(new String(copy, StandardCharsets.UTF_8));
       return true;
     }).when(webSocket).send(any(ByteBuffer.class));
     listener = new PortForwarderWebsocketListener(in, out, CommonThreadPool.get());
     listener.onOpen(webSocket);
     // Then
-    verify(webSocket, timeout(10_000).times(1)).send(any(ByteBuffer.class));
-    assertThat(sent.get()).startsWith("\u0000THIS IS A TEST");
+    assertThat(sent)
+        .succeedsWithin(10, TimeUnit.SECONDS, InstanceOfAssertFactories.STRING)
+        .startsWith("\u0000THIS IS A TEST");
+    // Single send for the 14-byte payload; pipe() exits on EOF before a second send.
+    verify(webSocket, times(1)).send(any(ByteBuffer.class));
     assertThat(in.isOpen()).isTrue();
     assertThat(out.isOpen()).isTrue();
   }
