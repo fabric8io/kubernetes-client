@@ -94,6 +94,7 @@ public class GenericKubernetesResource implements Editable<GenericKubernetesReso
     return MAPPER.convertValue(getAdditionalProperties(), JsonNode.class);
   }
 
+  // spotless:off
   /**
    * Allows the retrieval of field values from this Resource for the provided path segments.
    *
@@ -139,6 +140,7 @@ public class GenericKubernetesResource implements Editable<GenericKubernetesReso
    * @param <T> type of the returned object.
    * @return the value of the traversed path or null if the field does not exist.
    */
+  // spotless:on
   public <T> T get(Object... path) {
     return get(getAdditionalProperties(), path);
   }
