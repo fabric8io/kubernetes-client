@@ -78,7 +78,7 @@
                 <configuration>
                     <environmentVariables combine.children="append">
                         <!-- Isolate kubeconfig writes to this fork; see kube-api-test/core/pom.xml. -->
-                        <KUBECONFIG>${project.build.directory}/test-home/.kube/config</KUBECONFIG>
+                        <KUBECONFIG>${project.build.directory}${file.separator}test-home${file.separator}.kube${file.separator}config</KUBECONFIG>
                     </environmentVariables>
                 </configuration>
             </plugin>

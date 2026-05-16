@@ -37,10 +37,13 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -64,6 +67,8 @@ public class ProcessReadinessChecker {
   private static final Logger logger = LoggerFactory.getLogger(ProcessReadinessChecker.class);
 
   public static final int POLLING_INTERVAL = 200;
+
+  private static final char[] EMPTY_PASSWORD = new char[0];
 
   public void waitUntilDefaultNamespaceAvailable(int apiServerPort, BinaryManager binaryManager,
       CertManager certManager, KubeAPIServerConfig config, int timeoutMillis) {
@@ -227,9 +232,9 @@ public class ProcessReadinessChecker {
               }
           },
           null);
-      // Set protocol to HTTP/1.1 for "GET /readyz". On Kubernetes >=1.29, unauthenticated
-      // HTTP/2 traffic is rate-limited by the UnauthenticatedHTTP2DOSMitigation feature
-      // gate, so HTTP/1.1 is the safer default even for the authenticated path.
+      // HTTP/1.1 keeps the unauthenticated path safe under the
+      // UnauthenticatedHTTP2DOSMitigation feature gate (K8s >= 1.29); retained for the
+      // authenticated path for parity.
       return HttpClient.newBuilder()
           .sslContext(sslContext)
           .version(HttpClient.Version.HTTP_1_1)
@@ -242,11 +247,11 @@ public class ProcessReadinessChecker {
   private static KeyManager[] loadClientKeyManagers(CertManager certManager) {
     try {
       X509Certificate cert;
-      try (PEMParser p = new PEMParser(new FileReader(certManager.getClientCertPath()))) {
+      try (PEMParser p = new PEMParser(new FileReader(certManager.getClientCertPath(), StandardCharsets.US_ASCII))) {
         cert = new JcaX509CertificateConverter().getCertificate((X509CertificateHolder) p.readObject());
       }
       PrivateKey privateKey;
-      try (PEMParser p = new PEMParser(new FileReader(certManager.getClientKeyPath()))) {
+      try (PEMParser p = new PEMParser(new FileReader(certManager.getClientKeyPath(), StandardCharsets.US_ASCII))) {
         Object obj = p.readObject();
         PrivateKeyInfo keyInfo = (obj instanceof PEMKeyPair)
             ? ((PEMKeyPair) obj).getPrivateKeyInfo()
@@ -255,11 +260,12 @@ public class ProcessReadinessChecker {
       }
       KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
       ks.load(null, null);
-      ks.setKeyEntry("client", privateKey, new char[0], new Certificate[] { cert });
+      ks.setKeyEntry("client", privateKey, EMPTY_PASSWORD, new Certificate[] { cert });
       KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-      kmf.init(ks, new char[0]);
+      kmf.init(ks, EMPTY_PASSWORD);
       return kmf.getKeyManagers();
-    } catch (Exception e) {
+    } catch (IOException | KeyStoreException | NoSuchAlgorithmException
+        | CertificateException | UnrecoverableKeyException e) {
       throw new KubeAPITestException(
           "Failed to load client cert/key from " + certManager.getClientCertPath()
               + " and " + certManager.getClientKeyPath(),

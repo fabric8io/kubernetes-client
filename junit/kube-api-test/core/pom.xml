@@ -127,7 +127,7 @@
                              catch a partial write, producing a SnakeYAML "mapping values are not
                              allowed here" failure (see #7800). Scoping KUBECONFIG to target/ keeps
                              this fork's kubectl writes from racing with sibling-fork readers. -->
-                        <KUBECONFIG>${project.build.directory}/test-home/.kube/config</KUBECONFIG>
+                        <KUBECONFIG>${project.build.directory}${file.separator}test-home${file.separator}.kube${file.separator}config</KUBECONFIG>
                     </environmentVariables>
                 </configuration>
             </plugin>
