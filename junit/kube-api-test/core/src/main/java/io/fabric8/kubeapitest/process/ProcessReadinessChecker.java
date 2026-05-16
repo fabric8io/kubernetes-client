@@ -19,9 +19,16 @@ import io.fabric8.kubeapitest.KubeAPIServerConfig;
 import io.fabric8.kubeapitest.KubeAPITestException;
 import io.fabric8.kubeapitest.binary.BinaryManager;
 import io.fabric8.kubeapitest.cert.CertManager;
+import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
+import org.bouncycastle.cert.X509CertificateHolder;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
+import org.bouncycastle.openssl.PEMKeyPair;
+import org.bouncycastle.openssl.PEMParser;
+import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Socket;
@@ -31,7 +38,10 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.security.KeyManagementException;
+import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.time.LocalTime;
@@ -39,6 +49,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLException;
@@ -93,7 +105,20 @@ public class ProcessReadinessChecker {
 
   public void waitUntilReady(int port, String readyCheckPath, String processName,
       boolean useTLS, int timeoutMillis) {
-    HttpClient client = getHttpClient();
+    waitUntilReady(port, readyCheckPath, processName, useTLS, timeoutMillis, null);
+  }
+
+  /**
+   * Same as {@link #waitUntilReady(int, String, String, boolean, int)}, but uses the supplied
+   * {@link CertManager}'s client certificate to authenticate the readiness probe. Required when
+   * polling {@code /readyz} on kube-apiserver: with RBAC enabled, the unauthenticated probe is
+   * rejected with 403 until the post-start hook seeds the {@code system:public-info-viewer}
+   * binding, a window that can easily exceed the startup timeout on contended CI runners
+   * (see #7800).
+   */
+  public void waitUntilReady(int port, String readyCheckPath, String processName,
+      boolean useTLS, int timeoutMillis, CertManager certManager) {
+    HttpClient client = getHttpClient(certManager);
     HttpRequest request = getHttpRequest(useTLS, readyCheckPath, port);
     pollWithTimeout(() -> ready(client, request, processName, port), processName, timeoutMillis);
   }
@@ -151,10 +176,15 @@ public class ProcessReadinessChecker {
   }
 
   private static HttpClient getHttpClient() {
+    return getHttpClient(null);
+  }
+
+  private static HttpClient getHttpClient(CertManager certManager) {
     try {
       SSLContext sslContext = SSLContext.getInstance("TLS");
+      KeyManager[] keyManagers = certManager != null ? loadClientKeyManagers(certManager) : null;
       sslContext.init(
-          null,
+          keyManagers,
           new TrustManager[] {
               new X509ExtendedTrustManager() {
                 @Override
@@ -197,16 +227,43 @@ public class ProcessReadinessChecker {
               }
           },
           null);
-      // Set protocol to HTTP/1.1 for unauthenticated invocations of "GET /readyz". Sending
-      // unauthenticated requests using HTTP/2 is problematic on Kubernetes >=1.29, which enables
-      // denial-of-service mitigation for authenticated HTTP/2 by default with the
-      // UnauthenticatedHTTP2DOSMitigation feature gate.
+      // Set protocol to HTTP/1.1 for "GET /readyz". On Kubernetes >=1.29, unauthenticated
+      // HTTP/2 traffic is rate-limited by the UnauthenticatedHTTP2DOSMitigation feature
+      // gate, so HTTP/1.1 is the safer default even for the authenticated path.
       return HttpClient.newBuilder()
           .sslContext(sslContext)
           .version(HttpClient.Version.HTTP_1_1)
           .build();
     } catch (NoSuchAlgorithmException | KeyManagementException e) {
       throw new KubeAPITestException(e);
+    }
+  }
+
+  private static KeyManager[] loadClientKeyManagers(CertManager certManager) {
+    try {
+      X509Certificate cert;
+      try (PEMParser p = new PEMParser(new FileReader(certManager.getClientCertPath()))) {
+        cert = new JcaX509CertificateConverter().getCertificate((X509CertificateHolder) p.readObject());
+      }
+      PrivateKey privateKey;
+      try (PEMParser p = new PEMParser(new FileReader(certManager.getClientKeyPath()))) {
+        Object obj = p.readObject();
+        PrivateKeyInfo keyInfo = (obj instanceof PEMKeyPair)
+            ? ((PEMKeyPair) obj).getPrivateKeyInfo()
+            : (PrivateKeyInfo) obj;
+        privateKey = new JcaPEMKeyConverter().getPrivateKey(keyInfo);
+      }
+      KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
+      ks.load(null, null);
+      ks.setKeyEntry("client", privateKey, new char[0], new Certificate[] { cert });
+      KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+      kmf.init(ks, new char[0]);
+      return kmf.getKeyManagers();
+    } catch (Exception e) {
+      throw new KubeAPITestException(
+          "Failed to load client cert/key from " + certManager.getClientCertPath()
+              + " and " + certManager.getClientKeyPath(),
+          e);
     }
   }
 }

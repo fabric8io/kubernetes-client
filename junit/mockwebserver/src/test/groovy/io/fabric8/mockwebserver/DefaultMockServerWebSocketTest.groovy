@@ -116,13 +116,23 @@ class DefaultMockServerWebSocketTest extends Specification {
 		and: "A WebSocket listener"
 		String closeReason
 		wsReq.onComplete { ws ->
-			if (ws.result().isClosed()) {
-				closeReason = ws.result().closeReason()
-			} else {
-				ws.result().closeHandler { _ ->
-					ws.result().close()
-					closeReason = ws.result().closeReason()
+			def w = ws.result()
+			// closeHandler() throws IllegalStateException if the WebSocket has already
+			// closed, so the previous check-then-register pattern was racy: under load,
+			// the close frame can land between isClosed() and closeHandler(), surfacing
+			// as a silently-swallowed Vert.x exception and a 10 s test timeout (#7800).
+			// Try to register the handler unconditionally, then read closeReason from
+			// whichever path actually saw the close.
+			try {
+				w.closeHandler { _ ->
+					w.close()
+					closeReason = w.closeReason()
 				}
+			} catch (IllegalStateException ignored) {
+				// WS already closed before we could register; isClosed() check below handles it.
+			}
+			if (w.isClosed()) {
+				closeReason = w.closeReason()
 			}
 		}
 		and: "An instance of PollingConditions"

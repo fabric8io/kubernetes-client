@@ -112,4 +112,25 @@
             <artifactId>jackson-dataformat-yaml</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <environmentVariables combine.children="append">
+                        <!-- Isolate kubeconfig writes to this fork. JUnitExtensionKubeConfigUpdateTest
+                             shells out to `kubectl config set-*`, which truncate+writes the file
+                             non-atomically (client-go's os.WriteFile). Other modules' tests
+                             concurrently read $HOME/.kube/config in Config.autoConfigure and can
+                             catch a partial write, producing a SnakeYAML "mapping values are not
+                             allowed here" failure (see #7800). Scoping KUBECONFIG to target/ keeps
+                             this fork's kubectl writes from racing with sibling-fork readers. -->
+                        <KUBECONFIG>${project.build.directory}/test-home/.kube/config</KUBECONFIG>
+                    </environmentVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

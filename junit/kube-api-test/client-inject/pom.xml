@@ -69,4 +69,19 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <environmentVariables combine.children="append">
+                        <!-- Isolate kubeconfig writes to this fork; see kube-api-test/core/pom.xml. -->
+                        <KUBECONFIG>${project.build.directory}/test-home/.kube/config</KUBECONFIG>
+                    </environmentVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
