@@ -17,7 +17,10 @@ package io.fabric8.kubeapitest.sample;
 
 import io.fabric8.kubeapitest.junit.EnableKubeAPIServer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
+@DisabledOnOs(value = OS.WINDOWS, disabledReason = "Cross-platform kubeconfig isolation not yet sorted; see #7804")
 @EnableKubeAPIServer(updateKubeConfigFile = true)
 class JUnitExtensionKubeConfigUpdateTest {
 
