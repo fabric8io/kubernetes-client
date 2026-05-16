@@ -18,6 +18,11 @@ name: E2E Chaos Tests
 
 on:
   workflow_dispatch:
+  # TEMPORARY: trigger on PRs that modify this workflow so the ARM64 runner change can be
+  # validated end-to-end before merge. Remove this `pull_request:` block once verified.
+  pull_request:
+    paths:
+      - '.github/workflows/e2e-chaos-tests.yml'
   schedule:
     - cron: '0 6 * * *' # Every day at 6am
 
@@ -34,7 +39,7 @@ env:
 jobs:
   chaos-tests:
     name: K8S Chaos Test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 45
     if: github.repository == 'fabric8io/kubernetes-client'
     strategy:
@@ -48,7 +53,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: Setup Minikube-Kubernetes
-        uses: manusa/actions-setup-minikube@v2.16.1
+        uses: manusa/actions-setup-minikube@v2.17.0
         with:
           minikube version: v1.38.1
           kubernetes version: ${{ matrix.kubernetes }}
