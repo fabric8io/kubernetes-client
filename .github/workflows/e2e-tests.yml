@@ -63,7 +63,8 @@ jobs:
   minikube_baremetal:
     name: Baremetal K8S
     needs: buildWithoutTests
-    runs-on: ubuntu-24.04-arm
+    # Stays on x64 until manusa/actions-setup-minikube#147 lands ARM64 binary support.
+    runs-on: ubuntu-latest
     if: github.repository == 'fabric8io/kubernetes-client'
     strategy:
       fail-fast: false
