@@ -120,14 +120,22 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <environmentVariables combine.children="append">
-                        <!-- Isolate kubeconfig writes to this fork. JUnitExtensionKubeConfigUpdateTest
-                             shells out to `kubectl config set-*`, which truncate+writes the file
-                             non-atomically (client-go's os.WriteFile). Other modules' tests
-                             concurrently read $HOME/.kube/config in Config.autoConfigure and can
-                             catch a partial write, producing a SnakeYAML "mapping values are not
-                             allowed here" failure (see #7800). Scoping KUBECONFIG to target/ keeps
-                             this fork's kubectl writes from racing with sibling-fork readers. -->
-                        <KUBECONFIG>${project.build.directory}${file.separator}test-home${file.separator}.kube${file.separator}config</KUBECONFIG>
+                        <!-- Scope $HOME to this fork's target/ so kubectl (from
+                             JUnitExtensionKubeConfigUpdateTest) and Config.autoConfigure both
+                             resolve $HOME/.kube/config inside the fork instead of touching the
+                             developer/runner's real ~/.kube/config. kubectl's `config set-*`
+                             writes are non-atomic (client-go's os.WriteFile) and sibling forks
+                             read $HOME/.kube/config concurrently, producing a SnakeYAML
+                             "mapping values are not allowed here" failure (see #7800).
+                             HOME is honored by both kubectl (Go's homedir.HomeDir checks HOME
+                             first on Linux and Windows) and fabric8's Config.getHomeDir, so the
+                             two sides stay in sync cross-platform — unlike KUBECONFIG, which
+                             needed Maven property substitution inside an env-var value and
+                             produced inconsistent paths on Windows runners.
+                             KUBE_API_TEST_DIR is pinned back to the user's real home so the
+                             ~/.kubeapitest binary + cert cache survives `mvn clean`. -->
+                        <HOME>${project.build.directory}</HOME>
+                        <KUBE_API_TEST_DIR>${user.home}${file.separator}.kubeapitest</KUBE_API_TEST_DIR>
                     </environmentVariables>
                 </configuration>
             </plugin>
