@@ -20,11 +20,6 @@ on:
   push:
     branches:
       - main
-  # TEMPORARY: trigger on PRs that edit this workflow so the ARM64 runner change
-  # can be validated before merge. Remove this `pull_request:` block once verified.
-  pull_request:
-    paths:
-      - '.github/workflows/sonar.yml'
 #  pull_request:
 #    paths-ignore:
 #      - 'doc/**'
@@ -57,12 +52,5 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      # TEMPORARY split: `make sonar` is a single `mvn -Pcoverage,sonar install sonar:sonar`
-      # invocation; split here so PRs (which lack SONAR_TOKEN) can validate the build on
-      # ubuntu-24.04-arm without the publish step 401-ing. Collapse back into `make sonar`
-      # when the temporary PR trigger above is removed.
-      - name: Sonar build (coverage)
-        run: mvn -Pcoverage,sonar clean install
-      - name: Sonar publish
-        if: github.event_name == 'push'
-        run: mvn -Pcoverage,sonar sonar:sonar
+      - name: Sonar
+        run: make sonar

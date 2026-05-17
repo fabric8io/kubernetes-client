@@ -18,11 +18,6 @@ name: E2E Chaos Tests
 
 on:
   workflow_dispatch:
-  # TEMPORARY: trigger on PRs that modify this workflow so the ARM64 runner change can be
-  # validated end-to-end before merge. Remove this `pull_request:` block once verified.
-  pull_request:
-    paths:
-      - '.github/workflows/e2e-chaos-tests.yml'
   schedule:
     - cron: '0 6 * * *' # Every day at 6am
 
@@ -39,7 +34,9 @@ env:
 jobs:
   chaos-tests:
     name: K8S Chaos Test
-    runs-on: ubuntu-24.04-arm
+    # Stays on x64: jkube java-exec base image (quay.io/jkube/jkube-java) is amd64-only.
+    # See #7805 for the multi-arch path forward.
+    runs-on: ubuntu-latest
     timeout-minutes: 45
     if: github.repository == 'fabric8io/kubernetes-client'
     strategy:

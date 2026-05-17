@@ -18,11 +18,6 @@ name: E2E HTTPClient Tests
 
 on:
   workflow_dispatch:
-  # TEMPORARY: trigger on PRs that modify this workflow so the ARM64 runner change can be
-  # validated end-to-end before merge. Remove this `pull_request:` block once verified.
-  pull_request:
-    paths:
-      - '.github/workflows/e2e-httpclient-tests.yml'
   schedule:
     - cron: '0 5 * * *' # Every day at 5am
 
