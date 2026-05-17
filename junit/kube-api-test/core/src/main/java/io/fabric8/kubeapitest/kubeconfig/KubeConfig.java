@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -48,7 +49,14 @@ public class KubeConfig {
   }
 
   public void updateKubeConfig(int apiServerPort) {
-    logger.debug("Updating kubeconfig");
+    logger.debug(
+        "Updating kubeconfig (env HOME={}, USERPROFILE={}, HOMEDRIVE={}, HOMEPATH={}, KUBECONFIG={}, user.home={})",
+        System.getenv("HOME"),
+        System.getenv("USERPROFILE"),
+        System.getenv("HOMEDRIVE"),
+        System.getenv("HOMEPATH"),
+        System.getenv("KUBECONFIG"),
+        System.getProperty("user.home"));
     ensureKubeConfigFileExists();
     previousCurrentContext = execWithKubectlConfigAndWait("current-context").trim();
     execWithKubectlConfigAndWait("set-cluster", KUBE_API_TEST,
@@ -60,6 +68,41 @@ public class KubeConfig {
     execWithKubectlConfigAndWait("set-context", KUBE_API_TEST, "--cluster=kubeapitest",
         "--namespace=default", "--user=kubeapitest");
     execWithKubectlConfigAndWait("use-context", KUBE_API_TEST);
+    logCandidateKubeConfigPaths();
+  }
+
+  // Post-write diagnostics so we can tell, from CI output alone, whether kubectl
+  // wrote to the HOME-based path that ensureKubeConfigFileExists prepared or
+  // landed somewhere else (e.g. %USERPROFILE% on Windows). Remove once #7804 is
+  // fully understood on Windows.
+  private void logCandidateKubeConfigPaths() {
+    logCandidatePath("HOME", System.getenv("HOME"));
+    logCandidatePath("USERPROFILE", System.getenv("USERPROFILE"));
+    String homeDrive = System.getenv("HOMEDRIVE");
+    String homePath = System.getenv("HOMEPATH");
+    if (homeDrive != null && homePath != null) {
+      logCandidatePath("HOMEDRIVE+HOMEPATH", homeDrive + homePath);
+    }
+    logCandidatePath("user.home", System.getProperty("user.home"));
+  }
+
+  private void logCandidatePath(String label, String base) {
+    if (base == null || base.isEmpty()) {
+      logger.debug("Kubeconfig probe [{}]: env unset", label);
+      return;
+    }
+    Path candidate = Paths.get(base, ".kube", "config");
+    if (Files.isRegularFile(candidate)) {
+      long size = -1;
+      try {
+        size = Files.size(candidate);
+      } catch (IOException e) {
+        // best-effort diagnostic; size unavailable
+      }
+      logger.debug("Kubeconfig probe [{}]: {} exists, {} bytes", label, candidate, size);
+    } else {
+      logger.debug("Kubeconfig probe [{}]: {} absent", label, candidate);
+    }
   }
 
   public void restoreKubeConfig() {
@@ -89,16 +132,13 @@ public class KubeConfig {
     if (home == null || home.isEmpty()) {
       return;
     }
-    ensureKubeConfigFileExists(Paths.get(home));
-  }
-
-  static void ensureKubeConfigFileExists(Path homeDir) {
-    Path kubeConfigPath = homeDir.resolve(".kube").resolve("config");
+    Path kubeConfigPath = Paths.get(home, ".kube", "config");
     try {
       Files.createDirectories(kubeConfigPath.getParent());
-      if (!Files.exists(kubeConfigPath)) {
-        Files.createFile(kubeConfigPath);
-      }
+      Files.createFile(kubeConfigPath);
+      logger.debug("Pre-created {} for kubectl/fabric8 homedir parity", kubeConfigPath);
+    } catch (FileAlreadyExistsException ignored) {
+      // Already exists (prior run or sibling fork); nothing to do.
     } catch (IOException e) {
       throw new KubeAPITestException(e);
     }
@@ -127,7 +167,15 @@ public class KubeConfig {
       try (InputStream is = process.getInputStream()) {
         stdout = new String(is.readAllBytes(), Charset.defaultCharset());
       }
-      process.waitFor();
+      int exitCode = process.waitFor();
+      String stderr;
+      try (InputStream is = process.getErrorStream()) {
+        stderr = new String(is.readAllBytes(), Charset.defaultCharset());
+      }
+      if (exitCode != 0) {
+        logger.warn("kubectl config {} exit={} stderr={}",
+            String.join(" ", arguments), exitCode, stderr.trim());
+      }
       return stdout;
     } catch (IOException e) {
       throw new KubeAPITestException(e);

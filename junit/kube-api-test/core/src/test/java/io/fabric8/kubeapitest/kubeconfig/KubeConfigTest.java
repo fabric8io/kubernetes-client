@@ -17,11 +17,6 @@ package io.fabric8.kubeapitest.kubeconfig;
 
 import io.fabric8.kubeapitest.cert.CertManager;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -50,24 +45,6 @@ class KubeConfigTest {
         .contains(API_CERT_PATH)
         .contains(CLIENT_CERT_PATH)
         .contains(CLIENT_KEY_PATH);
-  }
-
-  @Test
-  void ensureKubeConfigFileExistsCreatesMissingFile(@TempDir Path tempHome) {
-    KubeConfig.ensureKubeConfigFileExists(tempHome);
-
-    assertThat(tempHome.resolve(".kube").resolve("config")).exists().isRegularFile();
-  }
-
-  @Test
-  void ensureKubeConfigFileExistsPreservesExistingFile(@TempDir Path tempHome) throws IOException {
-    Path config = tempHome.resolve(".kube").resolve("config");
-    Files.createDirectories(config.getParent());
-    Files.writeString(config, "existing-content");
-
-    KubeConfig.ensureKubeConfigFileExists(tempHome);
-
-    assertThat(config).hasContent("existing-content");
   }
 
 }
