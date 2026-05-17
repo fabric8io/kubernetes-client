@@ -25,6 +25,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +49,7 @@ public class KubeConfig {
 
   public void updateKubeConfig(int apiServerPort) {
     logger.debug("Updating kubeconfig");
+    ensureKubeConfigFileExists();
     previousCurrentContext = execWithKubectlConfigAndWait("current-context").trim();
     execWithKubectlConfigAndWait("set-cluster", KUBE_API_TEST,
         "--server=https://127.0.0.1:" + apiServerPort,
@@ -71,6 +75,33 @@ public class KubeConfig {
 
   private void unset(String target) {
     execWithKubectlConfigAndWait("unset", target);
+  }
+
+  // Pin kubectl's kubeconfig path to $HOME/.kube/config so writer (kubectl) and
+  // reader (fabric8 Config) resolve to the same file on Windows: Go's
+  // client-go/util/homedir.HomeDir picks %USERPROFILE% over $HOME on Windows
+  // unless $HOME/.kube/config already exists. See #7804.
+  private void ensureKubeConfigFileExists() {
+    String home = System.getenv("HOME");
+    if (home == null || home.isEmpty()) {
+      home = System.getProperty("user.home");
+    }
+    if (home == null || home.isEmpty()) {
+      return;
+    }
+    ensureKubeConfigFileExists(Paths.get(home));
+  }
+
+  static void ensureKubeConfigFileExists(Path homeDir) {
+    Path kubeConfigPath = homeDir.resolve(".kube").resolve("config");
+    try {
+      Files.createDirectories(kubeConfigPath.getParent());
+      if (!Files.exists(kubeConfigPath)) {
+        Files.createFile(kubeConfigPath);
+      }
+    } catch (IOException e) {
+      throw new KubeAPITestException(e);
+    }
   }
 
   public String generateKubeConfigYaml(int apiServerPort) {

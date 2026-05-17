@@ -127,11 +127,12 @@
                              writes are non-atomic (client-go's os.WriteFile) and sibling forks
                              read $HOME/.kube/config concurrently, producing a SnakeYAML
                              "mapping values are not allowed here" failure (see #7800).
-                             HOME is honored by both kubectl (Go's homedir.HomeDir checks HOME
-                             first on Linux and Windows) and fabric8's Config.getHomeDir, so the
-                             two sides stay in sync cross-platform — unlike KUBECONFIG, which
-                             needed Maven property substitution inside an env-var value and
-                             produced inconsistent paths on Windows runners.
+                             Fabric8's Config.getHomeDir honors HOME first on all platforms.
+                             kubectl honors HOME directly on Linux/macOS; on Windows, Go's
+                             client-go homedir.HomeDir prefers %USERPROFILE% over $HOME unless
+                             $HOME/.kube/config already exists — KubeConfig.updateKubeConfig
+                             pre-creates that file so kubectl and fabric8 stay in sync there
+                             too (see #7804).
                              KUBE_API_TEST_DIR is pinned back to the user's real home so the
                              ~/.kubeapitest binary + cert cache survives `mvn clean`. -->
                         <HOME>${project.build.directory}</HOME>
