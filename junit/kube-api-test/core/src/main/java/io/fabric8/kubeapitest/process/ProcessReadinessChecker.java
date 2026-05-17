@@ -87,16 +87,17 @@ public class ProcessReadinessChecker {
           "--request-timeout=5s",
           "get", "ns", "default");
 
-      if (!config.isUpdateKubeConfig()) {
-        // When the default kubeconfig file contains default context using client-certificate-data
-        // or client-key-data, kubectl will fail because it will not know which one to use and the
-        // readiness check will never pass. To avoid that, we set the KUBECONFIG environment
-        // variable to an non-existent kubeconfig file. This cannot be done using the --kubeconfig
-        // option to kubectl, because kubectl will complain if such file does not exist, but when
-        // set through KUBECONFIG env. variable, it does not complain.
-        Map<String, String> env = processBuilder.environment();
-        env.put("KUBECONFIG", config.getKubeAPITestDir() + "/.kubeconfig");
-      }
+      // Point KUBECONFIG at a non-existent file so kubectl ignores whatever
+      // kubeconfig the user (or this framework) has at $HOME/.kube/config.
+      // Without this, kubectl merges the on-disk kubeconfig with the explicit
+      // --client-certificate/--client-key flags and errors out with "specify
+      // only one of certificate file path or data, not both" whenever the
+      // kubeconfig stores cert content inline (e.g. via --embed-certs from
+      // KubeConfig.updateKubeConfig — see #7804 — or the user's own setup).
+      // --kubeconfig= can't be used because kubectl rejects a non-existent
+      // path, but KUBECONFIG via env tolerates it.
+      Map<String, String> env = processBuilder.environment();
+      env.put("KUBECONFIG", config.getKubeAPITestDir() + "/.kubeconfig");
 
       Process process = processBuilder.start();
       return process.waitFor() == 0;

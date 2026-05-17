@@ -59,50 +59,23 @@ public class KubeConfig {
         System.getProperty("user.home"));
     ensureKubeConfigFileExists();
     previousCurrentContext = execWithKubectlConfigAndWait("current-context").trim();
+    // --embed-certs=true: embed cert content inline instead of storing a path
+    // reference. kubectl's default (path reference) stores the path relative to
+    // the kubeconfig directory, which fails on Windows when the kubeconfig and
+    // the cert files live on different drives ($HOME under target\ on D:, certs
+    // under %USERPROFILE%\.kubeapitest on C:) — filepath.Rel can't compute a
+    // cross-drive relative path. See #7804.
     execWithKubectlConfigAndWait("set-cluster", KUBE_API_TEST,
         "--server=https://127.0.0.1:" + apiServerPort,
+        "--embed-certs=true",
         "--certificate-authority=" + certManager.getAPIServerCertPath());
     execWithKubectlConfigAndWait("set-credentials", KUBE_API_TEST,
+        "--embed-certs=true",
         "--client-certificate=" + certManager.getClientCertPath(),
         "--client-key=" + certManager.getClientKeyPath());
     execWithKubectlConfigAndWait("set-context", KUBE_API_TEST, "--cluster=kubeapitest",
         "--namespace=default", "--user=kubeapitest");
     execWithKubectlConfigAndWait("use-context", KUBE_API_TEST);
-    logCandidateKubeConfigPaths();
-  }
-
-  // Post-write diagnostics so we can tell, from CI output alone, whether kubectl
-  // wrote to the HOME-based path that ensureKubeConfigFileExists prepared or
-  // landed somewhere else (e.g. %USERPROFILE% on Windows). Remove once #7804 is
-  // fully understood on Windows.
-  private void logCandidateKubeConfigPaths() {
-    logCandidatePath("HOME", System.getenv("HOME"));
-    logCandidatePath("USERPROFILE", System.getenv("USERPROFILE"));
-    String homeDrive = System.getenv("HOMEDRIVE");
-    String homePath = System.getenv("HOMEPATH");
-    if (homeDrive != null && homePath != null) {
-      logCandidatePath("HOMEDRIVE+HOMEPATH", homeDrive + homePath);
-    }
-    logCandidatePath("user.home", System.getProperty("user.home"));
-  }
-
-  private void logCandidatePath(String label, String base) {
-    if (base == null || base.isEmpty()) {
-      logger.debug("Kubeconfig probe [{}]: env unset", label);
-      return;
-    }
-    Path candidate = Paths.get(base, ".kube", "config");
-    if (Files.isRegularFile(candidate)) {
-      long size = -1;
-      try {
-        size = Files.size(candidate);
-      } catch (IOException e) {
-        // best-effort diagnostic; size unavailable
-      }
-      logger.debug("Kubeconfig probe [{}]: {} exists, {} bytes", label, candidate, size);
-    } else {
-      logger.debug("Kubeconfig probe [{}]: {} absent", label, candidate);
-    }
   }
 
   public void restoreKubeConfig() {
