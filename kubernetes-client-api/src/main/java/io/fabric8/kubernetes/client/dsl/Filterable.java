@@ -76,8 +76,19 @@ public interface Filterable<T> {
   T withLabelSelector(String selectorAsString);
 
   /**
+   * Sets the {@code shardSelector} list option propagated to subsequent list and watch
+   * (including informer) requests. The selector is sent verbatim as a query parameter and
+   * is honored by API servers that support the {@code StorageVersionAPI} / shard-aware
+   * list-watch alpha. On servers that do not understand the parameter it is ignored.
+   *
+   * @param shardSelector the shard selector expression, or {@code null} to clear
+   * @return filtered resource
+   */
+  T withShardSelector(String shardSelector);
+
+  /**
    * Filter with the object that this event is about.
-   * 
+   *
    * @param objectReference {@link ObjectReference} for providing information of referred object
    * @return filtered resource
    */

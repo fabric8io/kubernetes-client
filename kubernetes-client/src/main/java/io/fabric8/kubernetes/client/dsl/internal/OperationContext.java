@@ -68,6 +68,7 @@ public class OperationContext {
   protected Map<String, String> fields;
   protected Map<String, String[]> fieldsNot;
   protected String selectorAsString;
+  protected String shardSelector;
 
   protected Client client;
   protected RequestConfig requestConfig;
@@ -84,6 +85,7 @@ public class OperationContext {
         other.fieldsNot, other.resourceVersion, other.gracePeriodSeconds, other.propagationPolicy,
         other.dryRun, other.selectorAsString, other.defaultNamespace, other.fieldValidation, other.fieldManager,
         other.forceConflicts, other.timeout, other.timeoutUnit, other.requestConfig);
+    this.shardSelector = other.shardSelector;
   }
 
   @SuppressWarnings("java:S107")
@@ -496,6 +498,19 @@ public class OperationContext {
     }
     final OperationContext context = new OperationContext(this);
     context.selectorAsString = selectorAsString;
+    return context;
+  }
+
+  public String getShardSelector() {
+    return shardSelector;
+  }
+
+  public OperationContext withShardSelector(String shardSelector) {
+    if (Objects.equals(this.shardSelector, shardSelector)) {
+      return this;
+    }
+    final OperationContext context = new OperationContext(this);
+    context.shardSelector = shardSelector;
     return context;
   }
 
