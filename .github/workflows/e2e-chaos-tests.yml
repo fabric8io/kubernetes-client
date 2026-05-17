@@ -34,6 +34,8 @@ env:
 jobs:
   chaos-tests:
     name: K8S Chaos Test
+    # Stays on x64: jkube java-exec base image (quay.io/jkube/jkube-java) is amd64-only.
+    # See #7805 for the multi-arch path forward.
     runs-on: ubuntu-latest
     timeout-minutes: 45
     if: github.repository == 'fabric8io/kubernetes-client'
@@ -48,7 +50,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: Setup Minikube-Kubernetes
-        uses: manusa/actions-setup-minikube@v2.16.1
+        uses: manusa/actions-setup-minikube@v2.17.0
         with:
           minikube version: v1.38.1
           kubernetes version: ${{ matrix.kubernetes }}

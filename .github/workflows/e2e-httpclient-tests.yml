@@ -33,7 +33,7 @@ env:
 jobs:
   minikube:
     name: K8S
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     if: github.repository == 'fabric8io/kubernetes-client'
     strategy:
       fail-fast: false
@@ -44,7 +44,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: Setup Minikube-Kubernetes
-        uses: manusa/actions-setup-minikube@v2.16.1
+        uses: manusa/actions-setup-minikube@v2.17.0
         with:
           minikube version: v1.38.1
           kubernetes version: ${{ matrix.kubernetes }}

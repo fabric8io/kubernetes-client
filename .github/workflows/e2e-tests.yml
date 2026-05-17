@@ -42,7 +42,7 @@ env:
 jobs:
   buildWithoutTests:
     name: BuildWithoutTests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     if: github.repository == 'fabric8io/kubernetes-client'
     steps:
       - name: Checkout
@@ -63,7 +63,7 @@ jobs:
   minikube_baremetal:
     name: Baremetal K8S
     needs: buildWithoutTests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     if: github.repository == 'fabric8io/kubernetes-client'
     strategy:
       fail-fast: false
@@ -73,7 +73,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: Setup Minikube-Kubernetes
-        uses: manusa/actions-setup-minikube@v2.16.1
+        uses: manusa/actions-setup-minikube@v2.17.0
         with:
           minikube version: v1.38.1
           kubernetes version: ${{ matrix.kubernetes }}
