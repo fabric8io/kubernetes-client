@@ -372,7 +372,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
         // start a whole new list/watch cycle
         reconnect();
       } else {
-        onException("watch", exception);
+        onException("watch", exception.isReconnectionError() ? exception.asClientException() : exception);
       }
     }
 
@@ -382,10 +382,6 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       logger.debug("Watch gracefully closed for {}", Reflector.this);
     }
 
-    @Override
-    public boolean reconnecting() {
-      return true;
-    }
   }
 
   ReflectorWatcher getWatcher() {
