@@ -52,7 +52,7 @@ public class ShardingIT {
 
   @Test
   void shardedList() {
-    client.resource(configMap("cm1")).create();
+    client.resource(configMap()).create();
 
     var shard1 = client.configMaps()
         .withLabelSelector(LABEL_SELECTOR)
@@ -66,7 +66,7 @@ public class ShardingIT {
 
   @Test
   void shardedInformer() {
-    client.resource(configMap("cm1")).create();
+    client.resource(configMap()).create();
     AtomicInteger eventCounter = new AtomicInteger(0);
 
     try (var ignored = client.configMaps()
@@ -82,7 +82,7 @@ public class ShardingIT {
 
   @Test
   void shardedWatch() {
-    client.resource(configMap("cm1")).create();
+    client.resource(configMap()).create();
     AtomicInteger eventCounter = new AtomicInteger(0);
 
     try (var ignored = client.configMaps()
@@ -151,6 +151,10 @@ public class ShardingIT {
       public void onDelete(ConfigMap configMap, boolean b) {
       }
     };
+  }
+
+  private ConfigMap configMap() {
+    return configMap("cm1");
   }
 
   private ConfigMap configMap(String name) {
