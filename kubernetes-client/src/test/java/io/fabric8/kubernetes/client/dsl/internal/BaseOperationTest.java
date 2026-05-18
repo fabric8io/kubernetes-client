@@ -226,6 +226,21 @@ class BaseOperationTest {
             .withResourceVersion("")
             .withResourceVersionMatch("NotOlderThan")
             .build()).toString());
+    // shardSelector is appended like any other ListOptions field (alphabetical)
+    assertEquals(
+        URLUtils.join(url.toString(),
+            "?shardSelector=shardRange(object.metadata.uid, '0x0000000000000000', '0x8000000000000000')"),
+        operation.fetchListUrl(url, new ListOptionsBuilder()
+            .withShardSelector("shardRange(object.metadata.uid, '0x0000000000000000', '0x8000000000000000')")
+            .build()).toString());
+    assertEquals(URLUtils.join(url.toString(),
+        "?labelSelector=app%3Dfoo&limit=5&shardSelector=shardRange(object.metadata.uid, '0x0000000000000000', '0x8000000000000000')&watch=true"),
+        operation.fetchListUrl(url, new ListOptionsBuilder()
+            .withLimit(5L)
+            .withLabelSelector("app=foo")
+            .withShardSelector("shardRange(object.metadata.uid, '0x0000000000000000', '0x8000000000000000')")
+            .withWatch(true)
+            .build()).toString());
   }
 
   @Test
