@@ -45,6 +45,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +70,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class BaseOperationTest {
+
+  public static final String SHARD_RANGE = "shardRange(object.metadata.uid,'0x0000000000000000','0x8000000000000000')";
 
   @Test
   void testSimpleFieldQueryParamConcatenation() {
@@ -229,16 +233,17 @@ class BaseOperationTest {
     // shardSelector is appended like any other ListOptions field (alphabetical)
     assertEquals(
         URLUtils.join(url.toString(),
-            "?shardSelector=shardRange(object.metadata.uid, '0x0000000000000000', '0x8000000000000000')"),
+            "?shardSelector=" + URLEncoder.encode(SHARD_RANGE, StandardCharsets.UTF_8)),
         operation.fetchListUrl(url, new ListOptionsBuilder()
-            .withShardSelector("shardRange(object.metadata.uid, '0x0000000000000000', '0x8000000000000000')")
+            .withShardSelector(SHARD_RANGE)
             .build()).toString());
     assertEquals(URLUtils.join(url.toString(),
-        "?labelSelector=app%3Dfoo&limit=5&shardSelector=shardRange(object.metadata.uid, '0x0000000000000000', '0x8000000000000000')&watch=true"),
+        "?labelSelector=app%3Dfoo&limit=5&shardSelector=" + URLEncoder.encode(SHARD_RANGE, StandardCharsets.UTF_8)
+            + "&watch=true"),
         operation.fetchListUrl(url, new ListOptionsBuilder()
             .withLimit(5L)
             .withLabelSelector("app=foo")
-            .withShardSelector("shardRange(object.metadata.uid, '0x0000000000000000', '0x8000000000000000')")
+            .withShardSelector(SHARD_RANGE)
             .withWatch(true)
             .build()).toString());
   }
