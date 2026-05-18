@@ -48,6 +48,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'maven'
       - name: Check License Headers
         run: ./mvnw ${MAVEN_ARGS} -Pitests -N license:check
       - name: Check Format (only on touched files)
