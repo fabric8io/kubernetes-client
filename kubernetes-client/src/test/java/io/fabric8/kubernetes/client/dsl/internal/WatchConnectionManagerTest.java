@@ -20,8 +20,9 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager.WatchRequestState;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.WebSocket;
-import org.awaitility.Awaitility;
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.io.IOException;
@@ -30,8 +31,12 @@ import java.net.URL;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -109,9 +114,28 @@ class WatchConnectionManagerTest {
     future.complete(mock);
 
     WatchRequestState state = manager.latestRequestState;
-    manager.setWatchEndCheckMs(0); // should nearly immediately trigger another start
-    manager.closeRequest();
-    Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> state != manager.latestRequestState);
+    manager.setWatchEndCheckMs(0);
+
+    // Intercept Utils.schedule so the fail-safe reconnect runs on the test thread
+    // instead of going through SHARED_SCHEDULER, which made this assertion timing-sensitive.
+    AtomicReference<Runnable> scheduledTask = new AtomicReference<>();
+    AtomicReference<Long> scheduledDelay = new AtomicReference<>();
+    try (MockedStatic<Utils> utils = Mockito.mockStatic(Utils.class, Mockito.CALLS_REAL_METHODS)) {
+      utils.when(() -> Utils.schedule(Mockito.any(), Mockito.any(Runnable.class), Mockito.anyLong(), Mockito.any()))
+          .thenAnswer(inv -> {
+            scheduledTask.set(inv.getArgument(1));
+            scheduledDelay.set(inv.getArgument(2));
+            return new CompletableFuture<Void>();
+          });
+
+      manager.closeRequest();
+
+      assertNotNull(scheduledTask.get(), "expected closeRequest to schedule the fail-safe reconnect");
+      assertEquals(0L, scheduledDelay.get(), "fail-safe reconnect should be scheduled with watchEndCheckMs");
+      scheduledTask.get().run();
+      assertNotSame(state, manager.latestRequestState,
+          "fail-safe reconnect should have replaced latestRequestState with a new watch");
+    }
   }
 
   private WatchConnectionManager<?, ?> setupWebSocketWatch(CompletableFuture<WebSocket> future, CountDownLatch reconnect)
