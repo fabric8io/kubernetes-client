@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.NonDeletingOperation;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
-@EnableKubeAPIServer(kubeAPIVersion = "1.36.0",apiServerFlags = "--feature-gates=ShardedListAndWatch=true")
+@EnableKubeAPIServer(kubeAPIVersion = "1.36.0", apiServerFlags = "--feature-gates=ShardedListAndWatch=true")
 public class ShardingIT {
 
   public static final String LABEL_SELECTOR = "test=true";
@@ -44,13 +43,13 @@ public class ShardingIT {
     var cm = client.resource(configMap()).create();
 
     var shard1 = client.configMaps()
-      .withLabelSelector(LABEL_SELECTOR)
-      .withShardSelector(SHARD1).list();
+        .withLabelSelector(LABEL_SELECTOR)
+        .withShardSelector(SHARD1).list();
     var shard2 = client.configMaps()
-      .withLabelSelector(LABEL_SELECTOR)
-      .withShardSelector(SHARD2).list();
+        .withLabelSelector(LABEL_SELECTOR)
+        .withShardSelector(SHARD2).list();
 
-    assertThat(shard1.getItems().size()+shard2.getItems().size()).isEqualTo(1);
+    assertThat(shard1.getItems().size() + shard2.getItems().size()).isEqualTo(1);
     client.resource(cm).delete();
   }
 
@@ -60,13 +59,13 @@ public class ShardingIT {
     AtomicInteger eventCounter = new AtomicInteger(0);
 
     try (var ignored = client.configMaps()
-      .withLabelSelector(LABEL_SELECTOR)
-      .withShardSelector(SHARD1).inform(getHandler(eventCounter));
-         var ignored1 = client.configMaps()
-           .withLabelSelector(LABEL_SELECTOR)
-           .withShardSelector(SHARD2).inform(getHandler(eventCounter))) {
+        .withLabelSelector(LABEL_SELECTOR)
+        .withShardSelector(SHARD1).inform(getHandler(eventCounter));
+        var ignored1 = client.configMaps()
+            .withLabelSelector(LABEL_SELECTOR)
+            .withShardSelector(SHARD2).inform(getHandler(eventCounter))) {
       await().pollDelay(Duration.ofMillis(150))
-        .untilAsserted(() -> assertThat(eventCounter.get()).isEqualTo(1));
+          .untilAsserted(() -> assertThat(eventCounter.get()).isEqualTo(1));
       client.resource(cm).delete();
     }
   }
@@ -91,12 +90,12 @@ public class ShardingIT {
 
   private ConfigMap configMap() {
     return new ConfigMapBuilder()
-      .withMetadata(new ObjectMetaBuilder()
-        .withName("cm1")
-        .withLabels(Map.of("test","true"))
-        .withNamespace("default")
-        .build())
-      .build();
+        .withMetadata(new ObjectMetaBuilder()
+            .withName("cm1")
+            .withLabels(Map.of("test", "true"))
+            .withNamespace("default")
+            .build())
+        .build();
   }
 
 }
