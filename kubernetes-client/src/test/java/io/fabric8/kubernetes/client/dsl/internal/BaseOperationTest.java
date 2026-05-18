@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
@@ -246,6 +247,47 @@ class BaseOperationTest {
             .withShardSelector(SHARD_RANGE)
             .withWatch(true)
             .build()).toString());
+  }
+
+  @Test
+  void testDeleteAllPropagatesShardSelector() throws Exception {
+    // Captures the URL emitted by deleteAll() so the test asserts shardSelector is
+    // appended to the DELETECOLLECTION request — guards BaseOperation#deleteAll against
+    // a refactor that drops context.getShardSelector() from the ListOptions assembly.
+    final URL[] capturedUrl = { null };
+    BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation<Pod, PodList, Resource<Pod>>(new OperationContext()
+        .withNamespace("default")
+        .withPlural("pods")
+        .withShardSelector(SHARD_RANGE)) {
+      @Override
+      public KubernetesSerialization getKubernetesSerialization() {
+        return new KubernetesSerialization();
+      }
+
+      @Override
+      public URL getResourceUrl() {
+        try {
+          return new URL("https://172.17.0.2:8443/api/v1/namespaces/default/pods");
+        } catch (MalformedURLException e) {
+          throw new RuntimeException(e);
+        }
+      }
+
+      @Override
+      protected KubernetesResource handleDelete(URL requestUrl, long gracePeriodSeconds,
+          DeletionPropagation propagationPolicy, String resourceVersion) {
+        capturedUrl[0] = requestUrl;
+        return null;
+      }
+    };
+    baseOp.setType(Pod.class);
+    baseOp.setListType(PodList.class);
+
+    baseOp.delete();
+
+    assertNotNull(capturedUrl[0]);
+    assertThat(capturedUrl[0].toString(),
+        containsString("shardSelector=" + URLEncoder.encode(SHARD_RANGE, StandardCharsets.UTF_8)));
   }
 
   @Test

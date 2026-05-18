@@ -23,6 +23,8 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -41,9 +43,16 @@ public class ShardingIT {
   public static final int EVENT_CHECK_DELAY = 100;
   static KubernetesClient client;
 
+  // The apiserver is class-scoped, so labelled ConfigMaps from one method would otherwise
+  // leak into the next and turn create() into AlreadyExists, masking the original failure.
+  @AfterEach
+  void cleanup() {
+    client.configMaps().inNamespace("default").withLabelSelector(LABEL_SELECTOR).delete();
+  }
+
   @Test
   void shardedList() {
-    var cm = client.resource(configMap()).create();
+    client.resource(configMap("cm1")).create();
 
     var shard1 = client.configMaps()
         .withLabelSelector(LABEL_SELECTOR)
@@ -53,12 +62,11 @@ public class ShardingIT {
         .withShardSelector(SHARD2).list();
 
     assertThat(shard1.getItems().size() + shard2.getItems().size()).isEqualTo(1);
-    client.resource(cm).delete();
   }
 
   @Test
   void shardedInformer() {
-    var cm = client.resource(configMap()).create();
+    client.resource(configMap("cm1")).create();
     AtomicInteger eventCounter = new AtomicInteger(0);
 
     try (var ignored = client.configMaps()
@@ -69,13 +77,12 @@ public class ShardingIT {
             .withShardSelector(SHARD2).inform(getHandler(eventCounter))) {
       await().pollDelay(Duration.ofMillis(EVENT_CHECK_DELAY))
           .untilAsserted(() -> assertThat(eventCounter.get()).isEqualTo(1));
-      client.resource(cm).delete();
     }
   }
 
   @Test
   void shardedWatch() {
-    var cm = client.resource(configMap()).create();
+    client.resource(configMap("cm1")).create();
     AtomicInteger eventCounter = new AtomicInteger(0);
 
     try (var ignored = client.configMaps()
@@ -86,8 +93,33 @@ public class ShardingIT {
             .withShardSelector(SHARD2).watch(getWatcher(eventCounter))) {
       await().pollDelay(Duration.ofMillis(EVENT_CHECK_DELAY))
           .untilAsserted(() -> assertThat(eventCounter.get()).isEqualTo(1));
-      client.resource(cm).delete();
     }
+  }
+
+  @Test
+  void shardedDelete() {
+    for (int i = 0; i < 10; i++) {
+      client.resource(configMap("cm-" + i)).create();
+    }
+
+    int totalBefore = client.configMaps().withLabelSelector(LABEL_SELECTOR).list().getItems().size();
+    int shard1Before = client.configMaps()
+        .withLabelSelector(LABEL_SELECTOR).withShardSelector(SHARD1).list().getItems().size();
+    int shard2Before = client.configMaps()
+        .withLabelSelector(LABEL_SELECTOR).withShardSelector(SHARD2).list().getItems().size();
+    assertThat(shard1Before + shard2Before).isEqualTo(totalBefore);
+    Assumptions.assumeTrue(shard1Before > 0 && shard2Before > 0,
+        "UID hashing didn't populate both shards — re-run");
+
+    client.configMaps()
+        .withLabelSelector(LABEL_SELECTOR).withShardSelector(SHARD1).delete();
+
+    // SHARD1 must be empty and SHARD2 untouched — guards against the apiserver ignoring
+    // shardSelector on DELETECOLLECTION (which would silently delete the whole label set).
+    assertThat(client.configMaps().withLabelSelector(LABEL_SELECTOR)
+        .withShardSelector(SHARD1).list().getItems()).isEmpty();
+    assertThat(client.configMaps().withLabelSelector(LABEL_SELECTOR)
+        .withShardSelector(SHARD2).list().getItems()).hasSize(shard2Before);
   }
 
   private static Watcher<ConfigMap> getWatcher(AtomicInteger eventCounter) {
@@ -121,10 +153,10 @@ public class ShardingIT {
     };
   }
 
-  private ConfigMap configMap() {
+  private ConfigMap configMap(String name) {
     return new ConfigMapBuilder()
         .withMetadata(new ObjectMetaBuilder()
-            .withName("cm1")
+            .withName(name)
             .withLabels(Map.of("test", "true"))
             .withNamespace("default")
             .build())
