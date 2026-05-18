@@ -35,6 +35,8 @@ class DefaultMockServerWebSocketTest extends Specification {
 
 	@Shared
 	static def vertx = Vertx.vertx()
+	@Shared
+	static final String DIAG_PREFIX = "[7806/" + System.getProperty("os.name") + "]"
 	WebSocketClient wsClient
 	DefaultMockServer server
 
@@ -120,25 +122,24 @@ class DefaultMockServerWebSocketTest extends Specification {
 		// Diagnostic logging at each decision point per #7806 — surfaces in surefire output so
 		// the next CI failure is triageable without rerunning.
 		def closeObserved = new AtomicBoolean()
-		def diag = "[7806/" + System.getProperty("os.name") + "]"
 		wsReq.onComplete { ws ->
 			if (ws.failed() || ws.result() == null) {
-				System.err.println("$diag onComplete failed: " + ws.cause())
+				System.err.println("$DIAG_PREFIX onComplete failed: " + ws.cause())
 				return
 			}
 			def w = ws.result()
 			try {
 				w.closeHandler { _ ->
-					System.err.println("$diag closeHandler fired; closeReason=" + w.closeReason())
+					System.err.println("$DIAG_PREFIX closeHandler fired; closeReason=" + w.closeReason())
 					closeObserved.set(true)
 					w.close()
 				}
 			} catch (IllegalStateException ignored) {
-				System.err.println("$diag closeHandler ISE: WS already closed at registration; closeReason=" + w.closeReason())
+				System.err.println("$DIAG_PREFIX closeHandler ISE: WS already closed at registration; closeReason=" + w.closeReason())
 				closeObserved.set(true)
 			}
 			if (w.isClosed()) {
-				System.err.println("$diag post-register isClosed; closeReason=" + w.closeReason())
+				System.err.println("$DIAG_PREFIX post-register isClosed; closeReason=" + w.closeReason())
 				closeObserved.set(true)
 			}
 		}
@@ -174,10 +175,9 @@ class DefaultMockServerWebSocketTest extends Specification {
 		// CLOSE-frame parse) fires the handler with closeReason left null. Windows reaches
 		// the second path intermittently (#7806), so the strict assertion only runs there.
 		def closeReason = wsReq.result().closeReason()
-		def osName = System.getProperty("os.name")
-		System.err.println("[7806/" + osName + "] closeReason=" + closeReason)
-		def isWindows = osName.toLowerCase().contains("windows")
-		isWindows ? (closeReason == null || closeReason == "Closing...") : closeReason == "Closing..."
+		System.err.println("$DIAG_PREFIX closeReason=" + closeReason)
+		def isWindows = System.getProperty("os.name").toLowerCase().contains("windows")
+		assert isWindows ? (closeReason == null || closeReason == "Closing...") : closeReason == "Closing..."
 	}
 
 	// https://github.com/fabric8io/mockwebserver/pull/66#issuecomment-944289335
