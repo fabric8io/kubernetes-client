@@ -8,7 +8,7 @@
 
 #### Improvements
 * Fix #7675: (mockwebserver) `MockWebServer.dispatcher` field marked `volatile` so a `setDispatcher(...)` call is reliably visible to the Vert.x request handler thread without further synchronization. `MockWebServer.reset()` Javadoc tightened to make its non-destructive contract explicit (no change to the running server, dispatcher, listeners, SSL/TLS state, port, or protocols)
-* Fix #7809: (kubernetes-client) Support for shard selectors for listing and informers
+* Fix #7809: (kubernetes-client) Support for shard selectors for list and watch - including informers
 
 #### Dependency Upgrade
 

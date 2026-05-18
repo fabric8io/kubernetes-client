@@ -20,6 +20,8 @@ import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import org.junit.jupiter.api.Test;
 
@@ -36,6 +38,7 @@ public class ShardingIT {
   public static final String LABEL_SELECTOR = "test=true";
   public static final String SHARD1 = "shardRange(object.metadata.uid, '0x0000000000000000', '0x8000000000000000')";
   public static final String SHARD2 = "shardRange(object.metadata.uid, '0x8000000000000000', '0x10000000000000000')";
+  public static final int EVENT_CHECK_DELAY = 100;
   static KubernetesClient client;
 
   @Test
@@ -64,10 +67,40 @@ public class ShardingIT {
         var ignored1 = client.configMaps()
             .withLabelSelector(LABEL_SELECTOR)
             .withShardSelector(SHARD2).inform(getHandler(eventCounter))) {
-      await().pollDelay(Duration.ofMillis(150))
+      await().pollDelay(Duration.ofMillis(EVENT_CHECK_DELAY))
           .untilAsserted(() -> assertThat(eventCounter.get()).isEqualTo(1));
       client.resource(cm).delete();
     }
+  }
+
+  @Test
+  void shardedWatch() {
+    var cm = client.resource(configMap()).create();
+    AtomicInteger eventCounter = new AtomicInteger(0);
+
+    try (var ignored = client.configMaps()
+        .withLabelSelector(LABEL_SELECTOR)
+        .withShardSelector(SHARD1).watch(getWatcher(eventCounter));
+        var ignored1 = client.configMaps()
+            .withLabelSelector(LABEL_SELECTOR)
+            .withShardSelector(SHARD2).watch(getWatcher(eventCounter))) {
+      await().pollDelay(Duration.ofMillis(EVENT_CHECK_DELAY))
+          .untilAsserted(() -> assertThat(eventCounter.get()).isEqualTo(1));
+      client.resource(cm).delete();
+    }
+  }
+
+  private static Watcher<ConfigMap> getWatcher(AtomicInteger eventCounter) {
+    return new Watcher<>() {
+      @Override
+      public void eventReceived(Action action, ConfigMap configMap) {
+        eventCounter.getAndAdd(1);
+      }
+
+      @Override
+      public void onClose(WatcherException cause) {
+      }
+    };
   }
 
   private static ResourceEventHandler<ConfigMap> getHandler(AtomicInteger eventCounter) {
