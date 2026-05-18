@@ -34,6 +34,9 @@ updates:
   ignore:
   - dependency-name: "io.vertx:*"
     update-types: ["version-update:semver-major"]
+  # JUnit 6 raises the runtime baseline to Java 17; we still target Java 11.
+  - dependency-name: "org.junit*:*"
+    update-types: ["version-update:semver-major"]
   groups:
     bouncycastle:
       patterns:
