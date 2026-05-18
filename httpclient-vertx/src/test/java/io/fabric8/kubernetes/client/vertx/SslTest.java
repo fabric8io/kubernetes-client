@@ -39,6 +39,7 @@ class SslTest {
 
   private Vertx vertx;
   private HttpServer server;
+  private int port;
   private volatile Handler<HttpServerRequest> requestHandler;
   private HttpClient.Factory clientFactory = new VertxHttpClientFactory();
   private TrustManager[] trustManagers;
@@ -58,7 +59,8 @@ class SslTest {
             req.response().setStatusCode(404).end();
           }
         });
-    server.listen(8443).toCompletionStage().toCompletableFuture().get(20, TimeUnit.SECONDS);
+    server.listen(0).toCompletionStage().toCompletableFuture().get(20, TimeUnit.SECONDS);
+    port = server.actualPort();
     TrustManagerFactory tmf = cert.trustOptions().getTrustManagerFactory(vertx);
     trustManagers = tmf.getTrustManagers();
   }
@@ -75,7 +77,7 @@ class SslTest {
     };
     HttpClient.Builder builder = clientFactory.newBuilder().sslContext(null, trustManagers);
     HttpClient client = builder.build();
-    HttpRequest request = client.newHttpRequestBuilder().uri("https://localhost:8443").build();
+    HttpRequest request = client.newHttpRequestBuilder().uri("https://localhost:" + port).build();
     HttpResponse<String> resp = client.sendAsync(request, String.class).get(10, TimeUnit.SECONDS);
     assertEquals(200, resp.code());
     assertEquals("OK", resp.bodyString());
