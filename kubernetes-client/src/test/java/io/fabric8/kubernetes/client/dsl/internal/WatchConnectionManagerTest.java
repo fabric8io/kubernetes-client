@@ -20,9 +20,7 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager.WatchRequestState;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.WebSocket;
-import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.io.IOException;
@@ -104,42 +102,44 @@ class WatchConnectionManagerTest {
   }
 
   @Test
-  void testFailSafeReconnect() throws MalformedURLException, InterruptedException {
+  void testFailSafeReconnect() throws MalformedURLException {
     CompletableFuture<WebSocket> future = new CompletableFuture<>();
     CountDownLatch reconnect = new CountDownLatch(1);
+    AtomicReference<Runnable> scheduledTask = new AtomicReference<>();
+    AtomicReference<Long> scheduledDelayMs = new AtomicReference<>();
 
-    WatchConnectionManager<?, ?> manager = setupWebSocketWatch(future, reconnect);
+    WatchConnectionManager<?, ?> manager = setupWebSocketWatch(future, reconnect, (command, delay, unit) -> {
+      scheduledTask.set(command);
+      scheduledDelayMs.set(unit.toMillis(delay));
+      return new CompletableFuture<>();
+    });
 
     WebSocket mock = Mockito.mock(WebSocket.class);
     future.complete(mock);
 
     WatchRequestState state = manager.latestRequestState;
     manager.setWatchEndCheckMs(0);
+    manager.closeRequest();
 
-    // Intercept Utils.schedule so the fail-safe reconnect runs on the test thread
-    // instead of going through SHARED_SCHEDULER, which made this assertion timing-sensitive.
-    AtomicReference<Runnable> scheduledTask = new AtomicReference<>();
-    AtomicReference<Long> scheduledDelay = new AtomicReference<>();
-    try (MockedStatic<Utils> utils = Mockito.mockStatic(Utils.class, Mockito.CALLS_REAL_METHODS)) {
-      utils.when(() -> Utils.schedule(Mockito.any(), Mockito.any(Runnable.class), Mockito.anyLong(), Mockito.any()))
-          .thenAnswer(inv -> {
-            scheduledTask.set(inv.getArgument(1));
-            scheduledDelay.set(inv.getArgument(2));
-            return new CompletableFuture<Void>();
-          });
+    assertNotNull(scheduledTask.get(), "expected closeRequest to schedule the fail-safe reconnect");
+    assertEquals(0L, scheduledDelayMs.get(), "fail-safe reconnect should be scheduled with watchEndCheckMs");
+    scheduledTask.get().run();
+    assertNotSame(state, manager.latestRequestState,
+        "fail-safe reconnect should have replaced latestRequestState with a new watch");
+  }
 
-      manager.closeRequest();
-
-      assertNotNull(scheduledTask.get(), "expected closeRequest to schedule the fail-safe reconnect");
-      assertEquals(0L, scheduledDelay.get(), "fail-safe reconnect should be scheduled with watchEndCheckMs");
-      scheduledTask.get().run();
-      assertNotSame(state, manager.latestRequestState,
-          "fail-safe reconnect should have replaced latestRequestState with a new watch");
-    }
+  @FunctionalInterface
+  private interface TestScheduler {
+    CompletableFuture<Void> schedule(Runnable command, long delay, TimeUnit unit);
   }
 
   private WatchConnectionManager<?, ?> setupWebSocketWatch(CompletableFuture<WebSocket> future, CountDownLatch reconnect)
       throws MalformedURLException {
+    return setupWebSocketWatch(future, reconnect, null);
+  }
+
+  private WatchConnectionManager<?, ?> setupWebSocketWatch(CompletableFuture<WebSocket> future, CountDownLatch reconnect,
+      TestScheduler testScheduler) throws MalformedURLException {
     HttpClient client = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
     BaseOperation baseOperation = AbstractWatchManagerTest.mockOperation();
     Mockito.when(baseOperation.getNamespacedUrl()).thenReturn(new URL("http://localhost"));
@@ -152,6 +152,14 @@ class WatchConnectionManagerTest {
       @Override
       void scheduleReconnect(WatchRequestState state) {
         reconnect.countDown();
+      }
+
+      @Override
+      protected CompletableFuture<Void> schedule(Runnable command, long delay, TimeUnit unit) {
+        if (testScheduler != null) {
+          return testScheduler.schedule(command, delay, unit);
+        }
+        return super.schedule(command, delay, unit);
       }
     };
   }

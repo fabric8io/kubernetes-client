@@ -159,11 +159,18 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     if (state != null && state.closed.compareAndSet(false, true)) {
       logger.debug("Closing the current watch");
       closeCurrentRequest();
-      CompletableFuture<Void> future = Utils.schedule(baseOperation.getOperationContext().getExecutor(),
-          () -> failSafeReconnect(state), watchEndCheckMs,
-          TimeUnit.MILLISECONDS);
+      CompletableFuture<Void> future = schedule(() -> failSafeReconnect(state), watchEndCheckMs, TimeUnit.MILLISECONDS);
       state.ended.whenComplete((v, t) -> future.cancel(true));
     }
+  }
+
+  /**
+   * Schedule a delayed task on the operation executor. Test-overridable seam so unit tests
+   * can drive the fail-safe / reconnect timing deterministically without touching
+   * {@link Utils#schedule}'s shared scheduler.
+   */
+  protected CompletableFuture<Void> schedule(Runnable command, long delay, TimeUnit unit) {
+    return Utils.schedule(baseOperation.getOperationContext().getExecutor(), command, delay, unit);
   }
 
   private synchronized void failSafeReconnect(WatchRequestState state) {
@@ -230,8 +237,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     logger.debug("Scheduling reconnect task in {} ms", delay);
 
     synchronized (this) {
-      reconnectAttempt = Utils.schedule(baseOperation.getOperationContext().getExecutor(), this::reconnect, delay,
-          TimeUnit.MILLISECONDS);
+      reconnectAttempt = schedule(this::reconnect, delay, TimeUnit.MILLISECONDS);
       if (isForceClosed()) {
         cancelReconnect();
       }
