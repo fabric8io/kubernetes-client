@@ -104,11 +104,10 @@ class WatchConnectionManagerTest {
   @Test
   void testFailSafeReconnect() throws MalformedURLException {
     CompletableFuture<WebSocket> future = new CompletableFuture<>();
-    CountDownLatch reconnect = new CountDownLatch(1);
     AtomicReference<Runnable> scheduledTask = new AtomicReference<>();
     AtomicReference<Long> scheduledDelayMs = new AtomicReference<>();
 
-    WatchConnectionManager<?, ?> manager = setupWebSocketWatch(future, reconnect, (command, delay, unit) -> {
+    WatchConnectionManager<?, ?> manager = setupWebSocketWatch(future, (command, delay, unit) -> {
       scheduledTask.set(command);
       scheduledDelayMs.set(unit.toMillis(delay));
       return new CompletableFuture<>();
@@ -136,6 +135,11 @@ class WatchConnectionManagerTest {
   private WatchConnectionManager<?, ?> setupWebSocketWatch(CompletableFuture<WebSocket> future, CountDownLatch reconnect)
       throws MalformedURLException {
     return setupWebSocketWatch(future, reconnect, null);
+  }
+
+  private WatchConnectionManager<?, ?> setupWebSocketWatch(CompletableFuture<WebSocket> future, TestScheduler testScheduler)
+      throws MalformedURLException {
+    return setupWebSocketWatch(future, new CountDownLatch(1), testScheduler);
   }
 
   private WatchConnectionManager<?, ?> setupWebSocketWatch(CompletableFuture<WebSocket> future, CountDownLatch reconnect,

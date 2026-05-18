@@ -167,7 +167,8 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   /**
    * Schedule a delayed task on the operation executor. Test-overridable seam so unit tests
    * can drive the fail-safe / reconnect timing deterministically without touching
-   * {@link Utils#schedule}'s shared scheduler.
+   * {@link Utils#schedule}'s shared scheduler. Must return a non-null future:
+   * {@link #closeRequest()} attaches a cancellation callback to it and will NPE otherwise.
    */
   protected CompletableFuture<Void> schedule(Runnable command, long delay, TimeUnit unit) {
     return Utils.schedule(baseOperation.getOperationContext().getExecutor(), command, delay, unit);
