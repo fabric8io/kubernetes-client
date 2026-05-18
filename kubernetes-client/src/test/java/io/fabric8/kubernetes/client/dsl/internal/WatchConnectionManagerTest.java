@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager.WatchRequestState;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.WebSocket;
-import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -30,8 +29,12 @@ import java.net.URL;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -99,23 +102,48 @@ class WatchConnectionManagerTest {
   }
 
   @Test
-  void testFailSafeReconnect() throws MalformedURLException, InterruptedException {
+  void testFailSafeReconnect() throws MalformedURLException {
     CompletableFuture<WebSocket> future = new CompletableFuture<>();
-    CountDownLatch reconnect = new CountDownLatch(1);
+    AtomicReference<Runnable> scheduledTask = new AtomicReference<>();
+    AtomicReference<Long> scheduledDelayMs = new AtomicReference<>();
 
-    WatchConnectionManager<?, ?> manager = setupWebSocketWatch(future, reconnect);
+    WatchConnectionManager<?, ?> manager = setupWebSocketWatch(future, (command, delay, unit) -> {
+      scheduledTask.set(command);
+      scheduledDelayMs.set(unit.toMillis(delay));
+      return new CompletableFuture<>();
+    });
 
     WebSocket mock = Mockito.mock(WebSocket.class);
     future.complete(mock);
 
     WatchRequestState state = manager.latestRequestState;
-    manager.setWatchEndCheckMs(0); // should nearly immediately trigger another start
+    manager.setWatchEndCheckMs(0);
     manager.closeRequest();
-    Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> state != manager.latestRequestState);
+
+    assertNotNull(scheduledTask.get(), "expected closeRequest to schedule the fail-safe reconnect");
+    assertEquals(0L, scheduledDelayMs.get(), "fail-safe reconnect should be scheduled with watchEndCheckMs");
+    scheduledTask.get().run();
+    assertNotSame(state, manager.latestRequestState,
+        "fail-safe reconnect should have replaced latestRequestState with a new watch");
+  }
+
+  @FunctionalInterface
+  private interface TestScheduler {
+    CompletableFuture<Void> schedule(Runnable command, long delay, TimeUnit unit);
   }
 
   private WatchConnectionManager<?, ?> setupWebSocketWatch(CompletableFuture<WebSocket> future, CountDownLatch reconnect)
       throws MalformedURLException {
+    return setupWebSocketWatch(future, reconnect, null);
+  }
+
+  private WatchConnectionManager<?, ?> setupWebSocketWatch(CompletableFuture<WebSocket> future, TestScheduler testScheduler)
+      throws MalformedURLException {
+    return setupWebSocketWatch(future, new CountDownLatch(1), testScheduler);
+  }
+
+  private WatchConnectionManager<?, ?> setupWebSocketWatch(CompletableFuture<WebSocket> future, CountDownLatch reconnect,
+      TestScheduler testScheduler) throws MalformedURLException {
     HttpClient client = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
     BaseOperation baseOperation = AbstractWatchManagerTest.mockOperation();
     Mockito.when(baseOperation.getNamespacedUrl()).thenReturn(new URL("http://localhost"));
@@ -128,6 +156,14 @@ class WatchConnectionManagerTest {
       @Override
       void scheduleReconnect(WatchRequestState state) {
         reconnect.countDown();
+      }
+
+      @Override
+      protected CompletableFuture<Void> schedule(Runnable command, long delay, TimeUnit unit) {
+        if (testScheduler != null) {
+          return testScheduler.schedule(command, delay, unit);
+        }
+        return super.schedule(command, delay, unit);
       }
     };
   }

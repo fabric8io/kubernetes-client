@@ -22,12 +22,9 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager.WatchRequestState;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClientFactory;
-import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
-import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.net.MalformedURLException;
@@ -35,18 +32,15 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -138,21 +132,24 @@ class AbstractWatchManagerTest {
   @DisplayName("cancelReconnect, with non-null attempt, should cancel")
   void cancelReconnectNonNullAttempt() throws MalformedURLException {
     // Given
-    final CompletableFuture<?> cf = mock(CompletableFuture.class);
-    ExecutorService executor = CommonThreadPool.get();
-    try (MockedStatic<Utils> utils = mockStatic(Utils.class)) {
-      utils.when(() -> Utils.schedule(any(), any(), anyLong(), any())).thenReturn(cf);
-      final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
-      final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
-      awm.baseOperation.context = Mockito.mock(OperationContext.class);
-      Mockito.when(awm.baseOperation.context.getExecutor()).thenReturn(executor);
+    final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
+    final AtomicReference<CompletableFuture<Void>> scheduled = new AtomicReference<>();
+    final WatchManager<HasMetadata> awm = new WatchManager<HasMetadata>(
+        watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 1, 60_000) {
+      @Override
+      protected CompletableFuture<Void> schedule(Runnable command, long delay, TimeUnit unit) {
+        CompletableFuture<Void> f = new CompletableFuture<>();
+        scheduled.set(f);
+        return f;
+      }
+    };
 
-      awm.scheduleReconnect(new WatchRequestState());
-      // When
-      awm.cancelReconnect();
-      // Then
-      verify(cf, times(1)).cancel(true);
-    }
+    awm.scheduleReconnect(new WatchRequestState());
+    // When
+    awm.cancelReconnect();
+    // Then
+    assertThat(scheduled.get()).isNotNull();
+    assertThat(scheduled.get().isCancelled()).isTrue();
   }
 
   @Test
