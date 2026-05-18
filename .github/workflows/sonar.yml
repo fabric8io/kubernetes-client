@@ -20,14 +20,11 @@ on:
   push:
     branches:
       - main
-  # TEMPORARY: pull_request trigger enabled to validate the install/sonar:sonar split (#7814).
-  # Scoped to only the files this PR touches so contributor PRs aren't dragged through
-  # a 15-min sonar build that would fail at sonar:sonar (SONAR_TOKEN is not exposed to
-  # fork PRs). Revert (re-comment) before merging.
-  pull_request:
-    paths:
-      - '.github/workflows/sonar.yml'
-      - 'Makefile'
+#  pull_request:
+#    paths-ignore:
+#      - 'doc/**'
+#      - 'ide-config/**'
+#      - '**.md'
 
 concurrency:
   # Only run once for latest commit per ref and cancel other (previous) runs.
