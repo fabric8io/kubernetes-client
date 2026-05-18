@@ -95,7 +95,7 @@
     <!-- fix as jackson-annotations version 2.20 was released, Refer: https://github.com/FasterXML/jackson-bom/blob/54f854ba1ce69c5827f8acf6d08ba2d7ce36233c/pom.xml#L53-L62 -->
     <jackson.bundle.version.annotations>2.21</jackson.bundle.version.annotations>
     <jetty.version>11.0.26</jetty.version>
-    <maven-core.version>3.9.15</maven-core.version>
+    <maven-core.version>3.9.16</maven-core.version>
     <maven-plugin-annotations.version>3.15.2</maven-plugin-annotations.version>
     <vertx.version>4.5.27</vertx.version>
     <vertx5.version>5.0.12</vertx5.version>
@@ -150,7 +150,7 @@
     <maven.release.plugin.version>3.3.1</maven.release.plugin.version>
     <maven.javadoc.plugin.version>3.12.0</maven.javadoc.plugin.version>
     <maven.source.plugin.version>3.4.0</maven.source.plugin.version>
-    <maven.enforcer.plugin.version>3.6.2</maven.enforcer.plugin.version>
+    <maven.enforcer.plugin.version>3.6.3</maven.enforcer.plugin.version>
     <maven.deploy.plugin.version>3.1.4</maven.deploy.plugin.version>
     <maven.gpg.plugin.version>3.2.8</maven.gpg.plugin.version>
     <maven.antrun.plugin.version>3.2.0</maven.antrun.plugin.version>
