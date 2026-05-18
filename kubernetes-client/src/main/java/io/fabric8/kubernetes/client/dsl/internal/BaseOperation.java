@@ -402,6 +402,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
+  public FilterWatchListDeletable<T, L, R> withShardSelector(String shardSelector) {
+    return withNewFilter().withShardSelector(shardSelector).endFilter();
+  }
+
+  @Override
   public FilterWatchListDeletable<T, L, R> withFields(Map<String, String> fields) {
     return withNewFilter().withFields(fields).endFilter();
   }
@@ -555,6 +560,10 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     if (labelQueryParam != null) {
       options.setLabelSelector(labelQueryParam);
     }
+    String shardSelector = context.getShardSelector();
+    if (shardSelector != null) {
+      options.setShardSelector(shardSelector);
+    }
     if (resourceVersion != null) {
       options.setResourceVersion(resourceVersion);
     }
@@ -614,6 +623,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
           String labelQueryParam = context.getLabelQueryParam();
           if (labelQueryParam != null) {
             options.setLabelSelector(labelQueryParam);
+            useOptions = true;
+          }
+          String shardSelector = context.getShardSelector();
+          if (shardSelector != null) {
+            options.setShardSelector(shardSelector);
             useOptions = true;
           }
         }

@@ -76,8 +76,20 @@ public interface Filterable<T> {
   T withLabelSelector(String selectorAsString);
 
   /**
+   * Sets the {@code shardSelector} list option propagated to subsequent list and watch
+   * (including informer) requests. The selector is sent verbatim as a query parameter.
+   * This feature is in alpha version, introduced in Kubernetes version 1.36.
+   * Therefore, explicitly needs to be turned on with feature flag "ShardedListAndWatch"
+   * for your API server.
+   *
+   * @param shardSelector the shard selector expression, or {@code null} to clear
+   * @return filtered resource
+   */
+  T withShardSelector(String shardSelector);
+
+  /**
    * Filter with the object that this event is about.
-   * 
+   *
    * @param objectReference {@link ObjectReference} for providing information of referred object
    * @return filtered resource
    */
