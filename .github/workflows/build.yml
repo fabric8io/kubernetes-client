@@ -49,7 +49,7 @@ jobs:
           - java: 17
             os: ubuntu-24.04-arm
           - java: 21
-            os: ubuntu-latest
+            os: ubuntu-24.04-arm
     name: Java ${{ matrix.environment.java }} Maven
     runs-on: ${{ matrix.environment.os }}
     steps:
