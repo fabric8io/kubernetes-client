@@ -79,7 +79,8 @@ public interface Filterable<T> {
    * Sets the {@code shardSelector} list option propagated to subsequent list and watch
    * (including informer) requests. The selector is sent verbatim as a query parameter.
    * This feature is in alpha version, introduced in Kubernetes version 1.36.
-   * Therefore, explicitly needs to be turned on with feature flag ShardedListAndWatch.
+   * Therefore, explicitly needs to be turned on with feature flag "ShardedListAndWatch"
+   * for your API server.
    *
    * @param shardSelector the shard selector expression, or {@code null} to clear
    * @return filtered resource
