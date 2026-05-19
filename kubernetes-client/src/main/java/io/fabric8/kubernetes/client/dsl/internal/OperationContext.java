@@ -83,9 +83,8 @@ public class OperationContext {
     this(other.client, other.plural, other.namespace, other.name, other.subresource, other.apiGroupName, other.apiGroupVersion,
         other.item, other.labels, other.labelsNot, other.labelsIn, other.labelsNotIn, other.fields,
         other.fieldsNot, other.resourceVersion, other.gracePeriodSeconds, other.propagationPolicy,
-        other.dryRun, other.selectorAsString, other.defaultNamespace, other.fieldValidation, other.fieldManager,
-        other.forceConflicts, other.timeout, other.timeoutUnit, other.requestConfig);
-    this.shardSelector = other.shardSelector;
+        other.dryRun, other.selectorAsString, other.shardSelector, other.defaultNamespace, other.fieldValidation,
+        other.fieldManager, other.forceConflicts, other.timeout, other.timeoutUnit, other.requestConfig);
   }
 
   @SuppressWarnings("java:S107")
@@ -94,8 +93,9 @@ public class OperationContext {
       Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn,
       Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion,
       long gracePeriodSeconds, DeletionPropagation propagationPolicy,
-      boolean dryRun, String selectorAsString, boolean defaultNamespace, FieldValidateable.Validation fieldValidation,
-      String fieldManager, Boolean forceConflicts, long timeout, TimeUnit timeoutUnit, RequestConfig requestConfig) {
+      boolean dryRun, String selectorAsString, String shardSelector, boolean defaultNamespace,
+      FieldValidateable.Validation fieldValidation, String fieldManager, Boolean forceConflicts, long timeout,
+      TimeUnit timeoutUnit, RequestConfig requestConfig) {
     this.client = client;
     this.item = item;
     this.plural = plural;
@@ -115,6 +115,7 @@ public class OperationContext {
     this.propagationPolicy = propagationPolicy;
     this.dryRun = dryRun;
     this.selectorAsString = selectorAsString;
+    this.shardSelector = shardSelector;
     this.fieldValidation = fieldValidation;
     this.fieldManager = fieldManager;
     this.forceConflicts = forceConflicts;

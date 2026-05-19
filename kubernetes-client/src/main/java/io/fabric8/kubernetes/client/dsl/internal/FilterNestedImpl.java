@@ -57,8 +57,6 @@ final class FilterNestedImpl<T extends HasMetadata, L extends KubernetesResource
     context.fields = new LinkedHashMap<>(this.baseOperation.context.getFields());
     // Use a multi-value map as its possible to define keyA != foo && keyA != bar
     context.fieldsNot = new LinkedHashMap<>(this.baseOperation.context.getFieldsNot());
-    context.selectorAsString = this.baseOperation.context.selectorAsString;
-    context.shardSelector = this.baseOperation.context.shardSelector;
   }
 
   @Override

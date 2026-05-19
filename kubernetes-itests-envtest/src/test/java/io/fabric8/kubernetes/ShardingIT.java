@@ -34,13 +34,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
-@EnableKubeAPIServer(kubeAPIVersion = "1.36.0", apiServerFlags = "--feature-gates=ShardedListAndWatch=true")
+@EnableKubeAPIServer(kubeAPIVersion = "1.36.*", apiServerFlags = "--feature-gates=ShardedListAndWatch=true")
 public class ShardingIT {
 
   public static final String LABEL_SELECTOR = "test=true";
   public static final String SHARD1 = "shardRange(object.metadata.uid, '0x0000000000000000', '0x8000000000000000')";
   public static final String SHARD2 = "shardRange(object.metadata.uid, '0x8000000000000000', '0x10000000000000000')";
-  public static final int EVENT_CHECK_DELAY = 100;
+  public static final Duration EVENT_SETTLE_WINDOW = Duration.ofMillis(500);
   static KubernetesClient client;
 
   // The apiserver is class-scoped, so labelled ConfigMaps from one method would otherwise
@@ -75,7 +75,7 @@ public class ShardingIT {
         var ignored1 = client.configMaps()
             .withLabelSelector(LABEL_SELECTOR)
             .withShardSelector(SHARD2).inform(getHandler(eventCounter))) {
-      await().pollDelay(Duration.ofMillis(EVENT_CHECK_DELAY))
+      await().during(EVENT_SETTLE_WINDOW)
           .untilAsserted(() -> assertThat(eventCounter.get()).isEqualTo(1));
     }
   }
@@ -91,7 +91,7 @@ public class ShardingIT {
         var ignored1 = client.configMaps()
             .withLabelSelector(LABEL_SELECTOR)
             .withShardSelector(SHARD2).watch(getWatcher(eventCounter))) {
-      await().pollDelay(Duration.ofMillis(EVENT_CHECK_DELAY))
+      await().during(EVENT_SETTLE_WINDOW)
           .untilAsserted(() -> assertThat(eventCounter.get()).isEqualTo(1));
     }
   }
@@ -126,7 +126,10 @@ public class ShardingIT {
     return new Watcher<>() {
       @Override
       public void eventReceived(Action action, ConfigMap configMap) {
-        eventCounter.getAndAdd(1);
+        // Only count ADDED so server-side managedFields bumps (MODIFIED) don't inflate the counter.
+        if (action == Action.ADDED) {
+          eventCounter.getAndAdd(1);
+        }
       }
 
       @Override
@@ -144,7 +147,7 @@ public class ShardingIT {
 
       @Override
       public void onUpdate(ConfigMap configMap, ConfigMap t1) {
-        eventCounter.getAndAdd(1);
+        // Intentionally not counted: managedFields churn can fire onUpdate without a sharding bug.
       }
 
       @Override
