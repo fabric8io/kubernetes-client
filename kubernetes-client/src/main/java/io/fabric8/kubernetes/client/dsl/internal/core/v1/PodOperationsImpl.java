@@ -412,6 +412,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   @Override
+  @SuppressWarnings("java:S3516") // return value is part of the public API; cannot be changed without a breaking release
   public boolean copy(Path destination) {
     try {
       if (Utils.isNotNullOrEmpty(getContext().getFile())) {

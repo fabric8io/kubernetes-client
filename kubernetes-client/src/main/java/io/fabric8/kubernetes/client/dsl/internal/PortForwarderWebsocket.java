@@ -61,6 +61,7 @@ public class PortForwarderWebsocket {
     this.connectTimeoutMills = connectTimeoutMillis;
   }
 
+  @SuppressWarnings("java:S2095") // server is closed via the returned LocalPortForward.close()
   public LocalPortForward forward(final URL resourceBaseUrl, final int port, final InetAddress localHost, final int localPort) {
     try {
       InetSocketAddress inetSocketAddress = createNewInetSocketAddress(localHost, localPort);
