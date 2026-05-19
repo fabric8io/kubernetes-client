@@ -56,6 +56,7 @@ public class OkHttpClientFactory implements HttpClient.Factory {
    * @return returns an HTTP client builder
    */
   @Override
+  @SuppressWarnings("java:S5527") // hostname verification is disabled only when the user explicitly opts in via trustCerts or disableHostnameVerification
   public OkHttpClientBuilderImpl newBuilder(Config config) {
     try {
       OkHttpClientBuilderImpl builderWrapper = newBuilder();
