@@ -34,6 +34,7 @@ public class KubeAPIServer implements UnexpectedProcessStopHandler {
   private final KubeConfig kubeConfig;
   private final EtcdProcess etcdProcess;
   private final KubeAPIServerProcess kubeApiServerProcess;
+  private boolean stopped = false;
 
   public KubeAPIServer() {
     this(KubeAPIServerConfigBuilder.anAPIServerConfig().build());
@@ -62,7 +63,17 @@ public class KubeAPIServer implements UnexpectedProcessStopHandler {
     logger.debug("API Server ready to use");
   }
 
-  public void stop() {
+  // stop() can be invoked twice: from the processStopped() callback (fired
+  // on unexpected child-process exit during startup) and from JUnit's
+  // afterAll. The stopped guard makes the second call a no-op so
+  // cleanEtcdData() doesn't crash on the already-removed temp dirs;
+  // synchronized closes the rarer window where the two callers overlap
+  // concurrently and would otherwise race past the guard. See #7834.
+  public synchronized void stop() {
+    if (stopped) {
+      return;
+    }
+    stopped = true;
     logger.debug("Stopping");
     kubeApiServerProcess.stopApiServer();
     etcdProcess.stopEtcd();
