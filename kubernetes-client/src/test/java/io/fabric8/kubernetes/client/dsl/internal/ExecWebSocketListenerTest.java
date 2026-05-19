@@ -21,12 +21,11 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext.StreamContext;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest;
-import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.http.TestWebSocket;
 import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
 import io.fabric8.kubernetes.client.http.WebSocketUpgradeResponse;
 import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -50,8 +49,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.verify;
-import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 class ExecWebSocketListenerTest {
 
@@ -87,18 +84,17 @@ class ExecWebSocketListenerTest {
 
   @Test
   void testSendShouldTruncateAndSendFlaggedWebSocketData() {
-    final WebSocket mockedWebSocket = Mockito.mock(WebSocket.class);
-    Mockito.when(mockedWebSocket.send(Mockito.any())).thenReturn(true);
-
+    final TestWebSocket webSocket = new TestWebSocket();
     ExecWebSocketListener listner = newExecWebSocketListener(new PodOperationContext());
 
-    listner.onOpen(mockedWebSocket);
+    listner.onOpen(webSocket);
     final byte[] toSend = new byte[] { 1, 3, 3, 7, 0 };
 
     listner.sendWithErrorChecking(toSend, 0, 4);
 
-    verify(mockedWebSocket, times(1))
-        .send(ByteBuffer.wrap(new byte[] { (byte) 0, (byte) 1, (byte) 3, (byte) 3, (byte) 7 }));
+    assertThat(webSocket.getSent())
+        .singleElement()
+        .isEqualTo(ByteBuffer.wrap(new byte[] { (byte) 0, (byte) 1, (byte) 3, (byte) 3, (byte) 7 }));
   }
 
   @Test
@@ -127,19 +123,18 @@ class ExecWebSocketListenerTest {
   @Test
   void testGracefulClose() {
     ExecWebSocketListener listener = newExecWebSocketListener(new PodOperationContext());
-    WebSocket mock = Mockito.mock(WebSocket.class);
-    listener.onOpen(mock);
+    TestWebSocket webSocket = new TestWebSocket();
+    listener.onOpen(webSocket);
     listener.close();
 
     assertFalse(listener.exitCode().isDone());
-    verify(mock).sendClose(Mockito.anyInt(), Mockito.anyString());
+    assertThat(webSocket.firstClose()).succeedsWithin(1, TimeUnit.SECONDS);
   }
 
   @Test
   void testOnClose() {
     ExecWebSocketListener listener = newExecWebSocketListener(new PodOperationContext());
-    WebSocket mock = Mockito.mock(WebSocket.class);
-    listener.onClose(mock, 1000, "testing");
+    listener.onClose(new TestWebSocket(), 1000, "testing");
 
     assertNull(listener.exitCode().join());
   }
@@ -172,11 +167,11 @@ class ExecWebSocketListenerTest {
     final ExecutorService asyncExecutor = Executors.newSingleThreadExecutor();
     try {
       final ExecWebSocketListener listener = new ExecWebSocketListener(context, asyncExecutor, new KubernetesSerialization());
-      final WebSocket mockedWebSocket = Mockito.mock(WebSocket.class);
-      listener.onOpen(mockedWebSocket);
+      final TestWebSocket webSocket = new TestWebSocket();
+      listener.onOpen(webSocket);
 
       // Channel 1 (stdout) message: queues an async write that will block until released
-      listener.onMessage(mockedWebSocket, ByteBuffer.wrap(new byte[] { (byte) 1, (byte) 'p', (byte) 'a', (byte) 'y' }));
+      listener.onMessage(webSocket, ByteBuffer.wrap(new byte[] { (byte) 1, (byte) 'p', (byte) 'a', (byte) 'y' }));
       assertTrue(writeStarted.await(2, TimeUnit.SECONDS), "expected the channel 1 async write to start");
 
       // Channel 3 (exit-success) message fires while the previous write is still in flight
@@ -184,7 +179,7 @@ class ExecWebSocketListenerTest {
           .getBytes(StandardCharsets.UTF_8);
       final ByteBuffer channel3 = ByteBuffer.allocate(successJson.length + 1).put((byte) 3).put(successJson);
       channel3.flip();
-      listener.onMessage(mockedWebSocket, channel3);
+      listener.onMessage(webSocket, channel3);
 
       // The exitCode must NOT complete before the pending channel 1 write has been processed.
       // Without the fix, exitCode is completed synchronously inside onMessage and this assertion fails.
@@ -208,8 +203,8 @@ class ExecWebSocketListenerTest {
 
     final ExecWebSocketListener listener = new ExecWebSocketListener(new PodOperationContext(), manualExecutor,
         new KubernetesSerialization());
-    final WebSocket mockedWebSocket = Mockito.mock(WebSocket.class);
-    listener.onOpen(mockedWebSocket);
+    final TestWebSocket webSocket = new TestWebSocket();
+    listener.onOpen(webSocket);
 
     // Channel 3: NonZeroExitCode=1 status frame
     final byte[] failureJson = new KubernetesSerialization().asJson(new StatusBuilder()
@@ -220,12 +215,12 @@ class ExecWebSocketListenerTest {
     final ByteBuffer channel3 = ByteBuffer.allocate(failureJson.length + 1)
         .put((byte) 3).put(failureJson);
     channel3.flip();
-    listener.onMessage(mockedWebSocket, channel3);
+    listener.onMessage(webSocket, channel3);
     assertFalse(listener.exitCode().isDone(),
         "exitCode must remain pending while handleExitStatus is queued in the executor");
 
     // The connection closes before the deferred handleExitStatus has a chance to run
-    listener.onError(mockedWebSocket, new IOException("Connection was closed"));
+    listener.onError(webSocket, new IOException("Connection was closed"));
     assertFalse(listener.exitCode().isDone(),
         "exitCode must not be completed exceptionally while the queued handleExitStatus is still pending");
 
@@ -261,7 +256,7 @@ class ExecWebSocketListenerTest {
         .execListener(execListener)
         .build();
     final ExecWebSocketListener listener = new ExecWebSocketListener(context, manualExecutor, new KubernetesSerialization());
-    listener.onOpen(Mockito.mock(WebSocket.class));
+    listener.onOpen(new TestWebSocket());
 
     final IOException boom = new IOException("boom");
     listener.onError(null, boom);
@@ -301,7 +296,7 @@ class ExecWebSocketListenerTest {
         .execListener(execListener)
         .build();
     final ExecWebSocketListener listener = new ExecWebSocketListener(context, manualExecutor, new KubernetesSerialization());
-    listener.onOpen(Mockito.mock(WebSocket.class));
+    listener.onOpen(new TestWebSocket());
 
     final WebSocketUpgradeResponse upgradeResponse = new WebSocketUpgradeResponse(
         new StandardHttpRequest.Builder().uri("https://localhost:8443/api/v1/namespaces/ns/pods/mypod").build(),
@@ -331,7 +326,7 @@ class ExecWebSocketListenerTest {
     final Executor manualExecutor = manualQueue::offer;
     final ExecWebSocketListener listener = new ExecWebSocketListener(new PodOperationContext(), manualExecutor,
         new KubernetesSerialization());
-    listener.onOpen(Mockito.mock(WebSocket.class));
+    listener.onOpen(new TestWebSocket());
 
     listener.onError(null, new IOException("boom"));
     assertFalse(listener.exitCode().isDone(),
@@ -374,15 +369,15 @@ class ExecWebSocketListenerTest {
     final ExecutorService asyncExecutor = Executors.newSingleThreadExecutor();
     try {
       final ExecWebSocketListener listener = new ExecWebSocketListener(context, asyncExecutor, new KubernetesSerialization());
-      final WebSocket mockedWebSocket = Mockito.mock(WebSocket.class);
-      listener.onOpen(mockedWebSocket);
+      final TestWebSocket webSocket = new TestWebSocket();
+      listener.onOpen(webSocket);
 
       // Channel 1 (stdout) message: queues an async write that will block until released
-      listener.onMessage(mockedWebSocket, ByteBuffer.wrap(new byte[] { (byte) 1, (byte) 'p', (byte) 'a', (byte) 'y' }));
+      listener.onMessage(webSocket, ByteBuffer.wrap(new byte[] { (byte) 1, (byte) 'p', (byte) 'a', (byte) 'y' }));
       assertTrue(writeStarted.await(2, TimeUnit.SECONDS), "expected the channel 1 async write to start");
 
       // Channel 2 (stderr) with terminateOnError=true: completes exitCode exceptionally
-      listener.onMessage(mockedWebSocket,
+      listener.onMessage(webSocket,
           ByteBuffer.wrap(new byte[] { (byte) 2, (byte) 'b', (byte) 'o', (byte) 'o', (byte) 'm' }));
 
       // The exitCode must NOT complete (exceptionally) before the pending channel 1 write has been processed.
@@ -426,7 +421,7 @@ class ExecWebSocketListenerTest {
         .terminateOnError(true)
         .build();
     final ExecWebSocketListener listener = new ExecWebSocketListener(context, manualExecutor, new KubernetesSerialization());
-    listener.onOpen(Mockito.mock(WebSocket.class));
+    listener.onOpen(new TestWebSocket());
 
     // Channel 2 with terminateOnError=true: queues exitCode.completeExceptionally(...)
     listener.onMessage(null,
@@ -481,14 +476,14 @@ class ExecWebSocketListenerTest {
         .execListener(execListener)
         .build();
     final ExecWebSocketListener listener = new ExecWebSocketListener(context, manualExecutor, new KubernetesSerialization());
-    final WebSocket mockedWebSocket = Mockito.mock(WebSocket.class);
-    listener.onOpen(mockedWebSocket);
+    final TestWebSocket webSocket = new TestWebSocket();
+    listener.onOpen(webSocket);
 
     // First terminal event: transport-level error.
-    listener.onError(mockedWebSocket, new IOException("first"));
+    listener.onError(webSocket, new IOException("first"));
     // Follow-up events that the framework may still deliver: a second onError, plus a late onClose.
-    listener.onError(mockedWebSocket, new IOException("second"));
-    listener.onClose(mockedWebSocket, 1000, "late");
+    listener.onError(webSocket, new IOException("second"));
+    listener.onClose(webSocket, 1000, "late");
 
     Runnable next;
     while ((next = manualQueue.poll()) != null) {

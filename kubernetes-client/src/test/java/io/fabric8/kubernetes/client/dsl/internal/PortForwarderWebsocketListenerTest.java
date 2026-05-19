@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.http.TestWebSocket;
 import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.awaitility.Awaitility;
@@ -31,24 +31,17 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.timeout;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class PortForwarderWebsocketListenerTest {
 
-  private WebSocket webSocket;
+  private TestWebSocket webSocket;
   private ReadableByteChannel in;
   private WritableByteChannel out;
   private ByteArrayOutputStream outputContent;
@@ -56,7 +49,7 @@ class PortForwarderWebsocketListenerTest {
 
   @BeforeEach
   void setUp() {
-    webSocket = mock(WebSocket.class);
+    webSocket = new TestWebSocket();
     in = Channels.newChannel(new ByteArrayInputStream("THIS IS A TEST".getBytes(StandardCharsets.UTF_8)));
     outputContent = new ByteArrayOutputStream();
     out = Channels.newChannel(outputContent);
@@ -74,28 +67,18 @@ class PortForwarderWebsocketListenerTest {
 
   @Test
   void onOpen_shouldPipeInChannelToWebSocket() {
-    // Snapshot the bytes synchronously inside send() and publish via a future.
-    // The ByteBuffer mutates across pipe() iterations (clear/put/read), so the
-    // bytes must be copied before the next iteration. Publishing via a future
-    // also avoids the verify(timeout) -> read race: Mockito records the
-    // invocation BEFORE the doAnswer body runs, so a verify(timeout) barrier
-    // can return while the captured value is still unset.
-    final CompletableFuture<String> sent = new CompletableFuture<>();
-    doAnswer(i -> {
-      ByteBuffer buf = i.getArgument(0);
-      byte[] copy = new byte[buf.remaining()];
-      buf.duplicate().get(copy);
-      sent.complete(new String(copy, StandardCharsets.UTF_8));
-      return true;
-    }).when(webSocket).send(any(ByteBuffer.class));
     listener = new PortForwarderWebsocketListener(in, out, CommonThreadPool.get());
     listener.onOpen(webSocket);
     // Then
-    assertThat(sent)
-        .succeedsWithin(10, TimeUnit.SECONDS, InstanceOfAssertFactories.STRING)
-        .startsWith("\u0000THIS IS A TEST");
+    assertThat(webSocket.firstSent())
+        .succeedsWithin(10, TimeUnit.SECONDS, InstanceOfAssertFactories.type(ByteBuffer.class))
+        .satisfies(buf -> {
+          final byte[] copy = new byte[buf.remaining()];
+          buf.duplicate().get(copy);
+          assertThat(new String(copy, StandardCharsets.UTF_8)).startsWith("\u0000THIS IS A TEST");
+        });
     // Single send for the 14-byte payload; pipe() exits on EOF before a second send.
-    verify(webSocket, times(1)).send(any(ByteBuffer.class));
+    assertThat(webSocket.getSent()).hasSize(1);
     assertThat(in.isOpen()).isTrue();
     assertThat(out.isOpen()).isTrue();
   }
@@ -107,7 +90,7 @@ class PortForwarderWebsocketListenerTest {
     listener = new PortForwarderWebsocketListener(inWithException, out, CommonThreadPool.get());
     listener.onOpen(webSocket);
     // Then
-    verify(webSocket, timeout(10_000).times(1)).sendClose(anyInt(), anyString());
+    assertThat(webSocket.firstClose()).succeedsWithin(10, TimeUnit.SECONDS);
     assertThat(listener.getClientThrowables())
         .singleElement()
         .asInstanceOf(InstanceOfAssertFactories.throwable(IOException.class))
@@ -140,35 +123,29 @@ class PortForwarderWebsocketListenerTest {
   @Test
   void onMessage_shouldSkipTwoMessagesAndPipeTheThird() {
     listener = new PortForwarderWebsocketListener(in, out, CommonThreadPool.get());
-    doAnswer(i -> {
-      listener.onMessage(webSocket, "SKIP 2");
-      return true;
-    }).doAnswer(i -> {
-      listener.onMessage(webSocket, ByteBuffer.wrap(
-          ByteBuffer.allocate(18).put((byte) 0).put("PROCESSED MESSAGE".getBytes(StandardCharsets.UTF_8)).array()));
-      return true;
-    })
-        .doNothing()
-        .when(webSocket).request();
+    webSocket
+        .onRequest(() -> listener.onMessage(webSocket, "SKIP 2"))
+        .onRequest(() -> listener.onMessage(webSocket, ByteBuffer.wrap(
+            ByteBuffer.allocate(18).put((byte) 0).put("PROCESSED MESSAGE".getBytes(StandardCharsets.UTF_8)).array())));
+    // third request is intentionally unscripted (no-op)
     listener.onMessage(webSocket, "SKIP 1");
     // Then
-    verify(webSocket, timeout(10_000).times(3)).request();
+    await().atMost(10, TimeUnit.SECONDS).until(() -> webSocket.requestCount() >= 3);
+    assertThat(webSocket.requestCount()).isEqualTo(3);
     assertThat(outputContent.toString()).contains("PROCESSED MESSAGE");
   }
 
   @Test
   void onMessage_withEmptyMessage_shouldEndWithError() {
     listener = new PortForwarderWebsocketListener(in, out, CommonThreadPool.get());
-    doAnswer(i -> {
-      listener.onMessage(webSocket, "SKIP 2");
-      return true;
-    }).doAnswer(i -> {
-      listener.onMessage(webSocket, ByteBuffer.wrap(new byte[0]));
-      return true;
-    }).when(webSocket).request();
+    webSocket
+        .onRequest(() -> listener.onMessage(webSocket, "SKIP 2"))
+        .onRequest(() -> listener.onMessage(webSocket, ByteBuffer.wrap(new byte[0])));
     listener.onMessage(webSocket, "SKIP 1");
     // Then
-    verify(webSocket, timeout(10_000)).sendClose(1002, "Protocol error");
+    assertThat(webSocket.firstClose())
+        .succeedsWithin(10, TimeUnit.SECONDS)
+        .isEqualTo(new TestWebSocket.CloseFrame(1002, "Protocol error"));
     await().atMost(10, TimeUnit.SECONDS).until(() -> !listener.isAlive());
     assertThat(outputContent.toString()).isEmpty();
     assertThat(listener.errorOccurred()).isTrue();
@@ -180,17 +157,11 @@ class PortForwarderWebsocketListenerTest {
   @Test
   void onMessage_withServerClose_shouldSkipTwoMessagesAndPipeTheThird() {
     listener = new PortForwarderWebsocketListener(in, out, CommonThreadPool.get());
-    doAnswer(i -> {
-      listener.onMessage(webSocket, "SKIP 2");
-      return true;
-    }).doAnswer(i -> {
-      listener.onMessage(webSocket, ByteBuffer.wrap(
-          ByteBuffer.allocate(18).put((byte) 0).put("PROCESSED MESSAGE".getBytes(StandardCharsets.UTF_8)).array()));
-      return true;
-    }).doAnswer(i -> {
-      listener.onClose(webSocket, 31337, "Transmission complete");
-      return true;
-    }).when(webSocket).request();
+    webSocket
+        .onRequest(() -> listener.onMessage(webSocket, "SKIP 2"))
+        .onRequest(() -> listener.onMessage(webSocket, ByteBuffer.wrap(
+            ByteBuffer.allocate(18).put((byte) 0).put("PROCESSED MESSAGE".getBytes(StandardCharsets.UTF_8)).array())))
+        .onRequest(() -> listener.onClose(webSocket, 31337, "Transmission complete"));
     listener.onMessage(webSocket, "SKIP 1");
     // Then
     await().atMost(10, TimeUnit.SECONDS).until(() -> !listener.isAlive());
@@ -203,19 +174,16 @@ class PortForwarderWebsocketListenerTest {
   @Test
   void onMessage_withWrongChannel_shouldLogAndEndWithError() {
     listener = new PortForwarderWebsocketListener(in, out, CommonThreadPool.get());
-    doAnswer(i -> {
-      listener.onMessage(webSocket, "SKIP 2");
-      return true;
-    }).doAnswer(i -> {
-      listener.onMessage(webSocket, ByteBuffer.wrap(
-          ByteBuffer.allocate(18).put((byte) 5).put("WRONG CHANNEL".getBytes(StandardCharsets.UTF_8)).array()));
-      return true;
-    })
-        .doNothing()
-        .when(webSocket).request();
+    webSocket
+        .onRequest(() -> listener.onMessage(webSocket, "SKIP 2"))
+        .onRequest(() -> listener.onMessage(webSocket, ByteBuffer.wrap(
+            ByteBuffer.allocate(18).put((byte) 5).put("WRONG CHANNEL".getBytes(StandardCharsets.UTF_8)).array())));
+    // third request is intentionally unscripted (no-op)
     listener.onMessage(webSocket, "SKIP 1");
     // Then
-    verify(webSocket, timeout(10_000)).sendClose(1002, "Protocol error");
+    assertThat(webSocket.firstClose())
+        .succeedsWithin(10, TimeUnit.SECONDS)
+        .isEqualTo(new TestWebSocket.CloseFrame(1002, "Protocol error"));
     await().atMost(10, TimeUnit.SECONDS).until(() -> !listener.isAlive());
     assertThat(outputContent.toString()).isEmpty();
     assertThat(listener.errorOccurred()).isTrue();
