@@ -173,6 +173,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
     this.serialExecutor = new SerialExecutor(executor);
   }
 
+  @SuppressWarnings("java:S2095") // channel wraps caller-provided OutputStream; closing it would close the caller's stream
   private ListenerStream createStream(String name, StreamContext streamContext) {
     ListenerStream stream = new ListenerStream(name);
     if (streamContext == null) {
