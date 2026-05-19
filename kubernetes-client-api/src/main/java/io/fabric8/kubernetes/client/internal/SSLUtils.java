@@ -118,6 +118,7 @@ public final class SSLUtils {
         config.getTrustStorePassphrase());
   }
 
+  @SuppressWarnings("java:S4830") // trust-all TrustManager is gated by the documented isTrustCerts opt-in for dev clusters with self-signed certs
   public static TrustManager[] trustManagers(String certData, String certFile, boolean isTrustCerts, String trustStoreFile,
       String trustStorePassphrase) throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
     TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());

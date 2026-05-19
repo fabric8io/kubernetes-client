@@ -185,6 +185,7 @@ public class ProcessReadinessChecker {
     return getHttpClient(null);
   }
 
+  @SuppressWarnings("java:S4830") // test infrastructure: polls a locally launched API server with ephemeral self-signed certs over localhost
   private static HttpClient getHttpClient(CertManager certManager) {
     try {
       SSLContext sslContext = SSLContext.getInstance("TLS");
