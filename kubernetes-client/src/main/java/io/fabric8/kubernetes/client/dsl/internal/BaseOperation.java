@@ -106,7 +106,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     ExtensibleResource<T>,
     ListerWatcher<T, L> {
 
-  static final Logger LOGGER = LoggerFactory.getLogger(BaseOperation.class);
+  static final Logger logger = LoggerFactory.getLogger(BaseOperation.class);
 
   private static final String WATCH = "watch";
   private static final String READ_ONLY_UPDATE_EXCEPTION_MESSAGE = "Cannot update read-only resources";
@@ -780,13 +780,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
               // If the HTTP return code is 200 or 503, we retry the watch again using a persistent hanging
               // HTTP GET. This is meant to handle cases like kubectl local proxy which does not support
               // websockets. Issue: https://github.com/kubernetes/kubernetes/issues/25126
-              LOGGER.debug(
+              logger.debug(
                   "Websocket hanshake failed with code {}, but an httpwatch may be possible.  Use Config.onlyHttpWatches to disable websocket watches.",
                   ke.getCode());
               httpWatch = true;
             }
           } else {
-            LOGGER.debug(
+            logger.debug(
                 "Failed to establish a websocket watch, will try regular http instead.  Use Config.onlyHttpWatches to disable websocket watches.",
                 t);
             httpWatch = true;
