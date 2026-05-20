@@ -17,7 +17,7 @@
 name: Style Checks
 
 env:
-  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e -T 1C -Daether.connector.http.connectionTimeout=10000 -Daether.connector.http.requestTimeout=30000
+  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e -T 1C -Daether.transport.http.connectTimeout=10000 -Daether.transport.http.requestTimeout=30000
 
 on:
   push:
