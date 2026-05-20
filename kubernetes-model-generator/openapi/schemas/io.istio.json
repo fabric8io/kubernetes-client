@@ -216,6 +216,35 @@
       "x-kubernetes-fabric8-enum-values": "FAIL_CLOSE(0),FAIL_OPEN(1),FAIL_RELOAD(2)",
       "x-kubernetes-fabric8-type": "enum"
     },
+    "io.istio.api.extensions.v1alpha1.IsTrafficExtension_FilterConfig": {
+      "type": "object",
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha1",
+        "Kind": "IsTrafficExtension_FilterConfig",
+        "Scope": "Namespaced"
+      },
+      "x-kubernetes-fabric8-implementation": "TrafficExtension_Lua,TrafficExtension_Wasm",
+      "x-kubernetes-fabric8-type": "interface"
+    },
+    "io.istio.api.extensions.v1alpha1.LuaConfig": {
+      "description": "LuaConfig configures a Lua filter.\n\nLua filters provide a lightweight alternative to WebAssembly for simple request/response transformations. The Lua code is executed inline within the Envoy proxy.\n\nExample: Simple header manipulation\n\n```yaml lua:\n\n\tinlineCode: |\n\t  function envoy_on_request(request_handle)\n\t    request_handle:headers():add(\"x-custom-header\", \"custom-value\")\n\t  end\n\n```\n\nThe Lua script must define one or both of the following functions: - `envoy_on_request(request_handle)`: Called when a request is received - `envoy_on_response(response_handle)`: Called when a response is received\n\nThe request_handle and response_handle provide access to headers, body, metadata, and other request/response attributes. See the Envoy Lua filter documentation for the complete API: https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/lua_filter",
+      "type": "object",
+      "properties": {
+        "inlineCode": {
+          "description": "The inline Lua code to be executed. The code must be a valid Lua script that defines the appropriate callback functions (`envoy_on_request` and/or `envoy_on_response`).\n\nThe maximum size is 64KB. For larger or more complex filters, use a WebAssembly filter instead.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha1",
+        "Kind": "LuaConfig",
+        "Scope": "Namespaced"
+      }
+    },
     "io.istio.api.extensions.v1alpha1.PluginPhase": {
       "description": "The phase in the filter chain where the plugin will be injected.",
       "type": "object",
@@ -255,6 +284,137 @@
       "x-kubernetes-fabric8-enum-values": "Always(2),IfNotPresent(1),UNSPECIFIED_POLICY(0)",
       "x-kubernetes-fabric8-type": "enum"
     },
+    "io.istio.api.extensions.v1alpha1.TrafficExtension": {
+      "description": "\u003c!-- crd generation tags --\u003e\n\n\u003c!-- go code generation tags --\u003e",
+      "type": "object",
+      "required": [
+        "FilterConfig"
+      ],
+      "properties": {
+        "FilterConfig": {
+          "description": "Exactly one of `wasm` or `lua` must be set.\n\nTypes that are valid to be assigned to FilterConfig:\n\n\t*TrafficExtension_Wasm\n\t*TrafficExtension_Lua",
+          "default": {},
+          "$ref": "#/definitions/io.istio.api.extensions.v1alpha1.IsTrafficExtension_FilterConfig"
+        },
+        "match": {
+          "description": "Specifies the criteria to determine which traffic is passed to TrafficExtension. If a traffic satisfies any of TrafficSelectors, the traffic passes the TrafficExtension.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.istio.api.extensions.v1alpha1.TrafficSelector"
+          }
+        },
+        "phase": {
+          "description": "Determines where in the filter chain this `TrafficExtension` is to be injected.",
+          "default": {},
+          "$ref": "#/definitions/io.istio.api.extensions.v1alpha1.TrafficExtension_ExecutionPhase"
+        },
+        "priority": {
+          "description": "Determines ordering of `TrafficExtensions` in the same `phase`. When multiple `TrafficExtensions` are applied to the same workload in the same `phase`, they will be applied by priority, in descending order. If `priority` is not set, or two `TrafficExtensions` exist with the same value, the ordering will be deterministically derived from the `creationTimestamp`, then name and namespace of the `TrafficExtensions`. Defaults to `0`.",
+          "$ref": "#/definitions/org.golang.google.protobuf.types.known.wrapperspb.Int32Value"
+        },
+        "selector": {
+          "description": "Optional. Criteria used to select the specific set of pods/VMs on which this configuration should be applied. If omitted, this configuration will be applied to all workload instances in the same namespace. If the `TrafficExtension` is present in the config root namespace, it will be applied to all applicable workloads in any namespace.\n\nAt most, only one of `selector` or `targetRefs` can be set for a given policy.",
+          "$ref": "#/definitions/io.istio.api.type.v1beta1.WorkloadSelector"
+        },
+        "targetRefs": {
+          "description": "Optional. The targetRefs specifies a list of resources the policy should be applied to. The targeted resources specified will determine which workloads the policy applies to.\n\nCurrently, the following resource attachment types are supported: * `kind: Gateway` with `group: gateway.networking.k8s.io` in the same namespace. * `kind: GatewayClass` with `group: gateway.networking.k8s.io` in the root namespace. * `kind: Service` with `group: \"\"` or `group: \"core\"` in the same namespace. This type is only supported for waypoints. * `kind: ServiceEntry` with `group: networking.istio.io` in the same namespace.\n\nIf not set, the policy is applied as defined by the selector. At most one of the selector and targetRefs can be set.\n\nNOTE: Waypoint proxies are required to use this field for policies to apply; `selector` policies will be ignored.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.istio.api.type.v1beta1.PolicyTargetReference"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "",
+        "Version": "v1alpha1",
+        "Kind": "TrafficExtension",
+        "Scope": "Namespaced"
+      },
+      "x-kubernetes-fabric8-interface-fields": "FilterConfig"
+    },
+    "io.istio.api.extensions.v1alpha1.TrafficExtension_ExecutionPhase": {
+      "description": "ExecutionPhase specifies where in the filter chain a `TrafficExtension` is injected.",
+      "type": "object",
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha1",
+        "Kind": "TrafficExtension_ExecutionPhase",
+        "Scope": "Namespaced"
+      },
+      "x-kubernetes-fabric8-enum-values": "AUTHN(1),AUTHZ(2),STATS(3),UNSPECIFIED(0)",
+      "x-kubernetes-fabric8-type": "enum"
+    },
+    "io.istio.api.extensions.v1alpha1.TrafficExtension_Lua": {
+      "type": "object",
+      "required": [
+        "lua"
+      ],
+      "properties": {
+        "lua": {
+          "description": "Lua filter configuration.",
+          "$ref": "#/definitions/io.istio.api.extensions.v1alpha1.LuaConfig"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha1",
+        "Kind": "TrafficExtension_Lua",
+        "Scope": "Namespaced"
+      },
+      "x-kubernetes-fabric8-implements": "IsTrafficExtension_FilterConfig"
+    },
+    "io.istio.api.extensions.v1alpha1.TrafficExtension_Wasm": {
+      "type": "object",
+      "required": [
+        "wasm"
+      ],
+      "properties": {
+        "wasm": {
+          "description": "WebAssembly filter configuration.",
+          "$ref": "#/definitions/io.istio.api.extensions.v1alpha1.WasmConfig"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha1",
+        "Kind": "TrafficExtension_Wasm",
+        "Scope": "Namespaced"
+      },
+      "x-kubernetes-fabric8-implements": "IsTrafficExtension_FilterConfig"
+    },
+    "io.istio.api.extensions.v1alpha1.TrafficSelector": {
+      "description": "TrafficSelector provides a mechanism to select a specific traffic flow for which a TrafficExtension will be enabled. When all the sub conditions in the TrafficSelector are satisfied, the traffic will be selected.",
+      "type": "object",
+      "properties": {
+        "mode": {
+          "description": "Criteria for selecting traffic by their direction. Note that `CLIENT` and `SERVER` are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be `CLIENT` or `CLIENT_AND_SERVER`. If not specified, the default value is `CLIENT_AND_SERVER`.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "ports": {
+          "description": "Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod.\n\nIf one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.istio.api.type.v1beta1.PortSelector"
+          },
+          "x-kubernetes-list-map-keys": [
+            "number"
+          ],
+          "x-kubernetes-list-type": "map"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha1",
+        "Kind": "TrafficSelector",
+        "Scope": "Namespaced"
+      }
+    },
     "io.istio.api.extensions.v1alpha1.VmConfig": {
       "description": "Configuration for a Wasm VM. more details can be found [here](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/wasm/v3/wasm.proto#extensions-wasm-v3-vmconfig).",
       "type": "object",
@@ -276,6 +436,62 @@
         "Group": "",
         "Version": "v1alpha1",
         "Kind": "VmConfig",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.istio.api.extensions.v1alpha1.WasmConfig": {
+      "description": "WasmConfig configures a WebAssembly filter.\n\nExample:\n\n```yaml wasm:\n\n\turl: oci://gcr.io/myproject/filter:v1.0.0\n\tsha256: abc123...\n\timagePullPolicy: IfNotPresent\n\timagePullSecret: gcr-secret\n\tpluginName: my-filter\n\tpluginConfig:\n\t  key1: value1\n\t  key2: value2\n\tfailStrategy: FAIL_CLOSE\n\tvmConfig:\n\t  env:\n\t  - name: SOME_ENV_VAR\n\t    value: some_value\n\ttype: HTTP\n\n```",
+      "type": "object",
+      "properties": {
+        "failStrategy": {
+          "description": "Specifies the failure behavior for the plugin due to fatal errors.",
+          "default": {},
+          "$ref": "#/definitions/io.istio.api.extensions.v1alpha1.FailStrategy"
+        },
+        "imagePullPolicy": {
+          "description": "The pull behaviour to be applied when fetching Wasm module by either OCI image or `http/https`. Only relevant when referencing Wasm module without any digest, including the digest in OCI image URL or `sha256` field in `vm_config`. Defaults to `IfNotPresent`, except when an OCI image is referenced in the `url` and the `latest` tag is used, in which case `Always` is the default, mirroring Kubernetes behaviour.",
+          "default": {},
+          "$ref": "#/definitions/io.istio.api.extensions.v1alpha1.PullPolicy"
+        },
+        "imagePullSecret": {
+          "description": "Credentials to use for OCI image pulling. Name of a Kubernetes Secret in the same namespace as the `TrafficExtension` that contains a Docker pull secret which is to be used to authenticate against the registry when pulling the image.",
+          "type": "string"
+        },
+        "pluginConfig": {
+          "description": "The configuration that will be passed on to the plugin.",
+          "$ref": "#/definitions/org.golang.google.protobuf.types.known.structpb.Struct"
+        },
+        "pluginName": {
+          "description": "The plugin name to be used in the Envoy configuration (used to be called `rootID`). Some .wasm modules might require this value to select the Wasm plugin to execute.",
+          "type": "string"
+        },
+        "sha256": {
+          "description": "SHA256 checksum that will be used to verify Wasm module or OCI container. If the `url` field already references a SHA256 (using the `@sha256:` notation), it must match the value of this field. If an OCI image is referenced by tag and this field is set, its checksum will be verified against the contents of this field after pulling.",
+          "type": "string"
+        },
+        "type": {
+          "description": "Specifies the type of Wasm Extension to be used.",
+          "default": {},
+          "$ref": "#/definitions/io.istio.api.extensions.v1alpha1.PluginType"
+        },
+        "url": {
+          "description": "URL of a Wasm module or OCI container. If no scheme is present, defaults to `oci://`, referencing an OCI image. Other valid schemes are `file://` for referencing .wasm module files present locally within the proxy container, and `http[s]://` for .wasm module files hosted remotely.",
+          "type": "string"
+        },
+        "verificationKey": {
+          "description": "$hide_from_docs Public key that will be used to verify signatures of signed OCI images or Wasm modules.\n\nAt this moment, various ways for signing/verifying are emerging and being proposed. We can observe two major streams for signing OCI images: Cosign from Sigstore and Notary, which is used in Docker Content Trust. In case of Wasm module, multiple approaches are still in discussion.\n  - https://github.com/WebAssembly/design/issues/1413\n  - https://github.com/wasm-signatures/design (various signing tools are enumerated)\n\nIn addition, for each method for signing\u0026verifying, we may need to consider to provide additional data or configuration (e.g., key rolling, KMS, root certs, ...) as well.\n\nTo deal with this situation, we need to elaborate more generic way to describe how to sign and verify the image or wasm binary, and how to specify relevant data, including this `verification_key`.\n\nTherefore, this field will not be implemented until the detailed design is established. For the future use, just keep this field in proto and hide from documentation.",
+          "type": "string"
+        },
+        "vmConfig": {
+          "description": "Configuration for a Wasm VM. More details can be found [here](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/wasm/v3/wasm.proto#extensions-wasm-v3-vmconfig).",
+          "$ref": "#/definitions/io.istio.api.extensions.v1alpha1.VmConfig"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha1",
+        "Kind": "WasmConfig",
         "Scope": "Namespaced"
       }
     },
@@ -440,7 +656,7 @@
       "type": "object",
       "properties": {
         "conditions": {
-          "description": "Current service state of the resource. More info: https://istio.io/docs/reference/config/config-status/",
+          "description": "Current service state of the resource.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.istio.api.meta.v1alpha1.IstioCondition"
@@ -449,7 +665,7 @@
           "x-kubernetes-patch-strategy": "merge"
         },
         "observedGeneration": {
-          "description": "$hide_from_docs Deprecated. IstioCondition observed_generation will show the resource generation for which the condition was generated. Resource Generation to which the Reconciled Condition refers. When this value is not equal to the object's metadata generation, reconciled condition  calculation for the current generation is still in progress.  See https://istio.io/latest/docs/reference/config/config-status/ for more info.",
+          "description": "$hide_from_docs Deprecated. IstioCondition observed_generation will show the resource generation for which the condition was generated. Resource Generation to which the Reconciled Condition refers. When this value is not equal to the object's metadata generation, reconciled condition  calculation for the current generation is still in progress.",
           "type": "integer",
           "format": "int64"
         },
@@ -3576,7 +3792,7 @@
           }
         },
         "conditions": {
-          "description": "Current service state of ServiceEntry. More info: https://istio.io/docs/reference/config/config-status/",
+          "description": "Current service state of ServiceEntry.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.istio.api.meta.v1alpha1.IstioCondition"
@@ -3585,7 +3801,7 @@
           "x-kubernetes-patch-strategy": "merge"
         },
         "observedGeneration": {
-          "description": "Resource Generation to which the Reconciled Condition refers. When this value is not equal to the object's metadata generation, reconciled condition  calculation for the current generation is still in progress.  See https://istio.io/latest/docs/reference/config/config-status/ for more info.",
+          "description": "Resource Generation to which the Reconciled Condition refers. When this value is not equal to the object's metadata generation, reconciled condition  calculation for the current generation is still in progress.",
           "type": "integer",
           "format": "int64"
         },
@@ -5027,6 +5243,14 @@
             "default": ""
           }
         },
+        "notTrustDomains": {
+          "description": "Optional. A list of negative match of trust domains. Can be exact, prefix, suffix and presence.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
         "principals": {
           "description": "Optional. A list of peer identities derived from the peer certificate. The peer identity is in the format of `\"\u003cTRUST_DOMAIN\u003e/ns/\u003cNAMESPACE\u003e/sa/\u003cSERVICE_ACCOUNT\u003e\"`, for example, `\"cluster.local/ns/default/sa/productpage\"`. This field requires mTLS enabled and is the same as the `source.principal` attribute.\n\nUsage of `serviceAccounts` is typically simpler and offers the same functionality.\n\nIf not set, any principal is allowed.",
           "type": "array",
@@ -5053,6 +5277,14 @@
         },
         "serviceAccounts": {
           "description": "Optional. A list of Kubernetes service accounts derived from the peer certificate. This field requires mTLS enabled and is the same as the `source.serviceaccount` attribute.\n\nThis takes the format `\u003cnamespace\u003e/\u003cserviceaccount\u003e`. `\u003cserviceaccount\u003e` may also be used to use the same namespace as the `AuthorizationPolicy`.\n\nIf not set, any service account is allowed.\n\nNo form of wildcard (`*`) is allowed. Cannot be set with `principals` or `namespaces`.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "default": ""
+          }
+        },
+        "trustDomains": {
+          "description": "Optional. A list of trust domains derived from the peer certificate. Can be exact, prefix, suffix and presence. This field requires mTLS enabled and is the same as the `source.trustDomain` attribute.\n\nIf not set, any trust domain is allowed.",
           "type": "array",
           "items": {
             "type": "string",
@@ -5413,6 +5645,10 @@
             "$ref": "#/definitions/io.istio.api.telemetry.v1alpha1.Tracing_CustomTag"
           }
         },
+        "disableContextPropagation": {
+          "description": "Controls whether trace context headers (e.g., `traceparent`/`tracestate` for W3C, `X-B3-*` for Zipkin) are propagated in forwarded requests. When set to true, trace context headers will not be included in proxied requests, effectively stopping trace context propagation at the selected workloads. This is useful for egress gateways where you want to prevent leaking trace context to external services while still reporting spans for internal observability. Defaults to false (context propagation enabled). NOTE: This does NOT impact span reporting; use `disable_span_reporting` to control that.",
+          "$ref": "#/definitions/org.golang.google.protobuf.types.known.wrapperspb.BoolValue"
+        },
         "disableSpanReporting": {
           "description": "Controls span reporting. If set to true, no spans will be reported for impacted workloads. This does NOT impact context propagation or trace sampling behavior.",
           "$ref": "#/definitions/org.golang.google.protobuf.types.known.wrapperspb.BoolValue"
@@ -5723,6 +5959,72 @@
         "Group": "",
         "Version": "v1beta1",
         "Kind": "WorkloadSelector",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.istio.extensions.v1alpha1.TrafficExtension": {
+      "description": "\u003c!-- crd generation tags --\u003e\n\n\u003c!-- go code generation tags --\u003e",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Spec defines the implementation of this definition.",
+          "$ref": "#/definitions/io.istio.api.extensions.v1alpha1.TrafficExtension"
+        },
+        "status": {
+          "$ref": "#/definitions/io.istio.api.meta.v1alpha1.IstioStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "extensions.istio.io",
+        "Version": "v1alpha1",
+        "Kind": "TrafficExtension",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.istio.extensions.v1alpha1.TrafficExtensionList": {
+      "description": "TrafficExtensionList is a collection of TrafficExtensions.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.istio.extensions.v1alpha1.TrafficExtension"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "extensions.istio.io",
+        "Version": "v1alpha1",
+        "Kind": "TrafficExtensionList",
         "Scope": "Namespaced"
       }
     },
