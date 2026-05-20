@@ -297,7 +297,9 @@ class SerializationTest {
   void unmarshalRawResource() {
     InputStream is = SerializationTest.class.getResourceAsStream("/serialization/invalid-resource.yml");
     RawExtension raw = Serialization.unmarshal(is);
-    ((Map) raw.getValue()).get("not-a").equals("resource");
+    @SuppressWarnings("unchecked")
+    Map<String, String> value = (Map<String, String>) raw.getValue();
+    assertThat(value).containsEntry("not-a", "resource");
   }
 
   @Test
