@@ -78,6 +78,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -346,6 +347,49 @@ class UtilsTest {
       completableFuture.complete(null);
     }, 0, () -> 1L, TimeUnit.MILLISECONDS);
     completableFuture.get(1, TimeUnit.SECONDS);
+  }
+
+  @Test
+  void waitUntilReadyPreservesInterruptStatus() {
+    Future<?> interruptingFuture = new Future<Object>() {
+      @Override
+      public boolean cancel(boolean mayInterruptIfRunning) {
+        return false;
+      }
+
+      @Override
+      public boolean isCancelled() {
+        return false;
+      }
+
+      @Override
+      public boolean isDone() {
+        return false;
+      }
+
+      @Override
+      public Object get() throws InterruptedException {
+        throw new InterruptedException("simulated interrupt");
+      }
+
+      @Override
+      public Object get(long timeout, TimeUnit unit) throws InterruptedException {
+        throw new InterruptedException("simulated interrupt");
+      }
+    };
+
+    assertThat(Thread.currentThread().isInterrupted()).isFalse();
+    try {
+      Utils.waitUntilReady(interruptingFuture, 10, TimeUnit.SECONDS);
+    } catch (Exception e) {
+      // expected
+    } finally {
+      assertThat(Thread.currentThread().isInterrupted())
+          .as("interrupt status should be preserved after InterruptedException is caught")
+          .isTrue();
+      // Clear the interrupt flag so it doesn't affect other tests
+      Thread.interrupted();
+    }
   }
 
   @Test

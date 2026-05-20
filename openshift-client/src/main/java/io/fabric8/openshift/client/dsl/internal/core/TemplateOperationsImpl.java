@@ -125,6 +125,9 @@ public class TemplateOperationsImpl
         }
       }
       return klb.build();
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(forOperationType("process"), e);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(forOperationType("process"), e);
     }

@@ -118,6 +118,7 @@ public class EtcdProcess {
         etcdProcess.destroyForcibly();
         etcdProcess.waitFor();
       } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
         throw new KubeAPITestException(e);
       }
     }
