@@ -31,6 +31,7 @@ import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -155,17 +156,24 @@ public class WebSocketSession extends WebSocketListener {
   private void send(final WebSocket ws, final WebSocketMessage message) {
     final UUID id = UUID.randomUUID();
     pendingMessages.add(id);
-    executor.schedule(() -> {
-      if (ws != null) {
-        if (message.isBinary()) {
-          ws.send(message.getBytes());
-        } else {
-          ws.send(message.getBody());
+    try {
+      executor.schedule(() -> {
+        if (ws != null) {
+          if (message.isBinary()) {
+            ws.send(message.getBytes());
+          } else {
+            ws.send(message.getBody());
+          }
+          pendingMessages.remove(id);
         }
-        pendingMessages.remove(id);
-      }
-      closeActiveSocketsIfApplicable();
-    }, message.getDelay(), TimeUnit.MILLISECONDS);
+        closeActiveSocketsIfApplicable();
+      }, message.getDelay(), TimeUnit.MILLISECONDS);
+    } catch (RejectedExecutionException ex) {
+      // Session is shutting down (or already shut down): an in-flight WebSocket upgrade
+      // may still invoke onOpen after MockDispatcher.shutdown() has terminated the executor.
+      // Silently drop the message — the connection is being torn down anyway.
+      pendingMessages.remove(id);
+    }
   }
 
   public void closeActiveSocketsIfApplicable() {

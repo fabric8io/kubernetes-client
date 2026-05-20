@@ -182,8 +182,13 @@ public class MockWebServer implements Closeable {
       throw new IllegalStateException("shutdown() before start()");
     }
     shutdown = true;
+    // Two-phase: shutdown() unblocks any blocked dispatches (e.g. QueueDispatcher.take()) so
+    // httpServer.close() can drain in-flight requests; releaseResources() then tears down per-
+    // connection state (e.g. WebSocketSession executors) that an in-flight upgrade may still
+    // have been about to touch via onOpen — avoiding a RejectedExecutionException race.
     dispatcher.shutdown();
     await(httpServer.close(), "Unable to close MockWebServer");
+    dispatcher.releaseResources();
     info("done accepting connections");
     await(vertx.close(), "Unable to close Vertx");
   }
