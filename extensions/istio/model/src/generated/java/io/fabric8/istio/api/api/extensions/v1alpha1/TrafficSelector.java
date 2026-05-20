@@ -1,5 +1,5 @@
 
-package io.fabric8.istio.api.api.meta.v1alpha1;
+package io.fabric8.istio.api.api.extensions.v1alpha1;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -13,11 +13,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.istio.api.api.analysis.v1alpha1.AnalysisMessageBase;
+import io.fabric8.istio.api.api.type.v1beta1.PortSelector;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -35,12 +34,14 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * TrafficSelector provides a mechanism to select a specific traffic flow for which a TrafficExtension will be enabled. When all the sub conditions in the TrafficSelector are satisfied, the traffic will be selected.
+ */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "conditions",
-    "observedGeneration",
-    "validationMessages"
+    "mode",
+    "ports"
 })
 @ToString
 @EqualsAndHashCode
@@ -58,96 +59,75 @@ import lombok.experimental.Accessors;
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.EnvVar.class),
     @BuildableReference(ContainerPort.class),
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class IstioStatus implements Editable<IstioStatusBuilder>, KubernetesResource
+public class TrafficSelector implements Editable<TrafficSelectorBuilder>, KubernetesResource
 {
 
-    @JsonProperty("conditions")
+    @JsonProperty("mode")
+    private Integer mode;
+    @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IstioCondition> conditions = new ArrayList<>();
-    @JsonProperty("observedGeneration")
-    private Long observedGeneration;
-    @JsonProperty("validationMessages")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AnalysisMessageBase> validationMessages = new ArrayList<>();
+    private List<PortSelector> ports = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public IstioStatus() {
+    public TrafficSelector() {
     }
 
-    public IstioStatus(List<IstioCondition> conditions, Long observedGeneration, List<AnalysisMessageBase> validationMessages) {
+    public TrafficSelector(Integer mode, List<PortSelector> ports) {
         super();
-        this.conditions = conditions;
-        this.observedGeneration = observedGeneration;
-        this.validationMessages = validationMessages;
+        this.mode = mode;
+        this.ports = ports;
     }
 
     /**
-     * Current service state of the resource.
+     * Criteria for selecting traffic by their direction. Note that `CLIENT` and `SERVER` are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be `CLIENT` or `CLIENT_AND_SERVER`. If not specified, the default value is `CLIENT_AND_SERVER`.
      */
-    @JsonProperty("conditions")
+    @JsonProperty("mode")
+    public Integer getMode() {
+        return mode;
+    }
+
+    /**
+     * Criteria for selecting traffic by their direction. Note that `CLIENT` and `SERVER` are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be `CLIENT` or `CLIENT_AND_SERVER`. If not specified, the default value is `CLIENT_AND_SERVER`.
+     */
+    @JsonProperty("mode")
+    public void setMode(Integer mode) {
+        this.mode = mode;
+    }
+
+    /**
+     * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod.<br><p> <br><p> If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
+     */
+    @JsonProperty("ports")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<IstioCondition> getConditions() {
-        return conditions;
+    public List<PortSelector> getPorts() {
+        return ports;
     }
 
     /**
-     * Current service state of the resource.
+     * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod.<br><p> <br><p> If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
      */
-    @JsonProperty("conditions")
-    public void setConditions(List<IstioCondition> conditions) {
-        this.conditions = conditions;
-    }
-
-    /**
-     * $hide_from_docs Deprecated. IstioCondition observed_generation will show the resource generation for which the condition was generated. Resource Generation to which the Reconciled Condition refers. When this value is not equal to the object's metadata generation, reconciled condition  calculation for the current generation is still in progress.
-     */
-    @JsonProperty("observedGeneration")
-    public Long getObservedGeneration() {
-        return observedGeneration;
-    }
-
-    /**
-     * $hide_from_docs Deprecated. IstioCondition observed_generation will show the resource generation for which the condition was generated. Resource Generation to which the Reconciled Condition refers. When this value is not equal to the object's metadata generation, reconciled condition  calculation for the current generation is still in progress.
-     */
-    @JsonProperty("observedGeneration")
-    public void setObservedGeneration(Long observedGeneration) {
-        this.observedGeneration = observedGeneration;
-    }
-
-    /**
-     * Includes any errors or warnings detected by Istio's analyzers.
-     */
-    @JsonProperty("validationMessages")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<AnalysisMessageBase> getValidationMessages() {
-        return validationMessages;
-    }
-
-    /**
-     * Includes any errors or warnings detected by Istio's analyzers.
-     */
-    @JsonProperty("validationMessages")
-    public void setValidationMessages(List<AnalysisMessageBase> validationMessages) {
-        this.validationMessages = validationMessages;
+    @JsonProperty("ports")
+    public void setPorts(List<PortSelector> ports) {
+        this.ports = ports;
     }
 
     @JsonIgnore
-    public IstioStatusBuilder edit() {
-        return new IstioStatusBuilder(this);
+    public TrafficSelectorBuilder edit() {
+        return new TrafficSelectorBuilder(this);
     }
 
     @JsonIgnore
-    public IstioStatusBuilder toBuilder() {
+    public TrafficSelectorBuilder toBuilder() {
         return edit();
     }
 
