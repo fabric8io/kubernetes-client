@@ -17,7 +17,16 @@
 name: Style Checks
 
 env:
-  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e -T 1C -Daether.connector.connectTimeout=10000 -Daether.connector.requestTimeout=30000 -Daether.connector.http.retryHandler.count=1
+  # Aether timeouts cap Maven Resolver HTTP calls; sun.net.client.* timeouts
+  # cap raw java.net.HttpURLConnection (e.g. URL.openStream in
+  # gradle-api-maven-plugin), which Aether cannot affect.
+  MAVEN_ARGS: >-
+    -B -C -V -ntp -Dhttp.keepAlive=false -e -T 1C
+    -Daether.connector.connectTimeout=10000
+    -Daether.connector.requestTimeout=30000
+    -Daether.connector.http.retryHandler.count=1
+    -Dsun.net.client.defaultConnectTimeout=10000
+    -Dsun.net.client.defaultReadTimeout=30000
 
 on:
   push:
