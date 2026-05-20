@@ -17,7 +17,7 @@
 name: Style Checks
 
 env:
-  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e -T 1C
+  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e -T 1C -Daether.connector.http.connectionTimeout=10000 -Daether.connector.http.requestTimeout=30000
 
 on:
   push:
@@ -47,16 +47,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: 'maven'
-      - name: Cache spotless formatter bundles
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.m2/repository/com/diffplug
-            ~/.m2/repository/org/eclipse
-          key: spotless-${{ runner.os }}-3.5.1-${{ hashFiles('ide-config/eclipse-format.xml', 'ide-config/eclipse.importorder') }}
-          restore-keys: |
-            spotless-${{ runner.os }}-3.5.1-
-            spotless-${{ runner.os }}-
+      - name: Strip stale _remote.repositories tracker files
+        # Tracker files left behind by other workflows reference repository
+        # IDs that don't exist in this build's pom, which makes Maven 3.9
+        # re-validate each cached artifact against Maven Central. A slow
+        # Central response can then stall the job for many minutes.
+        run: find ~/.m2/repository -name _remote.repositories -delete 2>/dev/null || true
       - name: Check License Headers
         run: ./mvnw ${MAVEN_ARGS} -Pitests -N license:check
       - name: Check Format
