@@ -33,7 +33,6 @@ import io.fabric8.kubernetes.client.http.WebSocketResponse;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -65,7 +64,6 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
@@ -254,22 +252,10 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
 
   @Override
   public void doClose() {
-    ConnectionPool connectionPool = httpClient.connectionPool();
-
+    httpClient.connectionPool().evictAll();
     Dispatcher dispatcher = httpClient.dispatcher();
-    ExecutorService executorService = httpClient.dispatcher() != null ? httpClient.dispatcher().executorService() : null;
-
-    if (dispatcher != null) {
-      dispatcher.cancelAll();
-    }
-
-    if (connectionPool != null) {
-      connectionPool.evictAll();
-    }
-
-    if (executorService != null) {
-      executorService.shutdownNow();
-    }
+    dispatcher.cancelAll();
+    dispatcher.executorService().shutdownNow();
   }
 
   private CompletableFuture<HttpResponse<AsyncBody>> sendAsync(StandardHttpRequest request,

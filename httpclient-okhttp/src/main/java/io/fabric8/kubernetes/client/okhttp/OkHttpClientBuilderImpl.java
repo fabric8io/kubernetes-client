@@ -76,7 +76,12 @@ class OkHttpClientBuilderImpl
       if (trustManagers != null && trustManagers.length == 1) {
         trustManager = (X509TrustManager) trustManagers[0];
       }
-      builder.sslSocketFactory(sslContext.getSocketFactory(), trustManager);
+      if (trustManager != null) {
+        builder.sslSocketFactory(sslContext.getSocketFactory(), trustManager);
+      } else {
+        logger.warn("sslContext is configured but no suitable X509TrustManager was found; "
+            + "SSL socket factory not applied, OkHttp will use its default trust configuration");
+      }
     }
     if (followRedirects) {
       builder.followRedirects(true).followSslRedirects(true);
