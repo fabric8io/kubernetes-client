@@ -62,32 +62,19 @@ jobs:
         # re-validate each cached artifact against Maven Central. A slow
         # Central response can then stall the job for many minutes.
         run: find ~/.m2/repository -name _remote.repositories -delete 2>/dev/null || true
-      - name: Resolve spotless version
-        # Drive the Equo P2 cache key off the actual plugin version in the
-        # root pom, so a spotless bump auto-invalidates the cache.
-        run: |
-          V=$(grep -oE '<spotless-maven-plugin\.version>[^<]+' pom.xml | sed 's/.*>//')
-          echo "SPOTLESS_VERSION=$V" >> "$GITHUB_ENV"
-      - name: Cache spotless Equo P2 data
-        # Pre-populates ~/.m2/repository/dev/equo/p2-data so spotless's
-        # eclipse / greclipse formatters don't have to fetch Eclipse plugin
-        # bundles from download.eclipse.org via OkHttp on every run.
-        # OkHttp is configured without timeouts by Equo, so a P2 fetch that
-        # stalls hangs the job indefinitely — the cache makes this a
-        # cold-key-only risk, contained by the step timeout below.
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository/dev/equo
-          key: spotless-equo-${{ runner.os }}-${{ env.SPOTLESS_VERSION }}-${{ hashFiles('ide-config/eclipse-format.xml', 'ide-config/eclipse.importorder') }}
-          restore-keys: |
-            spotless-equo-${{ runner.os }}-${{ env.SPOTLESS_VERSION }}-
-            spotless-equo-${{ runner.os }}-
       - name: Check License Headers
         run: ./mvnw ${MAVEN_ARGS} -Pitests -N license:check
       - name: Check Format
-        # If OkHttp hangs on a cold Equo cache, fail in 5 min with a clear
-        # timeout instead of stalling for 15+ minutes (Aether/JVM timeouts
-        # don't reach OkHttp; only the cache and this hard cap protect us).
+        # Spotless's eclipse formatter pulls Eclipse JDT bundles via Equo's P2
+        # client, which uses OkHttp without timeouts and stalls indefinitely on
+        # download.eclipse.org. We work around this by routing those fetches
+        # through a P2 mirror configured in the root pom (<p2Mirrors> on the
+        # spotless plugin's <eclipse> block).
+        #
+        # If this step starts hanging again, the mirror is the most likely
+        # culprit — switch to one of the alternatives listed alongside the
+        # <p2Mirrors> entry in pom.xml. The 5-minute cap is a safety net so a
+        # mirror outage fails fast instead of consuming the full job budget.
         timeout-minutes: 5
         run: ./mvnw ${MAVEN_ARGS} -Pitests spotless:check
       - name: Cancel PR workflows on failure
