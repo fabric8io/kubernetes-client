@@ -70,8 +70,8 @@ public class MockDispatcher extends Dispatcher {
   }
 
   @Override
-  public void shutdown() {
+  public void releaseResources() {
     webSocketSessions.forEach(WebSocketSession::shutdown);
-    super.shutdown();
+    super.releaseResources();
   }
 }
