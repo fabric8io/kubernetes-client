@@ -15,7 +15,6 @@
  */
 package io.fabric8.mockwebserver.internal
 
-import io.fabric8.mockwebserver.http.Response
 import io.fabric8.mockwebserver.http.WebSocket
 import spock.lang.Specification
 
@@ -29,10 +28,9 @@ class WebSocketSessionTest extends Specification {
 		def session = new WebSocketSession(open, null, null)
 		session.shutdown()
 		def ws = Mock(WebSocket)
-		def response = Mock(Response)
 
 		when: "onOpen is invoked after the executor was shut down (race window between in-flight WebSocket upgrade and MockWebServer.shutdown())"
-		session.onOpen(ws, response)
+		session.onOpen(ws, null)
 
 		then: "No exception is propagated to the caller (Vert.x event loop)"
 		noExceptionThrown()

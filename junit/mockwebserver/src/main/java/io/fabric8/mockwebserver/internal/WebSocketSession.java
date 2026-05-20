@@ -169,9 +169,9 @@ public class WebSocketSession extends WebSocketListener {
         closeActiveSocketsIfApplicable();
       }, message.getDelay(), TimeUnit.MILLISECONDS);
     } catch (RejectedExecutionException ex) {
-      // Session is shutting down (or already shut down): an in-flight WebSocket upgrade
-      // may still invoke onOpen after MockDispatcher.shutdown() has terminated the executor.
-      // Silently drop the message — the connection is being torn down anyway.
+      // Executor has been shut down: an in-flight WebSocket upgrade may still invoke onOpen
+      // after MockDispatcher.releaseResources() has terminated it. Silently drop the message
+      // — the connection is being torn down anyway.
       pendingMessages.remove(id);
     }
   }
