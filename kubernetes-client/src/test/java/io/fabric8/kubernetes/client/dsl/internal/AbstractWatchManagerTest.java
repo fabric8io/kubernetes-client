@@ -32,9 +32,12 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -258,6 +261,88 @@ class AbstractWatchManagerTest {
     assertThat(awm.isForceClosed()).isFalse();
   }
 
+  @Test
+  @DisplayName("onMessage, enqueues body on the SerialExecutor instead of running it on the caller thread")
+  void onMessageEnqueuesBodyOnSerialExecutor() throws MalformedURLException {
+    // Given a watch manager whose SerialExecutor uses a capture executor that does not run tasks
+    final LinkedBlockingDeque<Runnable> captured = new LinkedBlockingDeque<>();
+    final WatchManager<HasMetadata> awm = new WatchManager<>(
+        new WatcherAdapter<>(), mock(ListOptions.class, RETURNS_DEEP_STUBS), 1, 60_000, captured::add);
+    final AtomicBoolean completionFired = new AtomicBoolean();
+    // When a message arrives
+    awm.onMessage("not-valid-json", awm.latestRequestState, () -> completionFired.set(true));
+    // Then the body has not yet run: a task was queued, completion has not fired
+    assertThat(captured).hasSize(1);
+    assertThat(completionFired).isFalse();
+    // And when the captured task is drained
+    captured.poll().run();
+    // Then the completion callback fires
+    assertThat(completionFired).isTrue();
+  }
+
+  @Test
+  @DisplayName("onMessage, completion callback fires even when deserialization throws")
+  void onMessageCompletionFiresOnException() throws MalformedURLException {
+    // Given a watch manager whose SerialExecutor runs tasks synchronously on the caller
+    final WatchManager<HasMetadata> awm = withDefaultWatchManager(new WatcherAdapter<>());
+    final AtomicBoolean completionFired = new AtomicBoolean();
+    // When a message that will fail deserialization arrives
+    awm.onMessage("not-valid-json", awm.latestRequestState, () -> completionFired.set(true));
+    // Then the completion callback has still fired (back-pressure must not stall on deserialize errors)
+    assertThat(completionFired).isTrue();
+  }
+
+  @Test
+  @DisplayName("onMessage, a throwing completion callback is swallowed so the SerialExecutor keeps draining")
+  void onMessageThrowingCompletionDoesNotStallExecutor() throws MalformedURLException {
+    // Given a watch manager whose SerialExecutor runs tasks synchronously
+    final WatchManager<HasMetadata> awm = withDefaultWatchManager(new WatcherAdapter<>());
+    final AtomicInteger secondCompletionFired = new AtomicInteger();
+    // When a first message uses a completion that throws
+    awm.onMessage("not-valid-json", awm.latestRequestState, () -> {
+      throw new RuntimeException("re-arm explodes");
+    });
+    // And a second message uses a normal completion
+    awm.onMessage("not-valid-json", awm.latestRequestState, secondCompletionFired::incrementAndGet);
+    // Then the second completion still fired — the executor was not wedged by the first failure
+    assertThat(secondCompletionFired).hasValue(1);
+  }
+
+  @Test
+  @DisplayName("onMessage, after the SerialExecutor has been shut down, completion fires inline so back-pressure never wedges")
+  void onMessageCompletionFiresInlineWhenExecutorShutdown() throws MalformedURLException {
+    // Given a watch manager whose SerialExecutor has been shut down
+    final WatchManager<HasMetadata> awm = withDefaultWatchManager(new WatcherAdapter<>());
+    awm.serialExecutor.shutdownNow();
+    final AtomicBoolean completionFired = new AtomicBoolean();
+    // When a message arrives after shutdown
+    awm.onMessage("doesn't matter", awm.latestRequestState, () -> completionFired.set(true));
+    // Then the completion callback fires synchronously
+    assertThat(completionFired).isTrue();
+  }
+
+  @Test
+  @DisplayName("onMessage, preserves arrival ordering across multiple frames")
+  void onMessagePreservesOrderingAcrossFrames() throws MalformedURLException {
+    // Given a watch manager whose SerialExecutor uses a capture executor that runs tasks on demand
+    final LinkedBlockingDeque<Runnable> captured = new LinkedBlockingDeque<>();
+    final WatchManager<HasMetadata> awm = new WatchManager<>(
+        new WatcherAdapter<>(), mock(ListOptions.class, RETURNS_DEEP_STUBS), 1, 60_000, captured::add);
+    final java.util.List<Integer> completionOrder = new java.util.concurrent.CopyOnWriteArrayList<>();
+    // When three frames arrive in quick succession
+    awm.onMessage("frame-1", awm.latestRequestState, () -> completionOrder.add(1));
+    awm.onMessage("frame-2", awm.latestRequestState, () -> completionOrder.add(2));
+    awm.onMessage("frame-3", awm.latestRequestState, () -> completionOrder.add(3));
+    // Then nothing has been delivered yet
+    assertThat(completionOrder).isEmpty();
+    // And when the queue is fully drained (SerialExecutor's wrapper schedules the next task in finally)
+    while (!captured.isEmpty()) {
+      captured.poll().run();
+    }
+    // Then completions fired in arrival order
+    assertThat(completionOrder).containsExactly(1, 2, 3);
+  }
+
   private static <T extends HasMetadata> WatchManager<T> withDefaultWatchManager(Watcher<T> watcher)
       throws MalformedURLException {
     // Use a non-zero reconnect interval so that the reconnect task scheduled on
@@ -286,8 +371,12 @@ class AbstractWatchManagerTest {
   }
 
   static BaseOperation mockOperation() {
+    return mockOperation(Runnable::run);
+  }
+
+  static BaseOperation mockOperation(Executor executor) {
     BaseOperation operation = mock(BaseOperation.class, Mockito.RETURNS_DEEP_STUBS);
-    Mockito.when(operation.getOperationContext().getExecutor()).thenReturn(Runnable::run);
+    Mockito.when(operation.getOperationContext().getExecutor()).thenReturn(executor);
     Mockito.when(operation.getKubernetesSerialization()).thenReturn(new KubernetesSerialization());
     Mockito.when(operation.appendListOptionParams(Mockito.any(), Mockito.any())).thenCallRealMethod();
     return operation;
@@ -300,6 +389,12 @@ class AbstractWatchManagerTest {
     public WatchManager(Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval)
         throws MalformedURLException {
       super(watcher, mockOperation(), listOptions, reconnectLimit, reconnectInterval,
+          new TestStandardHttpClientFactory().newBuilder().build());
+    }
+
+    public WatchManager(Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval,
+        Executor executor) throws MalformedURLException {
+      super(watcher, mockOperation(executor), listOptions, reconnectLimit, reconnectInterval,
           new TestStandardHttpClientFactory().newBuilder().build());
     }
 
