@@ -64,6 +64,7 @@ import io.fabric8.kubernetes.api.model.storage.StorageClass;
 import io.fabric8.kubernetes.api.model.storage.VolumeAttachment;
 import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver;
 import io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.RestoreSystemProperties;
 import io.fabric8.kubernetes.client.lib.FileSystem;
 import io.fabric8.kubernetes.client.utils.CommonThreadPool;
@@ -84,6 +85,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -379,17 +381,13 @@ class UtilsTest {
     };
 
     assertThat(Thread.currentThread().isInterrupted()).isFalse();
-    try {
-      Utils.waitUntilReady(interruptingFuture, 10, TimeUnit.SECONDS);
-    } catch (Exception e) {
-      // expected
-    } finally {
-      assertThat(Thread.currentThread().isInterrupted())
-          .as("interrupt status should be preserved after InterruptedException is caught")
-          .isTrue();
-      // Clear the interrupt flag so it doesn't affect other tests
-      Thread.interrupted();
-    }
+    assertThatThrownBy(() -> Utils.waitUntilReady(interruptingFuture, 10, TimeUnit.SECONDS))
+        .isInstanceOf(KubernetesClientException.class)
+        .hasCauseInstanceOf(InterruptedException.class);
+    boolean wasInterrupted = Thread.interrupted();
+    assertThat(wasInterrupted)
+        .as("interrupt status should be preserved after InterruptedException is caught")
+        .isTrue();
   }
 
   @Test
