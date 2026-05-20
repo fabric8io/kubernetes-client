@@ -86,7 +86,7 @@ public class MockWebServer implements Closeable {
   private final BlockingQueue<RecordedRequest> requestQueue;
   private final AtomicInteger requestCount;
   private final List<MockWebServerListener> listeners;
-  private Dispatcher dispatcher;
+  private volatile Dispatcher dispatcher;
   private ClientAuth clientAuth;
   private final List<String> enabledSecuredTransportProtocols;
   private boolean ssl;
@@ -182,8 +182,13 @@ public class MockWebServer implements Closeable {
       throw new IllegalStateException("shutdown() before start()");
     }
     shutdown = true;
+    // Two-phase: shutdown() unblocks any blocked dispatches (e.g. QueueDispatcher.take()) so
+    // httpServer.close() can drain in-flight requests; releaseResources() then tears down per-
+    // connection state (e.g. WebSocketSession executors) that an in-flight upgrade may still
+    // have been about to touch via onOpen — avoiding a RejectedExecutionException race.
     dispatcher.shutdown();
     await(httpServer.close(), "Unable to close MockWebServer");
+    dispatcher.releaseResources();
     info("done accepting connections");
     await(vertx.close(), "Unable to close Vertx");
   }
@@ -268,11 +273,18 @@ public class MockWebServer implements Closeable {
   }
 
   /**
-   * Returns the MockWebServer to its initial state by:
+   * Returns the MockWebServer's recorded-traffic state to initial:
    * <ul>
    * <li>Clearing the request count.</li>
    * <li>Clearing the request queue.</li>
    * </ul>
+   *
+   * <p>
+   * This is intentionally non-destructive w.r.t. the running HTTP server, the configured
+   * {@link Dispatcher}, the listener list, the SSL/TLS state, the negotiated port, and the
+   * selected protocols. It is safe to call on a started server mid-life; callers that need
+   * a different dispatcher or expectation set must install those themselves
+   * ({@link #setDispatcher(Dispatcher)}).
    */
   public final void reset() {
     requestCount.set(0);

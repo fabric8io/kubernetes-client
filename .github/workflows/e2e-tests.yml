@@ -36,13 +36,13 @@ concurrency:
 
 env:
   IT_REVISION: master
-  IT_MODULE: kubernetes-itests
+  IT_MODULE: kubernetes-itests,kubernetes-itests-envtest
   MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
 
 jobs:
   buildWithoutTests:
     name: BuildWithoutTests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     if: github.repository == 'fabric8io/kubernetes-client'
     steps:
       - name: Checkout
@@ -63,19 +63,19 @@ jobs:
   minikube_baremetal:
     name: Baremetal K8S
     needs: buildWithoutTests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     if: github.repository == 'fabric8io/kubernetes-client'
     strategy:
       fail-fast: false
       matrix:
-        kubernetes: [v1.34.2,v1.33.0,v1.32.4,v1.31.8,v1.30.12,v1.29.14,v1.28.15,v1.27.16]
+        kubernetes: [v1.36.0,v1.35.4,v1.34.7,v1.33.11,v1.32.13,v1.31.14,v1.30.14,v1.29.15]
     steps:
       - name: Checkout
         uses: actions/checkout@v6
       - name: Setup Minikube-Kubernetes
-        uses: manusa/actions-setup-minikube@v2.16.1
+        uses: manusa/actions-setup-minikube@v2.17.1
         with:
-          minikube version: v1.37.0
+          minikube version: v1.38.1
           kubernetes version: ${{ matrix.kubernetes }}
           github token: ${{ secrets.GITHUB_TOKEN }}
           start args: '--force'

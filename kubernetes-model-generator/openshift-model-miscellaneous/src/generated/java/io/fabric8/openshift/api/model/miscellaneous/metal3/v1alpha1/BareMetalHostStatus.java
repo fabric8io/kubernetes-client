@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -12,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -20,7 +23,6 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -38,6 +40,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "conditions",
     "errorCount",
     "errorMessage",
     "errorType",
@@ -64,7 +67,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
@@ -76,6 +79,9 @@ import lombok.experimental.Accessors;
 public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>, KubernetesResource
 {
 
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("errorCount")
     private Integer errorCount;
     @JsonProperty("errorMessage")
@@ -109,8 +115,9 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
     public BareMetalHostStatus() {
     }
 
-    public BareMetalHostStatus(Integer errorCount, String errorMessage, String errorType, CredentialsStatus goodCredentials, HardwareDetails hardware, String hardwareProfile, String lastUpdated, OperationHistory operationHistory, String operationalStatus, Boolean poweredOn, ProvisionStatus provisioning, CredentialsStatus triedCredentials) {
+    public BareMetalHostStatus(List<Condition> conditions, Integer errorCount, String errorMessage, String errorType, CredentialsStatus goodCredentials, HardwareDetails hardware, String hardwareProfile, String lastUpdated, OperationHistory operationHistory, String operationalStatus, Boolean poweredOn, ProvisionStatus provisioning, CredentialsStatus triedCredentials) {
         super();
+        this.conditions = conditions;
         this.errorCount = errorCount;
         this.errorMessage = errorMessage;
         this.errorType = errorType;
@@ -123,6 +130,23 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
         this.poweredOn = poweredOn;
         this.provisioning = provisioning;
         this.triedCredentials = triedCredentials;
+    }
+
+    /**
+     * Conditions defines current service state of the BareMetalHost.
+     */
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<Condition> getConditions() {
+        return conditions;
+    }
+
+    /**
+     * Conditions defines current service state of the BareMetalHost.
+     */
+    @JsonProperty("conditions")
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
     }
 
     /**

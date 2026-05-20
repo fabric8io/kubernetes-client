@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "conditions",
     "decisionGroups",
+    "lastScoreUpdateTime",
     "numberOfSelectedClusters"
 })
 @ToString
@@ -73,6 +74,8 @@ public class PlacementStatus implements Editable<PlacementStatusBuilder>, Kubern
     @JsonProperty("decisionGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<DecisionGroupStatus> decisionGroups = new ArrayList<>();
+    @JsonProperty("lastScoreUpdateTime")
+    private String lastScoreUpdateTime;
     @JsonProperty("numberOfSelectedClusters")
     private Integer numberOfSelectedClusters;
     @JsonIgnore
@@ -84,10 +87,11 @@ public class PlacementStatus implements Editable<PlacementStatusBuilder>, Kubern
     public PlacementStatus() {
     }
 
-    public PlacementStatus(List<Condition> conditions, List<DecisionGroupStatus> decisionGroups, Integer numberOfSelectedClusters) {
+    public PlacementStatus(List<Condition> conditions, List<DecisionGroupStatus> decisionGroups, String lastScoreUpdateTime, Integer numberOfSelectedClusters) {
         super();
         this.conditions = conditions;
         this.decisionGroups = decisionGroups;
+        this.lastScoreUpdateTime = lastScoreUpdateTime;
         this.numberOfSelectedClusters = numberOfSelectedClusters;
     }
 
@@ -123,6 +127,16 @@ public class PlacementStatus implements Editable<PlacementStatusBuilder>, Kubern
     @JsonProperty("decisionGroups")
     public void setDecisionGroups(List<DecisionGroupStatus> decisionGroups) {
         this.decisionGroups = decisionGroups;
+    }
+
+    @JsonProperty("lastScoreUpdateTime")
+    public String getLastScoreUpdateTime() {
+        return lastScoreUpdateTime;
+    }
+
+    @JsonProperty("lastScoreUpdateTime")
+    public void setLastScoreUpdateTime(String lastScoreUpdateTime) {
+        this.lastScoreUpdateTime = lastScoreUpdateTime;
     }
 
     /**

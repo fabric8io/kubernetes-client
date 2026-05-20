@@ -25,6 +25,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,12 +49,28 @@ public class KubeConfig {
   }
 
   public void updateKubeConfig(int apiServerPort) {
-    logger.debug("Updating kubeconfig");
+    logger.debug(
+        "Updating kubeconfig (env HOME={}, USERPROFILE={}, HOMEDRIVE={}, HOMEPATH={}, KUBECONFIG={}, user.home={})",
+        System.getenv("HOME"),
+        System.getenv("USERPROFILE"),
+        System.getenv("HOMEDRIVE"),
+        System.getenv("HOMEPATH"),
+        System.getenv("KUBECONFIG"),
+        System.getProperty("user.home"));
+    ensureKubeConfigFileExists();
     previousCurrentContext = execWithKubectlConfigAndWait("current-context").trim();
+    // --embed-certs=true: embed cert content inline instead of storing a path
+    // reference. kubectl's default (path reference) stores the path relative to
+    // the kubeconfig directory, which fails on Windows when the kubeconfig and
+    // the cert files live on different drives ($HOME under target\ on D:, certs
+    // under %USERPROFILE%\.kubeapitest on C:) — filepath.Rel can't compute a
+    // cross-drive relative path. See #7804.
     execWithKubectlConfigAndWait("set-cluster", KUBE_API_TEST,
         "--server=https://127.0.0.1:" + apiServerPort,
+        "--embed-certs=true",
         "--certificate-authority=" + certManager.getAPIServerCertPath());
     execWithKubectlConfigAndWait("set-credentials", KUBE_API_TEST,
+        "--embed-certs=true",
         "--client-certificate=" + certManager.getClientCertPath(),
         "--client-key=" + certManager.getClientKeyPath());
     execWithKubectlConfigAndWait("set-context", KUBE_API_TEST, "--cluster=kubeapitest",
@@ -71,6 +91,30 @@ public class KubeConfig {
 
   private void unset(String target) {
     execWithKubectlConfigAndWait("unset", target);
+  }
+
+  // Pin kubectl's kubeconfig path to $HOME/.kube/config so writer (kubectl) and
+  // reader (fabric8 Config) resolve to the same file on Windows: Go's
+  // client-go/util/homedir.HomeDir picks %USERPROFILE% over $HOME on Windows
+  // unless $HOME/.kube/config already exists. See #7804.
+  private void ensureKubeConfigFileExists() {
+    String home = System.getenv("HOME");
+    if (home == null || home.isEmpty()) {
+      home = System.getProperty("user.home");
+    }
+    if (home == null || home.isEmpty()) {
+      return;
+    }
+    Path kubeConfigPath = Paths.get(home, ".kube", "config");
+    try {
+      Files.createDirectories(kubeConfigPath.getParent());
+      Files.createFile(kubeConfigPath);
+      logger.debug("Pre-created {} for kubectl/fabric8 homedir parity", kubeConfigPath);
+    } catch (FileAlreadyExistsException ignored) {
+      // Already exists (prior run or sibling fork); nothing to do.
+    } catch (IOException e) {
+      throw new KubeAPITestException(e);
+    }
   }
 
   public String generateKubeConfigYaml(int apiServerPort) {
@@ -96,7 +140,15 @@ public class KubeConfig {
       try (InputStream is = process.getInputStream()) {
         stdout = new String(is.readAllBytes(), Charset.defaultCharset());
       }
-      process.waitFor();
+      int exitCode = process.waitFor();
+      String stderr;
+      try (InputStream is = process.getErrorStream()) {
+        stderr = new String(is.readAllBytes(), Charset.defaultCharset());
+      }
+      if (exitCode != 0) {
+        logger.warn("kubectl config {} exit={} stderr={}",
+            String.join(" ", arguments), exitCode, stderr.trim());
+      }
       return stdout;
     } catch (IOException e) {
       throw new KubeAPITestException(e);

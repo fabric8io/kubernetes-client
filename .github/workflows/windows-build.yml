@@ -16,6 +16,9 @@
 
 name: Windows Build
 
+env:
+  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e -Dit.test.bom=true -T 1C
+
 on:
   workflow_dispatch:
   push:
@@ -54,7 +57,8 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
       - name: Build Project
-        run: ./mvnw clean install
+        shell: bash
+        run: ./mvnw ${MAVEN_ARGS} install
       - name: Drop in-repo artifacts before cache save
         # Don't let io.fabric8:* jars installed by this run leak into the cache that future
         # runs restore. Only third-party dependencies should be cached.

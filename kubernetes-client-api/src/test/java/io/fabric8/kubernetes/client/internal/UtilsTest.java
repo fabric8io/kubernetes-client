@@ -64,6 +64,7 @@ import io.fabric8.kubernetes.api.model.storage.StorageClass;
 import io.fabric8.kubernetes.api.model.storage.VolumeAttachment;
 import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver;
 import io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode;
+import io.fabric8.kubernetes.client.RestoreSystemProperties;
 import io.fabric8.kubernetes.client.lib.FileSystem;
 import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -88,13 +89,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@RestoreSystemProperties("something")
 class UtilsTest {
 
   @Test
   void existingSysPropShouldReturnValue() {
     System.setProperty("something", "value");
     assertEquals("value", Utils.getSystemPropertyOrEnvVar("something"));
-    System.getProperties().remove("something");
   }
 
   @Test

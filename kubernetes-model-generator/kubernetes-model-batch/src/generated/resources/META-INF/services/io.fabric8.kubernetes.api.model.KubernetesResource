@@ -1,0 +1,6 @@
+io.fabric8.kubernetes.api.model.batch.v1.CronJob
+io.fabric8.kubernetes.api.model.batch.v1.CronJobList
+io.fabric8.kubernetes.api.model.batch.v1.Job
+io.fabric8.kubernetes.api.model.batch.v1.JobList
+io.fabric8.kubernetes.api.model.batch.v1beta1.CronJob
+io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobList

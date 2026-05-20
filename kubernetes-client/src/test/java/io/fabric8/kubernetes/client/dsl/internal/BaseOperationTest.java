@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
@@ -45,6 +46,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +71,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class BaseOperationTest {
+
+  public static final String SHARD_RANGE = "shardRange(object.metadata.uid,'0x0000000000000000','0x8000000000000000')";
 
   @Test
   void testSimpleFieldQueryParamConcatenation() {
@@ -226,6 +231,63 @@ class BaseOperationTest {
             .withResourceVersion("")
             .withResourceVersionMatch("NotOlderThan")
             .build()).toString());
+    // shardSelector is appended like any other ListOptions field (alphabetical)
+    assertEquals(
+        URLUtils.join(url.toString(),
+            "?shardSelector=" + URLEncoder.encode(SHARD_RANGE, StandardCharsets.UTF_8)),
+        operation.fetchListUrl(url, new ListOptionsBuilder()
+            .withShardSelector(SHARD_RANGE)
+            .build()).toString());
+    assertEquals(URLUtils.join(url.toString(),
+        "?labelSelector=app%3Dfoo&limit=5&shardSelector=" + URLEncoder.encode(SHARD_RANGE, StandardCharsets.UTF_8)
+            + "&watch=true"),
+        operation.fetchListUrl(url, new ListOptionsBuilder()
+            .withLimit(5L)
+            .withLabelSelector("app=foo")
+            .withShardSelector(SHARD_RANGE)
+            .withWatch(true)
+            .build()).toString());
+  }
+
+  @Test
+  void testDeleteAllPropagatesShardSelector() throws Exception {
+    // Captures the URL emitted by deleteAll() so the test asserts shardSelector is
+    // appended to the DELETECOLLECTION request — guards BaseOperation#deleteAll against
+    // a refactor that drops context.getShardSelector() from the ListOptions assembly.
+    final URL[] capturedUrl = { null };
+    BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation<Pod, PodList, Resource<Pod>>(new OperationContext()
+        .withNamespace("default")
+        .withPlural("pods")
+        .withShardSelector(SHARD_RANGE)) {
+      @Override
+      public KubernetesSerialization getKubernetesSerialization() {
+        return new KubernetesSerialization();
+      }
+
+      @Override
+      public URL getResourceUrl() {
+        try {
+          return new URL("https://172.17.0.2:8443/api/v1/namespaces/default/pods");
+        } catch (MalformedURLException e) {
+          throw new RuntimeException(e);
+        }
+      }
+
+      @Override
+      protected KubernetesResource handleDelete(URL requestUrl, long gracePeriodSeconds,
+          DeletionPropagation propagationPolicy, String resourceVersion) {
+        capturedUrl[0] = requestUrl;
+        return null;
+      }
+    };
+    baseOp.setType(Pod.class);
+    baseOp.setListType(PodList.class);
+
+    baseOp.delete();
+
+    assertNotNull(capturedUrl[0]);
+    assertThat(capturedUrl[0].toString(),
+        containsString("shardSelector=" + URLEncoder.encode(SHARD_RANGE, StandardCharsets.UTF_8)));
   }
 
   @Test

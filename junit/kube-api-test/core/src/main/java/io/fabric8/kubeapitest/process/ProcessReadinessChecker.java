@@ -19,9 +19,16 @@ import io.fabric8.kubeapitest.KubeAPIServerConfig;
 import io.fabric8.kubeapitest.KubeAPITestException;
 import io.fabric8.kubeapitest.binary.BinaryManager;
 import io.fabric8.kubeapitest.cert.CertManager;
+import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
+import org.bouncycastle.cert.X509CertificateHolder;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
+import org.bouncycastle.openssl.PEMKeyPair;
+import org.bouncycastle.openssl.PEMParser;
+import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Socket;
@@ -30,8 +37,14 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.time.LocalTime;
@@ -39,6 +52,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLException;
@@ -52,6 +67,8 @@ public class ProcessReadinessChecker {
   private static final Logger logger = LoggerFactory.getLogger(ProcessReadinessChecker.class);
 
   public static final int POLLING_INTERVAL = 200;
+
+  private static final char[] EMPTY_PASSWORD = new char[0];
 
   public void waitUntilDefaultNamespaceAvailable(int apiServerPort, BinaryManager binaryManager,
       CertManager certManager, KubeAPIServerConfig config, int timeoutMillis) {
@@ -70,16 +87,17 @@ public class ProcessReadinessChecker {
           "--request-timeout=5s",
           "get", "ns", "default");
 
-      if (!config.isUpdateKubeConfig()) {
-        // When the default kubeconfig file contains default context using client-certificate-data
-        // or client-key-data, kubectl will fail because it will not know which one to use and the
-        // readiness check will never pass. To avoid that, we set the KUBECONFIG environment
-        // variable to an non-existent kubeconfig file. This cannot be done using the --kubeconfig
-        // option to kubectl, because kubectl will complain if such file does not exist, but when
-        // set through KUBECONFIG env. variable, it does not complain.
-        Map<String, String> env = processBuilder.environment();
-        env.put("KUBECONFIG", config.getKubeAPITestDir() + "/.kubeconfig");
-      }
+      // Point KUBECONFIG at a non-existent file so kubectl ignores whatever
+      // kubeconfig the user (or this framework) has at $HOME/.kube/config.
+      // Without this, kubectl merges the on-disk kubeconfig with the explicit
+      // --client-certificate/--client-key flags and errors out with "specify
+      // only one of certificate file path or data, not both" whenever the
+      // kubeconfig stores cert content inline (e.g. via --embed-certs from
+      // KubeConfig.updateKubeConfig — see #7804 — or the user's own setup).
+      // --kubeconfig= can't be used because kubectl rejects a non-existent
+      // path, but KUBECONFIG via env tolerates it.
+      Map<String, String> env = processBuilder.environment();
+      env.put("KUBECONFIG", config.getKubeAPITestDir() + "/.kubeconfig");
 
       Process process = processBuilder.start();
       return process.waitFor() == 0;
@@ -93,7 +111,20 @@ public class ProcessReadinessChecker {
 
   public void waitUntilReady(int port, String readyCheckPath, String processName,
       boolean useTLS, int timeoutMillis) {
-    HttpClient client = getHttpClient();
+    waitUntilReady(port, readyCheckPath, processName, useTLS, timeoutMillis, null);
+  }
+
+  /**
+   * Same as {@link #waitUntilReady(int, String, String, boolean, int)}, but uses the supplied
+   * {@link CertManager}'s client certificate to authenticate the readiness probe. Required when
+   * polling {@code /readyz} on kube-apiserver: with RBAC enabled, the unauthenticated probe is
+   * rejected with 403 until the post-start hook seeds the {@code system:public-info-viewer}
+   * binding, a window that can easily exceed the startup timeout on contended CI runners
+   * (see #7800).
+   */
+  public void waitUntilReady(int port, String readyCheckPath, String processName,
+      boolean useTLS, int timeoutMillis, CertManager certManager) {
+    HttpClient client = getHttpClient(certManager);
     HttpRequest request = getHttpRequest(useTLS, readyCheckPath, port);
     pollWithTimeout(() -> ready(client, request, processName, port), processName, timeoutMillis);
   }
@@ -151,10 +182,16 @@ public class ProcessReadinessChecker {
   }
 
   private static HttpClient getHttpClient() {
+    return getHttpClient(null);
+  }
+
+  @SuppressWarnings("java:S4830") // test infrastructure: polls a locally launched API server with ephemeral self-signed certs over localhost
+  private static HttpClient getHttpClient(CertManager certManager) {
     try {
       SSLContext sslContext = SSLContext.getInstance("TLS");
+      KeyManager[] keyManagers = certManager != null ? loadClientKeyManagers(certManager) : null;
       sslContext.init(
-          null,
+          keyManagers,
           new TrustManager[] {
               new X509ExtendedTrustManager() {
                 @Override
@@ -197,16 +234,44 @@ public class ProcessReadinessChecker {
               }
           },
           null);
-      // Set protocol to HTTP/1.1 for unauthenticated invocations of "GET /readyz". Sending
-      // unauthenticated requests using HTTP/2 is problematic on Kubernetes >=1.29, which enables
-      // denial-of-service mitigation for authenticated HTTP/2 by default with the
-      // UnauthenticatedHTTP2DOSMitigation feature gate.
+      // HTTP/1.1 keeps the unauthenticated path safe under the
+      // UnauthenticatedHTTP2DOSMitigation feature gate (K8s >= 1.29); retained for the
+      // authenticated path for parity.
       return HttpClient.newBuilder()
           .sslContext(sslContext)
           .version(HttpClient.Version.HTTP_1_1)
           .build();
     } catch (NoSuchAlgorithmException | KeyManagementException e) {
       throw new KubeAPITestException(e);
+    }
+  }
+
+  private static KeyManager[] loadClientKeyManagers(CertManager certManager) {
+    try {
+      X509Certificate cert;
+      try (PEMParser p = new PEMParser(new FileReader(certManager.getClientCertPath(), StandardCharsets.US_ASCII))) {
+        cert = new JcaX509CertificateConverter().getCertificate((X509CertificateHolder) p.readObject());
+      }
+      PrivateKey privateKey;
+      try (PEMParser p = new PEMParser(new FileReader(certManager.getClientKeyPath(), StandardCharsets.US_ASCII))) {
+        Object obj = p.readObject();
+        PrivateKeyInfo keyInfo = (obj instanceof PEMKeyPair)
+            ? ((PEMKeyPair) obj).getPrivateKeyInfo()
+            : (PrivateKeyInfo) obj;
+        privateKey = new JcaPEMKeyConverter().getPrivateKey(keyInfo);
+      }
+      KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
+      ks.load(null, null);
+      ks.setKeyEntry("client", privateKey, EMPTY_PASSWORD, new Certificate[] { cert });
+      KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+      kmf.init(ks, EMPTY_PASSWORD);
+      return kmf.getKeyManagers();
+    } catch (IOException | KeyStoreException | NoSuchAlgorithmException
+        | CertificateException | UnrecoverableKeyException e) {
+      throw new KubeAPITestException(
+          "Failed to load client cert/key from " + certManager.getClientCertPath()
+              + " and " + certManager.getClientKeyPath(),
+          e);
     }
   }
 }

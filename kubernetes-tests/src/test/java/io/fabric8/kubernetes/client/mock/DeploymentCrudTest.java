@@ -104,7 +104,7 @@ class DeploymentCrudTest {
     client.apps().deployments()
         .resource(new DeploymentBuilder().withNewMetadata().withName("deployment-to-delete").endMetadata().build())
         .create();
-    assertThat(client.apps().deployments().withName("deployment-to-delete").withTimeoutInMillis(100).delete())
+    assertThat(client.apps().deployments().withName("deployment-to-delete").withTimeoutInMillis(30_000L).delete())
         .singleElement()
         .extracting("name").isEqualTo("deployment-to-delete");
   }

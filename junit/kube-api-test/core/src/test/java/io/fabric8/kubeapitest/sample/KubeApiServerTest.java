@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 
 import static io.fabric8.kubeapitest.sample.TestCaseUtils.simpleTest;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class KubeApiServerTest {
@@ -87,6 +88,21 @@ class KubeApiServerTest {
         .withStartupTimeout(500)
         .build());
     assertThrows(KubeAPITestException.class, kubeApi::start);
+  }
+
+  // Regression for #7834: when an unexpected child-process exit fires the
+  // processStopped() callback during startup, KubeAPIServer.stop() runs from
+  // the callback AND again from JUnit's afterAll. The second invocation used
+  // to crash in EtcdProcess.cleanEtcdData() with NoSuchFileException because
+  // the first call already deleted the temp dirs. stop() must therefore be
+  // idempotent.
+  @Test
+  void stopCanBeCalledMultipleTimes() {
+    var kubeApi = new KubeAPIServer();
+    kubeApi.start();
+    kubeApi.stop();
+
+    assertThatNoException().isThrownBy(kubeApi::stop);
   }
 
   void testWithAPIServer(KubeAPIServer kubeApi) {

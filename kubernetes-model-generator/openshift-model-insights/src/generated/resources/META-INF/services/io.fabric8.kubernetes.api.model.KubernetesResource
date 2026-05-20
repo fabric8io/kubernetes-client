@@ -1,0 +1,4 @@
+io.fabric8.openshift.api.model.insights.v1alpha1.DataGather
+io.fabric8.openshift.api.model.insights.v1alpha1.DataGatherList
+io.fabric8.openshift.api.model.insights.v1alpha2.DataGather
+io.fabric8.openshift.api.model.insights.v1alpha2.DataGatherList

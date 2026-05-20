@@ -62,8 +62,8 @@ generate-model: openapi-generate-schema openapi-generate-java-classes
 
 .PHONY: sonar
 sonar: clean
-	# $(MAVEN_ARGS) ---> -T 1C won't work with sonar analysis (yet)
-	mvn -Pcoverage,sonar install sonar:sonar
+	mvn $(MAVEN_ARGS) -Pcoverage install
+	mvn -Pcoverage,sonar sonar:sonar -DskipTests
 
 .PHONY: javadoc
 javadoc: clean

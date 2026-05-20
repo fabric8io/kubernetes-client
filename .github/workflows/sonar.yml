@@ -37,7 +37,7 @@ permissions:
 jobs:
   sonar:
     name: Sonar
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -52,5 +52,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'maven'
       - name: Sonar
         run: make sonar

@@ -5,12 +5,12 @@ go 1.26.0
 require (
 	github.com/cert-manager/cert-manager v1.20.2
 	github.com/chaos-mesh/chaos-mesh/api v0.0.0-20250513055240-4db47f53978c
-	github.com/getkin/kin-openapi v0.137.0
+	github.com/getkin/kin-openapi v0.138.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.7
 	github.com/kubernetes-csi/external-snapshotter/client/v8 v8.4.0
-	github.com/metal3-io/baremetal-operator/apis v0.12.4
-	github.com/metal3-io/cluster-api-provider-metal3/api v1.12.4
-	github.com/metal3-io/ip-address-manager/api v1.12.4 // indirect
+	github.com/metal3-io/baremetal-operator/apis v0.13.0
+	github.com/metal3-io/cluster-api-provider-metal3/api v1.13.0
+	github.com/metal3-io/ip-address-manager/api v1.13.0 // indirect
 	// Match latest commit in the version branch (e.g. release-4.17)
 	github.com/openshift/api v3.9.0+incompatible
 	github.com/openshift/cloud-credential-operator v0.0.0-20251126011841-0e03b7a0fa39
@@ -31,14 +31,14 @@ require (
 	github.com/tektoncd/pipeline v1.12.0
 	github.com/tektoncd/triggers v0.35.0
 	istio.io/client-go v1.29.2
-	k8s.io/api v0.36.0
-	k8s.io/apiextensions-apiserver v0.36.0
-	k8s.io/apimachinery v0.36.0
+	k8s.io/api v0.36.1
+	k8s.io/apiextensions-apiserver v0.36.1
+	k8s.io/apimachinery v0.36.1
 	k8s.io/autoscaler/vertical-pod-autoscaler v1.6.0
 	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/gengo/v2 v2.0.0-20251215205346-5ee0d033ba5b
 	k8s.io/kube-openapi v0.0.0-20260319004828-5883c5ee87b9
-	k8s.io/metrics v0.36.0
+	k8s.io/metrics v0.36.1
 	knative.dev/caching v0.0.0-20260422140616-453ad996bbe2
 	knative.dev/eventing v0.49.0
 	knative.dev/eventing-awssqs v0.29.0
@@ -49,11 +49,11 @@ require (
 	knative.dev/eventing-prometheus v0.28.0
 	knative.dev/networking v0.0.0-20260422140718-e9578ef11562
 	knative.dev/serving v0.49.0
-	open-cluster-management.io/api v1.2.0
+	open-cluster-management.io/api v1.3.0
 	open-cluster-management.io/governance-policy-propagator v0.18.0
 	open-cluster-management.io/multicloud-operators-channel v0.16.0
 	open-cluster-management.io/multicloud-operators-subscription v0.16.0
-	sigs.k8s.io/cluster-api v1.12.7
+	sigs.k8s.io/cluster-api v1.13.1
 	sigs.k8s.io/gateway-api v1.5.1
 	sigs.k8s.io/kustomize/api v0.21.1
 	// This version is older than v1.10.0 see replacements below
@@ -240,7 +240,7 @@ require (
 	gopkg.in/evanphx/json-patch.v4 v4.13.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	istio.io/api v1.29.2-0.20260408155000-a0e4e1cbfcc5 // indirect
-	k8s.io/component-base v0.36.0 // indirect
+	k8s.io/component-base v0.36.1 // indirect
 	k8s.io/klog/v2 v2.140.0 // indirect
 	k8s.io/utils v0.0.0-20260210185600-b8788abfbbc2 // indirect
 	knative.dev/pkg v0.0.0-20260422015212-ec452872dcc1 // indirect
@@ -249,6 +249,6 @@ require (
 	sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730 // indirect
 	sigs.k8s.io/kustomize/kyaml v0.21.1 // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect
-	sigs.k8s.io/structured-merge-diff/v6 v6.3.2 // indirect
+	sigs.k8s.io/structured-merge-diff/v6 v6.4.0 // indirect
 	sigs.k8s.io/yaml v1.6.0 // indirect
 )

@@ -64,6 +64,9 @@ public class PortForwardExample {
       Thread.sleep(60 * 1000L);
       logger.info("Closing forwarded port");
       portForward.close();
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      logger.error("Exception occurred: {}", e.getMessage(), e);
     } catch (Exception e) {
       logger.error("Exception occurred: {}", e.getMessage(), e);
     }

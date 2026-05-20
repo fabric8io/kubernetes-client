@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.impl;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.RestoreSystemProperties;
 import io.fabric8.kubernetes.client.ServiceToURLProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,9 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.mockito.Mockito.mock;
 
+@RestoreSystemProperties({ "SVC1_SERVICE_HOST", "SVC1_SERVICE_PORT", "SVC1_SERVICE_PORT_80_TCP_PROTO" })
 class URLFromEnvVarsImplTest {
+
   private URLFromEnvVarsImpl urlFromEnvVars;
   private KubernetesClient kubernetesClient;
 
@@ -49,26 +52,17 @@ class URLFromEnvVarsImplTest {
 
   @Test
   void getURL_whenServicePropertyProvided_thenReturnServiceUrl() {
-    final String hostProperty = "SVC1_SERVICE_HOST";
-    final String portProperty = "SVC1_SERVICE_PORT";
-    final String protocolProperty = "SVC1_SERVICE_PORT_80_TCP_PROTO";
-    try {
-      // Given
-      System.setProperty(hostProperty, "10.111.30.220");
-      System.setProperty(portProperty, "80");
-      System.setProperty(protocolProperty, "tcp");
-      Service svc = createNewServiceBuilder().build();
+    // Given
+    System.setProperty("SVC1_SERVICE_HOST", "10.111.30.220");
+    System.setProperty("SVC1_SERVICE_PORT", "80");
+    System.setProperty("SVC1_SERVICE_PORT_80_TCP_PROTO", "tcp");
+    Service svc = createNewServiceBuilder().build();
 
-      // When
-      String url = urlFromEnvVars.getURL(svc, "test", "default", kubernetesClient);
+    // When
+    String url = urlFromEnvVars.getURL(svc, "test", "default", kubernetesClient);
 
-      // Then
-      assertThat(url).isEqualTo("tcp://10.111.30.220:80");
-    } finally {
-      System.clearProperty(hostProperty);
-      System.clearProperty(portProperty);
-      System.clearProperty(protocolProperty);
-    }
+    // Then
+    assertThat(url).isEqualTo("tcp://10.111.30.220:80");
   }
 
   @Test

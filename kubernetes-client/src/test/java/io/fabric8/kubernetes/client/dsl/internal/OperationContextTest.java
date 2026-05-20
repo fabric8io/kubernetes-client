@@ -29,6 +29,8 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -110,5 +112,32 @@ class OperationContextTest {
     assertEquals(selectorAsString, operationContext.getLabelQueryParam());
     assertEquals("metadata.name=operand-name,test=field,test!=fieldsNot", operationContext.getFieldQueryParam());
     assertEquals(1, operationContext.getRequestConfig().getLoggingInterval());
+  }
+
+  @Test
+  void testShardSelectorIsPreservedAndOrthogonalToOtherSelectors() {
+    OperationContext context = new OperationContext()
+        .withShardSelector("shardRange(object.metadata.uid, '0x0000000000000000', '0x8000000000000000')");
+
+    // returned by the getter
+    assertEquals("shardRange(object.metadata.uid, '0x0000000000000000', '0x8000000000000000')", context.getShardSelector());
+
+    // identity when called with the same value (mirrors withLabelSelector)
+    assertSame(context,
+        context.withShardSelector("shardRange(object.metadata.uid, '0x0000000000000000', '0x8000000000000000')"));
+
+    // preserved across unrelated context mutations (i.e. through the copy constructor)
+    OperationContext extended = context.withName("foo").withNamespace("ns").withLabelSelector("a=b");
+    assertEquals("shardRange(object.metadata.uid, '0x0000000000000000', '0x8000000000000000')", extended.getShardSelector());
+    // and orthogonal to the label selector
+    assertEquals("a=b", extended.getLabelQueryParam());
+
+    // overwrite
+    assertEquals("shardRange(object.metadata.uid, '0x0000000000000000', '0x8000000000000000')",
+        context.withShardSelector("shardRange(object.metadata.uid, '0x0000000000000000', '0x8000000000000000')")
+            .getShardSelector());
+
+    // clear
+    assertNull(context.withShardSelector(null).getShardSelector());
   }
 }

@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.client.LocalPortForward;
 import io.fabric8.kubernetes.client.PortForward;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClient;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClientFactory;
-import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.http.TestWebSocket;
 import io.fabric8.kubernetes.client.http.WebSocketResponse;
 import io.fabric8.kubernetes.client.http.WebSocketUpgradeResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +42,6 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
 
 class ServiceOperationsImplTest {
 
@@ -145,7 +144,7 @@ class ServiceOperationsImplTest {
                 "\"spec\":{\"selector\":{\"app\":\"test\"},\"ports\":[{\"port\":8080,\"targetPort\":9090}]}}");
         httpClient.expect("/api/v1/namespaces/test/pods", 200, POD_LIST_JSON);
         httpClient.wsExpect(".*/portforward.*",
-            new WebSocketResponse(new WebSocketUpgradeResponse(null), mock(WebSocket.class)));
+            new WebSocketResponse(new WebSocketUpgradeResponse(null), new TestWebSocket()));
 
         // When - Use channel-based portForward which triggers WebSocket connection immediately
         PipedOutputStream out = new PipedOutputStream();
@@ -183,7 +182,7 @@ class ServiceOperationsImplTest {
                 "\"spec\":{\"selector\":{\"app\":\"test\"},\"ports\":[{\"port\":8080,\"targetPort\":9090}]}}");
         httpClient.expect("/api/v1/namespaces/test/pods", 200, POD_LIST_JSON);
         httpClient.wsExpect(".*/portforward.*",
-            new WebSocketResponse(new WebSocketUpgradeResponse(null), mock(WebSocket.class)));
+            new WebSocketResponse(new WebSocketUpgradeResponse(null), new TestWebSocket()));
 
         // When - Use port 3000 which is not defined in the service
         PipedOutputStream out = new PipedOutputStream();
@@ -220,7 +219,7 @@ class ServiceOperationsImplTest {
                 "\"spec\":{\"selector\":{\"app\":\"test\"},\"ports\":[{\"port\":80,\"targetPort\":\"http\"}]}}");
         httpClient.expect("/api/v1/namespaces/test/pods", 200, POD_LIST_JSON);
         httpClient.wsExpect(".*/portforward.*",
-            new WebSocketResponse(new WebSocketUpgradeResponse(null), mock(WebSocket.class)));
+            new WebSocketResponse(new WebSocketUpgradeResponse(null), new TestWebSocket()));
 
         // When
         PipedOutputStream out = new PipedOutputStream();
@@ -261,7 +260,7 @@ class ServiceOperationsImplTest {
                 "]}}");
         httpClient.expect("/api/v1/namespaces/test/pods", 200, POD_LIST_JSON);
         httpClient.wsExpect(".*/portforward.*",
-            new WebSocketResponse(new WebSocketUpgradeResponse(null), mock(WebSocket.class)));
+            new WebSocketResponse(new WebSocketUpgradeResponse(null), new TestWebSocket()));
 
         // When - Forward the HTTPS port (443)
         PipedOutputStream out = new PipedOutputStream();

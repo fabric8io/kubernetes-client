@@ -1,0 +1,6 @@
+io.fabric8.kubernetes.api.model.node.v1.RuntimeClass
+io.fabric8.kubernetes.api.model.node.v1.RuntimeClassList
+io.fabric8.kubernetes.api.model.node.v1alpha1.RuntimeClass
+io.fabric8.kubernetes.api.model.node.v1alpha1.RuntimeClassList
+io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass
+io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList

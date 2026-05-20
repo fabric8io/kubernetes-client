@@ -240,6 +240,7 @@ public class Config extends SundrioConfig {
   /*
    * The Builder is generated in SundrioConfig, if new fields need to be added here, please make sure to add them there too.
    */
+  @SuppressWarnings("java:S6437") // DEFAULT_CLIENT_KEY_PASSPHRASE is the JVM cacerts default ("changeit"), not a credential
   protected Config(SundrioConfig config, Boolean shouldSetDefaultValues) {
     if (Boolean.TRUE.equals(shouldSetDefaultValues)) {
       this.setMasterUrl(DEFAULT_MASTER_URL);
