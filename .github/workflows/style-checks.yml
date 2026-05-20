@@ -17,7 +17,7 @@
 name: Style Checks
 
 env:
-  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
+  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e -T 1C
 
 on:
   push:
@@ -41,16 +41,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
       - name: Setup Java 17
         uses: actions/setup-java@v5
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'maven'
+      - name: Cache spotless formatter bundles
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2/repository/com/diffplug
+            ~/.m2/repository/org/eclipse
+          key: spotless-${{ runner.os }}-3.5.1-${{ hashFiles('ide-config/eclipse-format.xml', 'ide-config/eclipse.importorder') }}
+          restore-keys: |
+            spotless-${{ runner.os }}-3.5.1-
+            spotless-${{ runner.os }}-
       - name: Check License Headers
         run: ./mvnw ${MAVEN_ARGS} -Pitests -N license:check
-      - name: Check Format (only on touched files)
+      - name: Check Format
         run: ./mvnw ${MAVEN_ARGS} -Pitests spotless:check
       - name: Cancel PR workflows on failure
         if: ${{ failure() && github.event_name == 'pull_request' }}
