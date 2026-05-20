@@ -122,6 +122,7 @@ public class KubeAPIServerProcess {
         apiServerProcess.destroyForcibly();
         apiServerProcess.waitFor();
       } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
         throw new KubeAPITestException(e);
       }
     }

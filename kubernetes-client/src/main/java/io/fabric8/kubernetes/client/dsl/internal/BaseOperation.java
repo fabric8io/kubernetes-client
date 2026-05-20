@@ -639,6 +639,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         ArrayList<StatusDetails> details = new ArrayList<>();
         toStatusDetails(result, details);
         return details;
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+        throw KubernetesClientException.launderThrowable(forOperationType("delete"), e);
       } catch (Exception e) {
         RuntimeException re = KubernetesClientException.launderThrowable(forOperationType("delete"), e);
         if (re instanceof KubernetesClientException) {

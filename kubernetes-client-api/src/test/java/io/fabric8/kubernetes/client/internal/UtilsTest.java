@@ -64,6 +64,7 @@ import io.fabric8.kubernetes.api.model.storage.StorageClass;
 import io.fabric8.kubernetes.api.model.storage.VolumeAttachment;
 import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver;
 import io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.RestoreSystemProperties;
 import io.fabric8.kubernetes.client.lib.FileSystem;
 import io.fabric8.kubernetes.client.utils.CommonThreadPool;
@@ -78,11 +79,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -346,6 +349,45 @@ class UtilsTest {
       completableFuture.complete(null);
     }, 0, () -> 1L, TimeUnit.MILLISECONDS);
     completableFuture.get(1, TimeUnit.SECONDS);
+  }
+
+  @Test
+  void waitUntilReadyPreservesInterruptStatus() {
+    Future<?> interruptingFuture = new Future<Object>() {
+      @Override
+      public boolean cancel(boolean mayInterruptIfRunning) {
+        return false;
+      }
+
+      @Override
+      public boolean isCancelled() {
+        return false;
+      }
+
+      @Override
+      public boolean isDone() {
+        return false;
+      }
+
+      @Override
+      public Object get() throws InterruptedException {
+        throw new InterruptedException("simulated interrupt");
+      }
+
+      @Override
+      public Object get(long timeout, TimeUnit unit) throws InterruptedException {
+        throw new InterruptedException("simulated interrupt");
+      }
+    };
+
+    assertThat(Thread.currentThread().isInterrupted()).isFalse();
+    assertThatThrownBy(() -> Utils.waitUntilReady(interruptingFuture, 10, TimeUnit.SECONDS))
+        .isInstanceOf(KubernetesClientException.class)
+        .hasCauseInstanceOf(InterruptedException.class);
+    boolean wasInterrupted = Thread.interrupted();
+    assertThat(wasInterrupted)
+        .as("interrupt status should be preserved after InterruptedException is caught")
+        .isTrue();
   }
 
   @Test

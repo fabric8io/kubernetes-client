@@ -178,6 +178,9 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
           try {
             resource.getMetadata().setResourceVersion(resourceVersion);
             return handleUpdate(resource);
+          } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw KubernetesClientException.launderThrowable(forOperationType(REPLACE_OPERATION), e);
           } catch (Exception e) {
             throw KubernetesClientException.launderThrowable(forOperationType(REPLACE_OPERATION), e);
           }
@@ -225,6 +228,9 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     final UnaryOperator<T> visitor = resource -> {
       try {
         return handlePatch(context, theBase, resource);
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+        throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), e);
       } catch (Exception e) {
         throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), e);
       }
