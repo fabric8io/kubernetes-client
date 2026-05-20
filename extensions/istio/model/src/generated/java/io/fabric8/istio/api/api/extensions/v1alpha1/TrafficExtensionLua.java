@@ -1,9 +1,7 @@
 
-package io.fabric8.istio.api.api.meta.v1alpha1;
+package io.fabric8.istio.api.api.extensions.v1alpha1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -13,11 +11,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.istio.api.api.analysis.v1alpha1.AnalysisMessageBase;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -38,9 +34,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "conditions",
-    "observedGeneration",
-    "validationMessages"
+    "lua"
 })
 @ToString
 @EqualsAndHashCode
@@ -58,96 +52,48 @@ import lombok.experimental.Accessors;
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.EnvVar.class),
     @BuildableReference(ContainerPort.class),
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class IstioStatus implements Editable<IstioStatusBuilder>, KubernetesResource
+public class TrafficExtensionLua implements IsTrafficExtensionFilterConfig, Editable<TrafficExtensionLuaBuilder>, KubernetesResource
 {
 
-    @JsonProperty("conditions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<IstioCondition> conditions = new ArrayList<>();
-    @JsonProperty("observedGeneration")
-    private Long observedGeneration;
-    @JsonProperty("validationMessages")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<AnalysisMessageBase> validationMessages = new ArrayList<>();
+    @JsonProperty("lua")
+    private LuaConfig lua;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public IstioStatus() {
+    public TrafficExtensionLua() {
     }
 
-    public IstioStatus(List<IstioCondition> conditions, Long observedGeneration, List<AnalysisMessageBase> validationMessages) {
+    public TrafficExtensionLua(LuaConfig lua) {
         super();
-        this.conditions = conditions;
-        this.observedGeneration = observedGeneration;
-        this.validationMessages = validationMessages;
+        this.lua = lua;
     }
 
-    /**
-     * Current service state of the resource.
-     */
-    @JsonProperty("conditions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<IstioCondition> getConditions() {
-        return conditions;
+    @JsonProperty("lua")
+    public LuaConfig getLua() {
+        return lua;
     }
 
-    /**
-     * Current service state of the resource.
-     */
-    @JsonProperty("conditions")
-    public void setConditions(List<IstioCondition> conditions) {
-        this.conditions = conditions;
-    }
-
-    /**
-     * $hide_from_docs Deprecated. IstioCondition observed_generation will show the resource generation for which the condition was generated. Resource Generation to which the Reconciled Condition refers. When this value is not equal to the object's metadata generation, reconciled condition  calculation for the current generation is still in progress.
-     */
-    @JsonProperty("observedGeneration")
-    public Long getObservedGeneration() {
-        return observedGeneration;
-    }
-
-    /**
-     * $hide_from_docs Deprecated. IstioCondition observed_generation will show the resource generation for which the condition was generated. Resource Generation to which the Reconciled Condition refers. When this value is not equal to the object's metadata generation, reconciled condition  calculation for the current generation is still in progress.
-     */
-    @JsonProperty("observedGeneration")
-    public void setObservedGeneration(Long observedGeneration) {
-        this.observedGeneration = observedGeneration;
-    }
-
-    /**
-     * Includes any errors or warnings detected by Istio's analyzers.
-     */
-    @JsonProperty("validationMessages")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<AnalysisMessageBase> getValidationMessages() {
-        return validationMessages;
-    }
-
-    /**
-     * Includes any errors or warnings detected by Istio's analyzers.
-     */
-    @JsonProperty("validationMessages")
-    public void setValidationMessages(List<AnalysisMessageBase> validationMessages) {
-        this.validationMessages = validationMessages;
+    @JsonProperty("lua")
+    public void setLua(LuaConfig lua) {
+        this.lua = lua;
     }
 
     @JsonIgnore
-    public IstioStatusBuilder edit() {
-        return new IstioStatusBuilder(this);
+    public TrafficExtensionLuaBuilder edit() {
+        return new TrafficExtensionLuaBuilder(this);
     }
 
     @JsonIgnore
-    public IstioStatusBuilder toBuilder() {
+    public TrafficExtensionLuaBuilder toBuilder() {
         return edit();
     }
 

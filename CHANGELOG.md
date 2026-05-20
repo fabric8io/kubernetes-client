@@ -13,6 +13,7 @@
 * Fix #7837: (kubernetes-client) Follow-ups on shard selector
 
 #### Dependency Upgrade
+* Fix #PLACEHOLDER: bump istio.io/client-go from 1.29.2 to 1.30.0
 
 #### New Features
 
