@@ -75,7 +75,7 @@ jobs:
         # OkHttp is configured without timeouts by Equo, so a P2 fetch that
         # stalls hangs the job indefinitely — the cache makes this a
         # cold-key-only risk, contained by the step timeout below.
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.m2/repository/dev/equo
           key: spotless-equo-${{ runner.os }}-${{ env.SPOTLESS_VERSION }}-${{ hashFiles('ide-config/eclipse-format.xml', 'ide-config/eclipse.importorder') }}
