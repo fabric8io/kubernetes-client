@@ -68,6 +68,18 @@ public class KubernetesMixedDispatcher extends Dispatcher implements Resetable, 
   }
 
   @Override
+  public void shutdown() {
+    mockDispatcher.shutdown();
+    kubernetesCrudDispatcher.shutdown();
+  }
+
+  @Override
+  public void releaseResources() {
+    mockDispatcher.releaseResources();
+    kubernetesCrudDispatcher.releaseResources();
+  }
+
+  @Override
   public void reset() {
     this.kubernetesCrudDispatcher.reset();
   }

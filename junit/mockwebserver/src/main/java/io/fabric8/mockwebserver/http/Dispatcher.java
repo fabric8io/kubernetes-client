@@ -33,4 +33,21 @@ public abstract class Dispatcher {
    */
   public void shutdown() {
   }
+
+  /**
+   * Release any per-connection resources that must outlive in-flight dispatches.
+   * <p>
+   * Called after the HTTP server has stopped accepting new connections, so it is safe to tear
+   * down state that an in-flight handler might otherwise touch (for example a WebSocket
+   * session's {@code ScheduledExecutorService} used to deliver {@code onOpen} messages).
+   * <p>
+   * Note: Vert.x {@code HttpServer.close()} does not strictly wait for every in-flight WebSocket
+   * upgrade to deliver its {@code onOpen} callback before completing, so callers that schedule
+   * onto resources released here must still be defensive against a shutdown that races with a
+   * late upgrade (see {@code WebSocketSession.send}).
+   * <p>
+   * The default implementation is a no-op.
+   */
+  public void releaseResources() {
+  }
 }
