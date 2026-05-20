@@ -56,7 +56,10 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
       for (ByteBuffer content : b) {
         for (char c : StandardCharsets.UTF_8.decode(content).array()) {
           if (c == '\n') {
-            onMessage(buffer.toString(), state);
+            // HTTP path has no per-message back-pressure handle (a.consume() below
+            // signals readiness for the whole chunk), so no completion callback is needed.
+            onMessage(buffer.toString(), state, () -> {
+            });
             buffer.setLength(0);
           } else {
             buffer.append(c);

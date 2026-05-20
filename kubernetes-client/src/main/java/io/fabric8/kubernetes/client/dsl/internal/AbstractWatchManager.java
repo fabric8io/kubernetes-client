@@ -43,6 +43,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -58,7 +59,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
 
   private static final class SerialWatcher<T> implements Watcher<T> {
     private final Watcher<T> watcher;
-    SerialExecutor serialExecutor;
+    private final SerialExecutor serialExecutor;
 
     private SerialWatcher(Watcher<T> watcher, SerialExecutor serialExecutor) {
       this.watcher = watcher;
@@ -104,6 +105,11 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   private static final int INFO_LOG_CONNECTION_ERRORS = 10;
 
   final Watcher<T> watcher;
+  // Serializes both the message-deserialization+dispatch task (queued from onMessage) and the
+  // user-facing watcher callbacks (queued by SerialWatcher). Keeping both on one queue gives
+  // strict per-watch ordering, gets Jackson off the receive thread, and (combined with the
+  // completion callback that re-arms the WebSocket) provides natural per-frame back-pressure.
+  final SerialExecutor serialExecutor;
   final AtomicReference<String> resourceVersion;
 
   final AtomicBoolean forceClosed;
@@ -128,7 +134,8 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
       Watcher<T> watcher, BaseOperation<T, ?, ?> baseOperation, ListOptions listOptions, int reconnectLimit,
       int reconnectInterval, HttpClient client) throws MalformedURLException {
     // prevent the callbacks from happening in the httpclient thread
-    this.watcher = new SerialWatcher<>(watcher, new SerialExecutor(baseOperation.getOperationContext().getExecutor()));
+    this.serialExecutor = new SerialExecutor(baseOperation.getOperationContext().getExecutor());
+    this.watcher = new SerialWatcher<>(watcher, this.serialExecutor);
     this.reconnectLimit = reconnectLimit;
     this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(reconnectInterval, reconnectLimit);
     this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
@@ -360,41 +367,80 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     }
   }
 
-  protected void onMessage(String message, WatchRequestState state) {
-    endErrors.clear();
-    if (state.closed.get() || forceClosed.get()) {
+  /**
+   * Hand a freshly received frame off to the per-watch {@link SerialExecutor} for
+   * deserialization and dispatch, returning immediately. This keeps Jackson's
+   * deserializer-cold-path off the receive thread (the Vert.x event loop in the
+   * WebSocket path), where a single Pod-deep type warmup under CPU contention has
+   * been measured at tens of seconds and trips Vert.x's blocked-thread checker.
+   * <p>
+   * {@code onComplete} runs after the body finishes (success or failure) and is the
+   * point where WebSocket flow control should be re-armed by the caller. Fire-and-forget
+   * dispatch without it would let frames pile up faster than the executor can drain.
+   * It is also fired synchronously if the serial executor has already been shut down
+   * (i.e. the watch is terminating), so callers never hang waiting for re-arm. The
+   * runnable must not be null; if it throws, the error is logged and swallowed so a
+   * broken re-arm cannot wedge the queue.
+   */
+  protected void onMessage(String message, WatchRequestState state, Runnable onComplete) {
+    Objects.requireNonNull(onComplete, "onComplete");
+    if (serialExecutor.isShutdown()) {
+      // The watch is already terminating; the executor would silently drop the task,
+      // which would orphan the completion. Fire it inline so back-pressure never wedges.
+      runQuietly(onComplete);
       return;
     }
-    try {
-      WatchEvent event = contextAwareWatchEventDeserializer(message);
-      Object object = event.getObject();
-      Action action = Action.valueOf(event.getType());
-      if (action == Action.ERROR) {
-        if (object instanceof Status) {
-          Status status = (Status) object;
-
-          onStatus(status, state);
-        } else {
-          logger.error("Received an error which is not a status but {} - will retry", message);
-          closeRequest();
+    serialExecutor.execute(() -> {
+      try {
+        endErrors.clear();
+        if (state.closed.get() || forceClosed.get()) {
+          return;
         }
-      } else if (object instanceof HasMetadata) {
-        HasMetadata hasMetadata = (HasMetadata) object;
-        updateResourceVersion(hasMetadata.getMetadata().getResourceVersion());
-        eventReceived(action, hasMetadata);
-      } else {
-        final String msg = String.format("Invalid object received: %s", message);
-        close(new WatcherException(msg, null, message));
+        try {
+          WatchEvent event = contextAwareWatchEventDeserializer(message);
+          Object object = event.getObject();
+          Action action = Action.valueOf(event.getType());
+          if (action == Action.ERROR) {
+            if (object instanceof Status) {
+              Status status = (Status) object;
+
+              onStatus(status, state);
+            } else {
+              logger.error("Received an error which is not a status but {} - will retry", message);
+              closeRequest();
+            }
+          } else if (object instanceof HasMetadata) {
+            HasMetadata hasMetadata = (HasMetadata) object;
+            updateResourceVersion(hasMetadata.getMetadata().getResourceVersion());
+            eventReceived(action, hasMetadata);
+          } else {
+            final String msg = String.format("Invalid object received: %s", message);
+            close(new WatcherException(msg, null, message));
+          }
+        } catch (ClassCastException e) {
+          final String msg = "Received wrong type of object for watch";
+          close(new WatcherException(msg, e, message));
+        } catch (JsonProcessingException e) {
+          final String msg = "Couldn't deserialize watch event: " + message;
+          close(new WatcherException(msg, e, message));
+        } catch (Exception e) {
+          final String msg = "Unexpected exception processing watch event";
+          close(new WatcherException(msg, e, message));
+        }
+      } finally {
+        runQuietly(onComplete);
       }
-    } catch (ClassCastException e) {
-      final String msg = "Received wrong type of object for watch";
-      close(new WatcherException(msg, e, message));
-    } catch (JsonProcessingException e) {
-      final String msg = "Couldn't deserialize watch event: " + message;
-      close(new WatcherException(msg, e, message));
+    });
+  }
+
+  private static void runQuietly(Runnable r) {
+    try {
+      r.run();
     } catch (Exception e) {
-      final String msg = "Unexpected exception processing watch event";
-      close(new WatcherException(msg, e, message));
+      // Swallow: the completion callback is back-pressure re-arming (typically
+      // webSocket.request()). If it fails, the WS itself is already broken and
+      // propagating would also wedge the per-watch SerialExecutor's draining.
+      logger.warn("Error invoking onMessage completion callback", e);
     }
   }
 
