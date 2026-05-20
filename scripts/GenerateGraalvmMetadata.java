@@ -79,27 +79,35 @@ import java.util.stream.Collectors;
  */
 class GenerateGraalvmMetadata {
 
+  /** Outcome of a single {@link #generate(String[])} invocation. */
+  enum Result {
+    /** A reflect-config.json was written. */
+    WROTE,
+    /** No classes matched the inclusion criteria; nothing was written. Not an error. */
+    EMPTY,
+    /** Something failed; details were logged to stderr. */
+    ERROR
+  }
+
   public static void main(String[] args) {
-    int exitCode = generate(args);
-    System.exit(exitCode);
+    System.exit(generate(args) == Result.ERROR ? 1 : 0);
   }
 
   /**
    * Generate GraalVM metadata without calling System.exit().
-   * Returns 0 on success, 1 on failure.
    * This method can be called from other scripts using jbang SOURCES directive.
    */
-  static int generate(String[] args) {
+  static Result generate(String[] args) {
     try {
       var config = parseArgs(args);
       if (config == null) {
-        return 0; // Help was shown
+        return Result.EMPTY; // Help was shown, nothing to do
       }
 
       if (!config.indexFile.exists()) {
         System.err.println("ERROR: Jandex index file not found: " + config.indexFile);
         System.err.println("Consider generating index with jandex-maven-plugin");
-        return 1;
+        return Result.ERROR;
       }
 
       // Determine output file
@@ -112,12 +120,24 @@ class GenerateGraalvmMetadata {
         var moduleDir = classesDir.getParent().getParent().toFile(); // go up from target/classes to module root
         var artifactId = extractArtifactId(new File(moduleDir, "pom.xml"));
         if (artifactId == null) {
-          artifactId = "kubernetes-client"; // fallback
+          System.err.println("ERROR: Could not determine artifactId from " + new File(moduleDir, "pom.xml"));
+          System.err.println("Pass -o explicitly, or run from a module whose pom.xml has a top-level <artifactId>.");
+          return Result.ERROR;
         }
 
         config.outputFile = classesDir
           .resolve("META-INF/native-image/io.fabric8/" + artifactId + "/reflect-config.json")
           .toFile();
+
+        // Defensive: artifactId comes from a parsed pom.xml; refuse to write outside the
+        // module's target/classes (e.g. an artifactId containing path-traversal segments).
+        var classesDirAbs = classesDir.toAbsolutePath().normalize();
+        var outputAbs = config.outputFile.toPath().toAbsolutePath().normalize();
+        if (!outputAbs.startsWith(classesDirAbs)) {
+          System.err.println("ERROR: Refusing to write outside " + classesDirAbs
+            + " (suspicious artifactId in pom.xml: '" + artifactId + "')");
+          return Result.ERROR;
+        }
       }
 
       System.out.println("Generating GraalVM reflection configuration...");
@@ -131,7 +151,7 @@ class GenerateGraalvmMetadata {
 
       if (classes.isEmpty()) {
         System.out.println("No classes found matching inclusion criteria");
-        return 0;
+        return Result.EMPTY;
       }
 
       System.out.println("Found " + classes.size() + " classes for reflection configuration");
@@ -145,12 +165,17 @@ class GenerateGraalvmMetadata {
       generator.generate(classes, config.outputFile, config.mergeWithExisting);
 
       System.out.println("Successfully generated reflection configuration at: " + config.outputFile);
-      return 0;
+      return Result.WROTE;
 
+    } catch (IllegalArgumentException e) {
+      // Argument-parsing problem; print a friendly message + help, no stack trace.
+      System.err.println("ERROR: " + e.getMessage());
+      showHelp();
+      return Result.ERROR;
     } catch (Exception e) {
       System.err.println("ERROR: " + e.getMessage());
       e.printStackTrace();
-      return 1;
+      return Result.ERROR;
     }
   }
 
@@ -195,9 +220,9 @@ class GenerateGraalvmMetadata {
           showHelp();
           return null;
         default:
-          System.err.println("Unknown option: " + arg);
-          showHelp();
-          System.exit(1);
+          // Throw rather than System.exit so callers using //SOURCES (e.g. the batch
+          // wrapper) aren't terminated when a bad option is forwarded down.
+          throw new IllegalArgumentException("Unknown option: " + arg);
       }
     }
 
@@ -296,7 +321,10 @@ class GenerateGraalvmMetadata {
     private static final DotName JSON_TYPE_INFO = DotName.createSimple("com.fasterxml.jackson.annotation.JsonTypeInfo");
     private static final DotName JSON_SUB_TYPES = DotName.createSimple("com.fasterxml.jackson.annotation.JsonSubTypes");
     private static final DotName BUILDABLE = DotName.createSimple("io.sundr.builder.annotations.Buildable");
-    private static final DotName HAS_METADATA = DotName.createSimple("io.fabric8.kubernetes.api.model.HasMetadata");
+    // KubernetesResource (not HasMetadata) is the right marker for "needs reflective serialization":
+    // Spec/Status/nested model classes (PodSpec, ObjectMeta, EnvVar, ...) implement only
+    // KubernetesResource. HasMetadata is a narrow subset (top-level resources with metadata).
+    private static final DotName KUBERNETES_RESOURCE = DotName.createSimple("io.fabric8.kubernetes.api.model.KubernetesResource");
 
     private final IndexView index;
 
@@ -405,7 +433,7 @@ class GenerateGraalvmMetadata {
     private Set<String> findKubernetesResources() {
       var classes = new HashSet<String>();
 
-      for (var classInfo : index.getAllKnownImplementors(HAS_METADATA)) {
+      for (var classInfo : index.getAllKnownImplementors(KUBERNETES_RESOURCE)) {
         classes.add(classInfo.name().toString());
       }
 
@@ -450,7 +478,7 @@ class GenerateGraalvmMetadata {
       }
 
       var compiledPatterns = patterns.stream()
-        .map(p -> Pattern.compile(p.replace(".", "\\.").replace("*", ".*")))
+        .map(JandexReflectionScanner::globToRegex)
         .collect(Collectors.toList());
 
       for (var classInfo : index.getKnownClasses()) {
@@ -464,6 +492,30 @@ class GenerateGraalvmMetadata {
       }
 
       return classes;
+    }
+
+    /**
+     * Translate a glob-style pattern to a {@link Pattern}.
+     * Only {@code *} (any sequence) and {@code ?} (any single char) are wildcards;
+     * every other regex metacharacter is escaped, so patterns like {@code "io.fabric8.*"}
+     * or {@code "*.internal.*"} match the way users expect, and arbitrary input
+     * (e.g. {@code "foo[bar"}) does not throw {@link java.util.regex.PatternSyntaxException}.
+     */
+    static Pattern globToRegex(String glob) {
+      var sb = new StringBuilder(glob.length() + 8);
+      for (int i = 0; i < glob.length(); i++) {
+        char c = glob.charAt(i);
+        if (c == '*') {
+          sb.append(".*");
+        } else if (c == '?') {
+          sb.append('.');
+        } else if ("\\.[](){}+^$|".indexOf(c) >= 0) {
+          sb.append('\\').append(c);
+        } else {
+          sb.append(c);
+        }
+      }
+      return Pattern.compile(sb.toString());
     }
   }
 
