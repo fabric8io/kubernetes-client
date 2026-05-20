@@ -58,7 +58,7 @@ import java.util.function.UnaryOperator;
  */
 public class ResourceAdapter<T> implements Resource<T> {
 
-  protected Resource<T> resource;
+  Resource<T> resource;
 
   public ResourceAdapter() {
 

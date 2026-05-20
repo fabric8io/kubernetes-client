@@ -781,7 +781,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
               // HTTP GET. This is meant to handle cases like kubectl local proxy which does not support
               // websockets. Issue: https://github.com/kubernetes/kubernetes/issues/25126
               logger.debug(
-                  "Websocket hanshake failed with code {}, but an httpwatch may be possible.  Use Config.onlyHttpWatches to disable websocket watches.",
+                  "Websocket handshake failed with code {}, but an httpwatch may be possible.  Use Config.onlyHttpWatches to disable websocket watches.",
                   ke.getCode());
               httpWatch = true;
             }
