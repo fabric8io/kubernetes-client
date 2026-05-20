@@ -29,8 +29,6 @@ import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -43,8 +41,6 @@ import java.util.function.UnaryOperator;
 
 public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
     extends BaseOperation<T, L, R> {
-
-  private static final Logger logger = LoggerFactory.getLogger(HasMetadataOperation.class);
 
   public static final DeletionPropagation DEFAULT_PROPAGATION_POLICY = DeletionPropagation.BACKGROUND;
   public static final long DEFAULT_GRACE_PERIOD_IN_SECONDS = -1L;
