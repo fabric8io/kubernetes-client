@@ -377,8 +377,12 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
    * {@code onComplete} runs after the body finishes (success or failure) and is the
    * point where WebSocket flow control should be re-armed by the caller. Fire-and-forget
    * dispatch without it would let frames pile up faster than the executor can drain.
-   * It is also fired synchronously if the serial executor has already been shut down
-   * (i.e. the watch is terminating), so callers never hang waiting for re-arm. The
+   * It is also fired synchronously when the serial executor has already been shut down
+   * by the time this call enters, covering the common termination path. Two narrow
+   * races remain (a {@code shutdownNow()} interleaved between this check and
+   * {@code SerialExecutor.execute}, or between {@code execute} and the wrapper's own
+   * shutdown check) where the runnable can be dropped; both can only happen at watch
+   * teardown where the WebSocket is closing and back-pressure re-arm is moot. The
    * runnable must not be null; if it throws, the error is logged and swallowed so a
    * broken re-arm cannot wedge the queue.
    */
