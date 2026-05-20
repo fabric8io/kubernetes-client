@@ -1,3 +1,4 @@
+io.fabric8.istio.api.api.extensions.v1alpha1.TrafficExtension
 io.fabric8.istio.api.api.extensions.v1alpha1.WasmPlugin
 io.fabric8.istio.api.api.networking.v1alpha3.DestinationRule
 io.fabric8.istio.api.api.networking.v1alpha3.EnvoyFilter
@@ -13,6 +14,8 @@ io.fabric8.istio.api.api.security.v1beta1.AuthorizationPolicyExtensionProvider
 io.fabric8.istio.api.api.security.v1beta1.PeerAuthentication
 io.fabric8.istio.api.api.security.v1beta1.RequestAuthentication
 io.fabric8.istio.api.api.telemetry.v1alpha1.Telemetry
+io.fabric8.istio.api.extensions.v1alpha1.TrafficExtension
+io.fabric8.istio.api.extensions.v1alpha1.TrafficExtensionList
 io.fabric8.istio.api.extensions.v1alpha1.WasmPlugin
 io.fabric8.istio.api.extensions.v1alpha1.WasmPluginList
 io.fabric8.istio.api.networking.v1.DestinationRule

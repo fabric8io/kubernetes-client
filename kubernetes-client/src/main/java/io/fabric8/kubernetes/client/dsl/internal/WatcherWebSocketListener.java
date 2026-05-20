@@ -48,11 +48,11 @@ class WatcherWebSocketListener<T extends HasMetadata> implements WebSocket.Liste
 
   @Override
   public void onMessage(WebSocket webSocket, String text) {
-    try {
-      manager.onMessage(text, state);
-    } finally {
-      webSocket.request();
-    }
+    // manager.onMessage offloads deserialization to its SerialExecutor; chain request()
+    // as the completion callback so the next frame is fetched only after the previous
+    // frame's deserialization+dispatch has finished, preserving one-frame-at-a-time
+    // back-pressure that the synchronous flow used to provide.
+    manager.onMessage(text, state, webSocket::request);
   }
 
   @Override
