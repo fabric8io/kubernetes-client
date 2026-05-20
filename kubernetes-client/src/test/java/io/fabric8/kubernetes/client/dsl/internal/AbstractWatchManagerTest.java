@@ -30,6 +30,7 @@ import org.mockito.Mockito;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ForkJoinPool;
@@ -184,7 +185,7 @@ class AbstractWatchManagerTest {
     awm.cancelReconnect();
     // Then
 
-    done.get(5, TimeUnit.SECONDS);
+    assertThat(done).succeedsWithin(Duration.ofSeconds(5));
   }
 
   @Test
