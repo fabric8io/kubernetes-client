@@ -17,7 +17,16 @@
 name: Style Checks
 
 env:
-  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
+  # Aether timeouts cap Maven Resolver HTTP calls; sun.net.client.* timeouts
+  # cap raw java.net.HttpURLConnection (e.g. URL.openStream in
+  # gradle-api-maven-plugin), which Aether cannot affect.
+  MAVEN_ARGS: >-
+    -B -C -V -ntp -Dhttp.keepAlive=false -e -T 1C
+    -Daether.connector.connectTimeout=10000
+    -Daether.connector.requestTimeout=30000
+    -Daether.connector.http.retryHandler.count=1
+    -Dsun.net.client.defaultConnectTimeout=10000
+    -Dsun.net.client.defaultReadTimeout=30000
 
 on:
   push:
@@ -41,16 +50,45 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
       - name: Setup Java 17
         uses: actions/setup-java@v5
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'maven'
+      - name: Strip stale _remote.repositories tracker files
+        # Tracker files left behind by other workflows reference repository
+        # IDs that don't exist in this build's pom, which makes Maven 3.9
+        # re-validate each cached artifact against Maven Central. A slow
+        # Central response can then stall the job for many minutes.
+        run: find ~/.m2/repository -name _remote.repositories -delete 2>/dev/null || true
+      - name: Resolve spotless version
+        # Drive the Equo P2 cache key off the actual plugin version in the
+        # root pom, so a spotless bump auto-invalidates the cache.
+        run: |
+          V=$(grep -oE '<spotless-maven-plugin\.version>[^<]+' pom.xml | sed 's/.*>//')
+          echo "SPOTLESS_VERSION=$V" >> "$GITHUB_ENV"
+      - name: Cache spotless Equo P2 data
+        # Pre-populates ~/.m2/repository/dev/equo/p2-data so spotless's
+        # eclipse / greclipse formatters don't have to fetch Eclipse plugin
+        # bundles from download.eclipse.org via OkHttp on every run.
+        # OkHttp is configured without timeouts by Equo, so a P2 fetch that
+        # stalls hangs the job indefinitely — the cache makes this a
+        # cold-key-only risk, contained by the step timeout below.
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository/dev/equo
+          key: spotless-equo-${{ runner.os }}-${{ env.SPOTLESS_VERSION }}-${{ hashFiles('ide-config/eclipse-format.xml', 'ide-config/eclipse.importorder') }}
+          restore-keys: |
+            spotless-equo-${{ runner.os }}-${{ env.SPOTLESS_VERSION }}-
+            spotless-equo-${{ runner.os }}-
       - name: Check License Headers
         run: ./mvnw ${MAVEN_ARGS} -Pitests -N license:check
-      - name: Check Format (only on touched files)
+      - name: Check Format
+        # If OkHttp hangs on a cold Equo cache, fail in 5 min with a clear
+        # timeout instead of stalling for 15+ minutes (Aether/JVM timeouts
+        # don't reach OkHttp; only the cache and this hard cap protect us).
+        timeout-minutes: 5
         run: ./mvnw ${MAVEN_ARGS} -Pitests spotless:check
       - name: Cancel PR workflows on failure
         if: ${{ failure() && github.event_name == 'pull_request' }}
