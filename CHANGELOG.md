@@ -7,6 +7,7 @@
 * Fix #7765: (kubernetes-client) `BaseOperation.informOnCondition` now stops the informer inline when the inner predicate completes the future, closing a CompletableFuture `postComplete` race where a waiter helping drain dependents could fire `informer.stop` after `cf.complete` had already triggered a spurious `?watch=true` HTTP request
 
 #### Improvements
+* Fix #7825: (kubernetes-client, kubernetes-client-api) Remove duplicated logger and resource fields (Sonar S1845, S2387)
 * Fix #7675: (mockwebserver) `MockWebServer.dispatcher` field marked `volatile` so a `setDispatcher(...)` call is reliably visible to the Vert.x request handler thread without further synchronization. `MockWebServer.reset()` Javadoc tightened to make its non-destructive contract explicit (no change to the running server, dispatcher, listeners, SSL/TLS state, port, or protocols)
 * Fix #7809: (kubernetes-client) Support for shard selectors for list and watch - including informers
 * Fix #7837: (kubernetes-client) Follow-ups on shard selector
