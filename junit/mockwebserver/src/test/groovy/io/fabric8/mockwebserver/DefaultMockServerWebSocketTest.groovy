@@ -125,6 +125,15 @@ class DefaultMockServerWebSocketTest extends Specification {
 		wsReq.onComplete { ws ->
 			if (ws.failed() || ws.result() == null) {
 				System.err.println("$DIAG_PREFIX onComplete failed: " + ws.cause())
+				// Any connect-Future failure on the close-immediately server is itself
+				// evidence the client observed the close. Vert.x 4.5 surfaces it as ISE
+				// ("WebSocket is closed") when checkClosed() fires inside the post-connect
+				// handler-setup andThen block, and as WebSocketHandshakeException when
+				// channelInactive fires mid-handshake. Both are valid observations
+				// (#7806 follow-up to #7811).
+				if (ws.failed()) {
+					closeObserved.set(true)
+				}
 				return
 			}
 			def w = ws.result()
