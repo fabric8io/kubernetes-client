@@ -75,9 +75,10 @@ class ProcessReadinessCheckerTest {
     long elapsed = System.currentTimeMillis() - start;
     flipper.join();
 
-    assertThat(ex).isNotNull();
-    assertThat(ex).hasMessageContaining("test-process").hasMessageContaining("exited");
-    // Generous upper bound — the assertion is that the wait aborts well before the 60s
+    assertThat(ex).isNotNull()
+        .hasMessageContaining("test-process")
+        .hasMessageContaining("exited");
+    // Generous upper bound. The assertion is that the wait aborts well before the 60s
     // startupTimeout, not that it returns in microseconds. HttpClient/JSSE cold start on a
     // contended 2-vCPU CI runner can chew several seconds.
     assertThat(elapsed).isLessThan(15_000L);
@@ -97,8 +98,11 @@ class ProcessReadinessCheckerTest {
         KubeAPITestException.class);
     long elapsed = System.currentTimeMillis() - start;
 
-    assertThat(ex).isNotNull();
-    assertThat(ex).hasMessageContaining("test-process").hasMessageContaining("did not start properly");
-    assertThat(elapsed).isGreaterThanOrEqualTo(500L);
+    assertThat(ex).isNotNull()
+        .hasMessageContaining("test-process")
+        .hasMessageContaining("did not start properly");
+    // Lower bound proves the timeout actually fired; upper bound guards against a hypothetical
+    // regression that drops out of the polling loop into an unbounded wait.
+    assertThat(elapsed).isGreaterThanOrEqualTo(500L).isLessThan(30_000L);
   }
 }
