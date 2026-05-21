@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 
 import java.util.Set;
 import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -65,7 +66,22 @@ class WatchEventsListener extends WebSocketListener {
 
   @Override
   public void onClosing(WebSocket webSocket, int code, String reason) {
-    webSocketRef.get().close(code, reason);
+    // Queue the close behind any pending sends so events scheduled before the
+    // client-initiated WebSocket close are not lost when the Vert.x event loop
+    // processes the close ahead of the executor draining its queue (#7857).
+    try {
+      executor.schedule(() -> {
+        WebSocket ws = webSocketRef.get();
+        if (ws != null) {
+          ws.close(code, reason);
+        }
+      }, 0L, TimeUnit.SECONDS);
+    } catch (RejectedExecutionException e) {
+      // Executor already shut down by an earlier onClosed/onFailure; the socket is
+      // gone and any pending events have been drained or dropped. Mirrors the
+      // defensive pattern in WebSocketSession#send (#7841).
+      logger.debug("Skipping queued close: executor already shut down ({})", e.getMessage());
+    }
   }
 
   @Override
@@ -85,6 +101,9 @@ class WatchEventsListener extends WebSocketListener {
 
   @Override
   public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+    // Abnormal termination: transport is already broken, so deliberately do NOT
+    // route the close through the executor (see onClosing). Any queued events
+    // could not be delivered anyway.
     webSocket.close(1000, t.getMessage());
     executor.shutdown();
     try {
