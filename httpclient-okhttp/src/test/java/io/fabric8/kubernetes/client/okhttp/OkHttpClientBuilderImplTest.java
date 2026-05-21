@@ -24,6 +24,7 @@ import java.security.cert.X509Certificate;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 class OkHttpClientBuilderImplTest {
@@ -38,9 +39,25 @@ class OkHttpClientBuilderImplTest {
   }
 
   @Test
-  @DisplayName("S2637: build should use first X509TrustManager when trustManagers has multiple entries")
-  void build_shouldUseFirstX509TrustManagerFromMultipleEntries() throws NoSuchAlgorithmException {
-    X509TrustManager noopTrustManager = new X509TrustManager() {
+  @DisplayName("S2637: build should skip non-X509 entries and pick the first X509TrustManager from the array")
+  void build_shouldPickFirstX509TrustManagerSkippingNonX509() throws NoSuchAlgorithmException {
+    TrustManager nonX509 = new TrustManager() {
+    };
+    X509TrustManager firstX509 = noopX509TrustManager();
+    X509TrustManager secondX509 = noopX509TrustManager();
+    OkHttpClientBuilderImpl builder = new OkHttpClientBuilderImpl(
+        new OkHttpClientFactory(), new okhttp3.OkHttpClient.Builder());
+    builder.sslContext(null, new TrustManager[] { nonX509, firstX509, secondX509 });
+
+    OkHttpClientImpl client = builder.build();
+
+    assertThat(client.getOkHttpClient().x509TrustManager())
+        .as("should pick the first X509TrustManager from the array, skipping non-X509 entries")
+        .isSameAs(firstX509);
+  }
+
+  private static X509TrustManager noopX509TrustManager() {
+    return new X509TrustManager() {
       @Override
       public void checkClientTrusted(X509Certificate[] chain, String authType) {
       }
@@ -54,9 +71,5 @@ class OkHttpClientBuilderImplTest {
         return new X509Certificate[0];
       }
     };
-    OkHttpClientBuilderImpl builder = new OkHttpClientBuilderImpl(
-        new OkHttpClientFactory(), new okhttp3.OkHttpClient.Builder());
-    builder.sslContext(null, new TrustManager[] { noopTrustManager, noopTrustManager });
-    assertThatCode(builder::build).doesNotThrowAnyException();
   }
 }
