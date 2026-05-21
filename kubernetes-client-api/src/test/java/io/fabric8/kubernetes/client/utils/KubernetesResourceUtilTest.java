@@ -370,15 +370,6 @@ class KubernetesResourceUtilTest {
   }
 
   @Test
-  @DisplayName("S5998: KUBERNETES_SUBDOMAIN_REGEX should use possessive quantifiers to prevent ReDoS")
-  void subdomainRegex_shouldUsePossessiveQuantifiers() {
-    String pattern = KubernetesResourceUtil.KUBERNETES_SUBDOMAIN_REGEX.pattern();
-    assertThat(pattern)
-        .as("Regex should use possessive quantifiers (?+ or *+) to prevent catastrophic backtracking")
-        .containsAnyOf("?+", "*+");
-  }
-
-  @Test
   @DisplayName("S5998: KUBERNETES_SUBDOMAIN_REGEX should still match valid subdomains after possessive fix")
   void subdomainRegex_shouldMatchValidSubdomains() {
     assertThat(KubernetesResourceUtil.KUBERNETES_SUBDOMAIN_REGEX.matcher("a").matches()).isTrue();

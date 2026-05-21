@@ -38,8 +38,8 @@ class OkHttpClientBuilderImplTest {
   }
 
   @Test
-  @DisplayName("S2637: build should not throw NPE when trustManagers has more than one entry")
-  void build_shouldNotThrowNpeWhenTrustManagersHasMultipleEntries() throws NoSuchAlgorithmException {
+  @DisplayName("S2637: build should use first X509TrustManager when trustManagers has multiple entries")
+  void build_shouldUseFirstX509TrustManagerFromMultipleEntries() throws NoSuchAlgorithmException {
     X509TrustManager noopTrustManager = new X509TrustManager() {
       @Override
       public void checkClientTrusted(X509Certificate[] chain, String authType) {

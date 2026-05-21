@@ -252,9 +252,9 @@ public class OkHttpClientImpl extends StandardHttpClient<OkHttpClientImpl, OkHtt
 
   @Override
   public void doClose() {
-    httpClient.connectionPool().evictAll();
     Dispatcher dispatcher = httpClient.dispatcher();
     dispatcher.cancelAll();
+    httpClient.connectionPool().evictAll();
     dispatcher.executorService().shutdownNow();
   }
 
