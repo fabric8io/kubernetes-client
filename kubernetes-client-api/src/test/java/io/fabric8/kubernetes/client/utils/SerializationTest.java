@@ -537,6 +537,17 @@ class SerializationTest {
   }
 
   @Test
+  @DisplayName("S3064: yamlMapper should return a fully initialized mapper with modules registered")
+  @SuppressWarnings("deprecation")
+  void yamlMapper_shouldReturnFullyInitializedMapper() {
+    com.fasterxml.jackson.databind.ObjectMapper mapper = Serialization.yamlMapper();
+    assertThat(mapper).isNotNull();
+    assertThat(mapper.getRegisteredModuleIds())
+        .as("YAML mapper must have GoCompatibilityModule registered (not partially constructed)")
+        .anyMatch(id -> id.toString().contains("GoCompatibility"));
+  }
+
+  @Test
   void testAnyTypeSerialization() {
     // Given
     AnyType value = new AnyType("x");

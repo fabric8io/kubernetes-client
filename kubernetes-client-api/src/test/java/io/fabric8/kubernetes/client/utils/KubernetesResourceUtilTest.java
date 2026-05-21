@@ -369,6 +369,32 @@ class KubernetesResourceUtilTest {
         .contains(mapEntries);
   }
 
+  @Test
+  @DisplayName("S5998: KUBERNETES_SUBDOMAIN_REGEX should still match valid subdomains after possessive fix")
+  void subdomainRegex_shouldMatchValidSubdomains() {
+    assertThat(KubernetesResourceUtil.KUBERNETES_SUBDOMAIN_REGEX.matcher("a").matches()).isTrue();
+    assertThat(KubernetesResourceUtil.KUBERNETES_SUBDOMAIN_REGEX.matcher("abc").matches()).isTrue();
+    assertThat(KubernetesResourceUtil.KUBERNETES_SUBDOMAIN_REGEX.matcher("a-b").matches()).isTrue();
+    assertThat(KubernetesResourceUtil.KUBERNETES_SUBDOMAIN_REGEX.matcher("a--b").matches()).isTrue();
+    assertThat(KubernetesResourceUtil.KUBERNETES_SUBDOMAIN_REGEX.matcher("a.b.c").matches()).isTrue();
+    assertThat(KubernetesResourceUtil.KUBERNETES_SUBDOMAIN_REGEX.matcher("my-app.example.com").matches()).isTrue();
+    assertThat(KubernetesResourceUtil.KUBERNETES_SUBDOMAIN_REGEX.matcher("a1.b2.c3").matches()).isTrue();
+    assertThat(KubernetesResourceUtil.KUBERNETES_SUBDOMAIN_REGEX.matcher("0").matches()).isTrue();
+  }
+
+  @Test
+  @DisplayName("S5998: KUBERNETES_SUBDOMAIN_REGEX should still reject invalid subdomains after possessive fix")
+  void subdomainRegex_shouldRejectInvalidSubdomains() {
+    assertThat(KubernetesResourceUtil.KUBERNETES_SUBDOMAIN_REGEX.matcher("-a").matches()).isFalse();
+    assertThat(KubernetesResourceUtil.KUBERNETES_SUBDOMAIN_REGEX.matcher("a-").matches()).isFalse();
+    assertThat(KubernetesResourceUtil.KUBERNETES_SUBDOMAIN_REGEX.matcher(".a").matches()).isFalse();
+    assertThat(KubernetesResourceUtil.KUBERNETES_SUBDOMAIN_REGEX.matcher("a.").matches()).isFalse();
+    assertThat(KubernetesResourceUtil.KUBERNETES_SUBDOMAIN_REGEX.matcher("a..b").matches()).isFalse();
+    assertThat(KubernetesResourceUtil.KUBERNETES_SUBDOMAIN_REGEX.matcher("a.-b").matches()).isFalse();
+    assertThat(KubernetesResourceUtil.KUBERNETES_SUBDOMAIN_REGEX.matcher("A").matches()).isFalse();
+    assertThat(KubernetesResourceUtil.KUBERNETES_SUBDOMAIN_REGEX.matcher("a!b").matches()).isFalse();
+  }
+
   private MapEntry<String, String> createExpectedEntry(String key, Path filePath) throws IOException {
     String fileContent = new String(Files.readAllBytes(filePath));
     return entry(key, fileContent);

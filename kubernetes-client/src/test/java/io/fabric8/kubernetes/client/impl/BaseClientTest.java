@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.networking.v1.Ingress;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
 import io.fabric8.kubernetes.client.http.HttpClient;
@@ -30,7 +31,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
@@ -126,6 +130,61 @@ class BaseClientTest {
       // Then
       assertThat(result).isTrue();
     }
+  }
+
+  @Test
+  @DisplayName("S2445: addToCloseable should synchronize on internal closable set, not the parameter")
+  void addToCloseable_shouldSynchronizeOnClosableSet() throws Exception {
+    // Close the client and hold the closable lock. If addToCloseable synchronizes on
+    // closable, it blocks at the synchronized statement and never reaches isDone().
+    // If it wrongly synchronizes on the parameter, it enters immediately, finds
+    // closed.isDone() == true, and throws KubernetesClientException.
+    baseClient.close();
+
+    java.lang.reflect.Field closableField = BaseClient.class.getDeclaredField("closable");
+    closableField.setAccessible(true);
+    Object closableLock = closableField.get(baseClient);
+
+    CountDownLatch lockAcquired = new CountDownLatch(1);
+    CountDownLatch releaseLock = new CountDownLatch(1);
+
+    Thread lockHolder = new Thread(() -> {
+      synchronized (closableLock) {
+        lockAcquired.countDown();
+        try {
+          releaseLock.await(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+        }
+      }
+    });
+    lockHolder.start();
+    assertThat(lockAcquired.await(2, TimeUnit.SECONDS)).isTrue();
+
+    AtomicReference<Throwable> thrown = new AtomicReference<>();
+    AutoCloseable closeable = () -> {
+    };
+    Thread adder = new Thread(() -> {
+      try {
+        baseClient.addToCloseable(closeable);
+      } catch (Throwable t) {
+        thrown.set(t);
+      }
+    });
+    adder.start();
+    adder.join(500);
+
+    assertThat(adder.isAlive())
+        .as("addToCloseable should block on closable lock, not proceed with parameter lock")
+        .isTrue();
+    assertThat(thrown.get())
+        .as("addToCloseable should not have thrown yet (still blocked on lock)")
+        .isNull();
+
+    releaseLock.countDown();
+    adder.join(2000);
+    assertThat(thrown.get()).isInstanceOf(KubernetesClientException.class);
+    lockHolder.join(2000);
   }
 
   @Test

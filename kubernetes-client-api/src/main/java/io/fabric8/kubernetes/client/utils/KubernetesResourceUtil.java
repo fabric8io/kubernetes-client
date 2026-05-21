@@ -59,7 +59,7 @@ public class KubernetesResourceUtil {
   }
 
   public static final Pattern KUBERNETES_SUBDOMAIN_REGEX = Pattern
-      .compile("[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*");
+      .compile("[a-z0-9]([-a-z0-9]*[a-z0-9])?+(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?+)*+");
   public static final Pattern KUBERNETES_DNS1123_LABEL_REGEX = Pattern.compile("[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?");
   public static final Pattern KUBERNETES_KEY_REGEX = Pattern
       .compile("(" + KUBERNETES_SUBDOMAIN_REGEX.toString() + "/)?[a-z0-9]([-_.a-z0-9]{0,61}[a-z0-9])?");
