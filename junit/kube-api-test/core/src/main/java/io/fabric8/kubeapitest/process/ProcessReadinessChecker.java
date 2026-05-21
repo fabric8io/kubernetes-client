@@ -72,8 +72,15 @@ public class ProcessReadinessChecker {
 
   public void waitUntilDefaultNamespaceAvailable(int apiServerPort, BinaryManager binaryManager,
       CertManager certManager, KubeAPIServerConfig config, int timeoutMillis) {
+    waitUntilDefaultNamespaceAvailable(apiServerPort, binaryManager, certManager, config,
+        timeoutMillis, null);
+  }
+
+  public void waitUntilDefaultNamespaceAvailable(int apiServerPort, BinaryManager binaryManager,
+      CertManager certManager, KubeAPIServerConfig config, int timeoutMillis,
+      BooleanSupplier abortCheck) {
     pollWithTimeout(() -> defaultNamespaceExists(apiServerPort, binaryManager, certManager, config),
-        KUBE_API_SERVER, timeoutMillis);
+        KUBE_API_SERVER, timeoutMillis, abortCheck);
   }
 
   private boolean defaultNamespaceExists(int apiServerPort, BinaryManager binaryManager,
@@ -111,7 +118,7 @@ public class ProcessReadinessChecker {
 
   public void waitUntilReady(int port, String readyCheckPath, String processName,
       boolean useTLS, int timeoutMillis) {
-    waitUntilReady(port, readyCheckPath, processName, useTLS, timeoutMillis, null);
+    waitUntilReady(port, readyCheckPath, processName, useTLS, timeoutMillis, null, null);
   }
 
   /**
@@ -124,16 +131,34 @@ public class ProcessReadinessChecker {
    */
   public void waitUntilReady(int port, String readyCheckPath, String processName,
       boolean useTLS, int timeoutMillis, CertManager certManager) {
+    waitUntilReady(port, readyCheckPath, processName, useTLS, timeoutMillis, certManager, null);
+  }
+
+  /**
+   * Same as {@link #waitUntilReady(int, String, String, boolean, int, CertManager)}, but accepts
+   * an {@code abortCheck} supplier consulted between polls. When the supplier returns {@code true}
+   * (e.g. the underlying child process has exited unexpectedly) the wait is aborted immediately
+   * instead of running out the full timeout. This keeps a failed startup from stalling the main
+   * thread the entire {@code startupTimeout} window (see #7807).
+   */
+  public void waitUntilReady(int port, String readyCheckPath, String processName,
+      boolean useTLS, int timeoutMillis, CertManager certManager, BooleanSupplier abortCheck) {
     HttpClient client = getHttpClient(certManager);
     HttpRequest request = getHttpRequest(useTLS, readyCheckPath, port);
-    pollWithTimeout(() -> ready(client, request, processName, port), processName, timeoutMillis);
+    pollWithTimeout(() -> ready(client, request, processName, port), processName, timeoutMillis,
+        abortCheck);
   }
 
   private static void pollWithTimeout(BooleanSupplier predicate, String processName,
-      int timeoutMillis) {
+      int timeoutMillis, BooleanSupplier abortCheck) {
     try {
       LocalTime startedAt = LocalTime.now();
       while (true) {
+        // abortCheck is consulted before the (potentially slow, network-bound) predicate so an
+        // already-dead child process does not burn another HTTP-timeout window before throwing.
+        if (abortCheck != null && abortCheck.getAsBoolean()) {
+          throw new KubeAPITestException(processName + " exited before becoming ready");
+        }
         if (predicate.getAsBoolean()) {
           return;
         }
