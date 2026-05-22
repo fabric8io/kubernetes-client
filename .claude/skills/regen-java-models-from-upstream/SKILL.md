@@ -1,6 +1,6 @@
 ---
-name: bump-go-dep
-description: Bump a Go dependency from a failing Dependabot PR in the Kubernetes model generator. Regenerates models, fixes breaking changes, updates CHANGELOG, and creates a new PR that closes the Dependabot one.
+name: regen-java-models-from-upstream
+description: Bump a Go dependency from a failing Dependabot PR in the Kubernetes model generator, adapt the generator to upstream Go API changes, regenerate Java models, fix Java compilation, update CHANGELOG, and open a PR that closes the Dependabot one.
 argument-hint: "<dependabot-pr-number>"
 disable-model-invocation: true
 allowed-tools: Read, Edit, Write, Grep, Glob, Bash, AskUserQuestion, Agent
