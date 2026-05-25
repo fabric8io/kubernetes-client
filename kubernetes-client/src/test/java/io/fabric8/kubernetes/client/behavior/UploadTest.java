@@ -28,7 +28,7 @@ import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.StandardWebSocketBuilder;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClient;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClientFactory;
-import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.http.TestWebSocket;
 import io.fabric8.kubernetes.client.http.WebSocketResponse;
 import io.fabric8.kubernetes.client.http.WebSocketUpgradeResponse;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
@@ -38,7 +38,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnJre;
 import org.junit.jupiter.api.io.TempDir;
-import org.mockito.ArgumentCaptor;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -52,17 +51,12 @@ import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.condition.JRE.JAVA_21;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @DisplayName("Pod Upload Behavior")
 class UploadTest {
@@ -110,8 +104,7 @@ class UploadTest {
   @DisplayName("With failed upload, attempts to delete temp file")
   void uploadFailureDeletesTemp() {
     // Given
-    final WebSocket webSocket = mock(WebSocket.class);
-    when(webSocket.send(any())).thenReturn(true);
+    final TestWebSocket webSocket = new TestWebSocket();
     final TestStandardHttpClient.WsFutureProvider future = (s, l) -> {
       l.onOpen(webSocket);
       l.onMessage(webSocket, ByteBuffer.wrap("\u0003 ".getBytes(StandardCharsets.UTF_8))); // exit
@@ -140,21 +133,17 @@ class UploadTest {
   @DisplayName("Successful")
   class Success {
 
-    private WebSocket webSocket;
+    private TestWebSocket webSocket;
     private Path toUpload;
 
     @BeforeEach
     void setUp() {
-      final AtomicInteger tarByteCount = new AtomicInteger(0);
-      webSocket = mock(WebSocket.class);
-      when(webSocket.send(any())).thenAnswer(i -> {
-        tarByteCount.addAndGet(i.<ByteBuffer> getArgument(0).remaining() - 1);
-        return true;
-      });
+      webSocket = new TestWebSocket();
       final TestStandardHttpClient.WsFutureProvider future = (s, l) -> {
         l.onOpen(webSocket);
         if (s.asHttpRequest().uri().getQuery().contains("command=wc -c")) {
-          l.onMessage(webSocket, ByteBuffer.wrap(("\u0001" + tarByteCount.get() + "\n").getBytes(StandardCharsets.UTF_8)));
+          int byteCount = webSocket.getSent().stream().mapToInt(b -> b.remaining() - 1).sum();
+          l.onMessage(webSocket, ByteBuffer.wrap(("\u0001" + byteCount + "\n").getBytes(StandardCharsets.UTF_8)));
         }
         l.onMessage(webSocket, exitZeroEvent());
         return CompletableFuture.completedFuture(new WebSocketResponse(new WebSocketUpgradeResponse(null), webSocket));
@@ -242,13 +231,6 @@ class UploadTest {
       @DisplayName("Tar compression")
       class TarCompression {
 
-        private ArgumentCaptor<ByteBuffer> sendCaptor;
-
-        @BeforeEach
-        void setUp() {
-          sendCaptor = ArgumentCaptor.forClass(ByteBuffer.class);
-        }
-
         @Test
         @DisplayName("Creates a valid Tar archive from file")
         void validTarArchive() throws Exception {
@@ -256,10 +238,11 @@ class UploadTest {
           client.pods().inNamespace("default").withName("success-pod").file("/target-dir/file-name.txt")
               .upload(toUpload);
           // Then
-          verify(webSocket).send(sendCaptor.capture());
-          // First byte is the WebSocket Flag (0) (discard it)
-          final byte[] tarBytes = new byte[sendCaptor.getValue().remaining() - 1];
-          System.arraycopy(sendCaptor.getValue().array(), 1, tarBytes, 0, tarBytes.length);
+          assertThat(webSocket.getSent()).isNotEmpty();
+          final ByteBuffer sent = webSocket.getSent().get(0);
+          sent.get(); // skip WebSocket flag byte
+          final byte[] tarBytes = new byte[sent.remaining()];
+          sent.get(tarBytes);
           final TarArchiveInputStream tar = new TarArchiveInputStream(new ByteArrayInputStream(tarBytes));
           assertThat(tar.getNextEntry())
               .hasFieldOrPropertyWithValue("name", "file-name.txt")
@@ -276,10 +259,11 @@ class UploadTest {
               .file("/target-dir/" + longFileName)
               .upload(toUpload);
           // Then
-          verify(webSocket).send(sendCaptor.capture());
-          // First byte is the WebSocket Flag (0) (discard it)
-          final byte[] tarBytes = new byte[sendCaptor.getValue().remaining() - 1];
-          System.arraycopy(sendCaptor.getValue().array(), 1, tarBytes, 0, tarBytes.length);
+          assertThat(webSocket.getSent()).isNotEmpty();
+          final ByteBuffer sent = webSocket.getSent().get(0);
+          sent.get(); // skip WebSocket flag byte
+          final byte[] tarBytes = new byte[sent.remaining()];
+          sent.get(tarBytes);
           final TarArchiveInputStream tar = new TarArchiveInputStream(new ByteArrayInputStream(tarBytes));
           assertThat(tar.getNextEntry())
               .hasFieldOrPropertyWithValue("name", longFileName);
@@ -295,10 +279,11 @@ class UploadTest {
           client.pods().inNamespace("default").withName("success-pod").file("/target-dir/file-name.txt")
               .upload(toUploadWithModifiedDate);
           // Then
-          verify(webSocket).send(sendCaptor.capture());
-          // First byte is the WebSocket Flag (0) (discard it)
-          final byte[] tarBytes = new byte[sendCaptor.getValue().remaining() - 1];
-          System.arraycopy(sendCaptor.getValue().array(), 1, tarBytes, 0, tarBytes.length);
+          assertThat(webSocket.getSent()).isNotEmpty();
+          final ByteBuffer sent = webSocket.getSent().get(0);
+          sent.get(); // skip WebSocket flag byte
+          final byte[] tarBytes = new byte[sent.remaining()];
+          sent.get(tarBytes);
           final TarArchiveInputStream tar = new TarArchiveInputStream(new ByteArrayInputStream(tarBytes));
           assertThat(tar.getNextEntry())
               .hasFieldOrPropertyWithValue("name", "file-name.txt")
