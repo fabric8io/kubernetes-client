@@ -3,9 +3,17 @@
 ### 7.8-SNAPSHOT
 
 #### Bugs
+* Fix #7857: (kubernetes-server-mock) `WatchEventsListener.onClosing` now queues the server-side `WebSocket.close(...)` on the listener's send executor instead of invoking it directly on the Vert.x event loop. This preserves FIFO ordering with any data frames already queued on that executor, so events scheduled before a client-initiated watch close (e.g. an `ADDED`/`DELETED` pair on a final `create`/`delete` before `watch.close()`) are delivered before the close frame instead of being silently dropped by writes against an already-closing socket
+* Fix #7832: (sonar) Re-interrupt thread in 8 production-code catch blocks that swallowed `InterruptedException` without preserving the interrupt status (S2142)
 * Fix #7841: (mockwebserver) split `Dispatcher` shutdown into two phases so `MockDispatcher` only tears down per-session `WebSocketSession` executors after the HTTP server has drained, removing the window where an in-flight upgrade's `onOpen` could land on a shut-down executor. `shutdown()` still runs before `httpServer.close()` to unblock blocked dispatches (e.g. `QueueDispatcher.take()`); the new `releaseResources()` runs after. `WebSocketSession.send()` additionally catches `RejectedExecutionException` defensively so any residual shutdown race stays silent instead of bubbling as a Vert.x `Unhandled exception`. `KubernetesMixedDispatcher` now delegates both lifecycle hooks to its inner `MockDispatcher`, fixing a pre-existing leak where CRUD-mode WebSocket session executors were never shut down
 * Fix #7779: (kubernetes-client) ExecWebSocketListener now notifies the user-supplied ExecListener on transport-level errors that race with `terminateOnError` / channel-3 exit-status completion — `listener.onFailure` (or `onClose`) fires exactly once, gated by a dedicated flag, instead of being silently swallowed when the deferred onError task observes `exitCode.isDone()`
 * Fix #7765: (kubernetes-client) `BaseOperation.informOnCondition` now stops the informer inline when the inner predicate completes the future, closing a CompletableFuture `postComplete` race where a waiter helping drain dependents could fire `informer.stop` after `cf.complete` had already triggered a spurious `?watch=true` HTTP request
+* Fix #7847: (kubernetes-client) `BaseClient.addToCloseable` now synchronizes on the internal closeable set rather than the caller-supplied parameter, so callers cannot break mutual exclusion by passing different references (sonar S2445)
+* Fix #7847: (kubernetes-client-api) `KUBERNETES_SUBDOMAIN_REGEX` uses possessive quantifiers on the outer groups to block ReDoS-style backtracking on adversarial subdomain input; semantics still match the canonical RFC 1123 subdomain pattern (sonar S5998)
+* Fix #7847: (kubernetes-client-api) `Serialization.yamlMapper` builds the mapper into a local before assigning to the `volatile` field, so concurrent readers can no longer observe a partially-initialized instance with modules not yet registered (sonar S3064)
+* Fix #7847: (mockwebserver) self-signed cert/key temp file cleanup goes through `Files.deleteIfExists` with logging instead of swallowing the `File.delete()` return value (sonar S899)
+* Fix #7847: (httpclient-okhttp) `OkHttpClientBuilderImpl` now picks the first `X509TrustManager` from a multi-entry `TrustManager[]` rather than passing `null` to OkHttp's `sslSocketFactory` and NPE'ing; user-supplied `sslContext` is preserved for multi-CA setups (sonar S2637)
+* Fix #7847: (httpclient-okhttp) `OkHttpClientImpl.doClose` removes dead null checks on `dispatcher` and `connectionPool` that are guaranteed non-null by the OkHttp API (sonar S2583)
 
 #### Improvements
 * Fix #7675: (mockwebserver) `MockWebServer.dispatcher` field marked `volatile` so a `setDispatcher(...)` call is reliably visible to the Vert.x request handler thread without further synchronization. `MockWebServer.reset()` Javadoc tightened to make its non-destructive contract explicit (no change to the running server, dispatcher, listeners, SSL/TLS state, port, or protocols)
@@ -13,6 +21,7 @@
 * Fix #7837: (kubernetes-client) Follow-ups on shard selector
 
 #### Dependency Upgrade
+* Fix #7849: bump istio.io/client-go from 1.29.2 to 1.30.0
 
 #### New Features
 

@@ -30,6 +30,7 @@ import org.junit.jupiter.api.Test;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @EnableKubernetesMockClient(https = false)
@@ -42,14 +43,14 @@ class VisitResourcesTest {
     // api/v1 is missing
     // apis is missing
     // the following should still succeed
-    client.visitResources(new ApiVisitor() {
+    assertDoesNotThrow(() -> client.visitResources(new ApiVisitor() {
 
       @Override
       public ApiVisitResult visitResource(String group, String version, APIResource apiResource,
           MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> operation) {
         throw new AssertionError();
       }
-    });
+    }));
   }
 
   @Test

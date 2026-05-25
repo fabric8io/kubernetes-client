@@ -1159,6 +1159,26 @@
             </includes>
             <eclipse>
               <file>ide-config/eclipse-format.xml</file>
+              <!--
+                Route Equo's P2 fetches through OSU Open Source Lab. The default
+                https://download.eclipse.org/ origin uses HTTP/2 keep-alive frames
+                that defeat OkHttp's per-stream timeout (Equo builds the client
+                with no callTimeout), so cold-cache CI runs stall indefinitely.
+                The mirror serves the same paths over plain HTTPS and downloads
+                reliably in ~30s.
+
+                If this mirror ever becomes unreliable, alternatives that have
+                been verified to host the same /eclipse/updates/ tree:
+                  https://mirror.umd.edu/eclipse/
+                  https://ftp.halifax.rwth-aachen.de/eclipse/
+                  https://www.mirrorservice.org/sites/download.eclipse.org/eclipseMirror/
+              -->
+              <p2Mirrors>
+                <p2Mirror>
+                  <prefix>https://download.eclipse.org/</prefix>
+                  <url>https://ftp.osuosl.org/pub/eclipse/</url>
+                </p2Mirror>
+              </p2Mirrors>
             </eclipse>
             <importOrder>
               <file>ide-config/eclipse.importorder</file>
@@ -1173,7 +1193,24 @@
               <include>src/it/**/*.groovy</include>
             </includes>
             <importOrder/>
-            <greclipse/>
+            <greclipse>
+              <!--
+                See the rationale in the <eclipse> block above; greclipse also
+                fetches Eclipse 4.x bundles. With <p2Mirrors> present, spotless
+                rejects any P2 URL whose prefix isn't listed here, so we also
+                pass groovy.jfrog.io through (identity mapping = allow as-is).
+              -->
+              <p2Mirrors>
+                <p2Mirror>
+                  <prefix>https://download.eclipse.org/</prefix>
+                  <url>https://ftp.osuosl.org/pub/eclipse/</url>
+                </p2Mirror>
+                <p2Mirror>
+                  <prefix>https://groovy.jfrog.io/</prefix>
+                  <url>https://groovy.jfrog.io/</url>
+                </p2Mirror>
+              </p2Mirrors>
+            </greclipse>
           </groovy>
         </configuration>
       </plugin>

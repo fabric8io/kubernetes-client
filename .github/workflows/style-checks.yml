@@ -17,7 +17,16 @@
 name: Style Checks
 
 env:
-  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
+  # Aether timeouts cap Maven Resolver HTTP calls; sun.net.client.* timeouts
+  # cap raw java.net.HttpURLConnection (e.g. URL.openStream in
+  # gradle-api-maven-plugin), which Aether cannot affect.
+  MAVEN_ARGS: >-
+    -B -C -V -ntp -Dhttp.keepAlive=false -e -T 1C
+    -Daether.connector.connectTimeout=10000
+    -Daether.connector.requestTimeout=30000
+    -Daether.connector.http.retryHandler.count=1
+    -Dsun.net.client.defaultConnectTimeout=10000
+    -Dsun.net.client.defaultReadTimeout=30000
 
 on:
   push:
@@ -41,16 +50,32 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
       - name: Setup Java 17
         uses: actions/setup-java@v5
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'maven'
+      - name: Strip stale _remote.repositories tracker files
+        # Tracker files left behind by other workflows reference repository
+        # IDs that don't exist in this build's pom, which makes Maven 3.9
+        # re-validate each cached artifact against Maven Central. A slow
+        # Central response can then stall the job for many minutes.
+        run: find ~/.m2/repository -name _remote.repositories -delete 2>/dev/null || true
       - name: Check License Headers
         run: ./mvnw ${MAVEN_ARGS} -Pitests -N license:check
-      - name: Check Format (only on touched files)
+      - name: Check Format
+        # Spotless's eclipse formatter pulls Eclipse JDT bundles via Equo's P2
+        # client, which uses OkHttp without timeouts and stalls indefinitely on
+        # download.eclipse.org. We work around this by routing those fetches
+        # through a P2 mirror configured in the root pom (<p2Mirrors> on the
+        # spotless plugin's <eclipse> block).
+        #
+        # If this step starts hanging again, the mirror is the most likely
+        # culprit — switch to one of the alternatives listed alongside the
+        # <p2Mirrors> entry in pom.xml. The 5-minute cap is a safety net so a
+        # mirror outage fails fast instead of consuming the full job budget.
+        timeout-minutes: 5
         run: ./mvnw ${MAVEN_ARGS} -Pitests spotless:check
       - name: Cancel PR workflows on failure
         if: ${{ failure() && github.event_name == 'pull_request' }}

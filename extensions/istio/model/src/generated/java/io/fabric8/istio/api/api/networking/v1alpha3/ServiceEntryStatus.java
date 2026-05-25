@@ -115,7 +115,7 @@ public class ServiceEntryStatus implements Editable<ServiceEntryStatusBuilder>, 
     }
 
     /**
-     * Current service state of ServiceEntry. More info: https://istio.io/docs/reference/config/config-status/
+     * Current service state of ServiceEntry.
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -124,7 +124,7 @@ public class ServiceEntryStatus implements Editable<ServiceEntryStatusBuilder>, 
     }
 
     /**
-     * Current service state of ServiceEntry. More info: https://istio.io/docs/reference/config/config-status/
+     * Current service state of ServiceEntry.
      */
     @JsonProperty("conditions")
     public void setConditions(List<IstioCondition> conditions) {
@@ -132,7 +132,7 @@ public class ServiceEntryStatus implements Editable<ServiceEntryStatusBuilder>, 
     }
 
     /**
-     * Resource Generation to which the Reconciled Condition refers. When this value is not equal to the object's metadata generation, reconciled condition  calculation for the current generation is still in progress.  See https://istio.io/latest/docs/reference/config/config-status/ for more info.
+     * Resource Generation to which the Reconciled Condition refers. When this value is not equal to the object's metadata generation, reconciled condition  calculation for the current generation is still in progress.
      */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
@@ -140,7 +140,7 @@ public class ServiceEntryStatus implements Editable<ServiceEntryStatusBuilder>, 
     }
 
     /**
-     * Resource Generation to which the Reconciled Condition refers. When this value is not equal to the object's metadata generation, reconciled condition  calculation for the current generation is still in progress.  See https://istio.io/latest/docs/reference/config/config-status/ for more info.
+     * Resource Generation to which the Reconciled Condition refers. When this value is not equal to the object's metadata generation, reconciled condition  calculation for the current generation is still in progress.
      */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {

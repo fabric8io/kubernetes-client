@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import static okhttp3.ConnectionSpec.CLEARTEXT;
@@ -73,10 +74,21 @@ class OkHttpClientBuilderImpl
     }
     if (sslContext != null) {
       X509TrustManager trustManager = null;
-      if (trustManagers != null && trustManagers.length == 1) {
-        trustManager = (X509TrustManager) trustManagers[0];
+      if (trustManagers != null) {
+        for (TrustManager tm : trustManagers) {
+          if (tm instanceof X509TrustManager) {
+            trustManager = (X509TrustManager) tm;
+            break;
+          }
+        }
       }
-      builder.sslSocketFactory(sslContext.getSocketFactory(), trustManager);
+      if (trustManager != null) {
+        builder.sslSocketFactory(sslContext.getSocketFactory(), trustManager);
+      } else {
+        logger.warn("sslContext is configured but no X509TrustManager was found in trustManagers ({}); "
+            + "SSL socket factory not applied, OkHttp will use its default trust configuration",
+            trustManagers == null ? "null" : "length=" + trustManagers.length);
+      }
     }
     if (followRedirects) {
       builder.followRedirects(true).followSslRedirects(true);

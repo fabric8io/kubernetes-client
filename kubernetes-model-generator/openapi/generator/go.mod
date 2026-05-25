@@ -30,7 +30,7 @@ require (
 	github.com/stolostron/search-v2-operator v0.0.0-20250609200037-030a382461f4
 	github.com/tektoncd/pipeline v1.12.0
 	github.com/tektoncd/triggers v0.35.0
-	istio.io/client-go v1.29.2
+	istio.io/client-go v1.30.0
 	k8s.io/api v0.36.1
 	k8s.io/apiextensions-apiserver v0.36.1
 	k8s.io/apimachinery v0.36.1
@@ -239,7 +239,7 @@ require (
 	google.golang.org/protobuf v1.36.12-0.20260120151049-f2248ac996af // indirect
 	gopkg.in/evanphx/json-patch.v4 v4.13.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
-	istio.io/api v1.29.2-0.20260408155000-a0e4e1cbfcc5 // indirect
+	istio.io/api v1.30.0-rc.0.0.20260508191950-a283232d9647 // indirect
 	k8s.io/component-base v0.36.1 // indirect
 	k8s.io/klog/v2 v2.140.0 // indirect
 	k8s.io/utils v0.0.0-20260210185600-b8788abfbbc2 // indirect

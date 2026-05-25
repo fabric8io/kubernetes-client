@@ -493,6 +493,9 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(destination.toPath()))) {
       ExecWatch w = writingOutput(out).exec(readFileCommand(source));
       w.exitCode().get();
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(e);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }

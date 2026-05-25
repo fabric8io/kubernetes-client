@@ -51,6 +51,7 @@ import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.nio.file.Files;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.cert.X509Certificate;
@@ -350,8 +351,16 @@ public class MockWebServer implements Closeable {
 
         @Override
         public void delete() {
-          certTempFile.delete();
-          keyTempFile.delete();
+          try {
+            Files.deleteIfExists(certTempFile.toPath());
+          } catch (IOException e) {
+            logger.log(Level.WARNING, "Failed to delete temp cert file: " + certTempFile, e);
+          }
+          try {
+            Files.deleteIfExists(keyTempFile.toPath());
+          } catch (IOException e) {
+            logger.log(Level.WARNING, "Failed to delete temp key file: " + keyTempFile, e);
+          }
         }
       };
     } catch (Exception e) {
