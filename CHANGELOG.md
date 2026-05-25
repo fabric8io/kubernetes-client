@@ -24,6 +24,7 @@
 * Fix #7849: bump istio.io/client-go from 1.29.2 to 1.30.0
 
 #### New Features
+* Fix #5084: Jbang scripts to generate graalVM metadata
 
 #### _**Note**_: Breaking changes
 
