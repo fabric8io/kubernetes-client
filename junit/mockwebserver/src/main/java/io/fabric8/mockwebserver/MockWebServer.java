@@ -87,6 +87,7 @@ public class MockWebServer implements Closeable {
   private final BlockingQueue<RecordedRequest> requestQueue;
   private final AtomicInteger requestCount;
   private final List<MockWebServerListener> listeners;
+  @SuppressWarnings("java:S3077") // volatile reference-swap; Dispatcher implementations are thread-safe
   private volatile Dispatcher dispatcher;
   private ClientAuth clientAuth;
   private final List<String> enabledSecuredTransportProtocols;

@@ -37,6 +37,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourceList<T>> extends AbstractWatchManager<T> {
   private CompletableFuture<HttpResponse<AsyncBody>> call;
+  @SuppressWarnings("java:S3077") // volatile reference-swap; AsyncBody is designed for concurrent use
   private volatile AsyncBody body;
 
   public WatchHTTPManager(final HttpClient client,

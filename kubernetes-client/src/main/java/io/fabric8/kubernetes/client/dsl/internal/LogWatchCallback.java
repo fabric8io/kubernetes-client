@@ -41,6 +41,7 @@ public class LogWatchCallback implements LogWatch, AutoCloseable {
 
   private final OutputStream out;
   private WritableByteChannel outChannel;
+  @SuppressWarnings("java:S3077") // volatile provides safe publication of the InputStream reference
   private volatile InputStream output;
 
   private final AtomicBoolean closed = new AtomicBoolean(false);
