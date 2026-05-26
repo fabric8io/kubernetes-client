@@ -43,6 +43,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
 
   private final long connectTimeoutMillis;
   protected WatcherWebSocketListener<T> listener;
+  @SuppressWarnings("java:S3077") // CompletableFuture is thread-safe; volatile ensures reference visibility
   private volatile CompletableFuture<WebSocket> websocketFuture;
 
   volatile boolean ready;

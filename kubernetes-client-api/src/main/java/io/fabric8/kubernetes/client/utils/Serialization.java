@@ -45,6 +45,7 @@ public class Serialization {
   public static final UnmatchedFieldTypeModule UNMATCHED_FIELD_TYPE_MODULE = kubernetesSerialization
       .getUnmatchedFieldTypeModule();
 
+  @SuppressWarnings("java:S3077") // double-checked locking; volatile ensures safe publication
   private static volatile ObjectMapper YAML_MAPPER;
 
   /**

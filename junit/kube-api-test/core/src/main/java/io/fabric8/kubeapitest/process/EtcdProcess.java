@@ -35,6 +35,7 @@ public class EtcdProcess {
 
   private final BinaryManager binaryManager;
 
+  @SuppressWarnings("java:S3077") // volatile ensures cross-thread visibility; Process methods are thread-safe
   private volatile Process etcdProcess;
   private volatile boolean stopped = false;
   private final UnexpectedProcessStopHandler processStopHandler;

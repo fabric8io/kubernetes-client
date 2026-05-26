@@ -50,13 +50,16 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private final ProcessorStore<T> store;
   private final ReflectorWatcher watcher;
   private volatile boolean watching;
+  @SuppressWarnings("java:S3077") // CompletableFuture is thread-safe; volatile ensures reference visibility
   private volatile CompletableFuture<AbstractWatchManager<T>> watchFuture;
+  @SuppressWarnings("java:S3077") // CompletableFuture is thread-safe; volatile ensures reference visibility
   private volatile CompletableFuture<?> reconnectFuture;
   private final CompletableFuture<Void> startFuture = new CompletableFuture<>();
   private final CompletableFuture<Void> stopFuture = new CompletableFuture<>();
   private final ExponentialBackoffIntervalCalculator retryIntervalCalculator;
   private final Executor executor;
   //default behavior - retry if started and it's not a watcherexception
+  @SuppressWarnings("java:S3077") // volatile reference-swap; the handler lambda is stateless
   private volatile ExceptionHandler handler = (b, t) -> b && !(t instanceof WatcherException);
   private long minTimeout = MIN_TIMEOUT;
 
@@ -70,6 +73,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
 
   private boolean watchList;
+  @SuppressWarnings("java:S3077") // inner fields (ConcurrentSkipListSet, CompletableFuture) are thread-safe
   private volatile WatchListState watchListState;
 
   public Reflector(ListerWatcher<T, L> listerWatcher, ProcessorStore<T> store) {
