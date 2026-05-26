@@ -50,7 +50,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
       - name: Setup Minikube-Kubernetes
-        uses: manusa/actions-setup-minikube@v2.18.0
+        uses: manusa/actions-setup-minikube@b65276017fdec6f1e6498129fb740e34e260dc55 # v2.18.0
         with:
           minikube version: v1.38.1
           kubernetes version: ${{ matrix.kubernetes }}
@@ -62,7 +62,7 @@ jobs:
           distribution: "temurin"
           cache: maven
       - name: Setup Kubectl # Chaos-Mesh setup requires a functional kubectl version for all cluster versiones
-        uses: azure/setup-kubectl@v5
+        uses: azure/setup-kubectl@829323503d1be3d00ca8346e5391ca0b07a9ab0d # v5
         with:
           version: ${{ matrix.kubernetes }}
       - name: Install Chaos Mesh

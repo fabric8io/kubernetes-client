@@ -44,7 +44,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - name: Install oc
-        uses: redhat-actions/oc-installer@v1
+        uses: redhat-actions/oc-installer@35b60c3f9757ae4301521556e1b75ff6f59f8d7c # v1
       - name: Login to OpenShift
         run: |
           oc login --server=${{ secrets.OSCI_SERVER }} --token=${{ secrets.OSCI_TOKEN }}
