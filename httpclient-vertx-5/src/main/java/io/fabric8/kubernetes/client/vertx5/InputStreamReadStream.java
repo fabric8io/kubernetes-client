@@ -31,6 +31,7 @@ class InputStreamReadStream implements ReadStream<Buffer> {
   private final StreamFlowController flowController;
 
   private Handler<Throwable> exceptionHandler;
+  private boolean errored;
 
   InputStreamReadStream(Vertx5HttpRequest vertxHttpRequest, InputStream inputStream, HttpClientRequest request) {
     this.vertxHttpRequest = vertxHttpRequest;
@@ -64,6 +65,9 @@ class InputStreamReadStream implements ReadStream<Buffer> {
   }
 
   private void readChunk() {
+    if (errored) {
+      return;
+    }
     if (recursionGuard.enter()) {
       try {
         executeBlockingRead();
@@ -98,7 +102,23 @@ class InputStreamReadStream implements ReadStream<Buffer> {
   }
 
   private void handleReadError(final Throwable cause) {
-    request.reset(0, cause);
+    if (errored) {
+      return;
+    }
+    errored = true;
+    // Vert.x 5.1's pipe (used internally by req.send(stream)) treats source failures by calling
+    // dst.end() — for an HTTP request that writes a clean truncated chunked body and leaves the
+    // response future pending forever waiting for a server reply. Reset the request directly so
+    // the failure propagates to the response promise.
+    //
+    // We deliberately pass null as the reset cause: HttpClientRequestImpl#mapException in 5.1
+    // unwraps StreamResetException(code, cause) to the original cause, so passing the IOException
+    // here would surface as IOException on the response. StandardHttpClient's retry layer treats
+    // IOException as retryable, but a half-sent request body cannot be replayed — we'd retry
+    // until the user-facing timeout. Passing null cause leaves the response failing with
+    // StreamResetException, which is not retried; the original cause is still forwarded to the
+    // pipe via the exceptionHandler below.
+    request.reset(0x8);
     if (exceptionHandler != null) {
       exceptionHandler.handle(cause);
     }

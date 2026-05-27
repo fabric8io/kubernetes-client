@@ -271,6 +271,9 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
 
       @Override
       public SslContextFactory sslContextFactory() {
+        // JdkSslContext interprets an empty String[] as "no protocols enabled", which JSSE then
+        // rejects with "No appropriate protocol". Pass null when the caller didn't request a
+        // specific TLS version so the JDK defaults apply.
         return () -> new JdkSslContext(
             sslContext,
             true,
@@ -278,7 +281,7 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
             IdentityCipherSuiteFilter.INSTANCE,
             ApplicationProtocolConfig.DISABLED,
             io.netty.handler.ssl.ClientAuth.NONE,
-            protocols,
+            protocols.length > 0 ? protocols : null,
             false);
       }
     };

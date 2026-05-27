@@ -26,6 +26,7 @@
 * Fix #7894: bump k8s.io/autoscaler/vertical-pod-autoscaler from 1.6.0 to 1.7.0
 * Fix #7894: bump k8s.io/gengo/v2 from 2.0.0-20251215205346-5ee0d033ba5b to 2.0.0-20260408192533-25e2208e0dc3
 * Fix #7894: bump k8s.io/kube-openapi from 0.0.0-20260319004828-5883c5ee87b9 to 0.0.0-20260414162039-ec9c827d403f
+* Fix #7875: bump vertx5.version from 5.0.12 to 5.1.1, adapting httpclient-vertx-5 to Vert.x 5.1 behaviour changes (SSL engine options no longer accept an empty protocol array; request-body stream errors are reset with HTTP/2 CANCEL so they are not retried as transient IOExceptions)
 
 #### New Features
 * Fix #5084: Jbang scripts to generate graalVM metadata
