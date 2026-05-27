@@ -48,7 +48,7 @@ class UtilsTest {
   }
 
   @Test
-  @DisplayName("findFreePort never returns the same port twice within a JVM so that concurrently-launched child processes (e.g. etcd and kube-apiserver) cannot collide on bind")
+  @DisplayName("findFreePort never returns the same port twice within a JVM")
   void findFreePortDoesNotReturnDuplicates() {
     // Issue #7873: successive findFreePort() calls within the same JVM could
     // return the same port because the probe ServerSocket was closed before the

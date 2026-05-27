@@ -94,9 +94,8 @@ public class Utils {
         continue;
       }
       try (ServerSocket ignored = new ServerSocket(port)) {
-        if (ALLOCATED_PORTS.add(port)) {
-          return port;
-        }
+        ALLOCATED_PORTS.add(port);
+        return port;
       } catch (Exception e) {
         // NOOP
       }
