@@ -28,11 +28,18 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Utils {
 
   public static final String WILDCARD_SUFFIX = ".*";
   private static final Random RANDOM = new Random();
+  // Ports already handed out by findFreePort during this JVM's lifetime.
+  // The probe ServerSocket closes before the caller binds, so a port that just
+  // passed the check is "free" again on the next call — etcd and kube-apiserver
+  // launching back-to-back can otherwise collide (see #7873).
+  private static final Set<Integer> ALLOCATED_PORTS = ConcurrentHashMap.newKeySet();
 
   private Utils() {
   }
@@ -83,8 +90,13 @@ public class Utils {
   public static int findFreePort(int min, int max, int attempts) {
     for (int i = 0; i < attempts; i++) {
       int port = min + RANDOM.nextInt(max - min + 1);
+      if (ALLOCATED_PORTS.contains(port)) {
+        continue;
+      }
       try (ServerSocket ignored = new ServerSocket(port)) {
-        return port;
+        if (ALLOCATED_PORTS.add(port)) {
+          return port;
+        }
       } catch (Exception e) {
         // NOOP
       }
