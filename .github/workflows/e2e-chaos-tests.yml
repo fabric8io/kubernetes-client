@@ -28,6 +28,9 @@ concurrency:
 
 env:
   CHAOS_MESH_VERSION: 2.6.0
+  # When bumping CHAOS_MESH_VERSION, update this checksum to match the new install.sh:
+  #   curl -sSL "https://mirrors.chaos-mesh.org/v<VERSION>/install.sh" | sha256sum
+  CHAOS_MESH_INSTALL_SHA256: 49374b8edb60d1a1f4a68fcb22c0eb9f99338a4e55fa32e51a88c0b9a0ef1adb
   CHAOS_TESTS_MODULE: chaos-tests
   MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
 
@@ -67,7 +70,9 @@ jobs:
           version: ${{ matrix.kubernetes }}
       - name: Install Chaos Mesh
         run: |
-          curl -sSL https://mirrors.chaos-mesh.org/v${CHAOS_MESH_VERSION}/install.sh | bash
+          curl -sSL "https://mirrors.chaos-mesh.org/v${CHAOS_MESH_VERSION}/install.sh" -o install.sh
+          echo "${CHAOS_MESH_INSTALL_SHA256}  install.sh" | sha256sum -c -
+          bash install.sh
           kubectl wait --for=condition=Ready pods --all-namespaces --all --timeout=600s
       - name: Run Chaos Tests
         env:
