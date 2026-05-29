@@ -26,7 +26,6 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
-import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -142,8 +141,8 @@ class PodCrudTest {
   void testPodWatchOnNamespace() throws InterruptedException {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build();
 
-    //there are two adds - one when the watch is registered, another later
-    final LatchedWatcher lw = new LatchedWatcher(2, 1, 1, 1, 1);
+    // 2 ADDED (initial-sync pod1 + pod-new), 1 MODIFIED (patch), 2 DELETED (pod1 + pod-new)
+    final LatchedWatcher lw = new LatchedWatcher(2, 1, 2, 1, 1);
 
     client.pods().inNamespace("ns1").create(pod1);
     Watch watch = client.pods().inNamespace("ns1").watch(lw);
@@ -152,8 +151,6 @@ class PodCrudTest {
         .patch(new PodBuilder().withNewMetadataLike(pod1.getMetadata()).endMetadata().build());
 
     client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName()).delete();
-
-    Awaitility.waitAtMost(1, TimeUnit.MINUTES).until(() -> lw.addLatch.getCount() == 1);
 
     client.pods().inNamespace("ns1").create(new PodBuilder()
         .withNewMetadata().withName("pod-new").addToLabels("testKey", "testValue").endMetadata()
@@ -165,8 +162,14 @@ class PodCrudTest {
 
     assertEquals(0, client.pods().inNamespace("ns1").list().getItems().size());
 
-    watch.close();
+    // Await event latches before watch.close(): AbstractWatchManager#close() flips
+    // forceClosed synchronously, and any frame queued on the per-watch SerialExecutor is
+    // then dropped at the guard inside the dispatch task.
     assertTrue(lw.addLatch.await(1, TimeUnit.MINUTES));
+    assertTrue(lw.editLatch.await(1, TimeUnit.MINUTES));
+    assertTrue(lw.deleteLatch.await(1, TimeUnit.MINUTES));
+
+    watch.close();
     assertTrue(lw.closeLatch.await(1, TimeUnit.MINUTES));
   }
 

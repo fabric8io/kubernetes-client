@@ -62,8 +62,8 @@ class StandardHttpClientTest {
   }
 
   @Test
-  void webSocketFutureCancel() {
-    WebSocket ws = mock(WebSocket.class);
+  void webSocketFutureCancel() throws Exception {
+    TestWebSocket ws = new TestWebSocket();
     final CompletableFuture<WebSocketResponse> wsResponsefuture = new CompletableFuture<>();
     client.wsExpect(".*", wsResponsefuture);
 
@@ -76,7 +76,8 @@ class StandardHttpClientTest {
     wsResponsefuture.complete(new WebSocketResponse(new WebSocketUpgradeResponse(null, 101), ws));
 
     // ensure that the ws has been closed
-    Mockito.verify(ws).sendClose(1000, null);
+    assertThat(ws.firstClose().get(5, TimeUnit.SECONDS))
+        .isEqualTo(new TestWebSocket.CloseFrame(1000, null));
   }
 
   @Test
@@ -203,7 +204,7 @@ class StandardHttpClientTest {
         .build();
     final WebSocketResponse error = new WebSocketResponse(new WebSocketUpgradeResponse(null, 500), new IOException());
     IntStream.range(0, 2).forEach(i -> client.wsExpect(".*", error));
-    client.wsExpect(".*", new WebSocketResponse(new WebSocketUpgradeResponse(null), mock(WebSocket.class)));
+    client.wsExpect(".*", new WebSocketResponse(new WebSocketUpgradeResponse(null), new TestWebSocket()));
 
     CompletableFuture<WebSocket> future = client.newWebSocketBuilder().uri(URI.create("ws://localhost"))
         .buildAsync(new Listener() {

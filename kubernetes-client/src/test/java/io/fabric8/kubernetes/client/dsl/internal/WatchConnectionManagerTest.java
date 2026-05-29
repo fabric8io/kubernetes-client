@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager.WatchRequestState;
 import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.TestWebSocket;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -31,6 +32,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -64,19 +66,20 @@ class WatchConnectionManagerTest {
   }
 
   @Test
-  void testCloseRequest() throws MalformedURLException, InterruptedException {
+  void testCloseRequest() throws Exception {
     CompletableFuture<WebSocket> future = new CompletableFuture<>();
     CountDownLatch reconnect = new CountDownLatch(1);
 
     WatchConnectionManager<?, ?> manager = setupWebSocketWatch(future, reconnect);
 
-    WebSocket mock = Mockito.mock(WebSocket.class);
-    future.complete(mock);
+    TestWebSocket testWs = new TestWebSocket();
+    future.complete(testWs);
 
     WatchRequestState state = manager.latestRequestState;
     manager.closeRequest();
 
-    Mockito.verify(mock).sendClose(1000, null);
+    assertThat(testWs.firstClose().get(5, TimeUnit.SECONDS))
+        .isEqualTo(new TestWebSocket.CloseFrame(1000, null));
 
     // we should still be on the same watch that has not ended (onClose / onError not called)
     assertSame(state, manager.latestRequestState);
@@ -90,8 +93,7 @@ class WatchConnectionManagerTest {
 
     WatchConnectionManager<?, ?> manager = setupWebSocketWatch(future, reconnect);
 
-    WebSocket mock = Mockito.mock(WebSocket.class);
-    future.complete(mock);
+    future.complete(new TestWebSocket());
 
     WatchRequestState state = manager.latestRequestState;
 
@@ -113,8 +115,7 @@ class WatchConnectionManagerTest {
       return new CompletableFuture<>();
     });
 
-    WebSocket mock = Mockito.mock(WebSocket.class);
-    future.complete(mock);
+    future.complete(new TestWebSocket());
 
     WatchRequestState state = manager.latestRequestState;
     manager.setWatchEndCheckMs(0);
