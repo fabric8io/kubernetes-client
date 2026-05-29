@@ -25,7 +25,7 @@ import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClient;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClientFactory;
-import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.http.TestWebSocket;
 import io.fabric8.kubernetes.client.http.WebSocketResponse;
 import io.fabric8.kubernetes.client.http.WebSocketUpgradeResponse;
 import org.assertj.core.api.InstanceOfAssertFactories;
@@ -39,9 +39,6 @@ import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @SuppressWarnings("resource")
 @DisplayName("Request Timeout Behavior")
@@ -257,8 +254,7 @@ class RequestTimeoutTest {
   @Test
   void uploadWsUpgradeHasDefaultTimeout() throws Exception {
     // Given
-    final WebSocket webSocket = mock(WebSocket.class);
-    when(webSocket.send(any())).thenReturn(true);
+    final TestWebSocket webSocket = new TestWebSocket();
     final TestStandardHttpClient.WsFutureProvider future = (s, l) -> {
       l.onOpen(webSocket);
       l.onClose(webSocket, 0, "done");
