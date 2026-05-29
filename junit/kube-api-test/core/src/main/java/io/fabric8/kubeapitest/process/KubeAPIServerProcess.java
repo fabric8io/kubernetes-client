@@ -40,6 +40,7 @@ public class KubeAPIServerProcess {
   private final CertManager certManager;
   private final BinaryManager binaryManager;
   private final KubeAPIServerConfig config;
+  @SuppressWarnings("java:S3077") // volatile ensures cross-thread visibility; Process methods are thread-safe
   private volatile Process apiServerProcess;
   private volatile boolean stopped = false;
   private final UnexpectedProcessStopHandler processStopHandler;

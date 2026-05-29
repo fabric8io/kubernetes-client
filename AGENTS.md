@@ -291,6 +291,7 @@ class MyTest {
 2. **Black-box Testing**: Test behavior through the client API, not internals
 3. **Avoid Excessive Mocking**: Use the mock server instead of Mockito for client tests
 4. **Use AssertJ**: Prefer fluent assertions for readability
+5. **Declarative `@DisplayName`**: Add `@DisplayName` on test methods describing the *behavior contract*. When the test fails, the implementer of a future fix or refactor should learn from the displayed name exactly which contract they broke, without having to read the test body.
 
 ### Test Structure Pattern
 

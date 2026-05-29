@@ -53,6 +53,7 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
   private final CompletableFuture<Void> terminated = new CompletableFuture<>();
   private final AtomicBoolean outputClosed = new AtomicBoolean();
   private boolean moreMessages;
+  @SuppressWarnings("java:S3077") // volatile publishes the session reference; Jetty Session is thread-safe
   private volatile Session webSocketSession;
 
   public JettyWebSocket(WebSocket.Listener listener) {

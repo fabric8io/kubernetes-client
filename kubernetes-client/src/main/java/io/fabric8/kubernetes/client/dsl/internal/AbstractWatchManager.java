@@ -124,6 +124,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
 
   private final boolean receiveBookmarks;
 
+  @SuppressWarnings("java:S3077") // inner fields (AtomicBoolean, CompletableFuture) are thread-safe
   volatile WatchRequestState latestRequestState;
   private final Map<Class<?>, Integer> endErrors = new ConcurrentHashMap<>();
   private AtomicInteger retryAfterSeconds = new AtomicInteger();
