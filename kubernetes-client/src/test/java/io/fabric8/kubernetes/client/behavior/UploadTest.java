@@ -238,7 +238,7 @@ class UploadTest {
           client.pods().inNamespace("default").withName("success-pod").file("/target-dir/file-name.txt")
               .upload(toUpload);
           // Then
-          assertThat(webSocket.getSent()).isNotEmpty();
+          assertThat(webSocket.getSent()).hasSize(1);
           final ByteBuffer sent = webSocket.getSent().get(0);
           sent.get(); // skip WebSocket flag byte
           final byte[] tarBytes = new byte[sent.remaining()];
@@ -259,7 +259,7 @@ class UploadTest {
               .file("/target-dir/" + longFileName)
               .upload(toUpload);
           // Then
-          assertThat(webSocket.getSent()).isNotEmpty();
+          assertThat(webSocket.getSent()).hasSize(1);
           final ByteBuffer sent = webSocket.getSent().get(0);
           sent.get(); // skip WebSocket flag byte
           final byte[] tarBytes = new byte[sent.remaining()];
@@ -279,7 +279,7 @@ class UploadTest {
           client.pods().inNamespace("default").withName("success-pod").file("/target-dir/file-name.txt")
               .upload(toUploadWithModifiedDate);
           // Then
-          assertThat(webSocket.getSent()).isNotEmpty();
+          assertThat(webSocket.getSent()).hasSize(1);
           final ByteBuffer sent = webSocket.getSent().get(0);
           sent.get(); // skip WebSocket flag byte
           final byte[] tarBytes = new byte[sent.remaining()];
