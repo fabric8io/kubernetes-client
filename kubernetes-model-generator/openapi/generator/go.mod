@@ -40,15 +40,15 @@ require (
 	k8s.io/kube-openapi v0.0.0-20260319004828-5883c5ee87b9
 	k8s.io/metrics v0.36.1
 	knative.dev/caching v0.0.0-20260422140616-453ad996bbe2
-	knative.dev/eventing v0.49.0
+	knative.dev/eventing v0.49.1
 	knative.dev/eventing-awssqs v0.29.0
 	knative.dev/eventing-couchdb v0.28.0
-	knative.dev/eventing-github v0.49.0
-	knative.dev/eventing-gitlab v0.49.0
-	knative.dev/eventing-kafka-broker v0.49.0
+	knative.dev/eventing-github v0.49.1
+	knative.dev/eventing-gitlab v0.49.1
+	knative.dev/eventing-kafka-broker v0.49.1
 	knative.dev/eventing-prometheus v0.28.0
-	knative.dev/networking v0.0.0-20260422140718-e9578ef11562
-	knative.dev/serving v0.49.0
+	knative.dev/networking v0.0.0-20260529061306-c8de379770b9
+	knative.dev/serving v0.49.1
 	open-cluster-management.io/api v1.3.0
 	open-cluster-management.io/governance-policy-propagator v0.18.0
 	open-cluster-management.io/multicloud-operators-channel v0.16.0
@@ -243,7 +243,7 @@ require (
 	k8s.io/component-base v0.36.1 // indirect
 	k8s.io/klog/v2 v2.140.0 // indirect
 	k8s.io/utils v0.0.0-20260210185600-b8788abfbbc2 // indirect
-	knative.dev/pkg v0.0.0-20260422015212-ec452872dcc1 // indirect
+	knative.dev/pkg v0.0.0-20260531000007-52dbd5ece63f // indirect
 	sigs.k8s.io/cluster-api-provider-azure v1.22.1 // indirect
 	sigs.k8s.io/controller-runtime v0.23.3 // indirect
 	sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730 // indirect
