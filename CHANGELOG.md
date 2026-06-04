@@ -23,6 +23,9 @@
 
 #### Dependency Upgrade
 * Fix #7849: bump istio.io/client-go from 1.29.2 to 1.30.0
+* Fix #PLACEHOLDER: bump k8s.io/autoscaler/vertical-pod-autoscaler from 1.6.0 to 1.7.0
+* Fix #PLACEHOLDER: bump k8s.io/gengo/v2 from 2.0.0-20251215205346-5ee0d033ba5b to 2.0.0-20260408192533-25e2208e0dc3
+* Fix #PLACEHOLDER: bump k8s.io/kube-openapi from 0.0.0-20260319004828-5883c5ee87b9 to 0.0.0-20260414162039-ec9c827d403f
 
 #### New Features
 * Fix #5084: Jbang scripts to generate graalVM metadata

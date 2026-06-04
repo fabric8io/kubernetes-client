@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "lastTransitionTime",
     "message",
+    "observedGeneration",
     "reason",
     "status",
     "type"
@@ -73,6 +74,8 @@ public class VerticalPodAutoscalerCondition implements Editable<VerticalPodAutos
     private String lastTransitionTime;
     @JsonProperty("message")
     private String message;
+    @JsonProperty("observedGeneration")
+    private Long observedGeneration;
     @JsonProperty("reason")
     private String reason;
     @JsonProperty("status")
@@ -88,10 +91,11 @@ public class VerticalPodAutoscalerCondition implements Editable<VerticalPodAutos
     public VerticalPodAutoscalerCondition() {
     }
 
-    public VerticalPodAutoscalerCondition(String lastTransitionTime, String message, String reason, String status, String type) {
+    public VerticalPodAutoscalerCondition(String lastTransitionTime, String message, Long observedGeneration, String reason, String status, String type) {
         super();
         this.lastTransitionTime = lastTransitionTime;
         this.message = message;
+        this.observedGeneration = observedGeneration;
         this.reason = reason;
         this.status = status;
         this.type = type;
@@ -127,6 +131,22 @@ public class VerticalPodAutoscalerCondition implements Editable<VerticalPodAutos
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    /**
+     * observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.
+     */
+    @JsonProperty("observedGeneration")
+    public Long getObservedGeneration() {
+        return observedGeneration;
+    }
+
+    /**
+     * observedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date with respect to the current state of the instance.
+     */
+    @JsonProperty("observedGeneration")
+    public void setObservedGeneration(Long observedGeneration) {
+        this.observedGeneration = observedGeneration;
     }
 
     /**

@@ -1,9 +1,7 @@
 
-package io.fabric8.tekton.v1;
+package io.fabric8.autoscaling.api.model.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -25,6 +23,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
@@ -35,15 +34,15 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * PipelineRef can be used to refer to a specific instance of a Pipeline.
+ * GenericStartupBoost defines the startup boost policy for a resource.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "name",
-    "params",
-    "resolver"
+    "durationSeconds",
+    "factor",
+    "quantity",
+    "type"
 })
 @ToString
 @EqualsAndHashCode
@@ -67,107 +66,105 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PipelineRef implements Editable<PipelineRefBuilder>, KubernetesResource
+public class GenericStartupBoost implements Editable<GenericStartupBoostBuilder>, KubernetesResource
 {
 
-    @JsonProperty("apiVersion")
-    private String apiVersion;
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("params")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Param> params = new ArrayList<>();
-    @JsonProperty("resolver")
-    private String resolver;
+    @JsonProperty("durationSeconds")
+    private Integer durationSeconds;
+    @JsonProperty("factor")
+    private Integer factor;
+    @JsonProperty("quantity")
+    private Quantity quantity;
+    @JsonProperty("type")
+    private String type;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public PipelineRef() {
+    public GenericStartupBoost() {
     }
 
-    public PipelineRef(String apiVersion, String name, List<Param> params, String resolver) {
+    public GenericStartupBoost(Integer durationSeconds, Integer factor, Quantity quantity, String type) {
         super();
-        this.apiVersion = apiVersion;
-        this.name = name;
-        this.params = params;
-        this.resolver = resolver;
+        this.durationSeconds = durationSeconds;
+        this.factor = factor;
+        this.quantity = quantity;
+        this.type = type;
     }
 
     /**
-     * API version of the referent
+     * durationSeconds indicates for how long to keep the pod boosted after it goes to Ready. Defaults to 0.
      */
-    @JsonProperty("apiVersion")
-    public String getApiVersion() {
-        return apiVersion;
+    @JsonProperty("durationSeconds")
+    public Integer getDurationSeconds() {
+        return durationSeconds;
     }
 
     /**
-     * API version of the referent
+     * durationSeconds indicates for how long to keep the pod boosted after it goes to Ready. Defaults to 0.
      */
-    @JsonProperty("apiVersion")
-    public void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    @JsonProperty("durationSeconds")
+    public void setDurationSeconds(Integer durationSeconds) {
+        this.durationSeconds = durationSeconds;
     }
 
     /**
-     * Name of the referent; More info: http://kubernetes.io/docs/user-guide/identifiers#names
+     * factor specifies the factor to apply to the resource request. This field is required when Type is "Factor".
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("factor")
+    public Integer getFactor() {
+        return factor;
     }
 
     /**
-     * Name of the referent; More info: http://kubernetes.io/docs/user-guide/identifiers#names
+     * factor specifies the factor to apply to the resource request. This field is required when Type is "Factor".
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("factor")
+    public void setFactor(Integer factor) {
+        this.factor = factor;
     }
 
     /**
-     * Params contains the parameters used to identify the referenced Tekton resource. Example entries might include "repo" or "path" but the set of params ultimately depends on the chosen resolver.
+     * GenericStartupBoost defines the startup boost policy for a resource.
      */
-    @JsonProperty("params")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Param> getParams() {
-        return params;
+    @JsonProperty("quantity")
+    public Quantity getQuantity() {
+        return quantity;
     }
 
     /**
-     * Params contains the parameters used to identify the referenced Tekton resource. Example entries might include "repo" or "path" but the set of params ultimately depends on the chosen resolver.
+     * GenericStartupBoost defines the startup boost policy for a resource.
      */
-    @JsonProperty("params")
-    public void setParams(List<Param> params) {
-        this.params = params;
+    @JsonProperty("quantity")
+    public void setQuantity(Quantity quantity) {
+        this.quantity = quantity;
     }
 
     /**
-     * Resolver is the name of the resolver that should perform resolution of the referenced Tekton resource, such as "git".
+     * type specifies the kind of boost to apply. Supported values are: "Factor", "Quantity". No startupboost will be applied for unrecognized values.
      */
-    @JsonProperty("resolver")
-    public String getResolver() {
-        return resolver;
+    @JsonProperty("type")
+    public String getType() {
+        return type;
     }
 
     /**
-     * Resolver is the name of the resolver that should perform resolution of the referenced Tekton resource, such as "git".
+     * type specifies the kind of boost to apply. Supported values are: "Factor", "Quantity". No startupboost will be applied for unrecognized values.
      */
-    @JsonProperty("resolver")
-    public void setResolver(String resolver) {
-        this.resolver = resolver;
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
     }
 
     @JsonIgnore
-    public PipelineRefBuilder edit() {
-        return new PipelineRefBuilder(this);
+    public GenericStartupBoostBuilder edit() {
+        return new GenericStartupBoostBuilder(this);
     }
 
     @JsonIgnore
-    public PipelineRefBuilder toBuilder() {
+    public GenericStartupBoostBuilder toBuilder() {
         return edit();
     }
 

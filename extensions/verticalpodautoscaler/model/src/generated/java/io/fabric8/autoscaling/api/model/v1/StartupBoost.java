@@ -1,9 +1,7 @@
 
-package io.fabric8.tekton.v1;
+package io.fabric8.autoscaling.api.model.v1;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -35,15 +33,12 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * PipelineRef can be used to refer to a specific instance of a Pipeline.
+ * StartupBoost defines the startup boost policy.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "apiVersion",
-    "name",
-    "params",
-    "resolver"
+    "cpu"
 })
 @ToString
 @EqualsAndHashCode
@@ -67,107 +62,48 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class PipelineRef implements Editable<PipelineRefBuilder>, KubernetesResource
+public class StartupBoost implements Editable<StartupBoostBuilder>, KubernetesResource
 {
 
-    @JsonProperty("apiVersion")
-    private String apiVersion;
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("params")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Param> params = new ArrayList<>();
-    @JsonProperty("resolver")
-    private String resolver;
+    @JsonProperty("cpu")
+    private GenericStartupBoost cpu;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public PipelineRef() {
+    public StartupBoost() {
     }
 
-    public PipelineRef(String apiVersion, String name, List<Param> params, String resolver) {
+    public StartupBoost(GenericStartupBoost cpu) {
         super();
-        this.apiVersion = apiVersion;
-        this.name = name;
-        this.params = params;
-        this.resolver = resolver;
+        this.cpu = cpu;
     }
 
     /**
-     * API version of the referent
+     * StartupBoost defines the startup boost policy.
      */
-    @JsonProperty("apiVersion")
-    public String getApiVersion() {
-        return apiVersion;
+    @JsonProperty("cpu")
+    public GenericStartupBoost getCpu() {
+        return cpu;
     }
 
     /**
-     * API version of the referent
+     * StartupBoost defines the startup boost policy.
      */
-    @JsonProperty("apiVersion")
-    public void setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-    }
-
-    /**
-     * Name of the referent; More info: http://kubernetes.io/docs/user-guide/identifiers#names
-     */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Name of the referent; More info: http://kubernetes.io/docs/user-guide/identifiers#names
-     */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Params contains the parameters used to identify the referenced Tekton resource. Example entries might include "repo" or "path" but the set of params ultimately depends on the chosen resolver.
-     */
-    @JsonProperty("params")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<Param> getParams() {
-        return params;
-    }
-
-    /**
-     * Params contains the parameters used to identify the referenced Tekton resource. Example entries might include "repo" or "path" but the set of params ultimately depends on the chosen resolver.
-     */
-    @JsonProperty("params")
-    public void setParams(List<Param> params) {
-        this.params = params;
-    }
-
-    /**
-     * Resolver is the name of the resolver that should perform resolution of the referenced Tekton resource, such as "git".
-     */
-    @JsonProperty("resolver")
-    public String getResolver() {
-        return resolver;
-    }
-
-    /**
-     * Resolver is the name of the resolver that should perform resolution of the referenced Tekton resource, such as "git".
-     */
-    @JsonProperty("resolver")
-    public void setResolver(String resolver) {
-        this.resolver = resolver;
+    @JsonProperty("cpu")
+    public void setCpu(GenericStartupBoost cpu) {
+        this.cpu = cpu;
     }
 
     @JsonIgnore
-    public PipelineRefBuilder edit() {
-        return new PipelineRefBuilder(this);
+    public StartupBoostBuilder edit() {
+        return new StartupBoostBuilder(this);
     }
 
     @JsonIgnore
-    public PipelineRefBuilder toBuilder() {
+    public StartupBoostBuilder toBuilder() {
         return edit();
     }
 

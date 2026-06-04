@@ -34,10 +34,10 @@ require (
 	k8s.io/api v0.36.1
 	k8s.io/apiextensions-apiserver v0.36.1
 	k8s.io/apimachinery v0.36.1
-	k8s.io/autoscaler/vertical-pod-autoscaler v1.6.0
+	k8s.io/autoscaler/vertical-pod-autoscaler v1.7.0
 	k8s.io/client-go v12.0.0+incompatible
-	k8s.io/gengo/v2 v2.0.0-20251215205346-5ee0d033ba5b
-	k8s.io/kube-openapi v0.0.0-20260319004828-5883c5ee87b9
+	k8s.io/gengo/v2 v2.0.0-20260408192533-25e2208e0dc3
+	k8s.io/kube-openapi v0.0.0-20260414162039-ec9c827d403f
 	k8s.io/metrics v0.36.1
 	knative.dev/caching v0.0.0-20260422140616-453ad996bbe2
 	knative.dev/eventing v0.49.1
@@ -226,7 +226,7 @@ require (
 	golang.org/x/term v0.43.0 // indirect
 	golang.org/x/text v0.37.0 // indirect
 	golang.org/x/time v0.15.0 // indirect
-	golang.org/x/tools v0.44.0 // indirect
+	golang.org/x/tools v0.45.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.5.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20260401024825-9d38bb4040a9 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260401024825-9d38bb4040a9 // indirect
@@ -237,7 +237,7 @@ require (
 	istio.io/api v1.30.0-rc.0.0.20260508191950-a283232d9647 // indirect
 	k8s.io/component-base v0.36.1 // indirect
 	k8s.io/klog/v2 v2.140.0 // indirect
-	k8s.io/utils v0.0.0-20260210185600-b8788abfbbc2 // indirect
+	k8s.io/utils v0.0.0-20260319190234-28399d86e0b5 // indirect
 	knative.dev/pkg v0.0.0-20260531000007-52dbd5ece63f // indirect
 	sigs.k8s.io/cluster-api-provider-azure v1.22.1 // indirect
 	sigs.k8s.io/controller-runtime v0.23.3 // indirect

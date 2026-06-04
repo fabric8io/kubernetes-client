@@ -43,6 +43,7 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "recommenders",
     "resourcePolicy",
+    "startupBoost",
     "targetRef",
     "updatePolicy"
 })
@@ -76,6 +77,8 @@ public class VerticalPodAutoscalerSpec implements Editable<VerticalPodAutoscaler
     private List<VerticalPodAutoscalerRecommenderSelector> recommenders = new ArrayList<>();
     @JsonProperty("resourcePolicy")
     private PodResourcePolicy resourcePolicy;
+    @JsonProperty("startupBoost")
+    private StartupBoost startupBoost;
     @JsonProperty("targetRef")
     private CrossVersionObjectReference targetRef;
     @JsonProperty("updatePolicy")
@@ -89,10 +92,11 @@ public class VerticalPodAutoscalerSpec implements Editable<VerticalPodAutoscaler
     public VerticalPodAutoscalerSpec() {
     }
 
-    public VerticalPodAutoscalerSpec(List<VerticalPodAutoscalerRecommenderSelector> recommenders, PodResourcePolicy resourcePolicy, CrossVersionObjectReference targetRef, PodUpdatePolicy updatePolicy) {
+    public VerticalPodAutoscalerSpec(List<VerticalPodAutoscalerRecommenderSelector> recommenders, PodResourcePolicy resourcePolicy, StartupBoost startupBoost, CrossVersionObjectReference targetRef, PodUpdatePolicy updatePolicy) {
         super();
         this.recommenders = recommenders;
         this.resourcePolicy = resourcePolicy;
+        this.startupBoost = startupBoost;
         this.targetRef = targetRef;
         this.updatePolicy = updatePolicy;
     }
@@ -128,6 +132,22 @@ public class VerticalPodAutoscalerSpec implements Editable<VerticalPodAutoscaler
     @JsonProperty("resourcePolicy")
     public void setResourcePolicy(PodResourcePolicy resourcePolicy) {
         this.resourcePolicy = resourcePolicy;
+    }
+
+    /**
+     * VerticalPodAutoscalerSpec is the specification of the behavior of the autoscaler.
+     */
+    @JsonProperty("startupBoost")
+    public StartupBoost getStartupBoost() {
+        return startupBoost;
+    }
+
+    /**
+     * VerticalPodAutoscalerSpec is the specification of the behavior of the autoscaler.
+     */
+    @JsonProperty("startupBoost")
+    public void setStartupBoost(StartupBoost startupBoost) {
+        this.startupBoost = startupBoost;
     }
 
     /**
