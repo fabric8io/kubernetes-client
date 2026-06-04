@@ -1,7 +1,9 @@
 
 package io.fabric8.tekton.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -40,7 +42,9 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "apiVersion",
     "kind",
-    "name"
+    "name",
+    "params",
+    "resolver"
 })
 @ToString
 @EqualsAndHashCode
@@ -73,6 +77,11 @@ public class TaskRef implements Editable<TaskRefBuilder>, KubernetesResource
     private String kind;
     @JsonProperty("name")
     private String name;
+    @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Param> params = new ArrayList<>();
+    @JsonProperty("resolver")
+    private String resolver;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,11 +91,13 @@ public class TaskRef implements Editable<TaskRefBuilder>, KubernetesResource
     public TaskRef() {
     }
 
-    public TaskRef(String apiVersion, String kind, String name) {
+    public TaskRef(String apiVersion, String kind, String name, List<Param> params, String resolver) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
         this.name = name;
+        this.params = params;
+        this.resolver = resolver;
     }
 
     /**
@@ -135,6 +146,39 @@ public class TaskRef implements Editable<TaskRefBuilder>, KubernetesResource
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Params contains the parameters used to identify the referenced Tekton resource. Example entries might include "repo" or "path" but the set of params ultimately depends on the chosen resolver.
+     */
+    @JsonProperty("params")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<Param> getParams() {
+        return params;
+    }
+
+    /**
+     * Params contains the parameters used to identify the referenced Tekton resource. Example entries might include "repo" or "path" but the set of params ultimately depends on the chosen resolver.
+     */
+    @JsonProperty("params")
+    public void setParams(List<Param> params) {
+        this.params = params;
+    }
+
+    /**
+     * Resolver is the name of the resolver that should perform resolution of the referenced Tekton resource, such as "git".
+     */
+    @JsonProperty("resolver")
+    public String getResolver() {
+        return resolver;
+    }
+
+    /**
+     * Resolver is the name of the resolver that should perform resolution of the referenced Tekton resource, such as "git".
+     */
+    @JsonProperty("resolver")
+    public void setResolver(String resolver) {
+        this.resolver = resolver;
     }
 
     @JsonIgnore

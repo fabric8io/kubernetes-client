@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "evictAfterOOMSeconds",
     "evictionRequirements",
     "minReplicas",
     "updateMode"
@@ -69,6 +70,8 @@ import lombok.experimental.Accessors;
 public class PodUpdatePolicy implements Editable<PodUpdatePolicyBuilder>, KubernetesResource
 {
 
+    @JsonProperty("evictAfterOOMSeconds")
+    private Integer evictAfterOOMSeconds;
     @JsonProperty("evictionRequirements")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<EvictionRequirement> evictionRequirements = new ArrayList<>();
@@ -85,11 +88,28 @@ public class PodUpdatePolicy implements Editable<PodUpdatePolicyBuilder>, Kubern
     public PodUpdatePolicy() {
     }
 
-    public PodUpdatePolicy(List<EvictionRequirement> evictionRequirements, Integer minReplicas, String updateMode) {
+    public PodUpdatePolicy(Integer evictAfterOOMSeconds, List<EvictionRequirement> evictionRequirements, Integer minReplicas, String updateMode) {
         super();
+        this.evictAfterOOMSeconds = evictAfterOOMSeconds;
         this.evictionRequirements = evictionRequirements;
         this.minReplicas = minReplicas;
         this.updateMode = updateMode;
+    }
+
+    /**
+     * evictAfterOOMSeconds specifies the time in seconds to wait after an OOM event before considering the pod for eviction. Pods that have OOMed in less than this time since start will be evicted.
+     */
+    @JsonProperty("evictAfterOOMSeconds")
+    public Integer getEvictAfterOOMSeconds() {
+        return evictAfterOOMSeconds;
+    }
+
+    /**
+     * evictAfterOOMSeconds specifies the time in seconds to wait after an OOM event before considering the pod for eviction. Pods that have OOMed in less than this time since start will be evicted.
+     */
+    @JsonProperty("evictAfterOOMSeconds")
+    public void setEvictAfterOOMSeconds(Integer evictAfterOOMSeconds) {
+        this.evictAfterOOMSeconds = evictAfterOOMSeconds;
     }
 
     /**
