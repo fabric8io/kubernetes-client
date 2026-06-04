@@ -290,9 +290,8 @@ class InputStreamReadStreamTest {
 
     await().atMost(1, TimeUnit.SECONDS)
         .untilAsserted(() -> verify(httpRequest).reset(resetCodeCaptor.capture()));
-    // Vert.x 5.1: HTTP/2 CANCEL (0x8) rather than NO_ERROR (0x0); no cause arg so the response
-    // future fails with StreamResetException and is not unwrapped by mapException into the
-    // underlying IOException (which would be picked up by StandardHttpClient's retry layer).
+    // HTTP/2 CANCEL (0x8), no cause: mapException must not unwrap to the IOException, which
+    // StandardHttpClient's retry layer would re-issue (see InputStreamReadStream#handleReadError).
     assertThat(resetCodeCaptor.getValue()).isEqualTo(0x8L);
   }
 

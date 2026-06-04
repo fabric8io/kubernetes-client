@@ -271,9 +271,11 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
 
       @Override
       public SslContextFactory sslContextFactory() {
-        // JdkSslContext interprets an empty String[] as "no protocols enabled", which JSSE then
-        // rejects with "No appropriate protocol". Pass null when the caller didn't request a
-        // specific TLS version so the JDK defaults apply.
+        // JdkSslContext treats an empty String[] as "no protocols enabled" and JSSE then rejects
+        // the handshake ("No appropriate protocol"). Harmless before Vert.x 5.1, which re-applied
+        // the option-level protocols to each engine (SslContextProvider#configureEngine); now the
+        // SPI's enabledProtocols(Set) — a no-op for this lambda factory — is the only override,
+        // so whatever is passed here is final. Null lets the JDK defaults apply.
         return () -> new JdkSslContext(
             sslContext,
             true,
