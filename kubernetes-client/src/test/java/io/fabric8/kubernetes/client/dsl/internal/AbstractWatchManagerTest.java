@@ -217,6 +217,52 @@ class AbstractWatchManagerTest {
   }
 
   @Test
+  @DisplayName("watchEnded, clean close with no messages within 2s, resets resourceVersion to force re-list (GKE stale-rv bug)")
+  void watchEndedResetsResourceVersionOnQuickCleanClose() throws MalformedURLException {
+    // Given
+    final WatchManager<HasMetadata> awm = withDefaultWatchManager(new WatcherAdapter<>());
+    awm.resourceVersion.set("12345");
+    WatchRequestState state = new WatchRequestState();
+    state.startedAtMs = System.currentTimeMillis(); // simulates GKE: connection rejected immediately
+    awm.latestRequestState = state;
+    // When - clean close (t=null), zero messages, within the 2s threshold
+    awm.watchEnded(null, state);
+    // Then - resourceVersion must be cleared so the next reconnect does a fresh re-list
+    assertThat(awm.resourceVersion.get()).isNull();
+  }
+
+  @Test
+  @DisplayName("watchEnded, clean close with no messages but connection was old, preserves resourceVersion")
+  void watchEndedPreservesResourceVersionOnOldCleanClose() throws MalformedURLException {
+    // Given
+    final WatchManager<HasMetadata> awm = withDefaultWatchManager(new WatcherAdapter<>());
+    awm.resourceVersion.set("12345");
+    WatchRequestState state = new WatchRequestState();
+    state.startedAtMs = System.currentTimeMillis() - 5_000; // simulates legitimate idle disconnect after 5s
+    awm.latestRequestState = state;
+    // When - clean close (t=null), zero messages, but connection was alive well past the 2s threshold
+    awm.watchEnded(null, state);
+    // Then - resourceVersion must be preserved; reconnect can resume from last known position
+    assertThat(awm.resourceVersion.get()).isEqualTo("12345");
+  }
+
+  @Test
+  @DisplayName("watchEnded, clean close after messages were received, preserves resourceVersion")
+  void watchEndedPreservesResourceVersionWhenMessagesReceived() throws MalformedURLException {
+    // Given
+    final WatchManager<HasMetadata> awm = withDefaultWatchManager(new WatcherAdapter<>());
+    awm.resourceVersion.set("12345");
+    WatchRequestState state = new WatchRequestState();
+    state.startedAtMs = System.currentTimeMillis(); // connection is fresh
+    state.messageReceived.set(true); // but at least one message was processed
+    awm.latestRequestState = state;
+    // When - clean close (t=null), messages were received, within the 2s threshold
+    awm.watchEnded(null, state);
+    // Then - resourceVersion must be preserved; messages prove the rv was accepted
+    assertThat(awm.resourceVersion.get()).isEqualTo("12345");
+  }
+
+  @Test
   void testWebSocketCloseReconnectHandling() throws Exception {
     // Given
     final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
