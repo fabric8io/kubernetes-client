@@ -17,6 +17,8 @@ package io.fabric8.kubernetes;
 
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
+import io.fabric8.kubernetes.api.model.Event;
+import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.Config;
@@ -43,6 +45,51 @@ class WatchIT {
   KubernetesClient client;
 
   private static final Logger logger = LoggerFactory.getLogger(WatchIT.class);
+
+  @Test
+  void watchWithStaleResourceVersionRecovers() throws InterruptedException {
+    // Verify that a watch started with a deliberately stale resourceVersion recovers cleanly
+    // rather than looping indefinitely with the same stale rv.
+    //
+    // Standard clusters return {"type":"ERROR","code":410} → onClose(WatcherException) fires.
+    // GKE's GKFE proxy closes v1/events with WebSocket code 1000 and no body instead (see
+    // https://github.com/kubernetes/kubernetes/issues/137089). AbstractWatchManager detects
+    // the zero-message quick close, resets resourceVersion to null, and reconnects fresh —
+    // the recovered watch then delivers a BOOKMARK confirming the live connection.
+    //
+    // Either path counts as recovery; the test asserts it happens within 30s.
+    final CountDownLatch recovered = new CountDownLatch(1);
+
+    Watch watch = client.v1().events().inAnyNamespace()
+        .watch(new ListOptionsBuilder()
+            .withResourceVersion("1")
+            .withAllowWatchBookmarks(true)
+            .build(),
+            new Watcher<Event>() {
+              @Override
+              public void eventReceived(Action action, Event event) {
+                if (action == Action.BOOKMARK) {
+                  // rv was reset and a fresh watch established successfully
+                  recovered.countDown();
+                }
+              }
+
+              @Override
+              public void onClose(WatcherException cause) {
+                // standard 410 path: server signalled stale rv explicitly
+                recovered.countDown();
+              }
+
+              @Override
+              public void onClose() {
+                // clean close (GKE path): fix resets rv and reconnects — recovery pending
+              }
+            });
+
+    assertTrue(recovered.await(30, TimeUnit.SECONDS),
+        "Watch with stale resourceVersion should recover within 30s");
+    watch.close();
+  }
 
   @Test
   void testWatch() throws InterruptedException {
