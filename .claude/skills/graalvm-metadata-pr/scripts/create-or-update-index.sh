@@ -84,19 +84,63 @@ PKG=$(derive_package "$ARTIFACT_ID")
 DESC=$(derive_description "$ARTIFACT_ID")
 
 if [ -f "$INDEX_FILE" ]; then
-  # Existing module: add version to tested-versions if not already there
+  # Existing module: check if this version already has its own metadata-version entry.
+  # If not, create a new entry with its own metadata-version directory.
+  # Each version gets its own entry because model classes can change between releases.
+  # The latest entry has "latest": true; older entries do not.
   python3 -c "
 import json, sys
+
+version = '${VERSION}'
+
 with open('${INDEX_FILE}') as f:
     d = json.load(f)
-if '${VERSION}' in d[0].get('tested-versions', []):
-    print('SKIP: ${ARTIFACT_ID} (${VERSION} already in tested-versions)')
-    sys.exit(0)
-d[0].setdefault('tested-versions', []).append('${VERSION}')
+
+# Check if this version already has its own metadata-version entry
+for entry in d:
+    if entry.get('metadata-version') == version:
+        if version in entry.get('tested-versions', []):
+            print('SKIP: ${ARTIFACT_ID} (' + version + ' already has its own entry)')
+            sys.exit(0)
+        entry.setdefault('tested-versions', []).append(version)
+        with open('${INDEX_FILE}', 'w') as f:
+            json.dump(d, f, indent=2)
+            f.write('\n')
+        print('UPDATED: ${ARTIFACT_ID} (added ' + version + ' to existing entry)')
+        sys.exit(0)
+
+# Find the current latest entry to use as a template
+latest_entry = next((e for e in d if e.get('latest')), d[0])
+
+# Compare versions using tuple of ints (works for semver like 7.5.2 vs 7.7.0)
+def version_tuple(v):
+    try:
+        return tuple(int(x) for x in v.split('.'))
+    except (ValueError, AttributeError):
+        return (0,)
+
+is_newer = version_tuple(version) > version_tuple(latest_entry.get('metadata-version', '0'))
+
+# Create a new entry for this version
+new_entry = {
+    'metadata-version': version,
+    'tested-versions': [version],
+    'allowed-packages': latest_entry.get('allowed-packages', ['${PKG}']),
+}
+for key in ['source-code-url', 'repository-url', 'test-code-url', 'documentation-url', 'description']:
+    if key in latest_entry:
+        new_entry[key] = latest_entry[key]
+
+if is_newer:
+    new_entry['latest'] = True
+    latest_entry.pop('latest', None)
+
+d.append(new_entry)
+
 with open('${INDEX_FILE}', 'w') as f:
     json.dump(d, f, indent=2)
     f.write('\n')
-print('UPDATED: ${ARTIFACT_ID} (added ${VERSION} to tested-versions)')
+print('UPDATED: ${ARTIFACT_ID} (added metadata-version ' + version + (', marked latest' if is_newer else '') + ')')
 "
 else
   # New module: create index.json

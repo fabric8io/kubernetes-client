@@ -157,8 +157,9 @@ cp <path-to-generated>/reachability-metadata.json metadata/io.fabric8/<artifactI
 The `create-or-update-index.sh` script handles:
 - Deriving `allowed-packages` from the artifactId (maps module names to Java package prefixes)
 - Generating a two-sentence `description`
-- For existing modules: adding the version to `tested-versions`
-- For new modules: creating a complete `index.json`
+- For **new modules**: creating a complete `index.json` with a single entry
+- For **existing modules**: adding a **new `metadata-version` entry** pointing to the new version's directory, copying `allowed-packages` and optional fields from the previous latest entry, and marking the new entry as `latest: true` if it's a newer version (removing `latest` from the old entry)
+- If the version already has its own entry: adds the version to that entry's `tested-versions` (or skips if already present)
 
 Loop over all modules (excluding `kubernetes-examples`):
 
