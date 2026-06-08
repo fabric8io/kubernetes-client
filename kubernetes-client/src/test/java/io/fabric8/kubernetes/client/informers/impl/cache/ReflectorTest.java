@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.client.informers.impl.ListerWatcher;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.mockito.exceptions.verification.TooFewActualInvocations;
 
@@ -248,6 +249,51 @@ class ReflectorTest {
     // In normal mode, the ADDED event should add to the store
     Mockito.verify(mockStore).add(laterPod);
     assertEquals("50", reflector.getLastSyncResourceVersion());
+  }
+
+  @Test
+  void onBeforeListInvokedWithNullOnInitialListAndLastSyncedRvOnRelist() {
+    ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
+    PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("100").endMetadata().build();
+    Mockito.when(mock.submitList(Mockito.any())).thenReturn(CompletableFuture.completedFuture(list));
+
+    AbstractWatchManager manager = Mockito.mock(AbstractWatchManager.class);
+    Mockito.when(manager.isWatching()).thenReturn(true);
+    Mockito.when(mock.submitWatch(Mockito.any(), Mockito.any()))
+        .thenReturn(CompletableFuture.completedFuture(manager));
+
+    Reflector<Pod, PodList> reflector = new Reflector<>(mock, mockStore);
+
+    // initial list -> no last sync resource version yet
+    reflector.start().join();
+    Mockito.verify(mockStore).onBeforeList(null);
+
+    // re-list -> last sync resource version observed during the previous list
+    reflector.listSyncAndWatch().join();
+    Mockito.verify(mockStore).onBeforeList("100");
+  }
+
+  @Test
+  void onBeforeListInvokedBeforeSubmitListSoHandlersSeePreviousResourceVersion() {
+    ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
+    PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("7").endMetadata().build();
+    Mockito.when(mock.submitList(Mockito.any())).thenReturn(CompletableFuture.completedFuture(list));
+
+    AbstractWatchManager manager = Mockito.mock(AbstractWatchManager.class);
+    Mockito.when(manager.isWatching()).thenReturn(true);
+    Mockito.when(mock.submitWatch(Mockito.any(), Mockito.any()))
+        .thenReturn(CompletableFuture.completedFuture(manager));
+
+    Reflector<Pod, PodList> reflector = new Reflector<>(mock, mockStore);
+    reflector.start().join();
+    reflector.listSyncAndWatch().join();
+
+    InOrder inOrder = Mockito.inOrder(mockStore, mock);
+    inOrder.verify(mockStore).onBeforeList(null);
+    inOrder.verify(mock).submitList(Mockito.any());
+    inOrder.verify(mockStore).onList(Mockito.eq("7"), Mockito.anyBoolean());
+    inOrder.verify(mockStore).onBeforeList("7");
+    inOrder.verify(mock).submitList(Mockito.any());
   }
 
   @Test
