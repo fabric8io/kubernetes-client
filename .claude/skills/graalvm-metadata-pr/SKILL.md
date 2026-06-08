@@ -26,13 +26,21 @@ Generates GraalVM reachability metadata from the Fabric8 Kubernetes Client at a 
 
 ## Phase 1: Prepare the workspace
 
-### 1. Preserve the generation scripts
+### 1. Preserve the generation scripts and skill helper scripts
 
-The JBang scripts may not exist in the target tag/commit. Copy them to a temp location before checking out.
+The JBang scripts and skill helper scripts do not exist in older tags/commits. Copy them to a temp location before checking out.
 
 ```bash
 cp scripts/GenerateGraalvmMetadata.java /tmp/GenerateGraalvmMetadata.java
 cp scripts/GenerateAllGraalvmMetadata.java /tmp/GenerateAllGraalvmMetadata.java
+cp ${CLAUDE_SKILL_DIR}/scripts/create-or-update-index.sh .claude/skills/graalvm-metadata-pr/scripts/create-or-update-index.sh
+cp ${CLAUDE_SKILL_DIR}/scripts/collect-metadata-summary.sh .claude/skills/graalvm-metadata-pr/scripts/collect-metadata-summary.sh
+```
+
+If `${CLAUDE_SKILL_DIR}` is not accessible (e.g. running outside the skill context), extract from git:
+```bash
+git show <branch>:.claude/skills/graalvm-metadata-pr/scripts/create-or-update-index.sh > .claude/skills/graalvm-metadata-pr/scripts/create-or-update-index.sh
+chmod +x .claude/skills/graalvm-metadata-pr/scripts/create-or-update-index.sh
 ```
 
 ### 2. Record the current branch for later return
@@ -47,14 +55,18 @@ ORIGINAL_BRANCH=$(git branch --show-current)
 git checkout $0
 ```
 
-### 4. Restore the generation scripts
+### 4. Restore the generation scripts and skill helper scripts
 
-Copy the scripts back into the checked-out tree so JBang can run them.
+Copy the scripts back into the checked-out tree. The `.claude/skills/` directory won't exist in older tags — recreate it.
 
 ```bash
 mkdir -p scripts
 cp /tmp/GenerateGraalvmMetadata.java scripts/GenerateGraalvmMetadata.java
 cp /tmp/GenerateAllGraalvmMetadata.java scripts/GenerateAllGraalvmMetadata.java
+
+mkdir -p .claude/skills/graalvm-metadata-pr/scripts
+cp .claude/skills/graalvm-metadata-pr/scripts/create-or-update-index.sh .claude/skills/graalvm-metadata-pr/scripts/create-or-update-index.sh
+cp .claude/skills/graalvm-metadata-pr/scripts/collect-metadata-summary.sh .claude/skills/graalvm-metadata-pr/scripts/collect-metadata-summary.sh
 ```
 
 ### 5. Build the project to generate Jandex indexes
@@ -94,7 +106,7 @@ The script prints a summary showing which modules produced metadata (`WROTE`), w
 Use the helper script to list all generated files with entry counts:
 
 ```bash
-${CLAUDE_SKILL_DIR}/scripts/collect-metadata-summary.sh "$(pwd)" "/tmp/graalvm-reachability-metadata"
+.claude/skills/graalvm-metadata-pr/scripts/collect-metadata-summary.sh "$(pwd)" "/tmp/graalvm-reachability-metadata"
 ```
 
 This prints both a terminal summary table and a markdown table for the PR body.
@@ -138,7 +150,7 @@ mkdir -p metadata/io.fabric8/<artifactId>/${VERSION}
 cp <path-to-generated>/reachability-metadata.json metadata/io.fabric8/<artifactId>/${VERSION}/
 
 # Create or update index.json using the helper script
-${CLAUDE_SKILL_DIR}/scripts/create-or-update-index.sh /tmp/graalvm-reachability-metadata <artifactId> ${VERSION}
+.claude/skills/graalvm-metadata-pr/scripts/create-or-update-index.sh /tmp/graalvm-reachability-metadata <artifactId> ${VERSION}
 ```
 
 The `create-or-update-index.sh` script handles:
@@ -154,7 +166,7 @@ find <project-root> -path '*/META-INF/native-image/io.fabric8/*/reachability-met
   aid=$(echo "$f" | sed 's|.*io\.fabric8/\([^/]*\)/reachability-metadata\.json|\1|')
   mkdir -p /tmp/graalvm-reachability-metadata/metadata/io.fabric8/${aid}/${VERSION}
   cp "$f" /tmp/graalvm-reachability-metadata/metadata/io.fabric8/${aid}/${VERSION}/reachability-metadata.json
-  ${CLAUDE_SKILL_DIR}/scripts/create-or-update-index.sh /tmp/graalvm-reachability-metadata "$aid" "${VERSION}"
+  .claude/skills/graalvm-metadata-pr/scripts/create-or-update-index.sh /tmp/graalvm-reachability-metadata "$aid" "${VERSION}"
 done
 ```
 
@@ -222,11 +234,12 @@ EOF
 
 ### 13. Return to the original branch
 
-The restored JBang scripts are untracked files in the checked-out tag — `git checkout -- scripts/` will NOT work. Delete them first, then switch back.
+The restored scripts are untracked files in the checked-out tag — `git checkout -- scripts/` will NOT work. Delete them first, then switch back.
 
 ```bash
 cd <fabric8-project-dir>
 rm scripts/GenerateGraalvmMetadata.java scripts/GenerateAllGraalvmMetadata.java
+rm -rf .claude/skills/graalvm-metadata-pr
 git checkout ${ORIGINAL_BRANCH}
 ```
 
@@ -239,3 +252,4 @@ git checkout ${ORIGINAL_BRANCH}
 - **`kubernetes-examples` generates metadata** (typically 1 entry) but should be excluded — it's a test/example module, not a published library.
 - **The oracle repo clone is large** (~25k files). Start it in the background early or use `--depth 1` for a shallow clone.
 - **`index.json` format is strict.** The `allowed-packages` must match exactly what the oracle repo's `checkMetadataFiles` expects. Use the `create-or-update-index.sh` script to derive them automatically.
+- **Skill helper scripts are lost after checkout** — `.claude/skills/` doesn't exist in older tags. Phase 1 copies them to `/tmp/`, then Phase 4 (step 4) recreates `.claude/skills/graalvm-metadata-pr/scripts/` in the checked-out tree and restores them there. All post-checkout steps reference the restored path, not `/tmp/`. The `get-graalvm-context.sh` script does NOT need preserving — it runs as pre-fetched context before the checkout happens. Clean up the recreated `.claude/` directory before returning to the original branch (step 13).
