@@ -28,19 +28,20 @@ Generates GraalVM reachability metadata from the Fabric8 Kubernetes Client at a 
 
 ### 1. Preserve the generation scripts and skill helper scripts
 
-The JBang scripts and skill helper scripts do not exist in older tags/commits. Copy them to a temp location before checking out.
+The JBang scripts and skill helper scripts do not exist in older tags/commits. Copy them to `/tmp/` before checking out.
 
 ```bash
 cp scripts/GenerateGraalvmMetadata.java /tmp/GenerateGraalvmMetadata.java
 cp scripts/GenerateAllGraalvmMetadata.java /tmp/GenerateAllGraalvmMetadata.java
-cp ${CLAUDE_SKILL_DIR}/scripts/create-or-update-index.sh .claude/skills/graalvm-metadata-pr/scripts/create-or-update-index.sh
-cp ${CLAUDE_SKILL_DIR}/scripts/collect-metadata-summary.sh .claude/skills/graalvm-metadata-pr/scripts/collect-metadata-summary.sh
+cp ${CLAUDE_SKILL_DIR}/scripts/create-or-update-index.sh /tmp/create-or-update-index.sh
+cp ${CLAUDE_SKILL_DIR}/scripts/collect-metadata-summary.sh /tmp/collect-metadata-summary.sh
 ```
 
 If `${CLAUDE_SKILL_DIR}` is not accessible (e.g. running outside the skill context), extract from git:
 ```bash
-git show <branch>:.claude/skills/graalvm-metadata-pr/scripts/create-or-update-index.sh > .claude/skills/graalvm-metadata-pr/scripts/create-or-update-index.sh
-chmod +x .claude/skills/graalvm-metadata-pr/scripts/create-or-update-index.sh
+git show <branch>:.claude/skills/graalvm-metadata-pr/scripts/create-or-update-index.sh > /tmp/create-or-update-index.sh
+git show <branch>:.claude/skills/graalvm-metadata-pr/scripts/collect-metadata-summary.sh > /tmp/collect-metadata-summary.sh
+chmod +x /tmp/create-or-update-index.sh /tmp/collect-metadata-summary.sh
 ```
 
 ### 2. Record the current branch for later return
@@ -65,8 +66,8 @@ cp /tmp/GenerateGraalvmMetadata.java scripts/GenerateGraalvmMetadata.java
 cp /tmp/GenerateAllGraalvmMetadata.java scripts/GenerateAllGraalvmMetadata.java
 
 mkdir -p .claude/skills/graalvm-metadata-pr/scripts
-cp .claude/skills/graalvm-metadata-pr/scripts/create-or-update-index.sh .claude/skills/graalvm-metadata-pr/scripts/create-or-update-index.sh
-cp .claude/skills/graalvm-metadata-pr/scripts/collect-metadata-summary.sh .claude/skills/graalvm-metadata-pr/scripts/collect-metadata-summary.sh
+cp /tmp/create-or-update-index.sh .claude/skills/graalvm-metadata-pr/scripts/create-or-update-index.sh
+cp /tmp/collect-metadata-summary.sh .claude/skills/graalvm-metadata-pr/scripts/collect-metadata-summary.sh
 ```
 
 ### 5. Build the project to generate Jandex indexes
