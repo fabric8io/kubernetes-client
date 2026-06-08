@@ -120,6 +120,18 @@ public class ProcessorStore<T extends HasMetadata> {
   }
 
   /**
+   * Distributes the onBeforeList event to all registered handlers. Called prior to each list
+   * operation (initial list and re-lists), so handlers can observe the last known resource version
+   * before the cache is updated.
+   *
+   * @param lastSyncResourceVersion the latest resource version known prior to the list operation,
+   *        or {@code null} if no list has completed yet
+   */
+  public void onBeforeList(String lastSyncResourceVersion) {
+    this.processor.distribute(l -> l.getHandler().onBeforeList(lastSyncResourceVersion), false);
+  }
+
+  /**
    * Distributes the onList event to all registered handlers and returns the serial executor
    * used for event processing. Callers can use the returned executor to schedule work that
    * must run after all handler notifications have been processed.

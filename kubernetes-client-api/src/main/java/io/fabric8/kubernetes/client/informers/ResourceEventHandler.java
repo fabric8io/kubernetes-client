@@ -39,10 +39,22 @@ public interface ResourceEventHandler<T> {
   }
 
   /**
+   * Called before a list operation is started, including the initial list and any subsequent re-list
+   * (for example after an HTTP GONE).
+   * <p>
+   * Should not be implemented with long-running logic as that may lead to memory issues.
+   *
+   * @param lastSyncResourceVersion the latest resource version known prior to the list operation, or
+   *        {@code null} if no list has completed yet
+   */
+  default void onBeforeList(String lastSyncResourceVersion) {
+  }
+
+  /**
    * Called after a listing is completed. By default calls {@link #onNothing()} when remainedEmpty is true.
    * <p>
    * Should not be implemented with long-running logic as that may lead to memory issues.
-   * 
+   *
    * @param resourceVersion the latest resource version known to the list operation
    * @param remainedEmpty will be true if the cache remained empty prior to and after the list operation meaning no
    *        other events would have been emitted as part of the relist

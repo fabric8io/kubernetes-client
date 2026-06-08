@@ -135,6 +135,8 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       return CompletableFuture.completedFuture(null);
     }
 
+    store.onBeforeList(lastSyncResourceVersion);
+
     CompletableFuture<Void> theFuture = null;
     if (watchList) {
       watchListState = new WatchListState();
