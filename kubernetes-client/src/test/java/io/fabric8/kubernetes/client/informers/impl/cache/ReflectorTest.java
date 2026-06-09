@@ -262,7 +262,14 @@ class ReflectorTest {
     Mockito.when(mock.submitWatch(Mockito.any(), Mockito.any()))
         .thenReturn(CompletableFuture.completedFuture(manager));
 
-    Reflector<Pod, PodList> reflector = new Reflector<>(mock, mockStore);
+    // override reconnect so the HTTP GONE path runs the relist synchronously instead of via the
+    // scheduled executor
+    Reflector<Pod, PodList> reflector = new Reflector<Pod, PodList>(mock, mockStore) {
+      @Override
+      protected void reconnect() {
+        listSyncAndWatch();
+      }
+    };
 
     // initial list -> no last sync resource version yet
     reflector.start().join();
@@ -313,7 +320,12 @@ class ReflectorTest {
     Mockito.when(mock.submitWatch(Mockito.any(), Mockito.any()))
         .thenReturn(CompletableFuture.completedFuture(manager));
 
-    Reflector<Pod, PodList> reflector = new Reflector<>(mock, mockStore);
+    Reflector<Pod, PodList> reflector = new Reflector<Pod, PodList>(mock, mockStore) {
+      @Override
+      protected void reconnect() {
+        listSyncAndWatch();
+      }
+    };
     reflector.start().join();
     reflector.getWatcher().onClose(new WatcherException(null, new KubernetesClientException("gone", 410, null)));
 
