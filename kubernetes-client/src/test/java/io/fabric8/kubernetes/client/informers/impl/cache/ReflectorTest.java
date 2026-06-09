@@ -252,7 +252,7 @@ class ReflectorTest {
   }
 
   @Test
-  void onBeforeListInvokedWithNullOnInitialListAndLastSyncedRvOnRelist() {
+  void onBeforeListInvokedWithNullOnInitialListAndLastSyncedRvOnHttpGoneRelist() {
     ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
     PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("100").endMetadata().build();
     Mockito.when(mock.submitList(Mockito.any())).thenReturn(CompletableFuture.completedFuture(list));
@@ -268,9 +268,38 @@ class ReflectorTest {
     reflector.start().join();
     Mockito.verify(mockStore).onBeforeList(null);
 
-    // re-list -> last sync resource version observed during the previous list
-    reflector.listSyncAndWatch().join();
+    // HTTP GONE re-arms the cycle; reconnect runs listSyncAndWatch again with the
+    // resource version observed during the previous list
+    reflector.getWatcher().onClose(new WatcherException(null, new KubernetesClientException("gone", 410, null)));
     Mockito.verify(mockStore).onBeforeList("100");
+  }
+
+  @Test
+  void onBeforeListNotInvokedOnRetryWithinTheSameCycle() {
+    ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
+    PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
+    Mockito.when(mock.submitList(Mockito.any())).thenReturn(CompletableFuture.completedFuture(list));
+
+    AbstractWatchManager manager = Mockito.mock(AbstractWatchManager.class);
+    Mockito.when(manager.isWatching()).thenReturn(true);
+    // first watch attempt fails (retry-after-failure), second succeeds
+    Mockito.when(mock.submitWatch(Mockito.any(), Mockito.any()))
+        .thenThrow(new KubernetesClientException("error"))
+        .thenReturn(CompletableFuture.completedFuture(manager));
+
+    Reflector<Pod, PodList> reflector = new Reflector<Pod, PodList>(mock, mockStore) {
+      @Override
+      protected void reconnect() {
+        // drive the retry inline so the test stays deterministic
+        listSyncAndWatch();
+      }
+    };
+    reflector.setExceptionHandler((b, t) -> true);
+
+    reflector.start().join();
+
+    // exactly one onBeforeList for the whole cycle, despite the failure + retry
+    Mockito.verify(mockStore, Mockito.times(1)).onBeforeList(Mockito.any());
   }
 
   @Test
@@ -286,7 +315,7 @@ class ReflectorTest {
 
     Reflector<Pod, PodList> reflector = new Reflector<>(mock, mockStore);
     reflector.start().join();
-    reflector.listSyncAndWatch().join();
+    reflector.getWatcher().onClose(new WatcherException(null, new KubernetesClientException("gone", 410, null)));
 
     InOrder inOrder = Mockito.inOrder(mockStore, mock);
     inOrder.verify(mockStore).onBeforeList(null);

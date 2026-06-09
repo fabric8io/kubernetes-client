@@ -39,8 +39,9 @@ public interface ResourceEventHandler<T> {
   }
 
   /**
-   * Called before a list operation is started, including the initial list and any subsequent re-list
-   * (for example after an HTTP GONE).
+   * Called once per list/watch cycle, before the list operation is initiated. This fires for the
+   * initial list and for each fresh re-list (for example after an HTTP GONE), but not for retry
+   * attempts that follow a transient failure within the same cycle.
    * <p>
    * Should not be implemented with long-running logic as that may lead to memory issues.
    *
