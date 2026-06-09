@@ -20,6 +20,7 @@
 * Fix #7675: (mockwebserver) `MockWebServer.dispatcher` field marked `volatile` so a `setDispatcher(...)` call is reliably visible to the Vert.x request handler thread without further synchronization. `MockWebServer.reset()` Javadoc tightened to make its non-destructive contract explicit (no change to the running server, dispatcher, listeners, SSL/TLS state, port, or protocols)
 * Fix #7809: (kubernetes-client) Support for shard selectors for list and watch - including informers
 * Fix #7837: (kubernetes-client) Follow-ups on shard selector
+* Fix #7899: (kubernetes-client) Callback before re-list for Informers
 
 #### Dependency Upgrade
 * Fix #7849: bump istio.io/client-go from 1.29.2 to 1.30.0
