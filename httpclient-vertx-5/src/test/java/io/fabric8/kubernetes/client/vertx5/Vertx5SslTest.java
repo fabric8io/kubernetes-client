@@ -15,9 +15,11 @@
  */
 package io.fabric8.kubernetes.client.vertx5;
 
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.internal.SSLUtils;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
@@ -26,14 +28,17 @@ import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.net.SelfSignedCertificate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class Vertx5SslTest {
 
@@ -81,5 +86,22 @@ class Vertx5SslTest {
     HttpResponse<String> resp = client.sendAsync(request, String.class).get(10, TimeUnit.SECONDS);
     assertEquals(200, resp.code());
     assertEquals("OK", resp.bodyString());
+  }
+
+  @Test
+  @DisplayName("HTTPS rejects an untrusted server certificate instead of falling back to a permissive trust")
+  void httpsRejectsUntrustedCertificate() throws Exception {
+    requestHandler = req -> req.response().end("OK");
+    // Default JVM trust store does not contain the server's self-signed certificate, so the unified
+    // TLS configuration must reject it rather than silently trusting everything.
+    final TrustManager[] untrustingManagers = SSLUtils.trustManagers(null, null, false, null, null);
+    final HttpClient client = clientFactory.newBuilder()
+        .sslContext(null, untrustingManagers)
+        // Disable retries so the handshake failure surfaces on the first attempt instead of being
+        // retried until the get() timeout.
+        .tag(new RequestConfigBuilder().withRequestRetryBackoffLimit(0).build())
+        .build();
+    final HttpRequest request = client.newHttpRequestBuilder().uri("https://localhost:" + port).build();
+    assertThrows(ExecutionException.class, () -> client.sendAsync(request, String.class).get(10, TimeUnit.SECONDS));
   }
 }
