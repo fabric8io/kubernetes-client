@@ -50,6 +50,9 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private final ProcessorStore<T> store;
   private final ReflectorWatcher watcher;
   private volatile boolean watching;
+  // re-armed on initial start and HTTP GONE; cleared once the per-cycle onBeforeList has fired,
+  // so subsequent retries within the same list/watch cycle stay silent
+  private volatile boolean pendingBeforeListNotification = true;
   @SuppressWarnings("java:S3077") // CompletableFuture is thread-safe; volatile ensures reference visibility
   private volatile CompletableFuture<AbstractWatchManager<T>> watchFuture;
   @SuppressWarnings("java:S3077") // CompletableFuture is thread-safe; volatile ensures reference visibility
@@ -133,6 +136,11 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   public CompletableFuture<Void> listSyncAndWatch() {
     if (isStopped()) {
       return CompletableFuture.completedFuture(null);
+    }
+
+    if (pendingBeforeListNotification) {
+      pendingBeforeListNotification = false;
+      store.onBeforeList(lastSyncResourceVersion);
     }
 
     CompletableFuture<Void> theFuture = null;
@@ -374,6 +382,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
           logger.debug("Watch restarting due to http gone for {}", Reflector.this);
         }
         // start a whole new list/watch cycle
+        pendingBeforeListNotification = true;
         reconnect();
       } else {
         onException("watch", exception);
