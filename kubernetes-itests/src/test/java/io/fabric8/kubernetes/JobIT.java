@@ -40,7 +40,7 @@ class JobIT {
   void testGetLog() {
     final String jobName = "job-get-log";
     client.batch().v1().jobs().createOrReplace(initJob("job-get-log").build());
-    client.batch().v1().jobs().withName(jobName).waitUntilCondition(
+    Job job = client.batch().v1().jobs().withName(jobName).waitUntilCondition(
         j -> Optional.ofNullable(j).map(Job::getStatus).map(JobStatus::getSucceeded).orElse(0) > 0,
         1, TimeUnit.MINUTES);
     ByteArrayOutputStream baos = new ByteArrayOutputStream(1024);
@@ -51,6 +51,15 @@ class JobIT {
       await().atMost(30, TimeUnit.SECONDS).until(() -> baos.toString().length() > 0);
       assertNotNull(baos.toString());
       assertEquals("This is a message!\n", baos.toString());
+    }
+    ByteArrayOutputStream baos2 = new ByteArrayOutputStream(1024);
+    try (LogWatch ignore = client.batch().v1().jobs()
+        .resource(job)
+        .withLogWaitTimeout(30)
+        .watchLog(baos2)) {
+      await().atMost(30, TimeUnit.SECONDS).until(() -> baos2.toString().length() > 0);
+      assertNotNull(baos2.toString());
+      assertEquals("This is a message!\n", baos2.toString());
     }
   }
 
