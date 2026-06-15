@@ -19,9 +19,6 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.http.TlsVersion;
-import io.netty.handler.ssl.ApplicationProtocolConfig;
-import io.netty.handler.ssl.IdentityCipherSuiteFilter;
-import io.netty.handler.ssl.JdkSslContext;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.file.FileSystemOptions;
@@ -29,9 +26,11 @@ import io.vertx.core.http.HttpVersion;
 import io.vertx.core.http.PoolOptions;
 import io.vertx.core.http.WebSocketClientOptions;
 import io.vertx.core.net.JdkSSLEngineOptions;
+import io.vertx.core.net.KeyCertOptions;
 import io.vertx.core.net.ProxyOptions;
 import io.vertx.core.net.ProxyType;
-import io.vertx.core.spi.tls.SslContextFactory;
+import io.vertx.core.net.TCPSSLOptions;
+import io.vertx.core.net.TrustOptions;
 import io.vertx.ext.web.client.WebClientOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +40,11 @@ import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
+
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509KeyManager;
+import javax.net.ssl.X509TrustManager;
 
 import static io.fabric8.kubernetes.client.utils.HttpClientUtils.decodeBasicCredentials;
 import static io.vertx.core.impl.SysProps.DISABLE_DNS_RESOLVER;
@@ -169,13 +173,9 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
     applyProxy(httpOptions);
 
     final String[] protocols = resolveProtocols();
-    if (protocols.length > 0) {
-      httpOptions.setEnabledSecureTransportProtocols(new HashSet<>(Arrays.asList(protocols)));
-    }
 
     if (this.sslContext != null) {
-      httpOptions.setSsl(true);
-      httpOptions.setSslEngineOptions(createSslEngineOptions(protocols));
+      applyTlsOptions(httpOptions, protocols);
     }
 
     final WebSocketClientOptions wsOptions = createWebSocketClientOptions(protocols);
@@ -205,8 +205,7 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
     wsOptions.setMaxMessageSize(MAX_WS_MESSAGE_SIZE);
 
     if (this.sslContext != null) {
-      wsOptions.setSsl(true);
-      wsOptions.setSslEngineOptions(createSslEngineOptions(protocols));
+      applyTlsOptions(wsOptions, protocols);
     }
 
     return wsOptions;
@@ -261,31 +260,57 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
     return vertx;
   }
 
-  /** Utility that converts the builder’s {@link #sslContext} + protocols to Vert.x {@link JdkSSLEngineOptions}. */
-  private JdkSSLEngineOptions createSslEngineOptions(final String[] protocols) {
-    return new JdkSSLEngineOptions() {
-      @Override
-      public JdkSSLEngineOptions copy() {
-        return this; // immutable
-      }
+  /**
+   * Applies the builder's TLS configuration uniformly to both the HTTP and WebSocket client options.
+   *
+   * <p>
+   * Trust and key material are supplied to Vert.x as {@link TrustOptions}/{@link KeyCertOptions} wrapping
+   * the builder's {@link #trustManagers}/{@link #keyManagers} rather than a pre-built Netty
+   * {@code JdkSslContext} carried inside a custom {@code SslContextFactory}. Vert.x 5.1 resolves the
+   * WebSocket client's TLS through a per-connection {@code ClientSSLOptions} derived from these options
+   * (not from the engine-options factory), so carrying trust only in the factory left WebSocket-over-TLS
+   * connections falling back to the default JVM trust store. Driving both clients through the same options
+   * keeps a single source of trust and fixes the WebSocket path (see fabric8io/kubernetes-client#7907).
+   */
+  private void applyTlsOptions(final TCPSSLOptions options, final String[] protocols) {
+    options.setSsl(true);
+    options.setSslEngineOptions(new JdkSSLEngineOptions());
+    final X509TrustManager trustManager = firstX509TrustManager();
+    if (trustManager != null) {
+      options.setTrustOptions(TrustOptions.wrap(trustManager));
+    }
+    final X509KeyManager keyManager = firstX509KeyManager();
+    if (keyManager != null) {
+      options.setKeyCertOptions(KeyCertOptions.wrap(keyManager));
+    }
+    if (protocols.length > 0) {
+      options.setEnabledSecureTransportProtocols(new HashSet<>(Arrays.asList(protocols)));
+    }
+  }
 
-      @Override
-      public SslContextFactory sslContextFactory() {
-        // JdkSslContext treats an empty String[] as "no protocols enabled" and JSSE then rejects
-        // the handshake ("No appropriate protocol"). Harmless before Vert.x 5.1, which re-applied
-        // the option-level protocols to each engine (SslContextProvider#configureEngine); now the
-        // SPI's enabledProtocols(Set) — a no-op for this lambda factory — is the only override,
-        // so whatever is passed here is final. Null lets the JDK defaults apply.
-        return () -> new JdkSslContext(
-            sslContext,
-            true,
-            null,
-            IdentityCipherSuiteFilter.INSTANCE,
-            ApplicationProtocolConfig.DISABLED,
-            io.netty.handler.ssl.ClientAuth.NONE,
-            protocols.length > 0 ? protocols : null,
-            false);
+  /** Returns the first {@link X509TrustManager} from the configured trust managers, or {@code null}. */
+  private X509TrustManager firstX509TrustManager() {
+    if (trustManagers == null) {
+      return null;
+    }
+    for (TrustManager trustManager : trustManagers) {
+      if (trustManager instanceof X509TrustManager) {
+        return (X509TrustManager) trustManager;
       }
-    };
+    }
+    return null;
+  }
+
+  /** Returns the first {@link X509KeyManager} from the configured key managers, or {@code null}. */
+  private X509KeyManager firstX509KeyManager() {
+    if (keyManagers == null) {
+      return null;
+    }
+    for (KeyManager keyManager : keyManagers) {
+      if (keyManager instanceof X509KeyManager) {
+        return (X509KeyManager) keyManager;
+      }
+    }
+    return null;
   }
 }
