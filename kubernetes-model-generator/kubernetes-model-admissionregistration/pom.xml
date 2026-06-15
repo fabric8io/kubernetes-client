@@ -48,6 +48,37 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              open module io.fabric8.kubernetes.model.admissionregistration {
+                exports io.fabric8.kubernetes.api.model.admission.v1;
+                exports io.fabric8.kubernetes.api.model.admission.v1beta1;
+                exports io.fabric8.kubernetes.api.model.admissionregistration.v1;
+                exports io.fabric8.kubernetes.api.model.admissionregistration.v1alpha1;
+                exports io.fabric8.kubernetes.api.model.admissionregistration.v1beta1;
+                exports io.fabric8.kubernetes.api.model.authentication;
+                exports io.fabric8.kubernetes.api.model.authentication.v1beta1;
+                exports io.fabric8.kubernetes.api.model.authorization.v1;
+                exports io.fabric8.kubernetes.api.model.authorization.v1beta1;
+
+                requires transitive io.fabric8.kubernetes.model.core;
+                requires transitive com.fasterxml.jackson.annotation;
+                requires com.fasterxml.jackson.databind;
+                requires static builder.annotations;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
   <profiles>
     <profile>
       <id>generate</id>

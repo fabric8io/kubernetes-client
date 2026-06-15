@@ -49,6 +49,41 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              open module io.fabric8.openshift.model.hive {
+                exports io.fabric8.openshift.api.model.hive.agent.v1;
+                exports io.fabric8.openshift.api.model.hive.aws.v1;
+                exports io.fabric8.openshift.api.model.hive.azure.v1;
+                exports io.fabric8.openshift.api.model.hive.baremetal.v1;
+                exports io.fabric8.openshift.api.model.hive.gcp.v1;
+                exports io.fabric8.openshift.api.model.hive.ibmcloud.v1;
+                exports io.fabric8.openshift.api.model.hive.metricsconfig.v1;
+                exports io.fabric8.openshift.api.model.hive.none.v1;
+                exports io.fabric8.openshift.api.model.hive.openstack.v1;
+                exports io.fabric8.openshift.api.model.hive.ovirt.v1;
+                exports io.fabric8.openshift.api.model.hive.v1;
+                exports io.fabric8.openshift.api.model.hive.vsphere.v1;
+
+                requires transitive io.fabric8.kubernetes.model.core;
+                requires transitive io.fabric8.openshift.model;
+                requires transitive com.fasterxml.jackson.annotation;
+                requires com.fasterxml.jackson.databind;
+                requires static builder.annotations;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
   <profiles>
     <profile>
       <id>generate</id>

@@ -29,7 +29,6 @@
   <name>Fabric8 :: Kubernetes :: HttpClient :: JDK</name>
 
   <properties>
-    <jpms.module.name>io.fabric8.kubernetes.client.jdkhttp</jpms.module.name>
     <osgi.require-capability>
       osgi.extender;
       filter:="(osgi.extender=osgi.serviceloader.registrar)",
@@ -89,6 +88,25 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              module io.fabric8.kubernetes.client.jdkhttp {
+                exports io.fabric8.kubernetes.client.jdkhttp;
+
+                requires transitive io.fabric8.kubernetes.client.api;
+                requires java.net.http;
+
+                provides io.fabric8.kubernetes.client.http.HttpClient.Factory with
+                    io.fabric8.kubernetes.client.jdkhttp.JdkHttpClientFactory;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>

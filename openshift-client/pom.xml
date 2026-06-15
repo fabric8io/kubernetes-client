@@ -136,6 +136,41 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              open module io.fabric8.openshift.client {
+                exports io.fabric8.openshift.client.dsl.internal;
+                exports io.fabric8.openshift.client.dsl.internal.apps;
+                exports io.fabric8.openshift.client.dsl.internal.authorization;
+                exports io.fabric8.openshift.client.dsl.internal.build;
+                exports io.fabric8.openshift.client.dsl.internal.core;
+                exports io.fabric8.openshift.client.dsl.internal.project;
+                exports io.fabric8.openshift.client.impl;
+                exports io.fabric8.openshift.client.internal;
+                exports io.fabric8.openshift.client.osgi;
+
+                requires transitive io.fabric8.openshift.client.api;
+                requires io.fabric8.kubernetes.client;
+                requires com.fasterxml.jackson.databind;
+                requires com.fasterxml.jackson.core;
+                requires org.slf4j;
+                requires static builder.annotations;
+                requires static org.osgi.service.component.annotations;
+
+                provides io.fabric8.kubernetes.client.ServiceToURLProvider with
+                    io.fabric8.openshift.client.impl.URLFromOpenshiftRouteImpl;
+                provides io.fabric8.kubernetes.client.extension.ExtensionAdapter with
+                    io.fabric8.openshift.client.impl.OpenShiftExtensionAdapter,
+                    io.fabric8.openshift.client.impl.NamespacedOpenShiftExtensionAdapter;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>

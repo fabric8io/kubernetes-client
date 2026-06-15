@@ -51,4 +51,27 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              open module io.fabric8.kubernetes.junit.jupiter {
+                exports io.fabric8.junit.jupiter;
+                exports io.fabric8.junit.jupiter.api;
+
+                requires transitive io.fabric8.kubernetes.client;
+                requires org.apache.commons.compress;
+                requires org.junit.jupiter.api;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

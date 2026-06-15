@@ -140,6 +140,51 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              open module io.fabric8.kubernetes.client {
+                exports io.fabric8.kubernetes.client.dsl.internal;
+                exports io.fabric8.kubernetes.client.dsl.internal.apps.v1;
+                exports io.fabric8.kubernetes.client.dsl.internal.batch.v1;
+                exports io.fabric8.kubernetes.client.dsl.internal.certificates.v1;
+                exports io.fabric8.kubernetes.client.dsl.internal.certificates.v1beta1;
+                exports io.fabric8.kubernetes.client.dsl.internal.core.v1;
+                exports io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1;
+                exports io.fabric8.kubernetes.client.dsl.internal.uploadable;
+                exports io.fabric8.kubernetes.client.impl;
+                exports io.fabric8.kubernetes.client.informers.impl;
+                exports io.fabric8.kubernetes.client.informers.impl.cache;
+                exports io.fabric8.kubernetes.client.osgi;
+                exports io.fabric8.kubernetes.client.utils.internal;
+
+                requires transitive io.fabric8.kubernetes.client.api;
+                requires io.fabric8.zjsonpatch;
+                requires org.apache.commons.compress;
+                requires com.fasterxml.jackson.databind;
+                requires com.fasterxml.jackson.core;
+                requires com.fasterxml.jackson.dataformat.yaml;
+                requires com.fasterxml.jackson.datatype.jsr310;
+                requires org.snakeyaml.engine;
+                requires org.slf4j;
+                requires static builder.annotations;
+                requires static org.osgi.service.component.annotations;
+
+                uses io.fabric8.kubernetes.client.extension.ExtensionAdapter;
+                uses io.fabric8.kubernetes.client.ServiceToURLProvider;
+                provides io.fabric8.kubernetes.client.ServiceToURLProvider with
+                    io.fabric8.kubernetes.client.impl.URLFromEnvVarsImpl,
+                    io.fabric8.kubernetes.client.impl.URLFromIngressImpl,
+                    io.fabric8.kubernetes.client.impl.URLFromNodePortImpl,
+                    io.fabric8.kubernetes.client.impl.URLFromClusterIPImpl;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>

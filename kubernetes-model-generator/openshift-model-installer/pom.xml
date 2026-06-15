@@ -57,6 +57,43 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              open module io.fabric8.openshift.model.installer {
+                exports io.fabric8.openshift.api.model.installer.aws.v1;
+                exports io.fabric8.openshift.api.model.installer.baremetal.v1;
+                exports io.fabric8.openshift.api.model.installer.external.v1;
+                exports io.fabric8.openshift.api.model.installer.gcp.v1;
+                exports io.fabric8.openshift.api.model.installer.ibmcloud.v1;
+                exports io.fabric8.openshift.api.model.installer.none.v1;
+                exports io.fabric8.openshift.api.model.installer.nutanix.v1;
+                exports io.fabric8.openshift.api.model.installer.openstack.v1;
+                exports io.fabric8.openshift.api.model.installer.ovirt.v1;
+                exports io.fabric8.openshift.api.model.installer.powervc.v1;
+                exports io.fabric8.openshift.api.model.installer.powervs.v1;
+                exports io.fabric8.openshift.api.model.installer.v1;
+                exports io.fabric8.openshift.api.model.installer.vsphere.v1;
+
+                requires transitive io.fabric8.kubernetes.model.core;
+                requires transitive io.fabric8.openshift.model.config;
+                requires transitive io.fabric8.openshift.model.machine;
+                requires transitive com.fasterxml.jackson.annotation;
+                requires com.fasterxml.jackson.databind;
+                requires static builder.annotations;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
   <profiles>
     <profile>
       <id>generate</id>

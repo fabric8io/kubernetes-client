@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubeapitest.junit;
+package io.fabric8.kubeapitest.junit.inject;
 
 import io.fabric8.kubeapitest.KubeAPIServer;
 import io.fabric8.kubeapitest.KubeAPITestException;
+import io.fabric8.kubeapitest.junit.ClientInjectionHandler;
+import io.fabric8.kubeapitest.junit.KubeConfigInjectionHandler;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;

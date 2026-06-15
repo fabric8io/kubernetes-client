@@ -91,6 +91,21 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              module io.fabric8.zjsonpatch {
+                exports io.fabric8.zjsonpatch;
+
+                requires transitive com.fasterxml.jackson.databind;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>

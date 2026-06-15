@@ -169,6 +169,44 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              open module io.fabric8.openshift.client.api {
+                exports io.fabric8.openshift.client;
+                exports io.fabric8.openshift.client.dsl;
+                exports io.fabric8.openshift.client.dsl.buildconfig;
+                exports io.fabric8.openshift.client.readiness;
+
+                requires transitive io.fabric8.kubernetes.client.api;
+                requires transitive io.fabric8.openshift.model;
+                requires transitive io.fabric8.openshift.model.autoscaling;
+                requires transitive io.fabric8.openshift.model.config;
+                requires transitive io.fabric8.openshift.model.console;
+                requires transitive io.fabric8.openshift.model.hive;
+                requires transitive io.fabric8.openshift.model.installer;
+                requires transitive io.fabric8.openshift.model.machine;
+                requires transitive io.fabric8.openshift.model.machineconfiguration;
+                requires transitive io.fabric8.openshift.model.miscellaneous;
+                requires transitive io.fabric8.openshift.model.monitoring;
+                requires transitive io.fabric8.openshift.model.operator;
+                requires transitive io.fabric8.openshift.model.operatorhub;
+                requires transitive io.fabric8.openshift.model.storageversionmigrator;
+                requires transitive io.fabric8.openshift.model.tuned;
+                requires transitive io.fabric8.openshift.model.whereabouts;
+
+                requires transitive com.fasterxml.jackson.annotation;
+                requires com.fasterxml.jackson.databind;
+                requires static builder.annotations;
+                requires static org.osgi.service.component.annotations;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>

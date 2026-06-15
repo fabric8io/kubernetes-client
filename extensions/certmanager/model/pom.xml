@@ -60,6 +60,33 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              open module io.fabric8.certmanager.model {
+                exports io.fabric8.certmanager.api.model.acme.v1;
+                exports io.fabric8.certmanager.api.model.meta.v1;
+                exports io.fabric8.certmanager.api.model.v1;
+
+                requires transitive io.fabric8.kubernetes.model.apiextensions;
+                requires transitive io.fabric8.kubernetes.model.core;
+                requires transitive io.fabric8.kubernetes.model.gatewayapi;
+                requires transitive com.fasterxml.jackson.annotation;
+                requires com.fasterxml.jackson.databind;
+                requires static builder.annotations;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
   <profiles>
     <profile>
       <id>generate</id>

@@ -75,4 +75,27 @@
     </dependency>
 
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              open module io.fabric8.kubernetes.server.mock {
+                exports io.fabric8.kubernetes.client.server.mock;
+                exports io.fabric8.kubernetes.client.server.mock.crud;
+
+                requires transitive io.fabric8.mockwebserver;
+                requires static io.fabric8.kubernetes.client;
+                requires org.junit.jupiter.api;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
