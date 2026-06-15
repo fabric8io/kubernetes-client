@@ -40,8 +40,10 @@ public interface ResourceEventHandler<T> {
 
   /**
    * Called once per list/watch cycle, before the list operation is initiated. This fires for the
-   * initial list and for each fresh re-list (for example after an HTTP GONE), but not for retry
-   * attempts that follow a transient failure within the same cycle.
+   * initial list and for every fresh re-list — whether triggered by an HTTP GONE or by any other
+   * watch failure that goes through the reconnect path — but not for retry attempts that follow a
+   * transient failure within the same cycle (i.e. before the matching {@link #onList(String, boolean)}
+   * has been delivered).
    *
    * <p>
    * In the window between this callback and the matching {@link #onList(String, boolean)}:
