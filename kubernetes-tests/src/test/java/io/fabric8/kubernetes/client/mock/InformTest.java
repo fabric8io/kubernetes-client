@@ -22,9 +22,13 @@ import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
+import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.WatchEvent;
+import io.fabric8.kubernetes.api.model.WatchEventBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
@@ -34,15 +38,19 @@ import io.fabric8.kubernetes.client.informers.cache.ReducedStateItemStore;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -52,6 +60,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class InformTest {
 
   private static final Long EVENT_WAIT_PERIOD_MS = 10L;
+
+  private static final Status outdatedStatus = new StatusBuilder().withCode(HttpURLConnection.HTTP_GONE)
+      .withMessage("410: the requested watch resource version is outdated")
+      .build();
+  private static final WatchEvent outdatedEvent = new WatchEventBuilder().withType(Watcher.Action.ERROR.name())
+      .withObject(outdatedStatus)
+      .build();
 
   KubernetesMockServer server;
   KubernetesClient client;
@@ -546,6 +561,156 @@ class InformTest {
     assertEquals("1", byKey.getMetadata().getResourceVersion());
     assertEquals(1, byKey.getMetadata().getOwnerReferences().size());
     assertNull(byKey.getSpec());
+
+    informer.stop();
+  }
+
+  @Test
+  @DisplayName("onBeforeList(null) is delivered before the initial list adds and before onList, through the real informer pipeline")
+  void onBeforeListPrecedesInitialListAddsAndOnList() throws InterruptedException {
+    // Given
+    Pod pod1 = new PodBuilder().withNewMetadata()
+        .withNamespace("test").withName("pod1").withResourceVersion("1").endMetadata()
+        .build();
+
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?resourceVersion=0")
+        .andReturn(HttpURLConnection.HTTP_OK,
+            new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().withItems(pod1).build())
+        .once();
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?allowWatchBookmarks=true&resourceVersion=1&timeoutSeconds=600&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .done()
+        .once();
+
+    final List<String> events = new CopyOnWriteArrayList<>();
+    final CountDownLatch listLatch = new CountDownLatch(1);
+    final ResourceEventHandler<Pod> handler = new ResourceEventHandler<Pod>() {
+      @Override
+      public void onBeforeList(String lastSyncResourceVersion) {
+        events.add("beforeList:" + lastSyncResourceVersion);
+      }
+
+      @Override
+      public void onAdd(Pod obj) {
+        events.add("add:" + obj.getMetadata().getName());
+      }
+
+      @Override
+      public void onUpdate(Pod oldObj, Pod newObj) {
+        events.add("update:" + newObj.getMetadata().getName());
+      }
+
+      @Override
+      public void onDelete(Pod obj, boolean deletedFinalStateUnknown) {
+        events.add("delete:" + obj.getMetadata().getName());
+      }
+
+      @Override
+      public void onList(String resourceVersion, boolean remainedEmpty) {
+        events.add("list:" + resourceVersion);
+        listLatch.countDown();
+      }
+    };
+
+    // When
+    SharedIndexInformer<Pod> informer = client.pods().inform(handler);
+    assertTrue(listLatch.await(10, TimeUnit.SECONDS));
+
+    // Then the central ordering guarantee holds end to end: onBeforeList(null) is delivered first,
+    // then the (deferred, batch-flushed) initial add, then the matching onList.
+    assertThat(events).startsWith("beforeList:null");
+    assertThat(events.indexOf("beforeList:null")).isLessThan(events.indexOf("add:pod1"));
+    assertThat(events.indexOf("add:pod1")).isLessThan(events.indexOf("list:1"));
+
+    informer.stop();
+  }
+
+  @Test
+  @DisplayName("On an HTTP GONE re-list, onBeforeList re-fires with the frozen prior resourceVersion before the re-list's newer events and onList")
+  void onBeforeListReportsFrozenResourceVersionOnRelist() throws InterruptedException {
+    // Given an initial list at v1 ...
+    Pod pod1v1 = new PodBuilder().withNewMetadata()
+        .withNamespace("test").withName("pod1").withResourceVersion("1").endMetadata()
+        .build();
+    Pod pod1v2 = new PodBuilder().withNewMetadata()
+        .withNamespace("test").withName("pod1").withResourceVersion("2").endMetadata()
+        .build();
+
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?resourceVersion=0")
+        .andReturn(HttpURLConnection.HTTP_OK,
+            new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().withItems(pod1v1).build())
+        .once();
+    // ... whose watch then sees an HTTP GONE, forcing a fresh re-list cycle
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?allowWatchBookmarks=true&resourceVersion=1&timeoutSeconds=600&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(EVENT_WAIT_PERIOD_MS)
+        .andEmit(outdatedEvent)
+        .done()
+        .once();
+    // the re-list omits resourceVersion (it is no longer a cached listing) and returns pod1 at v2
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods")
+        .andReturn(HttpURLConnection.HTTP_OK,
+            new PodListBuilder().withNewMetadata().withResourceVersion("2").endMetadata().withItems(pod1v2).build())
+        .times(2);
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?allowWatchBookmarks=true&resourceVersion=2&timeoutSeconds=600&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .done()
+        .always();
+
+    final List<String> events = new CopyOnWriteArrayList<>();
+    final List<String> beforeListArgs = new CopyOnWriteArrayList<>();
+    final CountDownLatch relistDone = new CountDownLatch(1);
+    final ResourceEventHandler<Pod> handler = new ResourceEventHandler<Pod>() {
+      @Override
+      public void onBeforeList(String lastSyncResourceVersion) {
+        events.add("beforeList:" + lastSyncResourceVersion);
+        beforeListArgs.add(lastSyncResourceVersion);
+      }
+
+      @Override
+      public void onAdd(Pod obj) {
+        events.add("add:" + obj.getMetadata().getName() + ":" + obj.getMetadata().getResourceVersion());
+      }
+
+      @Override
+      public void onUpdate(Pod oldObj, Pod newObj) {
+        events.add("update:" + newObj.getMetadata().getName() + ":" + newObj.getMetadata().getResourceVersion());
+      }
+
+      @Override
+      public void onDelete(Pod obj, boolean deletedFinalStateUnknown) {
+        events.add("delete:" + obj.getMetadata().getName());
+      }
+
+      @Override
+      public void onList(String resourceVersion, boolean remainedEmpty) {
+        events.add("list:" + resourceVersion);
+        if ("2".equals(resourceVersion)) {
+          relistDone.countDown();
+        }
+      }
+    };
+
+    // When
+    SharedIndexInformer<Pod> informer = client.pods().inform(handler);
+    assertTrue(relistDone.await(10, TimeUnit.SECONDS));
+
+    // Then the initial cycle reports null and the re-list cycle reports the frozen prior version "1"
+    assertThat(beforeListArgs).hasSizeGreaterThanOrEqualTo(2);
+    assertThat(beforeListArgs.get(0)).isNull();
+    assertThat(beforeListArgs.get(1)).isEqualTo("1");
+    // and that frozen version is reported before the re-list emits the newer (v2) update and onList
+    assertThat(events.indexOf("beforeList:1")).isLessThan(events.indexOf("update:pod1:2"));
+    assertThat(events.indexOf("beforeList:1")).isLessThan(events.indexOf("list:2"));
 
     informer.stop();
   }

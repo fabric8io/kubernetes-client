@@ -52,8 +52,10 @@ public interface ResourceEventHandler<T> {
    * detected by the list are not reconciled into the cache until just before {@code onList} is
    * called.</li>
    * <li>the last sync resource version reported here remains frozen for the duration of the
-   * list, but {@code onAdd} / {@code onUpdate} events can still be emitted from the in-flight
-   * list pages with resource versions newer than {@code lastSyncResourceVersion}.</li>
+   * list. On a re-list, {@code onAdd} / {@code onUpdate} events can still be emitted from the
+   * in-flight list pages with resource versions newer than {@code lastSyncResourceVersion}; on
+   * the initial list the additions are instead deferred and delivered as a single batch just
+   * before {@link #onList(String, boolean)}.</li>
    * </ul>
    *
    * <p>
