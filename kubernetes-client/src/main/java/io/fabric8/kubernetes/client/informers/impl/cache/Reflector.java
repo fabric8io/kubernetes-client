@@ -50,6 +50,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private final ProcessorStore<T> store;
   private final ReflectorWatcher watcher;
   private volatile boolean watching;
+  private volatile boolean pendingBeforeListNotification = true;
   @SuppressWarnings("java:S3077") // CompletableFuture is thread-safe; volatile ensures reference visibility
   private volatile CompletableFuture<AbstractWatchManager<T>> watchFuture;
   @SuppressWarnings("java:S3077") // CompletableFuture is thread-safe; volatile ensures reference visibility
@@ -135,6 +136,11 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       return CompletableFuture.completedFuture(null);
     }
 
+    if (pendingBeforeListNotification) {
+      pendingBeforeListNotification = false;
+      store.onBeforeList(lastSyncResourceVersion);
+    }
+
     CompletableFuture<Void> theFuture = null;
     if (watchList) {
       watchListState = new WatchListState();
@@ -177,6 +183,8 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     boolean startWatchImmediately = cachedListing && lastSyncResourceVersion == null;
     lastSyncResourceVersion = latestResourceVersion;
     Executor executor = store.onList(latestResourceVersion, wasEmpty && nextKeys.isEmpty());
+    // re-arm so the next list/watch cycle (HTTP GONE or onException reconnect) fires onBeforeList
+    pendingBeforeListNotification = true;
     if (startWatchImmediately) {
       cf.complete(null);
     } else {
