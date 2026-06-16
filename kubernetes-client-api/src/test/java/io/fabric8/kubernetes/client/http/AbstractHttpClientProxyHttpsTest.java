@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.http;
 
-import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.DefaultMockServer;
@@ -29,6 +28,7 @@ import io.fabric8.mockwebserver.internal.MockDispatcher;
 import io.fabric8.mockwebserver.internal.SimpleRequest;
 import io.fabric8.mockwebserver.internal.SimpleResponse;
 import io.fabric8.mockwebserver.utils.ResponseProvider;
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -101,16 +101,17 @@ public abstract class AbstractHttpClientProxyHttpsTest {
         .sslContext(null, SSLUtils.trustManagers(null, null, true, null, null))
         .proxyAddress(new InetSocketAddress("localhost", proxyServer.getPort()))
         .proxyAuthorization(basicCredentials("auth", "cred"));
-    builder.tag(new RequestConfigBuilder().withRequestRetryBackoffInterval(1).build());
     try (HttpClient client = builder.build()) {
-      // When (just send and ignore response, we only care about the CONNECT request headers)
+      // When (just send and ignore the response, we only care about the CONNECT request headers)
       client.sendAsync(client.newHttpRequestBuilder().uri("https://example.com/proxied").build(), String.class)
-          .exceptionally(t -> null)
-          .get(30, TimeUnit.SECONDS);
+          .exceptionally(t -> null);
       // Then
-      assertThat(initialConnectRequest)
+      // The mock proxy can't complete the TLS handshake through the tunnel, so the request will eventually fail
+      // (and be retried). The CONNECT request we care about is recorded as soon as the authenticated tunnel is
+      // established, so we await that observable instead of blocking on the request's (irrelevant) final outcome.
+      Awaitility.await().atMost(30, TimeUnit.SECONDS).untilAsserted(() -> assertThat(initialConnectRequest)
           .doesNotHaveNullValue()
-          .hasValueMatching(r -> r.getHeader("Proxy-Authorization").equals("Basic YXV0aDpjcmVk"));
+          .hasValueMatching(r -> r.getHeader("Proxy-Authorization").equals("Basic YXV0aDpjcmVk")));
     }
   }
 }
