@@ -32,6 +32,7 @@
 
 #### New Features
 * Fix #5084: Jbang scripts to generate graalVM metadata
+* Fix #7375: (crd-generator) Support @JsonClassDescription for adding descriptions to classes in the generated CRD schema.
 
 #### _**Note**_: Breaking changes
 

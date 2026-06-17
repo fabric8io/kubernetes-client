@@ -22,6 +22,7 @@ import io.fabric8.crd.generator.CRDGenerator;
 import io.fabric8.crd.generator.CRDInfo;
 import io.fabric8.crd.generator.approvaltests.annotated.Annotated;
 import io.fabric8.crd.generator.approvaltests.complex.Complex;
+import io.fabric8.crd.generator.approvaltests.described.Described;
 import io.fabric8.crd.generator.approvaltests.inherited.Child;
 import io.fabric8.crd.generator.approvaltests.json.ContainingJson;
 import io.fabric8.crd.generator.approvaltests.k8svalidation.K8sValidation;
@@ -183,6 +184,7 @@ class CRDGeneratorApprovalTest {
   static Stream<TestCase> crdApprovalCasesApiV2(String crdVersion) {
     final List<TestCase> cases = new ArrayList<>();
     for (boolean parallel : new boolean[] { false, true }) {
+      cases.add(new TestCase("describeds.samples.fabric8.io", crdVersion, parallel, Described.class));
       cases.add(new TestCase("printercolumns.sample.fabric8.io", crdVersion, parallel, PrinterColumn.class));
       cases.add(new TestCase("requireds.samples.fabric8.io", crdVersion, parallel, Required.class));
       cases.add(new TestCase("selectablefields.sample.fabric8.io", crdVersion, parallel, SelectableField.class));
