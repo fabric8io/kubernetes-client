@@ -181,6 +181,20 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     }
   }
 
+  /**
+   * Walks up the class hierarchy to find the first (most specific) occurrence of the annotation.
+   */
+  private static <A extends Annotation> A findClassAnnotation(Class<?> beanClass, Class<A> annotation) {
+    while (beanClass != null && beanClass != Object.class) {
+      A found = beanClass.getAnnotation(annotation);
+      if (found != null) {
+        return found;
+      }
+      beanClass = beanClass.getSuperclass();
+    }
+    return null;
+  }
+
   Optional<Field> getFieldForMethod(BeanProperty beanProperty) {
     AnnotatedElement annotated = beanProperty.getMember().getAnnotated();
     if (annotated instanceof Method) {
@@ -433,8 +447,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     Class<?> rawClass = gos.javaType.getRawClass();
     collectDependentClasses(rawClass);
 
-    JsonClassDescription classDescription = rawClass.getAnnotation(JsonClassDescription.class);
-    if (classDescription != null) {
+    JsonClassDescription classDescription = findClassAnnotation(rawClass, JsonClassDescription.class);
+    if (classDescription != null && Utils.isNotNullOrEmpty(classDescription.value())) {
       objectSchema.setDescription(classDescription.value());
     }
 

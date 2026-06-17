@@ -22,6 +22,16 @@ spec:
               field:
                 description: "This is a field-level description."
                 type: "string"
+              inheriting:
+                description: "This is an inherited base-class-level description."
+                properties:
+                  baseField:
+                    description: "This is a base-field-level description."
+                    type: "string"
+                  childField:
+                    description: "This is a child-field-level description."
+                    type: "string"
+                type: "object"
               nested:
                 description: "This is a nested-class-level description."
                 properties:
@@ -34,6 +44,19 @@ spec:
                     type: "object"
                   nestedField:
                     description: "This is a nested-field-level description."
+                    type: "string"
+                type: "object"
+              overridden:
+                description: "This is a field-level description that overrides the\
+                  \ class-level one."
+                properties:
+                  leafField:
+                    description: "This is a leaf-field-level description."
+                    type: "string"
+                type: "object"
+              plain:
+                properties:
+                  plainField:
                     type: "string"
                 type: "object"
             type: "object"

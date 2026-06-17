@@ -160,13 +160,15 @@ The generated CRD will include these descriptions for each object type:
     schema:
       openAPIV3Schema:
         description: "Description for the Example resource"
-        type: object
         properties:
           spec:
             description: "Description for the spec object"
             type: object
+        type: object
 
 ```
+
+The description follows the class hierarchy: if a class does not declare its own `@JsonClassDescription`, the description declared on a superclass is used. When a field has both a `@JsonPropertyDescription` and a type annotated with `@JsonClassDescription`, the field-level description takes precedence.
 
 ### com.fasterxml.jackson.annotation.JsonPropertyDescription
 
