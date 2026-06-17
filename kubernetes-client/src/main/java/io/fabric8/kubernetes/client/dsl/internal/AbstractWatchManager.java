@@ -101,7 +101,9 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     final CompletableFuture<Void> ended = new CompletableFuture<>();
     final AtomicBoolean started = new AtomicBoolean();
     final AtomicBoolean messageReceived = new AtomicBoolean();
-    long startedAtNs;
+    // volatile: written in startWatch() after the volatile publication of latestRequestState and read
+    // on the WebSocket receive thread in watchEnded(); volatile guarantees that read sees the write.
+    volatile long startedAtNs;
   }
 
   private static final Logger logger = LoggerFactory.getLogger(AbstractWatchManager.class);
@@ -130,7 +132,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
 
   private final boolean receiveBookmarks;
 
-  @SuppressWarnings("java:S3077") // inner fields (AtomicBoolean, CompletableFuture) are thread-safe
+  @SuppressWarnings("java:S3077") // inner fields (AtomicBoolean, CompletableFuture, volatile long) are thread-safe
   volatile WatchRequestState latestRequestState;
   private final Map<Class<?>, Integer> endErrors = new ConcurrentHashMap<>();
   private AtomicInteger retryAfterSeconds = new AtomicInteger();
