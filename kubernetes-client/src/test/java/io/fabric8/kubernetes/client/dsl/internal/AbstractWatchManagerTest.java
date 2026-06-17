@@ -27,6 +27,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
@@ -296,6 +298,16 @@ class AbstractWatchManagerTest {
     assertThat(awm.isForceClosed()).isFalse();
     assertThat(state.reconnected.get()).isTrue();
     assertThat(watcher.closeWithCauseCount.get()).isEqualTo(0);
+  }
+
+  @Test
+  @DisplayName("WatchRequestState.startedAtNs is volatile so the receive thread sees the start thread's write")
+  void startedAtNsIsVolatile() throws NoSuchFieldException {
+    // startedAtNs is written in startWatch() after the volatile store of latestRequestState (so that
+    // publication does not cover it) and read on the WebSocket receive thread in watchEnded(); it must
+    // be volatile for that read to observe the write.
+    final Field startedAtNs = WatchRequestState.class.getDeclaredField("startedAtNs");
+    assertThat(Modifier.isVolatile(startedAtNs.getModifiers())).isTrue();
   }
 
   @Test
