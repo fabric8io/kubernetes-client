@@ -68,4 +68,16 @@ class SimpleIT {
         // When
         () -> gradleRunner.withITProject("simple").withArguments("clean", "build", "--stacktrace").build());
   }
+
+  /**
+   * Verify that the {@code crd2java} Gradle task is up-to-date when the CRD inputs haven't changed.
+   */
+  @Test
+  void tasks_crd2JavaIsUpToDateWhenInputsAreUnchanged() {
+    // When
+    gradleRunner.withITProject("simple").withArguments("clean", "crd2Java", "--stacktrace").build();
+    final BuildResult rebuild = gradleRunner.withITProject("simple").withArguments("crd2Java", "--stacktrace").build();
+    // Then
+    assertThat(rebuild).extracting(BuildResult::getOutput).asString().contains("UP-TO-DATE");
+  }
 }
