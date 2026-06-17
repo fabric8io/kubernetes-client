@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -99,10 +100,15 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     final AtomicBoolean closed = new AtomicBoolean();
     final CompletableFuture<Void> ended = new CompletableFuture<>();
     final AtomicBoolean started = new AtomicBoolean();
+    final AtomicBoolean messageReceived = new AtomicBoolean();
+    long startedAtNs;
   }
 
   private static final Logger logger = LoggerFactory.getLogger(AbstractWatchManager.class);
   private static final int INFO_LOG_CONNECTION_ERRORS = 10;
+  // Max connection lifetime (ns) under which a zero-message clean close is treated as a stale
+  // resourceVersion rejection. GKE closes within ~100ms; legitimate idle closes take much longer.
+  private static final long STALE_RV_CLOSE_THRESHOLD_NS = 2_000_000_000L;
 
   final Watcher<T> watcher;
   // Serializes both the message-deserialization+dispatch task (queued from onMessage) and the
@@ -335,6 +341,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
 
     closeRequest(); // only one can be active at a time
     latestRequestState = new WatchRequestState();
+    latestRequestState.startedAtNs = System.nanoTime();
     start(url, headers, latestRequestState);
   }
 
@@ -395,6 +402,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
       runQuietly(onComplete);
       return;
     }
+    state.messageReceived.set(true);
     serialExecutor.execute(() -> {
       try {
         endErrors.clear();
@@ -476,6 +484,27 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
       if (t != null) {
         logger.debug("Watch error received after the next watch started", t);
       }
+      return;
+    }
+    // When a watch closes cleanly (code 1000, no body) with zero messages within a very short
+    // window, treat it as a silent stale-resourceVersion rejection. This compensates for a
+    // GKE-specific behaviour on v1/events where the GKFE proxy sends a bare close instead of
+    // the standard {"type":"ERROR","code":410} response, causing the watch to loop indefinitely
+    // with the same stale resourceVersion. Emitting a WatcherException mirrors the ProtocolException
+    // path and lets the caller (e.g. an informer) decide how to recover.
+    // See: https://github.com/kubernetes/kubernetes/issues/137089
+    long connectionAgeNs = System.nanoTime() - state.startedAtNs;
+    if (t == null && resourceVersion.get() != null && !state.messageReceived.get()
+        && connectionAgeNs < STALE_RV_CLOSE_THRESHOLD_NS) {
+      logger.debug("Watch ended cleanly with no messages after {}ms — treating as stale resourceVersion rejection",
+          connectionAgeNs / 1_000_000);
+      Status status = new StatusBuilder()
+          .withCode(HTTP_GONE)
+          .withStatus("Failure")
+          .withReason("Expired")
+          .withMessage("resourceVersion too old")
+          .build();
+      close(new WatcherException(status.getMessage(), new KubernetesClientException(status)));
       return;
     }
     if (t instanceof ProtocolException) {
