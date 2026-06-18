@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.netty.handler.ssl.ApplicationProtocolConfig;
+import io.netty.handler.ssl.ClientAuth;
 import io.netty.handler.ssl.IdentityCipherSuiteFilter;
 import io.netty.handler.ssl.JdkSslContext;
 import io.vertx.core.Vertx;
@@ -126,6 +127,13 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
 
     if (this.sslContext != null) {
       options.setSsl(true);
+      // Build the Netty SslContext here, off the Vert.x event loop. Vert.x otherwise calls
+      // SslContextFactory.create() lazily on the event loop during the first handshake;
+      // returning a pre-built instance keeps that construction off the loop. See #7921.
+      final JdkSslContext jdkSslContext = new JdkSslContext(
+          sslContext, true, null, IdentityCipherSuiteFilter.INSTANCE,
+          ApplicationProtocolConfig.DISABLED, ClientAuth.NONE,
+          protocols, false);
       options.setSslEngineOptions(new JdkSSLEngineOptions() {
         @Override
         public JdkSSLEngineOptions copy() {
@@ -134,15 +142,7 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
 
         @Override
         public SslContextFactory sslContextFactory() {
-          return () -> new JdkSslContext(
-              sslContext,
-              true,
-              null,
-              IdentityCipherSuiteFilter.INSTANCE,
-              ApplicationProtocolConfig.DISABLED,
-              io.netty.handler.ssl.ClientAuth.NONE,
-              protocols,
-              false);
+          return () -> jdkSslContext;
         }
       });
     }

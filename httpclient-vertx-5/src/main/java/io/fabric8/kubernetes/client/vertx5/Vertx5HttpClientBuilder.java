@@ -19,6 +19,8 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.http.TlsVersion;
+import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.SslProvider;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.file.FileSystemOptions;
@@ -62,6 +64,7 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
     extends StandardHttpClientBuilder<Vertx5HttpClient<F>, F, Vertx5HttpClientBuilder<F>> {
 
   private static final Logger logger = LoggerFactory.getLogger(Vertx5HttpClientBuilder.class);
+  private static final AtomicBoolean TLS_STACK_WARMED = new AtomicBoolean(false);
   private static final int MAX_CONNECTIONS = 8192;
 
   // the default for etcd seems to be 3 MB, but we'll default to unlimited, so we have the same behavior across clients
@@ -176,6 +179,7 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
 
     if (this.sslContext != null) {
       applyTlsOptions(httpOptions, protocols);
+      warmTlsStackOffEventLoop();
     }
 
     final WebSocketClientOptions wsOptions = createWebSocketClientOptions(protocols);
@@ -258,6 +262,31 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
       }
     }
     return vertx;
+  }
+
+  /**
+   * One-time, off-event-loop warm-up of the JDK TLS stack. Vert.x 5.1 materialises the
+   * client SslContext lazily on the event loop on the first handshake
+   * (ClientSslContextProvider.createClientContext), which loads
+   * JdkDefaultApplicationProtocolNegotiator and compiles SSL-path lambda forms — enough to
+   * trip BlockedThreadChecker on a cold/constrained JVM. Building and discarding a context
+   * here (on the caller's thread) loads those JVM-global classes first. Best-effort: must
+   * never fail client construction. See #7921. We cannot reuse the instance (unlike the
+   * Vert.x 4 module) because #7907 requires trust to flow through TrustOptions/KeyCertOptions,
+   * not a custom SslContextFactory. The provider is pinned to {@link SslProvider#JDK} so the
+   * warm-up loads the same classes the client's {@code JdkSSLEngineOptions} path uses, even
+   * when netty-tcnative is on the classpath (which would otherwise make the default provider
+   * OpenSSL and warm the wrong stack).
+   */
+  private static void warmTlsStackOffEventLoop() {
+    if (!TLS_STACK_WARMED.compareAndSet(false, true)) {
+      return;
+    }
+    try {
+      SslContextBuilder.forClient().sslProvider(SslProvider.JDK).build();
+    } catch (Exception e) {
+      logger.debug("TLS stack warm-up skipped: {}", e.getMessage());
+    }
   }
 
   /**

@@ -89,6 +89,20 @@ class Vertx5SslTest {
   }
 
   @Test
+  @DisplayName("TLS warm-up is harmless and idempotent: two successive client builds both connect successfully")
+  void tlsWarmUpIsHarmlessAndIdempotent() throws Exception {
+    requestHandler = req -> req.response().end("OK");
+    for (int i = 0; i < 2; i++) {
+      try (HttpClient client = clientFactory.newBuilder().sslContext(null, trustManagers).build()) {
+        HttpRequest request = client.newHttpRequestBuilder().uri("https://localhost:" + port).build();
+        HttpResponse<String> resp = client.sendAsync(request, String.class).get(10, TimeUnit.SECONDS);
+        assertEquals(200, resp.code());
+        assertEquals("OK", resp.bodyString());
+      }
+    }
+  }
+
+  @Test
   @DisplayName("HTTPS rejects an untrusted server certificate instead of falling back to a permissive trust")
   void httpsRejectsUntrustedCertificate() throws Exception {
     requestHandler = req -> req.response().end("OK");
