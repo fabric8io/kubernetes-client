@@ -51,7 +51,7 @@ jobs:
         chaos-test: ["network-delay.yaml", "network-loss.yaml", "network-duplicate.yaml"]
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Setup Minikube-Kubernetes
         uses: manusa/actions-setup-minikube@b65276017fdec6f1e6498129fb740e34e260dc55 # v2.18.0
         with:
