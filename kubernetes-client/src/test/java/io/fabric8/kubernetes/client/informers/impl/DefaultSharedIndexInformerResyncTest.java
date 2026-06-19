@@ -16,9 +16,11 @@
 package io.fabric8.kubernetes.client.informers.impl;
 
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.client.dsl.internal.AbstractWatchManager;
+import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,6 +30,7 @@ import org.mockito.Mockito;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -167,6 +170,60 @@ class DefaultSharedIndexInformerResyncTest {
     // Then
     assertNull(controller.getResyncFuture());
     assertThat(countDown.getCount()).isLessThanOrEqualTo(1);
+  }
+
+  @Test
+  @DisplayName("Resync redistributes onUpdate only and never invokes onBeforeList or onList")
+  void resyncDoesNotInvokeOnBeforeListOrOnList() throws InterruptedException {
+    // Given a non-empty initial list so a resync has a cached item to redistribute as an onUpdate.
+    // 1000ms is the minimum effective resync period (DefaultSharedIndexInformer#MINIMUM_RESYNC_PERIOD_MILLIS).
+    final long resyncPeriod = 1000L;
+    final Pod pod1 = new PodBuilder().withNewMetadata()
+        .withNamespace("ns").withName("pod1").withResourceVersion("1").endMetadata()
+        .build();
+    Mockito.when(listerWatcher.submitList(Mockito.any()))
+        .thenReturn(CompletableFuture.completedFuture(new PodListBuilder().withNewMetadata()
+            .withResourceVersion("1").endMetadata().withItems(pod1).build()));
+    final AtomicInteger onBeforeListCount = new AtomicInteger();
+    final AtomicInteger onListCount = new AtomicInteger();
+    final CountDownLatch resyncDelivered = new CountDownLatch(1);
+    DefaultSharedIndexInformer<Pod, PodList> controller = createDefaultSharedIndexInformer(resyncPeriod);
+    controller.addEventHandler(new ResourceEventHandler<Pod>() {
+      @Override
+      public void onBeforeList(String lastSyncResourceVersion) {
+        onBeforeListCount.incrementAndGet();
+      }
+
+      @Override
+      public void onAdd(Pod obj) {
+        // intentionally ignored: the initial list flushes pod1 as an onAdd, so only onUpdate
+        // (emitted exclusively by the resync) trips the latch and isolates the resync.
+      }
+
+      @Override
+      public void onUpdate(Pod oldObj, Pod newObj) {
+        resyncDelivered.countDown();
+      }
+
+      @Override
+      public void onDelete(Pod obj, boolean deletedFinalStateUnknown) {
+      }
+
+      @Override
+      public void onList(String resourceVersion, boolean remainedEmpty) {
+        onListCount.incrementAndGet();
+      }
+    });
+
+    // When the informer runs (initial list) and the periodic resync then fires
+    controller.run();
+
+    // Then the resync delivers the cached item as an onUpdate ...
+    assertThat(resyncDelivered.await(10, TimeUnit.SECONDS)).isTrue();
+    // ... but neither onBeforeList nor onList is emitted for the resync: each fired exactly once,
+    // for the single initial list only.
+    assertThat(onBeforeListCount.get()).isEqualTo(1);
+    assertThat(onListCount.get()).isEqualTo(1);
   }
 
   @Test
