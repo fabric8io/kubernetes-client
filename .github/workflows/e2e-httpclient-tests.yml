@@ -42,7 +42,7 @@ jobs:
         httpclient: [jdk,jetty,okhttp,vertx-5]
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Setup Minikube-Kubernetes
         uses: manusa/actions-setup-minikube@b65276017fdec6f1e6498129fb740e34e260dc55 # v2.18.0
         with:
