@@ -32,6 +32,7 @@
 * Fix #7875: bump vertx5.version from 5.0.12 to 5.1.1, adapting httpclient-vertx-5 to Vert.x 5.1 behaviour changes (SSL engine options no longer accept an empty protocol array; request-body stream errors are reset with HTTP/2 CANCEL so they are not retried as transient IOExceptions)
 
 #### New Features
+* Fix #7019: (kubernetes-server-mock) Allow injection of `java.time.Clock` via `KubernetesMockServer.setClock(Clock)` for deterministic timestamps in CRUD mode
 * Fix #5084: Jbang scripts to generate graalVM metadata
 * Fix #7375: (crd-generator) Support @JsonClassDescription for adding descriptions to classes in the generated CRD schema.
 
