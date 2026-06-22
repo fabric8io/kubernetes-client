@@ -69,6 +69,34 @@ If you would rather take full control over the threading use KubernetesClientBui
 
 Finally, the fabric8 client will use 1 thread per PortForward and an additional thread per socket connection - this may be improved upon in the future.
 
+### Why does the first HTTPS request block / time out on a cold or CPU-throttled JVM?
+
+With the Vert.x HTTP clients (the default `kubernetes-httpclient-vertx` and `kubernetes-httpclient-vertx-5`), the Netty `SslContext`, `SslHandler` and `SSLEngine` are materialized lazily on the Vert.x event loop on the **first** TLS connection.
+On a cold JVM this pays the one-time class loading of the entire JDK/Netty TLS stack plus the first handshake on the event loop.
+On a healthy host this is fast, but on a JVM that is starting cold under heavy CPU throttling (for example a Kubernetes pod with a low CPU `limit`) it can take several seconds, trip Vert.x's `BlockedThreadChecker`, and in the worst case exceed the connect timeout so the first request fails.
+
+By default the client already builds and discards an SSL context off the event loop at client-construction time (`TlsWarmup.CONTEXT`), which removes about half of that first-connection cost.
+If you are still seeing first-connection blocking or timeouts under hard CPU throttling, you can opt in to a more complete warm-up that runs a throwaway loopback TLS handshake off the event loop, once per JVM, when the client is built:
+
+```java
+// Vert.x 5 client (kubernetes-httpclient-vertx-5)
+Vertx5HttpClientFactory factory = new Vertx5HttpClientFactory();
+factory.setTlsWarmup(TlsWarmup.FULL);
+KubernetesClient client = new KubernetesClientBuilder().withHttpClientFactory(factory).build();
+```
+
+`TlsWarmup.FULL` runs **synchronously**, so client construction takes longer (sub-second on a healthy host, a few seconds under hard throttling) but the first real connection no longer blocks the event loop, which deterministically prevents the first-connection timeout.
+Because it blocks the building thread, build a `FULL`-configured client from a regular (startup) thread, not from inside a Vert.x event-loop callback.
+It is best-effort and bounded: the bind and handshake share an overall deadline of roughly 30 seconds, after which the warm-up gives up and the client falls back to the default behavior (this also covers a restricted environment that blocks the loopback bind), so it never blocks startup indefinitely.
+`TlsWarmup.OFF` disables the warm-up entirely.
+The same setting is available on `VertxHttpClientFactory` for the Vert.x 4 client.
+
+> [!NOTE]
+> A warm-up only **relocates** the one-time TLS work off the event loop and off your first request; it cannot make a CPU-starved JVM faster.
+> Under a hard CPU cap the levers that actually reduce the work or raise the budget are:
+> - **Class Data Sharing (CDS)** — an AppCDS / dynamic CDS archive shrinks the class-loading slice (and on Java 24+ the AOT cache, `-XX:AOTCache`, additionally attacks the JIT slice CDS cannot). These are JVM launch flags, so they compose with the warm-up above.
+> - **Pod CPU sizing** — right-size the pod CPU `requests`/`limits` and enable the Kubernetes startup CPU boost so the JVM has more CPU available during startup.
+
 ### What additional logging is available?
 
 Like many Java application the Fabric8 Client utilizes [slf4j](https://www.slf4j.org/).
