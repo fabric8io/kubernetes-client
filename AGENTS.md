@@ -25,6 +25,15 @@ make quickly
 
 The project uses a `Makefile` for common operations. Prefer make targets over raw Maven commands.
 
+Before running builds or tests, verify Maven is using a supported Java version for this checkout:
+
+```bash
+mvn -version
+rg -n "maven.compiler.release|maven.compiler.source|java.version|maven-enforcer|toolchain|jdk" pom.xml .mvn **/pom.xml
+```
+
+Derive the required Java version from the project's Maven configuration; do not hardcode it in this file. If Maven is using an unsupported JDK, set `JAVA_HOME` to an installed supported JDK and re-run `mvn -version` before starting the build or test command.
+
 ```bash
 # Quick build without tests (default target, ~3-5 minutes)
 make quickly
@@ -58,8 +67,6 @@ tail -200 "$log"
 exit "$rc"
 ```
 
-Remove the "$log" when no longer needed.
-
 **Direct Maven commands** (when make targets don't cover the use case):
 ```bash
 # Build a specific module
@@ -92,6 +99,17 @@ mvn -Pitests -pl kubernetes-itests verify
 # Run OpenShift-specific integration tests
 mvn -Pitests -pl kubernetes-itests verify -Dtest="io.fabric8.openshift.**"
 ```
+
+Test suite prerequisites:
+- `make install` and module `mvn test` commands do not require an external cluster.
+- `mvn -Pitests -pl kubernetes-itests verify` requires a reachable Kubernetes API. Run `kubectl cluster-info` first.
+- OpenShift-specific integration tests require an OpenShift API. Run `oc whoami` or `kubectl api-resources | rg 'route.openshift.io|project.openshift.io'` first.
+- `mvn -Pitests -pl kubernetes-itests-envtest verify` is standalone and does not require an external cluster.
+- `mvn -Pitests -pl chaos-tests verify` requires Docker for JKube image builds plus a reachable Kubernetes cluster with Chaos Mesh installed. Run `docker info`, `kubectl cluster-info`, and `kubectl api-resources | rg 'chaos-mesh.org|networkchaos'` first.
+
+If any prerequisite fails, report an environment block unless the user explicitly asks to run the failing suite anyway.
+
+For long-running Maven commands, write output to a log file and poll with short tails, for example `tail -80 "$log"` every few minutes. Use Maven's final summary and report XML for test counts instead of repeatedly streaming the full log.
 
 ### Reproducing CI flakes locally
 
