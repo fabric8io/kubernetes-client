@@ -32,6 +32,7 @@
 * Fix #7875: bump vertx5.version from 5.0.12 to 5.1.1, adapting httpclient-vertx-5 to Vert.x 5.1 behaviour changes (SSL engine options no longer accept an empty protocol array; request-body stream errors are reset with HTTP/2 CANCEL so they are not retried as transient IOExceptions)
 
 #### New Features
+* Fix #7926: (httpclient-vertx-5, httpclient-vertx) opt-in TLS warm-up on the Vert.x HTTP client factory. `Vertx5HttpClientFactory`/`VertxHttpClientFactory` now expose `setTlsWarmup(TlsWarmup)` with modes `OFF`, `CONTEXT` (default, unchanged) and `FULL`. `FULL` runs a synchronous, once-per-JVM, throwaway loopback TLS handshake off the event loop when the client is built, so the first real connection no longer blocks the event loop on the one-time JDK/Netty TLS class loading — for users on cold or hard-CPU-throttled JVMs hitting the first-connection block/timeout described in #7921. Default behavior is unchanged; see the FAQ for CDS and pod CPU-sizing guidance for hard-throttled pods
 * Fix #5084: Jbang scripts to generate graalVM metadata
 * Fix #7375: (crd-generator) Support @JsonClassDescription for adding descriptions to classes in the generated CRD schema.
 
