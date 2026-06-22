@@ -47,6 +47,19 @@ make generate-model
 make generate-javadoc-links
 ```
 
+For agent runs, keep Maven output out of the conversation context unless it is needed for debugging:
+
+```bash
+log="$(mktemp "${TMPDIR:-/tmp}/kubernetes-client-build.XXXXXX.log")"
+MAVEN_ARGS="-B -ntp" make install >"$log" 2>&1
+rc=$?
+echo "Full build log: $log"
+tail -200 "$log"
+exit "$rc"
+```
+
+Remove the "$log" when no longer needed.
+
 **Direct Maven commands** (when make targets don't cover the use case):
 ```bash
 # Build a specific module
