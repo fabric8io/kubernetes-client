@@ -1,0 +1,10 @@
+{
+  "sandbox": {
+    "excludedCommands": [
+      "mvn test",
+      "mvn test *",
+      "mvn verify",
+      "mvn verify *"
+    ]
+  }
+}
