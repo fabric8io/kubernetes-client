@@ -123,7 +123,7 @@
          avoid Mockito's runtime self-attach. Keep this in sync with the byte-buddy-agent that mockito-core
          ${mockito.version} pulls transitively; a small skew is harmless since the agent only installs
          Instrumentation. -->
-    <byte-buddy.version>1.17.7</byte-buddy.version>
+    <byte-buddy.version>1.18.10</byte-buddy.version>
     <spock.version>2.4-M6-groovy-4.0</spock.version>
 
     <conscrypt-openjdk-uber.bundle.version>1.4.2_1</conscrypt-openjdk-uber.bundle.version>
