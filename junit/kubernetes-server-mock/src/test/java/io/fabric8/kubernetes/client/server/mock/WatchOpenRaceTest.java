@@ -29,7 +29,6 @@ import io.fabric8.mockwebserver.http.WebSocket;
 import io.fabric8.mockwebserver.http.WebSocketListener;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -92,10 +91,6 @@ class WatchOpenRaceTest {
   }
 
   @Test
-  @Disabled("Reproducer for the open-side race in kubernetes-server-mock. See issue #7867. "
-      + "Remove this annotation as part of the fix; the test passes once a CRUD event scheduled "
-      + "between handleWatch returning and WatchEventsListener#onOpen firing is delivered to the "
-      + "watcher instead of being silently dropped by the NPE in sendWebSocketResponse.")
   void modifiedEventDuringOpenRaceReachesWatcher() throws Exception {
     final Queue<String> received = new ConcurrentLinkedQueue<>();
     final CountDownLatch addReceived = new CountDownLatch(1);
@@ -156,6 +151,12 @@ class WatchOpenRaceTest {
           .as("watcher received the MODIFIED triggered during the open-race window; "
               + "got events=%s", received)
           .isTrue();
+
+      // Ordering guarantee: the buffered MODIFIED must be replayed AFTER the initial-sync
+      // ADDED, never before it (the secondary hazard noted in #7867).
+      assertThat(received)
+          .as("initial-sync ADDED is delivered before the buffered MODIFIED")
+          .containsExactly("ADDED:pod1", "MODIFIED:pod1");
     } finally {
       watch.close();
     }
