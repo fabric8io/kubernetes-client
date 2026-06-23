@@ -119,6 +119,11 @@
     <bcpkix-fips.version>2.1.11</bcpkix-fips.version>
     <keycloak.version>26.6.3</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
     <mockito.version>5.23.0</mockito.version>
+    <!-- byte-buddy-agent is loaded as a startup -javaagent by surefire (see maven-surefire-plugin) to
+         avoid Mockito's runtime self-attach. Keep this in sync with the byte-buddy-agent that mockito-core
+         ${mockito.version} pulls transitively; a small skew is harmless since the agent only installs
+         Instrumentation. -->
+    <byte-buddy.version>1.17.7</byte-buddy.version>
     <spock.version>2.4-M6-groovy-4.0</spock.version>
 
     <conscrypt-openjdk-uber.bundle.version>1.4.2_1</conscrypt-openjdk-uber.bundle.version>
@@ -908,6 +913,19 @@
     </dependencies>
   </dependencyManagement>
 
+  <dependencies>
+    <!-- Provides the ByteBuddy agent jar to every module so the maven-surefire-plugin can load it at
+         JVM startup (see -javaagent in the build section) and Mockito never falls back to runtime
+         self-attach. Test scope: it is not part of any module's compile/runtime classpath, bundle, or
+         BOM; it only guarantees the jar is resolved into the local repository for the -javaagent path. -->
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy-agent</artifactId>
+      <version>${byte-buddy.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
   <build>
     <resources>
       <resource>
@@ -1137,10 +1155,27 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <inherited>true</inherited>
         <configuration>
-          <argLine>@{argLine} -Xmx2048m</argLine>
+          <!-- Load the ByteBuddy agent at JVM startup so Mockito's inline mock-maker (and Spock's
+               Mockito-backed mock maker) get Instrumentation without a runtime self-attach. Self-attach
+               (ptrace + an attach socket) is blocked by restrictive sandboxes (e.g. Claude Code) and is
+               on the JEP 451 path to being disallowed by the JDK. byte-buddy-agent is declared as a
+               global test dependency below, so the jar is in the local repository for every module and
+               can be referenced here by path. We load byte-buddy-agent, NOT mockito-core: a mockito-core
+               -javaagent would put a second mockito-core on the system class loader without byte-buddy
+               and break the inline mock-maker with NoClassDefFoundError (net.bytebuddy.matcher.ElementMatcher).
+               Keep @{argLine} first so JaCoCo's coverage agent survives. -->
+          <argLine>@{argLine} -Xmx2048m -javaagent:${settings.localRepository}/net/bytebuddy/byte-buddy-agent/${byte-buddy.version}/byte-buddy-agent-${byte-buddy.version}.jar</argLine>
           <environmentVariables>
             <ENV_VAR_EXISTS>value</ENV_VAR_EXISTS>
             <ENV_VAR_EXISTS_BOOLEAN>true</ENV_VAR_EXISTS_BOOLEAN>
+            <!-- Isolate tests from an ambient HTTP(S) proxy. fabric8's Config.autoConfigure reads the
+                 standard HTTP_PROXY/HTTPS_PROXY/NO_PROXY env vars, so a proxy injected by the
+                 environment (a restrictive sandbox, or a corporate proxy on a dev box) would otherwise
+                 leak into Config and break the proxy-configuration unit tests. Empty is treated as unset. -->
+            <HTTP_PROXY></HTTP_PROXY>
+            <HTTPS_PROXY></HTTPS_PROXY>
+            <NO_PROXY></NO_PROXY>
+            <ALL_PROXY></ALL_PROXY>
           </environmentVariables>
         </configuration>
       </plugin>
@@ -1607,7 +1642,6 @@
         <jdk>[17,)</jdk>
       </activation>
       <properties>
-        <mockito.version>5.11.0</mockito.version>
         <karaf.itest.skip>true</karaf.itest.skip>
       </properties>
     </profile>
