@@ -1141,9 +1141,10 @@
                ByteBuddy's runtime self-attach. Self-attach (ptrace + an attach socket) is blocked by
                restrictive sandboxes (e.g. Claude Code) and is on the JEP 451 path to being disallowed
                by the JDK, so loading the agent up front keeps tests green in both cases. mockito-core
-               ships a Premain-Class; the ${mockito.version} jar is loaded by absolute path, so this also
-               works for modules that don't depend on Mockito. Keep @{argLine} first so JaCoCo survives. -->
-          <argLine>@{argLine} -Xmx2048m -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar</argLine>
+               ships a Premain-Class. The jar is staged into target/ by maven-dependency-plugin below,
+               which resolves the artifact regardless of the module's own dependencies, so the agent is
+               present even for modules that don't use Mockito. Keep @{argLine} first so JaCoCo survives. -->
+          <argLine>@{argLine} -Xmx2048m -javaagent:${project.build.directory}/mockito-agent.jar</argLine>
           <environmentVariables>
             <ENV_VAR_EXISTS>value</ENV_VAR_EXISTS>
             <ENV_VAR_EXISTS_BOOLEAN>true</ENV_VAR_EXISTS_BOOLEAN>
@@ -1157,6 +1158,36 @@
             <ALL_PROXY></ALL_PROXY>
           </environmentVariables>
         </configuration>
+      </plugin>
+      <plugin>
+        <!-- Stage the Mockito agent jar into each module's target/ so surefire's -javaagent (above) can
+             load it. Resolving an explicit artifactItem pulls mockito-core from the repo independently of
+             the module's declared dependencies, so the agent is available even in modules that don't use
+             Mockito (a path into the local repo is not, since nothing would have downloaded it there). -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <inherited>true</inherited>
+        <executions>
+          <execution>
+            <id>copy-mockito-agent</id>
+            <phase>process-test-resources</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <skip>${skipTests}</skip>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.mockito</groupId>
+                  <artifactId>mockito-core</artifactId>
+                  <version>${mockito.version}</version>
+                  <outputDirectory>${project.build.directory}</outputDirectory>
+                  <destFileName>mockito-agent.jar</destFileName>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>
