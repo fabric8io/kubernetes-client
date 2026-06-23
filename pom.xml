@@ -1137,10 +1137,24 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <inherited>true</inherited>
         <configuration>
-          <argLine>@{argLine} -Xmx2048m</argLine>
+          <!-- Load Mockito at JVM startup as a -javaagent so the inline mock-maker never falls back to
+               ByteBuddy's runtime self-attach. Self-attach (ptrace + an attach socket) is blocked by
+               restrictive sandboxes (e.g. Claude Code) and is on the JEP 451 path to being disallowed
+               by the JDK, so loading the agent up front keeps tests green in both cases. mockito-core
+               ships a Premain-Class; the ${mockito.version} jar is loaded by absolute path, so this also
+               works for modules that don't depend on Mockito. Keep @{argLine} first so JaCoCo survives. -->
+          <argLine>@{argLine} -Xmx2048m -javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar</argLine>
           <environmentVariables>
             <ENV_VAR_EXISTS>value</ENV_VAR_EXISTS>
             <ENV_VAR_EXISTS_BOOLEAN>true</ENV_VAR_EXISTS_BOOLEAN>
+            <!-- Isolate tests from an ambient HTTP(S) proxy. fabric8's Config.autoConfigure reads the
+                 standard HTTP_PROXY/HTTPS_PROXY/NO_PROXY env vars, so a proxy injected by the
+                 environment (a restrictive sandbox, or a corporate proxy on a dev box) would otherwise
+                 leak into Config and break the proxy-configuration unit tests. Empty is treated as unset. -->
+            <HTTP_PROXY></HTTP_PROXY>
+            <HTTPS_PROXY></HTTPS_PROXY>
+            <NO_PROXY></NO_PROXY>
+            <ALL_PROXY></ALL_PROXY>
           </environmentVariables>
         </configuration>
       </plugin>
@@ -1607,7 +1621,6 @@
         <jdk>[17,)</jdk>
       </activation>
       <properties>
-        <mockito.version>5.11.0</mockito.version>
         <karaf.itest.skip>true</karaf.itest.skip>
       </properties>
     </profile>
