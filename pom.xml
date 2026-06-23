@@ -119,6 +119,11 @@
     <bcpkix-fips.version>2.1.11</bcpkix-fips.version>
     <keycloak.version>26.6.3</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
     <mockito.version>5.23.0</mockito.version>
+    <!-- byte-buddy-agent is loaded as a startup -javaagent by surefire (see maven-surefire-plugin) to
+         avoid Mockito's runtime self-attach. Keep this in sync with the byte-buddy-agent that mockito-core
+         ${mockito.version} pulls transitively; a small skew is harmless since the agent only installs
+         Instrumentation. -->
+    <byte-buddy.version>1.17.7</byte-buddy.version>
     <spock.version>2.4-M6-groovy-4.0</spock.version>
 
     <conscrypt-openjdk-uber.bundle.version>1.4.2_1</conscrypt-openjdk-uber.bundle.version>
@@ -1137,14 +1142,15 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <inherited>true</inherited>
         <configuration>
-          <!-- Load Mockito at JVM startup as a -javaagent so the inline mock-maker never falls back to
-               ByteBuddy's runtime self-attach. Self-attach (ptrace + an attach socket) is blocked by
-               restrictive sandboxes (e.g. Claude Code) and is on the JEP 451 path to being disallowed
-               by the JDK, so loading the agent up front keeps tests green in both cases. mockito-core
-               ships a Premain-Class. The jar is staged into target/ by maven-dependency-plugin below,
-               which resolves the artifact regardless of the module's own dependencies, so the agent is
-               present even for modules that don't use Mockito. Keep @{argLine} first so JaCoCo survives. -->
-          <argLine>@{argLine} -Xmx2048m -javaagent:${project.build.directory}/mockito-agent.jar</argLine>
+          <!-- Load the ByteBuddy agent at JVM startup so Mockito's inline mock-maker (and Spock's
+               Mockito-backed mock maker) get Instrumentation without a runtime self-attach. Self-attach
+               (ptrace + an attach socket) is blocked by restrictive sandboxes (e.g. Claude Code) and is
+               on the JEP 451 path to being disallowed by the JDK. We load byte-buddy-agent, NOT
+               mockito-core: a mockito-core -javaagent puts a second mockito-core on the system class
+               loader without byte-buddy, which breaks the inline mock-maker with NoClassDefFoundError
+               (net.bytebuddy.matcher.ElementMatcher). The jar is staged into target/ by
+               maven-dependency-plugin below. Keep @{argLine} first so JaCoCo's coverage agent survives. -->
+          <argLine>@{argLine} -Xmx2048m -javaagent:${project.build.directory}/byte-buddy-agent.jar</argLine>
           <environmentVariables>
             <ENV_VAR_EXISTS>value</ENV_VAR_EXISTS>
             <ENV_VAR_EXISTS_BOOLEAN>true</ENV_VAR_EXISTS_BOOLEAN>
@@ -1160,16 +1166,17 @@
         </configuration>
       </plugin>
       <plugin>
-        <!-- Stage the Mockito agent jar into each module's target/ so surefire's -javaagent (above) can
-             load it. Resolving an explicit artifactItem pulls mockito-core from the repo independently of
-             the module's declared dependencies, so the agent is available even in modules that don't use
-             Mockito (a path into the local repo is not, since nothing would have downloaded it there). -->
+        <!-- Stage the ByteBuddy agent jar into each module's target/ so surefire's -javaagent (above)
+             can load it. Resolving an explicit artifactItem pulls byte-buddy-agent from the repo
+             independently of the module's declared dependencies, so the agent is available even in
+             modules that don't use Mockito (a path into the local repo is not, since nothing would have
+             downloaded it there). -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <inherited>true</inherited>
         <executions>
           <execution>
-            <id>copy-mockito-agent</id>
+            <id>copy-byte-buddy-agent</id>
             <phase>process-test-resources</phase>
             <goals>
               <goal>copy</goal>
@@ -1178,11 +1185,11 @@
               <skip>${skipTests}</skip>
               <artifactItems>
                 <artifactItem>
-                  <groupId>org.mockito</groupId>
-                  <artifactId>mockito-core</artifactId>
-                  <version>${mockito.version}</version>
+                  <groupId>net.bytebuddy</groupId>
+                  <artifactId>byte-buddy-agent</artifactId>
+                  <version>${byte-buddy.version}</version>
                   <outputDirectory>${project.build.directory}</outputDirectory>
-                  <destFileName>mockito-agent.jar</destFileName>
+                  <destFileName>byte-buddy-agent.jar</destFileName>
                 </artifactItem>
               </artifactItems>
             </configuration>
