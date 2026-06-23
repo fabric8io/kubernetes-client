@@ -130,4 +130,70 @@ class WatchEventsListenerTest {
       listener.onClosed(ws, 1000, "test cleanup");
     }
   }
+
+  // Regression for #7867: a CRUD event scheduled before Vert.x fires onOpen (while
+  // webSocketRef is still null) must not be dropped. Pre-fix it scheduled a send that
+  // NPE'd on the null webSocketRef and the exception was silently swallowed by the
+  // executor. The event is now buffered and replayed once the WebSocket is available, and
+  // the replay lands AFTER the initial-sync events so the watcher still observes the
+  // initial ADDED before the buffered MODIFIED.
+  @Test
+  void eventBufferedBeforeOnOpenIsReplayedAfterInitialSync() throws Exception {
+    final Context context = new Context(Serialization.jsonMapper());
+    final Set<WatchEventsListener> registry = new CopyOnWriteArraySet<>();
+    // onOpenAction mirrors the dispatcher's initial sync: a single ADDED for "initial-sync".
+    final WatchEventsListener listener = new WatchEventsListener(
+        context, new AttributeSet(), registry,
+        LoggerFactory.getLogger(WatchEventsListenerTest.class),
+        l -> l.sendWebSocketResponse("{\"metadata\":{\"name\":\"initial-sync\"}}", Watcher.Action.ADDED));
+
+    final List<String> sends = Collections.synchronizedList(new ArrayList<>());
+    final CountDownLatch bothSent = new CountDownLatch(2);
+    final WebSocket ws = new WebSocket() {
+      @Override
+      public RecordedRequest request() {
+        return null;
+      }
+
+      @Override
+      public boolean send(String text) {
+        if (text.contains("\"initial-sync\"")) {
+          sends.add("initial-sync");
+        } else if (text.contains("\"race-window\"")) {
+          sends.add("race-window");
+        } else {
+          sends.add("other");
+        }
+        bothSent.countDown();
+        return true;
+      }
+
+      @Override
+      public boolean send(byte[] bytes) {
+        return true;
+      }
+
+      @Override
+      public boolean close(int code, String reason) {
+        return true;
+      }
+    };
+
+    try {
+      // CRUD event lands in the open-race window, before onOpen has populated webSocketRef.
+      listener.sendWebSocketResponse("{\"metadata\":{\"name\":\"race-window\"}}", Watcher.Action.MODIFIED);
+
+      // Vert.x opens the socket: webSocketRef is set, the initial sync runs, then the
+      // buffered event is replayed.
+      listener.onOpen(ws, null);
+
+      assertThat(bothSent.await(10, TimeUnit.SECONDS))
+          .as("both the initial-sync ADDED and the buffered MODIFIED reach the socket")
+          .isTrue();
+      // The buffered MODIFIED is not lost, and arrives AFTER the initial-sync ADDED.
+      assertThat(sends).containsExactly("initial-sync", "race-window");
+    } finally {
+      listener.onClosed(ws, 1000, "test cleanup");
+    }
+  }
 }
