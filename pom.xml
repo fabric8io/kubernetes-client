@@ -913,6 +913,19 @@
     </dependencies>
   </dependencyManagement>
 
+  <dependencies>
+    <!-- Provides the ByteBuddy agent jar to every module so the maven-surefire-plugin can load it at
+         JVM startup (see -javaagent in the build section) and Mockito never falls back to runtime
+         self-attach. Test scope: it is not part of any module's compile/runtime classpath, bundle, or
+         BOM; it only guarantees the jar is resolved into the local repository for the -javaagent path. -->
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy-agent</artifactId>
+      <version>${byte-buddy.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
   <build>
     <resources>
       <resource>
@@ -1145,12 +1158,13 @@
           <!-- Load the ByteBuddy agent at JVM startup so Mockito's inline mock-maker (and Spock's
                Mockito-backed mock maker) get Instrumentation without a runtime self-attach. Self-attach
                (ptrace + an attach socket) is blocked by restrictive sandboxes (e.g. Claude Code) and is
-               on the JEP 451 path to being disallowed by the JDK. We load byte-buddy-agent, NOT
-               mockito-core: a mockito-core -javaagent puts a second mockito-core on the system class
-               loader without byte-buddy, which breaks the inline mock-maker with NoClassDefFoundError
-               (net.bytebuddy.matcher.ElementMatcher). The jar is staged into target/ by
-               maven-dependency-plugin below. Keep @{argLine} first so JaCoCo's coverage agent survives. -->
-          <argLine>@{argLine} -Xmx2048m -javaagent:${project.build.directory}/byte-buddy-agent.jar</argLine>
+               on the JEP 451 path to being disallowed by the JDK. byte-buddy-agent is declared as a
+               global test dependency below, so the jar is in the local repository for every module and
+               can be referenced here by path. We load byte-buddy-agent, NOT mockito-core: a mockito-core
+               -javaagent would put a second mockito-core on the system class loader without byte-buddy
+               and break the inline mock-maker with NoClassDefFoundError (net.bytebuddy.matcher.ElementMatcher).
+               Keep @{argLine} first so JaCoCo's coverage agent survives. -->
+          <argLine>@{argLine} -Xmx2048m -javaagent:${settings.localRepository}/net/bytebuddy/byte-buddy-agent/${byte-buddy.version}/byte-buddy-agent-${byte-buddy.version}.jar</argLine>
           <environmentVariables>
             <ENV_VAR_EXISTS>value</ENV_VAR_EXISTS>
             <ENV_VAR_EXISTS_BOOLEAN>true</ENV_VAR_EXISTS_BOOLEAN>
@@ -1164,37 +1178,6 @@
             <ALL_PROXY></ALL_PROXY>
           </environmentVariables>
         </configuration>
-      </plugin>
-      <plugin>
-        <!-- Stage the ByteBuddy agent jar into each module's target/ so surefire's -javaagent (above)
-             can load it. Resolving an explicit artifactItem pulls byte-buddy-agent from the repo
-             independently of the module's declared dependencies, so the agent is available even in
-             modules that don't use Mockito (a path into the local repo is not, since nothing would have
-             downloaded it there). -->
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <inherited>true</inherited>
-        <executions>
-          <execution>
-            <id>copy-byte-buddy-agent</id>
-            <phase>process-test-resources</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <configuration>
-              <skip>${skipTests}</skip>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>net.bytebuddy</groupId>
-                  <artifactId>byte-buddy-agent</artifactId>
-                  <version>${byte-buddy.version}</version>
-                  <outputDirectory>${project.build.directory}</outputDirectory>
-                  <destFileName>byte-buddy-agent.jar</destFileName>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
 
       <plugin>
