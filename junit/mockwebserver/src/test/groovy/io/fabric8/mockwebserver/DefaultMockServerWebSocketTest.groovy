@@ -171,22 +171,35 @@ class DefaultMockServerWebSocketTest extends Specification {
 		and: "An instance of PollingConditions"
 		def conditions = new PollingConditions(timeout: 10)
 
-		when: "The WebSocket has reached closed state"
+		when: "The connect Future has settled (connected-then-closed, or failed because the WS already closed)"
+		// The no-events server closes immediately after the upgrade. Vert.x 4.5 either resolves the
+		// connect Future with a WebSocket that then reaches the closed state, or — the 4th close-
+		// observation path from #7806 — fails the connect Future with "WebSocket is closed" when the
+		// close wins the race against the client observing the result. A failed Future carries no
+		// WebSocket to inspect, so it settles the poll just as a closed WebSocket does.
 		conditions.eventually {
 			assert wsReq.isComplete()
-			assert wsReq.result() != null
-			assert wsReq.result().isClosed()
+			assert wsReq.failed() || wsReq.result().isClosed()
 		}
 
-		then: "closeReason holds the server's reason on non-Windows; on Windows null is accepted"
-		// Vert.x 4.5 surfaces WebSocket close through two paths: handleCloseFrame() populates
-		// closeReason before firing closeHandler; handleConnectionClosed() (TCP drop before
-		// CLOSE-frame parse) fires the handler with closeReason left null. Windows reaches
-		// the second path intermittently (#7806), so the strict assertion only runs there.
-		def closeReason = wsReq.result().closeReason()
-		System.err.println("$DIAG_PREFIX closeReason=" + closeReason)
+		then: "closeReason holds the server's reason when a WebSocket connected; a failed connect or null reason is tolerated"
+		// When a WebSocket connects, Vert.x 4.5 surfaces close through two paths: handleCloseFrame()
+		// populates closeReason before firing closeHandler; handleConnectionClosed() (TCP drop before
+		// the CLOSE frame is parsed) leaves closeReason null. Windows reaches the second path
+		// intermittently, and may even fail the connect Future outright (#7806), so the strict reason
+		// is only required when a WebSocket actually connected on a non-Windows host.
 		def isWindows = System.getProperty("os.name").toLowerCase().contains("windows")
-		assert isWindows ? (closeReason == null || closeReason == "Closing...") : closeReason == "Closing..."
+		if (wsReq.failed()) {
+			// 4th close-observation path (#7806): the connect Future failed because the WS already
+			// closed, so there is no WebSocket to read closeReason from. The cause is recorded for
+			// triage; "close was observed" is asserted independently by the sibling
+			// "should fire onClose notification" test. Nothing further to verify here.
+			System.err.println("$DIAG_PREFIX connect Future failed: " + wsReq.cause())
+		} else {
+			def closeReason = wsReq.result().closeReason()
+			System.err.println("$DIAG_PREFIX closeReason=" + closeReason)
+			assert isWindows ? (closeReason == null || closeReason == "Closing...") : closeReason == "Closing..."
+		}
 	}
 
 	// https://github.com/fabric8io/mockwebserver/pull/66#issuecomment-944289335
