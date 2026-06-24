@@ -89,6 +89,8 @@ public class Config extends SundrioConfig {
   public static final String KUBERNETES_REQUEST_RETRY_BACKOFFLIMIT_SYSTEM_PROPERTY = "kubernetes.request.retry.backoffLimit";
   public static final String KUBERNETES_REQUEST_RETRY_BACKOFFINTERVAL_SYSTEM_PROPERTY = "kubernetes.request.retry.backoffInterval";
   public static final String KUBERNETES_LOGGING_INTERVAL_SYSTEM_PROPERTY = "kubernetes.logging.interval";
+  public static final String KUBERNETES_POD_COPY_MAX_FILE_BYTES_SYSTEM_PROPERTY = "kubernetes.pod.copy.max.file.bytes";
+  public static final String KUBERNETES_POD_COPY_MAX_TOTAL_BYTES_SYSTEM_PROPERTY = "kubernetes.pod.copy.max.total.bytes";
   public static final String KUBERNETES_SCALE_TIMEOUT_SYSTEM_PROPERTY = "kubernetes.scale.timeout";
   public static final String KUBERNETES_WEBSOCKET_PING_INTERVAL_SYSTEM_PROPERTY = "kubernetes.websocket.ping.interval";
   public static final String KUBERNETES_MAX_CONCURRENT_REQUESTS = "kubernetes.max.concurrent.requests";
@@ -127,6 +129,8 @@ public class Config extends SundrioConfig {
   public static final Long DEFAULT_SCALE_TIMEOUT = 10 * 60 * 1000L;
   public static final int DEFAULT_REQUEST_TIMEOUT = 10 * 1000;
   public static final int DEFAULT_LOGGING_INTERVAL = 20 * 1000;
+  public static final Long DEFAULT_POD_COPY_MAX_FILE_BYTES = -1L;
+  public static final Long DEFAULT_POD_COPY_MAX_TOTAL_BYTES = -1L;
   public static final Long DEFAULT_WEBSOCKET_PING_INTERVAL = 30 * 1000L;
 
   public static final Integer DEFAULT_MAX_CONCURRENT_REQUESTS = 64;
@@ -265,6 +269,8 @@ public class Config extends SundrioConfig {
       this.setRequestTimeout(DEFAULT_REQUEST_TIMEOUT);
       this.setScaleTimeout(DEFAULT_SCALE_TIMEOUT);
       this.setLoggingInterval(DEFAULT_LOGGING_INTERVAL);
+      this.setPodCopyMaxFileBytes(DEFAULT_POD_COPY_MAX_FILE_BYTES);
+      this.setPodCopyMaxTotalBytes(DEFAULT_POD_COPY_MAX_TOTAL_BYTES);
       this.setUserAgent("fabric8-kubernetes-client/" + Version.clientVersion());
       this.setTlsVersions(new TlsVersion[] { TlsVersion.TLS_1_3, TlsVersion.TLS_1_2 });
     }
@@ -352,6 +358,12 @@ public class Config extends SundrioConfig {
     }
     if (config.getUploadRequestTimeout() != null) {
       setUploadRequestTimeout(config.getUploadRequestTimeout());
+    }
+    if (config.getPodCopyMaxFileBytes() != null) {
+      setPodCopyMaxFileBytes(config.getPodCopyMaxFileBytes());
+    }
+    if (config.getPodCopyMaxTotalBytes() != null) {
+      setPodCopyMaxTotalBytes(config.getPodCopyMaxTotalBytes());
     }
     if (Utils.isNotNullOrEmpty(config.getImpersonateUsername())) {
       setImpersonateUsername(config.getImpersonateUsername());
@@ -512,6 +524,10 @@ public class Config extends SundrioConfig {
         config.getRequestRetryBackoffLimit()));
     config.setRequestRetryBackoffInterval(Utils.getSystemPropertyOrEnvVar(
         KUBERNETES_REQUEST_RETRY_BACKOFFINTERVAL_SYSTEM_PROPERTY, config.getRequestRetryBackoffInterval()));
+    config.setPodCopyMaxFileBytes(parseByteLimit(KUBERNETES_POD_COPY_MAX_FILE_BYTES_SYSTEM_PROPERTY,
+        config.getPodCopyMaxFileBytes()));
+    config.setPodCopyMaxTotalBytes(parseByteLimit(KUBERNETES_POD_COPY_MAX_TOTAL_BYTES_SYSTEM_PROPERTY,
+        config.getPodCopyMaxTotalBytes()));
 
     String configuredWebsocketPingInterval = Utils.getSystemPropertyOrEnvVar(KUBERNETES_WEBSOCKET_PING_INTERVAL_SYSTEM_PROPERTY,
         String.valueOf(config.getWebsocketPingInterval()));
@@ -561,6 +577,23 @@ public class Config extends SundrioConfig {
         tlsVersions[i] = TlsVersion.forJavaName(tlsVersionsSplit[i]);
       }
       config.setTlsVersions(tlsVersions);
+    }
+  }
+
+  private static Long parseByteLimit(String propertyName, Long defaultValue) {
+    String value = Utils.getSystemPropertyOrEnvVar(propertyName,
+        defaultValue == null ? null : String.valueOf(defaultValue));
+    if (value == null) {
+      return null;
+    }
+    try {
+      long byteLimit = Long.parseLong(value);
+      if (byteLimit < -1L) {
+        throw new IllegalArgumentException(propertyName + " must be -1 or greater");
+      }
+      return byteLimit;
+    } catch (NumberFormatException e) {
+      throw new IllegalArgumentException(propertyName + " must be a byte count", e);
     }
   }
 
@@ -996,6 +1029,28 @@ public class Config extends SundrioConfig {
   @Override
   public void setLoggingInterval(Integer loggingInterval) {
     this.requestConfig.setLoggingInterval(loggingInterval);
+  }
+
+  @Override
+  @JsonProperty("podCopyMaxFileBytes")
+  public Long getPodCopyMaxFileBytes() {
+    return getRequestConfig().getPodCopyMaxFileBytes();
+  }
+
+  @Override
+  public void setPodCopyMaxFileBytes(Long podCopyMaxFileBytes) {
+    this.requestConfig.setPodCopyMaxFileBytes(podCopyMaxFileBytes);
+  }
+
+  @Override
+  @JsonProperty("podCopyMaxTotalBytes")
+  public Long getPodCopyMaxTotalBytes() {
+    return getRequestConfig().getPodCopyMaxTotalBytes();
+  }
+
+  @Override
+  public void setPodCopyMaxTotalBytes(Long podCopyMaxTotalBytes) {
+    this.requestConfig.setPodCopyMaxTotalBytes(podCopyMaxTotalBytes);
   }
 
   @JsonProperty("http2Disable")

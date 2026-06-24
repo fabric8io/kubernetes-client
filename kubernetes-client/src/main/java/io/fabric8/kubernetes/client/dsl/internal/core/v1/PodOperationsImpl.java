@@ -31,6 +31,7 @@ import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.LocalPortForward;
 import io.fabric8.kubernetes.client.PortForward;
+import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.CopyOrReadable;
 import io.fabric8.kubernetes.client.dsl.EphemeralContainersResource;
@@ -83,7 +84,7 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -100,6 +101,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   public static final int DEFAULT_POD_READY_WAIT_TIMEOUT_MS = 0;
   private static final String[] EMPTY_COMMAND = { "/bin/sh", "-i" };
   public static final String DEFAULT_CONTAINER_ANNOTATION_NAME = "kubectl.kubernetes.io/default-container";
+  private static final long NO_POD_COPY_LIMIT = -1L;
+  private static final int COPY_BUFFER_SIZE = 8192;
 
   static final Logger LOG = LoggerFactory.getLogger(PodOperationsImpl.class);
 
@@ -528,6 +531,10 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
                   is))
 
           {
+            RequestConfig requestConfig = getPodCopyRequestConfig();
+            long maxFileBytes = normalizePodCopyLimit(requestConfig.getPodCopyMaxFileBytes(), "podCopyMaxFileBytes");
+            long[] remainingBytes = new long[] {
+                normalizePodCopyLimit(requestConfig.getPodCopyMaxTotalBytes(), "podCopyMaxTotalBytes") };
             for (org.apache.commons.compress.archivers.ArchiveEntry entry = tis.getNextTarEntry(); entry != null; entry = tis
                 .getNextEntry()) {
               if (tis.canReadEntryData(entry)) {
@@ -535,6 +542,10 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
                 if (normalizedEntryName == null) {
                   throw new IOException("Tar entry '" + entry.getName() + "' has an invalid name");
                 }
+                if (((org.apache.commons.compress.archivers.tar.TarArchiveEntry) entry).isSparse()) {
+                  throw new IOException("Refusing to extract sparse tar entry: " + entry.getName());
+                }
+                ensureEntryFitsConfiguredLimits(entry, maxFileBytes, remainingBytes[0]);
                 File f = new File(destination, normalizedEntryName);
                 if (entry.isDirectory()) {
                   if (!f.isDirectory() && !f.mkdirs()) {
@@ -545,7 +556,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
                   if (!parent.isDirectory() && !parent.mkdirs()) {
                     throw new IOException("Failed to create directory: " + f);
                   }
-                  Files.copy(tis, f.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                  copyEntry(tis, f.toPath(), maxFileBytes, remainingBytes);
                 }
               }
             }
@@ -557,6 +568,66 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     } catch (NoClassDefFoundError e) {
       throw new KubernetesClientException(
           "TarArchiveInputStream class is provided by commons-compress, an optional dependency. To use the read/copy functionality you must explicitly add commons-compress and commons-io dependency to the classpath.");
+    }
+  }
+
+  private RequestConfig getPodCopyRequestConfig() {
+    RequestConfig requestConfig = context.getRequestConfig();
+    if (requestConfig == null && config != null) {
+      requestConfig = config.getRequestConfig();
+    }
+    if (requestConfig == null) {
+      return new RequestConfig(null, null, null, null, null, null, null, null);
+    }
+    return requestConfig;
+  }
+
+  private static long normalizePodCopyLimit(Long byteLimit, String configName) throws IOException {
+    if (byteLimit == null) {
+      return NO_POD_COPY_LIMIT;
+    }
+    if (byteLimit < NO_POD_COPY_LIMIT) {
+      throw new IOException(configName + " must be -1 or greater");
+    }
+    return byteLimit;
+  }
+
+  private static void ensureEntryFitsConfiguredLimits(
+      org.apache.commons.compress.archivers.ArchiveEntry entry, long maxFileBytes, long remainingBytes)
+      throws IOException {
+    long entrySize = entry.getSize();
+    if (entrySize < 0) {
+      return;
+    }
+    if (maxFileBytes != NO_POD_COPY_LIMIT && entrySize > maxFileBytes) {
+      throw new IOException("Tar entry '" + entry.getName() + "' exceeds the configured file copy limit");
+    }
+    if (remainingBytes != NO_POD_COPY_LIMIT && entrySize > remainingBytes) {
+      throw new IOException("Tar entry '" + entry.getName() + "' exceeds the configured total copy limit");
+    }
+  }
+
+  private static void copyEntry(
+      InputStream input, Path destination, long maxFileBytes, long[] remainingBytes)
+      throws IOException {
+    long written = 0L;
+    byte[] buffer = new byte[COPY_BUFFER_SIZE];
+    try (OutputStream output = Files.newOutputStream(destination, StandardOpenOption.CREATE,
+        StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE)) {
+      int read;
+      while ((read = input.read(buffer)) >= 0) {
+        if (maxFileBytes != NO_POD_COPY_LIMIT && read > maxFileBytes - written) {
+          throw new IOException("Tar entry exceeds the configured file copy limit");
+        }
+        if (remainingBytes[0] != NO_POD_COPY_LIMIT && read > remainingBytes[0]) {
+          throw new IOException("Tar archive exceeds the configured total copy limit");
+        }
+        output.write(buffer, 0, read);
+        written += read;
+        if (remainingBytes[0] != NO_POD_COPY_LIMIT) {
+          remainingBytes[0] -= read;
+        }
+      }
     }
   }
 

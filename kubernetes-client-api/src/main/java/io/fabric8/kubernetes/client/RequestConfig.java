@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 import static io.fabric8.kubernetes.client.Config.DEFAULT_LOGGING_INTERVAL;
+import static io.fabric8.kubernetes.client.Config.DEFAULT_POD_COPY_MAX_FILE_BYTES;
+import static io.fabric8.kubernetes.client.Config.DEFAULT_POD_COPY_MAX_TOTAL_BYTES;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_REQUEST_TIMEOUT;
@@ -46,14 +48,25 @@ public class RequestConfig {
   private Integer requestTimeout = DEFAULT_REQUEST_TIMEOUT;
   private Long scaleTimeout = DEFAULT_SCALE_TIMEOUT;
   private Integer loggingInterval = DEFAULT_LOGGING_INTERVAL;
+  private Long podCopyMaxFileBytes = DEFAULT_POD_COPY_MAX_FILE_BYTES;
+  private Long podCopyMaxTotalBytes = DEFAULT_POD_COPY_MAX_TOTAL_BYTES;
 
   RequestConfig() {
+  }
+
+  public RequestConfig(Integer watchReconnectLimit, Integer watchReconnectInterval, Integer requestTimeout,
+      Long scaleTimeout, Integer loggingInterval, Integer requestRetryBackoffLimit,
+      Integer requestRetryBackoffInterval, Integer uploadRequestTimeout) {
+    this(watchReconnectLimit, watchReconnectInterval, requestTimeout, scaleTimeout, loggingInterval,
+        requestRetryBackoffLimit, requestRetryBackoffInterval, uploadRequestTimeout,
+        DEFAULT_POD_COPY_MAX_FILE_BYTES, DEFAULT_POD_COPY_MAX_TOTAL_BYTES);
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
   public RequestConfig(Integer watchReconnectLimit, Integer watchReconnectInterval, Integer requestTimeout,
       Long scaleTimeout, Integer loggingInterval, Integer requestRetryBackoffLimit,
-      Integer requestRetryBackoffInterval, Integer uploadRequestTimeout) {
+      Integer requestRetryBackoffInterval, Integer uploadRequestTimeout, Long podCopyMaxFileBytes,
+      Long podCopyMaxTotalBytes) {
     this.watchReconnectLimit = watchReconnectLimit;
     this.watchReconnectInterval = watchReconnectInterval;
     this.requestTimeout = requestTimeout;
@@ -62,6 +75,8 @@ public class RequestConfig {
     this.requestRetryBackoffLimit = requestRetryBackoffLimit;
     this.requestRetryBackoffInterval = requestRetryBackoffInterval;
     this.uploadRequestTimeout = uploadRequestTimeout;
+    this.podCopyMaxFileBytes = podCopyMaxFileBytes;
+    this.podCopyMaxTotalBytes = podCopyMaxTotalBytes;
   }
 
   public Integer getWatchReconnectInterval() {
@@ -126,6 +141,22 @@ public class RequestConfig {
 
   public void setLoggingInterval(Integer loggingInterval) {
     this.loggingInterval = loggingInterval;
+  }
+
+  public Long getPodCopyMaxFileBytes() {
+    return podCopyMaxFileBytes;
+  }
+
+  public void setPodCopyMaxFileBytes(Long podCopyMaxFileBytes) {
+    this.podCopyMaxFileBytes = podCopyMaxFileBytes;
+  }
+
+  public Long getPodCopyMaxTotalBytes() {
+    return podCopyMaxTotalBytes;
+  }
+
+  public void setPodCopyMaxTotalBytes(Long podCopyMaxTotalBytes) {
+    this.podCopyMaxTotalBytes = podCopyMaxTotalBytes;
   }
 
   public void setImpersonateUsername(String impersonateUsername) {

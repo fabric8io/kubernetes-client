@@ -17,21 +17,15 @@ package io.fabric8.kubernetes.client;
 
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.stream.Collectors;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+class RequestConfigTest {
 
-class SundrioConfigBuilderTest {
   @Test
-  void hasExpectedNumberOfFields() {
-    assertThat(Arrays.stream(SundrioConfigFluent.class.getDeclaredFields())
-        .filter(f -> !Modifier.isStatic(f.getModifiers()))
-        .map(f -> f.getName())
-        .collect(Collectors.toList()))
-        .withFailMessage("You've probably modified SundrioConfig, please update the Config copy constructor as well")
-        .hasSize(57)
-        .contains("podCopyMaxFileBytes", "podCopyMaxTotalBytes");
+  void eightArgumentConstructorKeepsPodCopyLimitsUnlimited() {
+    RequestConfig requestConfig = new RequestConfig(null, null, null, null, null, null, null, null);
+
+    assertThat(requestConfig.getPodCopyMaxFileBytes()).isEqualTo(Config.DEFAULT_POD_COPY_MAX_FILE_BYTES);
+    assertThat(requestConfig.getPodCopyMaxTotalBytes()).isEqualTo(Config.DEFAULT_POD_COPY_MAX_TOTAL_BYTES);
   }
 }
