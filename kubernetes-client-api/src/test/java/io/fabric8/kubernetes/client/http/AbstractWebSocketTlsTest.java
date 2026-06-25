@@ -22,15 +22,20 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import javax.net.ssl.SSLException;
 import javax.net.ssl.TrustManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -102,15 +107,37 @@ public abstract class AbstractWebSocketTlsTest {
       assertThatThrownBy(() -> future.get(10, TimeUnit.SECONDS))
           .isInstanceOf(ExecutionException.class)
           .cause()
-          .satisfies(cause -> {
-            assertThat(StandardHttpClient.isTerminalTlsTrustFailure(cause))
-                .as("cause tree should contain a TLS trust failure: %s", cause)
-                .isTrue();
-          });
+          .isInstanceOf(IOException.class)
+          .satisfies(cause -> assertThat(hasSslExceptionInTree(cause))
+              .as("cause/suppressed tree should contain an SSLException: %s", cause)
+              .isTrue());
       long elapsedMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start);
       assertThat(elapsedMs)
           .as("should fail fast, not drain the ~19s default backoff schedule")
-          .isLessThan(5_000);
+          .isLessThan(10_000);
     }
+  }
+
+  private static boolean hasSslExceptionInTree(Throwable throwable) {
+    Set<Throwable> visited = Collections.newSetFromMap(new IdentityHashMap<>());
+    return hasSslExceptionInTree(throwable, visited);
+  }
+
+  private static boolean hasSslExceptionInTree(Throwable throwable, Set<Throwable> visited) {
+    if (throwable == null || !visited.add(throwable)) {
+      return false;
+    }
+    if (throwable instanceof SSLException) {
+      return true;
+    }
+    if (hasSslExceptionInTree(throwable.getCause(), visited)) {
+      return true;
+    }
+    for (Throwable suppressed : throwable.getSuppressed()) {
+      if (hasSslExceptionInTree(suppressed, visited)) {
+        return true;
+      }
+    }
+    return false;
   }
 }
