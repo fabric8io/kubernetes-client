@@ -453,3 +453,53 @@ Key libraries used:
 - SLF4J - Logging facade
 - Sundrio - Builder generation
 - SnakeYAML - YAML parsing
+
+## Security
+
+Read below when hunting for vulnerabilities or validating security issues.
+
+### Scope and Severity
+
+Consult `/doc/THREAT_MODEL.md` to verify that the vulnerability is in scope and to assess its severity.
+
+### Deduplication
+
+Vulnerability must be deduplicated against online github issues and pull requests.
+
+If issue (open or closed) exists for the bug, then it is already known and must not be re-reported.
+If the issue significantly downgrades severity or does not recognize security implications of the bug,
+then the issue can be updated with new info instead of duplicate report.
+
+If PR exists that fixes the vulnerability, then the bug must not be reported.
+
+### POC
+
+When reporting vulnerabilities always provide proof of concept (POC).
+
+POC should be based on Java code that demonstrates vulnerable usage of kubernetes-client APIs.
+
+POC can include supporting files like YAML configs or shell scripts for setting up environment.
+
+### Patch
+
+Patch must make the POC fail.
+
+Patch must follow rules from CONTRIBUTING.md
+
+Patch should not change signature of public methods and APIs unless strictly neccesary.
+
+Patch must be properly validated:
+
+1. Apply the exact patch to a fresh branch from the target repo default branch.
+2. Run `git apply --check` before applying when possible.
+3. Run every test command listed in the writeup or issue.
+4. Also run tests for every directly changed module, not only the new regression test.
+5. If the patch changes generated/builder/config/serialization metadata, run the module’s invariant tests or full module test suite.
+6. Before pushing, run `git diff --check` and the repo formatter/checker.
+7. If a full CI-equivalent build is too expensive, state exactly what was not run in the PR body.
+8. After opening the PR, inspect failed CI logs before classifying failures as flakes.
+
+Verify that patch does not introduce new vulnerabilities.
+
+The patch must be complete: no bypasses that can keep the vulnerability exploitable must be possible.
+If the patch is not full and keeps any edge cases or bypasses, then the report must inform about that.
