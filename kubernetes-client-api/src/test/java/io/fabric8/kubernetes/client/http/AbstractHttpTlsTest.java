@@ -22,12 +22,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.net.URI;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -35,9 +29,8 @@ import javax.net.ssl.TrustManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public abstract class AbstractWebSocketTlsTest {
+public abstract class AbstractHttpTlsTest {
 
   private static DefaultMockServer server;
   private static TrustManager[] trustManagers;
@@ -46,8 +39,6 @@ public abstract class AbstractWebSocketTlsTest {
   static void beforeAll() throws Exception {
     server = new DefaultMockServer(true);
     server.start();
-    // Trust only the server's self-signed certificate (not the JVM default trust store), so the
-    // handshake exercises the supplied trust material exactly as a real cluster CA would.
     trustManagers = SSLUtils.trustManagers(null, server.getSelfSignedCertificate().certificatePath(), false, null, null);
   }
 
@@ -59,47 +50,29 @@ public abstract class AbstractWebSocketTlsTest {
   protected abstract HttpClient.Factory getHttpClientFactory();
 
   @Test
-  @DisplayName("WebSocket-over-TLS completes the upgrade trusting the supplied certificate and round-trips a message")
-  void secureWebSocketConnectsAndRoundTripsMessage() throws Exception {
+  @DisplayName("HTTP-over-TLS completes the request trusting the supplied certificate")
+  void secureHttpGetWithTrustedCert() throws Exception {
     try (HttpClient client = getHttpClientFactory().newBuilder().sslContext(null, trustManagers).build()) {
-      // Given
-      server.expect().withPath("/secure-ws")
-          .andUpgradeToWebSocket()
-          .open()
-          .expect("GiveMeSomething")
-          .andEmit("received")
-          .always()
-          .done()
-          .always();
-      final BlockingQueue<String> receivedText = new ArrayBlockingQueue<>(1);
-      final WebSocket ws = client.newWebSocketBuilder()
-          .uri(URI.create(server.url("secure-ws")))
-          .buildAsync(new WebSocket.Listener() {
-            @Override
-            public void onMessage(WebSocket webSocket, String text) {
-              assertTrue(receivedText.offer(text));
-            }
-          }).get(10L, TimeUnit.SECONDS);
-      // When
-      ws.send(ByteBuffer.wrap("GiveMeSomething".getBytes(StandardCharsets.UTF_8)));
-      final String result = receivedText.poll(10L, TimeUnit.SECONDS);
-      // Then
-      assertThat(result).isEqualTo("received");
+      server.expect().withPath("/secure-get")
+          .andReturn(200, "ok")
+          .once();
+      HttpResponse<String> response = client
+          .sendAsync(client.newHttpRequestBuilder().uri(server.url("secure-get")).build(), String.class)
+          .get(10, TimeUnit.SECONDS);
+      assertThat(response.code()).isEqualTo(200);
+      assertThat(response.body()).isEqualTo("ok");
     }
   }
 
   @Test
-  @DisplayName("Untrusted cert fails fast with default retry policy instead of draining ~19s backoff")
+  @DisplayName("Untrusted cert on HTTP path fails fast with default retry policy instead of draining ~19s backoff")
   void untrustedCertFailsFastWithDefaultRetryPolicy() throws Exception {
-    // JVM default trust managers won't trust the server's self-signed cert
     TrustManager[] untrustedManagers = SSLUtils.trustManagers(null, null, false, null, null);
     try (HttpClient client = getHttpClientFactory().newBuilder().sslContext(null, untrustedManagers).build()) {
       long start = System.nanoTime();
-      CompletableFuture<WebSocket> future = client.newWebSocketBuilder()
-          .uri(URI.create(server.url("secure-ws")))
-          .buildAsync(new WebSocket.Listener() {
-          });
-      assertThatThrownBy(() -> future.get(10, TimeUnit.SECONDS))
+      assertThatThrownBy(() -> client
+          .sendAsync(client.newHttpRequestBuilder().uri(server.url("secure-get")).build(), String.class)
+          .get(10, TimeUnit.SECONDS))
           .isInstanceOf(ExecutionException.class)
           .cause()
           .satisfies(cause -> {
