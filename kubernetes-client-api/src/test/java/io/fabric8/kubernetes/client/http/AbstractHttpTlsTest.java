@@ -83,7 +83,7 @@ public abstract class AbstractHttpTlsTest {
       long elapsedMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start);
       assertThat(elapsedMs)
           .as("should fail fast, not drain the ~19s default backoff schedule")
-          .isLessThan(10_000);
+          .isLessThan(5_000);
     }
   }
 }
