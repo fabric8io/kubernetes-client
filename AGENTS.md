@@ -12,9 +12,6 @@ does not match them.
 
 - Prefer Makefile targets over raw Maven commands unless the task requires
   Maven directly.
-- Before build or test work, read `doc/agents/build-and-setup.md`.
-- Before test work, read `doc/agents/testing.md`.
-- Before reproducing CI-only flakes, read `doc/agents/ci-flakes.md`.
 - Keep long Maven output in a temporary log and summarize only the useful tail
   or final failure.
 - Check suite prerequisites before running integration, OpenShift, chaos, or
@@ -37,6 +34,12 @@ does not match them.
   examples: `doc/agents/testing.md`
 - CI flake reproduction under constrained CPU and memory:
   `doc/agents/ci-flakes.md`
+- Threat model, trust zones, entry points, attack surface, and threat actors:
+  `doc/specs/security/THREAT_MODEL.md`
+- Secure API usage guidance for library consumers and downstream integrations:
+  `doc/specs/security/secure_usage.md`
+- Security issue validation, deduplication, PoC, patch, and reporting workflow:
+  `doc/specs/security/reporting.md`
 - Architecture, fluent DSL patterns, builders, adapters, API groups, and HTTP
   client SPI: `doc/agents/architecture.md`
 - Java style, formatting, imports, logging, license headers, and IDE config:

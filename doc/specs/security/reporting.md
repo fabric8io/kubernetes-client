@@ -5,7 +5,12 @@ Read below when hunting for vulnerabilities, validating security issues, or prep
 ### Scope and Severity
 
 Consult `doc/specs/security/THREAT_MODEL.md` to verify that the vulnerability
-is in scope and to assess its severity.
+is in scope.
+
+To assess vulnerability's severity consult the threat model but also check official
+[go-client](https://github.com/kubernetes/client-go). This project tries to match its behavior.
+
+If go-client has the same issue, then consider reporting to it instead of here.
 
 ### Deduplication
 
@@ -35,6 +40,8 @@ Patch must make the POC fail.
 Patch should not change signature of public methods and APIs unless strictly necessary.
 
 Patch must follow rules from CONTRIBUTING.md.
+
+Patch must not break library's users.
 
 Patch must undergo validation by fresh agents or a fresh checkout:
 
