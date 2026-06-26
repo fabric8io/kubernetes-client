@@ -482,24 +482,27 @@ POC can include supporting files like YAML configs or shell scripts for setting 
 
 ### Patch
 
+When reporting vulnerabilities always provide patch.
+
 Patch must make the POC fail.
 
-Patch must follow rules from CONTRIBUTING.md
-
 Patch should not change signature of public methods and APIs unless strictly neccesary.
+
+Patch must follow rules from CONTRIBUTING.md.
+
+Patch must undergo validation by fresh agents:
+
+* Verify that patch does not introduce new vulnerabilities.
+* Verify that the patch is complete: no bypasses that can keep the vulnerability exploitable must be possible. If the patch is not full and keeps any edge cases or bypasses, then the report must inform about that.
 
 Patch must be properly validated:
 
 1. Apply the exact patch to a fresh branch from the target repo default branch.
 2. Run `git apply --check` before applying when possible.
-3. Run every test command listed in the writeup or issue.
-4. Also run tests for every directly changed module, not only the new regression test.
-5. If the patch changes generated/builder/config/serialization metadata, run the module’s invariant tests or full module test suite.
+3. Run every test command listed explicitly in the finding.
+4. Also run all tests for every directly changed module, not only the new regression test.
+5. If the patch changes generators, templates, sanitizers, or generated/builder/ config/serialization metadata, run the relevant generated-output invariant check (for this repo, `make generate-model`) and inspect `git status --short` plus generated/expected diffs. Include required generated/expected-file updates in the patch. For sanitizer/encoder changes, add at least one benign exact-output regression test, not only an exploit-blocking test.
 6. Before pushing, run `git diff --check` and the repo formatter/checker.
 7. If a full CI-equivalent build is too expensive, state exactly what was not run in the PR body.
-8. After opening the PR, inspect failed CI logs before classifying failures as flakes.
+8. ? do CI runs locally
 
-Verify that patch does not introduce new vulnerabilities.
-
-The patch must be complete: no bypasses that can keep the vulnerability exploitable must be possible.
-If the patch is not full and keeps any edge cases or bypasses, then the report must inform about that.
