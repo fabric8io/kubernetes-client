@@ -292,6 +292,8 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
       } else {
         throw new AssertionError("Unsupported body content");
       }
+    } else if (request.method() != null) {
+      requestBuilder.method(request.method(), BodyPublishers.noBody());
     }
 
     requestBuilder.uri(request.uri());
