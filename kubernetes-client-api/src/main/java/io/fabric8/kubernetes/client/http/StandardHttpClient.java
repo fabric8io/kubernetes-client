@@ -28,12 +28,18 @@ import org.slf4j.LoggerFactory;
 import java.io.Closeable;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.security.cert.CertPathBuilderException;
+import java.security.cert.CertPathValidatorException;
+import java.security.cert.CertificateException;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeUnit;
@@ -41,6 +47,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import javax.net.ssl.SSLPeerUnverifiedException;
 
 public abstract class StandardHttpClient<C extends HttpClient, F extends HttpClient.Factory, T extends StandardHttpClientBuilder<C, F, ?>>
     implements HttpClient, RequestTags {
@@ -184,7 +192,14 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
       final Throwable actualCause = unwrapCompletionException(throwable);
       builder.interceptors.forEach((s, interceptor) -> interceptor.afterConnectionFailure(request, actualCause));
       if (actualCause instanceof IOException) {
-        // TODO: may not be specific enough - incorrect ssl settings for example will get caught here
+        if (isTerminalTlsTrustFailure(actualCause)) {
+          logger.debug(
+              String.format(
+                  "HTTP operation on url: %s will not be retried because the TLS trust failure is deterministic",
+                  request.uri()),
+              actualCause);
+          return -1;
+        }
         logger.debug(
             String.format("HTTP operation on url: %s should be retried after %d millis because of IOException",
                 request.uri(), retryInterval),
@@ -203,6 +218,35 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
       actualCause = throwable;
     }
     return actualCause;
+  }
+
+  static boolean isTerminalTlsTrustFailure(Throwable throwable) {
+    if (throwable == null) {
+      return false;
+    }
+    Set<Throwable> visited = Collections.newSetFromMap(new IdentityHashMap<>());
+    return containsTlsTrustFailure(throwable, visited);
+  }
+
+  private static boolean containsTlsTrustFailure(Throwable throwable, Set<Throwable> visited) {
+    if (throwable == null || !visited.add(throwable)) {
+      return false;
+    }
+    if (throwable instanceof CertificateException
+        || throwable instanceof CertPathValidatorException
+        || throwable instanceof CertPathBuilderException
+        || throwable instanceof SSLPeerUnverifiedException) {
+      return true;
+    }
+    if (containsTlsTrustFailure(throwable.getCause(), visited)) {
+      return true;
+    }
+    for (Throwable suppressed : throwable.getSuppressed()) {
+      if (containsTlsTrustFailure(suppressed, visited)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   static long retryAfterMillis(HttpResponse<?> httpResponse) {
