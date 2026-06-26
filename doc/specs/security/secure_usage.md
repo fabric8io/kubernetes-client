@@ -1,57 +1,323 @@
-<!-- markdownlint-disable MD013 MD041 MD060 -->
-<!-- Dense agent-facing tables use H2 sections and long rows. -->
+# Secure Use of Fabric8 APIs
 
-## API Secure Usage
+## Contents
 
-Fabric8 runs inside the caller JVM and uses the caller's OS account, classpath, network
-egress, local files, and Kubernetes credentials. Library users should treat the following
-APIs as privileged operations.
+- [Baseline Rule](#baseline-rule)
+- [Configuration and Kubeconfig](#configuration-and-kubeconfig)
+- [TLS, Proxy, and HTTP Backend](#tls-proxy-and-http-backend)
+- [Diagnostics and Logging](#diagnostics-and-logging)
+- [Typed DSL Values and Raw APIs](#typed-dsl-values-and-raw-apis)
+- [Namespaces, Selectors, List, and Watch](#namespaces-selectors-list-and-watch)
+- [Manifest Loading and OpenShift Templates](#manifest-loading-and-openshift-templates)
+- [Pod APIs](#pod-apis)
+- [Local File Helpers and Symlinks](#local-file-helpers-and-symlinks)
+- [Wrappers, Plugins, CI, and Script DSLs](#wrappers-plugins-ci-and-script-dsls)
+- [Generators](#generators)
+- [Kube API Test and Mock Servers](#kube-api-test-and-mock-servers)
+- [Untrusted Data Flow Summary](#untrusted-data-flow-summary)
 
-| API or Pattern | What Users Must Know | Safer Use |
-|---|---|---|
-| Default auto-configuration and `Config.fromKubeconfig(...)` | Kubeconfig, system properties, environment variables, service-account files, proxy fields, TLS fields, credential paths, auth fields, and impersonation fields all select the identity and destination for future requests. Kubeconfig `exec` entries are executable local configuration, and source-precedence bugs can turn lower-priority auth, certificate, proxy, or trust-all fields into the effective setting. Downstream misuse findings show request-controlled `masterUrl`, ConfigMap-sourced client transport settings, and ambiguous explicit-vs-ambient service-account credentials repeatedly lead to credential retargeting or unintended RBAC identity. | Load kubeconfigs only from trusted administrators or isolated workspaces. Prefer an explicit `Config` in services. Do not source `masterUrl`, `trustCerts`, proxy, token, CA, or auth-provider settings from ordinary application ConfigMaps or request parameters. Validate the effective master URL, proxy, CA, token/auth type, namespace, impersonation fields, credential source, and `exec` plugin policy before constructing a privileged client. |
-| TLS, proxy, `NO_PROXY`, and HTTP backend selection | Proxy settings are often an egress, audit, and credential-control boundary. Unsupported secure proxy schemes, suffix-style `NO_PROXY` matching, backend-specific WebSocket proxy handling, `tls-server-name` support, and trust-all TLS flags can silently change where credentials go or whether certificates are verified. Downstreams have treated missing or blank CA material as a reason to set `trustCerts=true`; that makes API-server impersonation and credential capture easy. | Treat proxy and TLS configuration as security policy. Fail closed on unsupported proxy schemes, unenforced `tls-server-name`, and missing CA material unless the operator selected an explicitly named insecure mode. Use `trustCerts` and hostname-verification disablement only in disposable environments. Test REST and WebSocket traffic with the same HTTP backend used in production. |
-| Classpath-selected transports, adapters, and resource mappings | `ServiceLoader` and dependency mediation can change HTTP behavior, serializers, adapters, and Kubernetes kind-to-class mappings. A transitive dependency or extra classpath entry can therefore affect credential handling, request construction, TLS, proxying, and object deserialization. | Pin the intended HTTP backend and dependency versions. Keep untrusted plugins and generated dependencies out of the runtime classpath. Re-run transport-sensitive tests when switching OkHttp, JDK, Jetty, Vert.x, or Vert.x 5. |
-| Configuration, resource, and environment diagnostics | `Config`, wrapper config objects, endpoint parameters, process environment variables, and Kubernetes resources can contain bearer tokens, basic passwords, proxy credentials, client key data, client-key passphrases, kubeconfigs, and Secret data. Normal `toString()`, JSON/YAML serialization, DEBUG logs, apply-result artifacts, and environment dumps are not safe diagnostic boundaries. Returned `Secret` objects contain live secret values by design. | Use a redacted diagnostic view for `Config`, wrapper objects, and environment variables. Treat `Serialization.asJson(config)`, raw config `toString()`, HTTP trace logging, Secret result logging, and apply JSON artifact capture as credential disclosure unless a redaction layer is applied. Maintain a redaction list for `KUBERNETES_*` credential variables and downstream aliases. |
-| DSL identifiers, raw paths, query values, and `raw(...)` | Namespaces, names, API groups, container names, `fieldManager`, OpenShift build metadata, and other DSL values are used in URL paths or query strings. If a service forwards untrusted values without validation or encoding, separators such as `/`, `..`, `&`, and `=` can retarget requests or smuggle API options. `raw(...)` is an escape hatch and should not be treated as a Kubernetes-path-only API. | Accept only Kubernetes-valid identifiers for typed DSL inputs. Reject path separators, dot segments, query delimiters, and absolute URLs unless the caller is fully trusted. Put explicit method/path/host allowlists around `raw(...)` and any wrapper that accepts user-selected API paths or query options. |
-| Namespaces, list/watch scope, and selectors | `list()`, `watch()`, `inAnyNamespace()`, `withLabels(...)`, and collection `delete()` encode authorization decisions. Downstream findings show users accidentally perform cluster-wide lists, require broad Secret/ConfigMap list/watch RBAC for named reads, or let user-controlled labels override reserved labels and drive privileged delete/status-update paths. | Use explicit `.inNamespace(...)` or explicit `.inAnyNamespace()`; avoid ambiguous default scope. For existence checks, prefer `withName(...).get()` over collection `list()`. For named ConfigMap/Secret watches, use `metadata.name` field selectors where Kubernetes/RBAC policy supports them. Filter reserved label prefixes before selectors reach privileged delete, watch, log, or status-update operations. |
-| Manifest loading, OpenShift Template processing, and cluster data reuse | `load`, `resource`, typed `.load`, `load(URL)`, and Template processing parse data in the caller JVM and can turn caller-controlled input into privileged Kubernetes writes. Template parameters are not inert strings when they are substituted into object JSON. Data read from ConfigMaps, Secrets, CRDs, labels, annotations, and resource status is also untrusted when a lower-privileged tenant can write those objects. | Treat manifests, Templates, parameter values, and cluster object fields as policy-controlled deployment input. Validate allowed kinds, namespaces, names, fields, labels, and ownership before create/replace/patch/delete. Do not concatenate ConfigMap or resource data into shell commands; use argv arrays and allowlists. Use dry-run/admission/RBAC as defense in depth, not as the only validation. Do not expose `load(URL)` or "apply this YAML" workflows to untrusted users without URL, size, and schema controls. |
-| Pod exec, attach, logs, copy, read, upload, and port-forward | These APIs bridge Kubernetes credentials to pod commands, pod-controlled bytes, local files, local streams, and local listeners. File-transfer helpers execute shell commands in pods; pod-copy tar output is pod-controlled and can consume local disk; logs and streams may contain secrets; convenience port-forward overloads can expose pod services on local network interfaces; Service port-forwarding must resolve named target ports correctly. | Expose these APIs only behind explicit authorization and least-privilege cluster credentials. Allowlist pods, containers, commands, paths, ports, and destination directories. Bind port-forwards to loopback unless wider exposure is intended. Apply byte, file, timeout, and destination-root limits to pod-controlled downloads. Scrub or avoid storing pod logs that may contain secrets. |
-| Local file helpers and symlinks | File-based helpers can read local paths, follow symlinks, upload local files to the cluster, or embed local file contents into resources. Examples include ConfigMap-from-file helpers, OpenShift binary build upload, certificate/key/truststore loading, kubeconfig token persistence, and generator source/output directories. | Canonicalize local paths under an approved root before passing them to Fabric8. Reject symlinks unless following them is an explicit feature. Keep generated output, kubeconfig mutation, downloaded artifacts, and user-chosen input paths in isolated work directories. |
-| Embedding Fabric8 in CI, plugin, and script DSLs | A `KubernetesClient`, OpenShift client, model object, DSL operation, or helper class can carry broad cluster credentials and local JVM authority. Downstream CI findings show that exposing broad Fabric8-backed objects or helper methods to sandboxed Groovy, pipeline authors, connector metadata endpoints, or autocomplete APIs can turn a convenience integration into a confused deputy. | Expose narrow command-style wrappers instead of raw clients or model graphs. Authorize every requested namespace, resource name, selector, port, command, and output field against the calling user. Use least-privilege service accounts per integration surface, not one shared controller credential for all user-triggered actions. |
-| Java, CRD, and OpenAPI generators | CRDs, OpenAPI schemas, package overrides, URLs, classpath entries, annotations, and output directories are source-generation input, not inert data. Schema values can become Java source, generator URLs can fetch from internal networks, and CRD generator classpath scanning can load project or dependency classes. | Run generators only on trusted schemas or in sandboxed CI. Pin or allowlist schema URLs, bound input sizes, isolate output directories, review generated source before compiling it, and keep untrusted JARs off generator classpaths. Treat generated code as code from the schema provider. |
-| Kube API Test and mock servers | Test utilities can download and execute API-server, `kubectl`, and `etcd` binaries, mutate kubeconfig files, bind local services, and parse request bodies. They are test-scope, but they still run with developer or CI privileges. | Use pinned/offline binary caches where possible, isolate `HOME`/`KUBECONFIG`, bind test services to loopback, and do not expose mock servers to untrusted local or network clients. |
+## Baseline Rule
 
+Fabric8 runs inside the caller JVM. It uses the caller's OS account, classpath,
+network egress, local files, and Kubernetes credentials. Treat Fabric8 APIs as
+privileged operations when lower-trust users can influence inputs.
 
-## Untrusted Data Flow Conclusions
+## Configuration and Kubeconfig
 
-| Dangerous API Family | Can Untrusted Data Reach It? | Conditions |
-|---|---|---|
-| Kubeconfig exec credential command execution | Yes | Any caller that auto-discovers kubeconfig from env/sysprops/default path or imports kubeconfig from users/CI artifacts gives the kubeconfig provider local execution capability. |
-| Pod exec/attach | Yes through downstream exposure | Fabric8 itself exposes a command API; risk depends on whether a service maps lower-privileged user input to commands or pod/container selectors while using broader cluster credentials. |
-| Pod read/copy/upload | Yes through downstream exposure and malicious pods | Caller-controlled paths and pod-controlled tar/output cross into local files, streams, and remote shell commands. |
-| Manifest/resource loading | Yes | `load`, `resource`, typed `.load`, OpenShift template loading, and generators all parse caller-provided streams/files/URLs/strings. |
-| API response/watch parsing | Yes from cluster/API endpoint | A compromised API endpoint, proxy, or tenant-controlled watched object can influence response and event payloads parsed in the caller JVM. |
-| Config, resource, and environment diagnostics | Yes through downstream logging/artifacts | Debug logs, support bundles, process-env dumps, apply-result JSON, and raw object serialization can expose Fabric8 credentials, proxy secrets, client key material, kubeconfigs, and Kubernetes Secret data. |
-| Namespace scope and selectors | Yes through downstream exposure | User-triggered `list()`, `watch()`, `inAnyNamespace()`, `withLabels(...)`, and collection delete/status flows can broaden RBAC requirements or let user-controlled labels select victim resources. |
-| Cluster data reused as code or config | Yes when tenants can write the source object | ConfigMap/Secret/resource fields read through Fabric8 are untrusted if lower-privileged tenants can write them; feeding those values into shell strings, client config, selectors, or generated artifacts crosses trust boundaries. |
-| Cert/key/truststore path loading | Yes if config is untrusted | Kubeconfig, env, and system properties can redirect local credential/trust-anchor file reads. |
-| Generator URL/file/classpath ingestion | Yes in CI/build tools | CRDs, schemas, package overrides, classpath entries, output dirs, and Maven/Gradle config are often project-controlled; malicious PRs can influence them in permissive CI. |
-| Kube API Test binary download/execution | Yes from remote supply chain and config | Remote release metadata/tarballs are parsed/downloaded; extracted binaries are executed if offline mode/cache does not prevent it. |
-| Mock server parsers | Usually no in production | Test-only unless mock servers are exposed to untrusted local/network clients. |
+Risk: configuration selects the cluster endpoint, credentials, TLS trust, proxy,
+namespace, impersonation fields, and credential plugin behavior.
 
-## Wrapper Design Checklist
+Do:
 
-Use this checklist when building a service, CI step, operator, plugin, or script
-DSL on top of Fabric8.
+- Load kubeconfigs only from trusted administrators or isolated workspaces.
+- Prefer explicit `Config` construction in services and controllers.
+- Validate the effective master URL, proxy, CA, token/auth type, namespace,
+  impersonation fields, credential source, and exec plugin policy.
+- Treat kubeconfig `exec` entries as executable local configuration.
 
-| Wrapper Decision | Required Control |
-|---|---|
-| Accepting names, namespaces, groups, versions, resources, subresources, selectors, fields, or query values | Validate the Kubernetes grammar for that specific field and reject path separators, dot segments, query delimiters, and absolute URLs before calling Fabric8. Do not rely on the HTTP backend to normalize or encode correctly. |
-| Accepting kubeconfig-like input | Decide whether the whole kubeconfig is trusted executable configuration. If only a subfield is meant to be user-controlled, parse into a safe allowlisted structure and construct `Config` explicitly instead of passing the original kubeconfig through Fabric8. |
-| Exposing pod file-transfer helpers | Treat remote paths beginning with `-` as command options unless the implementation inserts `--`. Apply destination-root, symlink, file-count, per-file-size, total-size, timeout, and cleanup limits. |
-| Exposing Service or Pod port-forward | Bind to loopback by default, authorize the requested listener address separately, and verify Service ports resolve to the intended Pod target port before opening the tunnel. |
-| Applying manifests or templates from users | Validate allowed kinds, namespaces, names, owners, labels, and fields before calling `create`, `replace`, `patch`, `serverSideApply`, or template processing. Treat OpenShift Template JSON parameters as structured object injection points. |
-| Logging configs, resources, requests, responses, or environment | Redact bearer/basic/proxy credentials, client keys, kubeconfigs, Secret data, and `KUBERNETES_*` credential variables before logs, support bundles, traces, and CI artifacts are written. |
-| Using generators in CI | Run generator jobs in isolated workspaces with trusted schemas or allowlisted URLs, bounded input sizes, reviewed generated source, and no untrusted classpath entries. |
-| Selecting an HTTP backend | Pin the backend and regression-test TLS, proxy, `NO_PROXY`, WebSocket, request-method, path, and query behavior under that backend. Re-test when dependency mediation changes the backend or its transitive libraries. |
+Do not:
+
+- Source `masterUrl`, `trustCerts`, proxy, token, CA, auth-provider, or exec
+  plugin fields from ordinary ConfigMaps, request parameters, or tenant data.
+- Pass user-uploaded kubeconfig through Fabric8 when only one subfield is meant
+  to be user-controlled.
+- Assume explicit credentials beat ambient service-account credentials without
+  checking the final effective config.
+
+Validate:
+
+- Print or inspect a redacted effective config view before constructing a
+  privileged client.
+- Test source-precedence cases that combine the intended winning and losing
+  sources.
+
+## TLS, Proxy, and HTTP Backend
+
+Risk: transport behavior decides where credentials go and whether the API
+server identity is verified.
+
+Do:
+
+- Treat proxy and TLS settings as security policy.
+- Pin the intended HTTP backend and dependency versions.
+- Test REST and WebSocket traffic with the backend used in production.
+- Fail closed on unsupported secure proxy schemes, unenforced
+  `tls-server-name`, missing CA material, or ambiguous trust-all modes.
+
+Do not:
+
+- Use `trustCerts` or hostname-verification disablement outside disposable
+  environments.
+- Assume all supported HTTP backends handle TLS, proxy, redirects, methods,
+  path normalization, and WebSockets identically.
+- Allow dependency mediation to silently switch transport behavior.
+
+Validate:
+
+- Capture the actual request method, host, path, query, proxy target, TLS peer,
+  and WebSocket route in tests that protect credential routing.
+
+## Diagnostics and Logging
+
+Risk: configs, resources, request/response traces, environment variables, and
+Secret objects can contain live credentials.
+
+Do:
+
+- Use redacted diagnostic views for `Config`, wrapper config objects, resources,
+  process environment, and support bundles.
+- Maintain a redaction list for `KUBERNETES_*` credential variables and
+  downstream aliases.
+- Treat returned `Secret` objects as containing live secret values by design.
+
+Do not:
+
+- Log raw `Config`, kubeconfig, `Serialization.asJson(config)`, HTTP trace
+  output, apply-result JSON, environment dumps, or Secret responses without
+  redaction.
+
+Validate:
+
+- Run log and artifact checks in CI for token, password, client-key, kubeconfig,
+  proxy credential, and Secret data patterns.
+
+## Typed DSL Values and Raw APIs
+
+Risk: names, namespaces, API groups, resource names, query values, and
+`raw(...)` inputs become HTTP paths, query strings, methods, or hosts.
+
+Do:
+
+- Validate the Kubernetes grammar for every typed field accepted from users.
+- Reject path separators, dot segments, query delimiters, absolute URLs, and
+  unexpected percent-encoded forms before calling Fabric8.
+- Put explicit method, host, path, and query allowlists around `raw(...)`.
+
+Do not:
+
+- Treat `raw(...)` as Kubernetes-path-only.
+- Forward user-controlled path or query text and rely on the selected HTTP
+  backend to encode or normalize safely.
+
+Validate:
+
+- Assert the exact server-observed method, path, query, and host for wrappers
+  that accept user-selected resource identifiers or options.
+
+## Namespaces, Selectors, List, and Watch
+
+Risk: scope and selectors encode authorization decisions.
+
+Do:
+
+- Use explicit `.inNamespace(...)` or explicit `.inAnyNamespace()`.
+- Prefer `withName(...).get()` over collection `list()` for named existence
+  checks.
+- Use `metadata.name` field selectors for named ConfigMap or Secret watches
+  where Kubernetes and RBAC policy support them.
+- Filter reserved label prefixes before selectors reach privileged read, watch,
+  delete, log, or status-update operations.
+
+Do not:
+
+- Let tenant-controlled labels replace reserved selectors.
+- Use cluster-wide list/watch where a named get or namespace-scoped watch is
+  enough.
+
+Validate:
+
+- Test the RBAC verbs and resources actually required by the wrapper, not just
+  whether the call succeeds with broad credentials.
+
+## Manifest Loading and OpenShift Templates
+
+Risk: manifests and templates parse in the caller JVM and can become privileged
+Kubernetes writes.
+
+Do:
+
+- Treat manifests, Templates, parameter values, and cluster object fields as
+  policy-controlled deployment input.
+- Validate allowed kinds, namespaces, names, owners, labels, fields, and
+  resource counts before create, replace, patch, delete, or server-side apply.
+- Use dry-run, admission, and RBAC as defense in depth.
+
+Do not:
+
+- Expose `load(URL)` or "apply this YAML" workflows to untrusted users without
+  URL, size, schema, and kind controls.
+- Treat OpenShift Template parameters as inert strings. They can produce
+  structured JSON values.
+- Concatenate ConfigMap, Secret, label, annotation, or status values into shell
+  commands.
+
+Validate:
+
+- Inspect the post-template object graph and the exact resource list before any
+  privileged apply or process call.
+
+## Pod APIs
+
+Risk: pod operations bridge Kubernetes credentials to pod commands, pod streams,
+local files, local listeners, and local logs.
+
+Do:
+
+- Expose pod exec, attach, logs, copy, read, upload, and port-forward only behind
+  explicit authorization.
+- Use least-privilege cluster credentials for each user-facing capability.
+- Allowlist pods, containers, commands, paths, ports, and destination roots.
+- Bind port-forwards to loopback unless wider exposure is explicitly intended.
+- Apply file-count, per-file-size, total-size, timeout, symlink, and
+  destination-root limits to pod-controlled downloads.
+
+Do not:
+
+- Treat pod tar output, logs, exit-status payloads, or streams as trusted.
+- Let lower-trust users choose remote paths beginning with `-` unless the
+  implementation inserts `--` before path arguments.
+- Assume Service port-forwarding reaches the intended Pod listener without
+  verifying Service-to-Pod port resolution.
+
+Validate:
+
+- Test malicious tar entries, sparse files, oversized streams, symlinks, option
+  shaped paths, and unexpected bind addresses.
+
+## Local File Helpers and Symlinks
+
+Risk: file helpers can read local paths, follow symlinks, upload local data, or
+write generated and downloaded artifacts.
+
+Do:
+
+- Canonicalize user-selected paths under an approved root before passing them to
+  Fabric8.
+- Reject symlinks unless following them is an explicit feature.
+- Isolate generated output, kubeconfig mutation, downloaded artifacts, pod-copy
+  destinations, and user-chosen input paths in dedicated work directories.
+
+Do not:
+
+- Let untrusted users choose certificate, key, truststore, kubeconfig, upload,
+  build archive, generator source, or output paths.
+
+Validate:
+
+- Test canonical path containment after symlink resolution and before writes.
+- Test time-of-check/time-of-use sensitive paths when the directory can be
+  modified by another user.
+
+## Wrappers, Plugins, CI, and Script DSLs
+
+Risk: a `KubernetesClient`, OpenShift client, model object, DSL operation, or
+helper class can carry broad cluster credentials and local JVM authority.
+
+Do:
+
+- Expose narrow command-style wrappers instead of raw clients or model graphs.
+- Authorize every requested namespace, resource name, selector, port, command,
+  path, output field, and log sink against the calling user.
+- Use least-privilege service accounts per integration surface.
+
+Do not:
+
+- Put broad Fabric8 objects into sandboxed Groovy, pipeline APIs, autocomplete
+  metadata endpoints, plugin scripting surfaces, or user-authored CI steps.
+
+Validate:
+
+- Model each wrapper as a confused-deputy boundary: the user controls narrow
+  input, Fabric8 performs the broader action.
+
+## Generators
+
+Risk: CRDs, OpenAPI schemas, package overrides, URLs, classpath entries,
+annotations, and output directories are source-generation input.
+
+Do:
+
+- Run generators only on trusted schemas or in sandboxed CI.
+- Pin or allowlist schema URLs and bound input sizes.
+- Keep generated source and output directories isolated.
+- Review generated source before compiling it.
+- Keep untrusted JARs and directories off generator classpaths.
+
+Do not:
+
+- Treat CRDs or OpenAPI schemas as inert data when they influence Java source,
+  class names, packages, defaults, enum values, or annotations.
+
+Validate:
+
+- Test malicious schema values against the generated Java source and expected
+  output fixtures.
+- Confirm whether generated code is compiled, loaded, or executed.
+
+## Kube API Test and Mock Servers
+
+Risk: test helpers can download and execute binaries, mutate kubeconfig, bind
+local services, and parse request bodies.
+
+Do:
+
+- Use pinned or offline binary caches where possible.
+- Isolate `HOME` and `KUBECONFIG`.
+- Bind test services to loopback unless network exposure is required.
+- Keep mock servers away from untrusted local or network clients.
+
+Do not:
+
+- Run Kube API Test against a developer's real kubeconfig or shared HOME.
+- Treat test-scope command execution as harmless in CI.
+
+Validate:
+
+- Check listener addresses, binary source verification, cache behavior, and
+  cleanup.
+
+## Untrusted Data Flow Summary
+
+Assume untrusted data can reach these families under the stated conditions:
+
+- Kubeconfig exec credential command execution, when a caller imports or
+  auto-discovers kubeconfig from a lower-trust source.
+- Pod exec and attach, when a wrapper maps lower-trust input to commands,
+  container selectors, or streams.
+- Pod read, copy, and upload, when caller-controlled paths or pod-controlled
+  tar/output cross local boundaries.
+- Manifest and resource loading, when services accept streams, files, URLs,
+  strings, Templates, or schemas from users.
+- API response and watch parsing, when a compromised endpoint, proxy, or tenant
+  object influences returned payloads.
+- Diagnostics, when logs, traces, support bundles, or artifacts include config,
+  resources, Secret bodies, or environment variables.
+- Namespace scope and selectors, when user-triggered list, watch, delete, label,
+  or field-selector flows use broader credentials.
+- Cluster data reused as code or config, when tenants can write ConfigMaps,
+  Secrets, labels, annotations, status, or CRDs later consumed by Fabric8.
+- Cert, key, and truststore path loading, when config is lower-trust.
+- Generator URL, file, and classpath ingestion, when build inputs are
+  project-controlled or PR-controlled.
+- Kube API Test binary download and mock-server parsing, when test utilities
+  consume remote or untrusted local data.
