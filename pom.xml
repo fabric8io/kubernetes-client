@@ -117,7 +117,7 @@
     <bouncycastle.version>1.84</bouncycastle.version>
     <bc-fips.version>2.1.2</bc-fips.version>
     <bcpkix-fips.version>2.1.11</bcpkix-fips.version>
-    <keycloak.version>26.6.3</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
+    <keycloak.version>26.6.4</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
     <mockito.version>5.23.0</mockito.version>
     <!-- byte-buddy-agent is loaded as a startup -javaagent by surefire (see maven-surefire-plugin) to
          avoid Mockito's runtime self-attach. Keep this in sync with the byte-buddy-agent that mockito-core
