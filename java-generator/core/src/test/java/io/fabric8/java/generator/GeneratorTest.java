@@ -1144,6 +1144,32 @@ class GeneratorTest {
   }
 
   @Test
+  void testFieldDescriptionWithUnicodeEscapeEscapesUnicodeIntroducer() {
+    // Arrange
+    Map<String, JSONSchemaProps> props = new HashMap<>();
+    JSONSchemaProps field = new JSONSchemaProps();
+    field.setType("string");
+    field.setDescription("Use HKEY\\Path & keep \\t but block " + "\\" + "u002a/");
+    props.put("myField", field);
+
+    JObject obj = new JObject(null, "t", props, null, false, defaultConfig, null, Boolean.FALSE, null);
+
+    // Act
+    GeneratorResult res = obj.generateJava();
+
+    // Assert
+    Optional<ClassOrInterfaceDeclaration> clzT = res.getTopLevelClasses().get(0).getClassByName("T");
+    assertTrue(clzT.isPresent());
+    FieldDeclaration fieldDecl = clzT.get().getFieldByName("myField").get();
+    String javadoc = fieldDecl.getJavadocComment().get().getContent();
+    assertThat(javadoc).contains("HKEY\\Path");
+    assertThat(javadoc).contains("&amp;");
+    assertThat(javadoc).contains("\\t");
+    assertThat(javadoc).contains("&#92;u002a/");
+    assertThat(javadoc).doesNotContain("&amp;#92;");
+  }
+
+  @Test
   void testFieldDescriptionWithCommentTerminatorIsEscapedInJavadoc() {
     // Arrange
     Map<String, JSONSchemaProps> props = new HashMap<>();

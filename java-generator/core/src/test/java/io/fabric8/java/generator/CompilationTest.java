@@ -133,6 +133,21 @@ class CompilationTest {
         "The current CRD should not compile since it contains duplicate fields which are not marked as deprecated");
   }
 
+  @Test
+  void rejectsSourceLikeNumericEnumFromCrd() throws Exception {
+    // Arrange
+    File crd = getCRD("malicious-numeric-enum-crd.yml");
+
+    // Act
+    JavaGeneratorException exception = assertThrows(
+        JavaGeneratorException.class,
+        () -> new FileJavaGenerator(config, crd).run(tempDir));
+
+    // Assert
+    assertTrue(exception.getMessage().contains("Invalid java.lang.Long enum value"));
+    assertTrue(getSources(tempDir).isEmpty(), "Rejected CRDs must not emit Java source files");
+  }
+
   static List<JavaFileObject> getSources(File basePath) throws IOException {
     List<JavaFileObject> sources = new ArrayList<JavaFileObject>();
     for (Path f : Files.list(basePath.toPath()).collect(Collectors.toList())) {

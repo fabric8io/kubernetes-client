@@ -25,6 +25,7 @@ import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import io.fabric8.java.generator.Config;
+import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,6 +36,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static io.fabric8.java.generator.nodes.Keywords.JAVA_LANG_INTEGER;
 import static io.fabric8.java.generator.nodes.Keywords.JAVA_LANG_LONG;
 import static io.fabric8.java.generator.nodes.Keywords.JAVA_LANG_STRING;
 import static io.fabric8.java.generator.nodes.Keywords.JAVA_PRIMITIVE_BOOLEAN;
@@ -109,6 +111,60 @@ public class JEnum extends AbstractJSONSchema2Pojo {
     return result;
   }
 
+  private Expression createValueArgument(String enumValue) {
+    if (JAVA_LANG_STRING.equals(underlyingType)) {
+      return createStringLiteral(enumValue);
+    }
+    if (JAVA_LANG_INTEGER.equals(underlyingType)) {
+      return new IntegerLiteralExpr(parseIntegerEnumValue(enumValue));
+    }
+    if (JAVA_LANG_LONG.equals(underlyingType)) {
+      return new IntegerLiteralExpr(parseLongEnumValue(enumValue) + "L");
+    }
+    if (JAVA_PRIMITIVE_BOOLEAN.equals(underlyingType)) {
+      return new BooleanLiteralExpr(parseBooleanEnumValue(enumValue));
+    }
+    throw new JavaGeneratorException("Unsupported enum underlying type: " + underlyingType);
+  }
+
+  private StringLiteralExpr createStringLiteral(String value) {
+    return new StringLiteralExpr().setString(value);
+  }
+
+  private String parseIntegerEnumValue(String enumValue) {
+    try {
+      return Integer.toString(Integer.parseInt(enumValue));
+    } catch (NumberFormatException e) {
+      throw invalidEnumValue(enumValue, e);
+    }
+  }
+
+  private String parseLongEnumValue(String enumValue) {
+    try {
+      return Long.toString(Long.parseLong(enumValue));
+    } catch (NumberFormatException e) {
+      throw invalidEnumValue(enumValue, e);
+    }
+  }
+
+  private boolean parseBooleanEnumValue(String enumValue) {
+    if ("true".equals(enumValue)) {
+      return true;
+    }
+    if ("false".equals(enumValue)) {
+      return false;
+    }
+    throw invalidEnumValue(enumValue, null);
+  }
+
+  private JavaGeneratorException invalidEnumValue(String enumValue, Exception cause) {
+    final String message = "Invalid " + underlyingType + " enum value: " + enumValue;
+    if (cause == null) {
+      return new JavaGeneratorException(message);
+    }
+    return new JavaGeneratorException(message, cause);
+  }
+
   @Override
   public GeneratorResult generateJava() {
     if (config.getExistingJavaTypes().containsKey(pkgPrefixedType)) {
@@ -148,7 +204,7 @@ public class JEnum extends AbstractJSONSchema2Pojo {
       boolean hasTrue = false;
       boolean hasFalse = false;
       for (String v : values) {
-        boolean value = Boolean.valueOf(v);
+        boolean value = parseBooleanEnumValue(v);
         if (value) {
           hasTrue = true;
         } else {
@@ -181,21 +237,13 @@ public class JEnum extends AbstractJSONSchema2Pojo {
       String constantName = constantNameBuilder.toString();
       constantNames.add(constantName);
 
-      String originalName = AbstractJSONSchema2Pojo.escapeQuotes(k);
-      Expression valueArgument = new StringLiteralExpr(originalName);
-      if (!underlyingType.equals(JAVA_LANG_STRING)) {
-        if (underlyingType.equals(JAVA_LANG_LONG) && !originalName.endsWith("L")) {
-          valueArgument = new IntegerLiteralExpr(originalName + "L");
-        } else {
-          valueArgument = new IntegerLiteralExpr(originalName);
-        }
-      }
+      Expression valueArgument = createValueArgument(k);
 
       EnumConstantDeclaration decl = new EnumConstantDeclaration();
       decl.addAnnotation(
           new SingleMemberAnnotationExpr(
               new Name("com.fasterxml.jackson.annotation.JsonProperty"),
-              new StringLiteralExpr(originalName)));
+              createStringLiteral(k)));
       decl.setName(constantName);
       decl.addArgument(valueArgument);
       en.addEntry(decl);

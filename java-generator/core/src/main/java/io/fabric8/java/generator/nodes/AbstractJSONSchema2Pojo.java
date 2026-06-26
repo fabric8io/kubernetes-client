@@ -25,6 +25,7 @@ import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 
 import java.util.Locale;
+import java.util.Optional;
 import java.util.function.Function;
 
 import static io.fabric8.java.generator.nodes.Keywords.*;
@@ -149,6 +150,16 @@ public abstract class AbstractJSONSchema2Pojo {
 
   public static String escapeQuotes(String str) {
     return str.replace("\"", "\\\"").replace("\'", "\\\'");
+  }
+
+  protected static String sanitizeJavadoc(String value) {
+    String escaped = Optional.ofNullable(value).orElse("")
+        .replace("&", "&amp;")
+        .replace("\\u", "&#92;u");
+    return escaped
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace("*/", "&#042;&#047;");
   }
 
   private static String getRefinedIntegerType(String format) {
