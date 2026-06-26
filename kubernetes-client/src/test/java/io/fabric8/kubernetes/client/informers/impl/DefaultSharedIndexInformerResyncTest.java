@@ -121,9 +121,9 @@ class DefaultSharedIndexInformerResyncTest {
   }
 
   @Test
-  @DisplayName("Controller with resync function throwing exception")
+  @DisplayName("A resync that throws on a mid-stream cycle is absorbed and the remaining cycles still run (issue #7435)")
   void testControllerRunsResyncFunctionThrowingException() throws InterruptedException {
-    // Given + When
+    // Given a resync that throws once part-way through the expected number of cycles
     long fullResyncPeriod = 10L;
     int numberOfResyncs = 10;
     final CountDownLatch countDown = new CountDownLatch(numberOfResyncs);
@@ -135,10 +135,35 @@ class DefaultSharedIndexInformerResyncTest {
       }
       return true;
     });
-    countDown.await(WAIT_TIME, TimeUnit.MILLISECONDS);
+    // Then every cycle still runs: the single failure must not permanently stop the periodic resync,
+    // so the latch reaches zero rather than getting stuck at 2.
+    boolean allCyclesRan = countDown.await(5, TimeUnit.SECONDS);
     controller.stop();
-    // Then
-    assertThat(countDown.getCount()).isLessThanOrEqualTo(2);
+    assertThat(allCyclesRan).isTrue();
+  }
+
+  @Test
+  @DisplayName("Resync that throws on one cycle must keep firing on subsequent intervals (issue #7435)")
+  void resyncContinuesAfterTransientException() throws InterruptedException {
+    // Given a resync that throws on its very first cycle and would succeed afterwards
+    final long fullResyncPeriod = 10L;
+    final AtomicInteger invocations = new AtomicInteger();
+    // Latch trips only on cycles that run AFTER the failing first cycle
+    final CountDownLatch afterFailure = new CountDownLatch(3);
+    DefaultSharedIndexInformer<Pod, PodList> controller = createDefaultSharedIndexInformer(fullResyncPeriod);
+    controller.scheduleResync(() -> {
+      if (invocations.incrementAndGet() == 1) {
+        throw new RuntimeException("transient resync failure");
+      }
+      afterFailure.countDown();
+      return true;
+    });
+
+    // Then the periodic resync must recover and keep firing; a single throw must not
+    // permanently and silently disable all future resyncs.
+    boolean recovered = afterFailure.await(5, TimeUnit.SECONDS);
+    controller.stop();
+    assertThat(recovered).isTrue();
   }
 
   @Test
