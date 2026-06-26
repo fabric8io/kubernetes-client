@@ -19,6 +19,7 @@
 * Fix #7847: (httpclient-okhttp) `OkHttpClientImpl.doClose` removes dead null checks on `dispatcher` and `connectionPool` that are guaranteed non-null by the OkHttp API (sonar S2583)
 
 #### Improvements
+* Fix #7930: (documentation) Update agent guidance for Maven log handling, test prerequisites, Java version checks, and security threat-model/reporting docs
 * Fix #7675: (mockwebserver) `MockWebServer.dispatcher` field marked `volatile` so a `setDispatcher(...)` call is reliably visible to the Vert.x request handler thread without further synchronization. `MockWebServer.reset()` Javadoc tightened to make its non-destructive contract explicit (no change to the running server, dispatcher, listeners, SSL/TLS state, port, or protocols)
 * Fix #7809: (kubernetes-client) Support for shard selectors for list and watch - including informers
 * Fix #7837: (kubernetes-client) Follow-ups on shard selector
