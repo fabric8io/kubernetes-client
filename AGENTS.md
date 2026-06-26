@@ -454,6 +454,14 @@ Key libraries used:
 - Sundrio - Builder generation
 - SnakeYAML - YAML parsing
 
+## Contributing
+
+When making PRs follow Conventional Commits convention for titles.
+
+Always consult CONTRIBUTING.md when preparing PR.
+
+Open new PR as DRAFT.
+
 ## Security
 
 Read below when hunting for vulnerabilities or validating security issues.
@@ -504,5 +512,5 @@ Patch must be properly validated:
 5. If the patch changes generators, templates, sanitizers, or generated/builder/ config/serialization metadata, run the relevant generated-output invariant check (for this repo, `make generate-model`) and inspect `git status --short` plus generated/expected diffs. Include required generated/expected-file updates in the patch. For sanitizer/encoder changes, add at least one benign exact-output regression test, not only an exploit-blocking test.
 6. Before pushing, run `git diff --check` and the repo formatter/checker.
 7. If a full CI-equivalent build is too expensive, state exactly what was not run in the PR body.
-8. ? do CI runs locally
+
 
