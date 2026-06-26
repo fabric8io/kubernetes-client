@@ -1,3 +1,6 @@
+<!-- markdownlint-disable MD013 MD041 MD060 -->
+<!-- Dense agent-facing tables use H2 sections and long rows. -->
+
 ## Components and Trust Zones
 
 | Trust Zone | Components | Security Properties |
@@ -10,7 +13,6 @@
 | Plugin and Generation Boundary | HTTP `ServiceLoader`, extension adapters, Kubernetes resource `ServiceLoader`, CRD/Java generators, Maven/Gradle plugins | Loads caller-provided classes and writes generated artifacts. |
 | Local Test Boundary | MockWebServer, KubernetesMockServer, Kube API Test, downloaded envtest binaries, local API server and etcd | Test-only services can still expose local process, network, credential, and filesystem boundaries. |
 | CI and Release Boundary | GitHub Actions, Dependabot, Maven/Go caches, Sonar, Minikube/CRC/Chaos Mesh/OSCI jobs, Maven Central credentials, signing key | Builds and tests repository code, updates dependencies, accesses external clusters, and publishes artifacts. |
-
 
 ## Entry Points
 
@@ -38,7 +40,6 @@
 | E2E cluster workflows | Schedules, manual dispatch, selected PR paths | Start Minikube, download CRC, install Chaos Mesh, or log into external OSCI OpenShift [e2e-chaos-tests.yml:68](../../kubernetes-client/.github/workflows/e2e-chaos-tests.yml#L68) [e2e-crc-okd-tests.yml:80](../../kubernetes-client/.github/workflows/e2e-crc-okd-tests.yml#L80) [e2e-osci-tests.yml:48](../../kubernetes-client/.github/workflows/e2e-osci-tests.yml#L48) | External installers, clusters, and CI secrets trusted | Installer compromise, persistent-cluster token misuse, or test-code exfiltration. |
 | Release and snapshot workflows | Manual release tag, manual Maven args, scheduled snapshots | Configure Maven Central credentials and imported GPG key, then run Maven deploy [release.yaml:19](../../kubernetes-client/.github/workflows/release.yaml#L19) [release.yaml:34](../../kubernetes-client/.github/workflows/release.yaml#L34) [release-snapshots.yaml:19](../../kubernetes-client/.github/workflows/release-snapshots.yaml#L19) | Repository writers, listed actors, selected refs, secrets, tag-pinned actions trusted | Signed malicious releases, poisoned snapshots, or publishing-secret misuse. |
 
-
 ## Code and Runtime Attack Surface
 
 | Component | Entry Point | Threat Scenario | Impact | Existing Mitigation |
@@ -61,7 +62,6 @@
 | Kube API Test | Binary download and extraction | Test jobs download envtest archives from GitHub release metadata and execute extracted `kube-apiserver`, `kubectl`, and `etcd` without repository-pinned checksum/signature verification. | Compromised binary execution in developer or automation context. | Downloads use HTTPS; extraction accepts only expected binary names. |
 | Kube API Test | Local API server and etcd | Etcd listens on `0.0.0.0` and API server points at `http://0.0.0.0:<etcdPort>`. API server secure bind address is not explicitly loopback in command args. | Other processes on shared hosts/runners may reach test control-plane services. | Client kubeconfig points to `127.0.0.1`; API server uses generated client certs and RBAC. |
 
-
 ## Threat Actors
 
 | Actor | Starting Position and Access |
@@ -69,11 +69,28 @@
 | External Cluster Attacker | Can influence a Kubernetes API endpoint, pod contents, pod logs, or CRD manifests consumed by a Fabric8-based application. |
 | Malicious Kubernetes Tenant | Can create pods/resources in namespaces watched or accessed by a Fabric8 controller running with broader credentials. |
 | Untrusted Kubeconfig Provider | Can supply kubeconfig content, paths, environment variables, system properties, proxy settings, or credential-plugin configuration to a Fabric8 process. |
+| Lower-Trust Wrapper User | Can choose one or more fields exposed by a service, CI job, operator, web UI, plugin, or script DSL that calls Fabric8 with broader Kubernetes or local privileges. |
 | Malicious Build Input Provider | Can supply CRDs, URLs, package overrides, classpath entries, Maven configuration, or generated-output directories in a downstream build. |
 | Compromised Classpath Dependency | Can provide HTTP factories, extension adapters, Kubernetes resource mappings, or Maven plugin behavior through Java classpath and `ServiceLoader`. |
 | Repository Writer or Compromised Maintainer | Can push branches, manually dispatch eligible workflows, modify tests/build scripts, or attempt release/snapshot jobs. |
 | GitHub Actions Supply-Chain Attacker | Can compromise tag-pinned actions, remote installers, public package downloads, cache contents, or external binary hosts. |
 | Downstream Application User (Victim) | Runs Fabric8 with credentials or local filesystem access and may mistake executable config or remote pod data for inert data. |
+
+## Agent Triage Rules
+
+Before accepting a candidate, identify the exact controlled bytes, the actor
+that controls them, the Fabric8 public API they reach, the sink, and the
+privilege boundary crossed. If any element is missing, treat the candidate as a
+hardening note or user-footgun until proven otherwise.
+
+| Candidate Class | In-Scope When | Usually Out of Scope or Downgraded |
+|---|---|---|
+| Whole kubeconfig, local env, JVM sysprops, local files, classpath, Maven/Gradle config | A downstream wrapper intentionally accepts only a supposedly safe subfield, or the project promises parity with Kubernetes/client-go behavior and Fabric8 violates it in a security-relevant way. | The attacker controls the whole executable configuration source. Kubeconfig exec, classpath, build files, and local env are trusted code/config by design. |
+| Typed DSL path, query, name, namespace, selector, port, method, or raw path values | A lower-trust wrapper user controls a field while Fabric8 uses broader credentials or exposes a narrower intended capability. | The caller is fully trusted, or the only impact is that the caller can ask Fabric8 to do exactly what the public API advertises. |
+| Pod exec, copy, read, upload, logs, and port-forward | A malicious pod controls bytes crossing into local files/streams, or a lower-trust user controls pod, path, command, container, port, or bind address through a privileged wrapper. | The same fully trusted administrator controls both the client and the pod/path/command. |
+| TLS, proxy, auth, impersonation, and config precedence | A lower-priority or less-trusted source can override a higher-priority security setting, or backend drift changes where credentials go. | The finding only says insecure settings are insecure when explicitly selected by a trusted operator. |
+| Generators, templates, and schema parsers | Untrusted project/schema/template input can become generated source, local files, API objects, network fetches, or build-JVM class loading. | The schema/build source is fully trusted and the impact is only generated code doing what the trusted schema asked for. |
+| CI/release workflows | Untrusted PR code, mutable third-party actions, downloaded tools, caches, or weak dispatch guards can access tokens, secrets, release artifacts, or external clusters. | A workflow issue is unreachable because GitHub event permissions or manual dispatch rights already enforce the same authorization. |
 
 ## Command Execution Sinks
 
@@ -126,4 +143,3 @@
 | OpenAPI model generator and validator | Maven model generator and schema validator API. | `CrdParser.crdToOpenApi` parses CRD YAML URI with Jackson YAML [CrdParser.java:71](../../kubernetes-client/kubernetes-model-generator/openapi/maven-plugin/src/main/java/io/fabric8/kubernetes/schema/generator/schema/CrdParser.java#L71). `Validator.validate(String/InputStream)` parses YAML/JSON into `JsonNode` [Validator.java:65](../../kubernetes-client/kubernetes-model-generator/openapi/validator/src/main/java/io/fabric8/kubernetes/schema/validator/Validator.java#L65). | Schema files/URIs and validation inputs may be build/user controlled. | Parser/availability boundary. Use only on trusted schemas or with external size/time controls. |
 | Kube API Test release index | Kube API Test binary lookup. | `BinaryRepo.listObjectNames` parses remote `envtest-releases.yaml` with Jackson YAML; `downloadVersionToTempFile` downloads tarballs [BinaryRepo.java:51](../../kubernetes-client/junit/kube-api-test/core/src/main/java/io/fabric8/kubeapitest/binary/repo/BinaryRepo.java#L51) [BinaryRepo.java:74](../../kubernetes-client/junit/kube-api-test/core/src/main/java/io/fabric8/kubeapitest/binary/repo/BinaryRepo.java#L74). | Remote GitHub/controller-tools release metadata. | Test-scope supply-chain parser boundary that leads to binary execution. |
 | JUnit mock server request handling | `KubernetesMockServer`/CRUD dispatcher when test code or local clients send requests. | Mock CRUD paths parse request bodies and CRDs with `Serialization.unmarshal` and Jackson readers [KubernetesCrudDispatcherHandler.java:93](../../kubernetes-client/junit/kubernetes-server-mock/src/main/java/io/fabric8/kubernetes/client/server/mock/crud/KubernetesCrudDispatcherHandler.java#L93) [CustomResourceDefinitionProcessor.java:46](../../kubernetes-client/junit/kubernetes-server-mock/src/main/java/io/fabric8/kubernetes/client/server/mock/CustomResourceDefinitionProcessor.java#L46) [KubernetesCrudPersistence.java:58](../../kubernetes-client/junit/kubernetes-server-mock/src/main/java/io/fabric8/kubernetes/client/server/mock/crud/KubernetesCrudPersistence.java#L58). | Usually test-controlled. Potentially untrusted if a mock server is exposed beyond loopback or reused in integration environments. | Test-scope parser boundary. Lower priority for production runtime, but still a dangerous API in shared test infrastructure. |
-

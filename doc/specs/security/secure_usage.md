@@ -1,3 +1,6 @@
+<!-- markdownlint-disable MD013 MD041 MD060 -->
+<!-- Dense agent-facing tables use H2 sections and long rows. -->
+
 ## API Secure Usage
 
 Fabric8 runs inside the caller JVM and uses the caller's OS account, classpath, network
@@ -19,6 +22,7 @@ APIs as privileged operations.
 | Java, CRD, and OpenAPI generators | CRDs, OpenAPI schemas, package overrides, URLs, classpath entries, annotations, and output directories are source-generation input, not inert data. Schema values can become Java source, generator URLs can fetch from internal networks, and CRD generator classpath scanning can load project or dependency classes. | Run generators only on trusted schemas or in sandboxed CI. Pin or allowlist schema URLs, bound input sizes, isolate output directories, review generated source before compiling it, and keep untrusted JARs off generator classpaths. Treat generated code as code from the schema provider. |
 | Kube API Test and mock servers | Test utilities can download and execute API-server, `kubectl`, and `etcd` binaries, mutate kubeconfig files, bind local services, and parse request bodies. They are test-scope, but they still run with developer or CI privileges. | Use pinned/offline binary caches where possible, isolate `HOME`/`KUBECONFIG`, bind test services to loopback, and do not expose mock servers to untrusted local or network clients. |
 
+
 ## Untrusted Data Flow Conclusions
 
 | Dangerous API Family | Can Untrusted Data Reach It? | Conditions |
@@ -35,3 +39,19 @@ APIs as privileged operations.
 | Generator URL/file/classpath ingestion | Yes in CI/build tools | CRDs, schemas, package overrides, classpath entries, output dirs, and Maven/Gradle config are often project-controlled; malicious PRs can influence them in permissive CI. |
 | Kube API Test binary download/execution | Yes from remote supply chain and config | Remote release metadata/tarballs are parsed/downloaded; extracted binaries are executed if offline mode/cache does not prevent it. |
 | Mock server parsers | Usually no in production | Test-only unless mock servers are exposed to untrusted local/network clients. |
+
+## Wrapper Design Checklist
+
+Use this checklist when building a service, CI step, operator, plugin, or script
+DSL on top of Fabric8.
+
+| Wrapper Decision | Required Control |
+|---|---|
+| Accepting names, namespaces, groups, versions, resources, subresources, selectors, fields, or query values | Validate the Kubernetes grammar for that specific field and reject path separators, dot segments, query delimiters, and absolute URLs before calling Fabric8. Do not rely on the HTTP backend to normalize or encode correctly. |
+| Accepting kubeconfig-like input | Decide whether the whole kubeconfig is trusted executable configuration. If only a subfield is meant to be user-controlled, parse into a safe allowlisted structure and construct `Config` explicitly instead of passing the original kubeconfig through Fabric8. |
+| Exposing pod file-transfer helpers | Treat remote paths beginning with `-` as command options unless the implementation inserts `--`. Apply destination-root, symlink, file-count, per-file-size, total-size, timeout, and cleanup limits. |
+| Exposing Service or Pod port-forward | Bind to loopback by default, authorize the requested listener address separately, and verify Service ports resolve to the intended Pod target port before opening the tunnel. |
+| Applying manifests or templates from users | Validate allowed kinds, namespaces, names, owners, labels, and fields before calling `create`, `replace`, `patch`, `serverSideApply`, or template processing. Treat OpenShift Template JSON parameters as structured object injection points. |
+| Logging configs, resources, requests, responses, or environment | Redact bearer/basic/proxy credentials, client keys, kubeconfigs, Secret data, and `KUBERNETES_*` credential variables before logs, support bundles, traces, and CI artifacts are written. |
+| Using generators in CI | Run generator jobs in isolated workspaces with trusted schemas or allowlisted URLs, bounded input sizes, reviewed generated source, and no untrusted classpath entries. |
+| Selecting an HTTP backend | Pin the backend and regression-test TLS, proxy, `NO_PROXY`, WebSocket, request-method, path, and query behavior under that backend. Re-test when dependency mediation changes the backend or its transitive libraries. |
