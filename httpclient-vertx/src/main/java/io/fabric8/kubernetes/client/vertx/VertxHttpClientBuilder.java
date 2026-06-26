@@ -89,11 +89,9 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
       return new VertxHttpClient<>(this, this.client.getClosed(), this.client.getClient(), closeVertx);
     }
 
-    // Warn if tlsServerName is configured but not supported
     if (tlsServerName != null && !tlsServerName.isEmpty()) {
-      logger.warn(
-          "tlsServerName '{}' is configured but not supported by Vert.x HTTP client. Consider using Jetty HTTP client for SNI support.",
-          tlsServerName);
+      throw new KubernetesClientException(
+          "tlsServerName is configured but cannot be enforced by the Vert.x HTTP client");
     }
 
     WebClientOptions options = new WebClientOptions();
