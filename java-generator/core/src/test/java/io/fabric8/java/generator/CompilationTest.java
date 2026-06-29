@@ -133,6 +133,35 @@ class CompilationTest {
         "The current CRD should not compile since it contains duplicate fields which are not marked as deprecated");
   }
 
+  @Test
+  void rejectsInjectedCodeInNumericEnumFromCrd() throws Exception {
+    // Arrange
+    File crd = getCRD("malicious-numeric-enum-crd.yml");
+
+    // Act & Assert
+    JavaGeneratorException exception = assertThrows(
+        JavaGeneratorException.class,
+        () -> new FileJavaGenerator(config, crd).run(tempDir));
+
+    assertTrue(exception.getMessage().contains("structural mismatch"));
+    assertTrue(getSources(tempDir).isEmpty(), "Rejected CRDs must not emit Java source files");
+  }
+
+  @Test
+  void rejectsExpressionInjectionInNumericEnumFromCrd() throws Exception {
+    // Arrange
+    File crd = getCRD("malicious-expression-enum-crd.yml");
+
+    // Act & Assert
+    JavaGeneratorException exception = assertThrows(
+        JavaGeneratorException.class,
+        () -> new FileJavaGenerator(config, crd).run(tempDir));
+
+    String msg = exception.getMessage();
+    assertTrue(msg.contains("structural mismatch") || msg.contains("code injection"),
+        "Expected injection detection message but got: " + msg);
+  }
+
   static List<JavaFileObject> getSources(File basePath) throws IOException {
     List<JavaFileObject> sources = new ArrayList<JavaFileObject>();
     for (Path f : Files.list(basePath.toPath()).collect(Collectors.toList())) {
