@@ -1133,9 +1133,13 @@
                 <goal>add-module-info</goal>
               </goals>
               <configuration>
-                <!-- Explicit descriptors per module (moduleInfoSource), NOT jdeps auto-generation:
-                     jdeps fails on the provided-scope sundr toolchain, whose jars share a split
-                     package (sundr.model.base & sundr.model.utils both export io.sundr.model). -->
+                <!-- Descriptors are injected post-compile rather than written as module-info.java:
+                     the model classes and all builders are produced by the Sundrio annotation
+                     processor, so the exported packages do not exist when javac would validate an
+                     inline module-info (it fails with "package is empty or does not exist").
+                     Explicit moduleInfoSource per module, NOT jdeps auto-generation: jdeps fails on
+                     the provided-scope sundr toolchain, whose jars share a split package
+                     (sundr.model.base & sundr.model.utils both export io.sundr.model). -->
                 <overwriteExistingFiles>true</overwriteExistingFiles>
               </configuration>
             </execution>
