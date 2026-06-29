@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "conditions",
+    "observedGeneration",
     "recommendation"
 })
 @ToString
@@ -71,6 +72,8 @@ public class VerticalPodAutoscalerStatus implements Editable<VerticalPodAutoscal
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<VerticalPodAutoscalerCondition> conditions = new ArrayList<>();
+    @JsonProperty("observedGeneration")
+    private Long observedGeneration;
     @JsonProperty("recommendation")
     private RecommendedPodResources recommendation;
     @JsonIgnore
@@ -82,9 +85,10 @@ public class VerticalPodAutoscalerStatus implements Editable<VerticalPodAutoscal
     public VerticalPodAutoscalerStatus() {
     }
 
-    public VerticalPodAutoscalerStatus(List<VerticalPodAutoscalerCondition> conditions, RecommendedPodResources recommendation) {
+    public VerticalPodAutoscalerStatus(List<VerticalPodAutoscalerCondition> conditions, Long observedGeneration, RecommendedPodResources recommendation) {
         super();
         this.conditions = conditions;
+        this.observedGeneration = observedGeneration;
         this.recommendation = recommendation;
     }
 
@@ -103,6 +107,22 @@ public class VerticalPodAutoscalerStatus implements Editable<VerticalPodAutoscal
     @JsonProperty("conditions")
     public void setConditions(List<VerticalPodAutoscalerCondition> conditions) {
         this.conditions = conditions;
+    }
+
+    /**
+     * observedGeneration is the most recent generation observed by this autoscaler.
+     */
+    @JsonProperty("observedGeneration")
+    public Long getObservedGeneration() {
+        return observedGeneration;
+    }
+
+    /**
+     * observedGeneration is the most recent generation observed by this autoscaler.
+     */
+    @JsonProperty("observedGeneration")
+    public void setObservedGeneration(Long observedGeneration) {
+        this.observedGeneration = observedGeneration;
     }
 
     /**

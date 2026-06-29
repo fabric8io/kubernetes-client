@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 public class KubeAPIServerProcess {
 
@@ -39,6 +40,7 @@ public class KubeAPIServerProcess {
   private final CertManager certManager;
   private final BinaryManager binaryManager;
   private final KubeAPIServerConfig config;
+  @SuppressWarnings("java:S3077") // volatile ensures cross-thread visibility; Process methods are thread-safe
   private volatile Process apiServerProcess;
   private volatile boolean stopped = false;
   private final UnexpectedProcessStopHandler processStopHandler;
@@ -69,7 +71,7 @@ public class KubeAPIServerProcess {
       apiServerProcess.onExit().thenApply(p -> {
         if (!stopped) {
           stopped = true;
-          logger.error("API Server process stopped unexpectedly");
+          logger.error("API Server process stopped unexpectedly with exit code {}", p.exitValue());
           this.processStopHandler.processStopped(p);
         }
         return null;
@@ -106,10 +108,14 @@ public class KubeAPIServerProcess {
     var readinessChecker = new ProcessReadinessChecker();
     var timeout = config.getStartupTimeout();
     var startTime = System.currentTimeMillis();
-    readinessChecker.waitUntilReady(apiServerPort, "readyz", KUBE_API_SERVER, true, timeout);
+    // Abort the readiness wait promptly if the apiserver process exits unexpectedly during
+    // startup, instead of running out the full startupTimeout on a dead process (see #7807).
+    BooleanSupplier abortCheck = () -> apiServerProcess != null && !apiServerProcess.isAlive();
+    readinessChecker.waitUntilReady(apiServerPort, "readyz", KUBE_API_SERVER, true, timeout,
+        certManager, abortCheck);
     var newTimout = (int) (timeout - (System.currentTimeMillis() - startTime));
     readinessChecker.waitUntilDefaultNamespaceAvailable(apiServerPort, binaryManager, certManager,
-        config, newTimout);
+        config, newTimout, abortCheck);
   }
 
   public void stopApiServer() {
@@ -122,6 +128,7 @@ public class KubeAPIServerProcess {
         apiServerProcess.destroyForcibly();
         apiServerProcess.waitFor();
       } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
         throw new KubeAPITestException(e);
       }
     }

@@ -54,11 +54,6 @@
 {{/refs}}
 })
 {{/buildableReferences}}
-{{#kubernetesResourceClass}}
-@TemplateTransformations({
-    @TemplateTransformation(value = "/manifest.vm", outputPath = "META-INF/services/{{.}}", gather = true)
-})
-{{/kubernetesResourceClass}}
 {{#version}}
 @Version("{{.}}")
 {{/version}}

@@ -28,8 +28,13 @@ import io.fabric8.mockwebserver.http.WebSocketListener;
 import io.fabric8.mockwebserver.internal.WebSocketMessage;
 import org.slf4j.Logger;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -43,6 +48,15 @@ class WatchEventsListener extends WebSocketListener {
   private final Set<WatchEventsListener> watchEventListenerList;
   private final Logger logger;
   private final Consumer<WatchEventsListener> onOpenAction;
+  // Guards open and pendingMessages so the buffer-vs-drain handoff in onOpen is atomic
+  // with respect to concurrent sendWebSocketResponse calls (#7867).
+  private final Object sendLock = new Object();
+  // false until onOpen has populated webSocketRef. While false, outgoing events are
+  // buffered instead of scheduled: a scheduled task would otherwise dereference a null
+  // webSocketRef and the resulting NPE would be silently swallowed by the executor,
+  // dropping the event.
+  private boolean open;
+  private final Queue<WebSocketMessage> pendingMessages = new ArrayDeque<>();
 
   public WatchEventsListener(Context context, AttributeSet attributeSet, final Set<WatchEventsListener> watchEventListenerList,
       Logger logger, Consumer<WatchEventsListener> onOpenAction) {
@@ -60,12 +74,39 @@ class WatchEventsListener extends WebSocketListener {
   @Override
   public void onOpen(WebSocket webSocket, Response response) {
     webSocketRef.set(webSocket);
+    final List<WebSocketMessage> buffered;
+    synchronized (sendLock) {
+      open = true;
+      buffered = new ArrayList<>(pendingMessages);
+      pendingMessages.clear();
+    }
+    // Run the initial-sync action first so the watcher observes the initial ADDED events
+    // ahead of anything that was buffered during the open-race window.
     onOpenAction.accept(this);
+    // Replay events that arrived before the WebSocket was available (#7867). Scheduling
+    // them after the initial sync preserves the ADDED-before-MODIFIED ordering on the
+    // single-threaded executor.
+    buffered.forEach(this::scheduleSend);
   }
 
   @Override
   public void onClosing(WebSocket webSocket, int code, String reason) {
-    webSocketRef.get().close(code, reason);
+    // Queue the close behind any pending sends so events scheduled before the
+    // client-initiated WebSocket close are not lost when the Vert.x event loop
+    // processes the close ahead of the executor draining its queue (#7857).
+    try {
+      executor.schedule(() -> {
+        WebSocket ws = webSocketRef.get();
+        if (ws != null) {
+          ws.close(code, reason);
+        }
+      }, 0L, TimeUnit.SECONDS);
+    } catch (RejectedExecutionException e) {
+      // Executor already shut down by an earlier onClosed/onFailure; the socket is
+      // gone and any pending events have been drained or dropped. Mirrors the
+      // defensive pattern in WebSocketSession#send (#7841).
+      logger.debug("Skipping queued close: executor already shut down ({})", e.getMessage());
+    }
   }
 
   @Override
@@ -85,6 +126,9 @@ class WatchEventsListener extends WebSocketListener {
 
   @Override
   public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+    // Abnormal termination: transport is already broken, so deliberately do NOT
+    // route the close through the executor (see onClosing). Any queued events
+    // could not be delivered anyway.
     webSocket.close(1000, t.getMessage());
     executor.shutdown();
     try {
@@ -99,6 +143,18 @@ class WatchEventsListener extends WebSocketListener {
   public void sendWebSocketResponse(String object, Watcher.Action action) {
     WebSocketMessage message = toWebSocketMessage(context,
         new WatchEvent(Serialization.unmarshal(object, GenericKubernetesResource.class), action.name()));
+    synchronized (sendLock) {
+      if (!open) {
+        // WebSocket not yet available: buffer the event until onOpen drains it, instead
+        // of scheduling a send that would NPE on the null webSocketRef and be dropped (#7867).
+        pendingMessages.add(message);
+        return;
+      }
+    }
+    scheduleSend(message);
+  }
+
+  private void scheduleSend(WebSocketMessage message) {
     executor.schedule(() -> webSocketRef.get().send(message.getBody()), message.getDelay(), TimeUnit.SECONDS);
   }
 

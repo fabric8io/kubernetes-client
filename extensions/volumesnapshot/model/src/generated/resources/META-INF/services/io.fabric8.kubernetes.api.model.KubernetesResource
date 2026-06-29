@@ -1,0 +1,6 @@
+io.fabric8.volumesnapshot.api.model.VolumeSnapshot
+io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass
+io.fabric8.volumesnapshot.api.model.VolumeSnapshotClassList
+io.fabric8.volumesnapshot.api.model.VolumeSnapshotContent
+io.fabric8.volumesnapshot.api.model.VolumeSnapshotContentList
+io.fabric8.volumesnapshot.api.model.VolumeSnapshotList

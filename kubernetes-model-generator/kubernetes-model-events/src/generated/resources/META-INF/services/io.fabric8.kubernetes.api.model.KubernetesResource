@@ -1,0 +1,4 @@
+io.fabric8.kubernetes.api.model.events.v1.Event
+io.fabric8.kubernetes.api.model.events.v1.EventList
+io.fabric8.kubernetes.api.model.events.v1beta1.Event
+io.fabric8.kubernetes.api.model.events.v1beta1.EventList

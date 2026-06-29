@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.NamedClusterBuilder;
 import io.fabric8.kubernetes.api.model.NamedContextBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.RestoreSystemProperties;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClient;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.http.TestStandardHttpClientFactory;
@@ -67,6 +68,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.data.MapEntry.entry;
 
+@RestoreSystemProperties("kubeconfig")
 class OpenIDConnectionUtilsBehaviorTest {
 
   @TempDir
@@ -597,11 +599,6 @@ class OpenIDConnectionUtilsBehaviorTest {
         System.setProperty("kubeconfig", kubeConfig.getAbsolutePath() + File.pathSeparator + userConfig.getAbsolutePath());
         originalConfig = new ConfigBuilder().withAutoConfigure().build();
         persistOAuthToken(originalConfig, oAuthTokenResponse, "updated-token");
-      }
-
-      @AfterEach
-      void tearDown() {
-        System.clearProperty("kubeconfig");
       }
 
       @Test

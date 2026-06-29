@@ -1,10 +1,54 @@
 ## CHANGELOG
 
-### 7.7-SNAPSHOT
+### 7.8-SNAPSHOT
+
+#### Bugs
+* Fix #7953: (httpclient-jdk) bodyless requests now preserve the requested HTTP method instead of silently defaulting to `GET`. `JdkHttpClientImpl.requestBuilder` only called `HttpRequest.Builder.method(...)` inside the `body != null` branch, so a bodyless `DELETE`/`POST`/`PUT`/`PATCH` (such as `client.raw(uri, "DELETE", null)`) was sent as `GET` on the JDK backend; the method is now set with `BodyPublishers.noBody()` when there is no body, matching the OkHttp, Jetty and Vert.x backends
+* Fix #7435: (kubernetes-client) A `SharedIndexInformer`'s periodic resync no longer stops permanently and silently when a single resync cycle throws. `DefaultSharedIndexInformer.scheduleResync` runs the resync through `Utils.scheduleAtFixedRate`, whose self-rescheduling chain re-arms the next cycle only when the previous one completes normally; an uncaught exception completed the (unobserved) `resyncFuture` exceptionally and the resync was never scheduled again, with no log, while the independent watch kept `isWatching()` reporting `true` (a restart was required to recover). The resync command now catches and `WARN`-logs the failure so the schedule fires again at the next interval
+* Fix #7933: (kubernetes-client-api) Deterministic TLS trust failures (untrusted cert, expired cert, hostname mismatch) are now classified as terminal and fail fast instead of being retried by the shared `StandardHttpClient.shouldRetry` backoff loop (~19 s drain). The classifier walks both `getCause()` and `getSuppressed()` trees for `CertificateException`, `CertPathValidatorException`, `CertPathBuilderException`, and `SSLPeerUnverifiedException`. Affects all five HTTP client modules (jdk, jetty, okhttp, vertx-4, vertx-5) on both the HTTP request and WebSocket connect paths
+* Fix #7867: (kubernetes-server-mock) `WatchEventsListener` now buffers outgoing watch events that are scheduled before Vert.x fires `onOpen` and replays them once the WebSocket is available, closing the open-side race where a CRUD operation landing between `handleWatch` registering the listener and `onOpen` populating `webSocketRef` scheduled a send that dereferenced a null `webSocketRef`; the resulting `NullPointerException` was silently swallowed by the executor and the event was dropped. Buffered events are replayed after the initial-sync `ADDED`s so ordering is preserved
+* Fix #7896: (kubernetes-client) `AbstractWatchManager.watchEnded()` now emits a `WatcherException` when a watch closes cleanly with no messages within 2 seconds, compensating for a GKE-specific behaviour on `v1/events` where the GKFE proxy rejects a stale `resourceVersion` with a bare WebSocket close (code 1000, no body) instead of `{"type":"ERROR","code":410}`, causing an indefinite reconnect loop with the same stale resourceVersion
+* Fix #7907: (httpclient-vertx-5) WebSocket-over-TLS operations (`exec`/`attach`/`portForward`/WebSocket-backed watches, and the CRD-establishment waits that depend on them) now trust the cluster certificate again. Vert.x 5.1 rewrote the WebSocket client to resolve TLS through a per-connection `ClientSSLOptions` that ignored the custom `SslContextFactory` the client used as its sole carrier of trust material, so WebSocket handshakes silently fell back to the default JVM trust store, failed PKIX validation, and hung to the client-side timeout (regular HTTPS request/response was unaffected). Both the HTTP and WebSocket clients are now configured uniformly with Vert.x `TrustOptions`/`KeyCertOptions` derived from the supplied trust/key managers
+* Fix #7873: (kube-api-test) `Utils.findFreePort` now records every port it hands out for the JVM's lifetime and skips any port already returned, eliminating the back-to-back duplicate-port window that surfaced as a `JUnitExtensionOnMethodTest.simpleTest2` flake — the probe `ServerSocket` was closed before the caller bound it, so `EtcdProcess.startEtcd()` and `KubeAPIServerProcess.startApiServer()` could draw the same port from `Random.nextInt`, etcd would win the bind, and apiserver would exit 1 with `bind: address already in use`, surfacing in `ProcessReadinessChecker` as `Connection reset by peer`
+* Fix #7857: (kubernetes-server-mock) `WatchEventsListener.onClosing` now queues the server-side `WebSocket.close(...)` on the listener's send executor instead of invoking it directly on the Vert.x event loop. This preserves FIFO ordering with any data frames already queued on that executor, so events scheduled before a client-initiated watch close (e.g. an `ADDED`/`DELETED` pair on a final `create`/`delete` before `watch.close()`) are delivered before the close frame instead of being silently dropped by writes against an already-closing socket
+* Fix #7832: (sonar) Re-interrupt thread in 8 production-code catch blocks that swallowed `InterruptedException` without preserving the interrupt status (S2142)
+* Fix #7841: (mockwebserver) split `Dispatcher` shutdown into two phases so `MockDispatcher` only tears down per-session `WebSocketSession` executors after the HTTP server has drained, removing the window where an in-flight upgrade's `onOpen` could land on a shut-down executor. `shutdown()` still runs before `httpServer.close()` to unblock blocked dispatches (e.g. `QueueDispatcher.take()`); the new `releaseResources()` runs after. `WebSocketSession.send()` additionally catches `RejectedExecutionException` defensively so any residual shutdown race stays silent instead of bubbling as a Vert.x `Unhandled exception`. `KubernetesMixedDispatcher` now delegates both lifecycle hooks to its inner `MockDispatcher`, fixing a pre-existing leak where CRUD-mode WebSocket session executors were never shut down
+* Fix #7779: (kubernetes-client) ExecWebSocketListener now notifies the user-supplied ExecListener on transport-level errors that race with `terminateOnError` / channel-3 exit-status completion — `listener.onFailure` (or `onClose`) fires exactly once, gated by a dedicated flag, instead of being silently swallowed when the deferred onError task observes `exitCode.isDone()`
+* Fix #7765: (kubernetes-client) `BaseOperation.informOnCondition` now stops the informer inline when the inner predicate completes the future, closing a CompletableFuture `postComplete` race where a waiter helping drain dependents could fire `informer.stop` after `cf.complete` had already triggered a spurious `?watch=true` HTTP request
+* Fix #7847: (kubernetes-client) `BaseClient.addToCloseable` now synchronizes on the internal closeable set rather than the caller-supplied parameter, so callers cannot break mutual exclusion by passing different references (sonar S2445)
+* Fix #7847: (kubernetes-client-api) `KUBERNETES_SUBDOMAIN_REGEX` uses possessive quantifiers on the outer groups to block ReDoS-style backtracking on adversarial subdomain input; semantics still match the canonical RFC 1123 subdomain pattern (sonar S5998)
+* Fix #7847: (kubernetes-client-api) `Serialization.yamlMapper` builds the mapper into a local before assigning to the `volatile` field, so concurrent readers can no longer observe a partially-initialized instance with modules not yet registered (sonar S3064)
+* Fix #7847: (mockwebserver) self-signed cert/key temp file cleanup goes through `Files.deleteIfExists` with logging instead of swallowing the `File.delete()` return value (sonar S899)
+* Fix #7847: (httpclient-okhttp) `OkHttpClientBuilderImpl` now picks the first `X509TrustManager` from a multi-entry `TrustManager[]` rather than passing `null` to OkHttp's `sslSocketFactory` and NPE'ing; user-supplied `sslContext` is preserved for multi-CA setups (sonar S2637)
+* Fix #7847: (httpclient-okhttp) `OkHttpClientImpl.doClose` removes dead null checks on `dispatcher` and `connectionPool` that are guaranteed non-null by the OkHttp API (sonar S2583)
+
+#### Improvements
+* Fix #7675: (mockwebserver) `MockWebServer.dispatcher` field marked `volatile` so a `setDispatcher(...)` call is reliably visible to the Vert.x request handler thread without further synchronization. `MockWebServer.reset()` Javadoc tightened to make its non-destructive contract explicit (no change to the running server, dispatcher, listeners, SSL/TLS state, port, or protocols)
+* Fix #7809: (kubernetes-client) Support for shard selectors for list and watch - including informers
+* Fix #7837: (kubernetes-client) Follow-ups on shard selector
+* Fix #7899: (kubernetes-client) Callback before re-list for Informers
+
+#### Dependency Upgrade
+* Fix #7849: bump istio.io/client-go from 1.29.2 to 1.30.0
+* Fix #7894: bump k8s.io/autoscaler/vertical-pod-autoscaler from 1.6.0 to 1.7.0
+* Fix #7894: bump k8s.io/gengo/v2 from 2.0.0-20251215205346-5ee0d033ba5b to 2.0.0-20260408192533-25e2208e0dc3
+* Fix #7894: bump k8s.io/kube-openapi from 0.0.0-20260319004828-5883c5ee87b9 to 0.0.0-20260414162039-ec9c827d403f
+* Fix #7875: bump vertx5.version from 5.0.12 to 5.1.1, adapting httpclient-vertx-5 to Vert.x 5.1 behaviour changes (SSL engine options no longer accept an empty protocol array; request-body stream errors are reset with HTTP/2 CANCEL so they are not retried as transient IOExceptions)
+
+#### New Features
+* Fix #7926: (httpclient-vertx-5, httpclient-vertx) opt-in TLS warm-up on the Vert.x HTTP client factory. `Vertx5HttpClientFactory`/`VertxHttpClientFactory` now expose `setTlsWarmup(TlsWarmup)` with modes `OFF`, `CONTEXT` (default, unchanged) and `FULL`. `FULL` runs a synchronous, once-per-JVM, throwaway loopback TLS handshake off the event loop when the client is built, so the first real connection no longer blocks the event loop on the one-time JDK/Netty TLS class loading — for users on cold or hard-CPU-throttled JVMs hitting the first-connection block/timeout described in #7921. Default behavior is unchanged; see the FAQ for CDS and pod CPU-sizing guidance for hard-throttled pods
+* Fix #5084: Jbang scripts to generate graalVM metadata
+* Fix #7375: (crd-generator) Support @JsonClassDescription for adding descriptions to classes in the generated CRD schema.
+
+#### _**Note**_: Breaking changes
+
+### 7.7.0 (2026-05-12)
 
 #### Bugs
 * Fix #7747: (mockwebserver) avoid RejectedExecutionException in MockWebServer#shutdown() — linearize close sequence to remove the httpClose-listener vs await race, and make shutdown() idempotent against repeated calls (e.g. JUnit @Nested afterAll cascades)
 * Fix #7734: (mockwebserver) avoid sending Content-Length together with Transfer-Encoding for chunked responses
+* Fix #7716: (informer) SerialExecutor.execute() now returns immediately after shutdown — no wrapper is offered, scheduleNext() is not called, and the underlying executor is not touched, fixing a post-stop NPE race exposed by SharedProcessor.distribute(...) after stop()
+* Fix #7702: ExecWebSocketListener.onError now wraps WebSocketHandshakeException via the chaining KubernetesClientException constructor instead of post-hoc initCause — handshake failures with a non-null upgrade response no longer throw IllegalStateException synchronously, so onFailure/exitCode receive the parsed Status and the original handshake exception as the cause
 * Fix #7686: (httpclient-vertx-5) StackBasedRecursionGuard.enter() no longer increments depth when refusing entry, fixing an infinite runOnContext loop that stalled InputStreamReadStream uploads under CPU contention
 * Fix #7700: ExecWebSocketListener.onError now defers failure handling through the SerialExecutor so a pending channel-3 exit-status task runs first and the parsed exit code is preserved instead of being overwritten by a peer-close exception
 * Fix #7698: (httpclient-vertx-5) InputStreamReadStream now fires endHandler when registered after the end signal has already been delivered, fixing a race for empty/fast streams
@@ -17,17 +61,22 @@
 * Fix #7265: fix ephemeral removal of index entries from informer caches
 
 #### Improvements
+* Fix #7426: add `HasMetadata#isSameResource` to test whether two HasMetadata instances point to the same logical cluster resource, with an optional strict mode that also requires matching kind and resourceVersion
 * Fix #7662: (mockwebserver) new `MockWebServer#setHttp2ClearTextEnabled(boolean)` setter to opt out of HTTP/2 cleartext (h2c) upgrade
 * Fix #7522: improve dependency management for kubernetes-httpclient-okhttp
 * Fix #7550: add a ResourceEventHandler onList method and deprecated onNothing
+* Fix #6922: add addOwnerReference variant to set controller and blockOwnerDeletion fields
 * Fix #3396: (mockwebserver) Enhance self-signed certificate generation to include Subject Alternative Names (SANs) for proper TLS verification by modern clients
 * Fix #6923: Make the crd-generator-maven-plugin be toolchain aware
 
 #### Dependency Upgrade
+* Fix #7754: bump baremetal-operator/apis from 0.12.4 to 0.13.0
+* Fix #7754: bump cluster-api-provider-metal3 from 1.12.4 to 1.13.0
 * Fix #7651: bump k8s.io/apimachinery from 0.35.4 to 0.36.0
 * Fix #7579: bump istio.io/client-go from 1.28.0 to 1.29.1
 * Fix #7551: bump jackson-bom from 2.20.0 to 2.21.1
 * Fix #7718: bump kin-openapi from 0.135.0 to 0.137.0
+* Fix #7758: bump kin-openapi from 0.137.0 to 0.138.0
 * Fix #7723: bump knative.dev/eventing from 0.48.2 to 0.49.0
 * Fix #7723: bump knative.dev/eventing-github from 0.48.0 to 0.49.0
 * Fix #7723: bump knative.dev/eventing-gitlab from 0.48.0 to 0.49.0
@@ -43,6 +92,7 @@
 * Fix #7544: bump cluster-api-provider-metal3 from 1.9.3 to 1.12.2
 * Fix #7543: bump prometheus-operator from 0.85.0 to 0.89.0
 * Fix #7542: bump open-cluster-management.io/api from 0.16.2 to 1.2.0
+* Fix #7753: bump open-cluster-management.io/api from 1.2.0 to 1.3.0
 * Fix #7541: bump gateway-api from 1.4.0 to 1.5.0
 * Fix #7538: bump cert-manager from 1.18.2 to 1.19.4
 * Fix #7583: bump operator-framework/api from 0.33.0 to 0.41.0
@@ -50,9 +100,13 @@
 * Fix #7736: bump prometheus-operator from 0.90.1 to 0.91.0
 * Fix #7578: bump tektoncd/pipeline from 1.9.0 to 1.10.2
 * Fix #7582: bump vertical-pod-autoscaler from 1.4.1 to 1.6.0
+* Fix #7659: bump vertx.version from 4.5.24 to 4.5.26
+* Fix #7731: bump vertx-5 version from 5.0.7 to 5.0.12
 
 #### New Features
 * Fix #7417: Support for Kubernetes v1.36 (ハル / Haru)
+* Fix #5495: Add more support for subresource operations with enhanced documentation and examples for the generic `subresource()` method
+* Fix #7451: Add support for server-side content negotiation (Table and PartialObjectMetadata responses)
 
 #### _**Note**_: Breaking changes
 * Fix #7417: `scheduling.k8s.io/v1alpha1` model classes removed (`Workload`, `WorkloadList`, `WorkloadSpec`, `PodGroup`, `PodGroupPolicy`, `BasicSchedulingPolicy`, `GangSchedulingPolicy`, `TypedLocalObjectReference`) — upstream rearchitected workload scheduling via KEP-5832

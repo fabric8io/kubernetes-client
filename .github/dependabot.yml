@@ -34,6 +34,13 @@ updates:
   ignore:
   - dependency-name: "io.vertx:*"
     update-types: ["version-update:semver-major"]
+  # JUnit 6 raises the runtime baseline to Java 17; we still target Java 11.
+  - dependency-name: "org.junit*:*"
+    update-types: ["version-update:semver-major"]
+  # swagger-request-validator 3.x raises the runtime baseline to Java 21 (and
+  # renames the artifacts to openapi-request-validator-*); we still target Java 11.
+  - dependency-name: "com.atlassian.oai:*"
+    update-types: ["version-update:semver-major"]
   groups:
     bouncycastle:
       patterns:

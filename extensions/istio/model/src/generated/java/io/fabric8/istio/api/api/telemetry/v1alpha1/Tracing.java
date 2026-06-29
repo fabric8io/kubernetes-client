@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "customTags",
+    "disableContextPropagation",
     "disableSpanReporting",
     "enableIstioTags",
     "match",
@@ -76,6 +77,8 @@ public class Tracing implements Editable<TracingBuilder>, KubernetesResource
     @JsonProperty("customTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, TracingCustomTag> customTags = new LinkedHashMap<>();
+    @JsonProperty("disableContextPropagation")
+    private Boolean disableContextPropagation;
     @JsonProperty("disableSpanReporting")
     private Boolean disableSpanReporting;
     @JsonProperty("enableIstioTags")
@@ -98,9 +101,10 @@ public class Tracing implements Editable<TracingBuilder>, KubernetesResource
     public Tracing() {
     }
 
-    public Tracing(Map<String, TracingCustomTag> customTags, Boolean disableSpanReporting, Boolean enableIstioTags, TracingTracingSelector match, List<ProviderRef> providers, Double randomSamplingPercentage, Boolean useRequestIdForTraceSampling) {
+    public Tracing(Map<String, TracingCustomTag> customTags, Boolean disableContextPropagation, Boolean disableSpanReporting, Boolean enableIstioTags, TracingTracingSelector match, List<ProviderRef> providers, Double randomSamplingPercentage, Boolean useRequestIdForTraceSampling) {
         super();
         this.customTags = customTags;
+        this.disableContextPropagation = disableContextPropagation;
         this.disableSpanReporting = disableSpanReporting;
         this.enableIstioTags = enableIstioTags;
         this.match = match;
@@ -124,6 +128,22 @@ public class Tracing implements Editable<TracingBuilder>, KubernetesResource
     @JsonProperty("customTags")
     public void setCustomTags(Map<String, TracingCustomTag> customTags) {
         this.customTags = customTags;
+    }
+
+    /**
+     * Tracing configures tracing behavior for workloads within a mesh. It can be used to enable/disable tracing, as well as to set sampling rates and custom tag extraction.<br><p> <br><p> Tracing configuration support overrides of the fields `providers`, `random_sampling_percentage`, `disable_span_reporting`, and `custom_tags` at each level in the configuration hierarchy, with missing values filled in from parent resources. However, when specified, `custom_tags` will fully replace any values provided by parent configuration.
+     */
+    @JsonProperty("disableContextPropagation")
+    public Boolean getDisableContextPropagation() {
+        return disableContextPropagation;
+    }
+
+    /**
+     * Tracing configures tracing behavior for workloads within a mesh. It can be used to enable/disable tracing, as well as to set sampling rates and custom tag extraction.<br><p> <br><p> Tracing configuration support overrides of the fields `providers`, `random_sampling_percentage`, `disable_span_reporting`, and `custom_tags` at each level in the configuration hierarchy, with missing values filled in from parent resources. However, when specified, `custom_tags` will fully replace any values provided by parent configuration.
+     */
+    @JsonProperty("disableContextPropagation")
+    public void setDisableContextPropagation(Boolean disableContextPropagation) {
+        this.disableContextPropagation = disableContextPropagation;
     }
 
     /**

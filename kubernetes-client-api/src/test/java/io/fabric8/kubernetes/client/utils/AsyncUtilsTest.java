@@ -104,7 +104,7 @@ class AsyncUtilsTest {
     final AsyncUtils.ShouldRetry<Void> shouldRetry = (v, t, retryInterval) -> -1;
     // When
     final CompletableFuture<Void> result = retryWithExponentialBackoff(actionSupplier, onCancel::complete,
-        Duration.ofMillis(100), retryIntervalCalculator, shouldRetry);
+        Duration.ZERO, retryIntervalCalculator, shouldRetry);
     result.cancel(false);
     action.complete(null);
     // Then
@@ -125,7 +125,7 @@ class AsyncUtilsTest {
     final AsyncUtils.ShouldRetry<Boolean> shouldRetry = (v, t, retryInterval) -> retryInterval;
     // When
     CompletableFuture<Boolean> result = retryWithExponentialBackoff(actionSupplier, onCancel::complete,
-        Duration.ofMillis(100), retryIntervalCalculator, shouldRetry);
+        Duration.ZERO, retryIntervalCalculator, shouldRetry);
     action.complete(true);
     result.get(150, TimeUnit.MILLISECONDS);
     // Then
@@ -146,7 +146,7 @@ class AsyncUtilsTest {
     final AsyncUtils.ShouldRetry<Void> shouldRetry = (v, t, retryInterval) -> -1;
     // When
     final CompletableFuture<Void> result = retryWithExponentialBackoff(actionSupplier, onCancel::complete,
-        Duration.ofMillis(100), retryIntervalCalculator, shouldRetry);
+        Duration.ZERO, retryIntervalCalculator, shouldRetry);
     action.complete(null);
     // Then
     assertThat(onCancel).isNotDone();

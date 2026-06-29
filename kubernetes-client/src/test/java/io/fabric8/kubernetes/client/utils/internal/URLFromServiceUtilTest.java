@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.ServicePort;
 import io.fabric8.kubernetes.api.model.ServicePortBuilder;
+import io.fabric8.kubernetes.client.RestoreSystemProperties;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -27,56 +28,43 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
+@RestoreSystemProperties({ "SVC1_SERVICE_HOST", "SVC1_PORT_443_TCP_PROTO", "SVC1_SERVICE_PORT" })
 class URLFromServiceUtilTest {
+
   @Test
   void resolveHostFromEnvVarOrSystemProperty_whenPropertyFound_thenReturnProperty() {
-    final String propertyName = "SVC1_SERVICE_HOST";
-    try {
-      // Given
-      System.setProperty(propertyName, "10.111.31.220");
+    // Given
+    System.setProperty("SVC1_SERVICE_HOST", "10.111.31.220");
 
-      // When
-      String host = URLFromServiceUtil.resolveHostFromEnvVarOrSystemProperty("svc1");
+    // When
+    String host = URLFromServiceUtil.resolveHostFromEnvVarOrSystemProperty("svc1");
 
-      // Then
-      assertThat(host).isEqualTo("10.111.31.220");
-    } finally {
-      System.clearProperty(propertyName);
-    }
+    // Then
+    assertThat(host).isEqualTo("10.111.31.220");
   }
 
   @Test
   void resolveProtocolFromEnvVarOrSystemProperty_whenPropertyFound_thenReturnProtocol() {
-    final String propertyName = "SVC1_PORT_443_TCP_PROTO";
-    try {
-      // Given
-      System.setProperty(propertyName, "tcp");
+    // Given
+    System.setProperty("SVC1_PORT_443_TCP_PROTO", "tcp");
 
-      // When
-      String host = URLFromServiceUtil.resolveProtocolFromEnvVarOrSystemProperty("svc1", "443");
+    // When
+    String host = URLFromServiceUtil.resolveProtocolFromEnvVarOrSystemProperty("svc1", "443");
 
-      // Then
-      assertThat(host).isEqualTo("tcp");
-    } finally {
-      System.clearProperty(propertyName);
-    }
+    // Then
+    assertThat(host).isEqualTo("tcp");
   }
 
   @Test
   void resolvePortFromEnvVarOrSystemProperty_whenPortPropertyProvided_thenReturnPort() {
-    final String propertyName = "SVC1_SERVICE_PORT";
-    try {
-      // Given
-      System.setProperty(propertyName, "80");
+    // Given
+    System.setProperty("SVC1_SERVICE_PORT", "80");
 
-      // When
-      String host = URLFromServiceUtil.resolvePortFromEnvVarOrSystemProperty("svc1", "");
+    // When
+    String host = URLFromServiceUtil.resolvePortFromEnvVarOrSystemProperty("svc1", "");
 
-      // Then
-      assertThat(host).isEqualTo("80");
-    } finally {
-      System.clearProperty(propertyName);
-    }
+    // Then
+    assertThat(host).isEqualTo("80");
   }
 
   @Test

@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.informers.impl.cache;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.cache.Cache;
 import io.fabric8.kubernetes.client.informers.impl.cache.ProcessorListener.AddNotification;
 import io.fabric8.kubernetes.client.informers.impl.cache.ProcessorListener.DeleteNotification;
@@ -26,6 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -137,6 +139,38 @@ class ProcessorStoreTest {
     processorStore.resync();
 
     Mockito.verify(processor).distribute(Mockito.any(ProcessorListener.Notification.class), Mockito.anyBoolean());
+  }
+
+  @Test
+  void onBeforeListPropagatesLastSyncResourceVersionToHandlers() {
+    CacheImpl<Pod> podCache = new CacheImpl<>();
+    SharedProcessor<Pod> processor = new SharedProcessor<>();
+    ProcessorStore<Pod> processorStore = new ProcessorStore<>(podCache, processor);
+
+    List<String> received = new ArrayList<>();
+    processor.addProcessorListener(new ResourceEventHandler<Pod>() {
+      @Override
+      public void onBeforeList(String lastSyncResourceVersion) {
+        received.add(lastSyncResourceVersion);
+      }
+
+      @Override
+      public void onAdd(Pod obj) {
+      }
+
+      @Override
+      public void onUpdate(Pod oldObj, Pod newObj) {
+      }
+
+      @Override
+      public void onDelete(Pod obj, boolean deletedFinalStateUnknown) {
+      }
+    }, 0L, Collections::emptyList);
+
+    processorStore.onBeforeList(null);
+    processorStore.onBeforeList("42");
+
+    assertThat(received).containsExactly(null, "42");
   }
 
 }

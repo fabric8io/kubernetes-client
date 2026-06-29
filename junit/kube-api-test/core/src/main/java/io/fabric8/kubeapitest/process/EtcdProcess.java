@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.function.BooleanSupplier;
 
 import static io.fabric8.kubeapitest.Utils.deleteDirectory;
 
@@ -34,6 +35,7 @@ public class EtcdProcess {
 
   private final BinaryManager binaryManager;
 
+  @SuppressWarnings("java:S3077") // volatile ensures cross-thread visibility; Process methods are thread-safe
   private volatile Process etcdProcess;
   private volatile boolean stopped = false;
   private final UnexpectedProcessStopHandler processStopHandler;
@@ -80,7 +82,7 @@ public class EtcdProcess {
       etcdProcess.onExit().thenApply(p -> {
         if (!stopped) {
           stopped = true;
-          logger.error("etcd process stopped unexpectedly");
+          logger.error("etcd process stopped unexpectedly with exit code {}", p.exitValue());
           processStopHandler.processStopped(p);
         }
         return null;
@@ -96,7 +98,11 @@ public class EtcdProcess {
   }
 
   private void waitUntilEtcdHealthy(int port) {
-    new ProcessReadinessChecker().waitUntilReady(port, "health", "etcd", false, startupTimeout);
+    // Abort the readiness wait promptly if etcd exits unexpectedly during startup, instead of
+    // running out the full startupTimeout on a dead process (see #7807).
+    BooleanSupplier abortCheck = () -> etcdProcess != null && !etcdProcess.isAlive();
+    new ProcessReadinessChecker().waitUntilReady(port, "health", "etcd", false, startupTimeout,
+        null, abortCheck);
   }
 
   public void cleanEtcdData() {
@@ -118,6 +124,7 @@ public class EtcdProcess {
         etcdProcess.destroyForcibly();
         etcdProcess.waitFor();
       } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
         throw new KubeAPITestException(e);
       }
     }

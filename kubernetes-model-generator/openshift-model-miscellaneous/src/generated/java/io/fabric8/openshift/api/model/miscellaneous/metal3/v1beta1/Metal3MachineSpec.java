@@ -247,7 +247,7 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
     }
 
     /**
-     * ProviderID will be the Metal3 machine in ProviderID format (metal3://&lt;bmh-uuid&gt;)
+     * ProviderID will be the Metal3 machine in ProviderID format (metal3://&lt;namespace&gt;/&lt;bmh-name&gt;/&lt;m3m-name&gt;). The legacy format (metal3://&lt;bmh-uuid&gt;) will be deprecated in CAPM3 v1.13 and removed in CAPM3 v1.14.
      */
     @JsonProperty("providerID")
     public String getProviderID() {
@@ -255,7 +255,7 @@ public class Metal3MachineSpec implements Editable<Metal3MachineSpecBuilder>, Ku
     }
 
     /**
-     * ProviderID will be the Metal3 machine in ProviderID format (metal3://&lt;bmh-uuid&gt;)
+     * ProviderID will be the Metal3 machine in ProviderID format (metal3://&lt;namespace&gt;/&lt;bmh-name&gt;/&lt;m3m-name&gt;). The legacy format (metal3://&lt;bmh-uuid&gt;) will be deprecated in CAPM3 v1.13 and removed in CAPM3 v1.14.
      */
     @JsonProperty("providerID")
     public void setProviderID(String providerID) {

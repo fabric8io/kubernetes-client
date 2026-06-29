@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set open files (threads) limit
         run: |
@@ -65,7 +65,7 @@ jobs:
           cache: 'maven'
 
       - name: Setup JBang
-        uses: jbangdev/setup-jbang@main
+        uses: jbangdev/setup-jbang@cc28889678db839e29433f42f9ff25f148b6d8de # main
 
       - name: Generate Revapi Reports
         env:

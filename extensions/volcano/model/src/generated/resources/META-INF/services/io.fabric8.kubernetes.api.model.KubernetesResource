@@ -1,0 +1,14 @@
+io.fabric8.volcano.api.model.batch.v1alpha1.Job
+io.fabric8.volcano.api.model.batch.v1alpha1.JobList
+io.fabric8.volcano.api.model.bus.v1alpha1.Command
+io.fabric8.volcano.api.model.bus.v1alpha1.CommandList
+io.fabric8.volcano.api.model.flow.v1alpha1.JobFlow
+io.fabric8.volcano.api.model.flow.v1alpha1.JobFlowList
+io.fabric8.volcano.api.model.flow.v1alpha1.JobTemplate
+io.fabric8.volcano.api.model.flow.v1alpha1.JobTemplateList
+io.fabric8.volcano.api.model.nodeinfo.v1alpha1.Numatopology
+io.fabric8.volcano.api.model.nodeinfo.v1alpha1.NumatopologyList
+io.fabric8.volcano.api.model.scheduling.v1beta1.PodGroup
+io.fabric8.volcano.api.model.scheduling.v1beta1.PodGroupList
+io.fabric8.volcano.api.model.scheduling.v1beta1.Queue
+io.fabric8.volcano.api.model.scheduling.v1beta1.QueueList

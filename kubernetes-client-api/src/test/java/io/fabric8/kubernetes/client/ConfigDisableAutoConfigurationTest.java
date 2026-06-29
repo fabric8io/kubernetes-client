@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.api.model.NamedContextBuilder;
 import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -30,7 +29,16 @@ import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@RestoreSystemProperties({
+    "kubernetes.disable.autoConfig",
+    "kubernetes.master",
+    "kubernetes.namespace",
+    "kubernetes.auth.serviceAccount.token",
+    "kubenamespace",
+    "kubeconfig"
+})
 class ConfigDisableAutoConfigurationTest {
+
   private final NamedContext userConfiguredNamedContext = new NamedContextBuilder()
       .withName("context1")
       .withNewContext()
@@ -45,11 +53,6 @@ class ConfigDisableAutoConfigurationTest {
     @BeforeEach
     void setUp() {
       System.setProperty("kubernetes.disable.autoConfig", "true");
-    }
-
-    @AfterEach
-    void tearDown() {
-      System.clearProperty("kubernetes.disable.autoConfig");
     }
 
     @Nested
@@ -150,12 +153,6 @@ class ConfigDisableAutoConfigurationTest {
             .satisfies(e -> assertThat(e.getUserAgent()).isEqualTo("custom-user-agent"));
       }
 
-      @AfterEach
-      void tearDown() {
-        System.clearProperty("kubernetes.master");
-        System.clearProperty("kubernetes.auth.serviceAccount.token");
-        System.clearProperty("kubenamespace");
-      }
     }
 
     @Nested
@@ -252,11 +249,6 @@ class ConfigDisableAutoConfigurationTest {
             .satisfies(e -> assertThat(e.getUserAgent()).isEqualTo("custom-user-agent"));
       }
 
-      @AfterEach
-      void tearDown() {
-        System.clearProperty("kubernetes.master");
-        System.clearProperty("kubernetes.namespace");
-      }
     }
 
     @Nested
@@ -353,10 +345,6 @@ class ConfigDisableAutoConfigurationTest {
             .satisfies(e -> assertThat(e.getUserAgent()).isEqualTo("custom-user-agent"));
       }
 
-      @AfterEach
-      void tearDown() {
-        System.clearProperty("kubeconfig");
-      }
     }
   }
 
@@ -369,11 +357,6 @@ class ConfigDisableAutoConfigurationTest {
     void setUp() {
       System.setProperty("kubeconfig", "/dev/null");
       configBuilder = new ConfigBuilder().withAutoConfigure(false);
-    }
-
-    @AfterEach
-    void tearDown() {
-      System.clearProperty("kubeconfig");
     }
 
     @Nested
@@ -469,12 +452,6 @@ class ConfigDisableAutoConfigurationTest {
             .satisfies(e -> assertThat(e.getUserAgent()).isEqualTo("custom-user-agent"));
       }
 
-      @AfterEach
-      void tearDown() {
-        System.clearProperty("kubernetes.master");
-        System.clearProperty("kubeconfig");
-        System.clearProperty("kubernetes.namespace");
-      }
     }
 
     @Nested
@@ -571,10 +548,6 @@ class ConfigDisableAutoConfigurationTest {
             .satisfies(e -> assertThat(e.getUserAgent()).isEqualTo("custom-user-agent"));
       }
 
-      @AfterEach
-      void tearDown() {
-        System.clearProperty("kubeconfig");
-      }
     }
   }
 }

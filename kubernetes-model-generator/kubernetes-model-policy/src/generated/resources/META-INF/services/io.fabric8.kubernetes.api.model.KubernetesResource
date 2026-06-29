@@ -1,0 +1,8 @@
+io.fabric8.kubernetes.api.model.policy.v1.Eviction
+io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudget
+io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudgetList
+io.fabric8.kubernetes.api.model.policy.v1beta1.Eviction
+io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget
+io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetList
+io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicy
+io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyList

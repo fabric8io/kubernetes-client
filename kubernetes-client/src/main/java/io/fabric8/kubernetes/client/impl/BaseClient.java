@@ -412,7 +412,7 @@ public abstract class BaseClient implements Client {
   }
 
   public void addToCloseable(AutoCloseable closeable) {
-    synchronized (closeable) {
+    synchronized (this.closable) {
       if (this.closed.isDone()) {
         throw new KubernetesClientException("Client is already closed");
       }

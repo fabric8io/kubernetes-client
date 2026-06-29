@@ -297,7 +297,9 @@ class SerializationTest {
   void unmarshalRawResource() {
     InputStream is = SerializationTest.class.getResourceAsStream("/serialization/invalid-resource.yml");
     RawExtension raw = Serialization.unmarshal(is);
-    ((Map) raw.getValue()).get("not-a").equals("resource");
+    @SuppressWarnings("unchecked")
+    Map<String, String> value = (Map<String, String>) raw.getValue();
+    assertThat(value).containsEntry("not-a", "resource");
   }
 
   @Test
@@ -532,6 +534,17 @@ class SerializationTest {
     assertThat(yaml).isEqualTo("---\n"
         + "- \"x\"\n"
         + "- \"y\"\n");
+  }
+
+  @Test
+  @DisplayName("S3064: yamlMapper should return a fully initialized mapper with modules registered")
+  @SuppressWarnings("deprecation")
+  void yamlMapper_shouldReturnFullyInitializedMapper() {
+    com.fasterxml.jackson.databind.ObjectMapper mapper = Serialization.yamlMapper();
+    assertThat(mapper).isNotNull();
+    assertThat(mapper.getRegisteredModuleIds())
+        .as("YAML mapper must have GoCompatibilityModule registered (not partially constructed)")
+        .anyMatch(id -> id.toString().contains("GoCompatibility"));
   }
 
   @Test

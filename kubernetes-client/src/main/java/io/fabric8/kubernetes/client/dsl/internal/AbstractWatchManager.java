@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -43,6 +44,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -58,7 +60,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
 
   private static final class SerialWatcher<T> implements Watcher<T> {
     private final Watcher<T> watcher;
-    SerialExecutor serialExecutor;
+    private final SerialExecutor serialExecutor;
 
     private SerialWatcher(Watcher<T> watcher, SerialExecutor serialExecutor) {
       this.watcher = watcher;
@@ -98,12 +100,24 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     final AtomicBoolean closed = new AtomicBoolean();
     final CompletableFuture<Void> ended = new CompletableFuture<>();
     final AtomicBoolean started = new AtomicBoolean();
+    final AtomicBoolean messageReceived = new AtomicBoolean();
+    // volatile: written in startWatch() after the volatile publication of latestRequestState and read
+    // on the WebSocket receive thread in watchEnded(); volatile guarantees that read sees the write.
+    volatile long startedAtNs;
   }
 
   private static final Logger logger = LoggerFactory.getLogger(AbstractWatchManager.class);
   private static final int INFO_LOG_CONNECTION_ERRORS = 10;
+  // Max connection lifetime (ns) under which a zero-message clean close is treated as a stale
+  // resourceVersion rejection. GKE closes within ~100ms; legitimate idle closes take much longer.
+  private static final long STALE_RV_CLOSE_THRESHOLD_NS = 2_000_000_000L;
 
   final Watcher<T> watcher;
+  // Serializes both the message-deserialization+dispatch task (queued from onMessage) and the
+  // user-facing watcher callbacks (queued by SerialWatcher). Keeping both on one queue gives
+  // strict per-watch ordering, gets Jackson off the receive thread, and (combined with the
+  // completion callback that re-arms the WebSocket) provides natural per-frame back-pressure.
+  final SerialExecutor serialExecutor;
   final AtomicReference<String> resourceVersion;
 
   final AtomicBoolean forceClosed;
@@ -118,6 +132,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
 
   private final boolean receiveBookmarks;
 
+  @SuppressWarnings("java:S3077") // inner fields (AtomicBoolean, CompletableFuture, volatile long) are thread-safe
   volatile WatchRequestState latestRequestState;
   private final Map<Class<?>, Integer> endErrors = new ConcurrentHashMap<>();
   private AtomicInteger retryAfterSeconds = new AtomicInteger();
@@ -128,7 +143,8 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
       Watcher<T> watcher, BaseOperation<T, ?, ?> baseOperation, ListOptions listOptions, int reconnectLimit,
       int reconnectInterval, HttpClient client) throws MalformedURLException {
     // prevent the callbacks from happening in the httpclient thread
-    this.watcher = new SerialWatcher<>(watcher, new SerialExecutor(baseOperation.getOperationContext().getExecutor()));
+    this.serialExecutor = new SerialExecutor(baseOperation.getOperationContext().getExecutor());
+    this.watcher = new SerialWatcher<>(watcher, this.serialExecutor);
     this.reconnectLimit = reconnectLimit;
     this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(reconnectInterval, reconnectLimit);
     this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
@@ -159,11 +175,19 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     if (state != null && state.closed.compareAndSet(false, true)) {
       logger.debug("Closing the current watch");
       closeCurrentRequest();
-      CompletableFuture<Void> future = Utils.schedule(baseOperation.getOperationContext().getExecutor(),
-          () -> failSafeReconnect(state), watchEndCheckMs,
-          TimeUnit.MILLISECONDS);
+      CompletableFuture<Void> future = schedule(() -> failSafeReconnect(state), watchEndCheckMs, TimeUnit.MILLISECONDS);
       state.ended.whenComplete((v, t) -> future.cancel(true));
     }
+  }
+
+  /**
+   * Schedule a delayed task on the operation executor. Test-overridable seam so unit tests
+   * can drive the fail-safe / reconnect timing deterministically without touching
+   * {@link Utils#schedule}'s shared scheduler. Must return a non-null future:
+   * {@link #closeRequest()} attaches a cancellation callback to it and will NPE otherwise.
+   */
+  protected CompletableFuture<Void> schedule(Runnable command, long delay, TimeUnit unit) {
+    return Utils.schedule(baseOperation.getOperationContext().getExecutor(), command, delay, unit);
   }
 
   private synchronized void failSafeReconnect(WatchRequestState state) {
@@ -230,8 +254,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     logger.debug("Scheduling reconnect task in {} ms", delay);
 
     synchronized (this) {
-      reconnectAttempt = Utils.schedule(baseOperation.getOperationContext().getExecutor(), this::reconnect, delay,
-          TimeUnit.MILLISECONDS);
+      reconnectAttempt = schedule(this::reconnect, delay, TimeUnit.MILLISECONDS);
       if (isForceClosed()) {
         cancelReconnect();
       }
@@ -320,6 +343,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
 
     closeRequest(); // only one can be active at a time
     latestRequestState = new WatchRequestState();
+    latestRequestState.startedAtNs = System.nanoTime();
     start(url, headers, latestRequestState);
   }
 
@@ -353,41 +377,85 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     }
   }
 
-  protected void onMessage(String message, WatchRequestState state) {
-    endErrors.clear();
-    if (state.closed.get() || forceClosed.get()) {
+  /**
+   * Hand a freshly received frame off to the per-watch {@link SerialExecutor} for
+   * deserialization and dispatch, returning immediately. This keeps Jackson's
+   * deserializer-cold-path off the receive thread (the Vert.x event loop in the
+   * WebSocket path), where a single Pod-deep type warmup under CPU contention has
+   * been measured at tens of seconds and trips Vert.x's blocked-thread checker.
+   * <p>
+   * {@code onComplete} runs after the body finishes (success or failure) and is the
+   * point where WebSocket flow control should be re-armed by the caller. Fire-and-forget
+   * dispatch without it would let frames pile up faster than the executor can drain.
+   * It is also fired synchronously when the serial executor has already been shut down
+   * by the time this call enters, covering the common termination path. Two narrow
+   * races remain (a {@code shutdownNow()} interleaved between this check and
+   * {@code SerialExecutor.execute}, or between {@code execute} and the wrapper's own
+   * shutdown check) where the runnable can be dropped; both can only happen at watch
+   * teardown where the WebSocket is closing and back-pressure re-arm is moot. The
+   * runnable must not be null; if it throws, the error is logged and swallowed so a
+   * broken re-arm cannot wedge the queue.
+   */
+  protected void onMessage(String message, WatchRequestState state, Runnable onComplete) {
+    Objects.requireNonNull(onComplete, "onComplete");
+    if (serialExecutor.isShutdown()) {
+      // The watch is already terminating; the executor would silently drop the task,
+      // which would orphan the completion. Fire it inline so back-pressure never wedges.
+      runQuietly(onComplete);
       return;
     }
-    try {
-      WatchEvent event = contextAwareWatchEventDeserializer(message);
-      Object object = event.getObject();
-      Action action = Action.valueOf(event.getType());
-      if (action == Action.ERROR) {
-        if (object instanceof Status) {
-          Status status = (Status) object;
-
-          onStatus(status, state);
-        } else {
-          logger.error("Received an error which is not a status but {} - will retry", message);
-          closeRequest();
+    state.messageReceived.set(true);
+    serialExecutor.execute(() -> {
+      try {
+        endErrors.clear();
+        if (state.closed.get() || forceClosed.get()) {
+          return;
         }
-      } else if (object instanceof HasMetadata) {
-        HasMetadata hasMetadata = (HasMetadata) object;
-        updateResourceVersion(hasMetadata.getMetadata().getResourceVersion());
-        eventReceived(action, hasMetadata);
-      } else {
-        final String msg = String.format("Invalid object received: %s", message);
-        close(new WatcherException(msg, null, message));
+        try {
+          WatchEvent event = contextAwareWatchEventDeserializer(message);
+          Object object = event.getObject();
+          Action action = Action.valueOf(event.getType());
+          if (action == Action.ERROR) {
+            if (object instanceof Status) {
+              Status status = (Status) object;
+
+              onStatus(status, state);
+            } else {
+              logger.error("Received an error which is not a status but {} - will retry", message);
+              closeRequest();
+            }
+          } else if (object instanceof HasMetadata) {
+            HasMetadata hasMetadata = (HasMetadata) object;
+            updateResourceVersion(hasMetadata.getMetadata().getResourceVersion());
+            eventReceived(action, hasMetadata);
+          } else {
+            final String msg = String.format("Invalid object received: %s", message);
+            close(new WatcherException(msg, null, message));
+          }
+        } catch (ClassCastException e) {
+          final String msg = "Received wrong type of object for watch";
+          close(new WatcherException(msg, e, message));
+        } catch (JsonProcessingException e) {
+          final String msg = "Couldn't deserialize watch event: " + message;
+          close(new WatcherException(msg, e, message));
+        } catch (Exception e) {
+          final String msg = "Unexpected exception processing watch event";
+          close(new WatcherException(msg, e, message));
+        }
+      } finally {
+        runQuietly(onComplete);
       }
-    } catch (ClassCastException e) {
-      final String msg = "Received wrong type of object for watch";
-      close(new WatcherException(msg, e, message));
-    } catch (JsonProcessingException e) {
-      final String msg = "Couldn't deserialize watch event: " + message;
-      close(new WatcherException(msg, e, message));
+    });
+  }
+
+  private static void runQuietly(Runnable r) {
+    try {
+      r.run();
     } catch (Exception e) {
-      final String msg = "Unexpected exception processing watch event";
-      close(new WatcherException(msg, e, message));
+      // Swallow: the completion callback is back-pressure re-arming (typically
+      // webSocket.request()). If it fails, the WS itself is already broken and
+      // propagating would also wedge the per-watch SerialExecutor's draining.
+      logger.warn("Error invoking onMessage completion callback", e);
     }
   }
 
@@ -418,6 +486,27 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
       if (t != null) {
         logger.debug("Watch error received after the next watch started", t);
       }
+      return;
+    }
+    // When a watch closes cleanly (code 1000, no body) with zero messages within a very short
+    // window, treat it as a silent stale-resourceVersion rejection. This compensates for a
+    // GKE-specific behaviour on v1/events where the GKFE proxy sends a bare close instead of
+    // the standard {"type":"ERROR","code":410} response, causing the watch to loop indefinitely
+    // with the same stale resourceVersion. Emitting a WatcherException mirrors the ProtocolException
+    // path and lets the caller (e.g. an informer) decide how to recover.
+    // See: https://github.com/kubernetes/kubernetes/issues/137089
+    long connectionAgeNs = System.nanoTime() - state.startedAtNs;
+    if (t == null && resourceVersion.get() != null && !state.messageReceived.get()
+        && connectionAgeNs < STALE_RV_CLOSE_THRESHOLD_NS) {
+      logger.debug("Watch ended cleanly with no messages after {}ms — treating as stale resourceVersion rejection",
+          connectionAgeNs / 1_000_000);
+      Status status = new StatusBuilder()
+          .withCode(HTTP_GONE)
+          .withStatus("Failure")
+          .withReason("Expired")
+          .withMessage("resourceVersion too old")
+          .build();
+      close(new WatcherException(status.getMessage(), new KubernetesClientException(status)));
       return;
     }
     if (t instanceof ProtocolException) {

@@ -344,6 +344,7 @@ public class JsonDiff {
         if (flags.contains(DiffFlags.ADD_ORIGINAL_VALUE_ON_REPLACE)) {
           jsonNode.set(FROM_VALUE, diff.getSrcValue());
         }
+        // fallthrough
       case ADD:
       case TEST:
         jsonNode.put(PATH, diff.getPath().toString());

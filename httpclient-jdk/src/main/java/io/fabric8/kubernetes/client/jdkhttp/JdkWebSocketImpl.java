@@ -35,6 +35,7 @@ class JdkWebSocketImpl implements WebSocket, java.net.http.WebSocket.Listener {
 
   private static final Logger logger = LoggerFactory.getLogger(JdkWebSocketImpl.class);
 
+  @SuppressWarnings("java:S3077") // volatile ensures cross-thread visibility; JDK WebSocket is thread-safe
   private volatile java.net.http.WebSocket webSocket;
   private final AtomicLong queueSize = new AtomicLong();
   private final Listener listener;

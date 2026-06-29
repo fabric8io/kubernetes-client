@@ -1,0 +1,10 @@
+io.fabric8.kubernetes.api.model.scheduling.v1.PriorityClass
+io.fabric8.kubernetes.api.model.scheduling.v1.PriorityClassList
+io.fabric8.kubernetes.api.model.scheduling.v1alpha1.PriorityClass
+io.fabric8.kubernetes.api.model.scheduling.v1alpha1.PriorityClassList
+io.fabric8.kubernetes.api.model.scheduling.v1alpha2.PodGroup
+io.fabric8.kubernetes.api.model.scheduling.v1alpha2.PodGroupList
+io.fabric8.kubernetes.api.model.scheduling.v1alpha2.Workload
+io.fabric8.kubernetes.api.model.scheduling.v1alpha2.WorkloadList
+io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClass
+io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClassList

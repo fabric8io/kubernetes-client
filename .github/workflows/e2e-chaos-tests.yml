@@ -28,29 +28,34 @@ concurrency:
 
 env:
   CHAOS_MESH_VERSION: 2.6.0
+  # When bumping CHAOS_MESH_VERSION, update this checksum to match the new install.sh:
+  #   curl -sSL "https://mirrors.chaos-mesh.org/v<VERSION>/install.sh" | sha256sum
+  CHAOS_MESH_INSTALL_SHA256: 49374b8edb60d1a1f4a68fcb22c0eb9f99338a4e55fa32e51a88c0b9a0ef1adb
   CHAOS_TESTS_MODULE: chaos-tests
   MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
 
 jobs:
   chaos-tests:
     name: K8S Chaos Test
+    # Stays on x64: jkube java-exec base image (quay.io/jkube/jkube-java) is amd64-only.
+    # See #7805 for the multi-arch path forward.
     runs-on: ubuntu-latest
     timeout-minutes: 45
     if: github.repository == 'fabric8io/kubernetes-client'
     strategy:
       fail-fast: false
       matrix:
-        kubernetes: [v1.34.2]
+        kubernetes: [v1.36.0]
         java-version: [11,17]
         http-client: [okhttp,jdk,jetty,vertx,vertx-5]
         chaos-test: ["network-delay.yaml", "network-loss.yaml", "network-duplicate.yaml"]
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Setup Minikube-Kubernetes
-        uses: manusa/actions-setup-minikube@v2.16.1
+        uses: manusa/actions-setup-minikube@b65276017fdec6f1e6498129fb740e34e260dc55 # v2.18.0
         with:
-          minikube version: v1.37.0
+          minikube version: v1.38.1
           kubernetes version: ${{ matrix.kubernetes }}
           github token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Java ${{ matrix.java-version }}
@@ -60,12 +65,14 @@ jobs:
           distribution: "temurin"
           cache: maven
       - name: Setup Kubectl # Chaos-Mesh setup requires a functional kubectl version for all cluster versiones
-        uses: azure/setup-kubectl@v5
+        uses: azure/setup-kubectl@829323503d1be3d00ca8346e5391ca0b07a9ab0d # v5.1.0
         with:
           version: ${{ matrix.kubernetes }}
       - name: Install Chaos Mesh
         run: |
-          curl -sSL https://mirrors.chaos-mesh.org/v${CHAOS_MESH_VERSION}/install.sh | bash
+          curl -sSL "https://mirrors.chaos-mesh.org/v${CHAOS_MESH_VERSION}/install.sh" -o install.sh
+          echo "${CHAOS_MESH_INSTALL_SHA256}  install.sh" | sha256sum -c -
+          bash install.sh
           kubectl wait --for=condition=Ready pods --all-namespaces --all --timeout=600s
       - name: Run Chaos Tests
         env:

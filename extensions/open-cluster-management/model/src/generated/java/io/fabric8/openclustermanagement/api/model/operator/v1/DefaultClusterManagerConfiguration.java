@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "addonWebhookConfiguration",
     "registrationWebhookConfiguration",
     "workWebhookConfiguration"
 })
@@ -66,6 +67,8 @@ import lombok.experimental.Accessors;
 public class DefaultClusterManagerConfiguration implements Editable<DefaultClusterManagerConfigurationBuilder>, KubernetesResource
 {
 
+    @JsonProperty("addonWebhookConfiguration")
+    private DefaultWebhookConfiguration addonWebhookConfiguration;
     @JsonProperty("registrationWebhookConfiguration")
     private DefaultWebhookConfiguration registrationWebhookConfiguration;
     @JsonProperty("workWebhookConfiguration")
@@ -79,10 +82,27 @@ public class DefaultClusterManagerConfiguration implements Editable<DefaultClust
     public DefaultClusterManagerConfiguration() {
     }
 
-    public DefaultClusterManagerConfiguration(DefaultWebhookConfiguration registrationWebhookConfiguration, DefaultWebhookConfiguration workWebhookConfiguration) {
+    public DefaultClusterManagerConfiguration(DefaultWebhookConfiguration addonWebhookConfiguration, DefaultWebhookConfiguration registrationWebhookConfiguration, DefaultWebhookConfiguration workWebhookConfiguration) {
         super();
+        this.addonWebhookConfiguration = addonWebhookConfiguration;
         this.registrationWebhookConfiguration = registrationWebhookConfiguration;
         this.workWebhookConfiguration = workWebhookConfiguration;
+    }
+
+    /**
+     * DefaultClusterManagerConfiguration represents customized configurations for clustermanager in the Default mode.
+     */
+    @JsonProperty("addonWebhookConfiguration")
+    public DefaultWebhookConfiguration getAddonWebhookConfiguration() {
+        return addonWebhookConfiguration;
+    }
+
+    /**
+     * DefaultClusterManagerConfiguration represents customized configurations for clustermanager in the Default mode.
+     */
+    @JsonProperty("addonWebhookConfiguration")
+    public void setAddonWebhookConfiguration(DefaultWebhookConfiguration addonWebhookConfiguration) {
+        this.addonWebhookConfiguration = addonWebhookConfiguration;
     }
 
     /**

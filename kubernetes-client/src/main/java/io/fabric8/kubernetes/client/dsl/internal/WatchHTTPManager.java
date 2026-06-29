@@ -33,9 +33,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourceList<T>> extends AbstractWatchManager<T> {
   private CompletableFuture<HttpResponse<AsyncBody>> call;
+  @SuppressWarnings("java:S3077") // volatile reference-swap; AsyncBody is designed for concurrent use
   private volatile AsyncBody body;
 
   public WatchHTTPManager(final HttpClient client,
@@ -53,17 +55,29 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
     StringBuffer buffer = new StringBuffer();
     call = client.consumeBytes(builder.build(), (b, a) -> {
       state.started.set(true);
+      // Track in-flight deserialize+dispatch tasks for this chunk so a.consume()
+      // (the equivalent of webSocket.request() on the HTTP path) only fires once
+      // they have all drained. The +1 here is for "the chunk loop is still running";
+      // it is matched by a final decrement after the loop, so a.consume() also
+      // fires immediately when the chunk contains zero newline-delimited frames.
+      final AtomicInteger pending = new AtomicInteger(1);
+      final Runnable maybeConsume = () -> {
+        if (pending.decrementAndGet() == 0) {
+          a.consume();
+        }
+      };
       for (ByteBuffer content : b) {
         for (char c : StandardCharsets.UTF_8.decode(content).array()) {
           if (c == '\n') {
-            onMessage(buffer.toString(), state);
+            pending.incrementAndGet();
+            onMessage(buffer.toString(), state, maybeConsume);
             buffer.setLength(0);
           } else {
             buffer.append(c);
           }
         }
       }
-      a.consume();
+      maybeConsume.run();
     });
     call.whenComplete((response, t) -> {
       if (t != null) {

@@ -39,10 +39,43 @@ public interface ResourceEventHandler<T> {
   }
 
   /**
+   * Called once per list/watch cycle, before the list operation is initiated. This fires for the
+   * initial list and for every fresh re-list — whether triggered by an HTTP GONE or by any other
+   * watch failure that goes through the reconnect path — but not for retry attempts that follow a
+   * transient failure within the same cycle (i.e. before the matching {@link #onList(String, boolean)}
+   * has been delivered).
+   *
+   * <p>
+   * In the window between this callback and the matching {@link #onList(String, boolean)}:
+   * <ul>
+   * <li>resources already deleted on the server may still be present in the cache — deletions
+   * detected by the list are not reconciled into the cache until just before {@code onList} is
+   * called.</li>
+   * <li>the last sync resource version reported here remains frozen for the duration of the
+   * list. On a re-list, {@code onAdd} / {@code onUpdate} events can still be emitted from the
+   * in-flight list pages with resource versions newer than {@code lastSyncResourceVersion}; on
+   * the initial list the additions are instead deferred and delivered as a single batch just
+   * before {@link #onList(String, boolean)}.</li>
+   * </ul>
+   *
+   * <p>
+   * Should not be implemented with long-running logic as that may lead to memory issues.
+   * <p>
+   * This method is not called for re-sync.
+   *
+   * @param lastSyncResourceVersion the latest resource version known prior to the list operation, or
+   *        {@code null} if no list has completed yet
+   */
+  default void onBeforeList(String lastSyncResourceVersion) {
+  }
+
+  /**
    * Called after a listing is completed. By default calls {@link #onNothing()} when remainedEmpty is true.
    * <p>
    * Should not be implemented with long-running logic as that may lead to memory issues.
-   * 
+   * <p>
+   * This method is not called for re-sync.
+   *
    * @param resourceVersion the latest resource version known to the list operation
    * @param remainedEmpty will be true if the cache remained empty prior to and after the list operation meaning no
    *        other events would have been emitted as part of the relist

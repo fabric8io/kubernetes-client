@@ -112,6 +112,11 @@ annotation, since might not make sense to do it for an individual test case. How
 [`KubeApiServer`](https://github.com/fabric8io/kubernetes-client/blob/main/junit/kube-api-test/core/src/main/java/io/fabric8/kubeapitest/KubeAPIServer.java)
 and also configured globally using environment variables, see [KubeAPIServerConfigBuilder](https://github.com/fabric8io/kubernetes-client/blob/main/junit/kube-api-test/core/src/main/java/io/fabric8/kubeapitest/KubeAPIServerConfigBuilder.java)
 
+The API Server startup wait defaults to 120 seconds (raised from 60 s in [#7834](https://github.com/fabric8io/kubernetes-client/pull/7836)
+to absorb scheduling pressure on shared CI runners). Override per instance with
+`KubeAPIServerConfigBuilder.withStartupTimeout(int)`, or globally via the
+`KUBE_API_TEST_STARTUP_TIMEOUT` environment variable (milliseconds).
+
 
 ### Updating kube config file
 

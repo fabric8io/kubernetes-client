@@ -92,7 +92,7 @@ public class IstioStatus implements Editable<IstioStatusBuilder>, KubernetesReso
     }
 
     /**
-     * Current service state of the resource. More info: https://istio.io/docs/reference/config/config-status/
+     * Current service state of the resource.
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -101,7 +101,7 @@ public class IstioStatus implements Editable<IstioStatusBuilder>, KubernetesReso
     }
 
     /**
-     * Current service state of the resource. More info: https://istio.io/docs/reference/config/config-status/
+     * Current service state of the resource.
      */
     @JsonProperty("conditions")
     public void setConditions(List<IstioCondition> conditions) {
@@ -109,7 +109,7 @@ public class IstioStatus implements Editable<IstioStatusBuilder>, KubernetesReso
     }
 
     /**
-     * $hide_from_docs Deprecated. IstioCondition observed_generation will show the resource generation for which the condition was generated. Resource Generation to which the Reconciled Condition refers. When this value is not equal to the object's metadata generation, reconciled condition  calculation for the current generation is still in progress.  See https://istio.io/latest/docs/reference/config/config-status/ for more info.
+     * $hide_from_docs Deprecated. IstioCondition observed_generation will show the resource generation for which the condition was generated. Resource Generation to which the Reconciled Condition refers. When this value is not equal to the object's metadata generation, reconciled condition  calculation for the current generation is still in progress.
      */
     @JsonProperty("observedGeneration")
     public Long getObservedGeneration() {
@@ -117,7 +117,7 @@ public class IstioStatus implements Editable<IstioStatusBuilder>, KubernetesReso
     }
 
     /**
-     * $hide_from_docs Deprecated. IstioCondition observed_generation will show the resource generation for which the condition was generated. Resource Generation to which the Reconciled Condition refers. When this value is not equal to the object's metadata generation, reconciled condition  calculation for the current generation is still in progress.  See https://istio.io/latest/docs/reference/config/config-status/ for more info.
+     * $hide_from_docs Deprecated. IstioCondition observed_generation will show the resource generation for which the condition was generated. Resource Generation to which the Reconciled Condition refers. When this value is not equal to the object's metadata generation, reconciled condition  calculation for the current generation is still in progress.
      */
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {

@@ -31,6 +31,7 @@ class InputStreamReadStream implements ReadStream<Buffer> {
   private final StreamFlowController flowController;
 
   private Handler<Throwable> exceptionHandler;
+  private boolean errored;
 
   InputStreamReadStream(Vertx5HttpRequest vertxHttpRequest, InputStream inputStream, HttpClientRequest request) {
     this.vertxHttpRequest = vertxHttpRequest;
@@ -64,6 +65,9 @@ class InputStreamReadStream implements ReadStream<Buffer> {
   }
 
   private void readChunk() {
+    if (errored) {
+      return;
+    }
     if (recursionGuard.enter()) {
       try {
         executeBlockingRead();
@@ -98,7 +102,18 @@ class InputStreamReadStream implements ReadStream<Buffer> {
   }
 
   private void handleReadError(final Throwable cause) {
-    request.reset(0, cause);
+    if (errored) {
+      return;
+    }
+    errored = true;
+    // Reset instead of relying on the pipe: on source failure the pipe just end()s the request,
+    // sending a truncated-but-valid chunked body and leaving the response pending forever.
+    //
+    // No cause on purpose: since 5.1, HttpClientRequestBase#mapException unwraps the reset cause,
+    // and surfacing our IOException would make StandardHttpClient retry an unreplayable half-sent
+    // body until timeout. A bare StreamResetException is not retried; the cause still reaches the
+    // pipe via the exceptionHandler below. 0x8 = HTTP/2 CANCEL, same as Vert.x's own cancel().
+    request.reset(0x8);
     if (exceptionHandler != null) {
       exceptionHandler.handle(cause);
     }

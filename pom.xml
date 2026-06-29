@@ -89,17 +89,17 @@
 
     <!-- Core versions -->
     <sundrio.version>0.230.2</sundrio.version>
-    <okhttp.version>5.3.2</okhttp.version>
-    <jackson.version>2.21.3</jackson.version>
+    <okhttp.version>5.4.0</okhttp.version>
+    <jackson.version>2.21.4</jackson.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
     <!-- fix as jackson-annotations version 2.20 was released, Refer: https://github.com/FasterXML/jackson-bom/blob/54f854ba1ce69c5827f8acf6d08ba2d7ce36233c/pom.xml#L53-L62 -->
     <jackson.bundle.version.annotations>2.21</jackson.bundle.version.annotations>
     <jetty.version>11.0.26</jetty.version>
-    <maven-core.version>3.9.15</maven-core.version>
+    <maven-core.version>3.9.16</maven-core.version>
     <maven-plugin-annotations.version>3.15.2</maven-plugin-annotations.version>
-    <vertx.version>4.5.27</vertx.version>
-    <vertx5.version>5.0.12</vertx5.version>
-    <jandex.version>3.5.3</jandex.version>
+    <vertx.version>4.5.28</vertx.version>
+    <vertx5.version>5.1.3</vertx5.version>
+    <jandex.version>3.6.0</jandex.version>
     <snakeyaml.version>3.0.1</snakeyaml.version>
     <snakeyaml.bundle.version>2.5</snakeyaml.bundle.version> <!-- Transitive Jackson -->
 
@@ -110,22 +110,27 @@
 
     <!-- Testing versions -->
     <junit4.version>4.13.2</junit4.version>
-    <junit.version>5.13.4</junit.version>
+    <junit.version>5.14.4</junit.version>
     <assertj.core.version>3.27.7</assertj.core.version>
     <awaitility.version>4.3.0</awaitility.version>
-    <approvaltests.version>30.1.0</approvaltests.version>
+    <approvaltests.version>31.0.0</approvaltests.version>
     <bouncycastle.version>1.84</bouncycastle.version>
     <bc-fips.version>2.1.2</bc-fips.version>
     <bcpkix-fips.version>2.1.11</bcpkix-fips.version>
-    <keycloak.version>26.6.1</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
+    <keycloak.version>26.6.4</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
     <mockito.version>5.23.0</mockito.version>
+    <!-- byte-buddy-agent is loaded as a startup -javaagent by surefire (see maven-surefire-plugin) to
+         avoid Mockito's runtime self-attach. Keep this in sync with the byte-buddy-agent that mockito-core
+         ${mockito.version} pulls transitively; a small skew is harmless since the agent only installs
+         Instrumentation. -->
+    <byte-buddy.version>1.18.10</byte-buddy.version>
     <spock.version>2.4-M6-groovy-4.0</spock.version>
 
     <conscrypt-openjdk-uber.bundle.version>1.4.2_1</conscrypt-openjdk-uber.bundle.version>
     <automaton.bundle.version>1.11-8_1</automaton.bundle.version>
     <aries-spifly.bundle.version>1.3.0</aries-spifly.bundle.version>
     <asm.bundle.version>8.0.1</asm.bundle.version>
-    <slf4j.version>2.0.17</slf4j.version>
+    <slf4j.version>2.0.18</slf4j.version>
     <log4j.version>2.26.0</log4j.version>
     <lombok.version>1.18.46</lombok.version>
     <commons-compress.version>1.28.0</commons-compress.version>
@@ -136,7 +141,7 @@
     <jmustache.version>1.16</jmustache.version>
     <picocli.version>4.7.7</picocli.version>
     <swagger-request-validator-core.version>2.46.1</swagger-request-validator-core.version>
-    <swagger-parser.version>2.1.41</swagger-parser.version>
+    <swagger-parser.version>2.1.45</swagger-parser.version>
 
     <!-- Maven plugin versions -->
     <buildnumber.plugin.version>3.3.0</buildnumber.plugin.version>
@@ -145,28 +150,28 @@
     <maven.bundle.plugin.version>5.1.9</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>3.6.1</maven.buildhelper.plugin.version>
     <maven.jar.plugin.version>3.5.0</maven.jar.plugin.version>
-    <maven.surefire.plugin.version>3.5.5</maven.surefire.plugin.version>
+    <maven.surefire.plugin.version>3.5.6</maven.surefire.plugin.version>
     <maven.resources.plugin.version>3.5.0</maven.resources.plugin.version>
     <maven.release.plugin.version>3.3.1</maven.release.plugin.version>
     <maven.javadoc.plugin.version>3.12.0</maven.javadoc.plugin.version>
     <maven.source.plugin.version>3.4.0</maven.source.plugin.version>
-    <maven.enforcer.plugin.version>3.6.2</maven.enforcer.plugin.version>
+    <maven.enforcer.plugin.version>3.6.3</maven.enforcer.plugin.version>
     <maven.deploy.plugin.version>3.1.4</maven.deploy.plugin.version>
     <maven.gpg.plugin.version>3.2.8</maven.gpg.plugin.version>
     <maven.antrun.plugin.version>3.2.0</maven.antrun.plugin.version>
-    <maven.dependency.plugin.version>3.10.0</maven.dependency.plugin.version>
+    <maven.dependency.plugin.version>3.11.0</maven.dependency.plugin.version>
     <maven.shade.plugin.version>3.6.2</maven.shade.plugin.version>
     <maven.install.plugin.version>3.1.4</maven.install.plugin.version>
     <maven.invoker.plugin.version>3.10.1</maven.invoker.plugin.version>
     <maven.plugin.plugin.version>3.15.2</maven.plugin.plugin.version>
-    <gmavenplus-plugin.version>4.3.1</gmavenplus-plugin.version>
+    <gmavenplus-plugin.version>5.0.0</gmavenplus-plugin.version>
     <gradle-api-maven-plugin.version>0.0.7</gradle-api-maven-plugin.version>
-    <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
+    <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
     <jkube.version>1.19.0</jkube.version>
-    <sonar-maven-plugin.version>5.6.0.6792</sonar-maven-plugin.version>
-    <central-publishing-maven-plugin>0.10.0</central-publishing-maven-plugin>
+    <sonar-maven-plugin.version>5.7.0.6970</sonar-maven-plugin.version>
+    <central-publishing-maven-plugin>0.11.0</central-publishing-maven-plugin>
     <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
-    <spotless-maven-plugin.version>3.4.0</spotless-maven-plugin.version>
+    <spotless-maven-plugin.version>3.7.0</spotless-maven-plugin.version>
     <really-executable-jar-maven-plugin.version>2.1.1</really-executable-jar-maven-plugin.version>
 
     <!-- Other options -->
@@ -175,6 +180,7 @@
     <maven.compiler.release>11</maven.compiler.release>
     <skipTests>false</skipTests>
     <generate.targetDirectory>${project.basedir}/src/generated/java</generate.targetDirectory>
+    <generate.targetResourcesDirectory>${project.basedir}/src/generated/resources</generate.targetResourcesDirectory>
 
     <exec.master>https://localhost:8443</exec.master>
 
@@ -205,7 +211,7 @@
     </osgi.include.resources.default>
     <osgi.include.resources>${osgi.include.resources.default}</osgi.include.resources>
     <karaf.itest.skip>false</karaf.itest.skip>
-    <project.build.outputTimestamp>2026-04-29T07:19:33Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2026-05-12T09:45:57Z</project.build.outputTimestamp>
     <validation-api.version>2.0.1.Final</validation-api.version>
     <revapi.version>0.15.1</revapi.version>
     <revapi-java.version>0.28.4</revapi-java.version>
@@ -699,18 +705,6 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>io.sundr</groupId>
-        <artifactId>transform-annotations</artifactId>
-        <version>${sundrio.version}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>io.sundr</groupId>
-        <artifactId>sundr-codegen-velocity-nodeps</artifactId>
-        <version>${sundrio.version}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
         <groupId>com.samskivert</groupId>
         <artifactId>jmustache</artifactId>
         <version>${jmustache.version}</version>
@@ -918,6 +912,19 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <dependencies>
+    <!-- Provides the ByteBuddy agent jar to every module so the maven-surefire-plugin can load it at
+         JVM startup (see -javaagent in the build section) and Mockito never falls back to runtime
+         self-attach. Test scope: it is not part of any module's compile/runtime classpath, bundle, or
+         BOM; it only guarantees the jar is resolved into the local repository for the -javaagent path. -->
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy-agent</artifactId>
+      <version>${byte-buddy.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
   <build>
     <resources>
@@ -1148,10 +1155,27 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <inherited>true</inherited>
         <configuration>
-          <argLine>@{argLine} -Xmx2048m</argLine>
+          <!-- Load the ByteBuddy agent at JVM startup so Mockito's inline mock-maker (and Spock's
+               Mockito-backed mock maker) get Instrumentation without a runtime self-attach. Self-attach
+               (ptrace + an attach socket) is blocked by restrictive sandboxes (e.g. Claude Code) and is
+               on the JEP 451 path to being disallowed by the JDK. byte-buddy-agent is declared as a
+               global test dependency below, so the jar is in the local repository for every module and
+               can be referenced here by path. We load byte-buddy-agent, NOT mockito-core: a mockito-core
+               -javaagent would put a second mockito-core on the system class loader without byte-buddy
+               and break the inline mock-maker with NoClassDefFoundError (net.bytebuddy.matcher.ElementMatcher).
+               Keep @{argLine} first so JaCoCo's coverage agent survives. -->
+          <argLine>@{argLine} -Xmx2048m -javaagent:${settings.localRepository}/net/bytebuddy/byte-buddy-agent/${byte-buddy.version}/byte-buddy-agent-${byte-buddy.version}.jar</argLine>
           <environmentVariables>
             <ENV_VAR_EXISTS>value</ENV_VAR_EXISTS>
             <ENV_VAR_EXISTS_BOOLEAN>true</ENV_VAR_EXISTS_BOOLEAN>
+            <!-- Isolate tests from an ambient HTTP(S) proxy. fabric8's Config.autoConfigure reads the
+                 standard HTTP_PROXY/HTTPS_PROXY/NO_PROXY env vars, so a proxy injected by the
+                 environment (a restrictive sandbox, or a corporate proxy on a dev box) would otherwise
+                 leak into Config and break the proxy-configuration unit tests. Empty is treated as unset. -->
+            <HTTP_PROXY></HTTP_PROXY>
+            <HTTPS_PROXY></HTTPS_PROXY>
+            <NO_PROXY></NO_PROXY>
+            <ALL_PROXY></ALL_PROXY>
           </environmentVariables>
         </configuration>
       </plugin>
@@ -1170,6 +1194,26 @@
             </includes>
             <eclipse>
               <file>ide-config/eclipse-format.xml</file>
+              <!--
+                Route Equo's P2 fetches through OSU Open Source Lab. The default
+                https://download.eclipse.org/ origin uses HTTP/2 keep-alive frames
+                that defeat OkHttp's per-stream timeout (Equo builds the client
+                with no callTimeout), so cold-cache CI runs stall indefinitely.
+                The mirror serves the same paths over plain HTTPS and downloads
+                reliably in ~30s.
+
+                If this mirror ever becomes unreliable, alternatives that have
+                been verified to host the same /eclipse/updates/ tree:
+                  https://mirror.umd.edu/eclipse/
+                  https://ftp.halifax.rwth-aachen.de/eclipse/
+                  https://www.mirrorservice.org/sites/download.eclipse.org/eclipseMirror/
+              -->
+              <p2Mirrors>
+                <p2Mirror>
+                  <prefix>https://download.eclipse.org/</prefix>
+                  <url>https://ftp.osuosl.org/pub/eclipse/</url>
+                </p2Mirror>
+              </p2Mirrors>
             </eclipse>
             <importOrder>
               <file>ide-config/eclipse.importorder</file>
@@ -1184,7 +1228,24 @@
               <include>src/it/**/*.groovy</include>
             </includes>
             <importOrder/>
-            <greclipse/>
+            <greclipse>
+              <!--
+                See the rationale in the <eclipse> block above; greclipse also
+                fetches Eclipse 4.x bundles. With <p2Mirrors> present, spotless
+                rejects any P2 URL whose prefix isn't listed here, so we also
+                pass groovy.jfrog.io through (identity mapping = allow as-is).
+              -->
+              <p2Mirrors>
+                <p2Mirror>
+                  <prefix>https://download.eclipse.org/</prefix>
+                  <url>https://ftp.osuosl.org/pub/eclipse/</url>
+                </p2Mirror>
+                <p2Mirror>
+                  <prefix>https://groovy.jfrog.io/</prefix>
+                  <url>https://groovy.jfrog.io/</url>
+                </p2Mirror>
+              </p2Mirrors>
+            </greclipse>
           </groovy>
         </configuration>
       </plugin>
@@ -1519,6 +1580,7 @@
       <id>itests</id>
       <modules>
         <module>kubernetes-itests</module>
+        <module>kubernetes-itests-envtest</module>
         <module>chaos-tests</module>
       </modules>
       <build>
@@ -1580,7 +1642,6 @@
         <jdk>[17,)</jdk>
       </activation>
       <properties>
-        <mockito.version>5.11.0</mockito.version>
         <karaf.itest.skip>true</karaf.itest.skip>
       </properties>
     </profile>

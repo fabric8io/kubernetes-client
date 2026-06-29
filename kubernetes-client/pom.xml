@@ -89,10 +89,6 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>io.sundr</groupId>
-      <artifactId>transform-annotations</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
     </dependency>

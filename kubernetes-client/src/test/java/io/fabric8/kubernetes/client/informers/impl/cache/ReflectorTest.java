@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.client.informers.impl.ListerWatcher;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.mockito.exceptions.verification.TooFewActualInvocations;
 
@@ -248,6 +249,128 @@ class ReflectorTest {
     // In normal mode, the ADDED event should add to the store
     Mockito.verify(mockStore).add(laterPod);
     assertEquals("50", reflector.getLastSyncResourceVersion());
+  }
+
+  @Test
+  void onBeforeListInvokedWithNullOnInitialListAndLastSyncedRvOnHttpGoneRelist() {
+    ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
+    PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("100").endMetadata().build();
+    Mockito.when(mock.submitList(Mockito.any())).thenReturn(CompletableFuture.completedFuture(list));
+
+    AbstractWatchManager manager = Mockito.mock(AbstractWatchManager.class);
+    Mockito.when(manager.isWatching()).thenReturn(true);
+    Mockito.when(mock.submitWatch(Mockito.any(), Mockito.any()))
+        .thenReturn(CompletableFuture.completedFuture(manager));
+
+    // override reconnect so the HTTP GONE path runs the relist synchronously instead of via the
+    // scheduled executor
+    Reflector<Pod, PodList> reflector = new Reflector<Pod, PodList>(mock, mockStore) {
+      @Override
+      protected void reconnect() {
+        listSyncAndWatch();
+      }
+    };
+
+    // initial list -> no last sync resource version yet
+    reflector.start().join();
+    Mockito.verify(mockStore).onBeforeList(null);
+
+    // HTTP GONE goes through the reconnect path; the previous cycle's onList re-armed the flag,
+    // so listSyncAndWatch fires onBeforeList with the resource version observed during that list
+    reflector.getWatcher().onClose(new WatcherException(null, new KubernetesClientException("gone", 410, null)));
+    Mockito.verify(mockStore).onBeforeList("100");
+  }
+
+  @Test
+  void onBeforeListNotInvokedOnRetryWithinTheSameCycle() {
+    ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
+    PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
+    // first list attempt fails before onList — second one succeeds. The failure is therefore
+    // strictly within the same cycle (no onList delivered yet), so no fresh onBeforeList is due.
+    CompletableFuture<PodList> failedList = new CompletableFuture<>();
+    failedList.completeExceptionally(new KubernetesClientException("error"));
+    Mockito.when(mock.submitList(Mockito.any()))
+        .thenReturn(failedList)
+        .thenReturn(CompletableFuture.completedFuture(list));
+
+    AbstractWatchManager manager = Mockito.mock(AbstractWatchManager.class);
+    Mockito.when(manager.isWatching()).thenReturn(true);
+    Mockito.when(mock.submitWatch(Mockito.any(), Mockito.any()))
+        .thenReturn(CompletableFuture.completedFuture(manager));
+
+    Reflector<Pod, PodList> reflector = new Reflector<Pod, PodList>(mock, mockStore) {
+      @Override
+      protected void reconnect() {
+        // drive the retry inline so the test stays deterministic
+        listSyncAndWatch();
+      }
+    };
+    reflector.setExceptionHandler((b, t) -> true);
+
+    reflector.start().join();
+
+    // exactly one onBeforeList for the whole cycle, despite the failure + retry
+    Mockito.verify(mockStore, Mockito.times(1)).onBeforeList(Mockito.any());
+  }
+
+  @Test
+  void onBeforeListInvokedAgainAfterWatchFailureFollowingSuccessfulList() {
+    ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
+    PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("5").endMetadata().build();
+    Mockito.when(mock.submitList(Mockito.any())).thenReturn(CompletableFuture.completedFuture(list));
+
+    AbstractWatchManager manager = Mockito.mock(AbstractWatchManager.class);
+    Mockito.when(manager.isWatching()).thenReturn(true);
+    // first watch attempt fails post-onList (non-GONE — i.e. the onException reconnect path),
+    // second attempt succeeds. onList for the first cycle re-arms the next onBeforeList.
+    Mockito.when(mock.submitWatch(Mockito.any(), Mockito.any()))
+        .thenThrow(new KubernetesClientException("error"))
+        .thenReturn(CompletableFuture.completedFuture(manager));
+
+    Reflector<Pod, PodList> reflector = new Reflector<Pod, PodList>(mock, mockStore) {
+      @Override
+      protected void reconnect() {
+        listSyncAndWatch();
+      }
+    };
+    reflector.setExceptionHandler((b, t) -> true);
+
+    reflector.start().join();
+
+    InOrder inOrder = Mockito.inOrder(mockStore);
+    inOrder.verify(mockStore).onBeforeList(null);
+    inOrder.verify(mockStore).onList(Mockito.eq("5"), Mockito.anyBoolean());
+    inOrder.verify(mockStore).onBeforeList("5");
+    inOrder.verify(mockStore).onList(Mockito.eq("5"), Mockito.anyBoolean());
+    Mockito.verify(mockStore, Mockito.times(2)).onBeforeList(Mockito.any());
+  }
+
+  @Test
+  void onBeforeListInvokedBeforeSubmitListSoHandlersSeePreviousResourceVersion() {
+    ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
+    PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("7").endMetadata().build();
+    Mockito.when(mock.submitList(Mockito.any())).thenReturn(CompletableFuture.completedFuture(list));
+
+    AbstractWatchManager manager = Mockito.mock(AbstractWatchManager.class);
+    Mockito.when(manager.isWatching()).thenReturn(true);
+    Mockito.when(mock.submitWatch(Mockito.any(), Mockito.any()))
+        .thenReturn(CompletableFuture.completedFuture(manager));
+
+    Reflector<Pod, PodList> reflector = new Reflector<Pod, PodList>(mock, mockStore) {
+      @Override
+      protected void reconnect() {
+        listSyncAndWatch();
+      }
+    };
+    reflector.start().join();
+    reflector.getWatcher().onClose(new WatcherException(null, new KubernetesClientException("gone", 410, null)));
+
+    InOrder inOrder = Mockito.inOrder(mockStore, mock);
+    inOrder.verify(mockStore).onBeforeList(null);
+    inOrder.verify(mock).submitList(Mockito.any());
+    inOrder.verify(mockStore).onList(Mockito.eq("7"), Mockito.anyBoolean());
+    inOrder.verify(mockStore).onBeforeList("7");
+    inOrder.verify(mock).submitList(Mockito.any());
   }
 
   @Test

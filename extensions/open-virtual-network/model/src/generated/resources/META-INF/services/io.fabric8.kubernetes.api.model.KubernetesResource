@@ -1,0 +1,12 @@
+io.fabric8.kubernetes.api.model.ovn.v1.AdminPolicyBasedExternalRoute
+io.fabric8.kubernetes.api.model.ovn.v1.AdminPolicyBasedExternalRouteList
+io.fabric8.kubernetes.api.model.ovn.v1.EgressFirewall
+io.fabric8.kubernetes.api.model.ovn.v1.EgressFirewallList
+io.fabric8.kubernetes.api.model.ovn.v1.EgressIP
+io.fabric8.kubernetes.api.model.ovn.v1.EgressIPList
+io.fabric8.kubernetes.api.model.ovn.v1.EgressQoS
+io.fabric8.kubernetes.api.model.ovn.v1.EgressQoSList
+io.fabric8.kubernetes.api.model.ovn.v1.EgressService
+io.fabric8.kubernetes.api.model.ovn.v1.EgressServiceList
+io.fabric8.kubernetes.api.model.ovn.v1.UserDefinedNetwork
+io.fabric8.kubernetes.api.model.ovn.v1.UserDefinedNetworkList

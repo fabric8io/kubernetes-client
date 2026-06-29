@@ -44,6 +44,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector.jitter;
 import static io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector.loop;
 import static io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector.now;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -311,7 +312,7 @@ class LeaderElectorTest {
       completion.complete(null);
     }, () -> 1L, CommonThreadPool.get());
     // When
-    cf.get(500, TimeUnit.MILLISECONDS);
+    assertThat(cf).succeedsWithin(Duration.ofMillis(500));
   }
 
   @Test

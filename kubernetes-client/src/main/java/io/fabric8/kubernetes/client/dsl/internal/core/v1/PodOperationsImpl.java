@@ -412,6 +412,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   @Override
+  @SuppressWarnings("java:S3516") // return value is part of the public API; cannot be changed without a breaking release
   public boolean copy(Path destination) {
     try {
       if (Utils.isNotNullOrEmpty(getContext().getFile())) {
@@ -492,6 +493,9 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(destination.toPath()))) {
       ExecWatch w = writingOutput(out).exec(readFileCommand(source));
       w.exitCode().get();
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(e);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }

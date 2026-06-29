@@ -15,10 +15,13 @@
  */
 package io.fabric8.kubeapitest;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,6 +45,26 @@ class UtilsTest {
   @Test
   void wildcardToPrefix() {
     assertThat(Utils.wildcardToPrefix("1.25.*")).isEqualTo("1.25");
+  }
+
+  @Test
+  @DisplayName("findFreePort never returns the same port twice within a JVM")
+  void findFreePortDoesNotReturnDuplicates() {
+    // Issue #7873: successive findFreePort() calls within the same JVM could
+    // return the same port because the probe ServerSocket was closed before the
+    // caller bound it. etcd and kube-apiserver allocate ports in quick
+    // succession, hitting "bind: address already in use" when both got the
+    // same value. Assert global uniqueness across many calls.
+    final int iterations = 500;
+    Set<Integer> seen = new HashSet<>();
+    for (int i = 0; i < iterations; i++) {
+      int port = Utils.findFreePort();
+      assertThat(seen)
+          .as("findFreePort returned duplicate port %d on iteration %d", port, i)
+          .doesNotContain(port);
+      seen.add(port);
+    }
+    assertThat(seen).hasSize(iterations);
   }
 
 }

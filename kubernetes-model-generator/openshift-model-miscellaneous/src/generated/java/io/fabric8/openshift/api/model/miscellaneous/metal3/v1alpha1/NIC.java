@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -45,6 +44,7 @@ import lombok.experimental.Accessors;
     "mac",
     "model",
     "name",
+    "pciAddress",
     "pxe",
     "speedGbps",
     "vlanId",
@@ -63,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
@@ -85,6 +85,8 @@ public class NIC implements Editable<NICBuilder>, KubernetesResource
     private String model;
     @JsonProperty("name")
     private String name;
+    @JsonProperty("pciAddress")
+    private String pciAddress;
     @JsonProperty("pxe")
     private Boolean pxe;
     @JsonProperty("speedGbps")
@@ -103,13 +105,14 @@ public class NIC implements Editable<NICBuilder>, KubernetesResource
     public NIC() {
     }
 
-    public NIC(String ip, LLDP lldp, String mac, String model, String name, Boolean pxe, Integer speedGbps, Integer vlanId, List<VLAN> vlans) {
+    public NIC(String ip, LLDP lldp, String mac, String model, String name, String pciAddress, Boolean pxe, Integer speedGbps, Integer vlanId, List<VLAN> vlans) {
         super();
         this.ip = ip;
         this.lldp = lldp;
         this.mac = mac;
         this.model = model;
         this.name = name;
+        this.pciAddress = pciAddress;
         this.pxe = pxe;
         this.speedGbps = speedGbps;
         this.vlanId = vlanId;
@@ -194,6 +197,22 @@ public class NIC implements Editable<NICBuilder>, KubernetesResource
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * The NIC PCI address
+     */
+    @JsonProperty("pciAddress")
+    public String getPciAddress() {
+        return pciAddress;
+    }
+
+    /**
+     * The NIC PCI address
+     */
+    @JsonProperty("pciAddress")
+    public void setPciAddress(String pciAddress) {
+        this.pciAddress = pciAddress;
     }
 
     /**

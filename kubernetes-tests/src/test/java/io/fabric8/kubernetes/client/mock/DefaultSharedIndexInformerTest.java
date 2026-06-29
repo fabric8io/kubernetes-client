@@ -320,19 +320,23 @@ class DefaultSharedIndexInformerTest {
             .withItems(Collections.emptyList())
             .build())
         .once();
+    // Use a longer emit window than the global WATCH_EVENT_EMIT_TIME (1 ms): the test
+    // depends on the ADDED event reaching the store before the relist following the 410
+    // GONE so the relist's pod1@endResourceVersion is delivered as an onUpdate (not onAdd).
+    final long emitWindowMs = 50L;
     server.expect()
         .withPath("/api/v1/pods?allowWatchBookmarks=true&resourceVersion=" + startResourceVersion
             + "&timeoutSeconds=600&watch=true")
         .andUpgradeToWebSocket()
         .open()
-        .waitFor(WATCH_EVENT_EMIT_TIME)
+        .waitFor(emitWindowMs)
         .andEmit(new WatchEvent(new PodBuilder().withNewMetadata()
             .withNamespace("test")
             .withName("pod1")
             .withResourceVersion(midResourceVersion)
             .endMetadata()
             .build(), "ADDED"))
-        .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
+        .waitFor(emitWindowMs)
         .andEmit(outdatedEvent)
         .done()
         .always();

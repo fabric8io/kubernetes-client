@@ -137,6 +137,39 @@ The generated field in the CRD will be named after the value provided in the ann
             type: object
 ```
 
+### com.fasterxml.jackson.annotation.JsonClassDescription
+
+If a class is annotated with `com.fasterxml.jackson.annotation.JsonClassDescription`, the provided text will be used as the `description` for that object type in the generated CRD schema.
+
+This ensures the description is associated with the class itself in the resulting schema:
+
+```java
+@JsonClassDescription("Description for the Example resource")
+public class Example extends CustomResource<ExampleSpec, ExampleStatus> implements Namespaced {}
+
+@JsonClassDescription("Description for the spec object")
+public class ExampleSpec {
+  private String field;
+}
+
+```
+
+The generated CRD will include these descriptions for each object type:
+
+```yaml
+    schema:
+      openAPIV3Schema:
+        description: "Description for the Example resource"
+        properties:
+          spec:
+            description: "Description for the spec object"
+            type: object
+        type: object
+
+```
+
+The description follows the class hierarchy: if a class does not declare its own `@JsonClassDescription`, the description declared on a superclass is used. When a field has both a `@JsonPropertyDescription` and a type annotated with `@JsonClassDescription`, the field-level description takes precedence.
+
 ### com.fasterxml.jackson.annotation.JsonPropertyDescription
 
 If a field or one of its accessors is annotated with `com.fasterxml.jackson.annotation.JsonPropertyDescription`
@@ -884,7 +917,8 @@ for directly manipulating the JSONSchemaProps of the annotated resource. This an
 | Annotation                                                      | Description                                                                                         |
 |-----------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
 | `com.fasterxml.jackson.annotation.JsonProperty`                 | The field is named after the provided value instead of looking up the java field name               |
-| `com.fasterxml.jackson.annotation.JsonPropertyDescription`      | The provided text is be embedded in the `description` of the field                                  |
+| `com.fasterxml.jackson.annotation.JsonClassDescription`         | The provided text is embedded in the `description` of the class                                     |
+| `com.fasterxml.jackson.annotation.JsonPropertyDescription`      | The provided text is embedded in the `description` of the field                                     |
 | `com.fasterxml.jackson.annotation.JsonIgnore`                   | The field is ignored                                                                                |
 | `io.fabric8.crd.generator.annotation.PreserveUnknownFields`     | The field have `x-kubernetes-preserve-unknown-fields: true` defined                                 |
 | `com.fasterxml.jackson.annotation.JsonAnyGetter`                | The corresponding object have `x-kubernetes-preserve-unknown-fields: true` defined                  |

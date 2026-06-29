@@ -45,6 +45,7 @@ public class Serialization {
   public static final UnmatchedFieldTypeModule UNMATCHED_FIELD_TYPE_MODULE = kubernetesSerialization
       .getUnmatchedFieldTypeModule();
 
+  @SuppressWarnings("java:S3077") // double-checked locking; volatile ensures safe publication
   private static volatile ObjectMapper YAML_MAPPER;
 
   /**
@@ -87,9 +88,10 @@ public class Serialization {
     if (YAML_MAPPER == null) {
       synchronized (Serialization.class) {
         if (YAML_MAPPER == null) {
-          YAML_MAPPER = new ObjectMapper(
+          ObjectMapper mapper = new ObjectMapper(
               new YAMLFactory().disable(YAMLGenerator.Feature.USE_NATIVE_TYPE_ID));
-          YAML_MAPPER.registerModules(new GoCompatibilityModule(), UNMATCHED_FIELD_TYPE_MODULE);
+          mapper.registerModules(new GoCompatibilityModule(), UNMATCHED_FIELD_TYPE_MODULE);
+          YAML_MAPPER = mapper;
         }
       }
     }

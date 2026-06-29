@@ -310,6 +310,6 @@ public class LeaderElector {
    */
   protected static Duration jitter(Duration duration, double maxFactor) {
     maxFactor = maxFactor > 0 ? maxFactor : 1.0;
-    return duration.plusMillis(Double.valueOf(duration.toMillis() * Math.random() * maxFactor).longValue());
+    return duration.plusMillis((long) (duration.toMillis() * Math.random() * maxFactor));
   }
 }

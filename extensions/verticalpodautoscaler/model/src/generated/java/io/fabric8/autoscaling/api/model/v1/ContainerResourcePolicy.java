@@ -45,10 +45,13 @@ import lombok.experimental.Accessors;
     "controlledResources",
     "controlledValues",
     "maxAllowed",
+    "memoryAggregationIntervalCount",
+    "memoryAggregationIntervalSeconds",
     "minAllowed",
     "mode",
     "oomBumpUpRatio",
-    "oomMinBumpUp"
+    "oomMinBumpUp",
+    "startupBoost"
 })
 @ToString
 @EqualsAndHashCode
@@ -85,6 +88,10 @@ public class ContainerResourcePolicy implements Editable<ContainerResourcePolicy
     @JsonProperty("maxAllowed")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Quantity> maxAllowed = new LinkedHashMap<>();
+    @JsonProperty("memoryAggregationIntervalCount")
+    private Long memoryAggregationIntervalCount;
+    @JsonProperty("memoryAggregationIntervalSeconds")
+    private Integer memoryAggregationIntervalSeconds;
     @JsonProperty("minAllowed")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Quantity> minAllowed = new LinkedHashMap<>();
@@ -94,6 +101,8 @@ public class ContainerResourcePolicy implements Editable<ContainerResourcePolicy
     private Quantity oomBumpUpRatio;
     @JsonProperty("oomMinBumpUp")
     private Quantity oomMinBumpUp;
+    @JsonProperty("startupBoost")
+    private StartupBoost startupBoost;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -103,16 +112,19 @@ public class ContainerResourcePolicy implements Editable<ContainerResourcePolicy
     public ContainerResourcePolicy() {
     }
 
-    public ContainerResourcePolicy(String containerName, List<String> controlledResources, String controlledValues, Map<String, Quantity> maxAllowed, Map<String, Quantity> minAllowed, String mode, Quantity oomBumpUpRatio, Quantity oomMinBumpUp) {
+    public ContainerResourcePolicy(String containerName, List<String> controlledResources, String controlledValues, Map<String, Quantity> maxAllowed, Long memoryAggregationIntervalCount, Integer memoryAggregationIntervalSeconds, Map<String, Quantity> minAllowed, String mode, Quantity oomBumpUpRatio, Quantity oomMinBumpUp, StartupBoost startupBoost) {
         super();
         this.containerName = containerName;
         this.controlledResources = controlledResources;
         this.controlledValues = controlledValues;
         this.maxAllowed = maxAllowed;
+        this.memoryAggregationIntervalCount = memoryAggregationIntervalCount;
+        this.memoryAggregationIntervalSeconds = memoryAggregationIntervalSeconds;
         this.minAllowed = minAllowed;
         this.mode = mode;
         this.oomBumpUpRatio = oomBumpUpRatio;
         this.oomMinBumpUp = oomMinBumpUp;
+        this.startupBoost = startupBoost;
     }
 
     /**
@@ -182,6 +194,38 @@ public class ContainerResourcePolicy implements Editable<ContainerResourcePolicy
     }
 
     /**
+     * memoryAggregationIntervalCount is the number of consecutive memoryAggregationIntervals which make up the memory aggregation window. The total window length is: MemoryAggregationIntervalSeconds &#42; MemoryAggregationIntervalCount.
+     */
+    @JsonProperty("memoryAggregationIntervalCount")
+    public Long getMemoryAggregationIntervalCount() {
+        return memoryAggregationIntervalCount;
+    }
+
+    /**
+     * memoryAggregationIntervalCount is the number of consecutive memoryAggregationIntervals which make up the memory aggregation window. The total window length is: MemoryAggregationIntervalSeconds &#42; MemoryAggregationIntervalCount.
+     */
+    @JsonProperty("memoryAggregationIntervalCount")
+    public void setMemoryAggregationIntervalCount(Long memoryAggregationIntervalCount) {
+        this.memoryAggregationIntervalCount = memoryAggregationIntervalCount;
+    }
+
+    /**
+     * memoryAggregationIntervalSeconds is the length of a single interval (in seconds) for which the peak memory usage is computed. Memory usage peaks are aggregated in multiples of this interval. In other words, there is one memory usage sample per interval (the maximum usage over that interval).
+     */
+    @JsonProperty("memoryAggregationIntervalSeconds")
+    public Integer getMemoryAggregationIntervalSeconds() {
+        return memoryAggregationIntervalSeconds;
+    }
+
+    /**
+     * memoryAggregationIntervalSeconds is the length of a single interval (in seconds) for which the peak memory usage is computed. Memory usage peaks are aggregated in multiples of this interval. In other words, there is one memory usage sample per interval (the maximum usage over that interval).
+     */
+    @JsonProperty("memoryAggregationIntervalSeconds")
+    public void setMemoryAggregationIntervalSeconds(Integer memoryAggregationIntervalSeconds) {
+        this.memoryAggregationIntervalSeconds = memoryAggregationIntervalSeconds;
+    }
+
+    /**
      * Specifies the minimal amount of resources that will be recommended for the container. The default is no minimum.
      */
     @JsonProperty("minAllowed")
@@ -244,6 +288,22 @@ public class ContainerResourcePolicy implements Editable<ContainerResourcePolicy
     @JsonProperty("oomMinBumpUp")
     public void setOomMinBumpUp(Quantity oomMinBumpUp) {
         this.oomMinBumpUp = oomMinBumpUp;
+    }
+
+    /**
+     * ContainerResourcePolicy controls how autoscaler computes the recommended resources for a specific container.
+     */
+    @JsonProperty("startupBoost")
+    public StartupBoost getStartupBoost() {
+        return startupBoost;
+    }
+
+    /**
+     * ContainerResourcePolicy controls how autoscaler computes the recommended resources for a specific container.
+     */
+    @JsonProperty("startupBoost")
+    public void setStartupBoost(StartupBoost startupBoost) {
+        this.startupBoost = startupBoost;
     }
 
     @JsonIgnore

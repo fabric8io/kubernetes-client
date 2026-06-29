@@ -42,7 +42,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -58,9 +57,6 @@ class InputStreamReadStreamTest {
 
   @Captor
   private ArgumentCaptor<Long> resetCodeCaptor;
-
-  @Captor
-  private ArgumentCaptor<Throwable> resetCauseCaptor;
 
   private AutoCloseable mocks;
 
@@ -160,7 +156,7 @@ class InputStreamReadStreamTest {
     assertThat(exceptionRef.get()).isNotNull();
 
     await().atMost(1, TimeUnit.SECONDS)
-        .untilAsserted(() -> verify(httpRequest, times(1)).reset(anyLong(), any(Throwable.class)));
+        .untilAsserted(() -> verify(httpRequest, times(1)).reset(anyLong()));
   }
 
   @Test
@@ -293,9 +289,10 @@ class InputStreamReadStreamTest {
     assertThat(caughtException.get()).isInstanceOf(IOException.class);
 
     await().atMost(1, TimeUnit.SECONDS)
-        .untilAsserted(() -> verify(httpRequest).reset(resetCodeCaptor.capture(), resetCauseCaptor.capture()));
-    assertThat(resetCodeCaptor.getValue()).isZero();
-    assertThat(resetCauseCaptor.getValue()).isSameAs(caughtException.get());
+        .untilAsserted(() -> verify(httpRequest).reset(resetCodeCaptor.capture()));
+    // HTTP/2 CANCEL (0x8), no cause: mapException must not unwrap to the IOException, which
+    // StandardHttpClient's retry layer would re-issue (see InputStreamReadStream#handleReadError).
+    assertThat(resetCodeCaptor.getValue()).isEqualTo(0x8L);
   }
 
   @Test

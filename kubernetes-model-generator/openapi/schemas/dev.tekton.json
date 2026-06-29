@@ -4432,6 +4432,18 @@
         "name": {
           "description": "Name of the referent; More info: http://kubernetes.io/docs/user-guide/identifiers#names",
           "type": "string"
+        },
+        "params": {
+          "description": "Params contains the parameters used to identify the referenced Tekton resource. Example entries might include \"repo\" or \"path\" but the set of params ultimately depends on the chosen resolver.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.tekton.v1.Param"
+          }
+        },
+        "resolver": {
+          "description": "Resolver is the name of the resolver that should perform resolution of the referenced Tekton resource, such as \"git\".",
+          "type": "string"
         }
       },
       "x-fabric8-info": {
@@ -5218,6 +5230,18 @@
       "properties": {
         "name": {
           "description": "Name of the referenced step",
+          "type": "string"
+        },
+        "params": {
+          "description": "Params contains the parameters used to identify the referenced Tekton resource. Example entries might include \"repo\" or \"path\" but the set of params ultimately depends on the chosen resolver.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.tekton.v1.Param"
+          }
+        },
+        "resolver": {
+          "description": "Resolver is the name of the resolver that should perform resolution of the referenced Tekton resource, such as \"git\".",
           "type": "string"
         }
       },
@@ -6035,6 +6059,18 @@
         },
         "name": {
           "description": "Name of the referent; More info: http://kubernetes.io/docs/user-guide/identifiers#names",
+          "type": "string"
+        },
+        "params": {
+          "description": "Params contains the parameters used to identify the referenced Tekton resource. Example entries might include \"repo\" or \"path\" but the set of params ultimately depends on the chosen resolver.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.tekton.v1.Param"
+          }
+        },
+        "resolver": {
+          "description": "Resolver is the name of the resolver that should perform resolution of the referenced Tekton resource, such as \"git\".",
           "type": "string"
         }
       },
@@ -8586,6 +8622,18 @@
         "name": {
           "description": "Name of the referent; More info: http://kubernetes.io/docs/user-guide/identifiers#names",
           "type": "string"
+        },
+        "params": {
+          "description": "Params contains the parameters used to identify the referenced Tekton resource. Example entries might include \"repo\" or \"path\" but the set of params ultimately depends on the chosen resolver.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.tekton.v1beta1.Param"
+          }
+        },
+        "resolver": {
+          "description": "Resolver is the name of the resolver that should perform resolution of the referenced Tekton resource, such as \"git\".",
+          "type": "string"
         }
       },
       "x-fabric8-info": {
@@ -9553,6 +9601,18 @@
       "properties": {
         "name": {
           "description": "Name of the referenced step",
+          "type": "string"
+        },
+        "params": {
+          "description": "Params contains the parameters used to identify the referenced Tekton resource. Example entries might include \"repo\" or \"path\" but the set of params ultimately depends on the chosen resolver.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.tekton.v1beta1.Param"
+          }
+        },
+        "resolver": {
+          "description": "Resolver is the name of the resolver that should perform resolution of the referenced Tekton resource, such as \"git\".",
           "type": "string"
         }
       },
@@ -10597,6 +10657,18 @@
         },
         "name": {
           "description": "Name of the referent; More info: http://kubernetes.io/docs/user-guide/identifiers#names",
+          "type": "string"
+        },
+        "params": {
+          "description": "Params contains the parameters used to identify the referenced Tekton resource. Example entries might include \"repo\" or \"path\" but the set of params ultimately depends on the chosen resolver.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/dev.tekton.v1beta1.Param"
+          }
+        },
+        "resolver": {
+          "description": "Resolver is the name of the resolver that should perform resolution of the referenced Tekton resource, such as \"git\".",
           "type": "string"
         }
       },

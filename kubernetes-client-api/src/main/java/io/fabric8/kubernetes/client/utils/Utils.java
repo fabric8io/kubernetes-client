@@ -174,6 +174,9 @@ public class Utils {
       }
       t.addSuppressed(new Throwable("waiting here"));
       throw KubernetesClientException.launderThrowable(t);
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(e);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }

@@ -37,7 +37,9 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "disabled",
     "message",
+    "name",
     "status"
 })
 @ToString
@@ -65,8 +67,12 @@ import lombok.experimental.Accessors;
 public class HubSourceStatus implements Editable<HubSourceStatusBuilder>, KubernetesResource
 {
 
+    @JsonProperty("disabled")
+    private Boolean disabled;
     @JsonProperty("message")
     private String message;
+    @JsonProperty("name")
+    private String name;
     @JsonProperty("status")
     private String status;
     @JsonIgnore
@@ -78,10 +84,28 @@ public class HubSourceStatus implements Editable<HubSourceStatusBuilder>, Kubern
     public HubSourceStatus() {
     }
 
-    public HubSourceStatus(String message, String status) {
+    public HubSourceStatus(Boolean disabled, String message, String name, String status) {
         super();
+        this.disabled = disabled;
         this.message = message;
+        this.name = name;
         this.status = status;
+    }
+
+    /**
+     * disabled is used to disable a default hub source on cluster
+     */
+    @JsonProperty("disabled")
+    public Boolean getDisabled() {
+        return disabled;
+    }
+
+    /**
+     * disabled is used to disable a default hub source on cluster
+     */
+    @JsonProperty("disabled")
+    public void setDisabled(Boolean disabled) {
+        this.disabled = disabled;
     }
 
     /**
@@ -98,6 +122,22 @@ public class HubSourceStatus implements Editable<HubSourceStatusBuilder>, Kubern
     @JsonProperty("message")
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    /**
+     * name is the name of one of the default hub sources
+     */
+    @JsonProperty("name")
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * name is the name of one of the default hub sources
+     */
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**

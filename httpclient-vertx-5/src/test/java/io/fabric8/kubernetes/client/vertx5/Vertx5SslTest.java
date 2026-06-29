@@ -15,9 +15,11 @@
  */
 package io.fabric8.kubernetes.client.vertx5;
 
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.internal.SSLUtils;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
@@ -26,19 +28,23 @@ import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.net.SelfSignedCertificate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class Vertx5SslTest {
 
   private Vertx vertx;
   private HttpServer server;
+  private int port;
   private volatile Handler<HttpServerRequest> requestHandler;
   private HttpClient.Factory clientFactory = new Vertx5HttpClientFactory();
   private TrustManager[] trustManagers;
@@ -58,7 +64,8 @@ class Vertx5SslTest {
             req.response().setStatusCode(404).end();
           }
         });
-    server.listen(8443).toCompletionStage().toCompletableFuture().get(20, TimeUnit.SECONDS);
+    server.listen(0).toCompletionStage().toCompletableFuture().get(20, TimeUnit.SECONDS);
+    port = server.actualPort();
     TrustManagerFactory tmf = cert.trustOptions().getTrustManagerFactory(vertx);
     trustManagers = tmf.getTrustManagers();
   }
@@ -75,9 +82,96 @@ class Vertx5SslTest {
     };
     HttpClient.Builder builder = clientFactory.newBuilder().sslContext(null, trustManagers);
     HttpClient client = builder.build();
-    HttpRequest request = client.newHttpRequestBuilder().uri("https://localhost:8443").build();
+    HttpRequest request = client.newHttpRequestBuilder().uri("https://localhost:" + port).build();
     HttpResponse<String> resp = client.sendAsync(request, String.class).get(10, TimeUnit.SECONDS);
     assertEquals(200, resp.code());
     assertEquals("OK", resp.bodyString());
+  }
+
+  @Test
+  @DisplayName("TLS warm-up is harmless and idempotent: two successive client builds both connect successfully")
+  void tlsWarmUpIsHarmlessAndIdempotent() throws Exception {
+    requestHandler = req -> req.response().end("OK");
+    for (int i = 0; i < 2; i++) {
+      try (HttpClient client = clientFactory.newBuilder().sslContext(null, trustManagers).build()) {
+        HttpRequest request = client.newHttpRequestBuilder().uri("https://localhost:" + port).build();
+        HttpResponse<String> resp = client.sendAsync(request, String.class).get(10, TimeUnit.SECONDS);
+        assertEquals(200, resp.code());
+        assertEquals("OK", resp.bodyString());
+      }
+    }
+  }
+
+  @Test
+  @DisplayName("TLS warm-up defaults to CONTEXT so existing clients keep the #7922 build-time warm-up unchanged")
+  void tlsWarmupDefaultsToContext() {
+    assertEquals(TlsWarmup.CONTEXT, new Vertx5HttpClientFactory().getTlsWarmup());
+  }
+
+  @Test
+  @DisplayName("A null TLS warm-up mode falls back to CONTEXT rather than disabling the warm-up")
+  void tlsWarmupSetterRejectsNull() {
+    final Vertx5HttpClientFactory factory = new Vertx5HttpClientFactory();
+    factory.setTlsWarmup(null);
+    assertEquals(TlsWarmup.CONTEXT, factory.getTlsWarmup());
+  }
+
+  @Test
+  @DisplayName("setTlsWarmup round-trips each mode (OFF, CONTEXT, FULL) through getTlsWarmup")
+  void tlsWarmupRoundTripsAllModes() {
+    final Vertx5HttpClientFactory factory = new Vertx5HttpClientFactory();
+    factory.setTlsWarmup(TlsWarmup.OFF);
+    assertEquals(TlsWarmup.OFF, factory.getTlsWarmup());
+    factory.setTlsWarmup(TlsWarmup.FULL);
+    assertEquals(TlsWarmup.FULL, factory.getTlsWarmup());
+    factory.setTlsWarmup(TlsWarmup.CONTEXT);
+    assertEquals(TlsWarmup.CONTEXT, factory.getTlsWarmup());
+  }
+
+  @Test
+  @DisplayName("FULL TLS warm-up is harmless and idempotent: two successive FULL client builds both connect over HTTPS")
+  void fullTlsWarmupIsHarmlessAndIdempotent() throws Exception {
+    requestHandler = req -> req.response().end("OK");
+    final Vertx5HttpClientFactory factory = new Vertx5HttpClientFactory();
+    factory.setTlsWarmup(TlsWarmup.FULL);
+    for (int i = 0; i < 2; i++) {
+      try (HttpClient client = factory.newBuilder().sslContext(null, trustManagers).build()) {
+        HttpRequest request = client.newHttpRequestBuilder().uri("https://localhost:" + port).build();
+        HttpResponse<String> resp = client.sendAsync(request, String.class).get(30, TimeUnit.SECONDS);
+        assertEquals(200, resp.code());
+        assertEquals("OK", resp.bodyString());
+      }
+    }
+  }
+
+  @Test
+  @DisplayName("OFF TLS warm-up skips warm-up entirely yet a client built with it still connects over HTTPS")
+  void offTlsWarmupClientConnectsOverHttps() throws Exception {
+    requestHandler = req -> req.response().end("OK");
+    final Vertx5HttpClientFactory factory = new Vertx5HttpClientFactory();
+    factory.setTlsWarmup(TlsWarmup.OFF);
+    try (HttpClient client = factory.newBuilder().sslContext(null, trustManagers).build()) {
+      HttpRequest request = client.newHttpRequestBuilder().uri("https://localhost:" + port).build();
+      HttpResponse<String> resp = client.sendAsync(request, String.class).get(10, TimeUnit.SECONDS);
+      assertEquals(200, resp.code());
+      assertEquals("OK", resp.bodyString());
+    }
+  }
+
+  @Test
+  @DisplayName("HTTPS rejects an untrusted server certificate instead of falling back to a permissive trust")
+  void httpsRejectsUntrustedCertificate() throws Exception {
+    requestHandler = req -> req.response().end("OK");
+    // Default JVM trust store does not contain the server's self-signed certificate, so the unified
+    // TLS configuration must reject it rather than silently trusting everything.
+    final TrustManager[] untrustingManagers = SSLUtils.trustManagers(null, null, false, null, null);
+    final HttpClient client = clientFactory.newBuilder()
+        .sslContext(null, untrustingManagers)
+        // Disable retries so the handshake failure surfaces on the first attempt instead of being
+        // retried until the get() timeout.
+        .tag(new RequestConfigBuilder().withRequestRetryBackoffLimit(0).build())
+        .build();
+    final HttpRequest request = client.newHttpRequestBuilder().uri("https://localhost:" + port).build();
+    assertThrows(ExecutionException.class, () -> client.sendAsync(request, String.class).get(10, TimeUnit.SECONDS));
   }
 }

@@ -1,0 +1,4 @@
+io.fabric8.openshift.api.model.autoscaling.v1.ClusterAutoscaler
+io.fabric8.openshift.api.model.autoscaling.v1.ClusterAutoscalerList
+io.fabric8.openshift.api.model.autoscaling.v1beta1.MachineAutoscaler
+io.fabric8.openshift.api.model.autoscaling.v1beta1.MachineAutoscalerList
