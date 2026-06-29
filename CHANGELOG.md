@@ -1,5 +1,17 @@
 ## CHANGELOG
 
+### 7.9-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes
+
 ### 7.8.0 (2026-06-29)
 
 #### Bugs
