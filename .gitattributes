@@ -1,3 +1,6 @@
 # eol style
 *.sh    text eol=lf
 *.bat   text eol=crlf
+
+# generated code — collapse diffs in GitHub PR review
+**/src/generated/** linguist-generated=true
