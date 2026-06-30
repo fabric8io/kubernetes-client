@@ -3,4 +3,4 @@
 *.bat   text eol=crlf
 
 # collapse generated source diffs in PR reviews
-src/generated/** linguist-generated=true
+**/src/generated/** linguist-generated=true
