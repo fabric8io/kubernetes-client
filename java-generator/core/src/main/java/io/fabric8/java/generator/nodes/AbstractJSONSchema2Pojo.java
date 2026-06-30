@@ -151,6 +151,18 @@ public abstract class AbstractJSONSchema2Pojo {
     return str.replace("\"", "\\\"").replace("\'", "\\\'");
   }
 
+  protected static String sanitizeJavadoc(String value) {
+    if (value == null) {
+      return "";
+    }
+    return value
+        .replace("&", "&amp;")
+        .replace("\\u", "&#92;u")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace("*/", "&#042;&#047;");
+  }
+
   private static String getRefinedIntegerType(String format) {
     if (format == null || format.equals(INT64_CRD_TYPE)) {
       return INT64_CRD_TYPE;

@@ -3,6 +3,7 @@
 ### 7.9-SNAPSHOT
 
 #### Bugs
+* Fix #7955: (java-generator) Malicious CRD schema values can no longer inject executable code into the generated Java sources. Each generated class is re-parsed and structurally validated before it is written (with Java Unicode escape preprocessing enabled to match `javac`), so any enum value, name or description that alters the generated structure aborts generation; property descriptions additionally neutralize Unicode escape introducers
 
 #### Improvements
 
