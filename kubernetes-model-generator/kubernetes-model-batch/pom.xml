@@ -87,21 +87,30 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <proc>full</proc>
-              <annotationProcessorPaths>
-                <path>
-                  <groupId>org.projectlombok</groupId>
-                  <artifactId>lombok</artifactId>
-                  <version>${lombok.version}</version>
-                </path>
-                <path>
-                  <groupId>io.sundr</groupId>
-                  <artifactId>builder-annotations</artifactId>
-                  <version>${sundrio.version}</version>
-                </path>
-              </annotationProcessorPaths>
-            </configuration>
+            <executions>
+              <execution>
+                <id>generate-sundrio</id>
+                <phase>process-sources</phase>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <proc>only</proc>
+                  <annotationProcessorPaths>
+                    <path>
+                      <groupId>org.projectlombok</groupId>
+                      <artifactId>lombok</artifactId>
+                      <version>${lombok.version}</version>
+                    </path>
+                    <path>
+                      <groupId>io.sundr</groupId>
+                      <artifactId>builder-annotations</artifactId>
+                      <version>${sundrio.version}</version>
+                    </path>
+                  </annotationProcessorPaths>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -109,7 +118,7 @@
             <executions>
               <execution>
                 <id>copy-sundrio-generated-sources</id>
-                <phase>compile</phase>
+                <phase>process-sources</phase>
                 <goals>
                   <goal>run</goal>
                 </goals>
