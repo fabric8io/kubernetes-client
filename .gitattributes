@@ -1,3 +1,6 @@
 # eol style
 *.sh    text eol=lf
 *.bat   text eol=crlf
+
+# collapse generated source diffs in PR reviews
+src/generated/** linguist-generated=true
