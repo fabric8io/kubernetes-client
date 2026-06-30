@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
@@ -246,16 +247,37 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   synchronized void scheduleResync(BooleanSupplier resyncFunc) {
     // schedule the resync runnable
     if (resyncCheckPeriodMillis > 0) {
-      resyncFuture = Utils.scheduleAtFixedRate(informerExecutor, () -> {
-        if (logger.isDebugEnabled()) {
-          logger.debug("Checking for resync at interval for {}", this);
-        }
-        if (resyncFunc.getAsBoolean()) {
-          logger.debug("Resync running for {}", this);
-          processorStore.resync();
+      CompletableFuture<?> scheduledResync = Utils.scheduleAtFixedRate(informerExecutor, () -> {
+        // A failure in a single resync cycle must not propagate out of this command: the periodic
+        // scheduler re-arms the next cycle only when the previous one completes normally, so an
+        // uncaught exception here would permanently (and silently) stop all future resyncs while
+        // the watch keeps running. Catch, log, and let the schedule fire again next interval (#7435).
+        try {
+          if (logger.isDebugEnabled()) {
+            logger.debug("Checking for resync at interval for {}", this);
+          }
+          if (resyncFunc.getAsBoolean()) {
+            logger.debug("Resync running for {}", this);
+            processorStore.resync();
+          }
+        } catch (Exception e) {
+          logger.warn("Resync for {} failed; it will be retried at the next interval", this, e);
         }
       }, resyncCheckPeriodMillis,
           resyncCheckPeriodMillis, TimeUnit.MILLISECONDS);
+      // Safety net: the periodic schedule above is expected to keep firing until the informer is
+      // stopped (which cancels it). Should it instead terminate exceptionally (e.g. an Error such
+      // as OutOfMemoryError escaping the per-cycle catch above), surface it rather than letting
+      // resync die silently, which is the exact failure mode reported in #7435. Note this does not
+      // cover the informer executor rejecting a cycle: that throws synchronously before the
+      // schedule's whenComplete is wired up, leaving the future uncompleted (deferred follow-up).
+      scheduledResync.whenComplete((v, e) -> {
+        if (e != null && !(e instanceof CancellationException)) {
+          logger.warn("Resync scheduling for {} stopped unexpectedly; resync will not resume until the informer is restarted",
+              this, e);
+        }
+      });
+      resyncFuture = scheduledResync;
     } else {
       logger.debug("Resync skipped due to 0 full resync period for {}", this);
     }

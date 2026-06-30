@@ -22,6 +22,7 @@ import io.vertx.ext.web.client.WebClientOptions;
 public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http.HttpClient.Factory {
 
   final Vertx sharedVertx;
+  private volatile TlsWarmup tlsWarmup = TlsWarmup.CONTEXT;
 
   @Override
   public int priority() {
@@ -54,5 +55,24 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
    */
   protected void additionalConfig(WebClientOptions options) {
     // no default implementation
+  }
+
+  /**
+   * Returns the configured {@link TlsWarmup} mode (never {@code null}).
+   *
+   * @return the TLS warm-up mode applied when building TLS-enabled clients
+   */
+  public TlsWarmup getTlsWarmup() {
+    return tlsWarmup;
+  }
+
+  /**
+   * Configures how the TLS stack is warmed up off the Vert.x event loop when a TLS-enabled client
+   * is built. See {@link TlsWarmup} for the trade-offs of each mode.
+   *
+   * @param tlsWarmup the warm-up mode; {@code null} resets it to the default {@link TlsWarmup#CONTEXT}
+   */
+  public void setTlsWarmup(TlsWarmup tlsWarmup) {
+    this.tlsWarmup = tlsWarmup == null ? TlsWarmup.CONTEXT : tlsWarmup;
   }
 }
