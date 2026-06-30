@@ -59,7 +59,7 @@ jobs:
         run: |
           git add .
           IGNORED_PATTERNS="validation-schema.json"
-          INCLUDE_PATTERNS="kube-schema.json\|src/generated/java\|src/generated/resources\|openapi/schemas/"
+          INCLUDE_PATTERNS="kube-schema.json\|src/generated/java\|src/generated-builders/java\|src/generated/resources\|openapi/schemas/"
           MODIFIED_FILES_COUNT=$(git status | grep -v "$IGNORED_PATTERNS" | grep "$INCLUDE_PATTERNS" | wc -l)
           if [ $MODIFIED_FILES_COUNT -eq "0" ]; then
             echo "No Schema files modified. Build Success.";
