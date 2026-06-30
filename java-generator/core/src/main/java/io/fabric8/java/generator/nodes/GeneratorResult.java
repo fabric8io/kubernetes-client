@@ -15,7 +15,9 @@
  */
 package io.fabric8.java.generator.nodes;
 
-import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.JavaParser;
+import com.github.javaparser.ParseResult;
+import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.BodyDeclaration;
@@ -46,13 +48,20 @@ public class GeneratorResult {
     }
 
     private static void assertStructuralIntegrity(CompilationUnit original, String javaSource) {
-      CompilationUnit reparsed;
+      final ParseResult<CompilationUnit> result;
       try {
-        reparsed = StaticJavaParser.parse(javaSource);
+        // Mirror javac, which decodes Java Unicode escapes before lexing. Without this, a schema
+        // value carrying such an escape round-trips as an inert string literal while re-parsing
+        // but breaks out of it at compile time, slipping past the structural checks below.
+        result = new JavaParser(new ParserConfiguration().setPreprocessUnicodeEscapes(true))
+            .parse(javaSource);
       } catch (Exception e) {
         throw new JavaGeneratorException(
             "Generated source failed to re-parse, possible code injection in CRD schema values", e);
       }
+      CompilationUnit reparsed = result.getResult()
+          .orElseThrow(() -> new JavaGeneratorException(
+              "Generated source failed to re-parse, possible code injection in CRD schema values"));
       List<TypeDeclaration<?>> originalTypes = original.getTypes();
       List<TypeDeclaration<?>> reparsedTypes = reparsed.getTypes();
       if (originalTypes.size() != reparsedTypes.size()) {

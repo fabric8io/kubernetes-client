@@ -1,0 +1,43 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# The `singular` name smuggles a Java Unicode escape (\u0022) that re-parses as an inert
+# string literal but, once javac decodes the escape before lexing, closes the @Singular string
+# literal and injects an extra top-level class with a static initializer into the generated source.
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: foos.example.com
+spec:
+  group: example.com
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                field:
+                  type: string
+  scope: Namespaced
+  names:
+    plural: foos
+    singular: '\u0022) class Pwned { static { java.lang.Runtime.getRuntime(); } } @SuppressWarnings(\u0022'
+    kind: Foo
