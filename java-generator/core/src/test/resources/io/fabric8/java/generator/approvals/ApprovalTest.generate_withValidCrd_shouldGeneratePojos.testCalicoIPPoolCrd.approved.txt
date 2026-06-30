@@ -1,6 +1,6 @@
 CalicoIPPoolCr[0] = package org.test.v1;
 
-@io.fabric8.kubernetes.model.annotation.Version(value = "v1" , storage = true , served = true)
+@io.fabric8.kubernetes.model.annotation.Version(value = "v1", storage = true, served = true)
 @io.fabric8.kubernetes.model.annotation.Group("crd.projectcalico.org")
 @io.fabric8.kubernetes.model.annotation.Singular("ippool")
 @io.fabric8.kubernetes.model.annotation.Plural("ippools")

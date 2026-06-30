@@ -147,10 +147,6 @@ public abstract class AbstractJSONSchema2Pojo {
     return sanitized;
   }
 
-  public static String escapeQuotes(String str) {
-    return str.replace("\"", "\\\"").replace("\'", "\\\'");
-  }
-
   protected static String sanitizeJavadoc(String value) {
     if (value == null) {
       return "";

@@ -136,7 +136,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
   }
 
   private String getSortedFieldsAsParam(Set<String> list) {
-    List<String> sortedFields = list.stream().map(AbstractJSONSchema2Pojo::escapeQuotes).sorted().collect(Collectors.toList());
+    List<String> sortedFields = list.stream().map(StringEscapeUtils::escapeJava).sorted().collect(Collectors.toList());
 
     StringBuilder sb = new StringBuilder();
     sb.append("{");
@@ -213,7 +213,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
       }
       buffer.addAll(gr.getTopLevelClasses());
 
-      String originalFieldName = AbstractJSONSchema2Pojo.escapeQuotes(k);
+      String originalFieldName = StringEscapeUtils.escapeJava(k);
       String fieldName = AbstractJSONSchema2Pojo.sanitizeString(k);
       String fieldType = prop.getType();
 

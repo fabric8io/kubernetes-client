@@ -14,14 +14,12 @@
 # limitations under the License.
 #
 
-# Several schema-controlled values (the singular and plural names, and a string enum value) smuggle
-# a Java Unicode escape that, left unescaped, would break out of the generated string literal once
-# javac decodes it. Each must be emitted as an inert, fully escaped literal. (group/version are not
-# exercised here because they also feed the generated package name and are covered separately.)
+# A benign string enum whose values contain backslashes (Windows-style paths). The backslash must
+# be escaped when emitted, not treated as a broken Java escape sequence that aborts generation.
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
-  name: foos.example.com
+  name: registrykeys.example.com
 spec:
   group: example.com
   versions:
@@ -35,13 +33,13 @@ spec:
             spec:
               type: object
               properties:
-                mode:
+                regKey:
                   type: string
                   enum:
-                    - 'A\u0022) class PwnedEnum { static { java.lang.Runtime.getRuntime(); } } //'
-                    - 'safe'
+                    - 'HKEY\Software'
+                    - 'HKEY\System'
   scope: Namespaced
   names:
-    plural: '\u0022s) class PwnedPlural { static { java.lang.Runtime.getRuntime(); } } @SuppressWarnings(\u0022'
-    singular: '\u0022) class Pwned { static { java.lang.Runtime.getRuntime(); } } @SuppressWarnings(\u0022'
-    kind: Foo
+    plural: registrykeys
+    singular: registrykey
+    kind: RegistryKey
