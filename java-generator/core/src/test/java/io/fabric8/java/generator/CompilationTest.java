@@ -163,12 +163,13 @@ class CompilationTest {
   }
 
   @Test
-  void neutralizesUnicodeEscapeInjectionInCrdNames() throws Exception {
-    // Arrange: a CRD whose `names.singular` smuggles a Java Unicode escape that, left unescaped,
-    // would break out of the generated @Singular string literal once javac decodes it.
+  void neutralizesUnicodeEscapeInjectionInSchemaValues() throws Exception {
+    // Arrange: a CRD whose `names.singular`, `names.plural` and a string enum value each smuggle a
+    // Java Unicode escape that, left unescaped, would break out of the generated string literal once
+    // javac decodes it (@Singular, @Plural, the enum constant value and its @JsonProperty).
     File crd = getCRD("malicious-unicode-escape-crd.yml");
 
-    // Act: the value is now emitted as a fully escaped (inert) string literal, so generation
+    // Act: every value is now emitted as a fully escaped (inert) string literal, so generation
     // succeeds and the result compiles. A real breakout would still trip the structural validation.
     new FileJavaGenerator(config, crd).run(tempDir);
     Compilation compilation = javac().compile(getSources(tempDir));
@@ -176,6 +177,22 @@ class CompilationTest {
     // Assert
     assertTrue(compilation.errors().isEmpty());
     assertEquals(Compilation.Status.SUCCESS, compilation.status());
+  }
+
+  @Test
+  void rejectsUnicodeEscapeInjectionInCrdVersion() throws Exception {
+    // Arrange: the version name feeds the generated package declaration, not only the @Version
+    // annotation, so a Unicode-escaped breakout there cannot be neutralized by literal escaping and
+    // must be rejected by the structural validation (same reasoning applies to the CRD group).
+    File crd = getCRD("malicious-version-crd.yml");
+
+    // Act & Assert
+    JavaGeneratorException exception = assertThrows(
+        JavaGeneratorException.class,
+        () -> new FileJavaGenerator(config, crd).run(tempDir));
+
+    assertTrue(exception.getMessage().contains("code injection"));
+    assertTrue(getSources(tempDir).isEmpty(), "Rejected CRDs must not emit Java source files");
   }
 
   @Test

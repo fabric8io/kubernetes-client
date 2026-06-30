@@ -20,9 +20,10 @@ import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.expr.BooleanLiteralExpr;
+import com.github.javaparser.ast.expr.MemberValuePair;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.Name;
-import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
@@ -89,15 +90,12 @@ public class JCRObject extends JObject implements JObjectExtraAnnotations {
     ClassOrInterfaceDeclaration clz = cu.addClass(className);
 
     clz.addAnnotation(
-        new SingleMemberAnnotationExpr(
+        new NormalAnnotationExpr(
             new Name("io.fabric8.kubernetes.model.annotation.Version"),
-            new NameExpr(
-                "value = \""
-                    + StringEscapeUtils.escapeJava(version)
-                    + "\" , storage = "
-                    + storage
-                    + " , served = "
-                    + served)));
+            new NodeList<>(
+                new MemberValuePair("value", new StringLiteralExpr(StringEscapeUtils.escapeJava(version))),
+                new MemberValuePair("storage", new BooleanLiteralExpr(storage)),
+                new MemberValuePair("served", new BooleanLiteralExpr(served)))));
     clz.addAnnotation(
         new SingleMemberAnnotationExpr(
             new Name("io.fabric8.kubernetes.model.annotation.Group"),

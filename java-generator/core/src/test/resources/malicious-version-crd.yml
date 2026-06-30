@@ -14,10 +14,9 @@
 # limitations under the License.
 #
 
-# Several schema-controlled values (the singular and plural names, and a string enum value) smuggle
-# a Java Unicode escape that, left unescaped, would break out of the generated string literal once
-# javac decodes it. Each must be emitted as an inert, fully escaped literal. (group/version are not
-# exercised here because they also feed the generated package name and are covered separately.)
+# The version name feeds the generated package declaration (not only the @Version annotation), so a
+# Unicode-escaped breakout here cannot be neutralized by literal escaping and must be rejected by the
+# structural validation. The same reasoning applies to the CRD group.
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -25,7 +24,7 @@ metadata:
 spec:
   group: example.com
   versions:
-    - name: v1
+    - name: 'v\u0022) class PwnedVersion { static { java.lang.Runtime.getRuntime(); } } //'
       served: true
       storage: true
       schema:
@@ -35,13 +34,10 @@ spec:
             spec:
               type: object
               properties:
-                mode:
+                field:
                   type: string
-                  enum:
-                    - 'A\u0022) class PwnedEnum { static { java.lang.Runtime.getRuntime(); } } //'
-                    - 'safe'
   scope: Namespaced
   names:
-    plural: '\u0022s) class PwnedPlural { static { java.lang.Runtime.getRuntime(); } } @SuppressWarnings(\u0022'
-    singular: '\u0022) class Pwned { static { java.lang.Runtime.getRuntime(); } } @SuppressWarnings(\u0022'
+    plural: foos
+    singular: foo
     kind: Foo
