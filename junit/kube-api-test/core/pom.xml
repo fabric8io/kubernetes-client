@@ -116,6 +116,36 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.moditect</groupId>
+                <artifactId>moditect-maven-plugin</artifactId>
+                <configuration>
+                    <module>
+                        <moduleInfoSource>
+                            open module io.fabric8.kube.api.test {
+                              exports io.fabric8.kubeapitest;
+                              exports io.fabric8.kubeapitest.binary;
+                              exports io.fabric8.kubeapitest.binary.repo;
+                              exports io.fabric8.kubeapitest.cert;
+                              exports io.fabric8.kubeapitest.junit;
+                              exports io.fabric8.kubeapitest.kubeconfig;
+                              exports io.fabric8.kubeapitest.process;
+
+                              requires org.apache.commons.compress;
+                              requires com.fasterxml.jackson.databind;
+                              requires com.fasterxml.jackson.dataformat.yaml;
+                              requires org.junit.jupiter.api;
+                              requires org.junit.jupiter.engine;
+                              requires org.slf4j;
+                              requires org.bouncycastle.pkix;
+                              requires org.bouncycastle.provider;
+
+                              uses io.fabric8.kubeapitest.junit.ClientInjectionHandler;
+                            }
+                        </moduleInfoSource>
+                    </module>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>

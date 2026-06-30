@@ -73,6 +73,28 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.moditect</groupId>
+                <artifactId>moditect-maven-plugin</artifactId>
+                <configuration>
+                    <module>
+                        <moduleInfoSource>
+                            open module io.fabric8.kube.api.test.client.inject {
+                              exports io.fabric8.kubeapitest.junit.inject;
+
+                              requires transitive io.fabric8.kube.api.test;
+                              requires io.fabric8.kubernetes.client;
+                              requires org.junit.jupiter.api;
+                              requires org.junit.jupiter.engine;
+                              requires org.slf4j;
+
+                              provides io.fabric8.kubeapitest.junit.ClientInjectionHandler with
+                                  io.fabric8.kubeapitest.junit.inject.Fabric8ClientInjectionHandler;
+                            }
+                        </moduleInfoSource>
+                    </module>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>

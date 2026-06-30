@@ -72,6 +72,27 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              open module io.fabric8.volumesnapshot.client {
+                exports io.fabric8.volumesnapshot.client;
+                exports io.fabric8.volumesnapshot.client.internal;
+
+                requires transitive io.fabric8.kubernetes.client;
+                requires transitive io.fabric8.kubernetes.client.api;
+                requires transitive io.fabric8.volumesnapshot.model;
+                requires static builder.annotations;
+                provides io.fabric8.kubernetes.client.extension.ExtensionAdapter with
+                    io.fabric8.volumesnapshot.client.VolumeSnapshotExtensionAdapter;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>io.sundr</groupId>
         <artifactId>sundr-maven-plugin</artifactId>
         <version>${sundrio.version}</version>

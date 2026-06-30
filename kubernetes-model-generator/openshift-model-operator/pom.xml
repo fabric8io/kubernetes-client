@@ -54,6 +54,35 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              open module io.fabric8.openshift.model.operator {
+                exports io.fabric8.openshift.api.model.operator.controlplane.v1alpha1;
+                exports io.fabric8.openshift.api.model.operator.imageregistry.v1;
+                exports io.fabric8.openshift.api.model.operator.ingress.v1;
+                exports io.fabric8.openshift.api.model.operator.network.v1;
+                exports io.fabric8.openshift.api.model.operator.v1;
+                exports io.fabric8.openshift.api.model.operator.v1alpha1;
+
+                requires transitive io.fabric8.kubernetes.model.admissionregistration;
+                requires transitive io.fabric8.openshift.model.config;
+                requires transitive com.fasterxml.jackson.annotation;
+                requires com.fasterxml.jackson.databind;
+                requires static builder.annotations;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
   <profiles>
     <profile>
       <id>generate</id>

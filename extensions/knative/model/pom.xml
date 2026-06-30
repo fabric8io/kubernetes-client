@@ -56,6 +56,58 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              open module io.fabric8.knative.model {
+                exports io.fabric8.knative.bindings.v1;
+                exports io.fabric8.knative.bindings.v1alpha1;
+                exports io.fabric8.knative.bindings.v1beta1;
+                exports io.fabric8.knative.duck.v1;
+                exports io.fabric8.knative.duck.v1alpha1;
+                exports io.fabric8.knative.duck.v1beta1;
+                exports io.fabric8.knative.eventing.pkg.apis.common.integration.v1alpha1;
+                exports io.fabric8.knative.eventing.v1;
+                exports io.fabric8.knative.eventing.v1alpha1;
+                exports io.fabric8.knative.eventing.v1beta1;
+                exports io.fabric8.knative.eventing.v1beta2;
+                exports io.fabric8.knative.eventing.v1beta3;
+                exports io.fabric8.knative.flows.v1;
+                exports io.fabric8.knative.internal.autoscaling.v1alpha1;
+                exports io.fabric8.knative.internal.caching.v1alpha1;
+                exports io.fabric8.knative.internal.networking.v1alpha1;
+                exports io.fabric8.knative.messaging.v1;
+                exports io.fabric8.knative.messaging.v1beta1;
+                exports io.fabric8.knative.pkg.apis;
+                exports io.fabric8.knative.pkg.tracker;
+                exports io.fabric8.knative.serving.v1;
+                exports io.fabric8.knative.serving.v1alpha1;
+                exports io.fabric8.knative.serving.v1beta1;
+                exports io.fabric8.knative.sinks.v1alpha1;
+                exports io.fabric8.knative.sources.v1;
+                exports io.fabric8.knative.sources.v1alpha1;
+                exports io.fabric8.knative.sources.v1beta1;
+                exports io.fabric8.knative.sources.v1beta2;
+
+                requires transitive io.fabric8.kubernetes.model.apps;
+                requires transitive io.fabric8.kubernetes.model.batch;
+                requires transitive io.fabric8.kubernetes.model.core;
+                requires transitive com.fasterxml.jackson.annotation;
+                requires com.fasterxml.jackson.databind;
+                requires static builder.annotations;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
   <profiles>
     <profile>
       <id>generate</id>

@@ -66,4 +66,29 @@
       <scope>runtime</scope>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              open module io.fabric8.tekton.client {
+                exports io.fabric8.tekton.client;
+                exports io.fabric8.tekton.client.dsl;
+
+                requires transitive io.fabric8.kubernetes.client;
+                requires transitive io.fabric8.kubernetes.client.api;
+                requires transitive io.fabric8.tekton.model;
+                requires static builder.annotations;
+                provides io.fabric8.kubernetes.client.extension.ExtensionAdapter with
+                    io.fabric8.tekton.client.TektonExtensionAdapter;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

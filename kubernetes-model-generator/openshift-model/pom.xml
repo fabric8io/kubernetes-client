@@ -34,6 +34,10 @@
     <clone-kube>true</clone-kube>
     <osgi.import>*</osgi.import>
     <osgi.export>
+      <!-- config.* lives in openshift-model-config; excluded so bnd does not embed it
+           (would create a JPMS split package on the module path) -->
+      !io.fabric8.openshift.api.model.config,
+      !io.fabric8.openshift.api.model.config.*,
       io.fabric8.openshift.api.model**,
       io.fabric8.openshift.api.model.customresourcestatus.conditions.v1**,
     </osgi.export>
@@ -53,6 +57,32 @@
       <artifactId>openshift-model-config</artifactId>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              open module io.fabric8.openshift.model {
+                exports io.fabric8.openshift.api.model;
+                exports io.fabric8.openshift.api.model.customresourcestatus.conditions.v1;
+
+                requires transitive io.fabric8.kubernetes.model.core;
+                requires transitive io.fabric8.kubernetes.model.rbac;
+                requires transitive io.fabric8.openshift.model.config;
+                requires transitive com.fasterxml.jackson.annotation;
+                requires com.fasterxml.jackson.databind;
+                requires static builder.annotations;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
   <profiles>
     <profile>

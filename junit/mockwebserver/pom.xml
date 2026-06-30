@@ -75,6 +75,31 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              open module io.fabric8.mockwebserver {
+                exports io.fabric8.mockwebserver;
+                exports io.fabric8.mockwebserver.crud;
+                exports io.fabric8.mockwebserver.dsl;
+                exports io.fabric8.mockwebserver.http;
+                exports io.fabric8.mockwebserver.internal;
+                exports io.fabric8.mockwebserver.utils;
+                exports io.fabric8.mockwebserver.vertx;
+
+                requires transitive com.fasterxml.jackson.databind;
+                requires io.vertx.web;
+                requires io.fabric8.zjsonpatch;
+                requires org.bouncycastle.pkix;
+                requires org.bouncycastle.provider;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
         <version>${gmavenplus-plugin.version}</version>

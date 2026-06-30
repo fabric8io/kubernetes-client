@@ -223,6 +223,66 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              open module io.fabric8.kubernetes.client.api {
+                exports io.fabric8.kubernetes.client;
+                exports io.fabric8.kubernetes.client.dsl;
+                exports io.fabric8.kubernetes.client.dsl.base;
+                exports io.fabric8.kubernetes.client.extended.leaderelection;
+                exports io.fabric8.kubernetes.client.extended.leaderelection.resourcelock;
+                exports io.fabric8.kubernetes.client.extended.run;
+                exports io.fabric8.kubernetes.client.extension;
+                exports io.fabric8.kubernetes.client.http;
+                exports io.fabric8.kubernetes.client.informers;
+                exports io.fabric8.kubernetes.client.informers.cache;
+                exports io.fabric8.kubernetes.client.internal;
+                exports io.fabric8.kubernetes.client.lib;
+                exports io.fabric8.kubernetes.client.readiness;
+                exports io.fabric8.kubernetes.client.utils;
+
+                requires transitive io.fabric8.kubernetes.model.core;
+                requires transitive io.fabric8.kubernetes.model.admissionregistration;
+                requires transitive io.fabric8.kubernetes.model.apiextensions;
+                requires transitive io.fabric8.kubernetes.model.apps;
+                requires transitive io.fabric8.kubernetes.model.autoscaling;
+                requires transitive io.fabric8.kubernetes.model.batch;
+                requires transitive io.fabric8.kubernetes.model.certificates;
+                requires transitive io.fabric8.kubernetes.model.coordination;
+                requires transitive io.fabric8.kubernetes.model.discovery;
+                requires transitive io.fabric8.kubernetes.model.events;
+                requires transitive io.fabric8.kubernetes.model.extensions;
+                requires transitive io.fabric8.kubernetes.model.flowcontrol;
+                requires transitive io.fabric8.kubernetes.model.gatewayapi;
+                requires transitive io.fabric8.kubernetes.model.metrics;
+                requires transitive io.fabric8.kubernetes.model.networking;
+                requires transitive io.fabric8.kubernetes.model.node;
+                requires transitive io.fabric8.kubernetes.model.policy;
+                requires transitive io.fabric8.kubernetes.model.rbac;
+                requires transitive io.fabric8.kubernetes.model.resource;
+                requires transitive io.fabric8.kubernetes.model.scheduling;
+                requires transitive io.fabric8.kubernetes.model.storageclass;
+
+                requires transitive com.fasterxml.jackson.annotation;
+                requires transitive com.fasterxml.jackson.databind;
+                requires com.fasterxml.jackson.core;
+                requires com.fasterxml.jackson.dataformat.yaml;
+                requires com.fasterxml.jackson.datatype.jsr310;
+                requires org.snakeyaml.engine;
+                requires org.slf4j;
+                requires static builder.annotations;
+                requires static org.osgi.service.component.annotations;
+
+                uses io.fabric8.kubernetes.client.http.HttpClient.Factory;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>

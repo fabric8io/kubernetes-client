@@ -148,6 +148,7 @@
     <exec.maven-plugin.version>3.6.3</exec.maven-plugin.version>
     <maven.compiler.plugin.version>3.15.0</maven.compiler.plugin.version>
     <maven.bundle.plugin.version>5.1.9</maven.bundle.plugin.version>
+    <moditect.plugin.version>1.2.2.Final</moditect.plugin.version>
     <maven.buildhelper.plugin.version>3.6.1</maven.buildhelper.plugin.version>
     <maven.jar.plugin.version>3.5.0</maven.jar.plugin.version>
     <maven.surefire.plugin.version>3.5.6</maven.surefire.plugin.version>
@@ -1138,6 +1139,30 @@
             </analysisConfiguration>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.moditect</groupId>
+          <artifactId>moditect-maven-plugin</artifactId>
+          <version>${moditect.plugin.version}</version>
+          <executions>
+            <execution>
+              <id>add-module-info</id>
+              <phase>package</phase>
+              <goals>
+                <goal>add-module-info</goal>
+              </goals>
+              <configuration>
+                <!-- Descriptors are injected post-compile rather than written as module-info.java:
+                     the model classes and all builders are produced by the Sundrio annotation
+                     processor, so the exported packages do not exist when javac would validate an
+                     inline module-info (it fails with "package is empty or does not exist").
+                     Explicit moduleInfoSource per module, NOT jdeps auto-generation: jdeps fails on
+                     the provided-scope sundr toolchain, whose jars share a split package
+                     (sundr.model.base & sundr.model.utils both export io.sundr.model). -->
+                <overwriteExistingFiles>true</overwriteExistingFiles>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -1722,29 +1747,6 @@
           <plugin>
             <groupId>org.revapi</groupId>
             <artifactId>revapi-maven-plugin</artifactId>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>jpms-module-name</id>
-      <activation>
-        <file>
-          <exists>${basedir}/src/main/resources/META-INF/services/io.fabric8.kubernetes.client.http.HttpClient$Factory</exists>
-        </file>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <configuration>
-              <archive>
-                <manifestEntries>
-                  <Automatic-Module-Name>${jpms.module.name}</Automatic-Module-Name>
-                </manifestEntries>
-              </archive>
-            </configuration>
           </plugin>
         </plugins>
       </build>

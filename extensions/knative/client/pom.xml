@@ -67,4 +67,29 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              open module io.fabric8.knative.client {
+                exports io.fabric8.knative.client;
+                exports io.fabric8.knative.client.serving.v1;
+
+                requires transitive io.fabric8.knative.model;
+                requires transitive io.fabric8.kubernetes.client;
+                requires transitive io.fabric8.kubernetes.client.api;
+                requires static builder.annotations;
+                provides io.fabric8.kubernetes.client.extension.ExtensionAdapter with
+                    io.fabric8.knative.client.KnativeExtensionAdapter;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

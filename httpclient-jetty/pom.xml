@@ -29,7 +29,6 @@
   <name>Fabric8 :: Kubernetes :: HttpClient :: Jetty</name>
 
   <properties>
-    <jpms.module.name>io.fabric8.kubernetes.client.jetty</jpms.module.name>
     <osgi.require-capability>
       osgi.extender;
       filter:="(osgi.extender=osgi.serviceloader.registrar)",
@@ -103,6 +102,27 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              module io.fabric8.kubernetes.client.jetty {
+                exports io.fabric8.kubernetes.client.jetty;
+
+                requires transitive io.fabric8.kubernetes.client.api;
+                requires org.eclipse.jetty.client;
+                requires org.eclipse.jetty.http2.http.client.transport;
+                requires org.eclipse.jetty.websocket.jetty.client;
+
+                provides io.fabric8.kubernetes.client.http.HttpClient.Factory with
+                    io.fabric8.kubernetes.client.jetty.JettyHttpClientFactory;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>

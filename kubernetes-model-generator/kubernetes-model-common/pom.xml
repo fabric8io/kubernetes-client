@@ -93,6 +93,29 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              open module io.fabric8.kubernetes.model.common {
+                exports io.fabric8.kubernetes.api.builder;
+                exports io.fabric8.kubernetes.model;
+                exports io.fabric8.kubernetes.model.annotation;
+                exports io.fabric8.kubernetes.model.jackson;
+                exports io.fabric8.kubernetes.model.util;
+
+                requires transitive com.fasterxml.jackson.annotation;
+                requires transitive com.fasterxml.jackson.databind;
+                requires com.fasterxml.jackson.core;
+                requires org.slf4j;
+                requires static builder.annotations;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 

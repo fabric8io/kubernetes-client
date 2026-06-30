@@ -29,7 +29,6 @@
   <name>Fabric8 :: Kubernetes :: HttpClient :: Vert.x</name>
 
   <properties>
-    <jpms.module.name>io.fabric8.kubernetes.client.vertx</jpms.module.name>
     <osgi.require-capability>
       osgi.extender;
       filter:="(osgi.extender=osgi.serviceloader.registrar)",
@@ -108,6 +107,26 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              module io.fabric8.kubernetes.client.vertx {
+                exports io.fabric8.kubernetes.client.vertx;
+
+                requires transitive io.fabric8.kubernetes.client.api;
+                requires io.vertx.core;
+                requires io.vertx.web.client;
+
+                provides io.fabric8.kubernetes.client.http.HttpClient.Factory with
+                    io.fabric8.kubernetes.client.vertx.VertxHttpClientFactory;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>

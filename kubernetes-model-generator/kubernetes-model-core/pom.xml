@@ -125,6 +125,34 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              open module io.fabric8.kubernetes.model.core {
+                exports io.fabric8.kubernetes.api;
+                exports io.fabric8.kubernetes.api.model;
+                exports io.fabric8.kubernetes.api.model.clusterapi.core.v1beta1;
+                exports io.fabric8.kubernetes.api.model.runtime;
+                exports io.fabric8.kubernetes.api.model.version;
+                exports io.fabric8.kubernetes.internal;
+
+                requires transitive io.fabric8.kubernetes.model.common;
+                requires transitive com.fasterxml.jackson.annotation;
+                requires com.fasterxml.jackson.databind;
+                requires static builder.annotations;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
   <profiles>
     <profile>
       <id>generate</id>

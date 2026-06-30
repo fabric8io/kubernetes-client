@@ -29,7 +29,6 @@
   <name>Fabric8 :: Kubernetes :: HttpClient :: OkHttp</name>
 
   <properties>
-    <jpms.module.name>io.fabric8.kubernetes.client.okhttp</jpms.module.name>
     <osgi.require-capability>
       osgi.extender;
       filter:="(osgi.extender=osgi.serviceloader.registrar)",
@@ -106,6 +105,26 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              module io.fabric8.kubernetes.client.okhttp {
+                exports io.fabric8.kubernetes.client.okhttp;
+
+                requires transitive io.fabric8.kubernetes.client.api;
+                requires okhttp3;
+                requires okhttp3.logging;
+
+                provides io.fabric8.kubernetes.client.http.HttpClient.Factory with
+                    io.fabric8.kubernetes.client.okhttp.OkHttpClientFactory;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>

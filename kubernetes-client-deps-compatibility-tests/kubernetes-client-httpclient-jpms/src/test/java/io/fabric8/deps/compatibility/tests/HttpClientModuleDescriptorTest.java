@@ -16,6 +16,7 @@
 package io.fabric8.deps.compatibility.tests;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -27,13 +28,11 @@ import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class HttpClientAutomaticModuleNameTest {
+class HttpClientModuleDescriptorTest {
 
   private static final Map<String, String> EXPECTED_MODULE_NAMES = new LinkedHashMap<>();
 
@@ -58,35 +57,7 @@ class HttpClientAutomaticModuleNameTest {
   }
 
   @Test
-  void httpClientModulesHaveCorrectAutomaticModuleName() throws IOException {
-    try (Stream<Path> jarFiles = Files.list(jarsDir)) {
-      Map<String, String> actualModuleNames = new LinkedHashMap<>();
-      jarFiles.filter(p -> p.toString().endsWith(".jar")).forEach(jarPath -> {
-        String fileName = jarPath.getFileName().toString();
-        Map.Entry<String, String> match = findMatchingArtifact(fileName);
-        if (match != null) {
-          try (JarFile jarFile = new JarFile(jarPath.toFile())) {
-            Manifest manifest = jarFile.getManifest();
-            assertThat(manifest)
-                .as("Manifest for %s", fileName)
-                .isNotNull();
-            String actualModuleName = manifest.getMainAttributes().getValue("Automatic-Module-Name");
-            assertThat(actualModuleName)
-                .as("Automatic-Module-Name in %s", fileName)
-                .isEqualTo(match.getValue());
-            actualModuleNames.put(match.getKey(), actualModuleName);
-          } catch (IOException e) {
-            throw new RuntimeException("Failed to read JAR: " + jarPath, e);
-          }
-        }
-      });
-      assertThat(actualModuleNames)
-          .as("All httpclient modules should have been verified")
-          .hasSize(EXPECTED_MODULE_NAMES.size());
-    }
-  }
-
-  @Test
+  @DisplayName("each httpclient jar carries a JPMS module descriptor with the expected, non-colliding module name")
   void httpClientModulesHaveValidJpmsModuleNames() throws IOException {
     try (Stream<Path> jarFiles = Files.list(jarsDir)) {
       Map<String, String> resolvedModuleNames = new LinkedHashMap<>();

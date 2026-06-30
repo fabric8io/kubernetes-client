@@ -73,6 +73,45 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <configuration>
+          <module>
+            <moduleInfoSource>
+              open module io.fabric8.istio.model {
+                exports io.fabric8.istio.api.api.analysis.v1alpha1;
+                exports io.fabric8.istio.api.api.extensions.v1alpha1;
+                exports io.fabric8.istio.api.api.meta.v1alpha1;
+                exports io.fabric8.istio.api.api.networking.v1alpha3;
+                exports io.fabric8.istio.api.api.networking.v1beta1;
+                exports io.fabric8.istio.api.api.security.v1alpha1;
+                exports io.fabric8.istio.api.api.security.v1beta1;
+                exports io.fabric8.istio.api.api.telemetry.v1alpha1;
+                exports io.fabric8.istio.api.api.type.v1beta1;
+                exports io.fabric8.istio.api.extensions.v1alpha1;
+                exports io.fabric8.istio.api.networking.v1;
+                exports io.fabric8.istio.api.networking.v1alpha3;
+                exports io.fabric8.istio.api.networking.v1beta1;
+                exports io.fabric8.istio.api.security.v1;
+                exports io.fabric8.istio.api.security.v1beta1;
+                exports io.fabric8.istio.api.telemetry.v1;
+                exports io.fabric8.istio.api.telemetry.v1alpha1;
+
+                requires transitive io.fabric8.kubernetes.model.core;
+                requires transitive com.fasterxml.jackson.annotation;
+                requires com.fasterxml.jackson.databind;
+                requires static builder.annotations;
+              }
+            </moduleInfoSource>
+          </module>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
   <profiles>
     <profile>
       <id>generate</id>
