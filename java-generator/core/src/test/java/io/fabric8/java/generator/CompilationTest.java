@@ -163,18 +163,34 @@ class CompilationTest {
   }
 
   @Test
-  void rejectsUnicodeEscapeInjectionInGeneratedSource() throws Exception {
-    // Arrange: a CRD whose `names.singular` smuggles a Java Unicode escape that re-parses as an
-    // inert string literal but breaks out of the generated @Singular literal once javac decodes it.
+  void neutralizesUnicodeEscapeInjectionInCrdNames() throws Exception {
+    // Arrange: a CRD whose `names.singular` smuggles a Java Unicode escape that, left unescaped,
+    // would break out of the generated @Singular string literal once javac decodes it.
     File crd = getCRD("malicious-unicode-escape-crd.yml");
 
-    // Act & Assert
-    JavaGeneratorException exception = assertThrows(
-        JavaGeneratorException.class,
-        () -> new FileJavaGenerator(config, crd).run(tempDir));
+    // Act: the value is now emitted as a fully escaped (inert) string literal, so generation
+    // succeeds and the result compiles. A real breakout would still trip the structural validation.
+    new FileJavaGenerator(config, crd).run(tempDir);
+    Compilation compilation = javac().compile(getSources(tempDir));
 
-    assertTrue(exception.getMessage().contains("structural mismatch"));
-    assertTrue(getSources(tempDir).isEmpty(), "Rejected CRDs must not emit Java source files");
+    // Assert
+    assertTrue(compilation.errors().isEmpty());
+    assertEquals(Compilation.Status.SUCCESS, compilation.status());
+  }
+
+  @Test
+  void compilesStringEnumValueContainingBackslash() throws Exception {
+    // Arrange: a backslash in a schema value (here a Windows-style path) must be escaped, not
+    // mistaken for a broken Java escape sequence that aborts generation.
+    File crd = getCRD("backslash-enum-crd.yml");
+
+    // Act
+    new FileJavaGenerator(config, crd).run(tempDir);
+    Compilation compilation = javac().compile(getSources(tempDir));
+
+    // Assert
+    assertTrue(compilation.errors().isEmpty());
+    assertEquals(Compilation.Status.SUCCESS, compilation.status());
   }
 
   static List<JavaFileObject> getSources(File basePath) throws IOException {

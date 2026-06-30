@@ -30,6 +30,7 @@ import com.github.javaparser.ast.expr.SuperExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import com.github.javaparser.utils.StringEscapeUtils;
 import io.fabric8.java.generator.Config;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 
@@ -92,7 +93,7 @@ public class JCRObject extends JObject implements JObjectExtraAnnotations {
             new Name("io.fabric8.kubernetes.model.annotation.Version"),
             new NameExpr(
                 "value = \""
-                    + version
+                    + StringEscapeUtils.escapeJava(version)
                     + "\" , storage = "
                     + storage
                     + " , served = "
@@ -100,20 +101,20 @@ public class JCRObject extends JObject implements JObjectExtraAnnotations {
     clz.addAnnotation(
         new SingleMemberAnnotationExpr(
             new Name("io.fabric8.kubernetes.model.annotation.Group"),
-            new StringLiteralExpr(group)));
+            new StringLiteralExpr(StringEscapeUtils.escapeJava(group))));
 
     if (singular != null) {
       clz.addAnnotation(
           new SingleMemberAnnotationExpr(
               new Name("io.fabric8.kubernetes.model.annotation.Singular"),
-              new StringLiteralExpr(singular)));
+              new StringLiteralExpr(StringEscapeUtils.escapeJava(singular))));
     }
 
     if (plural != null) {
       clz.addAnnotation(
           new SingleMemberAnnotationExpr(
               new Name("io.fabric8.kubernetes.model.annotation.Plural"),
-              new StringLiteralExpr(plural)));
+              new StringLiteralExpr(StringEscapeUtils.escapeJava(plural))));
     }
 
     ClassOrInterfaceType jlVoid = new ClassOrInterfaceType().setName("java.lang.Void");
