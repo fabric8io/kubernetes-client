@@ -24,6 +24,7 @@ import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.stmt.Statement;
+import com.github.javaparser.utils.StringEscapeUtils;
 import io.fabric8.java.generator.Config;
 
 import java.util.ArrayList;
@@ -181,21 +182,23 @@ public class JEnum extends AbstractJSONSchema2Pojo {
       String constantName = constantNameBuilder.toString();
       constantNames.add(constantName);
 
-      String originalName = AbstractJSONSchema2Pojo.escapeQuotes(k);
-      Expression valueArgument = new StringLiteralExpr(originalName);
-      if (!underlyingType.equals(JAVA_LANG_STRING)) {
-        if (underlyingType.equals(JAVA_LANG_LONG) && !originalName.endsWith("L")) {
-          valueArgument = new IntegerLiteralExpr(originalName + "L");
-        } else {
-          valueArgument = new IntegerLiteralExpr(originalName);
-        }
+      // Schema-controlled string values must be emitted as fully escaped Java string literals so a
+      // value carrying a Unicode-escaped quote cannot break out of the literal once javac decodes
+      // it. Non-string (numeric) values are emitted as numeric literals and validated structurally.
+      Expression valueArgument;
+      if (underlyingType.equals(JAVA_LANG_STRING)) {
+        valueArgument = new StringLiteralExpr(StringEscapeUtils.escapeJava(k));
+      } else if (underlyingType.equals(JAVA_LANG_LONG) && !k.endsWith("L")) {
+        valueArgument = new IntegerLiteralExpr(k + "L");
+      } else {
+        valueArgument = new IntegerLiteralExpr(k);
       }
 
       EnumConstantDeclaration decl = new EnumConstantDeclaration();
       decl.addAnnotation(
           new SingleMemberAnnotationExpr(
               new Name("com.fasterxml.jackson.annotation.JsonProperty"),
-              new StringLiteralExpr(originalName)));
+              new StringLiteralExpr(StringEscapeUtils.escapeJava(k))));
       decl.setName(constantName);
       decl.addArgument(valueArgument);
       en.addEntry(decl);

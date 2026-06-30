@@ -133,6 +133,83 @@ class CompilationTest {
         "The current CRD should not compile since it contains duplicate fields which are not marked as deprecated");
   }
 
+  @Test
+  void rejectsInjectedCodeInNumericEnumFromCrd() throws Exception {
+    // Arrange
+    File crd = getCRD("malicious-numeric-enum-crd.yml");
+
+    // Act & Assert
+    JavaGeneratorException exception = assertThrows(
+        JavaGeneratorException.class,
+        () -> new FileJavaGenerator(config, crd).run(tempDir));
+
+    assertTrue(exception.getMessage().contains("structural mismatch"));
+    assertTrue(getSources(tempDir).isEmpty(), "Rejected CRDs must not emit Java source files");
+  }
+
+  @Test
+  void rejectsExpressionInjectionInNumericEnumFromCrd() throws Exception {
+    // Arrange
+    File crd = getCRD("malicious-expression-enum-crd.yml");
+
+    // Act & Assert
+    JavaGeneratorException exception = assertThrows(
+        JavaGeneratorException.class,
+        () -> new FileJavaGenerator(config, crd).run(tempDir));
+
+    String msg = exception.getMessage();
+    assertTrue(msg.contains("structural mismatch") || msg.contains("code injection"),
+        "Expected injection detection message but got: " + msg);
+  }
+
+  @Test
+  void neutralizesUnicodeEscapeInjectionInSchemaValues() throws Exception {
+    // Arrange: a CRD whose `names.singular`, `names.plural` and a string enum value each smuggle a
+    // Java Unicode escape that, left unescaped, would break out of the generated string literal once
+    // javac decodes it (@Singular, @Plural, the enum constant value and its @JsonProperty).
+    File crd = getCRD("malicious-unicode-escape-crd.yml");
+
+    // Act: every value is now emitted as a fully escaped (inert) string literal, so generation
+    // succeeds and the result compiles. A real breakout would still trip the structural validation.
+    new FileJavaGenerator(config, crd).run(tempDir);
+    Compilation compilation = javac().compile(getSources(tempDir));
+
+    // Assert
+    assertTrue(compilation.errors().isEmpty());
+    assertEquals(Compilation.Status.SUCCESS, compilation.status());
+  }
+
+  @Test
+  void rejectsUnicodeEscapeInjectionInCrdVersion() throws Exception {
+    // Arrange: the version name feeds the generated package declaration, not only the @Version
+    // annotation, so a Unicode-escaped breakout there cannot be neutralized by literal escaping and
+    // must be rejected by the structural validation (same reasoning applies to the CRD group).
+    File crd = getCRD("malicious-version-crd.yml");
+
+    // Act & Assert
+    JavaGeneratorException exception = assertThrows(
+        JavaGeneratorException.class,
+        () -> new FileJavaGenerator(config, crd).run(tempDir));
+
+    assertTrue(exception.getMessage().contains("code injection"));
+    assertTrue(getSources(tempDir).isEmpty(), "Rejected CRDs must not emit Java source files");
+  }
+
+  @Test
+  void compilesStringEnumValueContainingBackslash() throws Exception {
+    // Arrange: a backslash in a schema value (here a Windows-style path) must be escaped, not
+    // mistaken for a broken Java escape sequence that aborts generation.
+    File crd = getCRD("backslash-enum-crd.yml");
+
+    // Act
+    new FileJavaGenerator(config, crd).run(tempDir);
+    Compilation compilation = javac().compile(getSources(tempDir));
+
+    // Assert
+    assertTrue(compilation.errors().isEmpty());
+    assertEquals(Compilation.Status.SUCCESS, compilation.status());
+  }
+
   static List<JavaFileObject> getSources(File basePath) throws IOException {
     List<JavaFileObject> sources = new ArrayList<JavaFileObject>();
     for (Path f : Files.list(basePath.toPath()).collect(Collectors.toList())) {

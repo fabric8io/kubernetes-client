@@ -1,0 +1,47 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# Several schema-controlled values (the singular and plural names, and a string enum value) smuggle
+# a Java Unicode escape that, left unescaped, would break out of the generated string literal once
+# javac decodes it. Each must be emitted as an inert, fully escaped literal. (group/version are not
+# exercised here because they also feed the generated package name and are covered separately.)
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: foos.example.com
+spec:
+  group: example.com
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                mode:
+                  type: string
+                  enum:
+                    - 'A\u0022) class PwnedEnum { static { java.lang.Runtime.getRuntime(); } } //'
+                    - 'safe'
+  scope: Namespaced
+  names:
+    plural: '\u0022s) class PwnedPlural { static { java.lang.Runtime.getRuntime(); } } @SuppressWarnings(\u0022'
+    singular: '\u0022) class Pwned { static { java.lang.Runtime.getRuntime(); } } @SuppressWarnings(\u0022'
+    kind: Foo
