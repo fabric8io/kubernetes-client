@@ -49,7 +49,13 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <proc>none</proc>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>${lombok.version}</version>
+            </path>
+          </annotationProcessorPaths>
         </configuration>
       </plugin>
     </plugins>
@@ -83,7 +89,12 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <configuration>
               <proc>full</proc>
-              <annotationProcessorPaths>what i
+              <annotationProcessorPaths>
+                <path>
+                  <groupId>org.projectlombok</groupId>
+                  <artifactId>lombok</artifactId>
+                  <version>${lombok.version}</version>
+                </path>
                 <path>
                   <groupId>io.sundr</groupId>
                   <artifactId>builder-annotations</artifactId>

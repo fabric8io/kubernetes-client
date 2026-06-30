@@ -1,0 +1,1334 @@
+package io.fabric8.kubernetes.api.model;
+
+import io.fabric8.kubernetes.api.builder.BaseFluent;
+import io.fabric8.kubernetes.api.builder.Nested;
+import java.lang.Boolean;
+import java.lang.Integer;
+import java.lang.Object;
+import java.lang.RuntimeException;
+import java.lang.String;
+import java.lang.StringBuilder;
+import java.lang.SuppressWarnings;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Predicate;
+
+/**
+ * Generated
+ */
+@SuppressWarnings("unchecked")
+public class ServiceSpecFluent<A extends io.fabric8.kubernetes.api.model.ServiceSpecFluent<A>> extends BaseFluent<A>{
+
+  private Map<String,Object> additionalProperties;
+  private Boolean allocateLoadBalancerNodePorts;
+  private String clusterIP;
+  private List<String> clusterIPs = new ArrayList<String>();
+  private List<String> externalIPs = new ArrayList<String>();
+  private String externalName;
+  private String externalTrafficPolicy;
+  private Integer healthCheckNodePort;
+  private String internalTrafficPolicy;
+  private List<String> ipFamilies = new ArrayList<String>();
+  private String ipFamilyPolicy;
+  private String loadBalancerClass;
+  private String loadBalancerIP;
+  private List<String> loadBalancerSourceRanges = new ArrayList<String>();
+  private ArrayList<ServicePortBuilder> ports = new ArrayList<ServicePortBuilder>();
+  private Boolean publishNotReadyAddresses;
+  private Map<String,String> selector;
+  private String sessionAffinity;
+  private SessionAffinityConfigBuilder sessionAffinityConfig;
+  private String trafficDistribution;
+  private String type;
+
+  public ServiceSpecFluent() {
+  }
+  
+  public ServiceSpecFluent(ServiceSpec instance) {
+    this.copyInstance(instance);
+  }
+
+  public A addAllToClusterIPs(Collection<String> items) {
+    if (this.clusterIPs == null) {
+      this.clusterIPs = new ArrayList();
+    }
+    for (String item : items) {
+      this.clusterIPs.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addAllToExternalIPs(Collection<String> items) {
+    if (this.externalIPs == null) {
+      this.externalIPs = new ArrayList();
+    }
+    for (String item : items) {
+      this.externalIPs.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addAllToIpFamilies(Collection<String> items) {
+    if (this.ipFamilies == null) {
+      this.ipFamilies = new ArrayList();
+    }
+    for (String item : items) {
+      this.ipFamilies.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addAllToLoadBalancerSourceRanges(Collection<String> items) {
+    if (this.loadBalancerSourceRanges == null) {
+      this.loadBalancerSourceRanges = new ArrayList();
+    }
+    for (String item : items) {
+      this.loadBalancerSourceRanges.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addAllToPorts(Collection<ServicePort> items) {
+    if (this.ports == null) {
+      this.ports = new ArrayList();
+    }
+    for (ServicePort item : items) {
+        ServicePortBuilder builder = new ServicePortBuilder(item);
+        _visitables.get("ports").add(builder);
+        this.ports.add(builder);
+    }
+    return (A) this;
+  }
+  
+  public PortsNested<A> addNewPort() {
+    return new PortsNested(-1, null);
+  }
+  
+  public PortsNested<A> addNewPortLike(ServicePort item) {
+    return new PortsNested(-1, item);
+  }
+  
+  public A addToAdditionalProperties(Map<String,Object> map) {
+    if (this.additionalProperties == null && map != null) {
+      this.additionalProperties = new LinkedHashMap();
+    }
+    if (map != null) {
+      this.additionalProperties.putAll(map);
+    }
+    return (A) this;
+  }
+  
+  public A addToAdditionalProperties(String key,Object value) {
+    if (this.additionalProperties == null && key != null && value != null) {
+      this.additionalProperties = new LinkedHashMap();
+    }
+    if (key != null && value != null) {
+      this.additionalProperties.put(key, value);
+    }
+    return (A) this;
+  }
+  
+  public A addToClusterIPs(String... items) {
+    if (this.clusterIPs == null) {
+      this.clusterIPs = new ArrayList();
+    }
+    for (String item : items) {
+      this.clusterIPs.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addToClusterIPs(int index,String item) {
+    if (this.clusterIPs == null) {
+      this.clusterIPs = new ArrayList();
+    }
+    this.clusterIPs.add(index, item);
+    return (A) this;
+  }
+  
+  public A addToExternalIPs(String... items) {
+    if (this.externalIPs == null) {
+      this.externalIPs = new ArrayList();
+    }
+    for (String item : items) {
+      this.externalIPs.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addToExternalIPs(int index,String item) {
+    if (this.externalIPs == null) {
+      this.externalIPs = new ArrayList();
+    }
+    this.externalIPs.add(index, item);
+    return (A) this;
+  }
+  
+  public A addToIpFamilies(String... items) {
+    if (this.ipFamilies == null) {
+      this.ipFamilies = new ArrayList();
+    }
+    for (String item : items) {
+      this.ipFamilies.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addToIpFamilies(int index,String item) {
+    if (this.ipFamilies == null) {
+      this.ipFamilies = new ArrayList();
+    }
+    this.ipFamilies.add(index, item);
+    return (A) this;
+  }
+  
+  public A addToLoadBalancerSourceRanges(String... items) {
+    if (this.loadBalancerSourceRanges == null) {
+      this.loadBalancerSourceRanges = new ArrayList();
+    }
+    for (String item : items) {
+      this.loadBalancerSourceRanges.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addToLoadBalancerSourceRanges(int index,String item) {
+    if (this.loadBalancerSourceRanges == null) {
+      this.loadBalancerSourceRanges = new ArrayList();
+    }
+    this.loadBalancerSourceRanges.add(index, item);
+    return (A) this;
+  }
+  
+  public A addToPorts(ServicePort... items) {
+    if (this.ports == null) {
+      this.ports = new ArrayList();
+    }
+    for (ServicePort item : items) {
+        ServicePortBuilder builder = new ServicePortBuilder(item);
+        _visitables.get("ports").add(builder);
+        this.ports.add(builder);
+    }
+    return (A) this;
+  }
+  
+  public A addToPorts(int index,ServicePort item) {
+    if (this.ports == null) {
+      this.ports = new ArrayList();
+    }
+    ServicePortBuilder builder = new ServicePortBuilder(item);
+    if (index < 0 || index >= ports.size()) {
+        _visitables.get("ports").add(builder);
+        ports.add(builder);
+    } else {
+        _visitables.get("ports").add(builder);
+        ports.add(index, builder);
+    }
+    return (A) this;
+  }
+  
+  public A addToSelector(Map<String,String> map) {
+    if (this.selector == null && map != null) {
+      this.selector = new LinkedHashMap();
+    }
+    if (map != null) {
+      this.selector.putAll(map);
+    }
+    return (A) this;
+  }
+  
+  public A addToSelector(String key,String value) {
+    if (this.selector == null && key != null && value != null) {
+      this.selector = new LinkedHashMap();
+    }
+    if (key != null && value != null) {
+      this.selector.put(key, value);
+    }
+    return (A) this;
+  }
+  
+  public ServicePort buildFirstPort() {
+    return this.ports.get(0).build();
+  }
+  
+  public ServicePort buildLastPort() {
+    return this.ports.get(ports.size() - 1).build();
+  }
+  
+  public ServicePort buildMatchingPort(Predicate<ServicePortBuilder> predicate) {
+      for (ServicePortBuilder item : ports) {
+        if (predicate.test(item)) {
+          return item.build();
+        }
+      }
+      return null;
+  }
+  
+  public ServicePort buildPort(int index) {
+    return this.ports.get(index).build();
+  }
+  
+  public List<ServicePort> buildPorts() {
+    return this.ports != null ? build(ports) : null;
+  }
+  
+  public SessionAffinityConfig buildSessionAffinityConfig() {
+    return this.sessionAffinityConfig != null ? this.sessionAffinityConfig.build() : null;
+  }
+  
+  protected void copyInstance(ServiceSpec instance) {
+    instance = instance != null ? instance : new ServiceSpec();
+    if (instance != null) {
+        this.withAllocateLoadBalancerNodePorts(instance.getAllocateLoadBalancerNodePorts());
+        this.withClusterIP(instance.getClusterIP());
+        this.withClusterIPs(instance.getClusterIPs());
+        this.withExternalIPs(instance.getExternalIPs());
+        this.withExternalName(instance.getExternalName());
+        this.withExternalTrafficPolicy(instance.getExternalTrafficPolicy());
+        this.withHealthCheckNodePort(instance.getHealthCheckNodePort());
+        this.withInternalTrafficPolicy(instance.getInternalTrafficPolicy());
+        this.withIpFamilies(instance.getIpFamilies());
+        this.withIpFamilyPolicy(instance.getIpFamilyPolicy());
+        this.withLoadBalancerClass(instance.getLoadBalancerClass());
+        this.withLoadBalancerIP(instance.getLoadBalancerIP());
+        this.withLoadBalancerSourceRanges(instance.getLoadBalancerSourceRanges());
+        this.withPorts(instance.getPorts());
+        this.withPublishNotReadyAddresses(instance.getPublishNotReadyAddresses());
+        this.withSelector(instance.getSelector());
+        this.withSessionAffinity(instance.getSessionAffinity());
+        this.withSessionAffinityConfig(instance.getSessionAffinityConfig());
+        this.withTrafficDistribution(instance.getTrafficDistribution());
+        this.withType(instance.getType());
+        this.withAdditionalProperties(instance.getAdditionalProperties());
+    }
+  }
+  
+  public PortsNested<A> editFirstPort() {
+    if (ports.size() == 0) {
+      throw new RuntimeException(String.format("Can't edit first %s. The list is empty.", "ports"));
+    }
+    return this.setNewPortLike(0, this.buildPort(0));
+  }
+  
+  public PortsNested<A> editLastPort() {
+    int index = ports.size() - 1;
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "ports"));
+    }
+    return this.setNewPortLike(index, this.buildPort(index));
+  }
+  
+  public PortsNested<A> editMatchingPort(Predicate<ServicePortBuilder> predicate) {
+    int index = -1;
+    for (int i = 0;i < ports.size();i++) {
+      if (predicate.test(ports.get(i))) {
+          index = i;
+          break;
+      }
+    }
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit matching %s. No match found.", "ports"));
+    }
+    return this.setNewPortLike(index, this.buildPort(index));
+  }
+  
+  public SessionAffinityConfigNested<A> editOrNewSessionAffinityConfig() {
+    return this.withNewSessionAffinityConfigLike(Optional.ofNullable(this.buildSessionAffinityConfig()).orElse(new SessionAffinityConfigBuilder().build()));
+  }
+  
+  public SessionAffinityConfigNested<A> editOrNewSessionAffinityConfigLike(SessionAffinityConfig item) {
+    return this.withNewSessionAffinityConfigLike(Optional.ofNullable(this.buildSessionAffinityConfig()).orElse(item));
+  }
+  
+  public PortsNested<A> editPort(int index) {
+    if (ports.size() <= index) {
+      throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "ports"));
+    }
+    return this.setNewPortLike(index, this.buildPort(index));
+  }
+  
+  public SessionAffinityConfigNested<A> editSessionAffinityConfig() {
+    return this.withNewSessionAffinityConfigLike(Optional.ofNullable(this.buildSessionAffinityConfig()).orElse(null));
+  }
+  
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || this.getClass() != o.getClass()) {
+      return false;
+    }
+    if (!(super.equals(o))) {
+      return false;
+    }
+    ServiceSpecFluent that = (ServiceSpecFluent) o;
+    if (!(Objects.equals(allocateLoadBalancerNodePorts, that.allocateLoadBalancerNodePorts))) {
+      return false;
+    }
+    if (!(Objects.equals(clusterIP, that.clusterIP))) {
+      return false;
+    }
+    if (!(Objects.equals(clusterIPs, that.clusterIPs))) {
+      return false;
+    }
+    if (!(Objects.equals(externalIPs, that.externalIPs))) {
+      return false;
+    }
+    if (!(Objects.equals(externalName, that.externalName))) {
+      return false;
+    }
+    if (!(Objects.equals(externalTrafficPolicy, that.externalTrafficPolicy))) {
+      return false;
+    }
+    if (!(Objects.equals(healthCheckNodePort, that.healthCheckNodePort))) {
+      return false;
+    }
+    if (!(Objects.equals(internalTrafficPolicy, that.internalTrafficPolicy))) {
+      return false;
+    }
+    if (!(Objects.equals(ipFamilies, that.ipFamilies))) {
+      return false;
+    }
+    if (!(Objects.equals(ipFamilyPolicy, that.ipFamilyPolicy))) {
+      return false;
+    }
+    if (!(Objects.equals(loadBalancerClass, that.loadBalancerClass))) {
+      return false;
+    }
+    if (!(Objects.equals(loadBalancerIP, that.loadBalancerIP))) {
+      return false;
+    }
+    if (!(Objects.equals(loadBalancerSourceRanges, that.loadBalancerSourceRanges))) {
+      return false;
+    }
+    if (!(Objects.equals(ports, that.ports))) {
+      return false;
+    }
+    if (!(Objects.equals(publishNotReadyAddresses, that.publishNotReadyAddresses))) {
+      return false;
+    }
+    if (!(Objects.equals(selector, that.selector))) {
+      return false;
+    }
+    if (!(Objects.equals(sessionAffinity, that.sessionAffinity))) {
+      return false;
+    }
+    if (!(Objects.equals(sessionAffinityConfig, that.sessionAffinityConfig))) {
+      return false;
+    }
+    if (!(Objects.equals(trafficDistribution, that.trafficDistribution))) {
+      return false;
+    }
+    if (!(Objects.equals(type, that.type))) {
+      return false;
+    }
+    if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
+      return false;
+    }
+    return true;
+  }
+  
+  public Map<String,Object> getAdditionalProperties() {
+    return this.additionalProperties;
+  }
+  
+  public Boolean getAllocateLoadBalancerNodePorts() {
+    return this.allocateLoadBalancerNodePorts;
+  }
+  
+  public String getClusterIP() {
+    return this.clusterIP;
+  }
+  
+  public String getClusterIP(int index) {
+    return this.clusterIPs.get(index);
+  }
+  
+  public List<String> getClusterIPs() {
+    return this.clusterIPs;
+  }
+  
+  public String getExternalIP(int index) {
+    return this.externalIPs.get(index);
+  }
+  
+  public List<String> getExternalIPs() {
+    return this.externalIPs;
+  }
+  
+  public String getExternalName() {
+    return this.externalName;
+  }
+  
+  public String getExternalTrafficPolicy() {
+    return this.externalTrafficPolicy;
+  }
+  
+  public String getFirstClusterIP() {
+    return this.clusterIPs.get(0);
+  }
+  
+  public String getFirstExternalIP() {
+    return this.externalIPs.get(0);
+  }
+  
+  public String getFirstIpFamily() {
+    return this.ipFamilies.get(0);
+  }
+  
+  public String getFirstLoadBalancerSourceRange() {
+    return this.loadBalancerSourceRanges.get(0);
+  }
+  
+  public Integer getHealthCheckNodePort() {
+    return this.healthCheckNodePort;
+  }
+  
+  public String getInternalTrafficPolicy() {
+    return this.internalTrafficPolicy;
+  }
+  
+  public List<String> getIpFamilies() {
+    return this.ipFamilies;
+  }
+  
+  public String getIpFamily(int index) {
+    return this.ipFamilies.get(index);
+  }
+  
+  public String getIpFamilyPolicy() {
+    return this.ipFamilyPolicy;
+  }
+  
+  public String getLastClusterIP() {
+    return this.clusterIPs.get(clusterIPs.size() - 1);
+  }
+  
+  public String getLastExternalIP() {
+    return this.externalIPs.get(externalIPs.size() - 1);
+  }
+  
+  public String getLastIpFamily() {
+    return this.ipFamilies.get(ipFamilies.size() - 1);
+  }
+  
+  public String getLastLoadBalancerSourceRange() {
+    return this.loadBalancerSourceRanges.get(loadBalancerSourceRanges.size() - 1);
+  }
+  
+  public String getLoadBalancerClass() {
+    return this.loadBalancerClass;
+  }
+  
+  public String getLoadBalancerIP() {
+    return this.loadBalancerIP;
+  }
+  
+  public String getLoadBalancerSourceRange(int index) {
+    return this.loadBalancerSourceRanges.get(index);
+  }
+  
+  public List<String> getLoadBalancerSourceRanges() {
+    return this.loadBalancerSourceRanges;
+  }
+  
+  public String getMatchingClusterIP(Predicate<String> predicate) {
+      for (String item : clusterIPs) {
+        if (predicate.test(item)) {
+          return item;
+        }
+      }
+      return null;
+  }
+  
+  public String getMatchingExternalIP(Predicate<String> predicate) {
+      for (String item : externalIPs) {
+        if (predicate.test(item)) {
+          return item;
+        }
+      }
+      return null;
+  }
+  
+  public String getMatchingIpFamily(Predicate<String> predicate) {
+      for (String item : ipFamilies) {
+        if (predicate.test(item)) {
+          return item;
+        }
+      }
+      return null;
+  }
+  
+  public String getMatchingLoadBalancerSourceRange(Predicate<String> predicate) {
+      for (String item : loadBalancerSourceRanges) {
+        if (predicate.test(item)) {
+          return item;
+        }
+      }
+      return null;
+  }
+  
+  public Boolean getPublishNotReadyAddresses() {
+    return this.publishNotReadyAddresses;
+  }
+  
+  public Map<String,String> getSelector() {
+    return this.selector;
+  }
+  
+  public String getSessionAffinity() {
+    return this.sessionAffinity;
+  }
+  
+  public String getTrafficDistribution() {
+    return this.trafficDistribution;
+  }
+  
+  public String getType() {
+    return this.type;
+  }
+  
+  public boolean hasAdditionalProperties() {
+    return this.additionalProperties != null;
+  }
+  
+  public boolean hasAllocateLoadBalancerNodePorts() {
+    return this.allocateLoadBalancerNodePorts != null;
+  }
+  
+  public boolean hasClusterIP() {
+    return this.clusterIP != null;
+  }
+  
+  public boolean hasClusterIPs() {
+    return this.clusterIPs != null && !(this.clusterIPs.isEmpty());
+  }
+  
+  public boolean hasExternalIPs() {
+    return this.externalIPs != null && !(this.externalIPs.isEmpty());
+  }
+  
+  public boolean hasExternalName() {
+    return this.externalName != null;
+  }
+  
+  public boolean hasExternalTrafficPolicy() {
+    return this.externalTrafficPolicy != null;
+  }
+  
+  public boolean hasHealthCheckNodePort() {
+    return this.healthCheckNodePort != null;
+  }
+  
+  public boolean hasInternalTrafficPolicy() {
+    return this.internalTrafficPolicy != null;
+  }
+  
+  public boolean hasIpFamilies() {
+    return this.ipFamilies != null && !(this.ipFamilies.isEmpty());
+  }
+  
+  public boolean hasIpFamilyPolicy() {
+    return this.ipFamilyPolicy != null;
+  }
+  
+  public boolean hasLoadBalancerClass() {
+    return this.loadBalancerClass != null;
+  }
+  
+  public boolean hasLoadBalancerIP() {
+    return this.loadBalancerIP != null;
+  }
+  
+  public boolean hasLoadBalancerSourceRanges() {
+    return this.loadBalancerSourceRanges != null && !(this.loadBalancerSourceRanges.isEmpty());
+  }
+  
+  public boolean hasMatchingClusterIP(Predicate<String> predicate) {
+      for (String item : clusterIPs) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
+  public boolean hasMatchingExternalIP(Predicate<String> predicate) {
+      for (String item : externalIPs) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
+  public boolean hasMatchingIpFamily(Predicate<String> predicate) {
+      for (String item : ipFamilies) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
+  public boolean hasMatchingLoadBalancerSourceRange(Predicate<String> predicate) {
+      for (String item : loadBalancerSourceRanges) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
+  public boolean hasMatchingPort(Predicate<ServicePortBuilder> predicate) {
+      for (ServicePortBuilder item : ports) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
+  public boolean hasPorts() {
+    return this.ports != null && !(this.ports.isEmpty());
+  }
+  
+  public boolean hasPublishNotReadyAddresses() {
+    return this.publishNotReadyAddresses != null;
+  }
+  
+  public boolean hasSelector() {
+    return this.selector != null;
+  }
+  
+  public boolean hasSessionAffinity() {
+    return this.sessionAffinity != null;
+  }
+  
+  public boolean hasSessionAffinityConfig() {
+    return this.sessionAffinityConfig != null;
+  }
+  
+  public boolean hasTrafficDistribution() {
+    return this.trafficDistribution != null;
+  }
+  
+  public boolean hasType() {
+    return this.type != null;
+  }
+  
+  public int hashCode() {
+    return Objects.hash(allocateLoadBalancerNodePorts, clusterIP, clusterIPs, externalIPs, externalName, externalTrafficPolicy, healthCheckNodePort, internalTrafficPolicy, ipFamilies, ipFamilyPolicy, loadBalancerClass, loadBalancerIP, loadBalancerSourceRanges, ports, publishNotReadyAddresses, selector, sessionAffinity, sessionAffinityConfig, trafficDistribution, type, additionalProperties);
+  }
+  
+  public A removeAllFromClusterIPs(Collection<String> items) {
+    if (this.clusterIPs == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.clusterIPs.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A removeAllFromExternalIPs(Collection<String> items) {
+    if (this.externalIPs == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.externalIPs.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A removeAllFromIpFamilies(Collection<String> items) {
+    if (this.ipFamilies == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.ipFamilies.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A removeAllFromLoadBalancerSourceRanges(Collection<String> items) {
+    if (this.loadBalancerSourceRanges == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.loadBalancerSourceRanges.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A removeAllFromPorts(Collection<ServicePort> items) {
+    if (this.ports == null) {
+      return (A) this;
+    }
+    for (ServicePort item : items) {
+        ServicePortBuilder builder = new ServicePortBuilder(item);
+        _visitables.get("ports").remove(builder);
+        this.ports.remove(builder);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromAdditionalProperties(String key) {
+    if (this.additionalProperties == null) {
+      return (A) this;
+    }
+    if (key != null && this.additionalProperties != null) {
+      this.additionalProperties.remove(key);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromAdditionalProperties(Map<String,Object> map) {
+    if (this.additionalProperties == null) {
+      return (A) this;
+    }
+    if (map != null) {
+      for (Object key : map.keySet()) {
+        if (this.additionalProperties != null) {
+          this.additionalProperties.remove(key);
+        }
+      }
+    }
+    return (A) this;
+  }
+  
+  public A removeFromClusterIPs(String... items) {
+    if (this.clusterIPs == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.clusterIPs.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromExternalIPs(String... items) {
+    if (this.externalIPs == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.externalIPs.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromIpFamilies(String... items) {
+    if (this.ipFamilies == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.ipFamilies.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromLoadBalancerSourceRanges(String... items) {
+    if (this.loadBalancerSourceRanges == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.loadBalancerSourceRanges.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromPorts(ServicePort... items) {
+    if (this.ports == null) {
+      return (A) this;
+    }
+    for (ServicePort item : items) {
+        ServicePortBuilder builder = new ServicePortBuilder(item);
+        _visitables.get("ports").remove(builder);
+        this.ports.remove(builder);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromSelector(String key) {
+    if (this.selector == null) {
+      return (A) this;
+    }
+    if (key != null && this.selector != null) {
+      this.selector.remove(key);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromSelector(Map<String,String> map) {
+    if (this.selector == null) {
+      return (A) this;
+    }
+    if (map != null) {
+      for (Object key : map.keySet()) {
+        if (this.selector != null) {
+          this.selector.remove(key);
+        }
+      }
+    }
+    return (A) this;
+  }
+  
+  public A removeMatchingFromPorts(Predicate<ServicePortBuilder> predicate) {
+    if (ports == null) {
+      return (A) this;
+    }
+    Iterator<ServicePortBuilder> each = ports.iterator();
+    List visitables = _visitables.get("ports");
+    while (each.hasNext()) {
+        ServicePortBuilder builder = each.next();
+        if (predicate.test(builder)) {
+            visitables.remove(builder);
+            each.remove();
+        }
+    }
+    return (A) this;
+  }
+  
+  public PortsNested<A> setNewPortLike(int index,ServicePort item) {
+    return new PortsNested(index, item);
+  }
+  
+  public A setToClusterIPs(int index,String item) {
+    if (this.clusterIPs == null) {
+      this.clusterIPs = new ArrayList();
+    }
+    this.clusterIPs.set(index, item);
+    return (A) this;
+  }
+  
+  public A setToExternalIPs(int index,String item) {
+    if (this.externalIPs == null) {
+      this.externalIPs = new ArrayList();
+    }
+    this.externalIPs.set(index, item);
+    return (A) this;
+  }
+  
+  public A setToIpFamilies(int index,String item) {
+    if (this.ipFamilies == null) {
+      this.ipFamilies = new ArrayList();
+    }
+    this.ipFamilies.set(index, item);
+    return (A) this;
+  }
+  
+  public A setToLoadBalancerSourceRanges(int index,String item) {
+    if (this.loadBalancerSourceRanges == null) {
+      this.loadBalancerSourceRanges = new ArrayList();
+    }
+    this.loadBalancerSourceRanges.set(index, item);
+    return (A) this;
+  }
+  
+  public A setToPorts(int index,ServicePort item) {
+    if (this.ports == null) {
+      this.ports = new ArrayList();
+    }
+    ServicePortBuilder builder = new ServicePortBuilder(item);
+    if (index < 0 || index >= ports.size()) {
+        _visitables.get("ports").add(builder);
+        ports.add(builder);
+    } else {
+        _visitables.get("ports").add(builder);
+        ports.set(index, builder);
+    }
+    return (A) this;
+  }
+  
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("{");
+    if (!(allocateLoadBalancerNodePorts == null)) {
+        sb.append("allocateLoadBalancerNodePorts:");
+        sb.append(allocateLoadBalancerNodePorts);
+        sb.append(",");
+    }
+    if (!(clusterIP == null)) {
+        sb.append("clusterIP:");
+        sb.append(clusterIP);
+        sb.append(",");
+    }
+    if (!(clusterIPs == null) && !(clusterIPs.isEmpty())) {
+        sb.append("clusterIPs:");
+        sb.append(clusterIPs);
+        sb.append(",");
+    }
+    if (!(externalIPs == null) && !(externalIPs.isEmpty())) {
+        sb.append("externalIPs:");
+        sb.append(externalIPs);
+        sb.append(",");
+    }
+    if (!(externalName == null)) {
+        sb.append("externalName:");
+        sb.append(externalName);
+        sb.append(",");
+    }
+    if (!(externalTrafficPolicy == null)) {
+        sb.append("externalTrafficPolicy:");
+        sb.append(externalTrafficPolicy);
+        sb.append(",");
+    }
+    if (!(healthCheckNodePort == null)) {
+        sb.append("healthCheckNodePort:");
+        sb.append(healthCheckNodePort);
+        sb.append(",");
+    }
+    if (!(internalTrafficPolicy == null)) {
+        sb.append("internalTrafficPolicy:");
+        sb.append(internalTrafficPolicy);
+        sb.append(",");
+    }
+    if (!(ipFamilies == null) && !(ipFamilies.isEmpty())) {
+        sb.append("ipFamilies:");
+        sb.append(ipFamilies);
+        sb.append(",");
+    }
+    if (!(ipFamilyPolicy == null)) {
+        sb.append("ipFamilyPolicy:");
+        sb.append(ipFamilyPolicy);
+        sb.append(",");
+    }
+    if (!(loadBalancerClass == null)) {
+        sb.append("loadBalancerClass:");
+        sb.append(loadBalancerClass);
+        sb.append(",");
+    }
+    if (!(loadBalancerIP == null)) {
+        sb.append("loadBalancerIP:");
+        sb.append(loadBalancerIP);
+        sb.append(",");
+    }
+    if (!(loadBalancerSourceRanges == null) && !(loadBalancerSourceRanges.isEmpty())) {
+        sb.append("loadBalancerSourceRanges:");
+        sb.append(loadBalancerSourceRanges);
+        sb.append(",");
+    }
+    if (!(ports == null) && !(ports.isEmpty())) {
+        sb.append("ports:");
+        sb.append(ports);
+        sb.append(",");
+    }
+    if (!(publishNotReadyAddresses == null)) {
+        sb.append("publishNotReadyAddresses:");
+        sb.append(publishNotReadyAddresses);
+        sb.append(",");
+    }
+    if (!(selector == null) && !(selector.isEmpty())) {
+        sb.append("selector:");
+        sb.append(selector);
+        sb.append(",");
+    }
+    if (!(sessionAffinity == null)) {
+        sb.append("sessionAffinity:");
+        sb.append(sessionAffinity);
+        sb.append(",");
+    }
+    if (!(sessionAffinityConfig == null)) {
+        sb.append("sessionAffinityConfig:");
+        sb.append(sessionAffinityConfig);
+        sb.append(",");
+    }
+    if (!(trafficDistribution == null)) {
+        sb.append("trafficDistribution:");
+        sb.append(trafficDistribution);
+        sb.append(",");
+    }
+    if (!(type == null)) {
+        sb.append("type:");
+        sb.append(type);
+        sb.append(",");
+    }
+    if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
+        sb.append("additionalProperties:");
+        sb.append(additionalProperties);
+    }
+    sb.append("}");
+    return sb.toString();
+  }
+  
+  public <K,V>A withAdditionalProperties(Map<String,Object> additionalProperties) {
+    if (additionalProperties == null) {
+      this.additionalProperties = null;
+    } else {
+      this.additionalProperties = new LinkedHashMap(additionalProperties);
+    }
+    return (A) this;
+  }
+  
+  public A withAllocateLoadBalancerNodePorts() {
+    return withAllocateLoadBalancerNodePorts(true);
+  }
+  
+  public A withAllocateLoadBalancerNodePorts(Boolean allocateLoadBalancerNodePorts) {
+    this.allocateLoadBalancerNodePorts = allocateLoadBalancerNodePorts;
+    return (A) this;
+  }
+  
+  public A withClusterIP(String clusterIP) {
+    this.clusterIP = clusterIP;
+    return (A) this;
+  }
+  
+  public A withClusterIPs(List<String> clusterIPs) {
+    if (clusterIPs != null) {
+        this.clusterIPs = new ArrayList();
+        for (String item : clusterIPs) {
+          this.addToClusterIPs(item);
+        }
+    } else {
+      this.clusterIPs = null;
+    }
+    return (A) this;
+  }
+  
+  public A withClusterIPs(String... clusterIPs) {
+    if (this.clusterIPs != null) {
+        this.clusterIPs.clear();
+        _visitables.remove("clusterIPs");
+    }
+    if (clusterIPs != null) {
+      for (String item : clusterIPs) {
+        this.addToClusterIPs(item);
+      }
+    }
+    return (A) this;
+  }
+  
+  public A withExternalIPs(List<String> externalIPs) {
+    if (externalIPs != null) {
+        this.externalIPs = new ArrayList();
+        for (String item : externalIPs) {
+          this.addToExternalIPs(item);
+        }
+    } else {
+      this.externalIPs = null;
+    }
+    return (A) this;
+  }
+  
+  public A withExternalIPs(String... externalIPs) {
+    if (this.externalIPs != null) {
+        this.externalIPs.clear();
+        _visitables.remove("externalIPs");
+    }
+    if (externalIPs != null) {
+      for (String item : externalIPs) {
+        this.addToExternalIPs(item);
+      }
+    }
+    return (A) this;
+  }
+  
+  public A withExternalName(String externalName) {
+    this.externalName = externalName;
+    return (A) this;
+  }
+  
+  public A withExternalTrafficPolicy(String externalTrafficPolicy) {
+    this.externalTrafficPolicy = externalTrafficPolicy;
+    return (A) this;
+  }
+  
+  public A withHealthCheckNodePort(Integer healthCheckNodePort) {
+    this.healthCheckNodePort = healthCheckNodePort;
+    return (A) this;
+  }
+  
+  public A withInternalTrafficPolicy(String internalTrafficPolicy) {
+    this.internalTrafficPolicy = internalTrafficPolicy;
+    return (A) this;
+  }
+  
+  public A withIpFamilies(List<String> ipFamilies) {
+    if (ipFamilies != null) {
+        this.ipFamilies = new ArrayList();
+        for (String item : ipFamilies) {
+          this.addToIpFamilies(item);
+        }
+    } else {
+      this.ipFamilies = null;
+    }
+    return (A) this;
+  }
+  
+  public A withIpFamilies(String... ipFamilies) {
+    if (this.ipFamilies != null) {
+        this.ipFamilies.clear();
+        _visitables.remove("ipFamilies");
+    }
+    if (ipFamilies != null) {
+      for (String item : ipFamilies) {
+        this.addToIpFamilies(item);
+      }
+    }
+    return (A) this;
+  }
+  
+  public A withIpFamilyPolicy(String ipFamilyPolicy) {
+    this.ipFamilyPolicy = ipFamilyPolicy;
+    return (A) this;
+  }
+  
+  public A withLoadBalancerClass(String loadBalancerClass) {
+    this.loadBalancerClass = loadBalancerClass;
+    return (A) this;
+  }
+  
+  public A withLoadBalancerIP(String loadBalancerIP) {
+    this.loadBalancerIP = loadBalancerIP;
+    return (A) this;
+  }
+  
+  public A withLoadBalancerSourceRanges(List<String> loadBalancerSourceRanges) {
+    if (loadBalancerSourceRanges != null) {
+        this.loadBalancerSourceRanges = new ArrayList();
+        for (String item : loadBalancerSourceRanges) {
+          this.addToLoadBalancerSourceRanges(item);
+        }
+    } else {
+      this.loadBalancerSourceRanges = null;
+    }
+    return (A) this;
+  }
+  
+  public A withLoadBalancerSourceRanges(String... loadBalancerSourceRanges) {
+    if (this.loadBalancerSourceRanges != null) {
+        this.loadBalancerSourceRanges.clear();
+        _visitables.remove("loadBalancerSourceRanges");
+    }
+    if (loadBalancerSourceRanges != null) {
+      for (String item : loadBalancerSourceRanges) {
+        this.addToLoadBalancerSourceRanges(item);
+      }
+    }
+    return (A) this;
+  }
+  
+  public SessionAffinityConfigNested<A> withNewSessionAffinityConfig() {
+    return new SessionAffinityConfigNested(null);
+  }
+  
+  public SessionAffinityConfigNested<A> withNewSessionAffinityConfigLike(SessionAffinityConfig item) {
+    return new SessionAffinityConfigNested(item);
+  }
+  
+  public A withPorts(List<ServicePort> ports) {
+    if (this.ports != null) {
+      this._visitables.get("ports").clear();
+    }
+    if (ports != null) {
+        this.ports = new ArrayList();
+        for (ServicePort item : ports) {
+          this.addToPorts(item);
+        }
+    } else {
+      this.ports = null;
+    }
+    return (A) this;
+  }
+  
+  public A withPorts(ServicePort... ports) {
+    if (this.ports != null) {
+        this.ports.clear();
+        _visitables.remove("ports");
+    }
+    if (ports != null) {
+      for (ServicePort item : ports) {
+        this.addToPorts(item);
+      }
+    }
+    return (A) this;
+  }
+  
+  public A withPublishNotReadyAddresses() {
+    return withPublishNotReadyAddresses(true);
+  }
+  
+  public A withPublishNotReadyAddresses(Boolean publishNotReadyAddresses) {
+    this.publishNotReadyAddresses = publishNotReadyAddresses;
+    return (A) this;
+  }
+  
+  public <K,V>A withSelector(Map<String,String> selector) {
+    if (selector == null) {
+      this.selector = null;
+    } else {
+      this.selector = new LinkedHashMap(selector);
+    }
+    return (A) this;
+  }
+  
+  public A withSessionAffinity(String sessionAffinity) {
+    this.sessionAffinity = sessionAffinity;
+    return (A) this;
+  }
+  
+  public A withSessionAffinityConfig(SessionAffinityConfig sessionAffinityConfig) {
+    this._visitables.remove("sessionAffinityConfig");
+    if (sessionAffinityConfig != null) {
+        this.sessionAffinityConfig = new SessionAffinityConfigBuilder(sessionAffinityConfig);
+        this._visitables.get("sessionAffinityConfig").add(this.sessionAffinityConfig);
+    } else {
+        this.sessionAffinityConfig = null;
+        this._visitables.get("sessionAffinityConfig").remove(this.sessionAffinityConfig);
+    }
+    return (A) this;
+  }
+  
+  public A withTrafficDistribution(String trafficDistribution) {
+    this.trafficDistribution = trafficDistribution;
+    return (A) this;
+  }
+  
+  public A withType(String type) {
+    this.type = type;
+    return (A) this;
+  }
+  public class PortsNested<N> extends ServicePortFluent<PortsNested<N>> implements Nested<N>{
+  
+    ServicePortBuilder builder;
+    int index;
+  
+    PortsNested(int index,ServicePort item) {
+      this.index = index;
+      this.builder = new ServicePortBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) ServiceSpecFluent.this.setToPorts(index, builder.build());
+    }
+    
+    public N endPort() {
+      return and();
+    }
+    
+  }
+  public class SessionAffinityConfigNested<N> extends SessionAffinityConfigFluent<SessionAffinityConfigNested<N>> implements Nested<N>{
+  
+    SessionAffinityConfigBuilder builder;
+  
+    SessionAffinityConfigNested(SessionAffinityConfig item) {
+      this.builder = new SessionAffinityConfigBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) ServiceSpecFluent.this.withSessionAffinityConfig(builder.build());
+    }
+    
+    public N endSessionAffinityConfig() {
+      return and();
+    }
+    
+  }
+}
