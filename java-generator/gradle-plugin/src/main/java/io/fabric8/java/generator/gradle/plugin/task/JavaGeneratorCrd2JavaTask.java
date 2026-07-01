@@ -22,6 +22,14 @@ import io.fabric8.java.generator.URLJavaGenerator;
 import io.fabric8.java.generator.gradle.plugin.JavaGeneratorPluginExtension;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.GradleException;
+import org.gradle.api.file.FileCollection;
+import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.InputFiles;
+import org.gradle.api.tasks.LocalState;
+import org.gradle.api.tasks.Optional;
+import org.gradle.api.tasks.OutputDirectory;
+import org.gradle.api.tasks.PathSensitive;
+import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskAction;
 
 import java.io.File;
@@ -42,6 +50,77 @@ public class JavaGeneratorCrd2JavaTask extends DefaultTask {
   public JavaGeneratorCrd2JavaTask(Class<? extends JavaGeneratorPluginExtension> extensionClass) {
     this.extensionClass = getProject().getExtensions().getByType(extensionClass);
     setDescription("Generate Java model from CRDs.");
+  }
+
+  @Optional
+  @InputFiles
+  @PathSensitive(PathSensitivity.RELATIVE)
+  public FileCollection getSourceFiles() {
+    final File source = extensionClass.getSourceOrDefault();
+    if (source == null) {
+      return getProject().files();
+    }
+    return source.isDirectory() ? getProject().fileTree(source) : getProject().files(source);
+  }
+
+  @Input
+  public List<String> getUrls() {
+    return extensionClass.getUrlsOrDefault();
+  }
+
+  @LocalState
+  public File getDownloadTarget() {
+    return extensionClass.getDownloadTargetOrDefault();
+  }
+
+  @OutputDirectory
+  public File getTarget() {
+    return extensionClass.getTargetOrDefault();
+  }
+
+  @Input
+  public Boolean getEnumUppercase() {
+    return extensionClass.getEnumUppercase();
+  }
+
+  @Input
+  public Boolean getExtraAnnotations() {
+    return extensionClass.getExtraAnnotations();
+  }
+
+  @Input
+  public Boolean getGeneratedAnnotations() {
+    return extensionClass.getGeneratedAnnotations();
+  }
+
+  @Input
+  public Boolean getAlwaysPreserveUnknown() {
+    return extensionClass.getAlwaysPreserveUnknown();
+  }
+
+  @Input
+  public List<String> getFilesSuffixes() {
+    return extensionClass.getFilesSuffixes();
+  }
+
+  @Input
+  public String getSerializationDatetimeFormat() {
+    return extensionClass.getSerializationDatetimeFormat();
+  }
+
+  @Input
+  public String getDeserializationDatetimeFormat() {
+    return extensionClass.getDeserializationDatetimeFormat();
+  }
+
+  @Input
+  public java.util.Map<String, String> getPackageOverrides() {
+    return extensionClass.getPackageOverrides();
+  }
+
+  @Input
+  public java.util.Map<String, String> getExistingJavaTypes() {
+    return extensionClass.getExistingJavaTypes();
   }
 
   @TaskAction

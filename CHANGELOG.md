@@ -3,6 +3,7 @@
 ### 7.9-SNAPSHOT
 
 #### Bugs
+* Fix #7091: (java-generator) the Gradle `crd2Java` task now declares its source files, URLs, generated-output directory, download cache, and generation options as Gradle task inputs/outputs so unchanged runs are recognized as `UP-TO-DATE` instead of executing again unnecessarily
 * Fix #7955: (java-generator) Malicious CRD schema values can no longer inject executable code into the generated Java sources. Schema-controlled values (enum values, CRD group/version/names, property names, descriptions and defaults) are emitted as fully escaped Java string literals, so a value carrying a Unicode-escaped quote cannot break out of its literal once `javac` decodes it. As a defense in depth, each generated class is also re-parsed and structurally validated before it is written (with Java Unicode escape preprocessing enabled to match `javac`), aborting generation on any residual structural mismatch
 
 #### Improvements
