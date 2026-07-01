@@ -43,6 +43,50 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-generated-builders-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${project.basedir}/src/generated-builders/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <!-- Default build: run only Lombok (keep equals/hashCode/toString); sundrio APT is
+               disabled so the committed Builders/Fluents in src/generated-builders/java are
+               compiled as plain source instead of being regenerated.
+               FOLLOW-UP (#5622): these processor class names are Lombok internals coupled to the
+               pinned ${lombok.version}; a rename on a version bump fails loudly (processor-not-found),
+               not silently. A less brittle alternative for THIS (default) build is to drop the named
+               processors and instead restrict <annotationProcessorPaths> to the lombok artifact only
+               (javac auto-discovers it via Lombok's META-INF/services, sundrio is simply not on the
+               path so it never runs). The named-processors-on-classpath approach is only strictly
+               required by the generate profile (so sundrio resolves referenced Builders from
+               dependency jars). Evaluate when lifting this config to the model parent pom. -->
+          <annotationProcessors>
+            <annotationProcessor>lombok.launch.AnnotationProcessorHider$AnnotationProcessor</annotationProcessor>
+            <annotationProcessor>lombok.launch.AnnotationProcessorHider$ClaimingProcessor</annotationProcessor>
+          </annotationProcessors>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
   <profiles>
     <profile>
       <id>generate</id>
@@ -64,6 +108,25 @@
                   <includeGenerationRegex>^io\.k8s\.api\.batch\..*$</includeGenerationRegex>
                 </includeGenerationRegexes>
               </settings>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <!-- Regeneration: sundrio APT writes Builders/Fluents straight into the committed
+                   src/generated-builders/java (a dedicated source root, kept separate from the
+                   POJOs so the compiler's pre-APT wipe of generatedSourcesDirectory only clears
+                   the Builders). Processors are named (not put on a separate processor path) so
+                   sundrio resolves referenced Builders from the compile classpath (dependency
+                   jars) instead of re-emitting shallow copies of them. -->
+              <generatedSourcesDirectory>${project.basedir}/src/generated-builders/java</generatedSourcesDirectory>
+              <annotationProcessors combine.self="override">
+                <annotationProcessor>lombok.launch.AnnotationProcessorHider$AnnotationProcessor</annotationProcessor>
+                <annotationProcessor>lombok.launch.AnnotationProcessorHider$ClaimingProcessor</annotationProcessor>
+                <annotationProcessor>io.sundr.builder.internal.processor.BuildableProcessor</annotationProcessor>
+                <annotationProcessor>io.sundr.builder.internal.processor.ExternalBuildableProcessor</annotationProcessor>
+              </annotationProcessors>
             </configuration>
           </plugin>
         </plugins>

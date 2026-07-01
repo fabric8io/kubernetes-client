@@ -1,3 +1,7 @@
 # eol style
 *.sh    text eol=lf
 *.bat   text eol=crlf
+
+# Generated source trees (openapi POJOs + sundrio Builders/Fluents): collapse diffs in PR review
+**/src/generated/java/** linguist-generated=true
+**/src/generated-builders/java/** linguist-generated=true

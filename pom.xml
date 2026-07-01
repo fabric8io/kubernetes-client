@@ -191,6 +191,7 @@
     <javadoc.sourcepath>
       ${project.basedir}/src/main/java;
       ${project.basedir}/src/generated/java;
+      ${project.basedir}/src/generated-builders/java;
       ${project.build.sourceDirectory};
       ${project.build.directory}/generated-sources/annotations;
     </javadoc.sourcepath>
@@ -1268,6 +1269,7 @@
                 <exclude>license.txt</exclude>
                 <exclude>**/test-kubeconfig</exclude>
                 <exclude>**/src/generated/java/**/*</exclude>
+                <exclude>**/src/generated-builders/java/**/*</exclude>
                 <exclude>**/io/fabric8/kubernetes/client/lib/**/*.java</exclude>
                 <exclude>kubernetes-model/vendor/**/*</exclude>
                 <exclude>kubernetes-model/generate</exclude>
@@ -1623,7 +1625,7 @@
         <sonar.links.ci>https://github.com/fabric8io/kubernetes-client/actions</sonar.links.ci>
         <sonar.links.scm>https://github.com/fabric8io/kubernetes-client</sonar.links.scm>
         <sonar.links.issue>https://github.com/fabric8io/kubernetes-client/issues</sonar.links.issue>
-        <sonar.exclusions>**/src/generated/java/**/*</sonar.exclusions>
+        <sonar.exclusions>**/src/generated/java/**/*,**/src/generated-builders/java/**/*</sonar.exclusions>
         <sonar.coverage.exclusions>**/kubernetes-examples/**/*,**/extensions/**/examples/**/*</sonar.coverage.exclusions>
         <karaf.itest.skip>true</karaf.itest.skip>
       </properties>
