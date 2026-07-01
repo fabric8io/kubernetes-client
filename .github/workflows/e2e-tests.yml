@@ -46,9 +46,9 @@ jobs:
     if: github.repository == 'fabric8io/kubernetes-client'
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Cache .m2 registry
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.m2/repository
           key: cache-e2e-${{ github.sha }}-${{ github.run_id }}
@@ -71,7 +71,7 @@ jobs:
         kubernetes: [v1.36.0,v1.35.4,v1.34.7,v1.33.11,v1.32.13,v1.31.14,v1.30.14,v1.29.15]
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Setup Minikube-Kubernetes
         uses: manusa/actions-setup-minikube@b65276017fdec6f1e6498129fb740e34e260dc55 # v2.18.0
         with:
@@ -80,7 +80,7 @@ jobs:
           github token: ${{ secrets.GITHUB_TOKEN }}
           start args: '--force'
       - name: Cache .m2 registry
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.m2/repository
           key: cache-e2e-${{ github.sha }}-${{ github.run_id }}

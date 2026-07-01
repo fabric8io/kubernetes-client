@@ -15,6 +15,7 @@
  */
 package io.fabric8.crdv2.generator;
 
+import com.fasterxml.jackson.annotation.JsonClassDescription;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.BeanProperty;
@@ -178,6 +179,20 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       Stream.of(beanClass.getAnnotationsByType(annotation)).forEach(consumer);
       beanClass = beanClass.getSuperclass();
     }
+  }
+
+  /**
+   * Walks up the class hierarchy to find the first (most specific) occurrence of the annotation.
+   */
+  private static <A extends Annotation> A findClassAnnotation(Class<?> beanClass, Class<A> annotation) {
+    while (beanClass != null && beanClass != Object.class) {
+      A found = beanClass.getAnnotation(annotation);
+      if (found != null) {
+        return found;
+      }
+      beanClass = beanClass.getSuperclass();
+    }
+    return null;
   }
 
   Optional<Field> getFieldForMethod(BeanProperty beanProperty) {
@@ -370,7 +385,9 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     }
 
     public void updateSchema(T schema) {
-      schema.setDescription(description);
+      if (Utils.isNotNullOrEmpty(description)) {
+        schema.setDescription(description);
+      }
       schema.setDefault(defaultValue);
       if (nullable) {
         schema.setNullable(true);
@@ -429,6 +446,11 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
     Class<?> rawClass = gos.javaType.getRawClass();
     collectDependentClasses(rawClass);
+
+    JsonClassDescription classDescription = findClassAnnotation(rawClass, JsonClassDescription.class);
+    if (classDescription != null && Utils.isNotNullOrEmpty(classDescription.value())) {
+      objectSchema.setDescription(classDescription.value());
+    }
 
     // while it should not be repeating, we reuse this method to look for preserve unknown on the class hierarchy
     consumeRepeatingAnnotation(rawClass, PreserveUnknownFields.class,

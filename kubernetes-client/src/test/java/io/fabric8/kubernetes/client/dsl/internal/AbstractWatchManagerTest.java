@@ -27,6 +27,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
@@ -263,6 +265,71 @@ class AbstractWatchManagerTest {
   }
 
   @Test
+  @DisplayName("watchEnded, clean close with no messages within 2s, emits WatcherException (GKE stale-rv bug)")
+  void watchEndedEmitsWatcherExceptionOnQuickCleanClose() throws MalformedURLException {
+    // Given
+    final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
+    final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
+    awm.resourceVersion.set("12345"); // a stale resourceVersion is in use, as on GKE
+    WatchRequestState state = new WatchRequestState();
+    state.startedAtNs = System.nanoTime(); // simulates GKE: connection rejected immediately
+    awm.latestRequestState = state;
+    // When - clean close (t=null), zero messages, within the 2s threshold
+    awm.watchEnded(null, state);
+    // Then - watch must be force-closed via WatcherException, not silently reconnected
+    assertThat(awm.isForceClosed()).isTrue();
+    assertThat(watcher.closeWithCauseCount.get()).isEqualTo(1);
+    assertThat(watcher.lastCause.isHttpGone()).isTrue();
+  }
+
+  @Test
+  @DisplayName("watchEnded, clean close with no messages but connection was old, schedules reconnect normally")
+  void watchEndedSchedulesReconnectOnOldCleanClose() throws MalformedURLException {
+    // Given
+    final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
+    final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
+    awm.resourceVersion.set("12345"); // resourceVersion is set — age guard is what prevents the WatcherException
+    WatchRequestState state = new WatchRequestState();
+    state.startedAtNs = System.nanoTime() - 5_000_000_000L; // connection alive for 5s — legitimate idle disconnect
+    awm.latestRequestState = state;
+    // When - clean close (t=null), zero messages, but connection was alive well past the 2s threshold
+    awm.watchEnded(null, state);
+    // Then - normal reconnect, no WatcherException
+    assertThat(awm.isForceClosed()).isFalse();
+    assertThat(state.reconnected.get()).isTrue();
+    assertThat(watcher.closeWithCauseCount.get()).isEqualTo(0);
+  }
+
+  @Test
+  @DisplayName("WatchRequestState.startedAtNs is volatile so the receive thread sees the start thread's write")
+  void startedAtNsIsVolatile() throws NoSuchFieldException {
+    // startedAtNs is written in startWatch() after the volatile store of latestRequestState (so that
+    // publication does not cover it) and read on the WebSocket receive thread in watchEnded(); it must
+    // be volatile for that read to observe the write.
+    final Field startedAtNs = WatchRequestState.class.getDeclaredField("startedAtNs");
+    assertThat(Modifier.isVolatile(startedAtNs.getModifiers())).isTrue();
+  }
+
+  @Test
+  @DisplayName("watchEnded, clean close with messages received, schedules reconnect normally")
+  void watchEndedSchedulesReconnectWhenMessagesReceived() throws MalformedURLException {
+    // Given
+    final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
+    final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
+    awm.resourceVersion.set("12345"); // resourceVersion is set — messageReceived guard is what prevents the WatcherException
+    WatchRequestState state = new WatchRequestState();
+    state.startedAtNs = System.nanoTime(); // fresh connection
+    state.messageReceived.set(true); // but messages were received — rv was accepted
+    awm.latestRequestState = state;
+    // When - clean close (t=null), messages received, within the 2s threshold
+    awm.watchEnded(null, state);
+    // Then - normal reconnect, no WatcherException
+    assertThat(awm.isForceClosed()).isFalse();
+    assertThat(state.reconnected.get()).isTrue();
+    assertThat(watcher.closeWithCauseCount.get()).isEqualTo(0);
+  }
+
+  @Test
   @DisplayName("onMessage, enqueues body on the SerialExecutor instead of running it on the caller thread")
   void onMessageEnqueuesBodyOnSerialExecutor() throws MalformedURLException {
     // Given a watch manager whose SerialExecutor uses a capture executor that does not run tasks
@@ -355,6 +422,8 @@ class AbstractWatchManagerTest {
 
   private static class WatcherAdapter<T> implements Watcher<T> {
     private final AtomicInteger closeCount = new AtomicInteger(0);
+    private final AtomicInteger closeWithCauseCount = new AtomicInteger(0);
+    private volatile WatcherException lastCause;
 
     @Override
     public void eventReceived(Action action, T resource) {
@@ -363,6 +432,8 @@ class AbstractWatchManagerTest {
     @Override
     public void onClose(WatcherException cause) {
       closeCount.addAndGet(1);
+      closeWithCauseCount.addAndGet(1);
+      lastCause = cause;
     }
 
     @Override

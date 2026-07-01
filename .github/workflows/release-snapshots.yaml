@@ -46,11 +46,11 @@ jobs:
     name: Release Java 11 SNAPSHOT
     # Cheap way to prevent accidental releases
     # Modify the list to add users with release permissions
-    if: contains('["manusa","ash-thakur-rh"]', github.actor)
+    if: contains(fromJSON('["manusa","ash-thakur-rh"]'), github.actor)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Setup Java 11
         uses: actions/setup-java@v5
         with:

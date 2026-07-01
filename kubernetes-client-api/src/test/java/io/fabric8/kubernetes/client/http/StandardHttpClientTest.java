@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -27,7 +28,12 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.ConnectException;
 import java.net.URI;
+import java.security.cert.CertPathBuilderException;
+import java.security.cert.CertPathValidatorException;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateExpiredException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -42,6 +48,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLHandshakeException;
+import javax.net.ssl.SSLPeerUnverifiedException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -374,5 +384,166 @@ class StandardHttpClientTest {
 
     // Then
     assertThat(throwable).isInstanceOf(IOException.class).hasMessage(IO_ERROR_MESSAGE);
+  }
+
+  @Test
+  @DisplayName("shouldRetry returns -1 for SSLHandshakeException caused by CertPathValidatorException (untrusted cert)")
+  void shouldNotRetrySslHandshakeWithCertPathValidatorException() {
+    SSLHandshakeException sslEx = new SSLHandshakeException("PKIX path validation failed");
+    sslEx.initCause(new CertPathValidatorException("Path does not chain with any of the trust anchors"));
+    long result = client.shouldRetry(
+        (StandardHttpRequest) client.newHttpRequestBuilder().uri("http://localhost").build(),
+        r -> null, null, sslEx, 1000);
+    assertThat(result).isEqualTo(-1);
+  }
+
+  @Test
+  @DisplayName("shouldRetry returns -1 for SSLHandshakeException caused by CertPathBuilderException (PKIX path building failed)")
+  void shouldNotRetrySslHandshakeWithCertPathBuilderException() {
+    SSLHandshakeException sslEx = new SSLHandshakeException("PKIX path building failed");
+    sslEx.initCause(new CertPathBuilderException("unable to find valid certification path to requested target"));
+    long result = client.shouldRetry(
+        (StandardHttpRequest) client.newHttpRequestBuilder().uri("http://localhost").build(),
+        r -> null, null, sslEx, 1000);
+    assertThat(result).isEqualTo(-1);
+  }
+
+  @Test
+  @DisplayName("shouldRetry returns -1 for SSLHandshakeException caused by CertificateException (expired/untrusted)")
+  void shouldNotRetrySslHandshakeWithCertificateException() {
+    SSLHandshakeException sslEx = new SSLHandshakeException("certificate validation failed");
+    sslEx.initCause(new CertificateExpiredException("NotAfter"));
+    long result = client.shouldRetry(
+        (StandardHttpRequest) client.newHttpRequestBuilder().uri("http://localhost").build(),
+        r -> null, null, sslEx, 1000);
+    assertThat(result).isEqualTo(-1);
+  }
+
+  @Test
+  @DisplayName("shouldRetry returns -1 for SSLPeerUnverifiedException (hostname mismatch)")
+  void shouldNotRetrySslPeerUnverifiedException() {
+    SSLPeerUnverifiedException sslEx = new SSLPeerUnverifiedException("Hostname localhost not verified");
+    long result = client.shouldRetry(
+        (StandardHttpRequest) client.newHttpRequestBuilder().uri("http://localhost").build(),
+        r -> null, null, sslEx, 1000);
+    assertThat(result).isEqualTo(-1);
+  }
+
+  @Test
+  @DisplayName("shouldRetry returns -1 when TLS trust failure appears in suppressed exceptions (okhttp dual-stack shape)")
+  void shouldNotRetryWhenTrustFailureInSuppressed() {
+    ConnectException primary = new ConnectException("Connection refused");
+    SSLHandshakeException suppressed = new SSLHandshakeException("PKIX path building failed");
+    suppressed.initCause(new CertPathBuilderException("unable to find valid certification path"));
+    primary.addSuppressed(suppressed);
+    long result = client.shouldRetry(
+        (StandardHttpRequest) client.newHttpRequestBuilder().uri("http://localhost").build(),
+        r -> null, null, primary, 1000);
+    assertThat(result).isEqualTo(-1);
+  }
+
+  @Test
+  @DisplayName("shouldRetry still retries transient SSLException (connection reset mid-handshake)")
+  void shouldRetryTransientSslException() {
+    SSLException sslEx = new SSLException("Connection reset");
+    long result = client.shouldRetry(
+        (StandardHttpRequest) client.newHttpRequestBuilder().uri("http://localhost").build(),
+        r -> null, null, sslEx, 1000);
+    assertThat(result).isEqualTo(1000);
+  }
+
+  @Test
+  @DisplayName("shouldRetry still retries plain SSLHandshakeException without trust-related cause")
+  void shouldRetryTransientSslHandshakeException() {
+    SSLHandshakeException sslEx = new SSLHandshakeException("Remote host terminated the handshake");
+    sslEx.initCause(new SSLException("Connection reset"));
+    long result = client.shouldRetry(
+        (StandardHttpRequest) client.newHttpRequestBuilder().uri("http://localhost").build(),
+        r -> null, null, sslEx, 1000);
+    assertThat(result).isEqualTo(1000);
+  }
+
+  @Test
+  @DisplayName("shouldRetry handles cyclic cause chain without infinite loop")
+  void shouldHandleCyclicCauseChain() {
+    IOException ex1 = new IOException("loop 1");
+    IOException ex2 = new IOException("loop 2");
+    ex1.initCause(ex2);
+    ex2.initCause(ex1);
+    long result = client.shouldRetry(
+        (StandardHttpRequest) client.newHttpRequestBuilder().uri("http://localhost").build(),
+        r -> null, null, ex1, 1000);
+    assertThat(result).isEqualTo(1000);
+  }
+
+  @Test
+  @DisplayName("SSLHandshakeException with trust failure is not retried even via consumeBytes path")
+  void sslHandshakeExceptionIsNotRetriedViaConsumeBytes() {
+    client = client.newBuilder().tag(new RequestConfigBuilder()
+        .withRequestRetryBackoffLimit(3)
+        .withRequestRetryBackoffInterval(50).build())
+        .build();
+
+    SSLHandshakeException sslEx = new SSLHandshakeException("PKIX path building failed");
+    sslEx.initCause(new CertPathBuilderException("unable to find valid certification path"));
+    client.expect(".*", sslEx);
+    client.expect(".*", new TestHttpResponse<AsyncBody>().withCode(200));
+
+    CompletableFuture<HttpResponse<AsyncBody>> consumeFuture = client.consumeBytes(
+        client.newHttpRequestBuilder().uri("http://localhost").build(),
+        (value, asyncBody) -> {
+        });
+
+    assertThatThrownBy(() -> consumeFuture.get(10, TimeUnit.SECONDS))
+        .isInstanceOf(ExecutionException.class)
+        .cause()
+        .isInstanceOf(SSLHandshakeException.class);
+    assertThat(client.getRecordedConsumeBytesDirects()).hasSize(1);
+  }
+
+  @Test
+  @DisplayName("isTerminalTlsTrustFailure returns false for null")
+  void isTerminalTlsTrustFailureReturnsFalseForNull() {
+    assertThat(StandardHttpClient.isTerminalTlsTrustFailure(null)).isFalse();
+  }
+
+  @Test
+  @DisplayName("isTerminalTlsTrustFailure returns true for direct CertificateException")
+  void isTerminalTlsTrustFailureDetectsDirectCertificateException() {
+    assertThat(StandardHttpClient.isTerminalTlsTrustFailure(new CertificateException("expired"))).isTrue();
+  }
+
+  @Test
+  @DisplayName("isTerminalTlsTrustFailure returns true for nested trust failure in cause chain")
+  void isTerminalTlsTrustFailureDetectsNestedCause() {
+    SSLHandshakeException sslEx = new SSLHandshakeException("PKIX path validation failed");
+    sslEx.initCause(new CertPathValidatorException("trust anchor not found"));
+    assertThat(StandardHttpClient.isTerminalTlsTrustFailure(sslEx)).isTrue();
+  }
+
+  @Test
+  @DisplayName("isTerminalTlsTrustFailure returns true when trust failure is in suppressed only")
+  void isTerminalTlsTrustFailureDetectsSuppressed() {
+    ConnectException primary = new ConnectException("Connection refused");
+    SSLHandshakeException suppressed = new SSLHandshakeException("PKIX path building failed");
+    suppressed.initCause(new CertPathBuilderException("unable to find valid certification path"));
+    primary.addSuppressed(suppressed);
+    assertThat(StandardHttpClient.isTerminalTlsTrustFailure(primary)).isTrue();
+  }
+
+  @Test
+  @DisplayName("isTerminalTlsTrustFailure returns false for transient SSLException")
+  void isTerminalTlsTrustFailureReturnsFalseForTransient() {
+    assertThat(StandardHttpClient.isTerminalTlsTrustFailure(new SSLException("Connection reset"))).isFalse();
+  }
+
+  @Test
+  @DisplayName("isTerminalTlsTrustFailure handles cyclic causes without infinite loop")
+  void isTerminalTlsTrustFailureHandlesCyclicCauses() {
+    IOException ex1 = new IOException("loop 1");
+    IOException ex2 = new IOException("loop 2");
+    ex1.initCause(ex2);
+    ex2.initCause(ex1);
+    assertThat(StandardHttpClient.isTerminalTlsTrustFailure(ex1)).isFalse();
   }
 }

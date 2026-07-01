@@ -1,8 +1,26 @@
 ## CHANGELOG
 
-### 7.8-SNAPSHOT
+### 7.9-SNAPSHOT
 
 #### Bugs
+* Fix #7955: (java-generator) Malicious CRD schema values can no longer inject executable code into the generated Java sources. Schema-controlled values (enum values, CRD group/version/names, property names, descriptions and defaults) are emitted as fully escaped Java string literals, so a value carrying a Unicode-escaped quote cannot break out of its literal once `javac` decodes it. As a defense in depth, each generated class is also re-parsed and structurally validated before it is written (with Java Unicode escape preprocessing enabled to match `javac`), aborting generation on any residual structural mismatch
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes
+
+### 7.8.0 (2026-06-29)
+
+#### Bugs
+* Fix #7953: (httpclient-jdk) bodyless requests now preserve the requested HTTP method instead of silently defaulting to `GET`. `JdkHttpClientImpl.requestBuilder` only called `HttpRequest.Builder.method(...)` inside the `body != null` branch, so a bodyless `DELETE`/`POST`/`PUT`/`PATCH` (such as `client.raw(uri, "DELETE", null)`) was sent as `GET` on the JDK backend; the method is now set with `BodyPublishers.noBody()` when there is no body, matching the OkHttp, Jetty and Vert.x backends
+* Fix #7435: (kubernetes-client) A `SharedIndexInformer`'s periodic resync no longer stops permanently and silently when a single resync cycle throws. `DefaultSharedIndexInformer.scheduleResync` runs the resync through `Utils.scheduleAtFixedRate`, whose self-rescheduling chain re-arms the next cycle only when the previous one completes normally; an uncaught exception completed the (unobserved) `resyncFuture` exceptionally and the resync was never scheduled again, with no log, while the independent watch kept `isWatching()` reporting `true` (a restart was required to recover). The resync command now catches and `WARN`-logs the failure so the schedule fires again at the next interval
+* Fix #7933: (kubernetes-client-api) Deterministic TLS trust failures (untrusted cert, expired cert, hostname mismatch) are now classified as terminal and fail fast instead of being retried by the shared `StandardHttpClient.shouldRetry` backoff loop (~19 s drain). The classifier walks both `getCause()` and `getSuppressed()` trees for `CertificateException`, `CertPathValidatorException`, `CertPathBuilderException`, and `SSLPeerUnverifiedException`. Affects all five HTTP client modules (jdk, jetty, okhttp, vertx-4, vertx-5) on both the HTTP request and WebSocket connect paths
+* Fix #7867: (kubernetes-server-mock) `WatchEventsListener` now buffers outgoing watch events that are scheduled before Vert.x fires `onOpen` and replays them once the WebSocket is available, closing the open-side race where a CRUD operation landing between `handleWatch` registering the listener and `onOpen` populating `webSocketRef` scheduled a send that dereferenced a null `webSocketRef`; the resulting `NullPointerException` was silently swallowed by the executor and the event was dropped. Buffered events are replayed after the initial-sync `ADDED`s so ordering is preserved
+* Fix #7896: (kubernetes-client) `AbstractWatchManager.watchEnded()` now emits a `WatcherException` when a watch closes cleanly with no messages within 2 seconds, compensating for a GKE-specific behaviour on `v1/events` where the GKFE proxy rejects a stale `resourceVersion` with a bare WebSocket close (code 1000, no body) instead of `{"type":"ERROR","code":410}`, causing an indefinite reconnect loop with the same stale resourceVersion
 * Fix #7907: (httpclient-vertx-5) WebSocket-over-TLS operations (`exec`/`attach`/`portForward`/WebSocket-backed watches, and the CRD-establishment waits that depend on them) now trust the cluster certificate again. Vert.x 5.1 rewrote the WebSocket client to resolve TLS through a per-connection `ClientSSLOptions` that ignored the custom `SslContextFactory` the client used as its sole carrier of trust material, so WebSocket handshakes silently fell back to the default JVM trust store, failed PKIX validation, and hung to the client-side timeout (regular HTTPS request/response was unaffected). Both the HTTP and WebSocket clients are now configured uniformly with Vert.x `TrustOptions`/`KeyCertOptions` derived from the supplied trust/key managers
 * Fix #7873: (kube-api-test) `Utils.findFreePort` now records every port it hands out for the JVM's lifetime and skips any port already returned, eliminating the back-to-back duplicate-port window that surfaced as a `JUnitExtensionOnMethodTest.simpleTest2` flake — the probe `ServerSocket` was closed before the caller bound it, so `EtcdProcess.startEtcd()` and `KubeAPIServerProcess.startApiServer()` could draw the same port from `Random.nextInt`, etcd would win the bind, and apiserver would exit 1 with `bind: address already in use`, surfacing in `ProcessReadinessChecker` as `Connection reset by peer`
 * Fix #7857: (kubernetes-server-mock) `WatchEventsListener.onClosing` now queues the server-side `WebSocket.close(...)` on the listener's send executor instead of invoking it directly on the Vert.x event loop. This preserves FIFO ordering with any data frames already queued on that executor, so events scheduled before a client-initiated watch close (e.g. an `ADDED`/`DELETED` pair on a final `create`/`delete` before `watch.close()`) are delivered before the close frame instead of being silently dropped by writes against an already-closing socket
@@ -31,7 +49,9 @@
 * Fix #7875: bump vertx5.version from 5.0.12 to 5.1.1, adapting httpclient-vertx-5 to Vert.x 5.1 behaviour changes (SSL engine options no longer accept an empty protocol array; request-body stream errors are reset with HTTP/2 CANCEL so they are not retried as transient IOExceptions)
 
 #### New Features
+* Fix #7926: (httpclient-vertx-5, httpclient-vertx) opt-in TLS warm-up on the Vert.x HTTP client factory. `Vertx5HttpClientFactory`/`VertxHttpClientFactory` now expose `setTlsWarmup(TlsWarmup)` with modes `OFF`, `CONTEXT` (default, unchanged) and `FULL`. `FULL` runs a synchronous, once-per-JVM, throwaway loopback TLS handshake off the event loop when the client is built, so the first real connection no longer blocks the event loop on the one-time JDK/Netty TLS class loading — for users on cold or hard-CPU-throttled JVMs hitting the first-connection block/timeout described in #7921. Default behavior is unchanged; see the FAQ for CDS and pod CPU-sizing guidance for hard-throttled pods
 * Fix #5084: Jbang scripts to generate graalVM metadata
+* Fix #7375: (crd-generator) Support @JsonClassDescription for adding descriptions to classes in the generated CRD schema.
 
 #### _**Note**_: Breaking changes
 

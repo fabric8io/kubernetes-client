@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.vertx;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.vertx.core.Vertx;
 import io.vertx.core.impl.VertxImpl;
+import io.vertx.core.net.JdkSSLEngineOptions;
 import io.vertx.ext.web.client.WebClientOptions;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.DisplayName;
@@ -91,6 +92,34 @@ class VertxHttpClientBuilderTest {
     assertThat(builder.vertx)
         .asInstanceOf(InstanceOfAssertFactories.type(VertxImpl.class))
         .returns(true, vi -> vi.closeFuture().isClosed());
+  }
+
+  @Nested
+  @DisplayName("SSL Context Construction")
+  class SslContextConstructionTests {
+
+    @Test
+    @DisplayName("JDK SslContext is built once at client-build time and reused, never constructed per connection")
+    void sslContextBuiltOnceAndReused() throws Exception {
+      final AtomicReference<WebClientOptions> captured = new AtomicReference<>();
+
+      VertxHttpClientFactory customFactory = new VertxHttpClientFactory() {
+        @Override
+        protected void additionalConfig(WebClientOptions options) {
+          captured.set(options);
+        }
+      };
+
+      try (HttpClient client = customFactory.newBuilder().sslContext(null, null).build()) {
+        assertThat(captured.get()).isNotNull();
+        JdkSSLEngineOptions engine = (JdkSSLEngineOptions) captured.get().getSslEngineOptions();
+        assertThat(engine).isNotNull();
+        assertThat(engine.sslContextFactory()).isNotNull();
+        assertThat(engine.sslContextFactory().create())
+            .isNotNull()
+            .isSameAs(engine.sslContextFactory().create());
+      }
+    }
   }
 
   @Nested

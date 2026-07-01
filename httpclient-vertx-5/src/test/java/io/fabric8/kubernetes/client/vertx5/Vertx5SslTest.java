@@ -89,6 +89,76 @@ class Vertx5SslTest {
   }
 
   @Test
+  @DisplayName("TLS warm-up is harmless and idempotent: two successive client builds both connect successfully")
+  void tlsWarmUpIsHarmlessAndIdempotent() throws Exception {
+    requestHandler = req -> req.response().end("OK");
+    for (int i = 0; i < 2; i++) {
+      try (HttpClient client = clientFactory.newBuilder().sslContext(null, trustManagers).build()) {
+        HttpRequest request = client.newHttpRequestBuilder().uri("https://localhost:" + port).build();
+        HttpResponse<String> resp = client.sendAsync(request, String.class).get(10, TimeUnit.SECONDS);
+        assertEquals(200, resp.code());
+        assertEquals("OK", resp.bodyString());
+      }
+    }
+  }
+
+  @Test
+  @DisplayName("TLS warm-up defaults to CONTEXT so existing clients keep the #7922 build-time warm-up unchanged")
+  void tlsWarmupDefaultsToContext() {
+    assertEquals(TlsWarmup.CONTEXT, new Vertx5HttpClientFactory().getTlsWarmup());
+  }
+
+  @Test
+  @DisplayName("A null TLS warm-up mode falls back to CONTEXT rather than disabling the warm-up")
+  void tlsWarmupSetterRejectsNull() {
+    final Vertx5HttpClientFactory factory = new Vertx5HttpClientFactory();
+    factory.setTlsWarmup(null);
+    assertEquals(TlsWarmup.CONTEXT, factory.getTlsWarmup());
+  }
+
+  @Test
+  @DisplayName("setTlsWarmup round-trips each mode (OFF, CONTEXT, FULL) through getTlsWarmup")
+  void tlsWarmupRoundTripsAllModes() {
+    final Vertx5HttpClientFactory factory = new Vertx5HttpClientFactory();
+    factory.setTlsWarmup(TlsWarmup.OFF);
+    assertEquals(TlsWarmup.OFF, factory.getTlsWarmup());
+    factory.setTlsWarmup(TlsWarmup.FULL);
+    assertEquals(TlsWarmup.FULL, factory.getTlsWarmup());
+    factory.setTlsWarmup(TlsWarmup.CONTEXT);
+    assertEquals(TlsWarmup.CONTEXT, factory.getTlsWarmup());
+  }
+
+  @Test
+  @DisplayName("FULL TLS warm-up is harmless and idempotent: two successive FULL client builds both connect over HTTPS")
+  void fullTlsWarmupIsHarmlessAndIdempotent() throws Exception {
+    requestHandler = req -> req.response().end("OK");
+    final Vertx5HttpClientFactory factory = new Vertx5HttpClientFactory();
+    factory.setTlsWarmup(TlsWarmup.FULL);
+    for (int i = 0; i < 2; i++) {
+      try (HttpClient client = factory.newBuilder().sslContext(null, trustManagers).build()) {
+        HttpRequest request = client.newHttpRequestBuilder().uri("https://localhost:" + port).build();
+        HttpResponse<String> resp = client.sendAsync(request, String.class).get(30, TimeUnit.SECONDS);
+        assertEquals(200, resp.code());
+        assertEquals("OK", resp.bodyString());
+      }
+    }
+  }
+
+  @Test
+  @DisplayName("OFF TLS warm-up skips warm-up entirely yet a client built with it still connects over HTTPS")
+  void offTlsWarmupClientConnectsOverHttps() throws Exception {
+    requestHandler = req -> req.response().end("OK");
+    final Vertx5HttpClientFactory factory = new Vertx5HttpClientFactory();
+    factory.setTlsWarmup(TlsWarmup.OFF);
+    try (HttpClient client = factory.newBuilder().sslContext(null, trustManagers).build()) {
+      HttpRequest request = client.newHttpRequestBuilder().uri("https://localhost:" + port).build();
+      HttpResponse<String> resp = client.sendAsync(request, String.class).get(10, TimeUnit.SECONDS);
+      assertEquals(200, resp.code());
+      assertEquals("OK", resp.bodyString());
+    }
+  }
+
+  @Test
   @DisplayName("HTTPS rejects an untrusted server certificate instead of falling back to a permissive trust")
   void httpsRejectsUntrustedCertificate() throws Exception {
     requestHandler = req -> req.response().end("OK");

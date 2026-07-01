@@ -15,10 +15,19 @@
  */
 package io.fabric8.java.generator.nodes;
 
+import com.github.javaparser.JavaParser;
+import com.github.javaparser.ParseResult;
+import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
+import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.EnumConstantDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.LiteralExpr;
+import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +44,105 @@ public class GeneratorResult {
       this.name = name;
       this.cu = cu;
       this.javaSource = cu.toString();
+      assertStructuralIntegrity(cu, this.javaSource);
+    }
+
+    private static void assertStructuralIntegrity(CompilationUnit original, String javaSource) {
+      final ParseResult<CompilationUnit> result;
+      try {
+        // Mirror javac, which decodes Java Unicode escapes before lexing. Without this, a schema
+        // value carrying such an escape round-trips as an inert string literal while re-parsing
+        // but breaks out of it at compile time, slipping past the structural checks below.
+        result = new JavaParser(new ParserConfiguration().setPreprocessUnicodeEscapes(true))
+            .parse(javaSource);
+      } catch (Exception e) {
+        throw new JavaGeneratorException(
+            "Generated source failed to re-parse, possible code injection in CRD schema values", e);
+      }
+      CompilationUnit reparsed = result.getResult()
+          .orElseThrow(() -> new JavaGeneratorException(
+              "Generated source failed to re-parse, possible code injection in CRD schema values"));
+      List<TypeDeclaration<?>> originalTypes = original.getTypes();
+      List<TypeDeclaration<?>> reparsedTypes = reparsed.getTypes();
+      if (originalTypes.size() != reparsedTypes.size()) {
+        throw new JavaGeneratorException(
+            "Generated source structural mismatch: expected " + originalTypes.size()
+                + " type(s) but re-parsed " + reparsedTypes.size()
+                + ". CRD schema values may contain injected code.");
+      }
+      for (int i = 0; i < originalTypes.size(); i++) {
+        assertTypeIntegrity(originalTypes.get(i), reparsedTypes.get(i));
+      }
+    }
+
+    private static void assertTypeIntegrity(TypeDeclaration<?> original, TypeDeclaration<?> reparsed) {
+      List<BodyDeclaration<?>> origMembers = original.getMembers();
+      List<BodyDeclaration<?>> reparsedMembers = reparsed.getMembers();
+      if (origMembers.size() != reparsedMembers.size()) {
+        throw new JavaGeneratorException(
+            "Generated source structural mismatch in type '" + original.getNameAsString()
+                + "': expected " + origMembers.size() + " member(s) but re-parsed "
+                + reparsedMembers.size()
+                + ". CRD schema values may contain injected code.");
+      }
+      for (int i = 0; i < origMembers.size(); i++) {
+        if (!origMembers.get(i).getClass().equals(reparsedMembers.get(i).getClass())) {
+          throw new JavaGeneratorException(
+              "Generated source structural mismatch in type '" + original.getNameAsString()
+                  + "': member " + i + " expected " + origMembers.get(i).getClass().getSimpleName()
+                  + " but re-parsed " + reparsedMembers.get(i).getClass().getSimpleName()
+                  + ". CRD schema values may contain injected code.");
+        }
+        if (origMembers.get(i) instanceof TypeDeclaration && reparsedMembers.get(i) instanceof TypeDeclaration) {
+          assertTypeIntegrity((TypeDeclaration<?>) origMembers.get(i), (TypeDeclaration<?>) reparsedMembers.get(i));
+        }
+      }
+      if (original instanceof EnumDeclaration && reparsed instanceof EnumDeclaration) {
+        assertEnumEntriesIntegrity(
+            (EnumDeclaration) original, (EnumDeclaration) reparsed);
+      }
+    }
+
+    private static void assertEnumEntriesIntegrity(EnumDeclaration original, EnumDeclaration reparsed) {
+      List<EnumConstantDeclaration> origEntries = original.getEntries();
+      List<EnumConstantDeclaration> reparsedEntries = reparsed.getEntries();
+      if (origEntries.size() != reparsedEntries.size()) {
+        throw new JavaGeneratorException(
+            "Generated source structural mismatch in enum '" + original.getNameAsString()
+                + "': expected " + origEntries.size() + " constant(s) but re-parsed "
+                + reparsedEntries.size()
+                + ". CRD schema values may contain injected code.");
+      }
+      for (int i = 0; i < origEntries.size(); i++) {
+        assertEnumConstantIntegrity(origEntries.get(i), reparsedEntries.get(i), original.getNameAsString());
+      }
+    }
+
+    private static void assertEnumConstantIntegrity(
+        EnumConstantDeclaration original, EnumConstantDeclaration reparsed, String typeName) {
+      List<Expression> origArgs = original.getArguments();
+      List<Expression> reparsedArgs = reparsed.getArguments();
+      if (origArgs.size() != reparsedArgs.size()) {
+        throw new JavaGeneratorException(
+            "Generated source structural mismatch in enum constant '"
+                + original.getNameAsString() + "' of type '" + typeName
+                + "': expected " + origArgs.size() + " argument(s) but re-parsed "
+                + reparsedArgs.size()
+                + ". CRD schema values may contain injected code.");
+      }
+      for (int i = 0; i < origArgs.size(); i++) {
+        assertExpressionIntegrity(origArgs.get(i), reparsedArgs.get(i), typeName);
+      }
+    }
+
+    private static void assertExpressionIntegrity(Expression original, Expression reparsed, String typeName) {
+      if (original instanceof LiteralExpr && !(reparsed instanceof LiteralExpr)) {
+        throw new JavaGeneratorException(
+            "Generated source structural mismatch in type '" + typeName
+                + "': expected a literal expression but re-parsed "
+                + reparsed.getClass().getSimpleName()
+                + ". CRD schema values may contain injected code.");
+      }
     }
 
     public String getName() {

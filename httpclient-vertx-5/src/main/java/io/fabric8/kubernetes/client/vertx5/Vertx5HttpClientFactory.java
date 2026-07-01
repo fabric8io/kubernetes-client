@@ -42,6 +42,7 @@ public class Vertx5HttpClientFactory implements HttpClient.Factory {
   private static final String VERTX5_MARKER_CLASS = "io.vertx.core.impl.SysProps";
 
   final Vertx vertx;
+  private volatile TlsWarmup tlsWarmup = TlsWarmup.CONTEXT;
 
   /**
    * Return a factory that reuses the supplied Vert.x instance.
@@ -110,5 +111,24 @@ public class Vertx5HttpClientFactory implements HttpClient.Factory {
   protected void additionalConfig(WebClientOptions webClientOptions, WebSocketClientOptions wsOptions,
       PoolOptions poolOptions) {
     // no default implementation
+  }
+
+  /**
+   * Returns the configured {@link TlsWarmup} mode (never {@code null}).
+   *
+   * @return the TLS warm-up mode applied when building TLS-enabled clients
+   */
+  public TlsWarmup getTlsWarmup() {
+    return tlsWarmup;
+  }
+
+  /**
+   * Configures how the TLS stack is warmed up off the Vert.x event loop when a TLS-enabled client
+   * is built. See {@link TlsWarmup} for the trade-offs of each mode.
+   *
+   * @param tlsWarmup the warm-up mode; {@code null} resets it to the default {@link TlsWarmup#CONTEXT}
+   */
+  public void setTlsWarmup(TlsWarmup tlsWarmup) {
+    this.tlsWarmup = tlsWarmup == null ? TlsWarmup.CONTEXT : tlsWarmup;
   }
 }
