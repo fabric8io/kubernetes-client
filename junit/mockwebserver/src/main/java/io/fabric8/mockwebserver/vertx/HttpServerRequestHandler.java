@@ -48,6 +48,25 @@ public abstract class HttpServerRequestHandler implements Handler<HttpServerRequ
         event.response().setStatusCode(500).setStatusMessage(err.getMessage()).send();
       }
     };
+    // A WebSocket upgrade must be performed synchronously from within the request handler, before
+    // the request is read. Reading the (empty) body first and upgrading from the asynchronous body
+    // callback makes Vert.x's HttpServerRequest#toWebSocket() intermittently throw
+    // "Request has already been read" once the request end event has been processed on the event
+    // loop. WebSocket upgrade requests never carry a body, so there is nothing to read here.
+    if (isWebSocketUpgrade(event)) {
+      final RecordedRequest request = toRecordedRequest(event, null);
+      final MockResponse mockResponse = onHttpRequest(request);
+      if (mockResponse.getWebSocketListener() != null) {
+        event.toWebSocket()
+            .onFailure(exceptionHandler)
+            .onSuccess(new ServerWebSocketHandler(request, mockResponse));
+        return;
+      }
+      // Not a WebSocket response after all; reply as a standard HTTP response.
+      event.resume();
+      sendResponse(event, mockResponse);
+      return;
+    }
     event.resume();
     final Future<io.vertx.core.buffer.Buffer> body;
     if (hasBody(event)) {
@@ -57,12 +76,7 @@ public abstract class HttpServerRequestHandler implements Handler<HttpServerRequ
     }
     body.onFailure(exceptionHandler);
     body.onSuccess(bodyBuffer -> {
-      final RecordedRequest request = new RecordedRequest(
-          event.version().alpnName().toUpperCase(Locale.ROOT),
-          HttpMethod.fromVertx(event.method()),
-          event.uri(),
-          Headers.builder().addAll(event.headers()).build(),
-          new io.fabric8.mockwebserver.http.Buffer(bodyBuffer == null ? null : bodyBuffer.getBytes()));
+      final RecordedRequest request = toRecordedRequest(event, bodyBuffer);
       final MockResponse mockResponse = onHttpRequest(request);
       // WebSocket
       if (mockResponse.getWebSocketListener() != null) {
@@ -72,24 +86,42 @@ public abstract class HttpServerRequestHandler implements Handler<HttpServerRequ
         return;
       }
       // Standard Http Response
-      final HttpServerResponse vertxResponse = event.response();
-      vertxResponse.setStatusCode(mockResponse.code());
-      mockResponse.getHeaders().toMultimap().forEach((key, values) -> vertxResponse.headers().add(key, values));
-      if (mockResponse.getBody() != null && mockResponse.getBody().size() > 0) {
-        if (!vertxResponse.headers().contains(TRANSFER_ENCODING)) {
-          vertxResponse.headers().add(CONTENT_LENGTH, String.valueOf(mockResponse.getBody().size()));
-        }
-        final io.vertx.core.buffer.Buffer toSend = io.vertx.core.buffer.Buffer.buffer(mockResponse.getBody().getBytes());
-        if (mockResponse.getBodyDelay() != null) {
-          vertx.setTimer(mockResponse.getBodyDelay().toMillis(), timerId -> vertxResponse.send(toSend));
-        } else {
-          vertxResponse.send(toSend);
-        }
-      } else {
-        vertxResponse.end();
-      }
+      sendResponse(event, mockResponse);
     });
 
+  }
+
+  private RecordedRequest toRecordedRequest(HttpServerRequest event, io.vertx.core.buffer.Buffer bodyBuffer) {
+    return new RecordedRequest(
+        event.version().alpnName().toUpperCase(Locale.ROOT),
+        HttpMethod.fromVertx(event.method()),
+        event.uri(),
+        Headers.builder().addAll(event.headers()).build(),
+        new io.fabric8.mockwebserver.http.Buffer(bodyBuffer == null ? null : bodyBuffer.getBytes()));
+  }
+
+  private void sendResponse(HttpServerRequest event, MockResponse mockResponse) {
+    final HttpServerResponse vertxResponse = event.response();
+    vertxResponse.setStatusCode(mockResponse.code());
+    mockResponse.getHeaders().toMultimap().forEach((key, values) -> vertxResponse.headers().add(key, values));
+    if (mockResponse.getBody() != null && mockResponse.getBody().size() > 0) {
+      if (!vertxResponse.headers().contains(TRANSFER_ENCODING)) {
+        vertxResponse.headers().add(CONTENT_LENGTH, String.valueOf(mockResponse.getBody().size()));
+      }
+      final io.vertx.core.buffer.Buffer toSend = io.vertx.core.buffer.Buffer.buffer(mockResponse.getBody().getBytes());
+      if (mockResponse.getBodyDelay() != null) {
+        vertx.setTimer(mockResponse.getBodyDelay().toMillis(), timerId -> vertxResponse.send(toSend));
+      } else {
+        vertxResponse.send(toSend);
+      }
+    } else {
+      vertxResponse.end();
+    }
+  }
+
+  private static boolean isWebSocketUpgrade(HttpServerRequest event) {
+    final String upgrade = event.getHeader("Upgrade");
+    return upgrade != null && upgrade.toLowerCase(Locale.ROOT).contains("websocket");
   }
 
   private static boolean hasBody(HttpServerRequest event) {

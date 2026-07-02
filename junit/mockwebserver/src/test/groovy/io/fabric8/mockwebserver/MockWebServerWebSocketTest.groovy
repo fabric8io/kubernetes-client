@@ -22,6 +22,7 @@ import io.fabric8.mockwebserver.http.WebSocketListener
 import io.vertx.core.Vertx
 import io.vertx.core.buffer.Buffer
 import io.vertx.core.http.WebSocketClient
+import io.vertx.core.http.WebSocketConnectOptions
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
@@ -202,6 +203,38 @@ class MockWebServerWebSocketTest extends Specification {
 		then: "The close message should be the expected one"
 		receivedCode == 1000
 		receivedReason == "Normal closure"
+	}
+
+	def "Upgrades to WebSocket even when the request carries content headers"() {
+		given: "A WebSocketUpgrade expectation"
+		String receivedMessage = null
+		server.enqueue(new MockResponse().withWebSocketUpgrade(new WebSocketListener() {
+					@Override
+					void onMessage(WebSocket webSocket, String text) {
+						receivedMessage = text
+					}
+				}))
+		and: "A WebSocket request carrying a Content-Type header (previously routed through the async body reader)"
+		def options = new WebSocketConnectOptions()
+				.setHost(server.getHostName())
+				.setPort(server.port)
+				.setURI("/websocket")
+				.addHeader("Content-Type", "application/octet-stream")
+		def wsReq = wsClient.connect(options)
+		and: "An instance of PollingConditions"
+		def condition = new PollingConditions(timeout: 10)
+
+		when: "The request is sent and a text message is written"
+		wsReq.onSuccess { ws ->
+			ws.writeTextMessage("A text message from the client")
+		}
+
+		then: "The upgrade succeeds and the message is received"
+		condition.eventually {
+			assert wsReq.isComplete()
+			assert wsReq.succeeded()
+			assert receivedMessage == "A text message from the client"
+		}
 	}
 
 	def "Sends WebSocket onClose messages to client"() {
