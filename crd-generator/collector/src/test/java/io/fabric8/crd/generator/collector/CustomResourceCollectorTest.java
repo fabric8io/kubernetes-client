@@ -108,6 +108,16 @@ class CustomResourceCollectorTest {
   }
 
   @Test
+  void givenClassNameAndMultipleExcludePackages_thenNoLoading() {
+    customResourceCollector.withCustomResourceClass("com.example.Test");
+    customResourceCollector.withExcludePackages(Arrays.asList("com.example", "com.other"));
+
+    List<Class<? extends HasMetadata>> classes = customResourceCollector.findCustomResourceClasses();
+    verify(customResourceClassLoader, times(0)).loadCustomResourceClass(anyString());
+    assertEquals(0, classes.size());
+  }
+
+  @Test
   void givenClassNamesAndIncludePackage_thenLoad() {
     customResourceCollector.withCustomResourceClass("com.example.Test", "com.other.Test");
     customResourceCollector.withIncludePackages(Collections.singletonList("com.example"));
