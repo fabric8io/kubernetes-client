@@ -187,6 +187,14 @@ class HttpClientUtilsTest {
         arguments("username", "Þaßßword£", "Basic dXNlcm5hbWU6w55hw5/Dn3dvcmTCow=="));
   }
 
+  @Test
+  void testDecodeBasicCredentialsPreservesColonsInPassword() {
+    String[] userPassword = HttpClientUtils.decodeBasicCredentials(HttpClientUtils.basicCredentials("username", "pa:ss"));
+
+    assertThat(userPassword)
+        .containsExactly("username", "pa:ss");
+  }
+
   @Nested
   @DisplayName("getProxyUrl")
   @TestInstance(PER_CLASS)
