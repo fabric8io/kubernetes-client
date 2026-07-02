@@ -37,6 +37,7 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ServiceLoader;
@@ -291,13 +292,35 @@ public class HttpClientUtils {
         if (new IpAddressMatcher(noProxyIpOrSubnet.get()).matches(host)) {
           return true;
         }
-      } else {
-        if (host.endsWith(noProxy)) {
-          return true;
-        }
+      } else if (isHostnameMatchedByNoProxy(host, noProxy)) {
+        return true;
       }
     }
     return false;
+  }
+
+  private static boolean isHostnameMatchedByNoProxy(String host, String noProxy) {
+    if (host == null || noProxy == null || noProxy.isEmpty()) {
+      return false;
+    }
+    String normalizedHost = normalizeHostnameForNoProxy(host);
+    String normalizedNoProxy = normalizeHostnameForNoProxy(noProxy);
+    if (normalizedNoProxy.startsWith(".")) {
+      normalizedNoProxy = normalizedNoProxy.substring(1);
+    }
+    if (normalizedNoProxy.isEmpty()) {
+      return false;
+    }
+    return normalizedHost.equals(normalizedNoProxy)
+        || normalizedHost.endsWith("." + normalizedNoProxy);
+  }
+
+  private static String normalizeHostnameForNoProxy(String hostname) {
+    String normalizedHostname = hostname.toLowerCase(Locale.ROOT);
+    if (normalizedHostname.endsWith(".")) {
+      return normalizedHostname.substring(0, normalizedHostname.length() - 1);
+    }
+    return normalizedHostname;
   }
 
   private static Optional<String> extractIpAddressOrSubnet(String ipAddressOrSubnet) {
