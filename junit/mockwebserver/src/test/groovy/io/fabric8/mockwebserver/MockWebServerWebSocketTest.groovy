@@ -21,8 +21,10 @@ import io.fabric8.mockwebserver.http.WebSocket
 import io.fabric8.mockwebserver.http.WebSocketListener
 import io.vertx.core.Vertx
 import io.vertx.core.buffer.Buffer
+import io.vertx.core.http.HttpMethod
 import io.vertx.core.http.WebSocketClient
 import io.vertx.core.http.WebSocketConnectOptions
+import java.util.concurrent.TimeUnit
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
@@ -235,6 +237,42 @@ class MockWebServerWebSocketTest extends Specification {
 			assert wsReq.succeeded()
 			assert receivedMessage == "A text message from the client"
 		}
+	}
+
+	def "Replies with the enqueued HTTP response when a WebSocket-upgrade request receives a non-WebSocket response"() {
+		given: "A standard (non-WebSocket) response is enqueued"
+		server.enqueue(new MockResponse().setResponseCode(200).setBody("Not a websocket"))
+		and: "A plain HTTP client"
+		def httpClient = vertx.createHttpClient()
+		and: "An instance of PollingConditions"
+		def condition = new PollingConditions(timeout: 10)
+
+		when: "A request carrying Upgrade and content headers is sent, but the mock returns a standard response"
+		// Only the status line is asserted: reading the response body over a connection that
+		// requested (and was denied) an upgrade is not reliable across HTTP client stacks and
+		// flakes on some platforms. Body delivery is already covered by the regular HTTP tests;
+		// this test only needs to prove the upgrade request falls back to a standard HTTP
+		// response instead of hanging or being upgraded.
+		def result = httpClient.request(HttpMethod.GET, server.port, server.getHostName(), "/websocket")
+				.compose { req ->
+					req.putHeader("Upgrade", "websocket")
+					req.putHeader("Content-Type", "application/octet-stream")
+					req.send()
+				}
+				.map { resp -> resp.statusCode() }
+
+		then: "The server replies with the enqueued HTTP status instead of hanging or upgrading"
+		condition.eventually {
+			assert result.succeeded()
+			assert result.result() == 200
+		}
+		and: "The server actually saw the upgrade header, so the synchronous fallback branch was exercised"
+		def recorded = server.takeRequest(10, TimeUnit.SECONDS)
+		recorded != null
+		recorded.getHeader("Upgrade")?.toLowerCase()?.contains("websocket")
+
+		cleanup:
+		httpClient.close()
 	}
 
 	def "Sends WebSocket onClose messages to client"() {

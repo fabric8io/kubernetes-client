@@ -62,18 +62,17 @@ public abstract class HttpServerRequestHandler implements Handler<HttpServerRequ
             .onSuccess(new ServerWebSocketHandler(request, mockResponse));
         return;
       }
-      // Not a WebSocket response after all; reply as a standard HTTP response.
+      // Not a WebSocket response after all; drain the request and reply as a standard HTTP
+      // response. The failure handler is wired the same way as the regular path so that a body
+      // read error surfaces as a 500 instead of being silently dropped.
       event.resume();
-      sendResponse(event, mockResponse);
+      final Future<io.vertx.core.buffer.Buffer> body = readBody(event);
+      body.onFailure(exceptionHandler);
+      body.onSuccess(ignored -> sendResponse(event, mockResponse));
       return;
     }
     event.resume();
-    final Future<io.vertx.core.buffer.Buffer> body;
-    if (hasBody(event)) {
-      body = event.body();
-    } else {
-      body = Future.succeededFuture(null);
-    }
+    final Future<io.vertx.core.buffer.Buffer> body = readBody(event);
     body.onFailure(exceptionHandler);
     body.onSuccess(bodyBuffer -> {
       final RecordedRequest request = toRecordedRequest(event, bodyBuffer);
@@ -117,6 +116,10 @@ public abstract class HttpServerRequestHandler implements Handler<HttpServerRequ
     } else {
       vertxResponse.end();
     }
+  }
+
+  private static Future<io.vertx.core.buffer.Buffer> readBody(HttpServerRequest event) {
+    return hasBody(event) ? event.body() : Future.succeededFuture(null);
   }
 
   private static boolean isWebSocketUpgrade(HttpServerRequest event) {
