@@ -20,6 +20,7 @@ import io.fabric8.mockwebserver.DefaultMockServer;
 import io.fabric8.mockwebserver.utils.ResponseProviders;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.eclipse.jetty.client.HttpClient;
+import org.eclipse.jetty.client.Origin;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.junit.jupiter.api.AfterAll;
@@ -28,6 +29,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
@@ -97,6 +99,21 @@ class JettyHttpClientBuilderTest {
       assertThat(client)
           .returns(1337L, c -> c.getJetty().getConnectTimeout())
           .returns(1337L, c -> c.getJettyWs().getConnectTimeout());
+    }
+  }
+
+  @Test
+  @DisplayName("proxy, configures both HTTP and WebSocket backing clients")
+  void proxyConfiguresHttpAndWebSocketClients() {
+    try (var client = factory.newBuilder()
+        .proxyAddress(new InetSocketAddress("proxy.example.com", 8080))
+        .proxyType(io.fabric8.kubernetes.client.http.HttpClient.ProxyType.HTTP)
+        .build()) {
+      Origin origin = new Origin("https", "cluster.example.com", 6443);
+      assertThat(client.getJetty().getProxyConfiguration().match(origin))
+          .isNotNull();
+      assertThat(client.getJettyWs().getHttpClient().getProxyConfiguration().match(origin))
+          .isNotNull();
     }
   }
 

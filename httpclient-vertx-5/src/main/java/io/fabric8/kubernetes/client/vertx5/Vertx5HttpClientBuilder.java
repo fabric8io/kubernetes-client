@@ -31,6 +31,7 @@ import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.http.HttpVersion;
 import io.vertx.core.http.PoolOptions;
 import io.vertx.core.http.WebSocketClientOptions;
+import io.vertx.core.net.ClientOptionsBase;
 import io.vertx.core.net.JdkSSLEngineOptions;
 import io.vertx.core.net.KeyCertOptions;
 import io.vertx.core.net.ProxyOptions;
@@ -133,7 +134,7 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
   }
 
   /** Configure proxy and potential auth interceptor. */
-  private void applyProxy(final WebClientOptions options) {
+  private void applyProxy(final ClientOptionsBase options) {
     if (this.proxyType == HttpClient.ProxyType.DIRECT || this.proxyAddress == null) {
       return;
     }
@@ -195,6 +196,7 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
     }
 
     final WebSocketClientOptions wsOptions = createWebSocketClientOptions(protocols);
+    applyProxy(wsOptions);
 
     // Since the factory is not explicitly typed as VertxHttpClientFactory, we need to check the type before invoking
     // additionalConfig as to not break other implementations of HttpClient.Factory for VertxHttpClientBuilder.
