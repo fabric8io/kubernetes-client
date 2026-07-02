@@ -82,3 +82,8 @@ zz_generated.openapi.go.report.txt
 
 # MacOS
 .DS_Store
+
+# Hugo
+doc/site/public/
+doc/site/resources/
+doc/site/.hugo_build.lock
