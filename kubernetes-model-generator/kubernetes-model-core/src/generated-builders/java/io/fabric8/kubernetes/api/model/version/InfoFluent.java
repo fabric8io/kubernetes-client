@@ -1,0 +1,426 @@
+package io.fabric8.kubernetes.api.model.version;
+
+import io.fabric8.kubernetes.api.builder.BaseFluent;
+import java.lang.Object;
+import java.lang.String;
+import java.lang.StringBuilder;
+import java.lang.SuppressWarnings;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+
+/**
+ * Generated
+ */
+@SuppressWarnings("unchecked")
+public class InfoFluent<A extends io.fabric8.kubernetes.api.model.version.InfoFluent<A>> extends BaseFluent<A>{
+
+  private Map<String,Object> additionalProperties;
+  private String buildDate;
+  private String compiler;
+  private String emulationMajor;
+  private String emulationMinor;
+  private String gitCommit;
+  private String gitTreeState;
+  private String gitVersion;
+  private String goVersion;
+  private String major;
+  private String minCompatibilityMajor;
+  private String minCompatibilityMinor;
+  private String minor;
+  private String platform;
+
+  public InfoFluent() {
+  }
+  
+  public InfoFluent(Info instance) {
+    this.copyInstance(instance);
+  }
+
+  public A addToAdditionalProperties(Map<String,Object> map) {
+    if (this.additionalProperties == null && map != null) {
+      this.additionalProperties = new LinkedHashMap();
+    }
+    if (map != null) {
+      this.additionalProperties.putAll(map);
+    }
+    return (A) this;
+  }
+  
+  public A addToAdditionalProperties(String key,Object value) {
+    if (this.additionalProperties == null && key != null && value != null) {
+      this.additionalProperties = new LinkedHashMap();
+    }
+    if (key != null && value != null) {
+      this.additionalProperties.put(key, value);
+    }
+    return (A) this;
+  }
+  
+  protected void copyInstance(Info instance) {
+    instance = instance != null ? instance : new Info();
+    if (instance != null) {
+        this.withBuildDate(instance.getBuildDate());
+        this.withCompiler(instance.getCompiler());
+        this.withEmulationMajor(instance.getEmulationMajor());
+        this.withEmulationMinor(instance.getEmulationMinor());
+        this.withGitCommit(instance.getGitCommit());
+        this.withGitTreeState(instance.getGitTreeState());
+        this.withGitVersion(instance.getGitVersion());
+        this.withGoVersion(instance.getGoVersion());
+        this.withMajor(instance.getMajor());
+        this.withMinCompatibilityMajor(instance.getMinCompatibilityMajor());
+        this.withMinCompatibilityMinor(instance.getMinCompatibilityMinor());
+        this.withMinor(instance.getMinor());
+        this.withPlatform(instance.getPlatform());
+        this.withAdditionalProperties(instance.getAdditionalProperties());
+    }
+  }
+  
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || this.getClass() != o.getClass()) {
+      return false;
+    }
+    if (!(super.equals(o))) {
+      return false;
+    }
+    InfoFluent that = (InfoFluent) o;
+    if (!(Objects.equals(buildDate, that.buildDate))) {
+      return false;
+    }
+    if (!(Objects.equals(compiler, that.compiler))) {
+      return false;
+    }
+    if (!(Objects.equals(emulationMajor, that.emulationMajor))) {
+      return false;
+    }
+    if (!(Objects.equals(emulationMinor, that.emulationMinor))) {
+      return false;
+    }
+    if (!(Objects.equals(gitCommit, that.gitCommit))) {
+      return false;
+    }
+    if (!(Objects.equals(gitTreeState, that.gitTreeState))) {
+      return false;
+    }
+    if (!(Objects.equals(gitVersion, that.gitVersion))) {
+      return false;
+    }
+    if (!(Objects.equals(goVersion, that.goVersion))) {
+      return false;
+    }
+    if (!(Objects.equals(major, that.major))) {
+      return false;
+    }
+    if (!(Objects.equals(minCompatibilityMajor, that.minCompatibilityMajor))) {
+      return false;
+    }
+    if (!(Objects.equals(minCompatibilityMinor, that.minCompatibilityMinor))) {
+      return false;
+    }
+    if (!(Objects.equals(minor, that.minor))) {
+      return false;
+    }
+    if (!(Objects.equals(platform, that.platform))) {
+      return false;
+    }
+    if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
+      return false;
+    }
+    return true;
+  }
+  
+  public Map<String,Object> getAdditionalProperties() {
+    return this.additionalProperties;
+  }
+  
+  public String getBuildDate() {
+    return this.buildDate;
+  }
+  
+  public String getCompiler() {
+    return this.compiler;
+  }
+  
+  public String getEmulationMajor() {
+    return this.emulationMajor;
+  }
+  
+  public String getEmulationMinor() {
+    return this.emulationMinor;
+  }
+  
+  public String getGitCommit() {
+    return this.gitCommit;
+  }
+  
+  public String getGitTreeState() {
+    return this.gitTreeState;
+  }
+  
+  public String getGitVersion() {
+    return this.gitVersion;
+  }
+  
+  public String getGoVersion() {
+    return this.goVersion;
+  }
+  
+  public String getMajor() {
+    return this.major;
+  }
+  
+  public String getMinCompatibilityMajor() {
+    return this.minCompatibilityMajor;
+  }
+  
+  public String getMinCompatibilityMinor() {
+    return this.minCompatibilityMinor;
+  }
+  
+  public String getMinor() {
+    return this.minor;
+  }
+  
+  public String getPlatform() {
+    return this.platform;
+  }
+  
+  public boolean hasAdditionalProperties() {
+    return this.additionalProperties != null;
+  }
+  
+  public boolean hasBuildDate() {
+    return this.buildDate != null;
+  }
+  
+  public boolean hasCompiler() {
+    return this.compiler != null;
+  }
+  
+  public boolean hasEmulationMajor() {
+    return this.emulationMajor != null;
+  }
+  
+  public boolean hasEmulationMinor() {
+    return this.emulationMinor != null;
+  }
+  
+  public boolean hasGitCommit() {
+    return this.gitCommit != null;
+  }
+  
+  public boolean hasGitTreeState() {
+    return this.gitTreeState != null;
+  }
+  
+  public boolean hasGitVersion() {
+    return this.gitVersion != null;
+  }
+  
+  public boolean hasGoVersion() {
+    return this.goVersion != null;
+  }
+  
+  public boolean hasMajor() {
+    return this.major != null;
+  }
+  
+  public boolean hasMinCompatibilityMajor() {
+    return this.minCompatibilityMajor != null;
+  }
+  
+  public boolean hasMinCompatibilityMinor() {
+    return this.minCompatibilityMinor != null;
+  }
+  
+  public boolean hasMinor() {
+    return this.minor != null;
+  }
+  
+  public boolean hasPlatform() {
+    return this.platform != null;
+  }
+  
+  public int hashCode() {
+    return Objects.hash(buildDate, compiler, emulationMajor, emulationMinor, gitCommit, gitTreeState, gitVersion, goVersion, major, minCompatibilityMajor, minCompatibilityMinor, minor, platform, additionalProperties);
+  }
+  
+  public A removeFromAdditionalProperties(String key) {
+    if (this.additionalProperties == null) {
+      return (A) this;
+    }
+    if (key != null && this.additionalProperties != null) {
+      this.additionalProperties.remove(key);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromAdditionalProperties(Map<String,Object> map) {
+    if (this.additionalProperties == null) {
+      return (A) this;
+    }
+    if (map != null) {
+      for (Object key : map.keySet()) {
+        if (this.additionalProperties != null) {
+          this.additionalProperties.remove(key);
+        }
+      }
+    }
+    return (A) this;
+  }
+  
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("{");
+    if (!(buildDate == null)) {
+        sb.append("buildDate:");
+        sb.append(buildDate);
+        sb.append(",");
+    }
+    if (!(compiler == null)) {
+        sb.append("compiler:");
+        sb.append(compiler);
+        sb.append(",");
+    }
+    if (!(emulationMajor == null)) {
+        sb.append("emulationMajor:");
+        sb.append(emulationMajor);
+        sb.append(",");
+    }
+    if (!(emulationMinor == null)) {
+        sb.append("emulationMinor:");
+        sb.append(emulationMinor);
+        sb.append(",");
+    }
+    if (!(gitCommit == null)) {
+        sb.append("gitCommit:");
+        sb.append(gitCommit);
+        sb.append(",");
+    }
+    if (!(gitTreeState == null)) {
+        sb.append("gitTreeState:");
+        sb.append(gitTreeState);
+        sb.append(",");
+    }
+    if (!(gitVersion == null)) {
+        sb.append("gitVersion:");
+        sb.append(gitVersion);
+        sb.append(",");
+    }
+    if (!(goVersion == null)) {
+        sb.append("goVersion:");
+        sb.append(goVersion);
+        sb.append(",");
+    }
+    if (!(major == null)) {
+        sb.append("major:");
+        sb.append(major);
+        sb.append(",");
+    }
+    if (!(minCompatibilityMajor == null)) {
+        sb.append("minCompatibilityMajor:");
+        sb.append(minCompatibilityMajor);
+        sb.append(",");
+    }
+    if (!(minCompatibilityMinor == null)) {
+        sb.append("minCompatibilityMinor:");
+        sb.append(minCompatibilityMinor);
+        sb.append(",");
+    }
+    if (!(minor == null)) {
+        sb.append("minor:");
+        sb.append(minor);
+        sb.append(",");
+    }
+    if (!(platform == null)) {
+        sb.append("platform:");
+        sb.append(platform);
+        sb.append(",");
+    }
+    if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
+        sb.append("additionalProperties:");
+        sb.append(additionalProperties);
+    }
+    sb.append("}");
+    return sb.toString();
+  }
+  
+  public <K,V>A withAdditionalProperties(Map<String,Object> additionalProperties) {
+    if (additionalProperties == null) {
+      this.additionalProperties = null;
+    } else {
+      this.additionalProperties = new LinkedHashMap(additionalProperties);
+    }
+    return (A) this;
+  }
+  
+  public A withBuildDate(String buildDate) {
+    this.buildDate = buildDate;
+    return (A) this;
+  }
+  
+  public A withCompiler(String compiler) {
+    this.compiler = compiler;
+    return (A) this;
+  }
+  
+  public A withEmulationMajor(String emulationMajor) {
+    this.emulationMajor = emulationMajor;
+    return (A) this;
+  }
+  
+  public A withEmulationMinor(String emulationMinor) {
+    this.emulationMinor = emulationMinor;
+    return (A) this;
+  }
+  
+  public A withGitCommit(String gitCommit) {
+    this.gitCommit = gitCommit;
+    return (A) this;
+  }
+  
+  public A withGitTreeState(String gitTreeState) {
+    this.gitTreeState = gitTreeState;
+    return (A) this;
+  }
+  
+  public A withGitVersion(String gitVersion) {
+    this.gitVersion = gitVersion;
+    return (A) this;
+  }
+  
+  public A withGoVersion(String goVersion) {
+    this.goVersion = goVersion;
+    return (A) this;
+  }
+  
+  public A withMajor(String major) {
+    this.major = major;
+    return (A) this;
+  }
+  
+  public A withMinCompatibilityMajor(String minCompatibilityMajor) {
+    this.minCompatibilityMajor = minCompatibilityMajor;
+    return (A) this;
+  }
+  
+  public A withMinCompatibilityMinor(String minCompatibilityMinor) {
+    this.minCompatibilityMinor = minCompatibilityMinor;
+    return (A) this;
+  }
+  
+  public A withMinor(String minor) {
+    this.minor = minor;
+    return (A) this;
+  }
+  
+  public A withPlatform(String platform) {
+    this.platform = platform;
+    return (A) this;
+  }
+  
+}

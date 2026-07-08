@@ -1,0 +1,224 @@
+package io.fabric8.kubernetes.api.model;
+
+import io.fabric8.kubernetes.api.builder.BaseFluent;
+import java.lang.Boolean;
+import java.lang.Object;
+import java.lang.String;
+import java.lang.StringBuilder;
+import java.lang.SuppressWarnings;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+
+/**
+ * Generated
+ */
+@SuppressWarnings("unchecked")
+public class AzureFilePersistentVolumeSourceFluent<A extends io.fabric8.kubernetes.api.model.AzureFilePersistentVolumeSourceFluent<A>> extends BaseFluent<A>{
+
+  private Map<String,Object> additionalProperties;
+  private Boolean readOnly;
+  private String secretName;
+  private String secretNamespace;
+  private String shareName;
+
+  public AzureFilePersistentVolumeSourceFluent() {
+  }
+  
+  public AzureFilePersistentVolumeSourceFluent(AzureFilePersistentVolumeSource instance) {
+    this.copyInstance(instance);
+  }
+
+  public A addToAdditionalProperties(Map<String,Object> map) {
+    if (this.additionalProperties == null && map != null) {
+      this.additionalProperties = new LinkedHashMap();
+    }
+    if (map != null) {
+      this.additionalProperties.putAll(map);
+    }
+    return (A) this;
+  }
+  
+  public A addToAdditionalProperties(String key,Object value) {
+    if (this.additionalProperties == null && key != null && value != null) {
+      this.additionalProperties = new LinkedHashMap();
+    }
+    if (key != null && value != null) {
+      this.additionalProperties.put(key, value);
+    }
+    return (A) this;
+  }
+  
+  protected void copyInstance(AzureFilePersistentVolumeSource instance) {
+    instance = instance != null ? instance : new AzureFilePersistentVolumeSource();
+    if (instance != null) {
+        this.withReadOnly(instance.getReadOnly());
+        this.withSecretName(instance.getSecretName());
+        this.withSecretNamespace(instance.getSecretNamespace());
+        this.withShareName(instance.getShareName());
+        this.withAdditionalProperties(instance.getAdditionalProperties());
+    }
+  }
+  
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || this.getClass() != o.getClass()) {
+      return false;
+    }
+    if (!(super.equals(o))) {
+      return false;
+    }
+    AzureFilePersistentVolumeSourceFluent that = (AzureFilePersistentVolumeSourceFluent) o;
+    if (!(Objects.equals(readOnly, that.readOnly))) {
+      return false;
+    }
+    if (!(Objects.equals(secretName, that.secretName))) {
+      return false;
+    }
+    if (!(Objects.equals(secretNamespace, that.secretNamespace))) {
+      return false;
+    }
+    if (!(Objects.equals(shareName, that.shareName))) {
+      return false;
+    }
+    if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
+      return false;
+    }
+    return true;
+  }
+  
+  public Map<String,Object> getAdditionalProperties() {
+    return this.additionalProperties;
+  }
+  
+  public Boolean getReadOnly() {
+    return this.readOnly;
+  }
+  
+  public String getSecretName() {
+    return this.secretName;
+  }
+  
+  public String getSecretNamespace() {
+    return this.secretNamespace;
+  }
+  
+  public String getShareName() {
+    return this.shareName;
+  }
+  
+  public boolean hasAdditionalProperties() {
+    return this.additionalProperties != null;
+  }
+  
+  public boolean hasReadOnly() {
+    return this.readOnly != null;
+  }
+  
+  public boolean hasSecretName() {
+    return this.secretName != null;
+  }
+  
+  public boolean hasSecretNamespace() {
+    return this.secretNamespace != null;
+  }
+  
+  public boolean hasShareName() {
+    return this.shareName != null;
+  }
+  
+  public int hashCode() {
+    return Objects.hash(readOnly, secretName, secretNamespace, shareName, additionalProperties);
+  }
+  
+  public A removeFromAdditionalProperties(String key) {
+    if (this.additionalProperties == null) {
+      return (A) this;
+    }
+    if (key != null && this.additionalProperties != null) {
+      this.additionalProperties.remove(key);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromAdditionalProperties(Map<String,Object> map) {
+    if (this.additionalProperties == null) {
+      return (A) this;
+    }
+    if (map != null) {
+      for (Object key : map.keySet()) {
+        if (this.additionalProperties != null) {
+          this.additionalProperties.remove(key);
+        }
+      }
+    }
+    return (A) this;
+  }
+  
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("{");
+    if (!(readOnly == null)) {
+        sb.append("readOnly:");
+        sb.append(readOnly);
+        sb.append(",");
+    }
+    if (!(secretName == null)) {
+        sb.append("secretName:");
+        sb.append(secretName);
+        sb.append(",");
+    }
+    if (!(secretNamespace == null)) {
+        sb.append("secretNamespace:");
+        sb.append(secretNamespace);
+        sb.append(",");
+    }
+    if (!(shareName == null)) {
+        sb.append("shareName:");
+        sb.append(shareName);
+        sb.append(",");
+    }
+    if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
+        sb.append("additionalProperties:");
+        sb.append(additionalProperties);
+    }
+    sb.append("}");
+    return sb.toString();
+  }
+  
+  public <K,V>A withAdditionalProperties(Map<String,Object> additionalProperties) {
+    if (additionalProperties == null) {
+      this.additionalProperties = null;
+    } else {
+      this.additionalProperties = new LinkedHashMap(additionalProperties);
+    }
+    return (A) this;
+  }
+  
+  public A withReadOnly() {
+    return withReadOnly(true);
+  }
+  
+  public A withReadOnly(Boolean readOnly) {
+    this.readOnly = readOnly;
+    return (A) this;
+  }
+  
+  public A withSecretName(String secretName) {
+    this.secretName = secretName;
+    return (A) this;
+  }
+  
+  public A withSecretNamespace(String secretNamespace) {
+    this.secretNamespace = secretNamespace;
+    return (A) this;
+  }
+  
+  public A withShareName(String shareName) {
+    this.shareName = shareName;
+    return (A) this;
+  }
+  
+}

@@ -1,0 +1,505 @@
+package io.fabric8.kubernetes.api.model;
+
+import io.fabric8.kubernetes.api.builder.BaseFluent;
+import java.lang.Object;
+import java.lang.String;
+import java.lang.StringBuilder;
+import java.lang.SuppressWarnings;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+
+/**
+ * Generated
+ */
+@SuppressWarnings("unchecked")
+public class LimitRangeItemFluent<A extends io.fabric8.kubernetes.api.model.LimitRangeItemFluent<A>> extends BaseFluent<A>{
+
+  private Map<String,Quantity> _default;
+  private Map<String,Object> additionalProperties;
+  private Map<String,Quantity> defaultRequest;
+  private Map<String,Quantity> max;
+  private Map<String,Quantity> maxLimitRequestRatio;
+  private Map<String,Quantity> min;
+  private String type;
+
+  public LimitRangeItemFluent() {
+  }
+  
+  public LimitRangeItemFluent(LimitRangeItem instance) {
+    this.copyInstance(instance);
+  }
+
+  public A addToAdditionalProperties(Map<String,Object> map) {
+    if (this.additionalProperties == null && map != null) {
+      this.additionalProperties = new LinkedHashMap();
+    }
+    if (map != null) {
+      this.additionalProperties.putAll(map);
+    }
+    return (A) this;
+  }
+  
+  public A addToAdditionalProperties(String key,Object value) {
+    if (this.additionalProperties == null && key != null && value != null) {
+      this.additionalProperties = new LinkedHashMap();
+    }
+    if (key != null && value != null) {
+      this.additionalProperties.put(key, value);
+    }
+    return (A) this;
+  }
+  
+  public A addToDefault(Map<String,Quantity> map) {
+    if (this._default == null && map != null) {
+      this._default = new LinkedHashMap();
+    }
+    if (map != null) {
+      this._default.putAll(map);
+    }
+    return (A) this;
+  }
+  
+  public A addToDefault(String key,Quantity value) {
+    if (this._default == null && key != null && value != null) {
+      this._default = new LinkedHashMap();
+    }
+    if (key != null && value != null) {
+      this._default.put(key, value);
+    }
+    return (A) this;
+  }
+  
+  public A addToDefaultRequest(Map<String,Quantity> map) {
+    if (this.defaultRequest == null && map != null) {
+      this.defaultRequest = new LinkedHashMap();
+    }
+    if (map != null) {
+      this.defaultRequest.putAll(map);
+    }
+    return (A) this;
+  }
+  
+  public A addToDefaultRequest(String key,Quantity value) {
+    if (this.defaultRequest == null && key != null && value != null) {
+      this.defaultRequest = new LinkedHashMap();
+    }
+    if (key != null && value != null) {
+      this.defaultRequest.put(key, value);
+    }
+    return (A) this;
+  }
+  
+  public A addToMax(Map<String,Quantity> map) {
+    if (this.max == null && map != null) {
+      this.max = new LinkedHashMap();
+    }
+    if (map != null) {
+      this.max.putAll(map);
+    }
+    return (A) this;
+  }
+  
+  public A addToMax(String key,Quantity value) {
+    if (this.max == null && key != null && value != null) {
+      this.max = new LinkedHashMap();
+    }
+    if (key != null && value != null) {
+      this.max.put(key, value);
+    }
+    return (A) this;
+  }
+  
+  public A addToMaxLimitRequestRatio(Map<String,Quantity> map) {
+    if (this.maxLimitRequestRatio == null && map != null) {
+      this.maxLimitRequestRatio = new LinkedHashMap();
+    }
+    if (map != null) {
+      this.maxLimitRequestRatio.putAll(map);
+    }
+    return (A) this;
+  }
+  
+  public A addToMaxLimitRequestRatio(String key,Quantity value) {
+    if (this.maxLimitRequestRatio == null && key != null && value != null) {
+      this.maxLimitRequestRatio = new LinkedHashMap();
+    }
+    if (key != null && value != null) {
+      this.maxLimitRequestRatio.put(key, value);
+    }
+    return (A) this;
+  }
+  
+  public A addToMin(Map<String,Quantity> map) {
+    if (this.min == null && map != null) {
+      this.min = new LinkedHashMap();
+    }
+    if (map != null) {
+      this.min.putAll(map);
+    }
+    return (A) this;
+  }
+  
+  public A addToMin(String key,Quantity value) {
+    if (this.min == null && key != null && value != null) {
+      this.min = new LinkedHashMap();
+    }
+    if (key != null && value != null) {
+      this.min.put(key, value);
+    }
+    return (A) this;
+  }
+  
+  protected void copyInstance(LimitRangeItem instance) {
+    instance = instance != null ? instance : new LimitRangeItem();
+    if (instance != null) {
+        this.withDefault(instance.getDefault());
+        this.withDefaultRequest(instance.getDefaultRequest());
+        this.withMax(instance.getMax());
+        this.withMaxLimitRequestRatio(instance.getMaxLimitRequestRatio());
+        this.withMin(instance.getMin());
+        this.withType(instance.getType());
+        this.withAdditionalProperties(instance.getAdditionalProperties());
+    }
+  }
+  
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || this.getClass() != o.getClass()) {
+      return false;
+    }
+    if (!(super.equals(o))) {
+      return false;
+    }
+    LimitRangeItemFluent that = (LimitRangeItemFluent) o;
+    if (!(Objects.equals(_default, that._default))) {
+      return false;
+    }
+    if (!(Objects.equals(defaultRequest, that.defaultRequest))) {
+      return false;
+    }
+    if (!(Objects.equals(max, that.max))) {
+      return false;
+    }
+    if (!(Objects.equals(maxLimitRequestRatio, that.maxLimitRequestRatio))) {
+      return false;
+    }
+    if (!(Objects.equals(min, that.min))) {
+      return false;
+    }
+    if (!(Objects.equals(type, that.type))) {
+      return false;
+    }
+    if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
+      return false;
+    }
+    return true;
+  }
+  
+  public Map<String,Object> getAdditionalProperties() {
+    return this.additionalProperties;
+  }
+  
+  public Map<String,Quantity> getDefault() {
+    return this._default;
+  }
+  
+  public Map<String,Quantity> getDefaultRequest() {
+    return this.defaultRequest;
+  }
+  
+  public Map<String,Quantity> getMax() {
+    return this.max;
+  }
+  
+  public Map<String,Quantity> getMaxLimitRequestRatio() {
+    return this.maxLimitRequestRatio;
+  }
+  
+  public Map<String,Quantity> getMin() {
+    return this.min;
+  }
+  
+  public String getType() {
+    return this.type;
+  }
+  
+  public boolean hasAdditionalProperties() {
+    return this.additionalProperties != null;
+  }
+  
+  public boolean hasDefault() {
+    return this._default != null;
+  }
+  
+  public boolean hasDefaultRequest() {
+    return this.defaultRequest != null;
+  }
+  
+  public boolean hasMax() {
+    return this.max != null;
+  }
+  
+  public boolean hasMaxLimitRequestRatio() {
+    return this.maxLimitRequestRatio != null;
+  }
+  
+  public boolean hasMin() {
+    return this.min != null;
+  }
+  
+  public boolean hasType() {
+    return this.type != null;
+  }
+  
+  public int hashCode() {
+    return Objects.hash(_default, defaultRequest, max, maxLimitRequestRatio, min, type, additionalProperties);
+  }
+  
+  public A removeFromAdditionalProperties(String key) {
+    if (this.additionalProperties == null) {
+      return (A) this;
+    }
+    if (key != null && this.additionalProperties != null) {
+      this.additionalProperties.remove(key);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromAdditionalProperties(Map<String,Object> map) {
+    if (this.additionalProperties == null) {
+      return (A) this;
+    }
+    if (map != null) {
+      for (Object key : map.keySet()) {
+        if (this.additionalProperties != null) {
+          this.additionalProperties.remove(key);
+        }
+      }
+    }
+    return (A) this;
+  }
+  
+  public A removeFromDefault(String key) {
+    if (this._default == null) {
+      return (A) this;
+    }
+    if (key != null && this._default != null) {
+      this._default.remove(key);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromDefault(Map<String,Quantity> map) {
+    if (this._default == null) {
+      return (A) this;
+    }
+    if (map != null) {
+      for (Object key : map.keySet()) {
+        if (this._default != null) {
+          this._default.remove(key);
+        }
+      }
+    }
+    return (A) this;
+  }
+  
+  public A removeFromDefaultRequest(String key) {
+    if (this.defaultRequest == null) {
+      return (A) this;
+    }
+    if (key != null && this.defaultRequest != null) {
+      this.defaultRequest.remove(key);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromDefaultRequest(Map<String,Quantity> map) {
+    if (this.defaultRequest == null) {
+      return (A) this;
+    }
+    if (map != null) {
+      for (Object key : map.keySet()) {
+        if (this.defaultRequest != null) {
+          this.defaultRequest.remove(key);
+        }
+      }
+    }
+    return (A) this;
+  }
+  
+  public A removeFromMax(String key) {
+    if (this.max == null) {
+      return (A) this;
+    }
+    if (key != null && this.max != null) {
+      this.max.remove(key);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromMax(Map<String,Quantity> map) {
+    if (this.max == null) {
+      return (A) this;
+    }
+    if (map != null) {
+      for (Object key : map.keySet()) {
+        if (this.max != null) {
+          this.max.remove(key);
+        }
+      }
+    }
+    return (A) this;
+  }
+  
+  public A removeFromMaxLimitRequestRatio(String key) {
+    if (this.maxLimitRequestRatio == null) {
+      return (A) this;
+    }
+    if (key != null && this.maxLimitRequestRatio != null) {
+      this.maxLimitRequestRatio.remove(key);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromMaxLimitRequestRatio(Map<String,Quantity> map) {
+    if (this.maxLimitRequestRatio == null) {
+      return (A) this;
+    }
+    if (map != null) {
+      for (Object key : map.keySet()) {
+        if (this.maxLimitRequestRatio != null) {
+          this.maxLimitRequestRatio.remove(key);
+        }
+      }
+    }
+    return (A) this;
+  }
+  
+  public A removeFromMin(String key) {
+    if (this.min == null) {
+      return (A) this;
+    }
+    if (key != null && this.min != null) {
+      this.min.remove(key);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromMin(Map<String,Quantity> map) {
+    if (this.min == null) {
+      return (A) this;
+    }
+    if (map != null) {
+      for (Object key : map.keySet()) {
+        if (this.min != null) {
+          this.min.remove(key);
+        }
+      }
+    }
+    return (A) this;
+  }
+  
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("{");
+    if (!(_default == null) && !(_default.isEmpty())) {
+        sb.append("_default:");
+        sb.append(_default);
+        sb.append(",");
+    }
+    if (!(defaultRequest == null) && !(defaultRequest.isEmpty())) {
+        sb.append("defaultRequest:");
+        sb.append(defaultRequest);
+        sb.append(",");
+    }
+    if (!(max == null) && !(max.isEmpty())) {
+        sb.append("max:");
+        sb.append(max);
+        sb.append(",");
+    }
+    if (!(maxLimitRequestRatio == null) && !(maxLimitRequestRatio.isEmpty())) {
+        sb.append("maxLimitRequestRatio:");
+        sb.append(maxLimitRequestRatio);
+        sb.append(",");
+    }
+    if (!(min == null) && !(min.isEmpty())) {
+        sb.append("min:");
+        sb.append(min);
+        sb.append(",");
+    }
+    if (!(type == null)) {
+        sb.append("type:");
+        sb.append(type);
+        sb.append(",");
+    }
+    if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
+        sb.append("additionalProperties:");
+        sb.append(additionalProperties);
+    }
+    sb.append("}");
+    return sb.toString();
+  }
+  
+  public <K,V>A withAdditionalProperties(Map<String,Object> additionalProperties) {
+    if (additionalProperties == null) {
+      this.additionalProperties = null;
+    } else {
+      this.additionalProperties = new LinkedHashMap(additionalProperties);
+    }
+    return (A) this;
+  }
+  
+  public <K,V>A withDefault(Map<String,Quantity> _default) {
+    if (_default == null) {
+      this._default = null;
+    } else {
+      this._default = new LinkedHashMap(_default);
+    }
+    return (A) this;
+  }
+  
+  public <K,V>A withDefaultRequest(Map<String,Quantity> defaultRequest) {
+    if (defaultRequest == null) {
+      this.defaultRequest = null;
+    } else {
+      this.defaultRequest = new LinkedHashMap(defaultRequest);
+    }
+    return (A) this;
+  }
+  
+  public <K,V>A withMax(Map<String,Quantity> max) {
+    if (max == null) {
+      this.max = null;
+    } else {
+      this.max = new LinkedHashMap(max);
+    }
+    return (A) this;
+  }
+  
+  public <K,V>A withMaxLimitRequestRatio(Map<String,Quantity> maxLimitRequestRatio) {
+    if (maxLimitRequestRatio == null) {
+      this.maxLimitRequestRatio = null;
+    } else {
+      this.maxLimitRequestRatio = new LinkedHashMap(maxLimitRequestRatio);
+    }
+    return (A) this;
+  }
+  
+  public <K,V>A withMin(Map<String,Quantity> min) {
+    if (min == null) {
+      this.min = null;
+    } else {
+      this.min = new LinkedHashMap(min);
+    }
+    return (A) this;
+  }
+  
+  public A withType(String type) {
+    this.type = type;
+    return (A) this;
+  }
+  
+}
