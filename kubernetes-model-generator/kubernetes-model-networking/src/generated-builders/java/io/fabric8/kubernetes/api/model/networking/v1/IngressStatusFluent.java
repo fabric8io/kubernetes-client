@@ -1,0 +1,195 @@
+package io.fabric8.kubernetes.api.model.networking.v1;
+
+import io.fabric8.kubernetes.api.builder.BaseFluent;
+import io.fabric8.kubernetes.api.builder.Nested;
+import java.lang.Object;
+import java.lang.String;
+import java.lang.StringBuilder;
+import java.lang.SuppressWarnings;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+
+/**
+ * Generated
+ */
+@SuppressWarnings("unchecked")
+public class IngressStatusFluent<A extends io.fabric8.kubernetes.api.model.networking.v1.IngressStatusFluent<A>> extends BaseFluent<A>{
+
+  private Map<String,Object> additionalProperties;
+  private IngressLoadBalancerStatusBuilder loadBalancer;
+
+  public IngressStatusFluent() {
+  }
+  
+  public IngressStatusFluent(IngressStatus instance) {
+    this.copyInstance(instance);
+  }
+
+  public A addToAdditionalProperties(Map<String,Object> map) {
+    if (this.additionalProperties == null && map != null) {
+      this.additionalProperties = new LinkedHashMap();
+    }
+    if (map != null) {
+      this.additionalProperties.putAll(map);
+    }
+    return (A) this;
+  }
+  
+  public A addToAdditionalProperties(String key,Object value) {
+    if (this.additionalProperties == null && key != null && value != null) {
+      this.additionalProperties = new LinkedHashMap();
+    }
+    if (key != null && value != null) {
+      this.additionalProperties.put(key, value);
+    }
+    return (A) this;
+  }
+  
+  public IngressLoadBalancerStatus buildLoadBalancer() {
+    return this.loadBalancer != null ? this.loadBalancer.build() : null;
+  }
+  
+  protected void copyInstance(IngressStatus instance) {
+    instance = instance != null ? instance : new IngressStatus();
+    if (instance != null) {
+        this.withLoadBalancer(instance.getLoadBalancer());
+        this.withAdditionalProperties(instance.getAdditionalProperties());
+    }
+  }
+  
+  public LoadBalancerNested<A> editLoadBalancer() {
+    return this.withNewLoadBalancerLike(Optional.ofNullable(this.buildLoadBalancer()).orElse(null));
+  }
+  
+  public LoadBalancerNested<A> editOrNewLoadBalancer() {
+    return this.withNewLoadBalancerLike(Optional.ofNullable(this.buildLoadBalancer()).orElse(new IngressLoadBalancerStatusBuilder().build()));
+  }
+  
+  public LoadBalancerNested<A> editOrNewLoadBalancerLike(IngressLoadBalancerStatus item) {
+    return this.withNewLoadBalancerLike(Optional.ofNullable(this.buildLoadBalancer()).orElse(item));
+  }
+  
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || this.getClass() != o.getClass()) {
+      return false;
+    }
+    if (!(super.equals(o))) {
+      return false;
+    }
+    IngressStatusFluent that = (IngressStatusFluent) o;
+    if (!(Objects.equals(loadBalancer, that.loadBalancer))) {
+      return false;
+    }
+    if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
+      return false;
+    }
+    return true;
+  }
+  
+  public Map<String,Object> getAdditionalProperties() {
+    return this.additionalProperties;
+  }
+  
+  public boolean hasAdditionalProperties() {
+    return this.additionalProperties != null;
+  }
+  
+  public boolean hasLoadBalancer() {
+    return this.loadBalancer != null;
+  }
+  
+  public int hashCode() {
+    return Objects.hash(loadBalancer, additionalProperties);
+  }
+  
+  public A removeFromAdditionalProperties(String key) {
+    if (this.additionalProperties == null) {
+      return (A) this;
+    }
+    if (key != null && this.additionalProperties != null) {
+      this.additionalProperties.remove(key);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromAdditionalProperties(Map<String,Object> map) {
+    if (this.additionalProperties == null) {
+      return (A) this;
+    }
+    if (map != null) {
+      for (Object key : map.keySet()) {
+        if (this.additionalProperties != null) {
+          this.additionalProperties.remove(key);
+        }
+      }
+    }
+    return (A) this;
+  }
+  
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("{");
+    if (!(loadBalancer == null)) {
+        sb.append("loadBalancer:");
+        sb.append(loadBalancer);
+        sb.append(",");
+    }
+    if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
+        sb.append("additionalProperties:");
+        sb.append(additionalProperties);
+    }
+    sb.append("}");
+    return sb.toString();
+  }
+  
+  public <K,V>A withAdditionalProperties(Map<String,Object> additionalProperties) {
+    if (additionalProperties == null) {
+      this.additionalProperties = null;
+    } else {
+      this.additionalProperties = new LinkedHashMap(additionalProperties);
+    }
+    return (A) this;
+  }
+  
+  public A withLoadBalancer(IngressLoadBalancerStatus loadBalancer) {
+    this._visitables.remove("loadBalancer");
+    if (loadBalancer != null) {
+        this.loadBalancer = new IngressLoadBalancerStatusBuilder(loadBalancer);
+        this._visitables.get("loadBalancer").add(this.loadBalancer);
+    } else {
+        this.loadBalancer = null;
+        this._visitables.get("loadBalancer").remove(this.loadBalancer);
+    }
+    return (A) this;
+  }
+  
+  public LoadBalancerNested<A> withNewLoadBalancer() {
+    return new LoadBalancerNested(null);
+  }
+  
+  public LoadBalancerNested<A> withNewLoadBalancerLike(IngressLoadBalancerStatus item) {
+    return new LoadBalancerNested(item);
+  }
+  public class LoadBalancerNested<N> extends IngressLoadBalancerStatusFluent<LoadBalancerNested<N>> implements Nested<N>{
+  
+    IngressLoadBalancerStatusBuilder builder;
+  
+    LoadBalancerNested(IngressLoadBalancerStatus item) {
+      this.builder = new IngressLoadBalancerStatusBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) IngressStatusFluent.this.withLoadBalancer(builder.build());
+    }
+    
+    public N endLoadBalancer() {
+      return and();
+    }
+    
+  }
+}
