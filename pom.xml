@@ -97,7 +97,7 @@
     <jetty.version>11.0.26</jetty.version>
     <maven-core.version>3.9.16</maven-core.version>
     <maven-plugin-annotations.version>3.15.2</maven-plugin-annotations.version>
-    <vertx.version>4.5.29</vertx.version>
+    <vertx.version>4.5.30</vertx.version>
     <vertx5.version>5.1.5</vertx5.version>
     <jandex.version>3.6.0</jandex.version>
     <snakeyaml.version>3.0.1</snakeyaml.version>
