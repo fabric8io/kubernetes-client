@@ -114,9 +114,9 @@
     <assertj.core.version>3.27.7</assertj.core.version>
     <awaitility.version>4.3.0</awaitility.version>
     <approvaltests.version>31.0.0</approvaltests.version>
-    <bouncycastle.version>1.84</bouncycastle.version>
+    <bouncycastle.version>1.85</bouncycastle.version>
     <bc-fips.version>2.1.2</bc-fips.version>
-    <bcpkix-fips.version>2.1.11</bcpkix-fips.version>
+    <bcpkix-fips.version>2.1.12</bcpkix-fips.version>
     <keycloak.version>26.7.0</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
     <mockito.version>5.23.0</mockito.version>
     <!-- byte-buddy-agent is loaded as a startup -javaagent by surefire (see maven-surefire-plugin) to
