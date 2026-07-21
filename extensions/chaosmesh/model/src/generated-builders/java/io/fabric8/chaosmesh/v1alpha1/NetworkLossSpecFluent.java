@@ -1,0 +1,311 @@
+package io.fabric8.chaosmesh.v1alpha1;
+
+import io.fabric8.kubernetes.api.builder.BaseFluent;
+import java.lang.Object;
+import java.lang.String;
+import java.lang.StringBuilder;
+import java.lang.SuppressWarnings;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+
+/**
+ * Generated
+ */
+@SuppressWarnings("unchecked")
+public class NetworkLossSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.NetworkLossSpecFluent<A>> extends BaseFluent<A>{
+
+  private Map<String,Object> additionalProperties;
+  private String correlation;
+  private String device;
+  private String egressPort;
+  private String hostname;
+  private String ipAddress;
+  private String ipProtocol;
+  private String percent;
+  private String sourcePort;
+
+  public NetworkLossSpecFluent() {
+  }
+  
+  public NetworkLossSpecFluent(NetworkLossSpec instance) {
+    this.copyInstance(instance);
+  }
+
+  public A addToAdditionalProperties(Map<String,Object> map) {
+    if (this.additionalProperties == null && map != null) {
+      this.additionalProperties = new LinkedHashMap();
+    }
+    if (map != null) {
+      this.additionalProperties.putAll(map);
+    }
+    return (A) this;
+  }
+  
+  public A addToAdditionalProperties(String key,Object value) {
+    if (this.additionalProperties == null && key != null && value != null) {
+      this.additionalProperties = new LinkedHashMap();
+    }
+    if (key != null && value != null) {
+      this.additionalProperties.put(key, value);
+    }
+    return (A) this;
+  }
+  
+  protected void copyInstance(NetworkLossSpec instance) {
+    instance = instance != null ? instance : new NetworkLossSpec();
+    if (instance != null) {
+        this.withCorrelation(instance.getCorrelation());
+        this.withDevice(instance.getDevice());
+        this.withEgressPort(instance.getEgressPort());
+        this.withHostname(instance.getHostname());
+        this.withIpAddress(instance.getIpAddress());
+        this.withIpProtocol(instance.getIpProtocol());
+        this.withPercent(instance.getPercent());
+        this.withSourcePort(instance.getSourcePort());
+        this.withAdditionalProperties(instance.getAdditionalProperties());
+    }
+  }
+  
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || this.getClass() != o.getClass()) {
+      return false;
+    }
+    if (!(super.equals(o))) {
+      return false;
+    }
+    NetworkLossSpecFluent that = (NetworkLossSpecFluent) o;
+    if (!(Objects.equals(correlation, that.correlation))) {
+      return false;
+    }
+    if (!(Objects.equals(device, that.device))) {
+      return false;
+    }
+    if (!(Objects.equals(egressPort, that.egressPort))) {
+      return false;
+    }
+    if (!(Objects.equals(hostname, that.hostname))) {
+      return false;
+    }
+    if (!(Objects.equals(ipAddress, that.ipAddress))) {
+      return false;
+    }
+    if (!(Objects.equals(ipProtocol, that.ipProtocol))) {
+      return false;
+    }
+    if (!(Objects.equals(percent, that.percent))) {
+      return false;
+    }
+    if (!(Objects.equals(sourcePort, that.sourcePort))) {
+      return false;
+    }
+    if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
+      return false;
+    }
+    return true;
+  }
+  
+  public Map<String,Object> getAdditionalProperties() {
+    return this.additionalProperties;
+  }
+  
+  public String getCorrelation() {
+    return this.correlation;
+  }
+  
+  public String getDevice() {
+    return this.device;
+  }
+  
+  public String getEgressPort() {
+    return this.egressPort;
+  }
+  
+  public String getHostname() {
+    return this.hostname;
+  }
+  
+  public String getIpAddress() {
+    return this.ipAddress;
+  }
+  
+  public String getIpProtocol() {
+    return this.ipProtocol;
+  }
+  
+  public String getPercent() {
+    return this.percent;
+  }
+  
+  public String getSourcePort() {
+    return this.sourcePort;
+  }
+  
+  public boolean hasAdditionalProperties() {
+    return this.additionalProperties != null;
+  }
+  
+  public boolean hasCorrelation() {
+    return this.correlation != null;
+  }
+  
+  public boolean hasDevice() {
+    return this.device != null;
+  }
+  
+  public boolean hasEgressPort() {
+    return this.egressPort != null;
+  }
+  
+  public boolean hasHostname() {
+    return this.hostname != null;
+  }
+  
+  public boolean hasIpAddress() {
+    return this.ipAddress != null;
+  }
+  
+  public boolean hasIpProtocol() {
+    return this.ipProtocol != null;
+  }
+  
+  public boolean hasPercent() {
+    return this.percent != null;
+  }
+  
+  public boolean hasSourcePort() {
+    return this.sourcePort != null;
+  }
+  
+  public int hashCode() {
+    return Objects.hash(correlation, device, egressPort, hostname, ipAddress, ipProtocol, percent, sourcePort, additionalProperties);
+  }
+  
+  public A removeFromAdditionalProperties(String key) {
+    if (this.additionalProperties == null) {
+      return (A) this;
+    }
+    if (key != null && this.additionalProperties != null) {
+      this.additionalProperties.remove(key);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromAdditionalProperties(Map<String,Object> map) {
+    if (this.additionalProperties == null) {
+      return (A) this;
+    }
+    if (map != null) {
+      for (Object key : map.keySet()) {
+        if (this.additionalProperties != null) {
+          this.additionalProperties.remove(key);
+        }
+      }
+    }
+    return (A) this;
+  }
+  
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("{");
+    if (!(correlation == null)) {
+        sb.append("correlation:");
+        sb.append(correlation);
+        sb.append(",");
+    }
+    if (!(device == null)) {
+        sb.append("device:");
+        sb.append(device);
+        sb.append(",");
+    }
+    if (!(egressPort == null)) {
+        sb.append("egressPort:");
+        sb.append(egressPort);
+        sb.append(",");
+    }
+    if (!(hostname == null)) {
+        sb.append("hostname:");
+        sb.append(hostname);
+        sb.append(",");
+    }
+    if (!(ipAddress == null)) {
+        sb.append("ipAddress:");
+        sb.append(ipAddress);
+        sb.append(",");
+    }
+    if (!(ipProtocol == null)) {
+        sb.append("ipProtocol:");
+        sb.append(ipProtocol);
+        sb.append(",");
+    }
+    if (!(percent == null)) {
+        sb.append("percent:");
+        sb.append(percent);
+        sb.append(",");
+    }
+    if (!(sourcePort == null)) {
+        sb.append("sourcePort:");
+        sb.append(sourcePort);
+        sb.append(",");
+    }
+    if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
+        sb.append("additionalProperties:");
+        sb.append(additionalProperties);
+    }
+    sb.append("}");
+    return sb.toString();
+  }
+  
+  public <K,V>A withAdditionalProperties(Map<String,Object> additionalProperties) {
+    if (additionalProperties == null) {
+      this.additionalProperties = null;
+    } else {
+      this.additionalProperties = new LinkedHashMap(additionalProperties);
+    }
+    return (A) this;
+  }
+  
+  public A withCorrelation(String correlation) {
+    this.correlation = correlation;
+    return (A) this;
+  }
+  
+  public A withDevice(String device) {
+    this.device = device;
+    return (A) this;
+  }
+  
+  public A withEgressPort(String egressPort) {
+    this.egressPort = egressPort;
+    return (A) this;
+  }
+  
+  public A withHostname(String hostname) {
+    this.hostname = hostname;
+    return (A) this;
+  }
+  
+  public A withIpAddress(String ipAddress) {
+    this.ipAddress = ipAddress;
+    return (A) this;
+  }
+  
+  public A withIpProtocol(String ipProtocol) {
+    this.ipProtocol = ipProtocol;
+    return (A) this;
+  }
+  
+  public A withPercent(String percent) {
+    this.percent = percent;
+    return (A) this;
+  }
+  
+  public A withSourcePort(String sourcePort) {
+    this.sourcePort = sourcePort;
+    return (A) this;
+  }
+  
+}
