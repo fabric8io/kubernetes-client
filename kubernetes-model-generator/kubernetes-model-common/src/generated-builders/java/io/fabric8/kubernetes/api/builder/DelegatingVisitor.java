@@ -1,0 +1,39 @@
+package io.fabric8.kubernetes.api.builder;
+
+import java.lang.Class;
+import java.lang.Object;
+import java.lang.String;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.function.Predicate;
+public class DelegatingVisitor<T> implements Visitor<T>{
+
+  private final Visitor<T> delegate;
+  private final Class<T> type;
+
+  DelegatingVisitor(Class<T> type,Visitor<T> delegate) {
+    this.type = type;
+        this.delegate = delegate;
+  }
+
+  public <F>Predicate<List<Entry<String,Object>>> getRequirement() {
+    return delegate.getRequirement();
+  }
+  
+  public Class<T> getType() {
+    return type;
+  }
+  
+  public int order() {
+    return delegate.order();
+  }
+  
+  public void visit(T target) {
+    delegate.visit(target);
+  }
+  
+  public void visit(List<Entry<String,Object>> path,T target) {
+    delegate.visit(path, target);
+  }
+  
+}
