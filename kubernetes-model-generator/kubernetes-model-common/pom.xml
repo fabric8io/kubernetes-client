@@ -69,31 +69,96 @@
           </instructions>
         </configuration>
       </plugin>
-      <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <configuration>
-              <target>
-                <echo>Removing Unneeded Classes</echo>
-                <delete
-                      file="target/classes/io/fabric8/kubernetes/model/util/Dummy.class"
-                      verbose="true" />
-                <delete verbose="true">
-                  <fileset dir="target/generated-sources/annotations/io/fabric8/kubernetes/model/util">
-                    <include name="*.java" />
-                  </fileset>
-                </delete>
-              </target>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <!-- #5622 — regeneration of the io.fabric8.kubernetes.api.builder runtime.
+
+         This module is the only one whose @Buildable sets generateBuilderPackage = true, which is what makes sundrio
+         emit that runtime (BaseFluent, Visitable, VisitableBuilder, ...). sundrio keeps one BuilderContext per javac
+         run and throws IllegalStateException if two @Buildable types in a module disagree on the flag, so the trigger
+         has to sit alone in a module: every other @Buildable in the repository sets it to false.
+
+         The trigger (src/generate/java/.../util/Dummy.java) is therefore a build-time artefact, not API. It is
+         compiled only here, under -Pgenerate; the default build compiles the committed runtime in
+         src/generated-builders/java as plain source and never sees Dummy. -->
+    <profile>
+      <id>generate</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>add-builder-package-trigger-source</id>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>add-source</goal>
+                </goals>
+                <configuration>
+                  <sources>
+                    <source>${basedir}/src/generate/java</source>
+                  </sources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>remove-builder-package-trigger-output</id>
+                <!-- `compile`, not a later phase: same-phase executions run after the ones the packaging's default
+                     lifecycle injects, so this fires right after default-compile (and after APT with it). Binding it
+                     any later would leave `mvn -Pgenerate compile` - and IDE builds delegated to Maven, which stop at
+                     that goal - with DummyBuilder/DummyFluent stranded in the committed tree, breaking every
+                     subsequent default build with `cannot find symbol: class Dummy`, which `mvn clean` cannot undo
+                     (clean only removes target/). An IDE compiling with its own javac runs no Maven plugin at all, so
+                     recovery there is still `git clean` on this directory.
+
+                     DO NOT move this to a later phase. jandex:jandex is bound to process-classes and indexes
+                     ${project.build.outputDirectory}; because this antrun comes from a profile it merges last among
+                     same-phase executions, so at process-classes jandex would index Dummy/DummyBuilder/DummyFluent
+                     *before* this deletes them, and `make generate-model` would install a jar whose META-INF/jandex.idx
+                     names three classes the jar does not contain (measured: 3 entries vs 0 class files). At compile,
+                     default-compile still wins (lifecycle-injected executions merge ahead of POM-declared ones) and
+                     jandex runs afterwards, so the index matches the default build's byte for byte.
+
+                     (The `package` binding this replaces fired after maven-bundle-plugin had already assembled the
+                     jar, which is why Dummy*.class shipped in every release since a3efaa3d77.) -->
+                <phase>compile</phase>
+                <configuration>
+                  <target>
+                    <echo>Removing the builder package trigger and its generated Builder/Fluent</echo>
+                    <!-- Mandatory, not cosmetic: these two reference Dummy, which the default build does not
+                         compile, so committing them would break every subsequent build of this module. -->
+                    <delete verbose="true" includeemptydirs="true">
+                      <!-- Matched as a subtree, not as the fileset's base dir, so includeemptydirs also removes the
+                           emptied package directories. Everything sundrio can emit under io/fabric8/kubernetes/model
+                           here is the trigger's own output, since Dummy is the module's only @Buildable; the
+                           committed runtime lives under io/fabric8/kubernetes/api/builder and is untouched. -->
+                      <fileset dir="${sundrio.generatedBuildersDirectory}" erroronmissingdir="false">
+                        <include name="io/fabric8/kubernetes/model/**" />
+                      </fileset>
+                      <!-- Files only: this directory also holds Helper.class and must survive. -->
+                      <fileset dir="${project.build.outputDirectory}/io/fabric8/kubernetes/model/util"
+                            erroronmissingdir="false">
+                        <include name="Dummy*.class" />
+                      </fileset>
+                    </delete>
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>

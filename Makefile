@@ -94,8 +94,8 @@ generate-javadoc-links:
 	  name=$${entry%%:*}; \
 	  path=$${entry##*:}; \
 	  mkdir -p doc/javadoc-links/$$name; \
-	  { find $$path/src/main/java $$path/src/generated/java $$path/target/generated-sources/annotations -name "*.java" 2>/dev/null || true; } | \
-	    sed 's|.*/main/java/||;s|.*/generated/java/||;s|.*/generated-sources/annotations/||;s|/[^/]*\.java$$||;s|/|.|g' | \
+	  { find $$path/src/main/java $$path/src/generated/java $$path/src/generated-builders/java $$path/target/generated-sources/annotations -name "*.java" 2>/dev/null || true; } | \
+	    sed 's|.*/main/java/||;s|.*/generated-builders/java/||;s|.*/generated/java/||;s|.*/generated-sources/annotations/||;s|/[^/]*\.java$$||;s|/|.|g' | \
 	    sort -u > doc/javadoc-links/$$name/element-list; \
 	  echo "Generated doc/javadoc-links/$$name/element-list"; \
 	done
