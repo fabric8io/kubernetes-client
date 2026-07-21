@@ -44,8 +44,8 @@
   </dependencies>
 
   <!-- The build config that snapshots/compiles the committed sundrio Builders is generic and lives
-       in the parent pom (kubernetes-model-generator): the 'committed-generated-builders' profile
-       (auto-activated because src/generated-builders/java exists here) plus the 'generate' profile. -->
+       in the parent pom (kubernetes-model-generator): its unconditional <build> for the default build,
+       plus the 'generate' profile for regeneration. -->
   <profiles>
     <profile>
       <id>generate</id>
