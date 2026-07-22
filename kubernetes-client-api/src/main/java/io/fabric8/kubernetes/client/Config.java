@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
@@ -435,16 +436,27 @@ public class Config extends SundrioConfig {
   }
 
   public static void configFromSysPropsOrEnvVars(Config config) {
-    config.setTrustCerts(Utils.getSystemPropertyOrEnvVar(KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY, config.isTrustCerts()));
-    config.setDisableHostnameVerification(Utils.getSystemPropertyOrEnvVar(
-        KUBERNETES_DISABLE_HOSTNAME_VERIFICATION_SYSTEM_PROPERTY, config.isDisableHostnameVerification()));
+    // TLS trust configuration must respect the documented source precedence (system properties >
+    // environment variables > kube config). CA material and the insecure trust-all / hostname
+    // verification flags are resolved together so that higher-priority CA material clears a
+    // lower-priority insecure flag instead of being silently ignored (fabric8io/kubernetes-client#7957).
+    final ConfigValue trustCerts = booleanConfigValue(KUBERNETES_TRUST_CERT_SYSTEM_PROPERTY, config.isTrustCerts());
+    final ConfigValue disableHostnameVerification = booleanConfigValue(
+        KUBERNETES_DISABLE_HOSTNAME_VERIFICATION_SYSTEM_PROPERTY, config.isDisableHostnameVerification());
+    config.setTrustCerts(Boolean.parseBoolean(trustCerts.value));
+    config.setDisableHostnameVerification(Boolean.parseBoolean(disableHostnameVerification.value));
     config.setMasterUrl(Utils.getSystemPropertyOrEnvVar(KUBERNETES_MASTER_SYSTEM_PROPERTY, config.getMasterUrl()));
     config.setApiVersion(Utils.getSystemPropertyOrEnvVar(KUBERNETES_API_VERSION_SYSTEM_PROPERTY, config.getApiVersion()));
     config.setNamespace(Utils.getSystemPropertyOrEnvVar(KUBERNETES_NAMESPACE_SYSTEM_PROPERTY, config.getNamespace()));
-    config
-        .setCaCertFile(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY, config.getCaCertFile()));
-    config
-        .setCaCertData(Utils.getSystemPropertyOrEnvVar(KUBERNETES_CA_CERTIFICATE_DATA_SYSTEM_PROPERTY, config.getCaCertData()));
+    final ConfigValue caCert = setRankedFileData(config::setCaCertFile, config::setCaCertData,
+        KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY, KUBERNETES_CA_CERTIFICATE_DATA_SYSTEM_PROPERTY,
+        config.getCaCertFile(), config.getCaCertData());
+    if (caCert.rank > trustCerts.rank) {
+      config.setTrustCerts(false);
+    }
+    if (caCert.rank > disableHostnameVerification.rank) {
+      config.setDisableHostnameVerification(false);
+    }
     config.setClientCertFile(
         Utils.getSystemPropertyOrEnvVar(KUBERNETES_CLIENT_CERTIFICATE_FILE_SYSTEM_PROPERTY, config.getClientCertFile()));
     config.setClientCertData(
@@ -561,6 +573,75 @@ public class Config extends SundrioConfig {
         tlsVersions[i] = TlsVersion.forJavaName(tlsVersionsSplit[i]);
       }
       config.setTlsVersions(tlsVersions);
+    }
+  }
+
+  /**
+   * Resolves a file/data config pair (e.g. CA cert file vs. inline CA cert data) honoring source
+   * precedence. The higher-priority source wins and the lower-priority counterpart is cleared, so
+   * a single, unambiguous source is used. Returns the winning value together with its rank.
+   */
+  private static ConfigValue setRankedFileData(
+      Consumer<String> setFile, Consumer<String> setData,
+      String fileKey, String dataKey,
+      String existingFile, String existingData) {
+    final ConfigValue file = systemEnvOrExisting(fileKey, existingFile);
+    final ConfigValue data = systemEnvOrExisting(dataKey, existingData);
+    if (file.rank > data.rank) {
+      setFile.accept(file.value);
+      setData.accept(null);
+      return file;
+    }
+    if (data.rank > file.rank) {
+      setData.accept(data.value);
+      setFile.accept(null);
+      return data;
+    }
+    setFile.accept(file.value);
+    setData.accept(data.value);
+    return file.rank == 0 ? data : file;
+  }
+
+  /**
+   * Resolves a String value from (in decreasing priority) a system property, an environment
+   * variable, or the existing config value, tagging the result with its source rank
+   * (3 = system property, 2 = environment variable, 1 = existing value, 0 = absent).
+   */
+  private static ConfigValue systemEnvOrExisting(String key, String existing) {
+    String value = System.getProperty(key);
+    if (Utils.isNotNullOrEmpty(value)) {
+      return new ConfigValue(value, 3);
+    }
+    value = System.getenv(Utils.convertSystemPropertyNameToEnvVar(key));
+    if (Utils.isNotNullOrEmpty(value)) {
+      return new ConfigValue(value, 2);
+    }
+    return new ConfigValue(existing, Utils.isNotNullOrEmpty(existing) ? 1 : 0);
+  }
+
+  /**
+   * Like {@link #systemEnvOrExisting(String, String)} but for a boolean flag, so the flag's source
+   * rank can be compared against other config sources.
+   */
+  private static ConfigValue booleanConfigValue(String key, boolean existing) {
+    String value = System.getProperty(key);
+    if (Utils.isNotNullOrEmpty(value)) {
+      return new ConfigValue(value, 3);
+    }
+    value = System.getenv(Utils.convertSystemPropertyNameToEnvVar(key));
+    if (Utils.isNotNullOrEmpty(value)) {
+      return new ConfigValue(value, 2);
+    }
+    return new ConfigValue(String.valueOf(existing), existing ? 1 : 0);
+  }
+
+  private static final class ConfigValue {
+    private final String value;
+    private final int rank;
+
+    private ConfigValue(String value, int rank) {
+      this.value = value;
+      this.rank = rank;
     }
   }
 
