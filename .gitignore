@@ -84,6 +84,6 @@ zz_generated.openapi.go.report.txt
 .DS_Store
 
 # Hugo
-doc/site/public/
-doc/site/resources/
-doc/site/.hugo_build.lock
+site/public/
+site/resources/
+site/.hugo_build.lock

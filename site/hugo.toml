@@ -27,22 +27,8 @@ title = 'Fabric8 Kubernetes Client'
     source = "content"
     target = "content"
   [[module.mounts]]
-    source = ".."
+    source = "../doc"
     target = "content/docs"
-    files = [
-      'CHEATSHEET.md',
-      'CRD-generator.md',
-      'CRD-generator-migration-v2.md',
-      'FAQ.md',
-      'java-generation-from-CRD.md',
-      'kube-api-test.md',
-      'KubernetesClientWithIPv6Clusters.md',
-      'KubernetesLog4j.md',
-      'KubernetesOperatorsInJavaWrittenUsingFabric8.md',
-      'MIGRATION-v5.md',
-      'MIGRATION-v6.md',
-      'MIGRATION-v7.md',
-    ]
 
 [menu]
   [[menu.after]]
