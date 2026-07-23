@@ -43,6 +43,9 @@
     </dependency>
   </dependencies>
 
+  <!-- The build config that snapshots/compiles the committed sundrio Builders is generic and lives
+       in the parent pom (kubernetes-model-generator): its unconditional <build> for the default build,
+       plus the 'generate' profile for regeneration. -->
   <profiles>
     <profile>
       <id>generate</id>

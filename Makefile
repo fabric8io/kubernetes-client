@@ -43,19 +43,15 @@ openapi-generate-java-classes:
 	# Test dependency needed for model de/serialization validation
 	mvn $(MAVEN_ARGS) clean install -pl . -pl zjsonpatch
 	cd kubernetes-model-generator && mvn $(MAVEN_ARGS) -Pgenerate clean install
-	cd extensions && mvn $(MAVEN_ARGS) \
-		-pl . \
-		-pl certmanager/model \
-		-pl chaosmesh/model \
-		-pl istio/model \
-		-pl knative/model \
-		-pl open-cluster-management/model \
-		-pl open-virtual-network/model \
-		-pl tekton/model \
-		-pl verticalpodautoscaler/model \
-		-pl volcano/model \
-		-pl volumesnapshot/model \
-		-Pgenerate clean install
+	# Every extensions/**/model module, discovered rather than enumerated: this list also decides what
+	# the generate-model.yml drift check can see, so a hand-written one fails open — an extension model
+	# module missing from it is never regenerated and its committed Builders go stale silently.
+	# Discovery has to be guarded or it fails open the same way: an empty result would collapse to
+	# `-pl .`, which builds only the aggregator and reports success having regenerated nothing.
+	cd extensions && \
+		MODELS="$$(find . -path '*/target' -prune -o -path '*/model/pom.xml' -print | sed 's|/pom.xml$$||;s|^\./||' | sort | tr '\n' ',' | sed 's/,$$//')" && \
+		{ [ -n "$$MODELS" ] || { echo 'ERROR: no extensions/**/model modules discovered; refusing to regenerate nothing' >&2; exit 1; }; } && \
+		mvn $(MAVEN_ARGS) -pl ".,$$MODELS" -Pgenerate clean install
 
 .PHONY: generate-model
 generate-model: openapi-generate-schema openapi-generate-java-classes
@@ -94,8 +90,8 @@ generate-javadoc-links:
 	  name=$${entry%%:*}; \
 	  path=$${entry##*:}; \
 	  mkdir -p doc/javadoc-links/$$name; \
-	  { find $$path/src/main/java $$path/src/generated/java $$path/target/generated-sources/annotations -name "*.java" 2>/dev/null || true; } | \
-	    sed 's|.*/main/java/||;s|.*/generated/java/||;s|.*/generated-sources/annotations/||;s|/[^/]*\.java$$||;s|/|.|g' | \
+	  { find $$path/src/main/java $$path/src/generated/java $$path/src/generated-builders/java $$path/target/generated-sources/annotations -name "*.java" 2>/dev/null || true; } | \
+	    sed 's|.*/main/java/||;s|.*/generated-builders/java/||;s|.*/generated/java/||;s|.*/generated-sources/annotations/||;s|/[^/]*\.java$$||;s|/|.|g' | \
 	    sort -u > doc/javadoc-links/$$name/element-list; \
 	  echo "Generated doc/javadoc-links/$$name/element-list"; \
 	done

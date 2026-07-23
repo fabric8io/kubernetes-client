@@ -1,0 +1,33 @@
+package io.fabric8.tekton.pod;
+
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
+import java.lang.Object;
+public class TemplateBuilder extends TemplateFluent<TemplateBuilder> implements VisitableBuilder<Template,TemplateBuilder>{
+
+  TemplateFluent<?> fluent;
+
+  public TemplateBuilder() {
+    this(new Template());
+  }
+  
+  public TemplateBuilder(TemplateFluent<?> fluent) {
+    this(fluent, new Template());
+  }
+  
+  public TemplateBuilder(Template instance) {
+    this.fluent = this;
+    this.copyInstance(instance);
+  }
+  
+  public TemplateBuilder(TemplateFluent<?> fluent,Template instance) {
+    this.fluent = fluent;
+    fluent.copyInstance(instance);
+  }
+
+  public Template build() {
+    Template buildable = new Template(fluent.getAffinity(), fluent.getAutomountServiceAccountToken(), fluent.getDnsConfig(), fluent.getDnsPolicy(), fluent.getEnableServiceLinks(), fluent.buildEnv(), fluent.getHostAliases(), fluent.getHostNetwork(), fluent.getHostUsers(), fluent.buildImagePullSecrets(), fluent.getNodeSelector(), fluent.getPriorityClassName(), fluent.getRuntimeClassName(), fluent.getSchedulerName(), fluent.getSecurityContext(), fluent.getTolerations(), fluent.getTopologySpreadConstraints(), fluent.buildVolumes());
+    buildable.setAdditionalProperties(fluent.getAdditionalProperties());
+    return buildable;
+  }
+  
+}

@@ -1,0 +1,675 @@
+package io.fabric8.kubernetes.api.model.flowcontrol.v1beta1;
+
+import io.fabric8.kubernetes.api.builder.BaseFluent;
+import java.lang.Boolean;
+import java.lang.Object;
+import java.lang.String;
+import java.lang.StringBuilder;
+import java.lang.SuppressWarnings;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Predicate;
+
+/**
+ * Generated
+ */
+@SuppressWarnings("unchecked")
+public class ResourcePolicyRuleFluent<A extends io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.ResourcePolicyRuleFluent<A>> extends BaseFluent<A>{
+
+  private Map<String,Object> additionalProperties;
+  private List<String> apiGroups = new ArrayList<String>();
+  private Boolean clusterScope;
+  private List<String> namespaces = new ArrayList<String>();
+  private List<String> resources = new ArrayList<String>();
+  private List<String> verbs = new ArrayList<String>();
+
+  public ResourcePolicyRuleFluent() {
+  }
+  
+  public ResourcePolicyRuleFluent(ResourcePolicyRule instance) {
+    this.copyInstance(instance);
+  }
+
+  public A addAllToApiGroups(Collection<String> items) {
+    if (this.apiGroups == null) {
+      this.apiGroups = new ArrayList();
+    }
+    for (String item : items) {
+      this.apiGroups.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addAllToNamespaces(Collection<String> items) {
+    if (this.namespaces == null) {
+      this.namespaces = new ArrayList();
+    }
+    for (String item : items) {
+      this.namespaces.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addAllToResources(Collection<String> items) {
+    if (this.resources == null) {
+      this.resources = new ArrayList();
+    }
+    for (String item : items) {
+      this.resources.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addAllToVerbs(Collection<String> items) {
+    if (this.verbs == null) {
+      this.verbs = new ArrayList();
+    }
+    for (String item : items) {
+      this.verbs.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addToAdditionalProperties(Map<String,Object> map) {
+    if (this.additionalProperties == null && map != null) {
+      this.additionalProperties = new LinkedHashMap();
+    }
+    if (map != null) {
+      this.additionalProperties.putAll(map);
+    }
+    return (A) this;
+  }
+  
+  public A addToAdditionalProperties(String key,Object value) {
+    if (this.additionalProperties == null && key != null && value != null) {
+      this.additionalProperties = new LinkedHashMap();
+    }
+    if (key != null && value != null) {
+      this.additionalProperties.put(key, value);
+    }
+    return (A) this;
+  }
+  
+  public A addToApiGroups(String... items) {
+    if (this.apiGroups == null) {
+      this.apiGroups = new ArrayList();
+    }
+    for (String item : items) {
+      this.apiGroups.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addToApiGroups(int index,String item) {
+    if (this.apiGroups == null) {
+      this.apiGroups = new ArrayList();
+    }
+    this.apiGroups.add(index, item);
+    return (A) this;
+  }
+  
+  public A addToNamespaces(String... items) {
+    if (this.namespaces == null) {
+      this.namespaces = new ArrayList();
+    }
+    for (String item : items) {
+      this.namespaces.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addToNamespaces(int index,String item) {
+    if (this.namespaces == null) {
+      this.namespaces = new ArrayList();
+    }
+    this.namespaces.add(index, item);
+    return (A) this;
+  }
+  
+  public A addToResources(String... items) {
+    if (this.resources == null) {
+      this.resources = new ArrayList();
+    }
+    for (String item : items) {
+      this.resources.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addToResources(int index,String item) {
+    if (this.resources == null) {
+      this.resources = new ArrayList();
+    }
+    this.resources.add(index, item);
+    return (A) this;
+  }
+  
+  public A addToVerbs(String... items) {
+    if (this.verbs == null) {
+      this.verbs = new ArrayList();
+    }
+    for (String item : items) {
+      this.verbs.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addToVerbs(int index,String item) {
+    if (this.verbs == null) {
+      this.verbs = new ArrayList();
+    }
+    this.verbs.add(index, item);
+    return (A) this;
+  }
+  
+  protected void copyInstance(ResourcePolicyRule instance) {
+    instance = instance != null ? instance : new ResourcePolicyRule();
+    if (instance != null) {
+        this.withApiGroups(instance.getApiGroups());
+        this.withClusterScope(instance.getClusterScope());
+        this.withNamespaces(instance.getNamespaces());
+        this.withResources(instance.getResources());
+        this.withVerbs(instance.getVerbs());
+        this.withAdditionalProperties(instance.getAdditionalProperties());
+    }
+  }
+  
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || this.getClass() != o.getClass()) {
+      return false;
+    }
+    if (!(super.equals(o))) {
+      return false;
+    }
+    ResourcePolicyRuleFluent that = (ResourcePolicyRuleFluent) o;
+    if (!(Objects.equals(apiGroups, that.apiGroups))) {
+      return false;
+    }
+    if (!(Objects.equals(clusterScope, that.clusterScope))) {
+      return false;
+    }
+    if (!(Objects.equals(namespaces, that.namespaces))) {
+      return false;
+    }
+    if (!(Objects.equals(resources, that.resources))) {
+      return false;
+    }
+    if (!(Objects.equals(verbs, that.verbs))) {
+      return false;
+    }
+    if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
+      return false;
+    }
+    return true;
+  }
+  
+  public Map<String,Object> getAdditionalProperties() {
+    return this.additionalProperties;
+  }
+  
+  public String getApiGroup(int index) {
+    return this.apiGroups.get(index);
+  }
+  
+  public List<String> getApiGroups() {
+    return this.apiGroups;
+  }
+  
+  public Boolean getClusterScope() {
+    return this.clusterScope;
+  }
+  
+  public String getFirstApiGroup() {
+    return this.apiGroups.get(0);
+  }
+  
+  public String getFirstNamespace() {
+    return this.namespaces.get(0);
+  }
+  
+  public String getFirstResource() {
+    return this.resources.get(0);
+  }
+  
+  public String getFirstVerb() {
+    return this.verbs.get(0);
+  }
+  
+  public String getLastApiGroup() {
+    return this.apiGroups.get(apiGroups.size() - 1);
+  }
+  
+  public String getLastNamespace() {
+    return this.namespaces.get(namespaces.size() - 1);
+  }
+  
+  public String getLastResource() {
+    return this.resources.get(resources.size() - 1);
+  }
+  
+  public String getLastVerb() {
+    return this.verbs.get(verbs.size() - 1);
+  }
+  
+  public String getMatchingApiGroup(Predicate<String> predicate) {
+      for (String item : apiGroups) {
+        if (predicate.test(item)) {
+          return item;
+        }
+      }
+      return null;
+  }
+  
+  public String getMatchingNamespace(Predicate<String> predicate) {
+      for (String item : namespaces) {
+        if (predicate.test(item)) {
+          return item;
+        }
+      }
+      return null;
+  }
+  
+  public String getMatchingResource(Predicate<String> predicate) {
+      for (String item : resources) {
+        if (predicate.test(item)) {
+          return item;
+        }
+      }
+      return null;
+  }
+  
+  public String getMatchingVerb(Predicate<String> predicate) {
+      for (String item : verbs) {
+        if (predicate.test(item)) {
+          return item;
+        }
+      }
+      return null;
+  }
+  
+  public String getNamespace(int index) {
+    return this.namespaces.get(index);
+  }
+  
+  public List<String> getNamespaces() {
+    return this.namespaces;
+  }
+  
+  public String getResource(int index) {
+    return this.resources.get(index);
+  }
+  
+  public List<String> getResources() {
+    return this.resources;
+  }
+  
+  public String getVerb(int index) {
+    return this.verbs.get(index);
+  }
+  
+  public List<String> getVerbs() {
+    return this.verbs;
+  }
+  
+  public boolean hasAdditionalProperties() {
+    return this.additionalProperties != null;
+  }
+  
+  public boolean hasApiGroups() {
+    return this.apiGroups != null && !(this.apiGroups.isEmpty());
+  }
+  
+  public boolean hasClusterScope() {
+    return this.clusterScope != null;
+  }
+  
+  public boolean hasMatchingApiGroup(Predicate<String> predicate) {
+      for (String item : apiGroups) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
+  public boolean hasMatchingNamespace(Predicate<String> predicate) {
+      for (String item : namespaces) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
+  public boolean hasMatchingResource(Predicate<String> predicate) {
+      for (String item : resources) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
+  public boolean hasMatchingVerb(Predicate<String> predicate) {
+      for (String item : verbs) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
+  public boolean hasNamespaces() {
+    return this.namespaces != null && !(this.namespaces.isEmpty());
+  }
+  
+  public boolean hasResources() {
+    return this.resources != null && !(this.resources.isEmpty());
+  }
+  
+  public boolean hasVerbs() {
+    return this.verbs != null && !(this.verbs.isEmpty());
+  }
+  
+  public int hashCode() {
+    return Objects.hash(apiGroups, clusterScope, namespaces, resources, verbs, additionalProperties);
+  }
+  
+  public A removeAllFromApiGroups(Collection<String> items) {
+    if (this.apiGroups == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.apiGroups.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A removeAllFromNamespaces(Collection<String> items) {
+    if (this.namespaces == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.namespaces.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A removeAllFromResources(Collection<String> items) {
+    if (this.resources == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.resources.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A removeAllFromVerbs(Collection<String> items) {
+    if (this.verbs == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.verbs.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromAdditionalProperties(String key) {
+    if (this.additionalProperties == null) {
+      return (A) this;
+    }
+    if (key != null && this.additionalProperties != null) {
+      this.additionalProperties.remove(key);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromAdditionalProperties(Map<String,Object> map) {
+    if (this.additionalProperties == null) {
+      return (A) this;
+    }
+    if (map != null) {
+      for (Object key : map.keySet()) {
+        if (this.additionalProperties != null) {
+          this.additionalProperties.remove(key);
+        }
+      }
+    }
+    return (A) this;
+  }
+  
+  public A removeFromApiGroups(String... items) {
+    if (this.apiGroups == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.apiGroups.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromNamespaces(String... items) {
+    if (this.namespaces == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.namespaces.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromResources(String... items) {
+    if (this.resources == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.resources.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromVerbs(String... items) {
+    if (this.verbs == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.verbs.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A setToApiGroups(int index,String item) {
+    if (this.apiGroups == null) {
+      this.apiGroups = new ArrayList();
+    }
+    this.apiGroups.set(index, item);
+    return (A) this;
+  }
+  
+  public A setToNamespaces(int index,String item) {
+    if (this.namespaces == null) {
+      this.namespaces = new ArrayList();
+    }
+    this.namespaces.set(index, item);
+    return (A) this;
+  }
+  
+  public A setToResources(int index,String item) {
+    if (this.resources == null) {
+      this.resources = new ArrayList();
+    }
+    this.resources.set(index, item);
+    return (A) this;
+  }
+  
+  public A setToVerbs(int index,String item) {
+    if (this.verbs == null) {
+      this.verbs = new ArrayList();
+    }
+    this.verbs.set(index, item);
+    return (A) this;
+  }
+  
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("{");
+    if (!(apiGroups == null) && !(apiGroups.isEmpty())) {
+        sb.append("apiGroups:");
+        sb.append(apiGroups);
+        sb.append(",");
+    }
+    if (!(clusterScope == null)) {
+        sb.append("clusterScope:");
+        sb.append(clusterScope);
+        sb.append(",");
+    }
+    if (!(namespaces == null) && !(namespaces.isEmpty())) {
+        sb.append("namespaces:");
+        sb.append(namespaces);
+        sb.append(",");
+    }
+    if (!(resources == null) && !(resources.isEmpty())) {
+        sb.append("resources:");
+        sb.append(resources);
+        sb.append(",");
+    }
+    if (!(verbs == null) && !(verbs.isEmpty())) {
+        sb.append("verbs:");
+        sb.append(verbs);
+        sb.append(",");
+    }
+    if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
+        sb.append("additionalProperties:");
+        sb.append(additionalProperties);
+    }
+    sb.append("}");
+    return sb.toString();
+  }
+  
+  public <K,V>A withAdditionalProperties(Map<String,Object> additionalProperties) {
+    if (additionalProperties == null) {
+      this.additionalProperties = null;
+    } else {
+      this.additionalProperties = new LinkedHashMap(additionalProperties);
+    }
+    return (A) this;
+  }
+  
+  public A withApiGroups(List<String> apiGroups) {
+    if (apiGroups != null) {
+        this.apiGroups = new ArrayList();
+        for (String item : apiGroups) {
+          this.addToApiGroups(item);
+        }
+    } else {
+      this.apiGroups = null;
+    }
+    return (A) this;
+  }
+  
+  public A withApiGroups(String... apiGroups) {
+    if (this.apiGroups != null) {
+        this.apiGroups.clear();
+        _visitables.remove("apiGroups");
+    }
+    if (apiGroups != null) {
+      for (String item : apiGroups) {
+        this.addToApiGroups(item);
+      }
+    }
+    return (A) this;
+  }
+  
+  public A withClusterScope() {
+    return withClusterScope(true);
+  }
+  
+  public A withClusterScope(Boolean clusterScope) {
+    this.clusterScope = clusterScope;
+    return (A) this;
+  }
+  
+  public A withNamespaces(List<String> namespaces) {
+    if (namespaces != null) {
+        this.namespaces = new ArrayList();
+        for (String item : namespaces) {
+          this.addToNamespaces(item);
+        }
+    } else {
+      this.namespaces = null;
+    }
+    return (A) this;
+  }
+  
+  public A withNamespaces(String... namespaces) {
+    if (this.namespaces != null) {
+        this.namespaces.clear();
+        _visitables.remove("namespaces");
+    }
+    if (namespaces != null) {
+      for (String item : namespaces) {
+        this.addToNamespaces(item);
+      }
+    }
+    return (A) this;
+  }
+  
+  public A withResources(List<String> resources) {
+    if (resources != null) {
+        this.resources = new ArrayList();
+        for (String item : resources) {
+          this.addToResources(item);
+        }
+    } else {
+      this.resources = null;
+    }
+    return (A) this;
+  }
+  
+  public A withResources(String... resources) {
+    if (this.resources != null) {
+        this.resources.clear();
+        _visitables.remove("resources");
+    }
+    if (resources != null) {
+      for (String item : resources) {
+        this.addToResources(item);
+      }
+    }
+    return (A) this;
+  }
+  
+  public A withVerbs(List<String> verbs) {
+    if (verbs != null) {
+        this.verbs = new ArrayList();
+        for (String item : verbs) {
+          this.addToVerbs(item);
+        }
+    } else {
+      this.verbs = null;
+    }
+    return (A) this;
+  }
+  
+  public A withVerbs(String... verbs) {
+    if (this.verbs != null) {
+        this.verbs.clear();
+        _visitables.remove("verbs");
+    }
+    if (verbs != null) {
+      for (String item : verbs) {
+        this.addToVerbs(item);
+      }
+    }
+    return (A) this;
+  }
+  
+}

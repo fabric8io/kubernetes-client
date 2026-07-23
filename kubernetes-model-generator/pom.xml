@@ -95,6 +95,11 @@
     <openapi.openshift-version>4.20</openapi.openshift-version>
     <openapi.storageversionmigrator-revision>5c8923c5ff96ceb4435f66b986b5aec2dd0cbc22</openapi.storageversionmigrator-revision>
     <openapi.whereabouts-revision>5bb9e1542cf987458db181bedee7c051a1538dc1</openapi.whereabouts-revision>
+    <!-- Where sundrio APT writes the generated Builders/Fluents under -Pgenerate (see the 'generate'
+         profile below): straight into the committed source root, so regenerating updates the files
+         that are under version control. Every model module now has its Builders committed (#5622),
+         so this is unconditional; it used to be an override in a file-gated profile. -->
+    <sundrio.generatedBuildersDirectory>${basedir}/src/generated-builders/java</sundrio.generatedBuildersDirectory>
     <osgi.require-capability>
       osgi.extender;
       filter:="(osgi.extender=osgi.serviceloader.registrar)"
@@ -329,6 +334,120 @@
           </excludes>
         </configuration>
       </plugin>
+      <!-- ============================================================================================
+           #5622 — committed sundrio Builders (default-build half)
+           ============================================================================================
+           sundrio's APT output (*Builder.java / *Fluent.java) is snapshotted into a committed source
+           root, src/generated-builders/java, so the default build compiles it as plain source instead
+           of re-running annotation processing every time (~4-5s/module faster). The POJOs it is
+           generated from live alongside it in src/generated/java.
+
+           This was a file-gated `committed-generated-builders` profile while the conversion was in
+           progress, so that a module without committed Builders would not silently lose its public
+           Builder/Fluent API. All 49 *model* modules under this parent are converted, so the gate is
+           gone and the configuration is unconditional.
+
+           SCOPE, because this parent is inherited more widely than the model modules: extensions/pom.xml
+           parents off it too, so everything here also applies to openapi/maven-plugin, openapi/validator
+           and the extensions/*/client, */tests and */examples modules (all except
+           open-virtual-network's client and tests, which parent off the root pom directly). None of them
+           declares @Buildable, so today they only lose an annotation-processing round that was already
+           emitting nothing, and gain a source root that does not exist, which javac ignores.
+
+           The consequence to know about: adding @Buildable to one of those modules will NOT produce a
+           Builder any more, because sundrio is off the processor path there. That surfaces as a compile
+           error the moment the Builder is referenced, and the fix is to put the type in a */model module
+           (where Builders are committed) or to give that module its own empty
+           <annotationProcessorPaths combine.self="override"/>. Re-gating this on file existence to keep
+           sundrio available there would reintroduce exactly the per-module activation this replaced.
+
+           Under -Pgenerate those modules also get an empty src/generated-builders/java, because
+           maven-compiler-plugin creates its generatedSourcesDirectory; it is untracked and git does not
+           record empty directories.
+
+           Two mechanics worth stating so they are not broken by accident:
+           - declaring build-helper here also activates the executions this pom manages for it
+             (add-source src/generated/java, add-resource src/generated/resources, attach-artifact with
+             skipAttach), in every descendant rather than only the converted modules. They are no-ops
+             where those directories are absent, which is everywhere outside the model modules.
+           - a child pom that declares its own <annotationProcessorPaths> would win over this one by
+             inheritance and silently restore a lombok-only path under -Pgenerate. No module under this
+             parent declares maven-compiler-plugin today; keep it that way. -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-generated-builders-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${basedir}/src/generated-builders/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <!-- Run Lombok only (it keeps equals/hashCode/toString on the POJOs) and leave sundrio APT
+               off, so the committed Builders compile as plain source. Restricting the processor path
+               to the lombok artifact is enough on its own: javac auto-discovers Lombok through its
+               META-INF/services, and sundrio (builder-annotations) is simply not on the path, so it
+               never runs. This deliberately avoids naming Lombok's internal processor classes, which
+               are coupled to ${lombok.version}. The 'generate' profile below re-enables sundrio. -->
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>${lombok.version}</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <!-- #5622 — regeneration half of the mechanism (activated by `mvn -Pgenerate`, e.g. via
+         `make generate-model`); the default-build half is unconditional, in <build> above.
+
+         The empty <annotationProcessorPaths> override is what re-enables sundrio: with no processor
+         path, javac discovers BOTH Lombok and sundrio from the compile classpath, so sundrio resolves
+         its referenced Builders from the dependency jars (no shadow copies). It must stay an override
+         of the lombok-only path in <build>; profiles are injected into this pom's own model before
+         inheritance is assembled, so descendants inherit an already-empty value and cannot reorder or
+         lose it. If it ever stopped winning, sundrio would SILENTLY stop regenerating and
+         `make generate-model` would just recompile the stale committed Builders — the
+         generate-model.yml drift guard is the safety net that would catch that.
+
+         Note this makes implicit classpath discovery the ONLY route by which sundrio ever runs. javac
+         warns about it from JDK 21 and it is expected to be disabled by default eventually, at which
+         point regeneration silently produces nothing rather than merely slowing down; the drift guard
+         would again be what catches it. -->
+
+    <profile>
+      <id>generate</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <!-- maven-compiler-plugin wipes generatedSourcesDirectory before APT; pointing it at
+                   the dedicated src/generated-builders/java (NOT src/generated/java) means the wipe
+                   only clears the Builders, never the POJOs that are sundrio's input. -->
+              <generatedSourcesDirectory>${sundrio.generatedBuildersDirectory}</generatedSourcesDirectory>
+              <annotationProcessorPaths combine.self="override"/>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

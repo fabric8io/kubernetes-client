@@ -147,8 +147,16 @@ public abstract class AbstractJSONSchema2Pojo {
     return sanitized;
   }
 
-  public static String escapeQuotes(String str) {
-    return str.replace("\"", "\\\"").replace("\'", "\\\'");
+  protected static String sanitizeJavadoc(String value) {
+    if (value == null) {
+      return "";
+    }
+    return value
+        .replace("&", "&amp;")
+        .replace("\\u", "&#92;u")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace("*/", "&#042;&#047;");
   }
 
   private static String getRefinedIntegerType(String format) {

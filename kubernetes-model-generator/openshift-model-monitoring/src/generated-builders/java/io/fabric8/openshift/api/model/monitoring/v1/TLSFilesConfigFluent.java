@@ -1,0 +1,196 @@
+package io.fabric8.openshift.api.model.monitoring.v1;
+
+import io.fabric8.kubernetes.api.builder.BaseFluent;
+import java.lang.Object;
+import java.lang.String;
+import java.lang.StringBuilder;
+import java.lang.SuppressWarnings;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+
+/**
+ * Generated
+ */
+@SuppressWarnings("unchecked")
+public class TLSFilesConfigFluent<A extends io.fabric8.openshift.api.model.monitoring.v1.TLSFilesConfigFluent<A>> extends BaseFluent<A>{
+
+  private Map<String,Object> additionalProperties;
+  private String caFile;
+  private String certFile;
+  private String keyFile;
+
+  public TLSFilesConfigFluent() {
+  }
+  
+  public TLSFilesConfigFluent(TLSFilesConfig instance) {
+    this.copyInstance(instance);
+  }
+
+  public A addToAdditionalProperties(Map<String,Object> map) {
+    if (this.additionalProperties == null && map != null) {
+      this.additionalProperties = new LinkedHashMap();
+    }
+    if (map != null) {
+      this.additionalProperties.putAll(map);
+    }
+    return (A) this;
+  }
+  
+  public A addToAdditionalProperties(String key,Object value) {
+    if (this.additionalProperties == null && key != null && value != null) {
+      this.additionalProperties = new LinkedHashMap();
+    }
+    if (key != null && value != null) {
+      this.additionalProperties.put(key, value);
+    }
+    return (A) this;
+  }
+  
+  protected void copyInstance(TLSFilesConfig instance) {
+    instance = instance != null ? instance : new TLSFilesConfig();
+    if (instance != null) {
+        this.withCaFile(instance.getCaFile());
+        this.withCertFile(instance.getCertFile());
+        this.withKeyFile(instance.getKeyFile());
+        this.withAdditionalProperties(instance.getAdditionalProperties());
+    }
+  }
+  
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || this.getClass() != o.getClass()) {
+      return false;
+    }
+    if (!(super.equals(o))) {
+      return false;
+    }
+    TLSFilesConfigFluent that = (TLSFilesConfigFluent) o;
+    if (!(Objects.equals(caFile, that.caFile))) {
+      return false;
+    }
+    if (!(Objects.equals(certFile, that.certFile))) {
+      return false;
+    }
+    if (!(Objects.equals(keyFile, that.keyFile))) {
+      return false;
+    }
+    if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
+      return false;
+    }
+    return true;
+  }
+  
+  public Map<String,Object> getAdditionalProperties() {
+    return this.additionalProperties;
+  }
+  
+  public String getCaFile() {
+    return this.caFile;
+  }
+  
+  public String getCertFile() {
+    return this.certFile;
+  }
+  
+  public String getKeyFile() {
+    return this.keyFile;
+  }
+  
+  public boolean hasAdditionalProperties() {
+    return this.additionalProperties != null;
+  }
+  
+  public boolean hasCaFile() {
+    return this.caFile != null;
+  }
+  
+  public boolean hasCertFile() {
+    return this.certFile != null;
+  }
+  
+  public boolean hasKeyFile() {
+    return this.keyFile != null;
+  }
+  
+  public int hashCode() {
+    return Objects.hash(caFile, certFile, keyFile, additionalProperties);
+  }
+  
+  public A removeFromAdditionalProperties(String key) {
+    if (this.additionalProperties == null) {
+      return (A) this;
+    }
+    if (key != null && this.additionalProperties != null) {
+      this.additionalProperties.remove(key);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromAdditionalProperties(Map<String,Object> map) {
+    if (this.additionalProperties == null) {
+      return (A) this;
+    }
+    if (map != null) {
+      for (Object key : map.keySet()) {
+        if (this.additionalProperties != null) {
+          this.additionalProperties.remove(key);
+        }
+      }
+    }
+    return (A) this;
+  }
+  
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("{");
+    if (!(caFile == null)) {
+        sb.append("caFile:");
+        sb.append(caFile);
+        sb.append(",");
+    }
+    if (!(certFile == null)) {
+        sb.append("certFile:");
+        sb.append(certFile);
+        sb.append(",");
+    }
+    if (!(keyFile == null)) {
+        sb.append("keyFile:");
+        sb.append(keyFile);
+        sb.append(",");
+    }
+    if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
+        sb.append("additionalProperties:");
+        sb.append(additionalProperties);
+    }
+    sb.append("}");
+    return sb.toString();
+  }
+  
+  public <K,V>A withAdditionalProperties(Map<String,Object> additionalProperties) {
+    if (additionalProperties == null) {
+      this.additionalProperties = null;
+    } else {
+      this.additionalProperties = new LinkedHashMap(additionalProperties);
+    }
+    return (A) this;
+  }
+  
+  public A withCaFile(String caFile) {
+    this.caFile = caFile;
+    return (A) this;
+  }
+  
+  public A withCertFile(String certFile) {
+    this.certFile = certFile;
+    return (A) this;
+  }
+  
+  public A withKeyFile(String keyFile) {
+    this.keyFile = keyFile;
+    return (A) this;
+  }
+  
+}

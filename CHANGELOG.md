@@ -1,6 +1,20 @@
 ## CHANGELOG
 
-### 7.8-SNAPSHOT
+### 7.9-SNAPSHOT
+
+#### Bugs
+* Fix #7983: (mockwebserver) WebSocket upgrades are now performed synchronously from the Vert.x request handler instead of from the asynchronous `HttpServerRequest#body()` callback. Deferring the upgrade let the request end event be processed first, so `HttpServerRequest#toWebSocket()` intermittently threw `IllegalStateException: Request has already been read` and the upgrade was lost (surfacing as flaky `exec`/`attach` mock-server tests). Upgrade requests carry no body, so they are detected via the `Upgrade` header and upgraded before the request is read; the asynchronous path is unchanged for regular HTTP requests
+* Fix #7955: (java-generator) Malicious CRD schema values can no longer inject executable code into the generated Java sources. Schema-controlled values (enum values, CRD group/version/names, property names, descriptions and defaults) are emitted as fully escaped Java string literals, so a value carrying a Unicode-escaped quote cannot break out of its literal once `javac` decodes it. As a defense in depth, each generated class is also re-parsed and structurally validated before it is written (with Java Unicode escape preprocessing enabled to match `javac`), aborting generation on any residual structural mismatch
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes
+
+### 7.8.0 (2026-06-29)
 
 #### Bugs
 * Fix #7953: (httpclient-jdk) bodyless requests now preserve the requested HTTP method instead of silently defaulting to `GET`. `JdkHttpClientImpl.requestBuilder` only called `HttpRequest.Builder.method(...)` inside the `body != null` branch, so a bodyless `DELETE`/`POST`/`PUT`/`PATCH` (such as `client.raw(uri, "DELETE", null)`) was sent as `GET` on the JDK backend; the method is now set with `BodyPublishers.noBody()` when there is no body, matching the OkHttp, Jetty and Vert.x backends
