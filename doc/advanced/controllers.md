@@ -6,7 +6,7 @@ weight: 2
 
 # Building Controllers
 
-A Kubernetes controller watches for changes to resources and reconciles actual state with desired state. Fabric8 provides the building blocks through informers and the client API.
+A Kubernetes controller watches for changes to resources and reconciles actual state with desired state. Fabric8 Kubernetes Client provides the building blocks through informers and the client API.
 
 ## Basic Controller Pattern
 
@@ -118,4 +118,4 @@ leaderElector.run();
 
 ## Further Reading
 
-- [Kubernetes Operators in Java]({{< relref "/docs/KubernetesOperatorsInJavaWrittenUsingFabric8" >}}) — Real-world operator examples built with Fabric8
+- [Kubernetes Operators in Java]({{< relref "/docs/KubernetesOperatorsInJavaWrittenUsingFabric8" >}}) — Real-world operator examples built with Fabric8 Kubernetes Client

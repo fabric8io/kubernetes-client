@@ -6,7 +6,7 @@ weight: 4
 
 # HTTP Client Backends
 
-Fabric8 uses a pluggable HTTP client architecture via Java SPI (Service Provider Interface). You choose the backend at build time by including the corresponding dependency.
+Fabric8 Kubernetes Client uses a pluggable HTTP client architecture via Java SPI (Service Provider Interface). You choose the backend at build time by including the corresponding dependency.
 
 ## Available Backends
 

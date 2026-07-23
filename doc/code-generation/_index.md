@@ -7,7 +7,7 @@ bookCollapseSection: true
 
 # Code Generation
 
-Fabric8 provides bidirectional code generation between Java classes and Kubernetes Custom Resource Definitions (CRDs).
+Fabric8 Kubernetes Client provides bidirectional code generation between Java classes and Kubernetes Custom Resource Definitions (CRDs).
 
 - **[CRD Generator]({{< relref "/docs/CRD-generator" >}})** — Generate CRD YAML manifests from annotated Java classes
 - **[Java Generator]({{< relref "/docs/java-generation-from-CRD" >}})** — Generate Java model classes from existing CRD manifests

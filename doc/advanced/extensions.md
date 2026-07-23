@@ -6,7 +6,7 @@ weight: 3
 
 # Extensions
 
-Fabric8 provides extension modules for popular Kubernetes ecosystem projects. Each extension adds typed DSL support for that project's custom resources.
+Fabric8 Kubernetes Client provides extension modules for popular Kubernetes ecosystem projects. Each extension adds typed DSL support for that project's custom resources.
 
 ## Available Extensions
 

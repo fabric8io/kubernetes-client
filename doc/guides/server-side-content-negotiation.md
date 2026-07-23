@@ -8,7 +8,7 @@ weight: 15
 
 For full details, see the [reference page]({{< relref "/docs/server-side-content-negotiation" >}}).
 
-Kubernetes supports server-side content negotiation via the HTTP `Accept` header. The Fabric8 client exposes two representations:
+Kubernetes supports server-side content negotiation via the HTTP `Accept` header. The Fabric8 Kubernetes Client exposes two representations:
 
 ## PartialObjectMetadata
 
