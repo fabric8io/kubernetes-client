@@ -19,13 +19,26 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodSpec;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.ExecWatch;
+import io.fabric8.kubernetes.client.dsl.TtyExecErrorable;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
+import java.io.ByteArrayInputStream;
+import java.lang.reflect.Method;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class PodOperationsImplTest {
 
@@ -133,6 +146,32 @@ class PodOperationsImplTest {
     // empty containers
     pod.setSpec(new PodSpec());
     assertThrows(KubernetesClientException.class, () -> podOperations.validateOrDefaultContainerId("a", pod));
+  }
+
+  @Test
+  void readTarUsesOptionSeparatorBeforeSource() {
+    final PodOperationsImpl operation = spy(podOperations);
+    final TtyExecErrorable execable = mock(TtyExecErrorable.class);
+    final ExecWatch execWatch = mock(ExecWatch.class);
+    final ArgumentCaptor<String[]> commandCaptor = ArgumentCaptor.forClass(String[].class);
+    doReturn(execable).when(operation).redirectingOutput();
+    when(execable.exec(any(String[].class))).thenReturn(execWatch);
+    when(execWatch.getOutput()).thenReturn(new ByteArrayInputStream(new byte[0]));
+
+    operation.readTar("--checkpoint-action=exec=touch");
+
+    verify(execable).exec(commandCaptor.capture());
+    assertThat(commandCaptor.getValue())
+        .containsExactly("sh", "-c", "tar -cf - -- '--checkpoint-action=exec=touch'");
+  }
+
+  @Test
+  void readFileCommandUsesOptionSeparatorBeforeSource() throws Exception {
+    final Method readFileCommand = PodOperationsImpl.class.getDeclaredMethod("readFileCommand", String.class);
+    readFileCommand.setAccessible(true);
+
+    assertThat((String[]) readFileCommand.invoke(podOperations, "--help"))
+        .containsExactly("sh", "-c", "cat -- '--help'");
   }
 
 }

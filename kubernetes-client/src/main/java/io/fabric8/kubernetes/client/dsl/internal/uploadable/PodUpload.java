@@ -165,7 +165,7 @@ public class PodUpload {
   }
 
   static String extractTarCommand(String directory, String tar) {
-    return String.format("mkdir -p %1$s; tar -C %1$s -xmf %2$s; e=$?; rm %2$s; exit $e", shellQuote(directory), tar);
+    return String.format("mkdir -p -- %1$s; tar -C %1$s -xmf %2$s; e=$?; rm %2$s; exit $e", shellQuote(directory), tar);
   }
 
   private static void addFileToTar(String fileName, File file, TarArchiveOutputStream tar)
@@ -184,7 +184,7 @@ public class PodUpload {
 
   static String createExecCommandForUpload(String file) {
     return String.format(
-        "mkdir -p %s && cat - > %s && echo $?", shellQuote(getDirectoryFromFile(file)), shellQuote(file));
+        "mkdir -p -- %s && cat - > %s && echo $?", shellQuote(getDirectoryFromFile(file)), shellQuote(file));
   }
 
   private static String ensureEndsWithSlash(String path) {
