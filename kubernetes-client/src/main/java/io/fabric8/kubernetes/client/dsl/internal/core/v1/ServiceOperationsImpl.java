@@ -15,13 +15,17 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
+import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
+import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.api.model.ServicePort;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.LocalPortForward;
@@ -44,9 +48,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class ServiceOperationsImpl extends HasMetadataOperation<Service, ServiceList, ServiceResource<Service>>
     implements ServiceResource<Service> {
@@ -136,7 +142,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     return new PodOperationsImpl(context.getClient())
         .inNamespace(m.getMetadata().getNamespace())
         .withName(m.getMetadata().getName())
-        .portForward(getTargetPortAsInt(s, port), in, out);
+        .portForward(getTargetPortAsInt(s, m, port), in, out);
   }
 
   @Override
@@ -156,16 +162,65 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     return new PodOperationsImpl(context.getClient())
         .inNamespace(m.getMetadata().getNamespace())
         .withName(m.getMetadata().getName())
-        .portForward(getTargetPortAsInt(s, port), localInetAddress, localPort);
+        .portForward(getTargetPortAsInt(s, m, port), localInetAddress, localPort);
   }
 
-  private int getTargetPortAsInt(Service service, int port) {
+  private int getTargetPortAsInt(Service service, Pod pod, int port) {
     return service.getSpec().getPorts().stream()
         .filter(p -> p.getPort().equals(port))
-        .map(p -> p.getTargetPort().getIntVal())
-        .filter(Objects::nonNull)
+        .map(p -> resolveTargetPort(service, p, pod))
         .findFirst()
         .orElse(port);
+  }
+
+  private int resolveTargetPort(Service service, ServicePort servicePort, Pod pod) {
+    if ("None".equals(service.getSpec().getClusterIP())) {
+      return servicePort.getPort();
+    }
+    IntOrString targetPort = servicePort.getTargetPort();
+    if (targetPort == null) {
+      return servicePort.getPort();
+    }
+    Integer intVal = targetPort.getIntVal();
+    if (intVal != null) {
+      return intVal == 0 ? servicePort.getPort() : intVal;
+    }
+    String strVal = targetPort.getStrVal();
+    if (strVal == null) {
+      return servicePort.getPort();
+    }
+    return findPodContainerPort(pod, strVal, servicePort.getProtocol())
+        .orElseThrow(() -> new IllegalStateException(String.format(
+            "Could not resolve targetPort '%s' for service port %d on pod %s.",
+            strVal, servicePort.getPort(), pod.getMetadata().getName())));
+  }
+
+  private Optional<Integer> findPodContainerPort(Pod pod, String name, String serviceProtocol) {
+    if (pod.getSpec() == null) {
+      return Optional.empty();
+    }
+    Stream<Container> containers = stream(pod.getSpec().getContainers());
+    Stream<Container> sidecars = stream(pod.getSpec().getInitContainers())
+        .filter(container -> "Always".equals(container.getRestartPolicy()));
+    return Stream.concat(containers, sidecars)
+        .flatMap(container -> stream(container.getPorts()))
+        .filter(containerPort -> Objects.equals(containerPort.getName(), name))
+        .filter(containerPort -> protocolsMatch(serviceProtocol, containerPort.getProtocol()))
+        .map(ContainerPort::getContainerPort)
+        .filter(Objects::nonNull)
+        .findFirst();
+  }
+
+  private static <T> Stream<T> stream(List<T> items) {
+    return items == null ? Stream.empty() : items.stream();
+  }
+
+  private static boolean protocolsMatch(String serviceProtocol, String containerProtocol) {
+    return protocolOrDefault(serviceProtocol).equals(protocolOrDefault(containerProtocol));
+  }
+
+  private static String protocolOrDefault(String protocol) {
+    return protocol == null ? "TCP" : protocol;
   }
 
   public static final class ServiceToUrlSortComparator implements Comparator<ServiceToURLProvider> {
