@@ -124,7 +124,7 @@
          ${mockito.version} pulls transitively; a small skew is harmless since the agent only installs
          Instrumentation. -->
     <byte-buddy.version>1.18.11</byte-buddy.version>
-    <spock.version>2.4-M6-groovy-4.0</spock.version>
+    <spock.version>2.4-groovy-4.0</spock.version>
 
     <conscrypt-openjdk-uber.bundle.version>1.4.2_1</conscrypt-openjdk-uber.bundle.version>
     <automaton.bundle.version>1.11-8_1</automaton.bundle.version>
