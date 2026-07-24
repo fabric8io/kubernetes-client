@@ -465,10 +465,7 @@ public class Config extends SundrioConfig {
         Utils.getSystemPropertyOrEnvVar(KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY, config.getKeyStorePassphrase()));
     config.setKeyStoreFile(Utils.getSystemPropertyOrEnvVar(KUBERNETES_KEYSTORE_FILE_PROPERTY, config.getKeyStoreFile()));
 
-    config
-        .setAutoOAuthToken(Utils.getSystemPropertyOrEnvVar(KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY, config.getAutoOAuthToken()));
-    config.setUsername(Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY, config.getUsername()));
-    config.setPassword(Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY, config.getPassword()));
+    setRankedAuth(config);
 
     config.setImpersonateUsername(
         Utils.getSystemPropertyOrEnvVar(KUBERNETES_IMPERSONATE_USERNAME, config.getImpersonateUsername()));
@@ -561,6 +558,59 @@ public class Config extends SundrioConfig {
         tlsVersions[i] = TlsVersion.forJavaName(tlsVersionsSplit[i]);
       }
       config.setTlsVersions(tlsVersions);
+    }
+  }
+
+  /**
+   * Apply system-property / environment / existing (kubeconfig) auth values by source rank.
+   * Higher-ranked sources win when bearer token and basic credentials compete. Same-rank
+   * values are kept together so existing same-source behaviour is unchanged.
+   *
+   * <p>
+   * Ranks: system property = 3, environment variable = 2, existing/kubeconfig = 1, empty = 0.
+   */
+  private static void setRankedAuth(Config config) {
+    ConfigValue autoOAuthToken = systemEnvOrExisting(KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY, config.getAutoOAuthToken());
+    ConfigValue username = systemEnvOrExisting(KUBERNETES_AUTH_BASIC_USERNAME_SYSTEM_PROPERTY, config.getUsername());
+    ConfigValue password = systemEnvOrExisting(KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY, config.getPassword());
+    int basicRank = Utils.isNotNullOrEmpty(username.value) && Utils.isNotNullOrEmpty(password.value)
+        ? Math.min(username.rank, password.rank)
+        : 0;
+
+    if (autoOAuthToken.rank > basicRank) {
+      config.setAutoOAuthToken(autoOAuthToken.value);
+      config.setUsername(null);
+      config.setPassword(null);
+      return;
+    }
+    if (basicRank > autoOAuthToken.rank) {
+      config.setAutoOAuthToken(null);
+    } else {
+      config.setAutoOAuthToken(autoOAuthToken.value);
+    }
+    config.setUsername(username.value);
+    config.setPassword(password.value);
+  }
+
+  private static ConfigValue systemEnvOrExisting(String key, String existing) {
+    String value = System.getProperty(key);
+    if (Utils.isNotNullOrEmpty(value)) {
+      return new ConfigValue(value, 3);
+    }
+    value = System.getenv(Utils.convertSystemPropertyNameToEnvVar(key));
+    if (Utils.isNotNullOrEmpty(value)) {
+      return new ConfigValue(value, 2);
+    }
+    return new ConfigValue(existing, Utils.isNotNullOrEmpty(existing) ? 1 : 0);
+  }
+
+  private static final class ConfigValue {
+    private final String value;
+    private final int rank;
+
+    private ConfigValue(String value, int rank) {
+      this.value = value;
+      this.rank = rank;
     }
   }
 
