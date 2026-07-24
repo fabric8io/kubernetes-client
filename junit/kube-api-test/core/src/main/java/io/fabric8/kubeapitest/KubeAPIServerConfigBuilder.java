@@ -18,6 +18,7 @@ package io.fabric8.kubeapitest;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public final class KubeAPIServerConfigBuilder {
 
@@ -63,43 +64,24 @@ public final class KubeAPIServerConfigBuilder {
 
   public KubeAPIServerConfig build() {
     this.apiTestDir = finalConfigValue(this.apiTestDir, KUBE_API_TEST_DIR,
-        new File(System.getProperty("user.home"), DIRECTORY_NAME).getPath());
-    this.offlineMode = finalConfigValue(this.offlineMode, KUBE_API_TEST_OFFLINE_MODE, false);
-    this.apiServerVersion = finalConfigValue(this.apiServerVersion, KUBE_API_TEST_API_SERVER_VERSION, null);
+        new File(System.getProperty("user.home"), DIRECTORY_NAME).getPath(), Function.identity());
+    this.offlineMode = finalConfigValue(this.offlineMode, KUBE_API_TEST_OFFLINE_MODE, false,
+        KubeAPIServerConfigBuilder::parseStrictBoolean);
+    this.apiServerVersion = finalConfigValue(this.apiServerVersion, KUBE_API_TEST_API_SERVER_VERSION,
+        null, Function.identity());
     this.waitForEtcdHealthCheckOnStartup = finalConfigValue(this.waitForEtcdHealthCheckOnStartup,
-        KUBE_API_TEST_WAIT_FOR_ETCD_HEALTH_CHECK, false);
+        KUBE_API_TEST_WAIT_FOR_ETCD_HEALTH_CHECK, false,
+        KubeAPIServerConfigBuilder::parseStrictBoolean);
     // 120s: idle startup ~2.6s scales ~20× under -T 1C CI contention (#7807)
-    this.startupTimeout = finalConfigValue(this.startupTimeout, KUBE_API_TEST_STARTUP_TIMEOUT, 120_000);
+    this.startupTimeout = finalConfigValue(this.startupTimeout, KUBE_API_TEST_STARTUP_TIMEOUT,
+        120_000, Integer::valueOf);
 
     return new KubeAPIServerConfig(apiTestDir, apiServerVersion, offlineMode, apiServerFlags,
         updateKubeConfig, waitForEtcdHealthCheckOnStartup, startupTimeout);
   }
 
-  private String finalConfigValue(String currentValue, String envVariable, String defaultValue) {
-    if (currentValue != null) {
-      return currentValue;
-    }
-    String envValue = System.getenv(envVariable);
-    return envValue != null ? envValue : defaultValue;
-  }
-
-  private Boolean finalConfigValue(Boolean currentValue, String envVariable, Boolean defaultValue) {
-    if (currentValue != null) {
-      return currentValue;
-    }
-    String envValue = System.getenv(envVariable);
-    if (envValue == null) {
-      return defaultValue;
-    }
-    if (!"true".equalsIgnoreCase(envValue) && !"false".equalsIgnoreCase(envValue)) {
-      throw new KubeAPITestException(
-          "Cannot parse environment variable " + envVariable + " value '" + envValue
-              + "' as Boolean (expected 'true' or 'false')");
-    }
-    return parseEnvValue(Boolean.class, envValue);
-  }
-
-  private Integer finalConfigValue(Integer currentValue, String envVariable, Integer defaultValue) {
+  private <T> T finalConfigValue(T currentValue, String envVariable, T defaultValue,
+      Function<String, T> parser) {
     if (currentValue != null) {
       return currentValue;
     }
@@ -108,23 +90,21 @@ public final class KubeAPIServerConfigBuilder {
       return defaultValue;
     }
     try {
-      return parseEnvValue(Integer.class, envValue);
-    } catch (NumberFormatException e) {
+      return parser.apply(envValue);
+    } catch (RuntimeException e) {
       throw new KubeAPITestException(
-          "Cannot parse environment variable " + envVariable + " value '" + envValue + "' as Integer", e);
+          "Cannot parse environment variable " + envVariable + " value '" + envValue + "'", e);
     }
   }
 
-  @SuppressWarnings("unchecked")
-  static <T> T parseEnvValue(Class<T> type, String envValue) {
-    if (type == Integer.class) {
-      return (T) Integer.valueOf(envValue);
-    } else if (type == Boolean.class) {
-      return (T) Boolean.valueOf(envValue);
-    } else if (type == String.class) {
-      return type.cast(envValue);
+  static Boolean parseStrictBoolean(String value) {
+    if ("true".equalsIgnoreCase(value)) {
+      return Boolean.TRUE;
     }
-    throw new IllegalArgumentException("Unsupported type for environment variable parsing: " + type);
+    if ("false".equalsIgnoreCase(value)) {
+      return Boolean.FALSE;
+    }
+    throw new IllegalArgumentException("expected 'true' or 'false', got '" + value + "'");
   }
 
   public KubeAPIServerConfigBuilder withUpdateKubeConfig(boolean updateKubeConfig) {

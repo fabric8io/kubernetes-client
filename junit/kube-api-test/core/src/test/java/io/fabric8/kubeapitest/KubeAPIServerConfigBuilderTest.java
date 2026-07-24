@@ -42,70 +42,31 @@ class KubeAPIServerConfigBuilderTest {
   }
 
   @Test
-  @DisplayName("parseEnvValue parses integer strings correctly")
-  void parseEnvValueInteger() {
-    assertThat(KubeAPIServerConfigBuilder.parseEnvValue(Integer.class, "180000"))
-        .isEqualTo(180_000);
+  @DisplayName("parseStrictBoolean parses 'true' correctly")
+  void parseStrictBooleanTrue() {
+    assertThat(KubeAPIServerConfigBuilder.parseStrictBoolean("true")).isTrue();
   }
 
   @Test
-  @DisplayName("parseEnvValue parses boolean 'true' correctly")
-  void parseEnvValueBooleanTrue() {
-    assertThat(KubeAPIServerConfigBuilder.parseEnvValue(Boolean.class, "true"))
-        .isTrue();
+  @DisplayName("parseStrictBoolean parses 'false' correctly")
+  void parseStrictBooleanFalse() {
+    assertThat(KubeAPIServerConfigBuilder.parseStrictBoolean("false")).isFalse();
   }
 
   @Test
-  @DisplayName("parseEnvValue parses boolean 'false' correctly")
-  void parseEnvValueBooleanFalse() {
-    assertThat(KubeAPIServerConfigBuilder.parseEnvValue(Boolean.class, "false"))
-        .isFalse();
+  @DisplayName("parseStrictBoolean parses case-insensitively")
+  void parseStrictBooleanCaseInsensitive() {
+    assertThat(KubeAPIServerConfigBuilder.parseStrictBoolean("TRUE")).isTrue();
+    assertThat(KubeAPIServerConfigBuilder.parseStrictBoolean("True")).isTrue();
+    assertThat(KubeAPIServerConfigBuilder.parseStrictBoolean("FALSE")).isFalse();
   }
 
   @Test
-  @DisplayName("parseEnvValue returns string values unchanged")
-  void parseEnvValueString() {
-    assertThat(KubeAPIServerConfigBuilder.parseEnvValue(String.class, "some-value"))
-        .isEqualTo("some-value");
-  }
-
-  @Test
-  @DisplayName("parseEnvValue throws NumberFormatException for non-numeric integer input")
-  void parseEnvValueInvalidInteger() {
-    assertThatThrownBy(() -> KubeAPIServerConfigBuilder.parseEnvValue(Integer.class, "not-a-number"))
-        .isInstanceOf(NumberFormatException.class);
-  }
-
-  @Test
-  @DisplayName("parseEnvValue parses boolean case-insensitively")
-  void parseEnvValueBooleanCaseInsensitive() {
-    assertThat(KubeAPIServerConfigBuilder.parseEnvValue(Boolean.class, "TRUE"))
-        .isTrue();
-    assertThat(KubeAPIServerConfigBuilder.parseEnvValue(Boolean.class, "True"))
-        .isTrue();
-  }
-
-  @Test
-  @DisplayName("parseEnvValue throws NumberFormatException for empty integer string")
-  void parseEnvValueEmptyInteger() {
-    assertThatThrownBy(() -> KubeAPIServerConfigBuilder.parseEnvValue(Integer.class, ""))
-        .isInstanceOf(NumberFormatException.class);
-  }
-
-  @Test
-  @DisplayName("parseEnvValue treats non-canonical boolean values as false")
-  void parseEnvValueNonCanonicalBoolean() {
-    assertThat(KubeAPIServerConfigBuilder.parseEnvValue(Boolean.class, "yes"))
-        .isFalse();
-    assertThat(KubeAPIServerConfigBuilder.parseEnvValue(Boolean.class, "1"))
-        .isFalse();
-  }
-
-  @Test
-  @DisplayName("parseEnvValue throws for unsupported types")
-  void parseEnvValueUnsupportedType() {
-    assertThatThrownBy(() -> KubeAPIServerConfigBuilder.parseEnvValue(Long.class, "42"))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("Unsupported type");
+  @DisplayName("parseStrictBoolean rejects non-canonical values")
+  void parseStrictBooleanRejectsNonCanonical() {
+    assertThatThrownBy(() -> KubeAPIServerConfigBuilder.parseStrictBoolean("yes"))
+        .isInstanceOf(IllegalArgumentException.class);
+    assertThatThrownBy(() -> KubeAPIServerConfigBuilder.parseStrictBoolean("1"))
+        .isInstanceOf(IllegalArgumentException.class);
   }
 }
