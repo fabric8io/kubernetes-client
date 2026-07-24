@@ -38,6 +38,4 @@ users:
       token: the-user-token
       username: the-username
       password: the-pa33word # notsecret
-      exec:
-        command: command
 current-context: the-context
