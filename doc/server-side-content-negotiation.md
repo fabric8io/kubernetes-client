@@ -1,6 +1,14 @@
+---
+title: "Server-Side Content Negotiation"
+description: "Using PartialObjectMetadata and Table representations via HTTP Accept header"
+draft: false
+weight: 60
+bookHidden: true
+---
+
 # Server-Side Content Negotiation: PartialObjectMetadata and Table
 
-Kubernetes supports server-side content negotiation via the HTTP `Accept` header, allowing clients to request a different representation of a resource without changing the API endpoint. The Fabric8 client exposes two such representations:
+Kubernetes supports server-side content negotiation via the HTTP `Accept` header, allowing clients to request a different representation of a resource without changing the API endpoint. The Fabric8 Kubernetes Client exposes two such representations:
 
 | Feature | Accept Header | Use Case |
 |---------|--------------|----------|

@@ -1,3 +1,11 @@
+---
+title: "Java Generation from CRD"
+description: "How to generate Java sources from CRD manifests"
+draft: false
+weight: 11
+bookHidden: true
+---
+
 # Java generation from CRD
 
 This document shows how to generate java sources from CRD manifests.
