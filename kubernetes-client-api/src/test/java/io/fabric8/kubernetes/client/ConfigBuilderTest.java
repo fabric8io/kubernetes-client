@@ -38,6 +38,8 @@ class ConfigBuilderTest {
         .withRequestTimeout(133709)
         .withScaleTimeout(133710)
         .withLoggingInterval(133711)
+        .withPodCopyMaxFileBytes(133712)
+        .withPodCopyMaxTotalBytes(133713)
         .withHttp2Disable(true)
         .withOnlyHttpWatches(true);
     assertThat(configBuilder.build())
@@ -55,6 +57,8 @@ class ConfigBuilderTest {
         .hasFieldOrPropertyWithValue("requestTimeout", 133709)
         .hasFieldOrPropertyWithValue("scaleTimeout", 133710L)
         .hasFieldOrPropertyWithValue("loggingInterval", 133711)
+        .hasFieldOrPropertyWithValue("podCopyMaxFileBytes", 133712L)
+        .hasFieldOrPropertyWithValue("podCopyMaxTotalBytes", 133713L)
         .hasFieldOrPropertyWithValue("http2Disable", Boolean.TRUE)
         .hasFieldOrPropertyWithValue("onlyHttpWatches", Boolean.TRUE);
   }
@@ -76,6 +80,8 @@ class ConfigBuilderTest {
         .withRequestTimeout(Integer.valueOf(133709))
         .withScaleTimeout(Long.valueOf(133710))
         .withLoggingInterval(Integer.valueOf(133711))
+        .withPodCopyMaxFileBytes(Long.valueOf(133712))
+        .withPodCopyMaxTotalBytes(Long.valueOf(133713))
         .withHttp2Disable(Boolean.TRUE)
         .withOnlyHttpWatches(Boolean.TRUE);
     assertThat(configBuilder.build())
@@ -93,6 +99,8 @@ class ConfigBuilderTest {
         .hasFieldOrPropertyWithValue("requestTimeout", 133709)
         .hasFieldOrPropertyWithValue("scaleTimeout", 133710L)
         .hasFieldOrPropertyWithValue("loggingInterval", 133711)
+        .hasFieldOrPropertyWithValue("podCopyMaxFileBytes", 133712L)
+        .hasFieldOrPropertyWithValue("podCopyMaxTotalBytes", 133713L)
         .hasFieldOrPropertyWithValue("http2Disable", true)
         .hasFieldOrPropertyWithValue("onlyHttpWatches", true);
   }
