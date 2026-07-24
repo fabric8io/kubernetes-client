@@ -19,6 +19,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 public final class KubeAPIServerConfigBuilder {
 
@@ -33,6 +34,7 @@ public final class KubeAPIServerConfigBuilder {
 
   private final List<String> apiServerFlags = new ArrayList<>(0);
   private boolean updateKubeConfig = false;
+  private UnaryOperator<String> envReader = System::getenv;
 
   private String apiTestDir;
   private String apiServerVersion;
@@ -88,7 +90,7 @@ public final class KubeAPIServerConfigBuilder {
     if (currentValue != null) {
       return currentValue;
     }
-    String envValue = System.getenv(envVariable);
+    String envValue = envReader.apply(envVariable);
     if (envValue == null) {
       return defaultValue;
     }
@@ -135,6 +137,11 @@ public final class KubeAPIServerConfigBuilder {
 
   public KubeAPIServerConfigBuilder withStartupTimeout(Integer startupTimeout) {
     this.startupTimeout = startupTimeout;
+    return this;
+  }
+
+  KubeAPIServerConfigBuilder withEnvReader(UnaryOperator<String> envReader) {
+    this.envReader = envReader;
     return this;
   }
 

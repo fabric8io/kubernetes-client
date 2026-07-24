@@ -18,10 +18,17 @@ package io.fabric8.kubeapitest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class KubeAPIServerConfigBuilderTest {
+
+  private static KubeAPIServerConfigBuilder builderWithEnv(Map<String, String> env) {
+    return KubeAPIServerConfigBuilder.anAPIServerConfig()
+        .withEnvReader(env::get);
+  }
 
   @Test
   @DisplayName("default startupTimeout is 120 seconds")
@@ -95,5 +102,53 @@ class KubeAPIServerConfigBuilderTest {
         .build())
         .isInstanceOf(KubeAPITestException.class)
         .hasMessageContaining("positive");
+  }
+
+  @Test
+  @DisplayName("env var KUBE_API_TEST_STARTUP_TIMEOUT overrides default")
+  void envVarStartupTimeoutOverridesDefault() {
+    var config = builderWithEnv(Map.of(
+        KubeAPIServerConfigBuilder.KUBE_API_TEST_STARTUP_TIMEOUT, "180000")).build();
+
+    assertThat(config.getStartupTimeout()).isEqualTo(180_000);
+  }
+
+  @Test
+  @DisplayName("env var KUBE_API_TEST_OFFLINE_MODE is parsed as boolean")
+  void envVarOfflineModeOverridesDefault() {
+    var config = builderWithEnv(Map.of(
+        KubeAPIServerConfigBuilder.KUBE_API_TEST_OFFLINE_MODE, "true")).build();
+
+    assertThat(config.isOfflineMode()).isTrue();
+  }
+
+  @Test
+  @DisplayName("explicit builder value takes precedence over env var")
+  void explicitValueTakesPrecedenceOverEnvVar() {
+    var config = builderWithEnv(Map.of(
+        KubeAPIServerConfigBuilder.KUBE_API_TEST_STARTUP_TIMEOUT, "999000"))
+        .withStartupTimeout(42_000)
+        .build();
+
+    assertThat(config.getStartupTimeout()).isEqualTo(42_000);
+  }
+
+  @Test
+  @DisplayName("invalid env var KUBE_API_TEST_STARTUP_TIMEOUT throws KubeAPITestException")
+  void invalidEnvVarStartupTimeoutThrows() {
+    assertThatThrownBy(() -> builderWithEnv(Map.of(
+        KubeAPIServerConfigBuilder.KUBE_API_TEST_STARTUP_TIMEOUT, "not-a-number")).build())
+        .isInstanceOf(KubeAPITestException.class)
+        .hasMessageContaining("KUBE_API_TEST_STARTUP_TIMEOUT")
+        .hasMessageContaining("not-a-number");
+  }
+
+  @Test
+  @DisplayName("non-canonical env var KUBE_API_TEST_OFFLINE_MODE throws KubeAPITestException")
+  void nonCanonicalEnvVarBooleanThrows() {
+    assertThatThrownBy(() -> builderWithEnv(Map.of(
+        KubeAPIServerConfigBuilder.KUBE_API_TEST_OFFLINE_MODE, "yes")).build())
+        .isInstanceOf(KubeAPITestException.class)
+        .hasMessageContaining("KUBE_API_TEST_OFFLINE_MODE");
   }
 }
