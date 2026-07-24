@@ -35,10 +35,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface EnableKubeAPIServer {
 
   String NOT_SET = "NOT_SET";
+  int STARTUP_TIMEOUT_NOT_SET = -1;
 
   String kubeAPIVersion() default NOT_SET;
 
   String[] apiServerFlags() default {};
 
   boolean updateKubeConfigFile() default false;
+
+  int startupTimeout() default STARTUP_TIMEOUT_NOT_SET;
 }

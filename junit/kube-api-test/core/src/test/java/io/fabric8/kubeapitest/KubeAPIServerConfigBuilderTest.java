@@ -15,17 +15,16 @@
  */
 package io.fabric8.kubeapitest;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class KubeAPIServerConfigBuilderTest {
 
-  // Default raised from 60s to 120s under #7834: the 2.6s idle startup of
-  // kube-apiserver scales ~20× under -T 1C + forkCount=1C CI contention,
-  // landing right on the 60s boundary. 120s gives a 2× buffer; the
-  // KUBE_API_TEST_STARTUP_TIMEOUT env var still lets users tune it.
   @Test
+  @DisplayName("default startupTimeout is 120 seconds")
   void defaultStartupTimeoutIs120Seconds() {
     var config = KubeAPIServerConfigBuilder.anAPIServerConfig().build();
 
@@ -33,11 +32,56 @@ class KubeAPIServerConfigBuilderTest {
   }
 
   @Test
+  @DisplayName("explicit startupTimeout via builder overrides default")
   void explicitStartupTimeoutOverridesDefault() {
     var config = KubeAPIServerConfigBuilder.anAPIServerConfig()
         .withStartupTimeout(42_000)
         .build();
 
     assertThat(config.getStartupTimeout()).isEqualTo(42_000);
+  }
+
+  @Test
+  @DisplayName("parseEnvValue parses integer strings correctly")
+  void parseEnvValueInteger() {
+    assertThat(KubeAPIServerConfigBuilder.parseEnvValue(Integer.class, "180000"))
+        .isEqualTo(180_000);
+  }
+
+  @Test
+  @DisplayName("parseEnvValue parses boolean 'true' correctly")
+  void parseEnvValueBooleanTrue() {
+    assertThat(KubeAPIServerConfigBuilder.parseEnvValue(Boolean.class, "true"))
+        .isTrue();
+  }
+
+  @Test
+  @DisplayName("parseEnvValue parses boolean 'false' correctly")
+  void parseEnvValueBooleanFalse() {
+    assertThat(KubeAPIServerConfigBuilder.parseEnvValue(Boolean.class, "false"))
+        .isFalse();
+  }
+
+  @Test
+  @DisplayName("parseEnvValue returns string values unchanged")
+  void parseEnvValueString() {
+    assertThat(KubeAPIServerConfigBuilder.parseEnvValue(String.class, "some-value"))
+        .isEqualTo("some-value");
+  }
+
+  @Test
+  @DisplayName("parseEnvValue throws NumberFormatException for non-numeric integer input")
+  void parseEnvValueInvalidInteger() {
+    assertThatThrownBy(() -> KubeAPIServerConfigBuilder.parseEnvValue(Integer.class, "not-a-number"))
+        .isInstanceOf(NumberFormatException.class);
+  }
+
+  @Test
+  @DisplayName("parseEnvValue parses boolean case-insensitively")
+  void parseEnvValueBooleanCaseInsensitive() {
+    assertThat(KubeAPIServerConfigBuilder.parseEnvValue(Boolean.class, "TRUE"))
+        .isTrue();
+    assertThat(KubeAPIServerConfigBuilder.parseEnvValue(Boolean.class, "True"))
+        .isTrue();
   }
 }

@@ -75,28 +75,45 @@ public final class KubeAPIServerConfigBuilder {
   }
 
   private String finalConfigValue(String currentValue, String envVariable, String defaultValue) {
-    return finalConfigValue(String.class, currentValue, envVariable, defaultValue);
-  }
-
-  private Boolean finalConfigValue(Boolean currentValue, String envVariable, Boolean defaultValue) {
-    return finalConfigValue(Boolean.class, currentValue, envVariable, defaultValue);
-  }
-
-  private Integer finalConfigValue(Integer currentValue, String envVariable, Integer defaultValue) {
-    return finalConfigValue(Integer.class, currentValue, envVariable, defaultValue);
-  }
-
-  private <T> T finalConfigValue(Class<T> type, T currentValue, String envVariable,
-      T defaultValue) {
     if (currentValue != null) {
       return currentValue;
     }
     String envValue = System.getenv(envVariable);
-    if (envValue != null) {
-      return type.cast(envValue);
-    } else {
+    return envValue != null ? envValue : defaultValue;
+  }
+
+  private Boolean finalConfigValue(Boolean currentValue, String envVariable, Boolean defaultValue) {
+    if (currentValue != null) {
+      return currentValue;
+    }
+    String envValue = System.getenv(envVariable);
+    return envValue != null ? parseEnvValue(Boolean.class, envValue) : defaultValue;
+  }
+
+  private Integer finalConfigValue(Integer currentValue, String envVariable, Integer defaultValue) {
+    if (currentValue != null) {
+      return currentValue;
+    }
+    String envValue = System.getenv(envVariable);
+    if (envValue == null) {
       return defaultValue;
     }
+    try {
+      return parseEnvValue(Integer.class, envValue);
+    } catch (NumberFormatException e) {
+      throw new KubeAPITestException(
+          "Cannot parse environment variable " + envVariable + " value '" + envValue + "' as Integer", e);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  static <T> T parseEnvValue(Class<T> type, String envValue) {
+    if (type == Integer.class) {
+      return (T) Integer.valueOf(envValue);
+    } else if (type == Boolean.class) {
+      return (T) Boolean.valueOf(envValue);
+    }
+    return type.cast(envValue);
   }
 
   public KubeAPIServerConfigBuilder withUpdateKubeConfig(boolean updateKubeConfig) {
