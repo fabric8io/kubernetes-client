@@ -75,6 +75,9 @@ public final class KubeAPIServerConfigBuilder {
     // 120s: idle startup ~2.6s scales ~20× under -T 1C CI contention (#7807)
     this.startupTimeout = finalConfigValue(this.startupTimeout, KUBE_API_TEST_STARTUP_TIMEOUT,
         120_000, Integer::valueOf);
+    if (this.startupTimeout <= 0) {
+      throw new KubeAPITestException("startupTimeout must be positive, got: " + this.startupTimeout);
+    }
 
     return new KubeAPIServerConfig(apiTestDir, apiServerVersion, offlineMode, apiServerFlags,
         updateKubeConfig, waitForEtcdHealthCheckOnStartup, startupTimeout);

@@ -114,13 +114,8 @@ public class KubeAPIServerExtension
     if (annotation.apiServerFlags().length > 0) {
       builder.withApiServerFlags(List.of(annotation.apiServerFlags()));
     }
-    var timeout = annotation.startupTimeout();
-    if (timeout != EnableKubeAPIServer.STARTUP_TIMEOUT_NOT_SET) {
-      if (timeout <= 0) {
-        throw new KubeAPITestException(
-            "@EnableKubeAPIServer startupTimeout must be positive, got: " + timeout);
-      }
-      builder.withStartupTimeout(timeout);
+    if (annotation.startupTimeout() != EnableKubeAPIServer.STARTUP_TIMEOUT_NOT_SET) {
+      builder.withStartupTimeout(annotation.startupTimeout());
     }
 
     builder.withUpdateKubeConfig(annotation.updateKubeConfigFile());

@@ -69,4 +69,31 @@ class KubeAPIServerConfigBuilderTest {
     assertThatThrownBy(() -> KubeAPIServerConfigBuilder.parseStrictBoolean("1"))
         .isInstanceOf(IllegalArgumentException.class);
   }
+
+  @Test
+  @DisplayName("parseStrictBoolean rejects empty string")
+  void parseStrictBooleanRejectsEmpty() {
+    assertThatThrownBy(() -> KubeAPIServerConfigBuilder.parseStrictBoolean(""))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  @DisplayName("build rejects non-positive startupTimeout from builder API")
+  void buildRejectsNonPositiveStartupTimeout() {
+    assertThatThrownBy(() -> KubeAPIServerConfigBuilder.anAPIServerConfig()
+        .withStartupTimeout(0)
+        .build())
+        .isInstanceOf(KubeAPITestException.class)
+        .hasMessageContaining("positive");
+  }
+
+  @Test
+  @DisplayName("build rejects negative startupTimeout from builder API")
+  void buildRejectsNegativeStartupTimeout() {
+    assertThatThrownBy(() -> KubeAPIServerConfigBuilder.anAPIServerConfig()
+        .withStartupTimeout(-500)
+        .build())
+        .isInstanceOf(KubeAPITestException.class)
+        .hasMessageContaining("positive");
+  }
 }
