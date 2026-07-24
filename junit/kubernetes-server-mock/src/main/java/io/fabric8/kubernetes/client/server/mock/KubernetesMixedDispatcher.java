@@ -25,6 +25,7 @@ import io.fabric8.mockwebserver.http.RecordedRequest;
 import io.fabric8.mockwebserver.internal.MockDispatcher;
 import io.fabric8.mockwebserver.internal.SimpleRequest;
 
+import java.time.Clock;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -52,9 +53,14 @@ public class KubernetesMixedDispatcher extends Dispatcher implements Resetable, 
 
   public KubernetesMixedDispatcher(
       Map<ServerRequest, Queue<ServerResponse>> responses, List<CustomResourceDefinitionContext> crdContexts) {
+    this(responses, crdContexts, Clock.systemUTC());
+  }
+
+  public KubernetesMixedDispatcher(
+      Map<ServerRequest, Queue<ServerResponse>> responses, List<CustomResourceDefinitionContext> crdContexts, Clock clock) {
     this.responses = responses;
     mockDispatcher = new MockDispatcher(responses);
-    kubernetesCrudDispatcher = new KubernetesCrudDispatcher(crdContexts);
+    kubernetesCrudDispatcher = new KubernetesCrudDispatcher(crdContexts, clock);
   }
 
   @Override
@@ -87,5 +93,9 @@ public class KubernetesMixedDispatcher extends Dispatcher implements Resetable, 
   @Override
   public void expectCustomResource(CustomResourceDefinitionContext rdc) {
     this.kubernetesCrudDispatcher.expectCustomResource(rdc);
+  }
+
+  public void setClock(Clock clock) {
+    this.kubernetesCrudDispatcher.setClock(clock);
   }
 }
