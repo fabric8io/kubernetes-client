@@ -84,4 +84,28 @@ class KubeAPIServerConfigBuilderTest {
     assertThat(KubeAPIServerConfigBuilder.parseEnvValue(Boolean.class, "True"))
         .isTrue();
   }
+
+  @Test
+  @DisplayName("parseEnvValue throws NumberFormatException for empty integer string")
+  void parseEnvValueEmptyInteger() {
+    assertThatThrownBy(() -> KubeAPIServerConfigBuilder.parseEnvValue(Integer.class, ""))
+        .isInstanceOf(NumberFormatException.class);
+  }
+
+  @Test
+  @DisplayName("parseEnvValue treats non-canonical boolean values as false")
+  void parseEnvValueNonCanonicalBoolean() {
+    assertThat(KubeAPIServerConfigBuilder.parseEnvValue(Boolean.class, "yes"))
+        .isFalse();
+    assertThat(KubeAPIServerConfigBuilder.parseEnvValue(Boolean.class, "1"))
+        .isFalse();
+  }
+
+  @Test
+  @DisplayName("parseEnvValue throws for unsupported types")
+  void parseEnvValueUnsupportedType() {
+    assertThatThrownBy(() -> KubeAPIServerConfigBuilder.parseEnvValue(Long.class, "42"))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Unsupported type");
+  }
 }

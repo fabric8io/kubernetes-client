@@ -15,10 +15,12 @@
  */
 package io.fabric8.kubeapitest.junit;
 
+import io.fabric8.kubeapitest.KubeAPITestException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class KubeAPIServerExtensionTest {
 
@@ -30,8 +32,12 @@ class KubeAPIServerExtensionTest {
   private static class WithDefaults {
   }
 
+  @EnableKubeAPIServer(startupTimeout = 0)
+  private static class WithZeroTimeout {
+  }
+
   @Test
-  @DisplayName("annotationToConfig sets startupTimeout when annotation specifies a positive value")
+  @DisplayName("annotationToConfig sets startupTimeout when annotation specifies a non-default value")
   void startupTimeoutFromAnnotation() {
     var annotation = WithCustomTimeout.class.getAnnotation(EnableKubeAPIServer.class);
     var extension = new KubeAPIServerExtension();
@@ -48,5 +54,16 @@ class KubeAPIServerExtensionTest {
     var config = extension.annotationToConfig(annotation);
 
     assertThat(config.getStartupTimeout()).isEqualTo(120_000);
+  }
+
+  @Test
+  @DisplayName("annotationToConfig rejects non-positive startupTimeout")
+  void nonPositiveStartupTimeoutFromAnnotation() {
+    var annotation = WithZeroTimeout.class.getAnnotation(EnableKubeAPIServer.class);
+    var extension = new KubeAPIServerExtension();
+
+    assertThatThrownBy(() -> extension.annotationToConfig(annotation))
+        .isInstanceOf(KubeAPITestException.class)
+        .hasMessageContaining("positive");
   }
 }

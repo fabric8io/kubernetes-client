@@ -68,6 +68,7 @@ public final class KubeAPIServerConfigBuilder {
     this.apiServerVersion = finalConfigValue(this.apiServerVersion, KUBE_API_TEST_API_SERVER_VERSION, null);
     this.waitForEtcdHealthCheckOnStartup = finalConfigValue(this.waitForEtcdHealthCheckOnStartup,
         KUBE_API_TEST_WAIT_FOR_ETCD_HEALTH_CHECK, false);
+    // 120s: idle startup ~2.6s scales ~20× under -T 1C CI contention (#7807)
     this.startupTimeout = finalConfigValue(this.startupTimeout, KUBE_API_TEST_STARTUP_TIMEOUT, 120_000);
 
     return new KubeAPIServerConfig(apiTestDir, apiServerVersion, offlineMode, apiServerFlags,
@@ -87,7 +88,15 @@ public final class KubeAPIServerConfigBuilder {
       return currentValue;
     }
     String envValue = System.getenv(envVariable);
-    return envValue != null ? parseEnvValue(Boolean.class, envValue) : defaultValue;
+    if (envValue == null) {
+      return defaultValue;
+    }
+    if (!"true".equalsIgnoreCase(envValue) && !"false".equalsIgnoreCase(envValue)) {
+      throw new KubeAPITestException(
+          "Cannot parse environment variable " + envVariable + " value '" + envValue
+              + "' as Boolean (expected 'true' or 'false')");
+    }
+    return parseEnvValue(Boolean.class, envValue);
   }
 
   private Integer finalConfigValue(Integer currentValue, String envVariable, Integer defaultValue) {
@@ -112,8 +121,10 @@ public final class KubeAPIServerConfigBuilder {
       return (T) Integer.valueOf(envValue);
     } else if (type == Boolean.class) {
       return (T) Boolean.valueOf(envValue);
+    } else if (type == String.class) {
+      return type.cast(envValue);
     }
-    return type.cast(envValue);
+    throw new IllegalArgumentException("Unsupported type for environment variable parsing: " + type);
   }
 
   public KubeAPIServerConfigBuilder withUpdateKubeConfig(boolean updateKubeConfig) {
