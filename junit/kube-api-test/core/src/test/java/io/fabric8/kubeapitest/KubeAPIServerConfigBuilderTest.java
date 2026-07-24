@@ -33,7 +33,7 @@ class KubeAPIServerConfigBuilderTest {
   @Test
   @DisplayName("default startupTimeout is 120 seconds")
   void defaultStartupTimeoutIs120Seconds() {
-    var config = KubeAPIServerConfigBuilder.anAPIServerConfig().build();
+    var config = builderWithEnv(Map.of()).build();
 
     assertThat(config.getStartupTimeout()).isEqualTo(120_000);
   }
@@ -41,7 +41,7 @@ class KubeAPIServerConfigBuilderTest {
   @Test
   @DisplayName("explicit startupTimeout via builder overrides default")
   void explicitStartupTimeoutOverridesDefault() {
-    var config = KubeAPIServerConfigBuilder.anAPIServerConfig()
+    var config = builderWithEnv(Map.of())
         .withStartupTimeout(42_000)
         .build();
 
@@ -87,7 +87,7 @@ class KubeAPIServerConfigBuilderTest {
   @Test
   @DisplayName("build rejects non-positive startupTimeout from builder API")
   void buildRejectsNonPositiveStartupTimeout() {
-    assertThatThrownBy(() -> KubeAPIServerConfigBuilder.anAPIServerConfig()
+    assertThatThrownBy(() -> builderWithEnv(Map.of())
         .withStartupTimeout(0)
         .build())
         .isInstanceOf(KubeAPITestException.class)
@@ -97,7 +97,7 @@ class KubeAPIServerConfigBuilderTest {
   @Test
   @DisplayName("build rejects negative startupTimeout from builder API")
   void buildRejectsNegativeStartupTimeout() {
-    assertThatThrownBy(() -> KubeAPIServerConfigBuilder.anAPIServerConfig()
+    assertThatThrownBy(() -> builderWithEnv(Map.of())
         .withStartupTimeout(-500)
         .build())
         .isInstanceOf(KubeAPITestException.class)
@@ -149,6 +149,7 @@ class KubeAPIServerConfigBuilderTest {
     assertThatThrownBy(() -> builderWithEnv(Map.of(
         KubeAPIServerConfigBuilder.KUBE_API_TEST_OFFLINE_MODE, "yes")).build())
         .isInstanceOf(KubeAPITestException.class)
-        .hasMessageContaining("KUBE_API_TEST_OFFLINE_MODE");
+        .hasMessageContaining("KUBE_API_TEST_OFFLINE_MODE")
+        .hasMessageContaining("yes");
   }
 }
