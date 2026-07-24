@@ -61,11 +61,9 @@ class OkHttpClientBuilderImpl
   }
 
   public OkHttpClientImpl initialBuild(okhttp3.OkHttpClient.Builder builder) {
-    // Warn if tlsServerName is configured but not supported
     if (tlsServerName != null && !tlsServerName.isEmpty()) {
-      logger.warn(
-          "tlsServerName '{}' is configured but not supported by OkHttp client. Consider using Jetty HTTP client for SNI support.",
-          tlsServerName);
+      throw new KubernetesClientException(
+          "tlsServerName is configured but cannot be enforced by the OkHttp client");
     }
 
     // configure the main properties
