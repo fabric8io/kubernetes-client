@@ -141,12 +141,12 @@ class BuildConfigTest {
 
   @Test
   void testBinaryBuildFromFile() throws IOException {
-    File warFile = new File("target/test.war");
+    File warFile = new File("target/test.war&commit=owned");
     warFile.createNewFile();
 
     server.expect().post()
-        .withPath("/apis/build.openshift.io/v1/namespaces/ns1/buildconfigs/bc2/instantiatebinary?name=bc2&namespace=ns1&asFile="
-            + warFile.getName())
+        .withPath("/apis/build.openshift.io/v1/namespaces/ns1/buildconfigs/bc2/instantiatebinary"
+            + "?name=bc2&namespace=ns1&asFile=test.war%26commit%3Downed")
         .andReturn(201, new BuildBuilder()
             .withNewMetadata().withName("bc2").endMetadata().build())
         .once();
