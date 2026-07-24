@@ -105,7 +105,7 @@ public class KubeAPIServerExtension
     });
   }
 
-  private KubeAPIServerConfig annotationToConfig(EnableKubeAPIServer annotation) {
+  KubeAPIServerConfig annotationToConfig(EnableKubeAPIServer annotation) {
     var builder = KubeAPIServerConfigBuilder.anAPIServerConfig();
     var version = annotation.kubeAPIVersion();
     if (!EnableKubeAPIServer.NOT_SET.equals(version)) {
@@ -113,6 +113,9 @@ public class KubeAPIServerExtension
     }
     if (annotation.apiServerFlags().length > 0) {
       builder.withApiServerFlags(List.of(annotation.apiServerFlags()));
+    }
+    if (annotation.startupTimeout() != EnableKubeAPIServer.STARTUP_TIMEOUT_NOT_SET) {
+      builder.withStartupTimeout(annotation.startupTimeout());
     }
 
     builder.withUpdateKubeConfig(annotation.updateKubeConfigFile());

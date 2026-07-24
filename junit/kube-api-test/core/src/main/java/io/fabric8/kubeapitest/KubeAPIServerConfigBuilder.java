@@ -18,6 +18,8 @@ package io.fabric8.kubeapitest;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 public final class KubeAPIServerConfigBuilder {
 
@@ -32,6 +34,7 @@ public final class KubeAPIServerConfigBuilder {
 
   private final List<String> apiServerFlags = new ArrayList<>(0);
   private boolean updateKubeConfig = false;
+  private UnaryOperator<String> envReader = System::getenv;
 
   private String apiTestDir;
   private String apiServerVersion;
@@ -63,40 +66,50 @@ public final class KubeAPIServerConfigBuilder {
 
   public KubeAPIServerConfig build() {
     this.apiTestDir = finalConfigValue(this.apiTestDir, KUBE_API_TEST_DIR,
-        new File(System.getProperty("user.home"), DIRECTORY_NAME).getPath());
-    this.offlineMode = finalConfigValue(this.offlineMode, KUBE_API_TEST_OFFLINE_MODE, false);
-    this.apiServerVersion = finalConfigValue(this.apiServerVersion, KUBE_API_TEST_API_SERVER_VERSION, null);
+        new File(System.getProperty("user.home"), DIRECTORY_NAME).getPath(), Function.identity());
+    this.offlineMode = finalConfigValue(this.offlineMode, KUBE_API_TEST_OFFLINE_MODE, false,
+        KubeAPIServerConfigBuilder::parseStrictBoolean);
+    this.apiServerVersion = finalConfigValue(this.apiServerVersion, KUBE_API_TEST_API_SERVER_VERSION,
+        null, Function.identity());
     this.waitForEtcdHealthCheckOnStartup = finalConfigValue(this.waitForEtcdHealthCheckOnStartup,
-        KUBE_API_TEST_WAIT_FOR_ETCD_HEALTH_CHECK, false);
-    this.startupTimeout = finalConfigValue(this.startupTimeout, KUBE_API_TEST_STARTUP_TIMEOUT, 120_000);
+        KUBE_API_TEST_WAIT_FOR_ETCD_HEALTH_CHECK, false,
+        KubeAPIServerConfigBuilder::parseStrictBoolean);
+    // 120s: idle startup ~2.6s scales ~20× under -T 1C CI contention (#7807)
+    this.startupTimeout = finalConfigValue(this.startupTimeout, KUBE_API_TEST_STARTUP_TIMEOUT,
+        120_000, Integer::valueOf);
+    if (this.startupTimeout <= 0) {
+      throw new KubeAPITestException("startupTimeout must be positive, got: " + this.startupTimeout);
+    }
 
     return new KubeAPIServerConfig(apiTestDir, apiServerVersion, offlineMode, apiServerFlags,
         updateKubeConfig, waitForEtcdHealthCheckOnStartup, startupTimeout);
   }
 
-  private String finalConfigValue(String currentValue, String envVariable, String defaultValue) {
-    return finalConfigValue(String.class, currentValue, envVariable, defaultValue);
-  }
-
-  private Boolean finalConfigValue(Boolean currentValue, String envVariable, Boolean defaultValue) {
-    return finalConfigValue(Boolean.class, currentValue, envVariable, defaultValue);
-  }
-
-  private Integer finalConfigValue(Integer currentValue, String envVariable, Integer defaultValue) {
-    return finalConfigValue(Integer.class, currentValue, envVariable, defaultValue);
-  }
-
-  private <T> T finalConfigValue(Class<T> type, T currentValue, String envVariable,
-      T defaultValue) {
+  private <T> T finalConfigValue(T currentValue, String envVariable, T defaultValue,
+      Function<String, T> parser) {
     if (currentValue != null) {
       return currentValue;
     }
-    String envValue = System.getenv(envVariable);
-    if (envValue != null) {
-      return type.cast(envValue);
-    } else {
+    String envValue = envReader.apply(envVariable);
+    if (envValue == null) {
       return defaultValue;
     }
+    try {
+      return parser.apply(envValue);
+    } catch (RuntimeException e) {
+      throw new KubeAPITestException(
+          "Cannot parse environment variable " + envVariable + " value '" + envValue + "'", e);
+    }
+  }
+
+  static Boolean parseStrictBoolean(String value) {
+    if ("true".equalsIgnoreCase(value)) {
+      return Boolean.TRUE;
+    }
+    if ("false".equalsIgnoreCase(value)) {
+      return Boolean.FALSE;
+    }
+    throw new IllegalArgumentException("expected 'true' or 'false', got '" + value + "'");
   }
 
   public KubeAPIServerConfigBuilder withUpdateKubeConfig(boolean updateKubeConfig) {
@@ -124,6 +137,11 @@ public final class KubeAPIServerConfigBuilder {
 
   public KubeAPIServerConfigBuilder withStartupTimeout(Integer startupTimeout) {
     this.startupTimeout = startupTimeout;
+    return this;
+  }
+
+  KubeAPIServerConfigBuilder withEnvReader(UnaryOperator<String> envReader) {
+    this.envReader = envReader;
     return this;
   }
 
