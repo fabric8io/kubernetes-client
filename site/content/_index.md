@@ -75,4 +75,4 @@ try (KubernetesClient client = new KubernetesClientBuilder().build()) {
 ## Links
 
 - [GitHub Repository](https://github.com/fabric8io/kubernetes-client)
-- [Maven Central](https://search.maven.org/search?q=g:io.fabric8%20AND%20a:kubernetes-client)
+- [Maven Central](https://central.sonatype.com/artifact/io.fabric8/kubernetes-client)
