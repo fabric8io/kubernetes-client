@@ -43,8 +43,9 @@ jobs:
     name: Java ${{ matrix.java }} Maven
     runs-on: windows-latest
     strategy:
+      fail-fast: false
       matrix:
-        java: [17]
+        java: [17, 25]
     steps:
       - name: Support long filenames in git
         run: git config --system core.longpaths true
