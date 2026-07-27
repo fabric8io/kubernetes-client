@@ -80,7 +80,18 @@ public class WritableCRCompilationUnit {
         destFolder = destFolder.resolve(p);
       }
     }
+    validateOutputContainment(destFolder, folder.toPath());
     destFolder.toFile().mkdirs();
     return destFolder.toFile();
+  }
+
+  static void validateOutputContainment(Path resolved, Path base) {
+    Path normalizedResolved = resolved.toAbsolutePath().normalize();
+    Path normalizedBase = base.toAbsolutePath().normalize();
+    if (!normalizedResolved.startsWith(normalizedBase)) {
+      throw new JavaGeneratorException(
+          "Generated output path '" + normalizedResolved
+              + "' escapes the target directory '" + normalizedBase + "'");
+    }
   }
 }

@@ -55,6 +55,7 @@ public class CRGeneratorRunner {
     List<WritableCRCompilationUnit> writableCUs = new ArrayList<>(crSpec.getVersions().size());
     for (CustomResourceDefinitionVersion crdv : crSpec.getVersions()) {
       String version = crdv.getName();
+      validatePathSafe(version, "CRD version");
 
       String pkgNotOverridden = Optional.ofNullable(basePackageName)
           .map(p -> p + "." + version)
@@ -132,9 +133,18 @@ public class CRGeneratorRunner {
   }
 
   protected static String groupToPackage(String group) {
+    validatePathSafe(group, "CRD group");
     final List<String> groupElements = Arrays.asList(group.replace('-', '_').split("\\."));
 
     Collections.reverse(groupElements);
     return String.join(".", groupElements);
+  }
+
+  private static void validatePathSafe(String value, String source) {
+    if (value != null && (value.contains("/") || value.contains("\\"))) {
+      throw new JavaGeneratorException(
+          "Invalid " + source + " '" + value
+              + "': contains path separator characters that could escape the target directory");
+    }
   }
 }
