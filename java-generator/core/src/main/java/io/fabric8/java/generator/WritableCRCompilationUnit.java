@@ -53,10 +53,10 @@ public class WritableCRCompilationUnit {
             .map(NodeWithName::getNameAsString)
             .orElse(null);
         File path = createFolders(pkg, basePath);
+        Path filePath = path.toPath().resolve(cr.getName() + ".java");
+        validateOutputContainment(filePath, basePath.toPath());
 
-        writeToFile(
-            path.toPath().resolve(cr.getName() + ".java").toFile(),
-            cr.getJavaSource());
+        writeToFile(filePath.toFile(), cr.getJavaSource());
       }
     } catch (Exception e) {
       throw new JavaGeneratorException(e);

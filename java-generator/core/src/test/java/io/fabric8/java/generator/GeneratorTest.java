@@ -1298,7 +1298,7 @@ class GeneratorTest {
     }
 
     @Test
-    @DisplayName("CRD version with valid name should be accepted")
+    @DisplayName("CRD version with valid name should be accepted and propagated into the package")
     void validVersionIsAccepted() {
       CRGeneratorRunner runner = new CRGeneratorRunner(defaultConfig);
       CustomResourceDefinition crd = buildCrdWithVersion("v1alpha1");
@@ -1306,6 +1306,10 @@ class GeneratorTest {
       List<WritableCRCompilationUnit> result = runner.generate(crd, groupToPackage("example.com"));
 
       assertThat(result).hasSize(1);
+      assertThat(result.get(0).getClassResults())
+          .anyMatch(cr -> cr.getPackageDeclaration()
+              .map(p -> p.getNameAsString().contains("v1alpha1"))
+              .orElse(false));
     }
 
     @ParameterizedTest
@@ -1316,7 +1320,8 @@ class GeneratorTest {
     @DisplayName("CRD group with path traversal characters should be rejected")
     void groupWithPathTraversalIsRejected(String maliciousGroup) {
       assertThatThrownBy(() -> groupToPackage(maliciousGroup))
-          .isInstanceOf(JavaGeneratorException.class);
+          .isInstanceOf(JavaGeneratorException.class)
+          .hasMessageContaining("CRD group");
     }
 
     @Test

@@ -187,10 +187,29 @@ class CompilationTest {
     File crd = getCRD("malicious-version-crd.yml");
 
     // Act & Assert
-    assertThrows(
+    JavaGeneratorException exception = assertThrows(
         JavaGeneratorException.class,
         () -> new FileJavaGenerator(config, crd).run(tempDir));
 
+    assertTrue(exception.getMessage().contains("path separator"),
+        "Expected path-safety rejection but got: " + exception.getMessage());
+    assertTrue(getSources(tempDir).isEmpty(), "Rejected CRDs must not emit Java source files");
+  }
+
+  @Test
+  void rejectsPathTraversalInCrdVersion() throws Exception {
+    // Arrange: the version name contains ../../ path traversal that would write files outside
+    // the target directory. This exercises the full FileJavaGenerator.run() → writeAllJavaClasses()
+    // → createFolders() path to confirm the input validation catches the attack end-to-end.
+    File crd = getCRD("path-traversal-version-crd.yml");
+
+    // Act & Assert
+    JavaGeneratorException exception = assertThrows(
+        JavaGeneratorException.class,
+        () -> new FileJavaGenerator(config, crd).run(tempDir));
+
+    assertTrue(exception.getMessage().contains("path separator"),
+        "Expected path-safety rejection but got: " + exception.getMessage());
     assertTrue(getSources(tempDir).isEmpty(), "Rejected CRDs must not emit Java source files");
   }
 
