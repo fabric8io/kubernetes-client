@@ -43,6 +43,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.*;
 
 import static io.fabric8.java.generator.CRGeneratorRunner.groupToPackage;
@@ -1321,8 +1322,8 @@ class GeneratorTest {
     @Test
     @DisplayName("Resolved output path escaping target directory should be rejected")
     void containmentCheckRejectsEscapingPath(@TempDir File tempDir) {
-      java.nio.file.Path base = tempDir.toPath();
-      java.nio.file.Path escaped = base.resolve("..").resolve("escape");
+      Path base = tempDir.toPath();
+      Path escaped = base.resolve("..").resolve("escape");
 
       assertThatThrownBy(() -> WritableCRCompilationUnit.validateOutputContainment(escaped, base))
           .isInstanceOf(JavaGeneratorException.class)
@@ -1332,8 +1333,8 @@ class GeneratorTest {
     @Test
     @DisplayName("Resolved output path within target directory should be accepted")
     void containmentCheckAcceptsContainedPath(@TempDir File tempDir) {
-      java.nio.file.Path base = tempDir.toPath();
-      java.nio.file.Path contained = base.resolve("com").resolve("example").resolve("v1");
+      Path base = tempDir.toPath();
+      Path contained = base.resolve("com").resolve("example").resolve("v1");
 
       WritableCRCompilationUnit.validateOutputContainment(contained, base);
     }
