@@ -39,6 +39,7 @@
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
+          <proc>full</proc>
         </configuration>
       </plugin>
     </plugins>
