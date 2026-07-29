@@ -44,6 +44,13 @@
           <annotationProcessors>
             <processor>io.sundr.builder.internal.processor.BuildableProcessor</processor>
           </annotationProcessors>
+          <annotationProcessorPaths combine.children="append">
+            <path>
+              <groupId>io.sundr</groupId>
+              <artifactId>builder-annotations</artifactId>
+              <version>${sundrio.version}</version>
+            </path>
+          </annotationProcessorPaths>
         </configuration>
       </plugin>
     </plugins>

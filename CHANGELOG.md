@@ -8,6 +8,7 @@
 * Fix #7955: (java-generator) Malicious CRD schema values can no longer inject executable code into the generated Java sources. Schema-controlled values (enum values, CRD group/version/names, property names, descriptions and defaults) are emitted as fully escaped Java string literals, so a value carrying a Unicode-escaped quote cannot break out of its literal once `javac` decodes it. As a defense in depth, each generated class is also re-parsed and structurally validated before it is written (with Java Unicode escape preprocessing enabled to match `javac`), aborting generation on any residual structural mismatch
 
 #### Improvements
+* Fix #7427: (build) JDK 25 build support — commit Sundrio-generated Builder/Fluent classes as source for `kubernetes-client-api` and `openshift-client-api`, and configure explicit Lombok `annotationProcessorPaths` project-wide. JDK 23+ defaults to `-proc:none`, silently skipping classpath-based annotation processor discovery; without explicit processor paths, Lombok and Sundrio APT stopped running and the build failed with missing getters/setters and Builder classes
 
 #### Dependency Upgrade
 

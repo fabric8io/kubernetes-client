@@ -52,6 +52,7 @@ openapi-generate-java-classes:
 		MODELS="$$(find . -path '*/target' -prune -o -path '*/model/pom.xml' -print | sed 's|/pom.xml$$||;s|^\./||' | sort | tr '\n' ',' | sed 's/,$$//')" && \
 		{ [ -n "$$MODELS" ] || { echo 'ERROR: no extensions/**/model modules discovered; refusing to regenerate nothing' >&2; exit 1; }; } && \
 		mvn $(MAVEN_ARGS) -pl ".,$$MODELS" -Pgenerate clean install
+	mvn $(MAVEN_ARGS) -Pgenerate compile -pl kubernetes-client-api,openshift-client-api -am
 
 .PHONY: generate-model
 generate-model: openapi-generate-schema openapi-generate-java-classes
