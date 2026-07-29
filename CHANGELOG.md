@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #7427: (build) JDK 25 build support — commit Sundrio-generated Builder/Fluent classes as source for `kubernetes-client-api` and `openshift-client-api`, and configure explicit Lombok `annotationProcessorPaths` project-wide. JDK 23+ defaults to `-proc:none`, silently skipping classpath-based annotation processor discovery; without explicit processor paths, Lombok and Sundrio APT stopped running and the build failed with missing getters/setters and Builder classes
 
 #### Dependency Upgrade
 * Fix #8098: bump chaos-mesh api from 4db47f5 to d70b66a
