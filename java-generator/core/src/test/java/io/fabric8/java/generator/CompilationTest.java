@@ -203,9 +203,13 @@ class CompilationTest {
     File crd = getCRD("path-traversal-version-crd.yml");
 
     // Act & Assert
-    assertThrows(
+    JavaGeneratorException exception = assertThrows(
         JavaGeneratorException.class,
         () -> new FileJavaGenerator(config, crd).run(tempDir));
+
+    String msg = exception.getMessage();
+    assertTrue(msg.contains("escapes the target directory") || msg.contains("structural mismatch"),
+        "Expected containment or structural rejection but got: " + msg);
   }
 
   @Test
