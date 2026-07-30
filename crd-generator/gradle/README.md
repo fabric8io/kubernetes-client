@@ -79,7 +79,7 @@ tasks.named(JvmConstants.CLASSES_TASK_NAME) {
 > **Limitation — cross-JDK version builds**
 >
 > The `doLast` block above runs in the Gradle daemon's JVM.
-> If the project is compiled with a newer JDK (e.g. JDK 17) than the daemon (e.g. JDK 11),
+> If the project is compiled with a newer JDK (e.g. JDK 21) than the daemon (e.g. JDK 17),
 > the `CustomResourceCollector` will throw `UnsupportedClassVersionError` when it tries to load
 > the compiled class files. Use the [forked approach](#forked-jvm-with-toolchain) below if your
 > compile JDK differs from the JDK that runs the Gradle daemon.
