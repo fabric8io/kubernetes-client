@@ -15,7 +15,9 @@
 #
 
 # The version name contains path traversal segments that would cause generated files to escape
-# the target directory if not validated. The path-safety check must reject this CRD.
+# the target directory if not validated. The containment check must reject this CRD.
+# The group "example.com" adds two directory components (com/example), so ../../../../ is needed
+# to traverse past them and then past the base path itself.
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -23,7 +25,7 @@ metadata:
 spec:
   group: example.com
   versions:
-    - name: ../../escape/java-generator
+    - name: ../../../../pwned
       served: true
       storage: true
       schema:

@@ -39,8 +39,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -1280,23 +1278,6 @@ class GeneratorTest {
           .build();
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {
-        "../../escape/java-generator",
-        "../escape",
-        "v1/../../attack",
-        "v1\\..\\attack"
-    })
-    @DisplayName("CRD version with path traversal characters should be rejected")
-    void versionWithPathTraversalIsRejected(String maliciousVersion) {
-      CRGeneratorRunner runner = new CRGeneratorRunner(defaultConfig);
-      CustomResourceDefinition crd = buildCrdWithVersion(maliciousVersion);
-
-      assertThatThrownBy(() -> runner.generate(crd, groupToPackage("example.com")))
-          .isInstanceOf(JavaGeneratorException.class)
-          .hasMessageContaining(maliciousVersion);
-    }
-
     @Test
     @DisplayName("CRD version with valid name should be accepted and propagated into the package")
     void validVersionIsAccepted() {
@@ -1310,18 +1291,6 @@ class GeneratorTest {
           .anyMatch(cr -> cr.getPackageDeclaration()
               .map(p -> p.getNameAsString().contains("v1alpha1"))
               .orElse(false));
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {
-        "example.com/../../attack",
-        "example.com\\attack"
-    })
-    @DisplayName("CRD group with path traversal characters should be rejected")
-    void groupWithPathTraversalIsRejected(String maliciousGroup) {
-      assertThatThrownBy(() -> groupToPackage(maliciousGroup))
-          .isInstanceOf(JavaGeneratorException.class)
-          .hasMessageContaining("CRD group");
     }
 
     @Test
