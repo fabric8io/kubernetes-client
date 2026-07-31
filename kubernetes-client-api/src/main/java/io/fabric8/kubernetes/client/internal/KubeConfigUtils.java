@@ -37,6 +37,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -198,13 +199,11 @@ public class KubeConfigUtils {
       clientConfig.setTlsServerName(currentCluster.getTlsServerName());
       String proxyUrl = currentCluster.getProxyUrl();
       if (Utils.isNotNullOrEmpty(proxyUrl)) {
-        if (proxyUrl.startsWith(SOCKS5_PROTOCOL_PREFIX) && clientConfig.getMasterUrl().startsWith(HTTPS_PROTOCOL_PREFIX)) {
-          clientConfig.setHttpsProxy(proxyUrl);
-        } else if (proxyUrl.startsWith(SOCKS5_PROTOCOL_PREFIX)) {
+        String lowerCaseProxyUrl = proxyUrl.toLowerCase(Locale.ROOT);
+        if (lowerCaseProxyUrl.startsWith(SOCKS5_PROTOCOL_PREFIX)
+            || lowerCaseProxyUrl.startsWith(HTTP_PROTOCOL_PREFIX)
+            || lowerCaseProxyUrl.startsWith(HTTPS_PROTOCOL_PREFIX)) {
           clientConfig.setHttpProxy(proxyUrl);
-        } else if (proxyUrl.startsWith(HTTP_PROTOCOL_PREFIX)) {
-          clientConfig.setHttpProxy(proxyUrl);
-        } else if (proxyUrl.startsWith(HTTPS_PROTOCOL_PREFIX)) {
           clientConfig.setHttpsProxy(proxyUrl);
         }
       }
