@@ -19,8 +19,6 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.http.TlsVersion;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.ProxySelector;
 import java.net.http.HttpClient.Redirect;
@@ -43,8 +41,6 @@ import javax.net.ssl.SSLParameters;
 class JdkHttpClientBuilderImpl
     extends StandardHttpClientBuilder<JdkHttpClientImpl, JdkHttpClientFactory, JdkHttpClientBuilderImpl> {
 
-  private static final Logger logger = LoggerFactory.getLogger(JdkHttpClientBuilderImpl.class);
-
   public JdkHttpClientBuilderImpl(JdkHttpClientFactory factory) {
     super(factory);
   }
@@ -55,11 +51,9 @@ class JdkHttpClientBuilderImpl
       return new JdkHttpClientImpl(this, client.getHttpClient(), client.getClosed());
     }
 
-    // Warn if tlsServerName is configured but not supported
     if (tlsServerName != null && !tlsServerName.isEmpty()) {
-      logger.warn(
-          "tlsServerName '{}' is configured but not supported by JDK HTTP client. Consider using Jetty HTTP client for SNI support.",
-          tlsServerName);
+      throw new KubernetesClientException(
+          "tlsServerName is configured but cannot be enforced by the JDK HTTP client");
     }
 
     java.net.http.HttpClient.Builder builder = clientFactory.createNewHttpClientBuilder();
