@@ -126,8 +126,8 @@ public class BuildConfigOperationsImpl
   @Override
   public Void trigger(WebHookTrigger trigger) {
     try {
-      //TODO: This needs some attention.
-      String triggerUrl = URLUtils.join(getResourceUrl().toString(), "webhooks", secret, triggerType);
+      String triggerUrl = URLUtils.join(getResourceUrl().toString(), "webhooks",
+          URLUtils.encodePathSegment(secret), URLUtils.encodePathSegment(triggerType));
       HttpRequest.Builder requestBuilder = this.httpClient.newHttpRequestBuilder()
           .post(JSON, getKubernetesSerialization().asJson(trigger))
           .uri(triggerUrl)
