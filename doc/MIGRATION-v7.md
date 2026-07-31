@@ -1,3 +1,11 @@
+---
+title: "Migration from 6.x to 7.x"
+description: "Guide for migrating from Fabric8 Kubernetes Client 6.x to 7.x"
+draft: false
+weight: 102
+bookHidden: true
+---
+
 # Migration from 6.x to 7.x
 
 ## Contents

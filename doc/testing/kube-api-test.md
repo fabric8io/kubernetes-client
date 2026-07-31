@@ -1,9 +1,8 @@
 ---
-title: "kube-api-test"
-description: "Integration testing with a real Kubernetes API Server in Java"
+title: "Integration Testing with a Real API Server"
+description: "Run tests against a real Kubernetes API Server using kube-api-test"
 draft: false
-weight: 50
-bookHidden: true
+weight: 2
 ---
 
 # kube-api-test

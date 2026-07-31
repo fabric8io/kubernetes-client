@@ -1,0 +1,37 @@
+baseURL = 'https://fabric8.io/kubernetes-client/'
+locale = 'en-us'
+title = 'Fabric8 Kubernetes Client'
+[params]
+  BookTheme = 'auto'
+  BookToC = true
+  BookSection = 'docs'
+  BookRepo = 'https://github.com/fabric8io/kubernetes-client'
+  BookSearch = true
+  BookComments = false
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    style = 'monokai'
+    lineNos = false
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 4
+
+[module]
+  [[module.imports]]
+    path = "github.com/alex-shpak/hugo-book"
+  [[module.mounts]]
+    source = "content"
+    target = "content"
+  [[module.mounts]]
+    source = "../doc"
+    target = "content/docs"
+
+[menu]
+  [[menu.after]]
+    name = "GitHub"
+    url = "https://github.com/fabric8io/kubernetes-client"
+    weight = 1

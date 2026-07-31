@@ -1,3 +1,11 @@
+---
+title: "Kubernetes Operators in Java"
+description: "Examples of Kubernetes Operators written in Java using Fabric8 Kubernetes Client"
+draft: false
+weight: 20
+bookHidden: true
+---
+
 # Kubernetes Operators in Java Written using Fabric8 Kubernetes Client
 
 You can easily rely on Fabric8 Kubernetes Client to implement your Kubernetes Operators. Here are few examples of already existing Kubernetes Operators which can give you some idea on how to get started with writing Kubernetes Operators in Java using Fabric8 Kubernetes Client:
