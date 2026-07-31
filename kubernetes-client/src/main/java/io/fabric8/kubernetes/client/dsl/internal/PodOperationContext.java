@@ -132,31 +132,38 @@ public class PodOperationContext {
   }
 
   public String getLogParameters() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("log?pretty=").append(prettyOutput);
+    URLBuilder urlBuilder = new URLBuilder("log");
+    urlBuilder.addQueryParameter("pretty", Boolean.toString(prettyOutput));
 
     if (containerId != null && !containerId.isEmpty()) {
-      sb.append("&container=").append(containerId);
+      urlBuilder.addQueryParameter("container", containerId);
     }
     if (terminatedStatus) {
-      sb.append("&previous=true");
+      urlBuilder.addQueryParameter("previous", "true");
     }
     if (sinceSeconds != null) {
-      sb.append("&sinceSeconds=").append(sinceSeconds);
+      urlBuilder.addQueryParameter("sinceSeconds", sinceSeconds.toString());
     } else if (sinceTimestamp != null) {
       // https://github.com/fabric8io/kubernetes-client/issues/6459
-      sb.append("&sinceTime=").append(URLUtils.encodeToUTF(sinceTimestamp).replace("%3A", ":"));
+      urlBuilder.addQueryParameter("sinceTime", sinceTimestamp);
     }
     if (tailingLines != null) {
-      sb.append("&tailLines=").append(tailingLines);
+      urlBuilder.addQueryParameter("tailLines", tailingLines.toString());
     }
     if (limitBytes != null) {
-      sb.append("&limitBytes=").append(limitBytes);
+      urlBuilder.addQueryParameter("limitBytes", limitBytes.toString());
     }
     if (timestamps) {
-      sb.append("&timestamps=true");
+      urlBuilder.addQueryParameter("timestamps", "true");
     }
-    return sb.toString();
+    String logParameters = urlBuilder.toString();
+    if (sinceTimestamp != null) {
+      String encodedSinceTime = URLUtils.encodeToUTF(sinceTimestamp).replace("+", "%20");
+      logParameters = logParameters.replace(
+          "sinceTime=" + encodedSinceTime,
+          "sinceTime=" + encodedSinceTime.replace("%3A", ":"));
+    }
+    return logParameters;
   }
 
   public void addQueryParameters(URLBuilder httpUrlBuilder) {
