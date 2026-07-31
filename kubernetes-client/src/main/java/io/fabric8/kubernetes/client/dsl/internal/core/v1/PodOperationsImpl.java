@@ -465,7 +465,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   private String[] readFileCommand(String source) {
-    return new String[] { "sh", "-c", String.format("cat %s", shellQuote(source)) };
+    return new String[] { "sh", "-c", String.format("cat -- %s", shellQuote(source)) };
   }
 
   private InputStream readFile(String source) {
@@ -502,7 +502,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   public InputStream readTar(String source) {
-    return read("sh", "-c", "tar -cf - " + shellQuote(source));
+    return read("sh", "-c", "tar -cf - -- " + shellQuote(source));
   }
 
   private InputStream read(String... command) {
