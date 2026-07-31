@@ -104,21 +104,8 @@ public class JettyHttpClientBuilder
     sharedWebSocketClient.getHttpClient().setMaxConnectionsPerDestination(MAX_CONNECTIONS);
     if (proxyType != ProxyType.DIRECT && proxyAddress != null) {
       Origin.Address address = new Origin.Address(proxyAddress.getHostString(), proxyAddress.getPort());
-      // Jetty allows for the differentiation of proxy being secure separately from the destination,
-      // but we'll always set that flag to false
-      switch (proxyType) {
-        case HTTP:
-          sharedHttpClient.getProxyConfiguration().addProxy(new HttpProxy(address, false));
-          break;
-        case SOCKS4:
-          sharedHttpClient.getProxyConfiguration().addProxy(new Socks4Proxy(address, false));
-          break;
-        case SOCKS5:
-          sharedHttpClient.getProxyConfiguration().addProxy(new Socks5Proxy(address, false));
-          break;
-        default:
-          throw new KubernetesClientException("Unsupported proxy type");
-      }
+      addProxy(sharedHttpClient, address);
+      addProxy(sharedWebSocketClient.getHttpClient(), address);
       final String[] userPassword = decodeBasicCredentials(this.proxyAuthorization);
       if (userPassword != null) {
         URI proxyUri;
@@ -127,14 +114,37 @@ public class JettyHttpClientBuilder
         } catch (URISyntaxException e) {
           throw KubernetesClientException.launderThrowable(e);
         }
-        sharedHttpClient.getAuthenticationStore()
-            .addAuthentication(new BasicAuthentication(proxyUri, Authentication.ANY_REALM, userPassword[0], userPassword[1]));
+        addProxyAuthentication(sharedHttpClient, proxyUri, userPassword);
+        addProxyAuthentication(sharedWebSocketClient.getHttpClient(), proxyUri, userPassword);
       } else {
         addProxyAuthInterceptor();
       }
     }
     clientFactory.additionalConfig(sharedHttpClient, sharedWebSocketClient);
     return new JettyHttpClient(this, sharedHttpClient, sharedWebSocketClient);
+  }
+
+  private void addProxy(HttpClient httpClient, Origin.Address address) {
+    // Jetty allows for the differentiation of proxy being secure separately from the destination,
+    // but we'll always set that flag to false
+    switch (proxyType) {
+      case HTTP:
+        httpClient.getProxyConfiguration().addProxy(new HttpProxy(address, false));
+        break;
+      case SOCKS4:
+        httpClient.getProxyConfiguration().addProxy(new Socks4Proxy(address, false));
+        break;
+      case SOCKS5:
+        httpClient.getProxyConfiguration().addProxy(new Socks5Proxy(address, false));
+        break;
+      default:
+        throw new KubernetesClientException("Unsupported proxy type");
+    }
+  }
+
+  private static void addProxyAuthentication(HttpClient httpClient, URI proxyUri, String[] userPassword) {
+    httpClient.getAuthenticationStore()
+        .addAuthentication(new BasicAuthentication(proxyUri, Authentication.ANY_REALM, userPassword[0], userPassword[1]));
   }
 
   private static HttpClientTransport newTransport(SslContextFactory.Client sslContextFactory, boolean preferHttp11) {

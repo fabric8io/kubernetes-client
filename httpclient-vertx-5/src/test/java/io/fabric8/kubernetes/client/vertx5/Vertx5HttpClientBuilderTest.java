@@ -170,6 +170,37 @@ class Vertx5HttpClientBuilderTest {
         assertThat(client).isNotNull();
       }
     }
+
+    @Test
+    @DisplayName("Should configure proxy on HTTP and WebSocket options")
+    void proxy_shouldConfigureHttpAndWebSocketOptions() {
+      final AtomicReference<WebClientOptions> capturedHttpOptions = new AtomicReference<>();
+      final AtomicReference<WebSocketClientOptions> capturedWsOptions = new AtomicReference<>();
+      Vertx5HttpClientFactory factory = new Vertx5HttpClientFactory() {
+        @Override
+        protected void additionalConfig(WebClientOptions webClientOptions,
+            WebSocketClientOptions wsOptions, PoolOptions poolOptions) {
+          capturedHttpOptions.set(webClientOptions);
+          capturedWsOptions.set(wsOptions);
+        }
+      };
+
+      try (HttpClient client = factory.newBuilder()
+          .proxyAddress(new InetSocketAddress("proxy.example.com", 8080))
+          .proxyType(HttpClient.ProxyType.HTTP)
+          .build()) {
+        assertThat(client).isNotNull();
+      }
+
+      assertThat(capturedHttpOptions.get().getProxyOptions())
+          .isNotNull()
+          .hasFieldOrPropertyWithValue("host", "proxy.example.com")
+          .hasFieldOrPropertyWithValue("port", 8080);
+      assertThat(capturedWsOptions.get().getProxyOptions())
+          .isNotNull()
+          .hasFieldOrPropertyWithValue("host", "proxy.example.com")
+          .hasFieldOrPropertyWithValue("port", 8080);
+    }
   }
 
   @Nested
