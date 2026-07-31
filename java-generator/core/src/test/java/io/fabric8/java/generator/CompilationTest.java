@@ -197,19 +197,24 @@ class CompilationTest {
 
   @Test
   void rejectsPathTraversalInCrdVersion() throws Exception {
-    // Arrange: the version name contains path traversal that would write files outside the target
-    // directory. The structural integrity check or the containment check in WritableCRCompilationUnit
-    // must reject this CRD before any files are written.
-    File crd = getCRD("path-traversal-version-crd.yml");
+    // Arrange: the version name feeds the generated package declaration and, through it, the output
+    // directory layout. A traversing version cannot produce valid Java, so the structural validation
+    // rejects the CRD while generating it, before the write phase is ever reached (the containment
+    // guard that backs that phase up is covered by WritableCRCompilationUnitTest). Nesting the
+    // output directory inside the temporary directory lets us assert that nothing escaped it.
+    File crd = getCRD("malicious-path-traversal-crd.yml");
+    File outputDirectory = new File(tempDir, "out");
+    assertTrue(outputDirectory.mkdir());
 
     // Act & Assert
     JavaGeneratorException exception = assertThrows(
         JavaGeneratorException.class,
-        () -> new FileJavaGenerator(config, crd).run(tempDir));
+        () -> new FileJavaGenerator(config, crd).run(outputDirectory));
 
-    String msg = exception.getMessage();
-    assertTrue(msg.contains("escapes the target directory") || msg.contains("structural mismatch"),
-        "Expected containment or structural rejection but got: " + msg);
+    assertTrue(exception.getMessage().contains("structural mismatch"));
+    assertTrue(getSources(outputDirectory).isEmpty(), "Rejected CRDs must not emit Java source files");
+    assertArrayEquals(new File[] { outputDirectory }, tempDir.listFiles(),
+        "Rejected CRDs must not create anything outside the output directory");
   }
 
   @Test

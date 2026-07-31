@@ -85,7 +85,16 @@ public class WritableCRCompilationUnit {
     return destFolder.toFile();
   }
 
-  static void validateOutputContainment(Path resolved, Path base) {
+  /**
+   * Guards the filesystem boundary: a package or class name derived from CRD metadata must never
+   * resolve outside the requested output directory.
+   * <p>
+   * The comparison is lexical. {@link Path#normalize()} does not resolve symbolic links, so a
+   * symlink already present inside the output directory can still redirect a write. {@code
+   * toRealPath} is not usable instead, because the resolved path does not exist yet at validation
+   * time.
+   */
+  private static void validateOutputContainment(Path resolved, Path base) {
     Path normalizedResolved = resolved.toAbsolutePath().normalize();
     Path normalizedBase = base.toAbsolutePath().normalize();
     if (!normalizedResolved.startsWith(normalizedBase)) {

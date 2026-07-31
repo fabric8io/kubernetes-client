@@ -28,26 +28,19 @@ import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.java.generator.nodes.*;
-import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrBool;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
-import java.io.File;
-import java.nio.file.Path;
 import java.util.*;
 
 import static io.fabric8.java.generator.CRGeneratorRunner.groupToPackage;
 import static io.fabric8.java.generator.nodes.Keywords.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -1243,74 +1236,5 @@ class GeneratorTest {
     // Assert
     assertEquals("org.test.ExistingJavaEnum", obj.getType());
     assertEquals(0, res.getTopLevelClasses().size());
-  }
-
-  @Nested
-  class PathTraversalPrevention {
-
-    private CustomResourceDefinition buildCrdWithVersion(String versionName) {
-      JSONSchemaProps stringProp = new JSONSchemaProps();
-      stringProp.setType("string");
-      Map<String, JSONSchemaProps> specProps = new HashMap<>();
-      specProps.put("field", stringProp);
-      JSONSchemaProps specSchema = new JSONSchemaProps();
-      specSchema.setType("object");
-      specSchema.setProperties(specProps);
-      JSONSchemaProps rootSchema = new JSONSchemaProps();
-      rootSchema.setType("object");
-      Map<String, JSONSchemaProps> rootProps = new HashMap<>();
-      rootProps.put("spec", specSchema);
-      rootSchema.setProperties(rootProps);
-
-      return new CustomResourceDefinitionBuilder()
-          .withNewMetadata().withName("escapes.example.com").endMetadata()
-          .withNewSpec()
-          .withGroup("example.com")
-          .withScope("Namespaced")
-          .withNewNames().withPlural("escapes").withSingular("escape").withKind("Escape").endNames()
-          .addNewVersion()
-          .withName(versionName)
-          .withServed(true)
-          .withStorage(true)
-          .withNewSchema().withOpenAPIV3Schema(rootSchema).endSchema()
-          .endVersion()
-          .endSpec()
-          .build();
-    }
-
-    @Test
-    @DisplayName("CRD version with valid name should be accepted and propagated into the package")
-    void validVersionIsAccepted() {
-      CRGeneratorRunner runner = new CRGeneratorRunner(defaultConfig);
-      CustomResourceDefinition crd = buildCrdWithVersion("v1alpha1");
-
-      List<WritableCRCompilationUnit> result = runner.generate(crd, groupToPackage("example.com"));
-
-      assertThat(result).hasSize(1);
-      assertThat(result.get(0).getClassResults())
-          .anyMatch(cr -> cr.getPackageDeclaration()
-              .map(p -> p.getNameAsString().contains("v1alpha1"))
-              .orElse(false));
-    }
-
-    @Test
-    @DisplayName("Resolved output path escaping target directory should be rejected")
-    void containmentCheckRejectsEscapingPath(@TempDir File tempDir) {
-      Path base = tempDir.toPath();
-      Path escaped = base.resolve("..").resolve("escape");
-
-      assertThatThrownBy(() -> WritableCRCompilationUnit.validateOutputContainment(escaped, base))
-          .isInstanceOf(JavaGeneratorException.class)
-          .hasMessageContaining("target directory");
-    }
-
-    @Test
-    @DisplayName("Resolved output path within target directory should be accepted")
-    void containmentCheckAcceptsContainedPath(@TempDir File tempDir) {
-      Path base = tempDir.toPath();
-      Path contained = base.resolve("com").resolve("example").resolve("v1");
-
-      WritableCRCompilationUnit.validateOutputContainment(contained, base);
-    }
   }
 }
