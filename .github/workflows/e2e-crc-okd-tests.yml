@@ -41,13 +41,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # There is some problem with latest version of crc configured with okd preset. I
-        # wasn't able to run tests successfully on latest version of crc. See linked issue:
-        # https://github.com/crc-org/crc/issues/4382
-        # TODO: Update CRC version to latest when aforementioned issue gets resolved
-        # https://github.com/fabric8io/kubernetes-client/issues/6415
-        okd: [ v4.14.0 ]
-        crc: [ 2.32.0 ]
+        okd-bundle: [ 4.22.0-okd-scos.6 ]
+        crc: [ 2.62.0 ]
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -79,13 +74,14 @@ jobs:
           sudo rm -f /mnt/swapfile
       - name: Download CRC
         run: |
-          wget https://developers.redhat.com/content-gateway/file/pub/openshift-v4/clients/crc/${{ matrix.crc }}/crc-linux-amd64.tar.xz
+          wget https://mirror.openshift.com/pub/openshift-v4/clients/crc/${{ matrix.crc }}/crc-linux-amd64.tar.xz
           tar -xJf crc-linux-amd64.tar.xz
           sudo cp crc-linux-${{ matrix.crc }}-amd64/crc /usr/local/bin/crc
       - name: Set the crc config
         run: |
           crc config set preset okd
           crc config set network-mode user
+          crc config set bundle docker://quay.io/crcont/okd-bundle:${{ matrix.okd-bundle }}
       - name: Setup CRC
         run: sudo -su $USER crc setup
       - name: Start CRC
