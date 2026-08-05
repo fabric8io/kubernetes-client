@@ -53,31 +53,10 @@ class Vertx5HttpClientConfiguration<F extends io.fabric8.kubernetes.client.http.
   @NonNull
   private final HttpClient httpClient;
 
+  @NonNull
   private final WebSocketClientOptions webSocketOptions;
 
   private final boolean closeVertx;
-
-  /**
-   * Creates a configuration with default WebSocket options.
-   * 
-   * @param clientBuilder the builder that created the client
-   * @param closed atomic boolean indicating if client is closed
-   * @param httpClient the Vert.x HTTP client instance
-   * @param closeVertx whether to close Vert.x instance when client closes
-   * @return configuration with default WebSocket settings
-   */
-  static <F extends io.fabric8.kubernetes.client.http.HttpClient.Factory> Vertx5HttpClientConfiguration<F> withDefaultWebSocket(
-      Vertx5HttpClientBuilder<F> clientBuilder,
-      AtomicBoolean closed,
-      HttpClient httpClient,
-      boolean closeVertx) {
-    return Vertx5HttpClientConfiguration.<F> builder()
-        .clientBuilder(clientBuilder)
-        .closed(closed)
-        .httpClient(httpClient)
-        .closeVertx(closeVertx)
-        .build();
-  }
 
   /**
    * Creates a configuration with custom WebSocket options.
