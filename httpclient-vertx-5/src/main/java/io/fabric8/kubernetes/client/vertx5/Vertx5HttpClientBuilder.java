@@ -167,10 +167,12 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
   @Override
   public Vertx5HttpClient<F> build() {
     if (this.client != null) {
-      return Vertx5HttpClient.createWithDefaults(
+      final WebSocketClientOptions wsOptions = createWebSocketClientOptions(resolveProtocols());
+      return Vertx5HttpClient.createWithWebSocketOptions(
           this,
           this.client.getClosed(),
           this.client.getHttpClient(),
+          wsOptions,
           closeVertx);
     }
 
