@@ -29,6 +29,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
@@ -37,34 +38,42 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Guards the JPMS packaging invariant: no two published artifacts may contribute classes to the
- * same package. Split packages are legal on the classpath and tolerated by OSGi, but the module
- * system rejects them, so the affected artifacts cannot sit on the module path together.
+ * Guards the JPMS packaging invariant across the published artifacts: no package may be
+ * contributed by more than one of them. Split packages are legal on the classpath and tolerated by
+ * OSGi, but the module system rejects them, so affected artifacts cannot sit on a module path
+ * together.
  * <p>
- * The staged artifacts are the pairs that regressed historically. Adding an artifact to the
- * {@code copy-split-package-candidate-jars} execution in the pom automatically extends coverage,
- * since every staged jar is compared against every other one.
+ * The jars are staged by {@code maven-dependency-plugin:copy-dependencies} from the io.fabric8
+ * closure of the roots declared in the pom, so a newly added model or extension module is covered
+ * automatically once something depends on it. Deliberately-shaded artifacts and the OSGi
+ * {@code bundle} classifier are excluded there, with the reasoning recorded inline.
  * <p>
  * Packages are read from the jar entries rather than through {@code ModuleFinder}, which cannot
  * derive a module name from the evergreen {@code 999-SNAPSHOT} version these jars carry in CI.
  */
 class SplitPackageTest {
 
-  private static final int EXPECTED_JAR_COUNT = 4;
+  /**
+   * Lower bound on the staged artifact count, so a staging step that silently stopped resolving
+   * cannot leave the suite trivially green. Deliberately well below the real count (~98) to avoid
+   * churn whenever a module is added or removed.
+   */
+  private static final int MINIMUM_STAGED_ARTIFACTS = 60;
+
   private static final String MULTI_RELEASE_PREFIX = "META-INF/versions/";
 
-  private static Map<String, Set<String>> packagesByJar;
+  private static Map<String, Set<String>> packagesByArtifact;
 
   @BeforeAll
   static void setUp() throws IOException {
-    final String jarsDirProperty = System.getProperty("split.package.jars.dir");
+    final String jarsDirProperty = System.getProperty("published.jars.dir");
     assertThat(jarsDirProperty)
-        .as("System property 'split.package.jars.dir' must be set")
+        .as("System property 'published.jars.dir' must be set")
         .isNotNull();
     final Path jarsDir = Paths.get(jarsDirProperty);
     assertThat(jarsDir).isDirectory();
     try (Stream<Path> jarFiles = Files.list(jarsDir)) {
-      packagesByJar = jarFiles
+      packagesByArtifact = jarFiles
           .filter(p -> p.toString().endsWith(".jar"))
           .sorted()
           .collect(Collectors.toMap(
@@ -76,30 +85,23 @@ class SplitPackageTest {
   }
 
   @Test
-  @DisplayName("every candidate artifact is staged, so a copy that silently stopped resolving cannot pass the suite")
-  void allCandidateJarsAreStaged() {
-    assertThat(packagesByJar)
-        .as("Jars staged for split package verification")
-        .hasSize(EXPECTED_JAR_COUNT);
-    assertThat(packagesByJar.values())
-        .as("Each staged jar must contribute at least one package")
-        .allSatisfy(packages -> assertThat(packages).isNotEmpty());
+  @DisplayName("the published artifacts are actually staged, so a broken staging step cannot leave this suite trivially green")
+  void publishedArtifactsAreStaged() {
+    assertThat(packagesByArtifact)
+        .as("Artifacts staged for split package verification")
+        .hasSizeGreaterThanOrEqualTo(MINIMUM_STAGED_ARTIFACTS);
   }
 
   @Test
-  @DisplayName("no package is contributed by more than one published artifact, so the artifacts can share a module path")
+  @DisplayName("no package is contributed by more than one published artifact, so they can share a module path")
   void publishedArtifactsDoNotShareAnyPackage() {
-    final List<String> jars = new ArrayList<>(packagesByJar.keySet());
-    final List<String> splits = new ArrayList<>();
-    for (int i = 0; i < jars.size(); i++) {
-      for (int j = i + 1; j < jars.size(); j++) {
-        final String left = jars.get(i);
-        final String right = jars.get(j);
-        final Set<String> shared = new TreeSet<>(packagesByJar.get(left));
-        shared.retainAll(packagesByJar.get(right));
-        shared.forEach(pkg -> splits.add(pkg + " <- " + left + " + " + right));
-      }
-    }
+    final Map<String, List<String>> artifactsByPackage = new TreeMap<>();
+    packagesByArtifact.forEach((artifact, packages) -> packages
+        .forEach(pkg -> artifactsByPackage.computeIfAbsent(pkg, k -> new ArrayList<>()).add(artifact)));
+    final List<String> splits = artifactsByPackage.entrySet().stream()
+        .filter(entry -> entry.getValue().size() > 1)
+        .map(entry -> entry.getKey() + " <- " + String.join(" + ", entry.getValue()))
+        .collect(Collectors.toList());
     assertThat(splits)
         .as("Packages split across published artifacts")
         .isEmpty();

@@ -34,18 +34,36 @@
     <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
 
+  <!--
+    Roots of the published artifact graph. maven-dependency-plugin:copy-dependencies stages the
+    whole io.fabric8 closure of these, so a new model or extension module is covered as soon as
+    an existing artifact depends on it. A new top-level entry point has to be added here.
+    Declared (rather than only listed under artifactItems) so the reactor builds them first.
+  -->
   <dependencies>
-    <!-- Declared as provided dependencies to ensure reactor build order.
-         The maven-dependency-plugin:copy goal resolves from repositories, not the reactor,
-         so without these dependencies, parallel builds (-T) may fail when snapshots aren't published. -->
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model</artifactId>
+      <artifactId>openshift-client</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model-config</artifactId>
+      <artifactId>kubernetes-server-mock</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-junit-jupiter</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-junit-jupiter-autodetected</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>mockwebserver</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -56,6 +74,96 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kube-api-test-client-inject</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-httpclient-jdk</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-httpclient-jetty</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-httpclient-okhttp</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-httpclient-vertx</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-httpclient-vertx-5</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>crd-generator-api-v2</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>crd-generator-collector</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>java-generator-core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>certmanager-client</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>chaosmesh-client</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>istio-client</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>knative-client</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>open-cluster-management-client</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>ovn-client</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>tekton-client</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>verticalpodautoscaler-client</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>volcano-client</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>volumesnapshot-client</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -77,38 +185,22 @@
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
-            <id>copy-split-package-candidate-jars</id>
+            <id>stage-published-jars</id>
             <phase>generate-test-resources</phase>
             <goals>
-              <goal>copy</goal>
+              <goal>copy-dependencies</goal>
             </goals>
             <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>io.fabric8</groupId>
-                  <artifactId>openshift-model</artifactId>
-                  <version>${project.version}</version>
-                  <outputDirectory>${project.build.directory}/split-package-jars</outputDirectory>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>io.fabric8</groupId>
-                  <artifactId>openshift-model-config</artifactId>
-                  <version>${project.version}</version>
-                  <outputDirectory>${project.build.directory}/split-package-jars</outputDirectory>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>io.fabric8</groupId>
-                  <artifactId>kube-api-test</artifactId>
-                  <version>${project.version}</version>
-                  <outputDirectory>${project.build.directory}/split-package-jars</outputDirectory>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>io.fabric8</groupId>
-                  <artifactId>kube-api-test-client-inject</artifactId>
-                  <version>${project.version}</version>
-                  <outputDirectory>${project.build.directory}/split-package-jars</outputDirectory>
-                </artifactItem>
-              </artifactItems>
+              <outputDirectory>${project.build.directory}/published-jars</outputDirectory>
+              <includeGroupIds>io.fabric8</includeGroupIds>
+              <includeScope>provided</includeScope>
+              <!-- The `bundle` classifier is the OSGi fat bundle, which inlines its API by
+                   design and is never placed on a module path. -->
+              <excludeClassifiers>bundle,tests,sources,javadoc</excludeClassifiers>
+              <!-- Shaded fat jars: they relocate or embed other artifacts on purpose. -->
+              <excludeArtifactIds>kubernetes-openshift-uberjar,java-generator-cli,crd-generator-cli</excludeArtifactIds>
+              <useRepositoryLayout>false</useRepositoryLayout>
+              <overWriteSnapshots>true</overWriteSnapshots>
             </configuration>
           </execution>
         </executions>
@@ -118,7 +210,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <systemPropertyVariables>
-            <split.package.jars.dir>${project.build.directory}/split-package-jars</split.package.jars.dir>
+            <published.jars.dir>${project.build.directory}/published-jars</published.jars.dir>
           </systemPropertyVariables>
         </configuration>
       </plugin>
