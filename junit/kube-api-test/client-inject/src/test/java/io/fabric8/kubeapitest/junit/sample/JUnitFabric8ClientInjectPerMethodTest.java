@@ -16,7 +16,6 @@
 package io.fabric8.kubeapitest.junit.sample;
 
 import io.fabric8.kubeapitest.junit.EnableKubeAPIServer;
-import io.fabric8.kubeapitest.junit.TestCaseUtils;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.junit.jupiter.api.Test;
 

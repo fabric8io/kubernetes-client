@@ -6,6 +6,7 @@
 * Fix #7807: (kube-api-test) The `KUBE_API_TEST_STARTUP_TIMEOUT` environment variable is now parsed instead of throwing `ClassCastException` on every use — the value (always a `String`) was passed to `Class.cast()` for an `Integer`/`Boolean` target, which only widens reference types and never parses, so the timeout could not be configured via environment at all. A new `startupTimeout` attribute on `@EnableKubeAPIServer` (e.g. `@EnableKubeAPIServer(startupTimeout = 180000)`) allows overriding it declaratively, and all three configuration paths (annotation, builder, env var) now reject non-positive values
 * Fix #7983: (mockwebserver) WebSocket upgrades are now performed synchronously from the Vert.x request handler instead of from the asynchronous `HttpServerRequest#body()` callback. Deferring the upgrade let the request end event be processed first, so `HttpServerRequest#toWebSocket()` intermittently threw `IllegalStateException: Request has already been read` and the upgrade was lost (surfacing as flaky `exec`/`attach` mock-server tests). Upgrade requests carry no body, so they are detected via the `Upgrade` header and upgraded before the request is read; the asynchronous path is unchanged for regular HTTP requests
 * Fix #7955: (java-generator) Malicious CRD schema values can no longer inject executable code into the generated Java sources. Schema-controlled values (enum values, CRD group/version/names, property names, descriptions and defaults) are emitted as fully escaped Java string literals, so a value carrying a Unicode-escaped quote cannot break out of its literal once `javac` decodes it. As a defense in depth, each generated class is also re-parsed and structurally validated before it is written (with Java Unicode escape preprocessing enabled to match `javac`), aborting generation on any residual structural mismatch
+* Fix #8028: (openshift-model, kube-api-test) No package is shipped by two artifacts anymore, so each pair can be placed on the JPMS module path together. `openshift-model` no longer bundles the `io.fabric8.openshift.api.model.config.*` classes that `openshift-model-config` owns (its `Export-Package` wildcard inlined them from that dependency); they still reach consumers through it. `Fabric8ClientInjectionHandler` moved to `io.fabric8.kubeapitest.junit.inject`
 
 #### Improvements
 
@@ -14,6 +15,8 @@
 #### New Features
 
 #### _**Note**_: Breaking changes
+* Fix #8028: (kube-api-test) `Fabric8ClientInjectionHandler` moved to `io.fabric8.kubeapitest.junit.inject`. It is resolved through `ServiceLoader`, so only code naming the class directly is affected
+* Fix #8028: (openshift-model) The bundle no longer exports or contains `io.fabric8.openshift.api.model.config.*`. Maven consumers are unaffected (`openshift-model-config` is a compile dependency), but OSGi deployments importing those packages must install the `openshift-model-config` bundle, which the `openshift-client` Karaf feature already does
 
 ### 7.8.0 (2026-06-29)
 
