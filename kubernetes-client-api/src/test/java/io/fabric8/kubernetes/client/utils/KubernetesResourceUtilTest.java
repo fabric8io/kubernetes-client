@@ -36,6 +36,7 @@ import org.assertj.core.data.MapEntry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -59,6 +60,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 class KubernetesResourceUtilTest {
   private ConfigMap configMap1;
@@ -306,6 +308,46 @@ class KubernetesResourceUtilTest {
   }
 
   @Test
+  void createNewConfigMapFromDirOrFiles_whenSymlinkFileProvided_shouldThrowException(@TempDir Path temporaryFolder)
+      throws IOException {
+    // Given
+    Path target = Files.writeString(temporaryFolder.resolve("target.properties"), "secret");
+    Path symlink = createSymbolicLinkOrSkip(temporaryFolder.resolve("game.properties"), target);
+
+    // When + Then
+    assertThatIllegalArgumentException()
+        .isThrownBy(() -> KubernetesResourceUtil.createConfigMapFromDirOrFiles("test-configmap", symlink))
+        .withMessage("symbolic links are not supported " + symlink);
+  }
+
+  @Test
+  void createNewConfigMapFromDirOrFiles_whenDirContainsSymlinkFile_shouldThrowException(@TempDir Path temporaryFolder)
+      throws IOException {
+    // Given
+    Path configDir = Files.createDirectory(temporaryFolder.resolve("config"));
+    Path target = Files.writeString(temporaryFolder.resolve("target.properties"), "secret");
+    Path symlink = createSymbolicLinkOrSkip(configDir.resolve("game.properties"), target);
+
+    // When + Then
+    assertThatIllegalArgumentException()
+        .isThrownBy(() -> KubernetesResourceUtil.createConfigMapFromDirOrFiles("test-configmap", configDir))
+        .withMessage("symbolic links are not supported " + symlink);
+  }
+
+  @Test
+  void createNewConfigMapFromDirOrFiles_whenSymlinkDirProvided_shouldThrowException(@TempDir Path temporaryFolder)
+      throws IOException {
+    // Given
+    Path targetDir = Files.createDirectory(temporaryFolder.resolve("target-dir"));
+    Path symlink = createSymbolicLinkOrSkip(temporaryFolder.resolve("config"), targetDir);
+
+    // When + Then
+    assertThatIllegalArgumentException()
+        .isThrownBy(() -> KubernetesResourceUtil.createConfigMapFromDirOrFiles("test-configmap", symlink))
+        .withMessage("symbolic links are not supported " + symlink);
+  }
+
+  @Test
   void createNewConfigMapFromDirOrFiles_whenFileProvided_shouldCreateConfigMapFromFile() throws IOException {
     // Given
     Path path = new File(getClass().getResource("/configmap-from-file/game-config/game.properties").getFile()).toPath();
@@ -404,5 +446,14 @@ class KubernetesResourceUtilTest {
   private MapEntry<String, String> createExpectedEntry(String key, Path filePath) throws IOException {
     String fileContent = new String(Files.readAllBytes(filePath));
     return entry(key, fileContent);
+  }
+
+  private Path createSymbolicLinkOrSkip(Path link, Path target) {
+    try {
+      return Files.createSymbolicLink(link, target);
+    } catch (UnsupportedOperationException | IOException e) {
+      assumeTrue(false, "Symbolic links are not available: " + e.getMessage());
+      return link;
+    }
   }
 }
