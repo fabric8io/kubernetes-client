@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.http;
 
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.mockwebserver.DefaultMockServer;
 import io.fabric8.mockwebserver.http.Headers;
 import io.fabric8.mockwebserver.http.RecordedRequest;
@@ -109,12 +110,16 @@ public abstract class AbstractHttpClientProxyTest {
           .always();
     }
     final int requestsBeforeConnect = proxyServer.getRequestCount();
-    final CompletableFuture<WebSocket> connected;
     try (HttpClient client = getHttpClientFactory().newBuilder()
         .proxyAddress(new InetSocketAddress("localhost", proxyServer.getPort()))
+        // The connection is expected to fail on the implementations that tunnel: DefaultMockServer does not
+        // implement CONNECT. Retrying it would keep the attempt pending for ~19 seconds (10 IOException retries
+        // at 100-3200ms), which makes both outcomes slow and makes the assertion below depend on the retry
+        // classifier for its timing. One attempt is all this test needs.
+        .tag(new RequestConfigBuilder().withRequestRetryBackoffLimit(0).build())
         .build()) {
       // When
-      connected = client.newWebSocketBuilder()
+      final CompletableFuture<WebSocket> connected = client.newWebSocketBuilder()
           .uri(URI.create("http://ws.example.test/proxied-ws"))
           .buildAsync(new WebSocket.Listener() {
           });
@@ -123,16 +128,49 @@ public abstract class AbstractHttpClientProxyTest {
       // implementations legitimately differ here (Vert.x and the JDK tunnel with CONNECT, which DefaultMockServer
       // does not implement, while OkHttp sends an absolute-form GET). What regressed, and what matters for an
       // operator-mandated egress proxy, is whether the proxy is contacted at all.
-      await().atMost(30L, TimeUnit.SECONDS)
-          .failFast(connected::isCompletedExceptionally)
-          .untilAsserted(() -> assertThat(proxyServer.getRequestCount())
-              .as("the WebSocket connection should have been addressed to the proxy, not to the origin")
-              .isGreaterThan(requestsBeforeConnect));
+      awaitProxyContact(requestsBeforeConnect, connected);
       assertThat(proxyServer.getLastRequest().getPath())
           .as("the proxy should have been asked to reach the origin")
           .contains("ws.example.test");
+      connected.cancel(true);
     }
-    connected.cancel(true);
+    // proxyServer is shared by every test in this class, and DefaultMockServer#getLastRequest drains the recorded
+    // requests instead of peeking them, so anything left queued here would be handed to whichever test runs next.
+    proxyServer.getLastRequest();
+  }
+
+  /**
+   * Waits until the proxy has recorded the WebSocket connection attempt, giving up as soon as the attempt is
+   * over without the proxy having been contacted.
+   *
+   * <p>
+   * The fail-fast is gated on the request count too, not only on the attempt being finished: Awaitility
+   * evaluates it before the assertion on every poll and wins even when the assertion is already satisfiable,
+   * and the implementations that tunnel with CONNECT do reach the proxy before failing on it. The outcome of
+   * the attempt is folded into the error because Awaitility's own message carries none of it, which would
+   * leave a CI failure with nothing to go on.
+   * </p>
+   */
+  private static void awaitProxyContact(int requestsBeforeConnect, CompletableFuture<WebSocket> connected) {
+    try {
+      await().atMost(30L, TimeUnit.SECONDS)
+          .failFast("the WebSocket connection attempt ended without the proxy being contacted",
+              () -> connected.isDone() && proxyServer.getRequestCount() == requestsBeforeConnect)
+          .untilAsserted(() -> assertThat(proxyServer.getRequestCount())
+              .as("the WebSocket connection should have been addressed to the proxy, not to the origin")
+              .isGreaterThan(requestsBeforeConnect));
+    } catch (RuntimeException failure) {
+      throw new AssertionError(
+          "The WebSocket connection was not addressed to the proxy. The connection attempt " + describe(connected),
+          failure);
+    }
+  }
+
+  /** Describes the outcome of a connection attempt, for inclusion in an assertion failure. */
+  private static String describe(CompletableFuture<WebSocket> connected) {
+    return connected
+        .handle((webSocket, throwable) -> throwable == null ? "succeeded" : "failed with " + throwable)
+        .getNow("is still in progress");
   }
 
   @Test

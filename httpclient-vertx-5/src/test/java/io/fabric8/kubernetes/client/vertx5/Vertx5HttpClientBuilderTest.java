@@ -32,7 +32,9 @@ import org.junit.jupiter.api.Test;
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 import static io.fabric8.kubernetes.client.utils.HttpClientUtils.basicCredentials;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -344,18 +346,22 @@ class Vertx5HttpClientBuilderTest {
     @Test
     @DisplayName("WebSocket customizations applied through additionalConfig survive on derived clients")
     void derivedClientKeepsAdditionalConfigWebSocketCustomizations() {
-      final AtomicReference<WebSocketClientOptions> capturedWsOptions = new AtomicReference<>();
+      final AtomicInteger additionalConfigInvocations = new AtomicInteger();
       final Vertx5HttpClientFactory factory = new Vertx5HttpClientFactory() {
         @Override
         protected void additionalConfig(WebClientOptions webClientOptions, WebSocketClientOptions wsOptions,
             PoolOptions poolOptions) {
+          additionalConfigInvocations.incrementAndGet();
           wsOptions.setMaxFrameSize(4096);
-          capturedWsOptions.set(wsOptions);
         }
       };
       try (Vertx5HttpClient<?> original = factory.newBuilder().build();
           Vertx5HttpClient<?> derived = (Vertx5HttpClient<?>) original.newBuilder().build()) {
-        assertThat(capturedWsOptions.get().getMaxFrameSize()).isEqualTo(4096);
+        // additionalConfig only runs on the non-derived build, so the customization survives derivation exactly
+        // because the transport it was applied to is the one the derived client keeps using.
+        assertThat(additionalConfigInvocations)
+            .as("the derived build must not re-run additionalConfig, it has no options to apply it to")
+            .hasValue(1);
         assertThat(derived.getWebSocketClient())
             .as("reusing the transport is what keeps additionalConfig's WebSocket customizations alive")
             .isSameAs(original.getWebSocketClient());
@@ -367,8 +373,7 @@ class Vertx5HttpClientBuilderTest {
   @DisplayName("WebSocket Transport Settings")
   class WebSocketTransportSettingsTests {
 
-    private WebSocketClientOptions buildAndCaptureWsOptions(
-        java.util.function.Consumer<Vertx5HttpClientBuilder<?>> customizer) {
+    private WebSocketClientOptions buildAndCaptureWsOptions(Consumer<Vertx5HttpClientBuilder<?>> customizer) {
       final AtomicReference<WebSocketClientOptions> captured = new AtomicReference<>();
       final Vertx5HttpClientFactory factory = new Vertx5HttpClientFactory() {
         @Override

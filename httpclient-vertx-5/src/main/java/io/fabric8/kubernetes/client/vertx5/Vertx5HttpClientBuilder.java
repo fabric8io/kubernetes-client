@@ -178,10 +178,13 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
   @Override
   public Vertx5HttpClient<F> build() {
     if (this.client != null) {
-      // A derived builder can only add interceptors and tags: HttpClient.DerivedClientBuilder exposes no way to
-      // change TLS, proxy, timeouts or protocols. Both transports are therefore identical to the original's by
-      // construction, so they are reused rather than rebuilt. Reusing also keeps any WebSocket customization
-      // applied through additionalConfig alive, and leaves a single transport pair per client family to close.
+      // Under the HttpClient.DerivedClientBuilder contract a derived builder can only add interceptors and tags:
+      // it offers no way to change TLS, proxy, timeouts or protocols, so both transports are identical to the
+      // original's and are reused rather than rebuilt. (The contract is what guarantees this, not the type: the
+      // runtime object is a full Vertx5HttpClientBuilder, so a caller that downcasts it can still set TLS or a
+      // proxy here, and those settings are ignored - exactly as they already were for the HTTP client.) Reusing
+      // also keeps any WebSocket customization applied through additionalConfig alive, and leaves a single
+      // transport pair per client family to close.
       return Vertx5HttpClient.create(
           this,
           this.client.getClosed(),
@@ -244,7 +247,9 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
     }
 
     if (proxyOptions != null) {
-      wsOptions.setProxyOptions(proxyOptions);
+      // Vert.x keeps the reference rather than copying, and additionalConfig receives both option objects, so
+      // handing the very same instance to both would let a customization of one silently retarget the other.
+      wsOptions.setProxyOptions(new ProxyOptions(proxyOptions));
     }
 
     if (this.sslContext != null) {
