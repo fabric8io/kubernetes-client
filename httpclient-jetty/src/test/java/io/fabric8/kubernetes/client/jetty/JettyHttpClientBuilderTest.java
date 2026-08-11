@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.jetty;
 
 import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.internal.SSLUtils;
 import io.fabric8.mockwebserver.DefaultMockServer;
 import io.fabric8.mockwebserver.utils.ResponseProviders;
 import org.assertj.core.api.InstanceOfAssertFactories;
@@ -28,11 +29,23 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
+import javax.net.ssl.SNIHostName;
+import javax.net.ssl.SSLEngine;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509ExtendedTrustManager;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class JettyHttpClientBuilderTest {
 
@@ -159,18 +172,75 @@ class JettyHttpClientBuilderTest {
   }
 
   @Test
-  @DisplayName("tlsServerName, configures SNI provider on SSL context factory")
-  void tlsServerNameConfiguresSniProvider() {
+  @DisplayName("tlsServerName, configures SNI and endpoint verification name")
+  void tlsServerNameConfiguresSniAndEndpointVerificationName() throws Exception {
     try (var client = factory.newBuilder()
         .sslContext(null, null)
         .tlsServerName("api.example.cluster.local")
         .build()) {
-      // Verify the client was built successfully with tlsServerName
       assertThat(client).isNotNull();
       SslContextFactory.Client sslContextFactory = client.getJetty().getSslContextFactory();
       assertThat(sslContextFactory).isNotNull();
-      // The SNI provider is set internally, we can verify the factory is properly configured
       assertThat(sslContextFactory.getSNIProvider()).isNotNull();
+
+      client.getJetty().start();
+      SSLEngine sslEngine = sslContextFactory.newSSLEngine("localhost", 443);
+      assertThat(sslEngine.getPeerHost()).isEqualTo("api.example.cluster.local");
+      assertThat(sslEngine.getSSLParameters().getEndpointIdentificationAlgorithm()).isEqualTo("HTTPS");
+      assertThat(sslEngine.getSSLParameters().getServerNames())
+          .containsExactly(new SNIHostName("api.example.cluster.local"));
+    }
+  }
+
+  @Test
+  @DisplayName("tlsServerName, verifies names that cannot be encoded as SNI")
+  void tlsServerNameVerifiesNonSniName() throws Exception {
+    try (var client = factory.newBuilder()
+        .sslContext(null, null)
+        .tlsServerName("2001:db8::1")
+        .build()) {
+      SslContextFactory.Client sslContextFactory = client.getJetty().getSslContextFactory();
+
+      client.getJetty().start();
+      SSLEngine sslEngine = sslContextFactory.newSSLEngine("localhost", 443);
+      assertThat(sslEngine.getPeerHost()).isEqualTo("2001:db8::1");
+      assertThat(sslEngine.getSSLParameters().getEndpointIdentificationAlgorithm()).isEqualTo("HTTPS");
+      assertThat(sslEngine.getSSLParameters().getServerNames()).isNullOrEmpty();
+    }
+  }
+
+  @Test
+  @DisplayName("tlsServerName, rejects certificates for the contacted URL host only")
+  void tlsServerNameRejectsCertificateForUrlHostOnly() throws Exception {
+    final DefaultMockServer tlsServer = new DefaultMockServer(true);
+    tlsServer.start();
+    try {
+      final TrustManager[] trustManagers = SSLUtils.trustManagers(
+          null, tlsServer.getSelfSignedCertificate().certificatePath(), false, null, null);
+      final X509Certificate certificate = loadCertificate(tlsServer.getSelfSignedCertificate().certificatePath());
+      try (var client = factory.newBuilder()
+          .sslContext(null, trustManagers)
+          .tlsServerName("api.example.cluster.local")
+          .build()) {
+        SslContextFactory.Client sslContextFactory = client.getJetty().getSslContextFactory();
+
+        client.getJetty().start();
+        SSLEngine sslEngine = sslContextFactory.newSSLEngine("localhost", 443);
+        assertThat(sslEngine.getPeerHost()).isEqualTo("api.example.cluster.local");
+        assertThatThrownBy(() -> ((X509ExtendedTrustManager) trustManagers[0]).checkServerTrusted(
+            new X509Certificate[] { certificate },
+            certificate.getPublicKey().getAlgorithm(),
+            sslEngine))
+            .isInstanceOf(CertificateException.class);
+      }
+    } finally {
+      tlsServer.shutdown();
+    }
+  }
+
+  private static X509Certificate loadCertificate(String certificatePath) throws Exception {
+    try (InputStream certificateInput = Files.newInputStream(Path.of(certificatePath))) {
+      return (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(certificateInput);
     }
   }
 

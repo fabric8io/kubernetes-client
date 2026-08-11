@@ -48,6 +48,7 @@ import java.util.stream.Stream;
 
 import javax.net.ssl.SNIHostName;
 import javax.net.ssl.SNIServerName;
+import javax.net.ssl.SSLEngine;
 
 import static io.fabric8.kubernetes.client.utils.HttpClientUtils.decodeBasicCredentials;
 
@@ -72,19 +73,12 @@ public class JettyHttpClientBuilder
     if (client != null) {
       return new JettyHttpClient(this, client.getJetty(), client.getJettyWs(), client.getClosed());
     }
-    final var sslContextFactory = new SslContextFactory.Client();
+    final var sslContextFactory = newSslContextFactory(tlsServerName);
     if (sslContext != null) {
       sslContextFactory.setSslContext(sslContext);
     }
     if (tlsVersions != null && tlsVersions.length > 0) {
       sslContextFactory.setIncludeProtocols(Stream.of(tlsVersions).map(TlsVersion::javaName).toArray(String[]::new));
-    }
-    // Configure SNI (Server Name Indication) if tlsServerName is specified
-    // This is needed when connecting through a tunnel where the URL host differs from the TLS certificate hostname
-    if (tlsServerName != null && !tlsServerName.isEmpty()) {
-      logger.debug("Configuring SNI with tlsServerName: {}", tlsServerName);
-      final List<SNIServerName> sniServerNames = Collections.singletonList(new SNIHostName(tlsServerName));
-      sslContextFactory.setSNIProvider((sslEngine, serverNames) -> sniServerNames);
     }
     HttpClient sharedHttpClient = new HttpClient(newTransport(sslContextFactory, preferHttp11));
     WebSocketClient sharedWebSocketClient = new WebSocketClient(new HttpClient(newTransport(sslContextFactory, preferHttp11)));
@@ -137,6 +131,14 @@ public class JettyHttpClientBuilder
     return new JettyHttpClient(this, sharedHttpClient, sharedWebSocketClient);
   }
 
+  private static SslContextFactory.Client newSslContextFactory(String tlsServerName) {
+    if (tlsServerName == null || tlsServerName.isEmpty()) {
+      return new SslContextFactory.Client();
+    }
+    logger.debug("Configuring SNI and certificate verification with tlsServerName: {}", tlsServerName);
+    return new TlsServerNameSslContextFactory(tlsServerName);
+  }
+
   private static HttpClientTransport newTransport(SslContextFactory.Client sslContextFactory, boolean preferHttp11) {
     final var clientConnector = new ClientConnector();
     clientConnector.setSslContextFactory(sslContextFactory);
@@ -148,6 +150,41 @@ public class JettyHttpClientBuilder
       transport = new HttpClientTransportDynamic(clientConnector, http2, HttpClientConnectionFactory.HTTP11);
     }
     return transport;
+  }
+
+  private static final class TlsServerNameSslContextFactory extends SslContextFactory.Client {
+
+    private final String tlsServerName;
+
+    private TlsServerNameSslContextFactory(String tlsServerName) {
+      this.tlsServerName = tlsServerName;
+      final List<SNIServerName> sniServerNames = sniServerNames(tlsServerName);
+      if (!sniServerNames.isEmpty()) {
+        setSNIProvider((sslEngine, serverNames) -> sniServerNames);
+      }
+    }
+
+    private static List<SNIServerName> sniServerNames(String tlsServerName) {
+      try {
+        return Collections.singletonList(new SNIHostName(tlsServerName));
+      } catch (IllegalArgumentException e) {
+        logger.debug(
+            "tlsServerName '{}' cannot be encoded as SNI; using it only for certificate verification",
+            tlsServerName,
+            e);
+        return Collections.emptyList();
+      }
+    }
+
+    @Override
+    public SSLEngine newSSLEngine(String host, int port) {
+      if (!isStarted()) {
+        throw new IllegalStateException("SslContextFactory is not started");
+      }
+      SSLEngine sslEngine = getSslContext().createSSLEngine(tlsServerName, port);
+      customize(sslEngine);
+      return sslEngine;
+    }
   }
 
   @Override
