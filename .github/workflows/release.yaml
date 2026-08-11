@@ -42,8 +42,8 @@ env:
 #  contents: read
 
 jobs:
-  release-java-11:
-    name: Release Java 11 ${{ github.event.inputs.tag }}
+  release-java-17:
+    name: Release Java 17 ${{ github.event.inputs.tag }}
     # Cheap way to prevent accidental releases
     # Modify the list to add users with release permissions
     if: contains(fromJSON('["manusa","ash-thakur-rh"]'), github.actor)
@@ -53,10 +53,10 @@ jobs:
         uses: actions/checkout@v7
         with:
           ref: ${{ github.event.inputs.tag }}
-      - name: Setup Java 11
+      - name: Setup Java 17
         uses: actions/setup-java@v5
         with:
-          java-version: 11
+          java-version: 17
           distribution: ${{ github.event.inputs.java_distribution }}
           server-id: central-portal
           server-username: MAVEN_CENTRAL_USERNAME

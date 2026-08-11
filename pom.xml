@@ -175,9 +175,9 @@
     <really-executable-jar-maven-plugin.version>2.1.1</really-executable-jar-maven-plugin.version>
 
     <!-- Other options -->
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.release>17</maven.compiler.release>
     <skipTests>false</skipTests>
     <generate.targetDirectory>${project.basedir}/src/generated/java</generate.targetDirectory>
     <generate.targetResourcesDirectory>${project.basedir}/src/generated/resources</generate.targetResourcesDirectory>
@@ -211,7 +211,7 @@
       /META-INF/jandex.idx=target/classes/META-INF/jandex.idx
     </osgi.include.resources.default>
     <osgi.include.resources>${osgi.include.resources.default}</osgi.include.resources>
-    <karaf.itest.skip>false</karaf.itest.skip>
+    <karaf.itest.skip>true</karaf.itest.skip>
     <project.build.outputTimestamp>2026-06-29T08:36:26Z</project.build.outputTimestamp>
     <validation-api.version>2.0.1.Final</validation-api.version>
     <revapi.version>0.15.1</revapi.version>
@@ -1641,15 +1641,6 @@
           </plugin>
         </plugins>
       </build>
-    </profile>
-    <profile>
-      <id>java-17</id>
-      <activation>
-        <jdk>[17,)</jdk>
-      </activation>
-      <properties>
-        <karaf.itest.skip>true</karaf.itest.skip>
-      </properties>
     </profile>
     <profile>
       <id>javadoc-test</id>
