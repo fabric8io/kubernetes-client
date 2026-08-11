@@ -1,3 +1,11 @@
+---
+title: "Migration from 4.x to 5.x"
+description: "Guide for migrating from Fabric8 Kubernetes Client 4.x to 5.x"
+draft: false
+weight: 100
+bookHidden: true
+---
+
 # Migration from 4.x to 5.x
 
 > [!NOTE]
