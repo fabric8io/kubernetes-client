@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.ZoneOffset;
+import java.time.Clock;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -67,13 +67,19 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
   private final KubernetesCrudDispatcherHandler putHandler;
   private final KubernetesCrudDispatcherHandler patchHandler;
   private final ReadWriteLock lock = new ReentrantReadWriteLock();
+  private volatile Clock clock;
 
   public KubernetesCrudDispatcher() {
     this(Collections.emptyList());
   }
 
   public KubernetesCrudDispatcher(List<CustomResourceDefinitionContext> crdContexts) {
+    this(crdContexts, Clock.systemUTC());
+  }
+
+  public KubernetesCrudDispatcher(List<CustomResourceDefinitionContext> crdContexts, Clock clock) {
     super(new Context(Serialization.jsonMapper()), new KubernetesAttributesExtractor(), new KubernetesResponseComposer());
+    this.clock = Objects.requireNonNull(clock, "clock");
     this.kubernetesAttributesExtractor = (KubernetesAttributesExtractor) this.attributeExtractor;
     this.kubernetesResponseComposer = (KubernetesResponseComposer) this.responseComposer;
     watchEventListeners = new CopyOnWriteArraySet<>();
@@ -81,7 +87,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
     this.kubernetesAttributesExtractor.setCustomResourceDefinitionProcessor(crdProcessor);
     resourceVersion = new AtomicLong();
 
-    postHandler = new PostHandler(this.kubernetesAttributesExtractor, this);
+    postHandler = new PostHandler(this.kubernetesAttributesExtractor, this, () -> this.clock);
     putHandler = new PutHandler(this);
     patchHandler = new PatchHandler(this);
     crdContexts.forEach(this::expectCustomResource);
@@ -209,7 +215,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
     if (!resource.isMarkedForDeletion()) {
       // Mark the resource as deleted, but don't remove it yet (wait for finalizer-removal).
       resource.getMetadata().setDeletionTimestamp(
-          ZonedDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+          ZonedDateTime.now(clock).truncatedTo(ChronoUnit.SECONDS).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
       resource.getMetadata().setResourceVersion(String.valueOf(requestResourceVersion()));
       String updatedResource = Serialization.asJson(resource);
       processEvent(path, pathAttributes, oldAttributes, resource, updatedResource);
@@ -221,6 +227,10 @@ public class KubernetesCrudDispatcher extends CrudDispatcher implements Kubernet
   @Override
   public long requestResourceVersion() {
     return resourceVersion.incrementAndGet();
+  }
+
+  public void setClock(Clock clock) {
+    this.clock = Objects.requireNonNull(clock, "clock");
   }
 
   @Override
