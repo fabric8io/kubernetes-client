@@ -25,10 +25,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.net.InetSocketAddress;
+import java.net.URI;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.kubernetes.client.utils.HttpClientUtils.basicCredentials;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 @SuppressWarnings("HttpUrlsUsage")
 public abstract class AbstractHttpClientProxyTest {
@@ -87,6 +90,49 @@ public abstract class AbstractHttpClientProxyTest {
           .returns("example.com", h -> h.get("Host"))
           .returns("Basic YXV0aDpjcmVk", h -> h.get("Proxy-Authorization"));
     }
+  }
+
+  @Test
+  @DisplayName("Proxied HttpClient routes WebSocket connections through the proxy instead of dialing the origin directly")
+  protected void proxyConfigurationIsHonoredByWebSocketConnections() throws Exception {
+    // Given
+    // The origin host is deliberately unresolvable (reserved .test TLD, RFC 6761), so the client can only ever
+    // reach the proxy: were it to bypass the proxy, name resolution would fail and nothing would be recorded.
+    // Clients that forward the upgrade in absolute form match one of these expectations and complete the
+    // handshake (OkHttp keeps the http scheme, Jetty keeps the ws one); clients that tunnel with CONNECT match
+    // neither, but their CONNECT is still recorded, which is all this test asserts on.
+    for (String absoluteForm : new String[] { "http://ws.example.test/proxied-ws", "ws://ws.example.test/proxied-ws" }) {
+      proxyServer.expect().withPath(absoluteForm)
+          .andUpgradeToWebSocket()
+          .open()
+          .done()
+          .always();
+    }
+    final int requestsBeforeConnect = proxyServer.getRequestCount();
+    final CompletableFuture<WebSocket> connected;
+    try (HttpClient client = getHttpClientFactory().newBuilder()
+        .proxyAddress(new InetSocketAddress("localhost", proxyServer.getPort()))
+        .build()) {
+      // When
+      connected = client.newWebSocketBuilder()
+          .uri(URI.create("http://ws.example.test/proxied-ws"))
+          .buildAsync(new WebSocket.Listener() {
+          });
+      // Then
+      // Only the fact that the connection is addressed to the proxy is asserted, not that the upgrade completes:
+      // implementations legitimately differ here (Vert.x and the JDK tunnel with CONNECT, which DefaultMockServer
+      // does not implement, while OkHttp sends an absolute-form GET). What regressed, and what matters for an
+      // operator-mandated egress proxy, is whether the proxy is contacted at all.
+      await().atMost(30L, TimeUnit.SECONDS)
+          .failFast(connected::isCompletedExceptionally)
+          .untilAsserted(() -> assertThat(proxyServer.getRequestCount())
+              .as("the WebSocket connection should have been addressed to the proxy, not to the origin")
+              .isGreaterThan(requestsBeforeConnect));
+      assertThat(proxyServer.getLastRequest().getPath())
+          .as("the proxy should have been asked to reach the origin")
+          .contains("ws.example.test");
+    }
+    connected.cancel(true);
   }
 
   @Test
