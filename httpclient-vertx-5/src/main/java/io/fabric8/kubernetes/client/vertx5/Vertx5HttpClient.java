@@ -67,29 +67,13 @@ public class Vertx5HttpClient<F extends io.fabric8.kubernetes.client.http.HttpCl
   }
 
   /**
-   * Creates WebSocket client based on configuration.
-   * Uses custom options if provided, otherwise creates with defaults.
+   * Creates WebSocket client using the configuration's TLS/limits options - callers must always supply
+   * these explicitly (see {@link Vertx5HttpClientConfiguration#withCustomWebSocket}) so a WebSocket client
+   * never silently falls back to Vert.x's bare defaults (and, in particular, the JVM default trust store)
+   * regardless of whether it backs a freshly built or a derived {@link Vertx5HttpClient}.
    */
   private WebSocketClient createWebSocketClient(final Vertx5HttpClientConfiguration<F> config) {
-    final WebSocketClientOptions options = config.getWebSocketOptions();
-    return options != null
-        ? vertx.createWebSocketClient(options)
-        : vertx.createWebSocketClient();
-  }
-
-  /**
-   * Creates Vertx5HttpClient with default WebSocket configuration.
-   * For internal use by Vertx5HttpClientBuilder.
-   */
-  static <F extends io.fabric8.kubernetes.client.http.HttpClient.Factory> Vertx5HttpClient<F> createWithDefaults(
-      final Vertx5HttpClientBuilder<F> builder,
-      final AtomicBoolean closed,
-      final HttpClient httpClient,
-      final boolean closeVertx) {
-
-    final Vertx5HttpClientConfiguration<F> config = Vertx5HttpClientConfiguration.withDefaultWebSocket(builder, closed,
-        httpClient, closeVertx);
-    return new Vertx5HttpClient<>(config);
+    return vertx.createWebSocketClient(config.getWebSocketOptions());
   }
 
   /**

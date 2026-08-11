@@ -94,6 +94,37 @@ public abstract class AbstractWebSocketTlsTest {
   }
 
   @Test
+  @DisplayName("Derived client (newBuilder().build() on an already-built client) still trusts the supplied certificate for WebSocket-over-TLS")
+  void secureWebSocketOverDerivedClientTrustsSuppliedCertificate() throws Exception {
+    try (HttpClient original = getHttpClientFactory().newBuilder().sslContext(null, trustManagers).build();
+        HttpClient client = original.newBuilder().build()) {
+      // Given
+      server.expect().withPath("/secure-ws-derived")
+          .andUpgradeToWebSocket()
+          .open()
+          .expect("GiveMeSomething")
+          .andEmit("received")
+          .always()
+          .done()
+          .always();
+      final BlockingQueue<String> receivedText = new ArrayBlockingQueue<>(1);
+      final WebSocket ws = client.newWebSocketBuilder()
+          .uri(URI.create(server.url("secure-ws-derived")))
+          .buildAsync(new WebSocket.Listener() {
+            @Override
+            public void onMessage(WebSocket webSocket, String text) {
+              assertTrue(receivedText.offer(text));
+            }
+          }).get(10L, TimeUnit.SECONDS);
+      // When
+      ws.send(ByteBuffer.wrap("GiveMeSomething".getBytes(StandardCharsets.UTF_8)));
+      final String result = receivedText.poll(10L, TimeUnit.SECONDS);
+      // Then
+      assertThat(result).isEqualTo("received");
+    }
+  }
+
+  @Test
   @DisplayName("Untrusted cert fails fast with default retry policy instead of draining ~19s backoff")
   void untrustedCertFailsFastWithDefaultRetryPolicy() throws Exception {
     // JVM default trust managers won't trust the server's self-signed cert
