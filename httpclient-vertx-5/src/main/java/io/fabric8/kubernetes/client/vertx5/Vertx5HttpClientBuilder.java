@@ -132,10 +132,21 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
     }
   }
 
-  /** Configure proxy and potential auth interceptor. */
-  private void applyProxy(final WebClientOptions options) {
+  /**
+   * Builds the proxy configuration and registers the auth interceptor when the credentials cannot be decoded.
+   *
+   * <p>
+   * Resolved once per build and applied to both the HTTP and the WebSocket client options. Unlike the Vert.x 4
+   * module, where a single {@code WebClientOptions} drives both, Vert.x 5 uses a separate {@code WebSocketClient}
+   * that has to be given the proxy explicitly, otherwise {@code exec}/{@code attach}/{@code portForward} and
+   * WebSocket-backed watches connect straight to the API server and bypass the configured egress proxy.
+   * </p>
+   *
+   * @return the proxy options, or {@code null} when no proxy is configured
+   */
+  private ProxyOptions resolveProxyOptions() {
     if (this.proxyType == HttpClient.ProxyType.DIRECT || this.proxyAddress == null) {
-      return;
+      return null;
     }
     final ProxyOptions proxyOptions = new ProxyOptions()
         .setHost(this.proxyAddress.getHostName())
@@ -148,7 +159,7 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
     } else {
       addProxyAuthInterceptor();
     }
-    options.setProxyOptions(proxyOptions);
+    return proxyOptions;
   }
 
   /** Translate requested TLS versions (if any). */
@@ -167,12 +178,18 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
   @Override
   public Vertx5HttpClient<F> build() {
     if (this.client != null) {
-      final WebSocketClientOptions wsOptions = createWebSocketClientOptions(resolveProtocols());
-      return Vertx5HttpClient.createWithWebSocketOptions(
+      // Under the HttpClient.DerivedClientBuilder contract a derived builder can only add interceptors and tags:
+      // it offers no way to change TLS, proxy, timeouts or protocols, so both transports are identical to the
+      // original's and are reused rather than rebuilt. (The contract is what guarantees this, not the type: the
+      // runtime object is a full Vertx5HttpClientBuilder, so a caller that downcasts it can still set TLS or a
+      // proxy here, and those settings are ignored - exactly as they already were for the HTTP client.) Reusing
+      // also keeps any WebSocket customization applied through additionalConfig alive, and leaves a single
+      // transport pair per client family to close.
+      return Vertx5HttpClient.create(
           this,
           this.client.getClosed(),
           this.client.getHttpClient(),
-          wsOptions,
+          this.client.getWebSocketClient(),
           closeVertx);
     }
 
@@ -184,10 +201,13 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
           tlsServerName);
     }
 
+    final ProxyOptions proxyOptions = resolveProxyOptions();
     final PoolOptions poolOptions = createPoolOptions();
     final WebClientOptions httpOptions = new WebClientOptions();
     applyBasicHttpSettings(httpOptions);
-    applyProxy(httpOptions);
+    if (proxyOptions != null) {
+      httpOptions.setProxyOptions(proxyOptions);
+    }
 
     final String[] protocols = resolveProtocols();
 
@@ -196,7 +216,7 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
       warmTlsStack();
     }
 
-    final WebSocketClientOptions wsOptions = createWebSocketClientOptions(protocols);
+    final WebSocketClientOptions wsOptions = createWebSocketClientOptions(protocols, proxyOptions);
 
     // Since the factory is not explicitly typed as VertxHttpClientFactory, we need to check the type before invoking
     // additionalConfig as to not break other implementations of HttpClient.Factory for VertxHttpClientBuilder.
@@ -204,16 +224,16 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
       ((Vertx5HttpClientFactory) clientFactory).additionalConfig(httpOptions, wsOptions, poolOptions);
     }
 
-    return Vertx5HttpClient.createWithWebSocketOptions(
+    return Vertx5HttpClient.create(
         this,
         new AtomicBoolean(),
         vertx.createHttpClient(httpOptions, poolOptions),
-        wsOptions,
+        vertx.createWebSocketClient(wsOptions),
         closeVertx);
   }
 
   /** Creates WebSocket client options with appropriate limits for Kubernetes API communication. */
-  private WebSocketClientOptions createWebSocketClientOptions(final String[] protocols) {
+  private WebSocketClientOptions createWebSocketClientOptions(final String[] protocols, final ProxyOptions proxyOptions) {
     final WebSocketClientOptions wsOptions = new WebSocketClientOptions();
 
     wsOptions.setMaxConnections(MAX_CONNECTIONS);
@@ -221,6 +241,16 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
     // the api-server does not seem to fragment messages, so the frames can be very large
     wsOptions.setMaxFrameSize(MAX_WS_MESSAGE_SIZE);
     wsOptions.setMaxMessageSize(MAX_WS_MESSAGE_SIZE);
+
+    if (this.connectTimeout != null) {
+      wsOptions.setConnectTimeout((int) this.connectTimeout.toMillis());
+    }
+
+    if (proxyOptions != null) {
+      // Vert.x keeps the reference rather than copying, and additionalConfig receives both option objects, so
+      // handing the very same instance to both would let a customization of one silently retarget the other.
+      wsOptions.setProxyOptions(new ProxyOptions(proxyOptions));
+    }
 
     if (this.sslContext != null) {
       applyTlsOptions(wsOptions, protocols);

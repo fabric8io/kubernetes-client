@@ -40,7 +40,6 @@ import javax.net.ssl.TrustManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class AbstractWebSocketTlsTest {
 
@@ -66,62 +65,56 @@ public abstract class AbstractWebSocketTlsTest {
   @Test
   @DisplayName("WebSocket-over-TLS completes the upgrade trusting the supplied certificate and round-trips a message")
   void secureWebSocketConnectsAndRoundTripsMessage() throws Exception {
+    // Given
     try (HttpClient client = getHttpClientFactory().newBuilder().sslContext(null, trustManagers).build()) {
-      // Given
-      server.expect().withPath("/secure-ws")
-          .andUpgradeToWebSocket()
-          .open()
-          .expect("GiveMeSomething")
-          .andEmit("received")
-          .always()
-          .done()
-          .always();
-      final BlockingQueue<String> receivedText = new ArrayBlockingQueue<>(1);
-      final WebSocket ws = client.newWebSocketBuilder()
-          .uri(URI.create(server.url("secure-ws")))
-          .buildAsync(new WebSocket.Listener() {
-            @Override
-            public void onMessage(WebSocket webSocket, String text) {
-              assertTrue(receivedText.offer(text));
-            }
-          }).get(10L, TimeUnit.SECONDS);
       // When
-      ws.send(ByteBuffer.wrap("GiveMeSomething".getBytes(StandardCharsets.UTF_8)));
-      final String result = receivedText.poll(10L, TimeUnit.SECONDS);
+      final String result = roundTripOverSecureWebSocket(client, "secure-ws");
       // Then
-      assertThat(result).isEqualTo("received");
+      assertThat(result)
+          .as("the upgrade should have completed against the supplied trust material")
+          .isEqualTo("received");
     }
   }
 
   @Test
   @DisplayName("Derived client (newBuilder().build() on an already-built client) still trusts the supplied certificate for WebSocket-over-TLS")
   void secureWebSocketOverDerivedClientTrustsSuppliedCertificate() throws Exception {
+    // Given
     try (HttpClient original = getHttpClientFactory().newBuilder().sslContext(null, trustManagers).build();
-        HttpClient client = original.newBuilder().build()) {
-      // Given
-      server.expect().withPath("/secure-ws-derived")
-          .andUpgradeToWebSocket()
-          .open()
-          .expect("GiveMeSomething")
-          .andEmit("received")
-          .always()
-          .done()
-          .always();
-      final BlockingQueue<String> receivedText = new ArrayBlockingQueue<>(1);
-      final WebSocket ws = client.newWebSocketBuilder()
-          .uri(URI.create(server.url("secure-ws-derived")))
-          .buildAsync(new WebSocket.Listener() {
-            @Override
-            public void onMessage(WebSocket webSocket, String text) {
-              assertTrue(receivedText.offer(text));
-            }
-          }).get(10L, TimeUnit.SECONDS);
+        HttpClient derived = original.newBuilder().build()) {
       // When
-      ws.send(ByteBuffer.wrap("GiveMeSomething".getBytes(StandardCharsets.UTF_8)));
-      final String result = receivedText.poll(10L, TimeUnit.SECONDS);
+      final String result = roundTripOverSecureWebSocket(derived, "secure-ws-derived");
       // Then
-      assertThat(result).isEqualTo("received");
+      assertThat(result)
+          .as("a derived client must keep the original's trust material instead of falling back to the JVM default store")
+          .isEqualTo("received");
     }
+  }
+
+  /**
+   * Opens a WebSocket-over-TLS connection on the given path, sends a message and returns the server's reply
+   * (or {@code null} if none arrives in time).
+   */
+  private String roundTripOverSecureWebSocket(HttpClient client, String path) throws Exception {
+    server.expect().withPath("/" + path)
+        .andUpgradeToWebSocket()
+        .open()
+        .expect("GiveMeSomething")
+        .andEmit("received")
+        .always()
+        .done()
+        .always();
+    final BlockingQueue<String> receivedText = new ArrayBlockingQueue<>(1);
+    final WebSocket ws = client.newWebSocketBuilder()
+        .uri(URI.create(server.url(path)))
+        .buildAsync(new WebSocket.Listener() {
+          @Override
+          public void onMessage(WebSocket webSocket, String text) {
+            receivedText.offer(text);
+          }
+        }).get(10L, TimeUnit.SECONDS);
+    ws.send(ByteBuffer.wrap("GiveMeSomething".getBytes(StandardCharsets.UTF_8)));
+    return receivedText.poll(10L, TimeUnit.SECONDS);
   }
 
   @Test
