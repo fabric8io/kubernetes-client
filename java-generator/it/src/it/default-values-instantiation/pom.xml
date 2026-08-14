@@ -80,6 +80,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>@maven.compiler.plugin.version@</version>
         <configuration>
+          <!-- Required by Lombok on JDK 23+: annotation processing is disabled by default (JEP 611) -->
           <proc>full</proc>
         </configuration>
       </plugin>
