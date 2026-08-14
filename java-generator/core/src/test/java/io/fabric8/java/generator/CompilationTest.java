@@ -196,6 +196,28 @@ class CompilationTest {
   }
 
   @Test
+  void rejectsPathTraversalInCrdVersion() throws Exception {
+    // Arrange: the version name feeds the generated package declaration and, through it, the output
+    // directory layout. A traversing version cannot produce valid Java, so the structural validation
+    // rejects the CRD while generating it, before the write phase is ever reached (the containment
+    // guard that backs that phase up is covered by WritableCRCompilationUnitTest). Nesting the
+    // output directory inside the temporary directory lets us assert that nothing escaped it.
+    File crd = getCRD("malicious-path-traversal-crd.yml");
+    File outputDirectory = new File(tempDir, "out");
+    assertTrue(outputDirectory.mkdir());
+
+    // Act & Assert
+    JavaGeneratorException exception = assertThrows(
+        JavaGeneratorException.class,
+        () -> new FileJavaGenerator(config, crd).run(outputDirectory));
+
+    assertTrue(exception.getMessage().contains("structural mismatch"));
+    assertTrue(getSources(outputDirectory).isEmpty(), "Rejected CRDs must not emit Java source files");
+    assertArrayEquals(new File[] { outputDirectory }, tempDir.listFiles(),
+        "Rejected CRDs must not create anything outside the output directory");
+  }
+
+  @Test
   void compilesStringEnumValueContainingBackslash() throws Exception {
     // Arrange: a backslash in a schema value (here a Windows-style path) must be escaped, not
     // mistaken for a broken Java escape sequence that aborts generation.

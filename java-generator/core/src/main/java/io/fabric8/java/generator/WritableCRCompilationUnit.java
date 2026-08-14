@@ -53,10 +53,10 @@ public class WritableCRCompilationUnit {
             .map(NodeWithName::getNameAsString)
             .orElse(null);
         File path = createFolders(pkg, basePath);
+        Path filePath = path.toPath().resolve(cr.getName() + ".java");
+        validateOutputContainment(filePath, basePath.toPath());
 
-        writeToFile(
-            path.toPath().resolve(cr.getName() + ".java").toFile(),
-            cr.getJavaSource());
+        writeToFile(filePath.toFile(), cr.getJavaSource());
       }
     } catch (Exception e) {
       throw new JavaGeneratorException(e);
@@ -80,7 +80,27 @@ public class WritableCRCompilationUnit {
         destFolder = destFolder.resolve(p);
       }
     }
+    validateOutputContainment(destFolder, folder.toPath());
     destFolder.toFile().mkdirs();
     return destFolder.toFile();
+  }
+
+  /**
+   * Guards the filesystem boundary: a package or class name derived from CRD metadata must never
+   * resolve outside the requested output directory.
+   * <p>
+   * The comparison is lexical. {@link Path#normalize()} does not resolve symbolic links, so a
+   * symlink already present inside the output directory can still redirect a write. {@code
+   * toRealPath} is not usable instead, because the resolved path does not exist yet at validation
+   * time.
+   */
+  private static void validateOutputContainment(Path resolved, Path base) {
+    Path normalizedResolved = resolved.toAbsolutePath().normalize();
+    Path normalizedBase = base.toAbsolutePath().normalize();
+    if (!normalizedResolved.startsWith(normalizedBase)) {
+      throw new JavaGeneratorException(
+          "Generated output path '" + normalizedResolved
+              + "' escapes the target directory '" + normalizedBase + "'");
+    }
   }
 }

@@ -88,6 +88,42 @@ public abstract class AbstractWebSocketSendReceiveTest {
   }
 
   @Test
+  @DisplayName("derived client receives a message larger than the WebSocket implementation's default message limit")
+  void derivedClientReceivesMessageAboveDefaultLimit() throws Exception {
+    // 300 KiB exceeds every implementation's out-of-the-box maximum message size (Vert.x defaults to 256 KiB),
+    // so this only succeeds if the derived client inherited the configured unlimited message size rather than
+    // falling back to transport defaults. Oversized messages are dropped silently, which surfaces as a hang.
+    final String largeMessage = "a".repeat(300_000);
+    try (
+        final HttpClient client = getHttpClientFactory().newBuilder().build();
+        final HttpClient derivedClient = client.newBuilder().build()) {
+      // Given
+      server.expect().withPath("/receive-large-derived")
+          .andUpgradeToWebSocket()
+          .open()
+          .waitFor(5)
+          .andEmit(largeMessage)
+          .done()
+          .always();
+      final BlockingQueue<String> receivedText = new LinkedBlockingQueue<>();
+      // When
+      derivedClient.newWebSocketBuilder()
+          .uri(URI.create(server.url("receive-large-derived")))
+          .buildAsync(new WebSocket.Listener() {
+            @Override
+            public void onMessage(WebSocket webSocket, String text) {
+              receivedText.add(text);
+              webSocket.request();
+            }
+          }).get(10L, TimeUnit.SECONDS);
+      // Then
+      assertThat(receivedText.poll(10L, TimeUnit.SECONDS))
+          .as("a derived client must keep the configured WebSocket message limits, not revert to transport defaults")
+          .isEqualTo(largeMessage);
+    }
+  }
+
+  @Test
   @DisplayName("receive multiframe message")
   void multiframeReceive() throws Exception {
     final String multiframe = "a".repeat(66000);
