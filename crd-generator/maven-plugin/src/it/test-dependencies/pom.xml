@@ -39,6 +39,7 @@
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
+          <!-- Required by Lombok on JDK 23+: annotation processing is disabled by default (JEP 611) -->
           <proc>full</proc>
         </configuration>
       </plugin>

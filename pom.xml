@@ -954,6 +954,7 @@
             <showDeprecation>true</showDeprecation>
             <showWarnings>true</showWarnings>
              <compilerArgument>-Xlint:unchecked</compilerArgument>
+            <!-- Required by Lombok on JDK 23+: annotation processing is disabled by default (JEP 611) -->
             <proc>full</proc>
           </configuration>
         </plugin>
