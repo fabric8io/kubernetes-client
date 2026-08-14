@@ -11,6 +11,7 @@
 * Fix #8028: (openshift-model, kube-api-test) No package is shipped by two artifacts anymore, so each pair can be placed on the JPMS module path together. `openshift-model` no longer bundles the `io.fabric8.openshift.api.model.config.*` classes that `openshift-model-config` owns (its `Export-Package` wildcard inlined them from that dependency); they still reach consumers through it. `Fabric8ClientInjectionHandler` moved to `io.fabric8.kubeapitest.junit.inject`
 
 #### Improvements
+* Fix #7427: (build) JDK 25 build support — commit Sundrio-generated Builder/Fluent classes as source for `kubernetes-client-api` and `openshift-client-api`, and configure explicit Lombok `annotationProcessorPaths` project-wide. JDK 23+ defaults to `-proc:none`, silently skipping classpath-based annotation processor discovery; without explicit processor paths, Lombok and Sundrio APT stopped running and the build failed with missing getters/setters and Builder classes
 
 #### Dependency Upgrade
 
