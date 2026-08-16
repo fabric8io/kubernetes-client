@@ -33,12 +33,11 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * HTTPRouteSpec defines the desired state of HTTPRoute
+ * TCPRouteSpec defines the desired state of TCPRoute
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "hostnames",
     "parentRefs",
     "rules",
     "useDefaultGateways"
@@ -65,18 +64,15 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class HTTPRouteSpec implements Editable<HTTPRouteSpecBuilder>, KubernetesResource
+public class TCPRouteSpec implements Editable<TCPRouteSpecBuilder>, KubernetesResource
 {
 
-    @JsonProperty("hostnames")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> hostnames = new ArrayList<>();
     @JsonProperty("parentRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ParentReference> parentRefs = new ArrayList<>();
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<HTTPRouteRule> rules = new ArrayList<>();
+    private List<TCPRouteRule> rules = new ArrayList<>();
     @JsonProperty("useDefaultGateways")
     private String useDefaultGateways;
     @JsonIgnore
@@ -85,32 +81,14 @@ public class HTTPRouteSpec implements Editable<HTTPRouteSpecBuilder>, Kubernetes
     /**
      * No args constructor for use in serialization
      */
-    public HTTPRouteSpec() {
+    public TCPRouteSpec() {
     }
 
-    public HTTPRouteSpec(List<String> hostnames, List<ParentReference> parentRefs, List<HTTPRouteRule> rules, String useDefaultGateways) {
+    public TCPRouteSpec(List<ParentReference> parentRefs, List<TCPRouteRule> rules, String useDefaultGateways) {
         super();
-        this.hostnames = hostnames;
         this.parentRefs = parentRefs;
         this.rules = rules;
         this.useDefaultGateways = useDefaultGateways;
-    }
-
-    /**
-     * Hostnames defines a set of hostnames that should match against the HTTP Host header to select a HTTPRoute used to process the request. Implementations MUST ignore any port value specified in the HTTP Host header while performing a match and (absent of any applicable header modification configuration) MUST forward this header unmodified to the backend.<br><p> <br><p> Valid values for Hostnames are determined by RFC 1123 definition of a hostname with 2 notable exceptions:<br><p> <br><p> 1. IPs are not allowed. 2. A hostname may be prefixed with a wildcard label (`&#42;.`). The wildcard<br><p>    label must appear by itself as the first label.<br><p> <br><p> If a hostname is specified by both the Listener and HTTPRoute, there must be at least one intersecting hostname for the HTTPRoute to be attached to the Listener. For example:<br><p> <br><p> &#42; A Listener with `test.example.com` as the hostname matches HTTPRoutes<br><p>   that have either not specified any hostnames, or have specified at<br><p>   least one of `test.example.com` or `&#42;.example.com`.<br><p> &#42; A Listener with `&#42;.example.com` as the hostname matches HTTPRoutes<br><p>   that have either not specified any hostnames or have specified at least<br><p>   one hostname that matches the Listener hostname. For example,<br><p>   `&#42;.example.com`, `test.example.com`, and `foo.test.example.com` would<br><p>   all match. On the other hand, `example.com` and `test.example.net` would<br><p>   not match.<br><p> <br><p> Hostnames that are prefixed with a wildcard label (`&#42;.`) are interpreted as a suffix match. That means that a match for `&#42;.example.com` would match both `test.example.com`, and `foo.test.example.com`, but not `example.com`.<br><p> <br><p> If both the Listener and HTTPRoute have specified hostnames, any HTTPRoute hostnames that do not match the Listener hostname MUST be ignored. For example, if a Listener specified `&#42;.example.com`, and the HTTPRoute specified `test.example.com` and `test.example.net`, `test.example.net` must not be considered for a match.<br><p> <br><p> If both the Listener and HTTPRoute have specified hostnames, and none match with the criteria above, then the HTTPRoute is not accepted. The implementation must raise an 'Accepted' Condition with a status of `False` in the corresponding RouteParentStatus.<br><p> <br><p> In the event that multiple HTTPRoutes specify intersecting hostnames (e.g. overlapping wildcard matching and exact matching hostnames), precedence must be given to rules from the HTTPRoute with the largest number of:<br><p> <br><p> &#42; Characters in a matching non-wildcard hostname. &#42; Characters in a matching hostname.<br><p> <br><p> If ties exist across multiple Routes, the matching precedence rules for HTTPRouteMatches takes over.<br><p> <br><p> Support: Core
-     */
-    @JsonProperty("hostnames")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<String> getHostnames() {
-        return hostnames;
-    }
-
-    /**
-     * Hostnames defines a set of hostnames that should match against the HTTP Host header to select a HTTPRoute used to process the request. Implementations MUST ignore any port value specified in the HTTP Host header while performing a match and (absent of any applicable header modification configuration) MUST forward this header unmodified to the backend.<br><p> <br><p> Valid values for Hostnames are determined by RFC 1123 definition of a hostname with 2 notable exceptions:<br><p> <br><p> 1. IPs are not allowed. 2. A hostname may be prefixed with a wildcard label (`&#42;.`). The wildcard<br><p>    label must appear by itself as the first label.<br><p> <br><p> If a hostname is specified by both the Listener and HTTPRoute, there must be at least one intersecting hostname for the HTTPRoute to be attached to the Listener. For example:<br><p> <br><p> &#42; A Listener with `test.example.com` as the hostname matches HTTPRoutes<br><p>   that have either not specified any hostnames, or have specified at<br><p>   least one of `test.example.com` or `&#42;.example.com`.<br><p> &#42; A Listener with `&#42;.example.com` as the hostname matches HTTPRoutes<br><p>   that have either not specified any hostnames or have specified at least<br><p>   one hostname that matches the Listener hostname. For example,<br><p>   `&#42;.example.com`, `test.example.com`, and `foo.test.example.com` would<br><p>   all match. On the other hand, `example.com` and `test.example.net` would<br><p>   not match.<br><p> <br><p> Hostnames that are prefixed with a wildcard label (`&#42;.`) are interpreted as a suffix match. That means that a match for `&#42;.example.com` would match both `test.example.com`, and `foo.test.example.com`, but not `example.com`.<br><p> <br><p> If both the Listener and HTTPRoute have specified hostnames, any HTTPRoute hostnames that do not match the Listener hostname MUST be ignored. For example, if a Listener specified `&#42;.example.com`, and the HTTPRoute specified `test.example.com` and `test.example.net`, `test.example.net` must not be considered for a match.<br><p> <br><p> If both the Listener and HTTPRoute have specified hostnames, and none match with the criteria above, then the HTTPRoute is not accepted. The implementation must raise an 'Accepted' Condition with a status of `False` in the corresponding RouteParentStatus.<br><p> <br><p> In the event that multiple HTTPRoutes specify intersecting hostnames (e.g. overlapping wildcard matching and exact matching hostnames), precedence must be given to rules from the HTTPRoute with the largest number of:<br><p> <br><p> &#42; Characters in a matching non-wildcard hostname. &#42; Characters in a matching hostname.<br><p> <br><p> If ties exist across multiple Routes, the matching precedence rules for HTTPRouteMatches takes over.<br><p> <br><p> Support: Core
-     */
-    @JsonProperty("hostnames")
-    public void setHostnames(List<String> hostnames) {
-        this.hostnames = hostnames;
     }
 
     /**
@@ -131,19 +109,19 @@ public class HTTPRouteSpec implements Editable<HTTPRouteSpecBuilder>, Kubernetes
     }
 
     /**
-     * Rules are a list of HTTP matchers, filters and actions.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="Rule name must be unique within the route",rule="self.all(l1, !has(l1.name) || self.exists_one(l2, has(l2.name) &amp;&amp; l1.name == l2.name))"&gt; &lt;gateway:util:excludeFromCRD&gt; Validates that the total number of matches across all rules does not exceed 128. CEL does not support aggregate functions like sum() over lists, so each of the (up to 16) rules is checked individually and their match counts are summed explicitly. &lt;/gateway:util:excludeFromCRD&gt;
+     * Rules are a list of TCP matchers and actions.
      */
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<HTTPRouteRule> getRules() {
+    public List<TCPRouteRule> getRules() {
         return rules;
     }
 
     /**
-     * Rules are a list of HTTP matchers, filters and actions.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="Rule name must be unique within the route",rule="self.all(l1, !has(l1.name) || self.exists_one(l2, has(l2.name) &amp;&amp; l1.name == l2.name))"&gt; &lt;gateway:util:excludeFromCRD&gt; Validates that the total number of matches across all rules does not exceed 128. CEL does not support aggregate functions like sum() over lists, so each of the (up to 16) rules is checked individually and their match counts are summed explicitly. &lt;/gateway:util:excludeFromCRD&gt;
+     * Rules are a list of TCP matchers and actions.
      */
     @JsonProperty("rules")
-    public void setRules(List<HTTPRouteRule> rules) {
+    public void setRules(List<TCPRouteRule> rules) {
         this.rules = rules;
     }
 
@@ -164,12 +142,12 @@ public class HTTPRouteSpec implements Editable<HTTPRouteSpecBuilder>, Kubernetes
     }
 
     @JsonIgnore
-    public HTTPRouteSpecBuilder edit() {
-        return new HTTPRouteSpecBuilder(this);
+    public TCPRouteSpecBuilder edit() {
+        return new TCPRouteSpecBuilder(this);
     }
 
     @JsonIgnore
-    public HTTPRouteSpecBuilder toBuilder() {
+    public TCPRouteSpecBuilder toBuilder() {
         return edit();
     }
 

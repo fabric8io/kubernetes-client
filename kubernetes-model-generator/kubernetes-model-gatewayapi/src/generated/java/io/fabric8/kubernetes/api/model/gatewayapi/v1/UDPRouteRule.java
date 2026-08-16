@@ -1,5 +1,5 @@
 
-package io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2;
+package io.fabric8.kubernetes.api.model.gatewayapi.v1;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -20,15 +20,12 @@ import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
-import io.fabric8.kubernetes.api.model.gatewayapi.v1.BackendRef;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -36,7 +33,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * TCPRouteRule is the configuration for a given rule.
+ * UDPRouteRule is the configuration for a given rule.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -57,8 +54,8 @@ import lombok.experimental.Accessors;
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
     @BuildableReference(ContainerPort.class),
@@ -66,7 +63,7 @@ import lombok.experimental.Accessors;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TCPRouteRule implements Editable<TCPRouteRuleBuilder>, KubernetesResource
+public class UDPRouteRule implements Editable<UDPRouteRuleBuilder>, KubernetesResource
 {
 
     @JsonProperty("backendRefs")
@@ -80,17 +77,17 @@ public class TCPRouteRule implements Editable<TCPRouteRuleBuilder>, KubernetesRe
     /**
      * No args constructor for use in serialization
      */
-    public TCPRouteRule() {
+    public UDPRouteRule() {
     }
 
-    public TCPRouteRule(List<BackendRef> backendRefs, String name) {
+    public UDPRouteRule(List<BackendRef> backendRefs, String name) {
         super();
         this.backendRefs = backendRefs;
         this.name = name;
     }
 
     /**
-     * BackendRefs defines the backend(s) where matching requests should be sent. If unspecified or invalid (refers to a nonexistent resource or a Service with no endpoints), the underlying implementation MUST actively reject connection attempts to this backend. Connection rejections must respect weight; if an invalid backend is requested to have 80% of connections, then 80% of connections must be rejected instead.<br><p> <br><p> Support: Core for Kubernetes Service
+     * BackendRefs defines the backend(s) where matching requests should be sent. If unspecified or invalid (refers to a nonexistent resource or a Service with no endpoints), the underlying implementation MUST actively reject connection attempts to this backend. Packet drops must respect weight; if an invalid backend is requested to have 80% of the packets, then 80% of packets must be dropped instead.<br><p> <br><p> Support: Extended for Kubernetes Service
      */
     @JsonProperty("backendRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -99,7 +96,7 @@ public class TCPRouteRule implements Editable<TCPRouteRuleBuilder>, KubernetesRe
     }
 
     /**
-     * BackendRefs defines the backend(s) where matching requests should be sent. If unspecified or invalid (refers to a nonexistent resource or a Service with no endpoints), the underlying implementation MUST actively reject connection attempts to this backend. Connection rejections must respect weight; if an invalid backend is requested to have 80% of connections, then 80% of connections must be rejected instead.<br><p> <br><p> Support: Core for Kubernetes Service
+     * BackendRefs defines the backend(s) where matching requests should be sent. If unspecified or invalid (refers to a nonexistent resource or a Service with no endpoints), the underlying implementation MUST actively reject connection attempts to this backend. Packet drops must respect weight; if an invalid backend is requested to have 80% of the packets, then 80% of packets must be dropped instead.<br><p> <br><p> Support: Extended for Kubernetes Service
      */
     @JsonProperty("backendRefs")
     public void setBackendRefs(List<BackendRef> backendRefs) {
@@ -123,12 +120,12 @@ public class TCPRouteRule implements Editable<TCPRouteRuleBuilder>, KubernetesRe
     }
 
     @JsonIgnore
-    public TCPRouteRuleBuilder edit() {
-        return new TCPRouteRuleBuilder(this);
+    public UDPRouteRuleBuilder edit() {
+        return new UDPRouteRuleBuilder(this);
     }
 
     @JsonIgnore
-    public TCPRouteRuleBuilder toBuilder() {
+    public UDPRouteRuleBuilder toBuilder() {
         return edit();
     }
 

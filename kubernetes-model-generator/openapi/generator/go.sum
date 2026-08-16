@@ -6540,6 +6540,8 @@ k8s.io/kube-openapi v0.0.0-20240228011516-70dd3763d340/go.mod h1:yD4MZYeKMBwQKVh
 k8s.io/kube-openapi v0.0.0-20250910181357-589584f1c912/go.mod h1:kdmbQkyfwUagLfXIad1y2TdrjPFWp2Q89B3qkRwf/pQ=
 k8s.io/kube-openapi v0.0.0-20260414162039-ec9c827d403f h1:4Qiq0YAoQATdgmHALJWz9rJ4fj20pB3xebpB4CFNhYM=
 k8s.io/kube-openapi v0.0.0-20260414162039-ec9c827d403f/go.mod h1:uGBT7iTA6c6MvqUvSXIaYZo9ukscABYi2btjhvgKGZ0=
+k8s.io/kube-openapi v0.0.0-20260501160325-927ab1f70cd6 h1:ngxu1nL4SbFuXwu1EY7cSKcVqSjTQPVbYQT6WNjTXaU=
+k8s.io/kube-openapi v0.0.0-20260501160325-927ab1f70cd6/go.mod h1:uGBT7iTA6c6MvqUvSXIaYZo9ukscABYi2btjhvgKGZ0=
 k8s.io/metrics v0.36.1 h1:MQPb+G4RhrKEpt8NETPssbW8QgGUc4Jbqu1jx+kPqGk=
 k8s.io/metrics v0.36.1/go.mod h1:xqS8XcWLjDzo6E7DJm/GfjKpRKdN5/MtJAQFuV6nLUc=
 k8s.io/utils v0.0.0-20201110183641-67b214c5f920/go.mod h1:jPW/WVKK9YHAvNhRxK0md/EJ228hCsBRufyofKtW8HA=
@@ -6672,6 +6674,8 @@ sigs.k8s.io/controller-runtime v0.19.7 h1:DLABZfMr20A+AwCZOHhcbcu+TqBXnJZaVBri9K
 sigs.k8s.io/controller-runtime v0.19.7/go.mod h1:iRmWllt8IlaLjvTTDLhRBXIEtkCK6hwVBJJsYS9Ajf4=
 sigs.k8s.io/gateway-api v1.5.1 h1:RqVRIlkhLhUO8wOHKTLnTJA6o/1un4po4/6M1nRzdd0=
 sigs.k8s.io/gateway-api v1.5.1/go.mod h1:GvCETiaMAlLym5CovLxGjS0NysqFk3+Yuq3/rh6QL2o=
+sigs.k8s.io/gateway-api v1.6.1 h1:mock6phZbI6rvZerwrVNk7hVNymQgHo+6sJ81Ia7ftY=
+sigs.k8s.io/gateway-api v1.6.1/go.mod h1:FVfx3t389ybeXOqvDghLbdvJdSCfI/PReqCUI3lu3mY=
 sigs.k8s.io/json v0.0.0-20211020170558-c049b76a60c6/go.mod h1:p4QtZmO4uMYipTQNzagwnNoseA6OxSUutVw05NhYDRs=
 sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd/go.mod h1:B8JuhiUyNFVKdsE8h686QcCxMaH6HrOAZj4vswFpcB0=
 sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730 h1:IpInykpT6ceI+QxKBbEflcR5EXP7sU1kvOlxwZh5txg=

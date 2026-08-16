@@ -34,7 +34,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
+ * TCPRoute provides a way to route TCP requests. When combined with a Gateway listener, it can be used to forward connections on the port specified by the listener to a set of backends specified by the TCPRoute.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -69,29 +69,29 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("gateway.networking.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Gateway implements Editable<GatewayBuilder>, HasMetadata, Namespaced
+public class TCPRoute implements Editable<TCPRouteBuilder>, HasMetadata, Namespaced
 {
 
     @JsonProperty("apiVersion")
     private String apiVersion = "gateway.networking.k8s.io/v1";
     @JsonProperty("kind")
-    private String kind = "Gateway";
+    private String kind = "TCPRoute";
     @JsonProperty("metadata")
     private ObjectMeta metadata;
     @JsonProperty("spec")
-    private GatewaySpec spec;
+    private TCPRouteSpec spec;
     @JsonProperty("status")
-    private GatewayStatus status;
+    private TCPRouteStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public Gateway() {
+    public TCPRoute() {
     }
 
-    public Gateway(String apiVersion, String kind, ObjectMeta metadata, GatewaySpec spec, GatewayStatus status) {
+    public TCPRoute(String apiVersion, String kind, ObjectMeta metadata, TCPRouteSpec spec, TCPRouteStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -133,7 +133,7 @@ public class Gateway implements Editable<GatewayBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
+     * TCPRoute provides a way to route TCP requests. When combined with a Gateway listener, it can be used to forward connections on the port specified by the listener to a set of backends specified by the TCPRoute.
      */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
@@ -141,7 +141,7 @@ public class Gateway implements Editable<GatewayBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
+     * TCPRoute provides a way to route TCP requests. When combined with a Gateway listener, it can be used to forward connections on the port specified by the listener to a set of backends specified by the TCPRoute.
      */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
@@ -149,44 +149,44 @@ public class Gateway implements Editable<GatewayBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
+     * TCPRoute provides a way to route TCP requests. When combined with a Gateway listener, it can be used to forward connections on the port specified by the listener to a set of backends specified by the TCPRoute.
      */
     @JsonProperty("spec")
-    public GatewaySpec getSpec() {
+    public TCPRouteSpec getSpec() {
         return spec;
     }
 
     /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
+     * TCPRoute provides a way to route TCP requests. When combined with a Gateway listener, it can be used to forward connections on the port specified by the listener to a set of backends specified by the TCPRoute.
      */
     @JsonProperty("spec")
-    public void setSpec(GatewaySpec spec) {
+    public void setSpec(TCPRouteSpec spec) {
         this.spec = spec;
     }
 
     /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
+     * TCPRoute provides a way to route TCP requests. When combined with a Gateway listener, it can be used to forward connections on the port specified by the listener to a set of backends specified by the TCPRoute.
      */
     @JsonProperty("status")
-    public GatewayStatus getStatus() {
+    public TCPRouteStatus getStatus() {
         return status;
     }
 
     /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
+     * TCPRoute provides a way to route TCP requests. When combined with a Gateway listener, it can be used to forward connections on the port specified by the listener to a set of backends specified by the TCPRoute.
      */
     @JsonProperty("status")
-    public void setStatus(GatewayStatus status) {
+    public void setStatus(TCPRouteStatus status) {
         this.status = status;
     }
 
     @JsonIgnore
-    public GatewayBuilder edit() {
-        return new GatewayBuilder(this);
+    public TCPRouteBuilder edit() {
+        return new TCPRouteBuilder(this);
     }
 
     @JsonIgnore
-    public GatewayBuilder toBuilder() {
+    public TCPRouteBuilder toBuilder() {
         return edit();
     }
 
