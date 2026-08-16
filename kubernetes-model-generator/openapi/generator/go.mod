@@ -37,7 +37,7 @@ require (
 	k8s.io/autoscaler/vertical-pod-autoscaler v1.7.0
 	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/gengo/v2 v2.0.0-20260408192533-25e2208e0dc3
-	k8s.io/kube-openapi v0.0.0-20260414162039-ec9c827d403f
+	k8s.io/kube-openapi v0.0.0-20260501160325-927ab1f70cd6
 	k8s.io/metrics v0.36.1
 	knative.dev/caching v0.0.0-20260422140616-453ad996bbe2
 	knative.dev/eventing v0.49.1
@@ -54,7 +54,7 @@ require (
 	open-cluster-management.io/multicloud-operators-channel v0.16.0
 	open-cluster-management.io/multicloud-operators-subscription v0.16.0
 	sigs.k8s.io/cluster-api v1.13.1
-	sigs.k8s.io/gateway-api v1.5.1
+	sigs.k8s.io/gateway-api v1.6.1
 	sigs.k8s.io/kustomize/api v0.21.1
 	// This version is older than v1.10.0 see replacements below
 	volcano.sh/apis v1.19.6

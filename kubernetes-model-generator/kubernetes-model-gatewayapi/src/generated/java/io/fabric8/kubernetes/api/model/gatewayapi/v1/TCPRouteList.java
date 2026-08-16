@@ -1,7 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.gatewayapi.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -15,10 +17,11 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
@@ -34,7 +37,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
+ * TCPRouteList contains a list of TCPRoute
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -42,8 +45,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec",
-    "status"
+    "items"
 })
 @ToString
 @EqualsAndHashCode
@@ -69,35 +71,33 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("gateway.networking.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Gateway implements Editable<GatewayBuilder>, HasMetadata, Namespaced
+public class TCPRouteList implements Editable<TCPRouteListBuilder>, KubernetesResource, KubernetesResourceList<io.fabric8.kubernetes.api.model.gatewayapi.v1.TCPRoute>
 {
 
     @JsonProperty("apiVersion")
     private String apiVersion = "gateway.networking.k8s.io/v1";
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<io.fabric8.kubernetes.api.model.gatewayapi.v1.TCPRoute> items = new ArrayList<>();
     @JsonProperty("kind")
-    private String kind = "Gateway";
+    private String kind = "TCPRouteList";
     @JsonProperty("metadata")
-    private ObjectMeta metadata;
-    @JsonProperty("spec")
-    private GatewaySpec spec;
-    @JsonProperty("status")
-    private GatewayStatus status;
+    private ListMeta metadata;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public Gateway() {
+    public TCPRouteList() {
     }
 
-    public Gateway(String apiVersion, String kind, ObjectMeta metadata, GatewaySpec spec, GatewayStatus status) {
+    public TCPRouteList(String apiVersion, List<io.fabric8.kubernetes.api.model.gatewayapi.v1.TCPRoute> items, String kind, ListMeta metadata) {
         super();
         this.apiVersion = apiVersion;
+        this.items = items;
         this.kind = kind;
         this.metadata = metadata;
-        this.spec = spec;
-        this.status = status;
     }
 
     /**
@@ -117,6 +117,23 @@ public class Gateway implements Editable<GatewayBuilder>, HasMetadata, Namespace
     }
 
     /**
+     * TCPRouteList contains a list of TCPRoute
+     */
+    @JsonProperty("items")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<io.fabric8.kubernetes.api.model.gatewayapi.v1.TCPRoute> getItems() {
+        return items;
+    }
+
+    /**
+     * TCPRouteList contains a list of TCPRoute
+     */
+    @JsonProperty("items")
+    public void setItems(List<io.fabric8.kubernetes.api.model.gatewayapi.v1.TCPRoute> items) {
+        this.items = items;
+    }
+
+    /**
      * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
      */
     @JsonProperty("kind")
@@ -133,60 +150,28 @@ public class Gateway implements Editable<GatewayBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
+     * TCPRouteList contains a list of TCPRoute
      */
     @JsonProperty("metadata")
-    public ObjectMeta getMetadata() {
+    public ListMeta getMetadata() {
         return metadata;
     }
 
     /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
+     * TCPRouteList contains a list of TCPRoute
      */
     @JsonProperty("metadata")
-    public void setMetadata(ObjectMeta metadata) {
+    public void setMetadata(ListMeta metadata) {
         this.metadata = metadata;
     }
 
-    /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
-     */
-    @JsonProperty("spec")
-    public GatewaySpec getSpec() {
-        return spec;
-    }
-
-    /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
-     */
-    @JsonProperty("spec")
-    public void setSpec(GatewaySpec spec) {
-        this.spec = spec;
-    }
-
-    /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
-     */
-    @JsonProperty("status")
-    public GatewayStatus getStatus() {
-        return status;
-    }
-
-    /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
-     */
-    @JsonProperty("status")
-    public void setStatus(GatewayStatus status) {
-        this.status = status;
+    @JsonIgnore
+    public TCPRouteListBuilder edit() {
+        return new TCPRouteListBuilder(this);
     }
 
     @JsonIgnore
-    public GatewayBuilder edit() {
-        return new GatewayBuilder(this);
-    }
-
-    @JsonIgnore
-    public GatewayBuilder toBuilder() {
+    public TCPRouteListBuilder toBuilder() {
         return edit();
     }
 

@@ -13,10 +13,13 @@
 #### Improvements
 
 #### Dependency Upgrade
+* Fix #8033: bump gateway-api from 1.5.1 to 1.6.1
 
 #### New Features
+* Fix #8033: gateway-api model gains `v1.TCPRoute` and `v1.UDPRoute` (both graduated from `v1alpha2` upstream in gateway-api v1.6.0; the `v1alpha2` types remain available)
 
 #### _**Note**_: Breaking changes
+* Fix #8033: gateway-api model `v1.SessionPersistence` no longer exposes `idleTimeout` (removed upstream in gateway-api v1.6.0)
 * Fix #8028: (kube-api-test) `Fabric8ClientInjectionHandler` moved to `io.fabric8.kubeapitest.junit.inject`. It is resolved through `ServiceLoader`, so only code naming the class directly is affected
 * Fix #8028: (openshift-model) The bundle no longer exports or contains `io.fabric8.openshift.api.model.config.*`. Maven consumers are unaffected (`openshift-model-config` is a compile dependency), but OSGi deployments importing those packages must install the `openshift-model-config` bundle, which the `openshift-client` Karaf feature already does
 

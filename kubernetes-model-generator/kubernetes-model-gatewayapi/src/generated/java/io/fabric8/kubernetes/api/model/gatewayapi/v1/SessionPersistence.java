@@ -38,7 +38,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "absoluteTimeout",
     "cookieConfig",
-    "idleTimeout",
     "sessionName",
     "type"
 })
@@ -71,8 +70,6 @@ public class SessionPersistence implements Editable<SessionPersistenceBuilder>, 
     private String absoluteTimeout;
     @JsonProperty("cookieConfig")
     private CookieConfig cookieConfig;
-    @JsonProperty("idleTimeout")
-    private String idleTimeout;
     @JsonProperty("sessionName")
     private String sessionName;
     @JsonProperty("type")
@@ -86,11 +83,10 @@ public class SessionPersistence implements Editable<SessionPersistenceBuilder>, 
     public SessionPersistence() {
     }
 
-    public SessionPersistence(String absoluteTimeout, CookieConfig cookieConfig, String idleTimeout, String sessionName, String type) {
+    public SessionPersistence(String absoluteTimeout, CookieConfig cookieConfig, String sessionName, String type) {
         super();
         this.absoluteTimeout = absoluteTimeout;
         this.cookieConfig = cookieConfig;
-        this.idleTimeout = idleTimeout;
         this.sessionName = sessionName;
         this.type = type;
     }
@@ -125,22 +121,6 @@ public class SessionPersistence implements Editable<SessionPersistenceBuilder>, 
     @JsonProperty("cookieConfig")
     public void setCookieConfig(CookieConfig cookieConfig) {
         this.cookieConfig = cookieConfig;
-    }
-
-    /**
-     * IdleTimeout defines the idle timeout of the persistent session. Once the session has been idle for more than the specified IdleTimeout duration, the session becomes invalid.<br><p> <br><p> Support: Extended
-     */
-    @JsonProperty("idleTimeout")
-    public String getIdleTimeout() {
-        return idleTimeout;
-    }
-
-    /**
-     * IdleTimeout defines the idle timeout of the persistent session. Once the session has been idle for more than the specified IdleTimeout duration, the session becomes invalid.<br><p> <br><p> Support: Extended
-     */
-    @JsonProperty("idleTimeout")
-    public void setIdleTimeout(String idleTimeout) {
-        this.idleTimeout = idleTimeout;
     }
 
     /**

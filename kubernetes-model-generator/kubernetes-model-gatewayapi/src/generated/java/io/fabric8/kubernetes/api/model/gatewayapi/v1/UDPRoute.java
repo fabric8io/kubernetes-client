@@ -34,7 +34,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
+ * UDPRoute provides a way to route UDP traffic. When combined with a Gateway listener, it can be used to forward traffic on the port specified by the listener to a set of backends specified by the UDPRoute.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -69,29 +69,29 @@ import lombok.experimental.Accessors;
 @Version("v1")
 @Group("gateway.networking.k8s.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Gateway implements Editable<GatewayBuilder>, HasMetadata, Namespaced
+public class UDPRoute implements Editable<UDPRouteBuilder>, HasMetadata, Namespaced
 {
 
     @JsonProperty("apiVersion")
     private String apiVersion = "gateway.networking.k8s.io/v1";
     @JsonProperty("kind")
-    private String kind = "Gateway";
+    private String kind = "UDPRoute";
     @JsonProperty("metadata")
     private ObjectMeta metadata;
     @JsonProperty("spec")
-    private GatewaySpec spec;
+    private UDPRouteSpec spec;
     @JsonProperty("status")
-    private GatewayStatus status;
+    private UDPRouteStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public Gateway() {
+    public UDPRoute() {
     }
 
-    public Gateway(String apiVersion, String kind, ObjectMeta metadata, GatewaySpec spec, GatewayStatus status) {
+    public UDPRoute(String apiVersion, String kind, ObjectMeta metadata, UDPRouteSpec spec, UDPRouteStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
@@ -133,7 +133,7 @@ public class Gateway implements Editable<GatewayBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
+     * UDPRoute provides a way to route UDP traffic. When combined with a Gateway listener, it can be used to forward traffic on the port specified by the listener to a set of backends specified by the UDPRoute.
      */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
@@ -141,7 +141,7 @@ public class Gateway implements Editable<GatewayBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
+     * UDPRoute provides a way to route UDP traffic. When combined with a Gateway listener, it can be used to forward traffic on the port specified by the listener to a set of backends specified by the UDPRoute.
      */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
@@ -149,44 +149,44 @@ public class Gateway implements Editable<GatewayBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
+     * UDPRoute provides a way to route UDP traffic. When combined with a Gateway listener, it can be used to forward traffic on the port specified by the listener to a set of backends specified by the UDPRoute.
      */
     @JsonProperty("spec")
-    public GatewaySpec getSpec() {
+    public UDPRouteSpec getSpec() {
         return spec;
     }
 
     /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
+     * UDPRoute provides a way to route UDP traffic. When combined with a Gateway listener, it can be used to forward traffic on the port specified by the listener to a set of backends specified by the UDPRoute.
      */
     @JsonProperty("spec")
-    public void setSpec(GatewaySpec spec) {
+    public void setSpec(UDPRouteSpec spec) {
         this.spec = spec;
     }
 
     /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
+     * UDPRoute provides a way to route UDP traffic. When combined with a Gateway listener, it can be used to forward traffic on the port specified by the listener to a set of backends specified by the UDPRoute.
      */
     @JsonProperty("status")
-    public GatewayStatus getStatus() {
+    public UDPRouteStatus getStatus() {
         return status;
     }
 
     /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
+     * UDPRoute provides a way to route UDP traffic. When combined with a Gateway listener, it can be used to forward traffic on the port specified by the listener to a set of backends specified by the UDPRoute.
      */
     @JsonProperty("status")
-    public void setStatus(GatewayStatus status) {
+    public void setStatus(UDPRouteStatus status) {
         this.status = status;
     }
 
     @JsonIgnore
-    public GatewayBuilder edit() {
-        return new GatewayBuilder(this);
+    public UDPRouteBuilder edit() {
+        return new UDPRouteBuilder(this);
     }
 
     @JsonIgnore
-    public GatewayBuilder toBuilder() {
+    public UDPRouteBuilder toBuilder() {
         return edit();
     }
 
