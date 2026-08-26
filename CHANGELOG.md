@@ -16,10 +16,10 @@
 * Fix #8033: bump gateway-api from 1.5.1 to 1.6.1
 
 #### New Features
-* Fix #8033: gateway-api model gains `v1.TCPRoute` and `v1.UDPRoute` (both graduated from `v1alpha2` upstream in gateway-api v1.6.0; the `v1alpha2` types remain available)
+* Fix #8033: gateway-api model gains `v1.TCPRoute` and `v1.UDPRoute` (both graduated from `v1alpha2` upstream in gateway-api v1.6.0). The `v1alpha2` types remain available, but upstream has deprecated them and will remove them in a future release, so new code should use the `v1` types
 
 #### _**Note**_: Breaking changes
-* Fix #8033: gateway-api model `v1.SessionPersistence` no longer exposes `idleTimeout` (removed upstream in gateway-api v1.6.0)
+* Fix #8033: gateway-api model `v1.SessionPersistence` no longer exposes `idleTimeout` (removed upstream in gateway-api v1.6.0). Besides the field, this removes `getIdleTimeout()`/`setIdleTimeout()`, collapses the canonical constructor from five arguments to four, and drops `SessionPersistenceFluent.withIdleTimeout()`/`getIdleTimeout()`/`hasIdleTimeout()`, so the builder form (`withNewSessionPersistence().withIdleTimeout(...)`) no longer compiles. There is no runtime data loss: the class keeps its `@JsonAnyGetter`/`@JsonAnySetter`, and both the fluent and the builder carry `additionalProperties` through, so JSON or YAML still containing `idleTimeout` continues to deserialize and re-serialize intact
 * Fix #8028: (kube-api-test) `Fabric8ClientInjectionHandler` moved to `io.fabric8.kubeapitest.junit.inject`. It is resolved through `ServiceLoader`, so only code naming the class directly is affected
 * Fix #8028: (openshift-model) The bundle no longer exports or contains `io.fabric8.openshift.api.model.config.*`. Maven consumers are unaffected (`openshift-model-config` is a compile dependency), but OSGi deployments importing those packages must install the `openshift-model-config` bundle, which the `openshift-client` Karaf feature already does
 
