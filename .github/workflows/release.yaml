@@ -54,7 +54,7 @@ jobs:
         with:
           ref: ${{ github.event.inputs.tag }}
       - name: Setup Java 11
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v6
         with:
           java-version: 11
           distribution: ${{ github.event.inputs.java_distribution }}
