@@ -17,8 +17,6 @@ package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import tools.jackson.core.JsonGenerator;
 import tools.jackson.databind.DatabindException;
 import tools.jackson.databind.JavaType;
@@ -52,12 +50,8 @@ import java.util.stream.Stream;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonDeserialize
 @JsonSerialize(using = Duration.Serializer.class)
-@ToString
-@EqualsAndHashCode
 public class Duration implements KubernetesResource {
-
   private static final long serialVersionUID = -2326157920610452294L;
-
   private static final String DURATION_REGEX = "(\\d+)\\s*([A-Za-zµ]+)";
   private static final Pattern DURATION_PATTERN = Pattern.compile(DURATION_REGEX);
   private java.time.Duration javaDuration;
@@ -169,9 +163,7 @@ public class Duration implements KubernetesResource {
     final Matcher matcher = Optional.ofNullable(duration).map(String::trim).map(DURATION_PATTERN::matcher).orElse(null);
     while (matcher != null && matcher.find()) {
       found = true;
-      final java.time.Duration durationToken = Optional.ofNullable(TimeUnits.from(matcher.group(2)))
-          .map(tu -> java.time.Duration.of(Long.parseLong(matcher.group(1)), tu.timeUnit))
-          .orElseThrow(() -> new ParseException(String.format("Invalid duration token (%s)", matcher.group()), 0));
+      final java.time.Duration durationToken = Optional.ofNullable(TimeUnits.from(matcher.group(2))).map(tu -> java.time.Duration.of(Long.parseLong(matcher.group(1)), tu.timeUnit)).orElseThrow(() -> new ParseException(String.format("Invalid duration token (%s)", matcher.group()), 0));
       accumulator = accumulator.plus(durationToken);
     }
     if (!found) {
@@ -180,8 +172,8 @@ public class Duration implements KubernetesResource {
     return new Duration(accumulator);
   }
 
-  public static class Serializer extends StdSerializer<Duration> {
 
+  public static class Serializer extends StdSerializer<Duration> {
     public Serializer() {
       super(Duration.class);
     }
@@ -197,17 +189,9 @@ public class Duration implements KubernetesResource {
     }
   }
 
+
   private enum TimeUnits {
-
-    NANOSECOND(ChronoUnit.NANOS, "ns", "nano", "nanos"),
-    MICROSECOND(ChronoUnit.MICROS, "us", "µs", "micro", "micros"),
-    MILLISECOND(ChronoUnit.MILLIS, "ms", "milli", "millis"),
-    SECOND(ChronoUnit.SECONDS, "s", "sec", "secs"),
-    MINUTE(ChronoUnit.MINUTES, "m", "min", "mins"),
-    HOUR(ChronoUnit.HOURS, "h", "hr", "hour", "hours"),
-    DAY(ChronoUnit.DAYS, "d", "day", "days"),
-    WEEK(SevenDayWeek.INSTANCE, "w", "wk", "week", "weeks");
-
+    NANOSECOND(ChronoUnit.NANOS, "ns", "nano", "nanos"), MICROSECOND(ChronoUnit.MICROS, "us", "µs", "micro", "micros"), MILLISECOND(ChronoUnit.MILLIS, "ms", "milli", "millis"), SECOND(ChronoUnit.SECONDS, "s", "sec", "secs"), MINUTE(ChronoUnit.MINUTES, "m", "min", "mins"), HOUR(ChronoUnit.HOURS, "h", "hr", "hour", "hours"), DAY(ChronoUnit.DAYS, "d", "day", "days"), WEEK(SevenDayWeek.INSTANCE, "w", "wk", "week", "weeks");
     private final Set<String> abbreviations;
     private final TemporalUnit timeUnit;
 
@@ -217,19 +201,17 @@ public class Duration implements KubernetesResource {
     }
 
     static TimeUnits from(String abbreviation) {
-      return Stream.of(values()).filter(tu -> tu.abbreviations.contains(abbreviation.toLowerCase())).findAny()
-          .orElse(null);
+      return Stream.of(values()).filter(tu -> tu.abbreviations.contains(abbreviation.toLowerCase())).findAny().orElse(null);
     }
   }
+
 
   /**
    * Provides an <strong>exact</strong> {@link TemporalUnit} implementation
    * of a 7 day week.
    */
   private static class SevenDayWeek implements TemporalUnit {
-
     private static final SevenDayWeek INSTANCE = new SevenDayWeek();
-
     private static final java.time.Duration SEVEN_DAYS = java.time.Duration.ofDays(7L);
 
     private SevenDayWeek() {
@@ -265,5 +247,35 @@ public class Duration implements KubernetesResource {
     public long between(Temporal temporal1Inclusive, Temporal temporal2Exclusive) {
       return temporal1Inclusive.until(temporal2Exclusive, this);
     }
+  }
+
+  @java.lang.Override
+  public java.lang.String toString() {
+    return "Duration(javaDuration=" + this.javaDuration + ")";
+  }
+
+  @java.lang.Override
+  public boolean equals(final java.lang.Object o) {
+    if (o == this) return true;
+    if (!(o instanceof Duration)) return false;
+    final Duration other = (Duration) o;
+    if (!other.canEqual((java.lang.Object) this)) return false;
+    final java.lang.Object this$javaDuration = this.javaDuration;
+    final java.lang.Object other$javaDuration = other.javaDuration;
+    if (this$javaDuration == null ? other$javaDuration != null : !this$javaDuration.equals(other$javaDuration)) return false;
+    return true;
+  }
+
+  protected boolean canEqual(final java.lang.Object other) {
+    return other instanceof Duration;
+  }
+
+  @java.lang.Override
+  public int hashCode() {
+    final int PRIME = 59;
+    int result = 1;
+    final java.lang.Object $javaDuration = this.javaDuration;
+    result = result * PRIME + ($javaDuration == null ? 43 : $javaDuration.hashCode());
+    return result;
   }
 }
