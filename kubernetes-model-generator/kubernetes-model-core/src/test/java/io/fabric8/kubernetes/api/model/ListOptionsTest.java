@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.api.model;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.util.Map;
 
@@ -53,7 +53,8 @@ class ListOptionsTest {
         .withWatch(false)
         .withAdditionalProperties(Map.of("custom", "value"))
         .build();
-    final ListOptions copy = new ObjectMapper().readValue(new ObjectMapper().writeValueAsBytes(original), ListOptions.class);
+    final JsonMapper mapper = new JsonMapper();
+    final ListOptions copy = mapper.readValue(mapper.writeValueAsBytes(original), ListOptions.class);
 
     assertThat(copy)
         .isEqualTo(original)

@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -40,12 +37,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonPropertyOrder({
     "outboundSNAT",
     "routing"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class NoOverlayConfig implements Editable<NoOverlayConfigBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NoOverlayConfig)) {
+            return false;
+        }
+        NoOverlayConfig other = (NoOverlayConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$outboundSNAT = this.getOutboundSNAT();
+        Object other$outboundSNAT = other.getOutboundSNAT();
+        if (this$outboundSNAT == null ? other$outboundSNAT != null : !this$outboundSNAT.equals(other$outboundSNAT)) {
+            return false;
+        }
+        Object this$routing = this.getRouting();
+        Object other$routing = other.getRouting();
+        if (this$routing == null ? other$routing != null : !this$routing.equals(other$routing)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NoOverlayConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $outboundSNAT = this.getOutboundSNAT();
+        result = result * prime + ($outboundSNAT == null ? 43 : $outboundSNAT.hashCode());
+        Object $routing = this.getRouting();
+        result = result * prime + ($routing == null ? 43 : $routing.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NoOverlayConfig(" + "outboundSNAT=" + this.getOutboundSNAT() + ", routing=" + this.getRouting() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

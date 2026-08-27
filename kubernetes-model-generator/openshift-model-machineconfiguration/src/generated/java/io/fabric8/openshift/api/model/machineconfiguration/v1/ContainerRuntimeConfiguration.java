@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -48,12 +45,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "logSizeMax",
     "overlaySize",
     "pidsLimit"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -268,6 +259,99 @@ public class ContainerRuntimeConfiguration implements Editable<ContainerRuntimeC
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ContainerRuntimeConfiguration)) {
+            return false;
+        }
+        ContainerRuntimeConfiguration other = (ContainerRuntimeConfiguration) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$additionalArtifactStores = this.getAdditionalArtifactStores();
+        Object other$additionalArtifactStores = other.getAdditionalArtifactStores();
+        if (this$additionalArtifactStores == null ? other$additionalArtifactStores != null : !this$additionalArtifactStores.equals(other$additionalArtifactStores)) {
+            return false;
+        }
+        Object this$additionalImageStores = this.getAdditionalImageStores();
+        Object other$additionalImageStores = other.getAdditionalImageStores();
+        if (this$additionalImageStores == null ? other$additionalImageStores != null : !this$additionalImageStores.equals(other$additionalImageStores)) {
+            return false;
+        }
+        Object this$additionalLayerStores = this.getAdditionalLayerStores();
+        Object other$additionalLayerStores = other.getAdditionalLayerStores();
+        if (this$additionalLayerStores == null ? other$additionalLayerStores != null : !this$additionalLayerStores.equals(other$additionalLayerStores)) {
+            return false;
+        }
+        Object this$defaultRuntime = this.getDefaultRuntime();
+        Object other$defaultRuntime = other.getDefaultRuntime();
+        if (this$defaultRuntime == null ? other$defaultRuntime != null : !this$defaultRuntime.equals(other$defaultRuntime)) {
+            return false;
+        }
+        Object this$logLevel = this.getLogLevel();
+        Object other$logLevel = other.getLogLevel();
+        if (this$logLevel == null ? other$logLevel != null : !this$logLevel.equals(other$logLevel)) {
+            return false;
+        }
+        Object this$logSizeMax = this.getLogSizeMax();
+        Object other$logSizeMax = other.getLogSizeMax();
+        if (this$logSizeMax == null ? other$logSizeMax != null : !this$logSizeMax.equals(other$logSizeMax)) {
+            return false;
+        }
+        Object this$overlaySize = this.getOverlaySize();
+        Object other$overlaySize = other.getOverlaySize();
+        if (this$overlaySize == null ? other$overlaySize != null : !this$overlaySize.equals(other$overlaySize)) {
+            return false;
+        }
+        Object this$pidsLimit = this.getPidsLimit();
+        Object other$pidsLimit = other.getPidsLimit();
+        if (this$pidsLimit == null ? other$pidsLimit != null : !this$pidsLimit.equals(other$pidsLimit)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ContainerRuntimeConfiguration;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $additionalArtifactStores = this.getAdditionalArtifactStores();
+        result = result * prime + ($additionalArtifactStores == null ? 43 : $additionalArtifactStores.hashCode());
+        Object $additionalImageStores = this.getAdditionalImageStores();
+        result = result * prime + ($additionalImageStores == null ? 43 : $additionalImageStores.hashCode());
+        Object $additionalLayerStores = this.getAdditionalLayerStores();
+        result = result * prime + ($additionalLayerStores == null ? 43 : $additionalLayerStores.hashCode());
+        Object $defaultRuntime = this.getDefaultRuntime();
+        result = result * prime + ($defaultRuntime == null ? 43 : $defaultRuntime.hashCode());
+        Object $logLevel = this.getLogLevel();
+        result = result * prime + ($logLevel == null ? 43 : $logLevel.hashCode());
+        Object $logSizeMax = this.getLogSizeMax();
+        result = result * prime + ($logSizeMax == null ? 43 : $logSizeMax.hashCode());
+        Object $overlaySize = this.getOverlaySize();
+        result = result * prime + ($overlaySize == null ? 43 : $overlaySize.hashCode());
+        Object $pidsLimit = this.getPidsLimit();
+        result = result * prime + ($pidsLimit == null ? 43 : $pidsLimit.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ContainerRuntimeConfiguration(" + "additionalArtifactStores=" + this.getAdditionalArtifactStores() + ", additionalImageStores=" + this.getAdditionalImageStores() + ", additionalLayerStores=" + this.getAdditionalLayerStores() + ", defaultRuntime=" + this.getDefaultRuntime() + ", logLevel=" + this.getLogLevel() + ", logSizeMax=" + this.getLogSizeMax() + ", overlaySize=" + this.getOverlaySize() + ", pidsLimit=" + this.getPidsLimit() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

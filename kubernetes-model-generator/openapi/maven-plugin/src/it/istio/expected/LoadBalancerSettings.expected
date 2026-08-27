@@ -194,6 +194,11 @@ public class LoadBalancerSettings implements Editable<LoadBalancerSettingsBuilde
         if (this$warmupDurationSecs == null ? other$warmupDurationSecs != null : !this$warmupDurationSecs.equals(other$warmupDurationSecs)) {
             return false;
         }
+        Object this$zoneAwareLbSetting = this.getZoneAwareLbSetting();
+        Object other$zoneAwareLbSetting = other.getZoneAwareLbSetting();
+        if (this$zoneAwareLbSetting == null ? other$zoneAwareLbSetting != null : !this$zoneAwareLbSetting.equals(other$zoneAwareLbSetting)) {
+            return false;
+        }
         Object this$additionalProperties = this.getAdditionalProperties();
         Object other$additionalProperties = other.getAdditionalProperties();
         if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
@@ -218,6 +223,8 @@ public class LoadBalancerSettings implements Editable<LoadBalancerSettingsBuilde
         result = result * prime + ($warmup == null ? 43 : $warmup.hashCode());
         Object $warmupDurationSecs = this.getWarmupDurationSecs();
         result = result * prime + ($warmupDurationSecs == null ? 43 : $warmupDurationSecs.hashCode());
+        Object $zoneAwareLbSetting = this.getZoneAwareLbSetting();
+        result = result * prime + ($zoneAwareLbSetting == null ? 43 : $zoneAwareLbSetting.hashCode());
         Object $additionalProperties = this.getAdditionalProperties();
         result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
         return result;
@@ -225,7 +232,7 @@ public class LoadBalancerSettings implements Editable<LoadBalancerSettingsBuilde
 
     @Override
     public String toString() {
-        return "LoadBalancerSettings(" + "lbPolicy=" + this.getLbPolicy() + ", localityLbSetting=" + this.getLocalityLbSetting() + ", warmup=" + this.getWarmup() + ", warmupDurationSecs=" + this.getWarmupDurationSecs() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
+        return "LoadBalancerSettings(" + "lbPolicy=" + this.getLbPolicy() + ", localityLbSetting=" + this.getLocalityLbSetting() + ", warmup=" + this.getWarmup() + ", warmupDurationSecs=" + this.getWarmupDurationSecs() + ", zoneAwareLbSetting=" + this.getZoneAwareLbSetting() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

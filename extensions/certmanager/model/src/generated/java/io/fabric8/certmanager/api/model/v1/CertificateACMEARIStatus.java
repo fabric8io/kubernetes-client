@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
@@ -40,12 +37,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "lastError",
     "nextCheck",
     "suggestedWindow"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -179,6 +170,78 @@ public class CertificateACMEARIStatus implements Editable<CertificateACMEARIStat
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CertificateACMEARIStatus)) {
+            return false;
+        }
+        CertificateACMEARIStatus other = (CertificateACMEARIStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$explanationURL = this.getExplanationURL();
+        Object other$explanationURL = other.getExplanationURL();
+        if (this$explanationURL == null ? other$explanationURL != null : !this$explanationURL.equals(other$explanationURL)) {
+            return false;
+        }
+        Object this$lastChecked = this.getLastChecked();
+        Object other$lastChecked = other.getLastChecked();
+        if (this$lastChecked == null ? other$lastChecked != null : !this$lastChecked.equals(other$lastChecked)) {
+            return false;
+        }
+        Object this$lastError = this.getLastError();
+        Object other$lastError = other.getLastError();
+        if (this$lastError == null ? other$lastError != null : !this$lastError.equals(other$lastError)) {
+            return false;
+        }
+        Object this$nextCheck = this.getNextCheck();
+        Object other$nextCheck = other.getNextCheck();
+        if (this$nextCheck == null ? other$nextCheck != null : !this$nextCheck.equals(other$nextCheck)) {
+            return false;
+        }
+        Object this$suggestedWindow = this.getSuggestedWindow();
+        Object other$suggestedWindow = other.getSuggestedWindow();
+        if (this$suggestedWindow == null ? other$suggestedWindow != null : !this$suggestedWindow.equals(other$suggestedWindow)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CertificateACMEARIStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $explanationURL = this.getExplanationURL();
+        result = result * prime + ($explanationURL == null ? 43 : $explanationURL.hashCode());
+        Object $lastChecked = this.getLastChecked();
+        result = result * prime + ($lastChecked == null ? 43 : $lastChecked.hashCode());
+        Object $lastError = this.getLastError();
+        result = result * prime + ($lastError == null ? 43 : $lastError.hashCode());
+        Object $nextCheck = this.getNextCheck();
+        result = result * prime + ($nextCheck == null ? 43 : $nextCheck.hashCode());
+        Object $suggestedWindow = this.getSuggestedWindow();
+        result = result * prime + ($suggestedWindow == null ? 43 : $suggestedWindow.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CertificateACMEARIStatus(" + "explanationURL=" + this.getExplanationURL() + ", lastChecked=" + this.getLastChecked() + ", lastError=" + this.getLastError() + ", nextCheck=" + this.getNextCheck() + ", suggestedWindow=" + this.getSuggestedWindow() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }
