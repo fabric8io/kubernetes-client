@@ -25,7 +25,7 @@ public class NodeSpecBuilder extends NodeSpecFluent<NodeSpecBuilder> implements 
   }
 
   public NodeSpec build() {
-    NodeSpec buildable = new NodeSpec(fluent.buildConfigSource(), fluent.getExternalID(), fluent.getPodCIDR(), fluent.getPodCIDRs(), fluent.getProviderID(), fluent.buildTaints(), fluent.getUnschedulable());
+    NodeSpec buildable = new NodeSpec(fluent.buildConfigSource(), fluent.getExternalID(), fluent.getPodCIDR(), fluent.getPodCIDRs(), fluent.buildPodPreemptionPolicy(), fluent.getProviderID(), fluent.buildTaints(), fluent.getUnschedulable());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

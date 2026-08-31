@@ -2,6 +2,7 @@ package io.fabric8.kubernetes.api.model;
 
 import io.fabric8.kubernetes.api.builder.BaseFluent;
 import io.fabric8.kubernetes.api.builder.Nested;
+import java.lang.Boolean;
 import java.lang.Long;
 import java.lang.Object;
 import java.lang.String;
@@ -28,6 +29,7 @@ public class NodeSystemInfoFluent<A extends io.fabric8.kubernetes.api.model.Node
   private String machineID;
   private String operatingSystem;
   private String osImage;
+  private Boolean runningInUserNamespace;
   private NodeSwapStatusBuilder swap;
   private String systemUUID;
 
@@ -74,6 +76,7 @@ public class NodeSystemInfoFluent<A extends io.fabric8.kubernetes.api.model.Node
         this.withMachineID(instance.getMachineID());
         this.withOperatingSystem(instance.getOperatingSystem());
         this.withOsImage(instance.getOsImage());
+        this.withRunningInUserNamespace(instance.getRunningInUserNamespace());
         this.withSwap(instance.getSwap());
         this.withSystemUUID(instance.getSystemUUID());
         this.withAdditionalProperties(instance.getAdditionalProperties());
@@ -130,6 +133,9 @@ public class NodeSystemInfoFluent<A extends io.fabric8.kubernetes.api.model.Node
     if (!(Objects.equals(osImage, that.osImage))) {
       return false;
     }
+    if (!(Objects.equals(runningInUserNamespace, that.runningInUserNamespace))) {
+      return false;
+    }
     if (!(Objects.equals(swap, that.swap))) {
       return false;
     }
@@ -182,6 +188,10 @@ public class NodeSystemInfoFluent<A extends io.fabric8.kubernetes.api.model.Node
     return this.osImage;
   }
   
+  public Boolean getRunningInUserNamespace() {
+    return this.runningInUserNamespace;
+  }
+  
   public String getSystemUUID() {
     return this.systemUUID;
   }
@@ -226,6 +236,10 @@ public class NodeSystemInfoFluent<A extends io.fabric8.kubernetes.api.model.Node
     return this.osImage != null;
   }
   
+  public boolean hasRunningInUserNamespace() {
+    return this.runningInUserNamespace != null;
+  }
+  
   public boolean hasSwap() {
     return this.swap != null;
   }
@@ -235,7 +249,7 @@ public class NodeSystemInfoFluent<A extends io.fabric8.kubernetes.api.model.Node
   }
   
   public int hashCode() {
-    return Objects.hash(architecture, bootID, containerRuntimeVersion, kernelVersion, kubeProxyVersion, kubeletVersion, machineID, operatingSystem, osImage, swap, systemUUID, additionalProperties);
+    return Objects.hash(architecture, bootID, containerRuntimeVersion, kernelVersion, kubeProxyVersion, kubeletVersion, machineID, operatingSystem, osImage, runningInUserNamespace, swap, systemUUID, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -308,6 +322,11 @@ public class NodeSystemInfoFluent<A extends io.fabric8.kubernetes.api.model.Node
     if (!(osImage == null)) {
         sb.append("osImage:");
         sb.append(osImage);
+        sb.append(",");
+    }
+    if (!(runningInUserNamespace == null)) {
+        sb.append("runningInUserNamespace:");
+        sb.append(runningInUserNamespace);
         sb.append(",");
     }
     if (!(swap == null)) {
@@ -391,6 +410,15 @@ public class NodeSystemInfoFluent<A extends io.fabric8.kubernetes.api.model.Node
   
   public A withOsImage(String osImage) {
     this.osImage = osImage;
+    return (A) this;
+  }
+  
+  public A withRunningInUserNamespace() {
+    return withRunningInUserNamespace(true);
+  }
+  
+  public A withRunningInUserNamespace(Boolean runningInUserNamespace) {
+    this.runningInUserNamespace = runningInUserNamespace;
     return (A) this;
   }
   

@@ -94,7 +94,7 @@ public class ParentReference implements Editable<ParentReferenceBuilder>, Kubern
     }
 
     /**
-     * Group is the group of the object being referenced.
+     * group is the group of the object being referenced.
      */
     @JsonProperty("group")
     public String getGroup() {
@@ -102,7 +102,7 @@ public class ParentReference implements Editable<ParentReferenceBuilder>, Kubern
     }
 
     /**
-     * Group is the group of the object being referenced.
+     * group is the group of the object being referenced.
      */
     @JsonProperty("group")
     public void setGroup(String group) {
@@ -110,7 +110,7 @@ public class ParentReference implements Editable<ParentReferenceBuilder>, Kubern
     }
 
     /**
-     * Name is the name of the object being referenced.
+     * name is the name of the object being referenced.
      */
     @JsonProperty("name")
     public String getName() {
@@ -118,7 +118,7 @@ public class ParentReference implements Editable<ParentReferenceBuilder>, Kubern
     }
 
     /**
-     * Name is the name of the object being referenced.
+     * name is the name of the object being referenced.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -126,7 +126,7 @@ public class ParentReference implements Editable<ParentReferenceBuilder>, Kubern
     }
 
     /**
-     * Namespace is the namespace of the object being referenced.
+     * namespace is the namespace of the object being referenced.
      */
     @JsonProperty("namespace")
     public String getNamespace() {
@@ -134,7 +134,7 @@ public class ParentReference implements Editable<ParentReferenceBuilder>, Kubern
     }
 
     /**
-     * Namespace is the namespace of the object being referenced.
+     * namespace is the namespace of the object being referenced.
      */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {
@@ -142,7 +142,7 @@ public class ParentReference implements Editable<ParentReferenceBuilder>, Kubern
     }
 
     /**
-     * Resource is the resource of the object being referenced.
+     * resource is the resource of the object being referenced.
      */
     @JsonProperty("resource")
     public String getResource() {
@@ -150,7 +150,7 @@ public class ParentReference implements Editable<ParentReferenceBuilder>, Kubern
     }
 
     /**
-     * Resource is the resource of the object being referenced.
+     * resource is the resource of the object being referenced.
      */
     @JsonProperty("resource")
     public void setResource(String resource) {

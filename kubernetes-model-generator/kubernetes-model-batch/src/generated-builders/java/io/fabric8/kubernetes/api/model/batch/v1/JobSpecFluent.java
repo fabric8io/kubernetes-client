@@ -38,6 +38,7 @@ public class JobSpecFluent<A extends io.fabric8.kubernetes.api.model.batch.v1.Jo
   private Integer parallelism;
   private PodFailurePolicyBuilder podFailurePolicy;
   private String podReplacementPolicy;
+  private JobSchedulingConfigurationBuilder scheduling;
   private LabelSelectorBuilder selector;
   private SuccessPolicyBuilder successPolicy;
   private Boolean suspend;
@@ -75,6 +76,10 @@ public class JobSpecFluent<A extends io.fabric8.kubernetes.api.model.batch.v1.Jo
     return this.podFailurePolicy != null ? this.podFailurePolicy.build() : null;
   }
   
+  public JobSchedulingConfiguration buildScheduling() {
+    return this.scheduling != null ? this.scheduling.build() : null;
+  }
+  
   public LabelSelector buildSelector() {
     return this.selector != null ? this.selector.build() : null;
   }
@@ -101,6 +106,7 @@ public class JobSpecFluent<A extends io.fabric8.kubernetes.api.model.batch.v1.Jo
         this.withParallelism(instance.getParallelism());
         this.withPodFailurePolicy(instance.getPodFailurePolicy());
         this.withPodReplacementPolicy(instance.getPodReplacementPolicy());
+        this.withScheduling(instance.getScheduling());
         this.withSelector(instance.getSelector());
         this.withSuccessPolicy(instance.getSuccessPolicy());
         this.withSuspend(instance.getSuspend());
@@ -116,6 +122,14 @@ public class JobSpecFluent<A extends io.fabric8.kubernetes.api.model.batch.v1.Jo
   
   public PodFailurePolicyNested<A> editOrNewPodFailurePolicyLike(PodFailurePolicy item) {
     return this.withNewPodFailurePolicyLike(Optional.ofNullable(this.buildPodFailurePolicy()).orElse(item));
+  }
+  
+  public SchedulingNested<A> editOrNewScheduling() {
+    return this.withNewSchedulingLike(Optional.ofNullable(this.buildScheduling()).orElse(new JobSchedulingConfigurationBuilder().build()));
+  }
+  
+  public SchedulingNested<A> editOrNewSchedulingLike(JobSchedulingConfiguration item) {
+    return this.withNewSchedulingLike(Optional.ofNullable(this.buildScheduling()).orElse(item));
   }
   
   public SelectorNested<A> editOrNewSelector() {
@@ -144,6 +158,10 @@ public class JobSpecFluent<A extends io.fabric8.kubernetes.api.model.batch.v1.Jo
   
   public PodFailurePolicyNested<A> editPodFailurePolicy() {
     return this.withNewPodFailurePolicyLike(Optional.ofNullable(this.buildPodFailurePolicy()).orElse(null));
+  }
+  
+  public SchedulingNested<A> editScheduling() {
+    return this.withNewSchedulingLike(Optional.ofNullable(this.buildScheduling()).orElse(null));
   }
   
   public SelectorNested<A> editSelector() {
@@ -200,6 +218,9 @@ public class JobSpecFluent<A extends io.fabric8.kubernetes.api.model.batch.v1.Jo
       return false;
     }
     if (!(Objects.equals(podReplacementPolicy, that.podReplacementPolicy))) {
+      return false;
+    }
+    if (!(Objects.equals(scheduling, that.scheduling))) {
       return false;
     }
     if (!(Objects.equals(selector, that.selector))) {
@@ -323,6 +344,10 @@ public class JobSpecFluent<A extends io.fabric8.kubernetes.api.model.batch.v1.Jo
     return this.podReplacementPolicy != null;
   }
   
+  public boolean hasScheduling() {
+    return this.scheduling != null;
+  }
+  
   public boolean hasSelector() {
     return this.selector != null;
   }
@@ -344,7 +369,7 @@ public class JobSpecFluent<A extends io.fabric8.kubernetes.api.model.batch.v1.Jo
   }
   
   public int hashCode() {
-    return Objects.hash(activeDeadlineSeconds, backoffLimit, backoffLimitPerIndex, completionMode, completions, managedBy, manualSelector, maxFailedIndexes, parallelism, podFailurePolicy, podReplacementPolicy, selector, successPolicy, suspend, template, ttlSecondsAfterFinished, additionalProperties);
+    return Objects.hash(activeDeadlineSeconds, backoffLimit, backoffLimitPerIndex, completionMode, completions, managedBy, manualSelector, maxFailedIndexes, parallelism, podFailurePolicy, podReplacementPolicy, scheduling, selector, successPolicy, suspend, template, ttlSecondsAfterFinished, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -427,6 +452,11 @@ public class JobSpecFluent<A extends io.fabric8.kubernetes.api.model.batch.v1.Jo
     if (!(podReplacementPolicy == null)) {
         sb.append("podReplacementPolicy:");
         sb.append(podReplacementPolicy);
+        sb.append(",");
+    }
+    if (!(scheduling == null)) {
+        sb.append("scheduling:");
+        sb.append(scheduling);
         sb.append(",");
     }
     if (!(selector == null)) {
@@ -523,6 +553,14 @@ public class JobSpecFluent<A extends io.fabric8.kubernetes.api.model.batch.v1.Jo
     return new PodFailurePolicyNested(item);
   }
   
+  public SchedulingNested<A> withNewScheduling() {
+    return new SchedulingNested(null);
+  }
+  
+  public SchedulingNested<A> withNewSchedulingLike(JobSchedulingConfiguration item) {
+    return new SchedulingNested(item);
+  }
+  
   public SelectorNested<A> withNewSelector() {
     return new SelectorNested(null);
   }
@@ -566,6 +604,18 @@ public class JobSpecFluent<A extends io.fabric8.kubernetes.api.model.batch.v1.Jo
   
   public A withPodReplacementPolicy(String podReplacementPolicy) {
     this.podReplacementPolicy = podReplacementPolicy;
+    return (A) this;
+  }
+  
+  public A withScheduling(JobSchedulingConfiguration scheduling) {
+    this._visitables.remove("scheduling");
+    if (scheduling != null) {
+        this.scheduling = new JobSchedulingConfigurationBuilder(scheduling);
+        this._visitables.get("scheduling").add(this.scheduling);
+    } else {
+        this.scheduling = null;
+        this._visitables.get("scheduling").remove(this.scheduling);
+    }
     return (A) this;
   }
   
@@ -631,6 +681,23 @@ public class JobSpecFluent<A extends io.fabric8.kubernetes.api.model.batch.v1.Jo
     }
     
     public N endPodFailurePolicy() {
+      return and();
+    }
+    
+  }
+  public class SchedulingNested<N> extends JobSchedulingConfigurationFluent<SchedulingNested<N>> implements Nested<N>{
+  
+    JobSchedulingConfigurationBuilder builder;
+  
+    SchedulingNested(JobSchedulingConfiguration item) {
+      this.builder = new JobSchedulingConfigurationBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) JobSpecFluent.this.withScheduling(builder.build());
+    }
+    
+    public N endScheduling() {
       return and();
     }
     

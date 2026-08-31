@@ -25,7 +25,7 @@ public class EmptyDirVolumeSourceBuilder extends EmptyDirVolumeSourceFluent<Empt
   }
 
   public EmptyDirVolumeSource build() {
-    EmptyDirVolumeSource buildable = new EmptyDirVolumeSource(fluent.getMedium(), fluent.buildSizeLimit());
+    EmptyDirVolumeSource buildable = new EmptyDirVolumeSource(fluent.getMedium(), fluent.getMode(), fluent.buildSizeLimit());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

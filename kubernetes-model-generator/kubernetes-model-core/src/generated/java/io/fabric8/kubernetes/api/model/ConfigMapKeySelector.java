@@ -61,7 +61,7 @@ public class ConfigMapKeySelector implements Editable<ConfigMapKeySelectorBuilde
     }
 
     /**
-     * The key to select.
+     * The key to select from the ConfigMap's Data field. Keys in the BinaryData field are not currently propagated to container env vars.
      */
     @JsonProperty("key")
     public String getKey() {
@@ -69,7 +69,7 @@ public class ConfigMapKeySelector implements Editable<ConfigMapKeySelectorBuilde
     }
 
     /**
-     * The key to select.
+     * The key to select from the ConfigMap's Data field. Keys in the BinaryData field are not currently propagated to container env vars.
      */
     @JsonProperty("key")
     public void setKey(String key) {

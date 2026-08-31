@@ -85,7 +85,7 @@ public class AggregationRule implements Editable<AggregationRuleBuilder>, Kubern
     }
 
     /**
-     * ClusterRoleSelectors holds a list of selectors which will be used to find ClusterRoles and create the rules. If any of the selectors match, then the ClusterRole's permissions will be added
+     * clusterRoleSelectors holds a list of selectors which will be used to find ClusterRoles and create the rules. If any of the selectors match, then the ClusterRole's permissions will be added
      */
     @JsonProperty("clusterRoleSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -94,7 +94,7 @@ public class AggregationRule implements Editable<AggregationRuleBuilder>, Kubern
     }
 
     /**
-     * ClusterRoleSelectors holds a list of selectors which will be used to find ClusterRoles and create the rules. If any of the selectors match, then the ClusterRole's permissions will be added
+     * clusterRoleSelectors holds a list of selectors which will be used to find ClusterRoles and create the rules. If any of the selectors match, then the ClusterRole's permissions will be added
      */
     @JsonProperty("clusterRoleSelectors")
     public void setClusterRoleSelectors(List<LabelSelector> clusterRoleSelectors) {

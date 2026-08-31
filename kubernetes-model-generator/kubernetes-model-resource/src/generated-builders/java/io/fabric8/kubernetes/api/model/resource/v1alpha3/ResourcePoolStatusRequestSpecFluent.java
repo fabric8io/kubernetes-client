@@ -17,6 +17,7 @@ import java.util.Objects;
 public class ResourcePoolStatusRequestSpecFluent<A extends io.fabric8.kubernetes.api.model.resource.v1alpha3.ResourcePoolStatusRequestSpecFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
+  private String defaultPartitionTypeAttribute;
   private String driver;
   private Integer limit;
   private String poolName;
@@ -51,6 +52,7 @@ public class ResourcePoolStatusRequestSpecFluent<A extends io.fabric8.kubernetes
   protected void copyInstance(ResourcePoolStatusRequestSpec instance) {
     instance = instance != null ? instance : new ResourcePoolStatusRequestSpec();
     if (instance != null) {
+        this.withDefaultPartitionTypeAttribute(instance.getDefaultPartitionTypeAttribute());
         this.withDriver(instance.getDriver());
         this.withLimit(instance.getLimit());
         this.withPoolName(instance.getPoolName());
@@ -69,6 +71,9 @@ public class ResourcePoolStatusRequestSpecFluent<A extends io.fabric8.kubernetes
       return false;
     }
     ResourcePoolStatusRequestSpecFluent that = (ResourcePoolStatusRequestSpecFluent) o;
+    if (!(Objects.equals(defaultPartitionTypeAttribute, that.defaultPartitionTypeAttribute))) {
+      return false;
+    }
     if (!(Objects.equals(driver, that.driver))) {
       return false;
     }
@@ -88,6 +93,10 @@ public class ResourcePoolStatusRequestSpecFluent<A extends io.fabric8.kubernetes
     return this.additionalProperties;
   }
   
+  public String getDefaultPartitionTypeAttribute() {
+    return this.defaultPartitionTypeAttribute;
+  }
+  
   public String getDriver() {
     return this.driver;
   }
@@ -104,6 +113,10 @@ public class ResourcePoolStatusRequestSpecFluent<A extends io.fabric8.kubernetes
     return this.additionalProperties != null;
   }
   
+  public boolean hasDefaultPartitionTypeAttribute() {
+    return this.defaultPartitionTypeAttribute != null;
+  }
+  
   public boolean hasDriver() {
     return this.driver != null;
   }
@@ -117,7 +130,7 @@ public class ResourcePoolStatusRequestSpecFluent<A extends io.fabric8.kubernetes
   }
   
   public int hashCode() {
-    return Objects.hash(driver, limit, poolName, additionalProperties);
+    return Objects.hash(defaultPartitionTypeAttribute, driver, limit, poolName, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -147,6 +160,11 @@ public class ResourcePoolStatusRequestSpecFluent<A extends io.fabric8.kubernetes
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
+    if (!(defaultPartitionTypeAttribute == null)) {
+        sb.append("defaultPartitionTypeAttribute:");
+        sb.append(defaultPartitionTypeAttribute);
+        sb.append(",");
+    }
     if (!(driver == null)) {
         sb.append("driver:");
         sb.append(driver);
@@ -176,6 +194,11 @@ public class ResourcePoolStatusRequestSpecFluent<A extends io.fabric8.kubernetes
     } else {
       this.additionalProperties = new LinkedHashMap(additionalProperties);
     }
+    return (A) this;
+  }
+  
+  public A withDefaultPartitionTypeAttribute(String defaultPartitionTypeAttribute) {
+    this.defaultPartitionTypeAttribute = defaultPartitionTypeAttribute;
     return (A) this;
   }
   

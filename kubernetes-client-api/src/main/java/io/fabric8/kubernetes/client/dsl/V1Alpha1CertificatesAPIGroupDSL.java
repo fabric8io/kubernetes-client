@@ -15,31 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundle;
-import io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundleList;
 import io.fabric8.kubernetes.client.Client;
 
+/**
+ * @deprecated certificates.k8s.io/v1alpha1 API has been removed in Kubernetes 1.37.
+ *             Use {@link V1CertificatesAPIGroupDSL} or {@link V1beta1CertificatesAPIGroupDSL} instead.
+ */
+@Deprecated
 public interface V1Alpha1CertificatesAPIGroupDSL extends Client {
-  /**
-   * API entrypoint for certificates.k8s.io/v1alpha1 ClusterTrustBundle
-   * <br>
-   * ClusterTrustBundle is a cluster-scoped container for X.509 trust anchors
-   * (root certificates).
-   * <br>
-   * ClusterTrustBundle objects are considered to be readable by any authenticated
-   * user in the cluster, because they can be mounted by pods using the
-   * `clusterTrustBundle` projection. All service accounts have read access to
-   * ClusterTrustBundles by default. Users who only have namespace-level access
-   * to a cluster can read ClusterTrustBundles by impersonating a serviceaccount
-   * that they have access to.
-   * <br>
-   * It can be optionally associated with a particular assigner, in which case it
-   * contains one valid set of trust anchors for that signer. Signers may have
-   * multiple associated ClusterTrustBundles; each is an independent set of trust
-   * anchors for that signer. Admission control is used to enforce that only users
-   * with permissions on the signer can create or modify the corresponding bundle.
-   *
-   * @return {@link NonNamespaceOperation} for ClusterTrustBundle
-   */
-  NonNamespaceOperation<ClusterTrustBundle, ClusterTrustBundleList, Resource<ClusterTrustBundle>> clusterTrustBundles();
 }

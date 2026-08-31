@@ -29,6 +29,7 @@ import lombok.experimental.Accessors;
     "keyType",
     "maxExpirationSeconds",
     "signerName",
+    "user",
     "userAnnotations"
 })
 @ToString
@@ -54,6 +55,8 @@ public class PodCertificateProjection implements Editable<PodCertificateProjecti
     private Integer maxExpirationSeconds;
     @JsonProperty("signerName")
     private String signerName;
+    @JsonProperty("user")
+    private Long user;
     @JsonProperty("userAnnotations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> userAnnotations = new LinkedHashMap<>();
@@ -66,7 +69,7 @@ public class PodCertificateProjection implements Editable<PodCertificateProjecti
     public PodCertificateProjection() {
     }
 
-    public PodCertificateProjection(String certificateChainPath, String credentialBundlePath, String keyPath, String keyType, Integer maxExpirationSeconds, String signerName, Map<String, String> userAnnotations) {
+    public PodCertificateProjection(String certificateChainPath, String credentialBundlePath, String keyPath, String keyType, Integer maxExpirationSeconds, String signerName, Long user, Map<String, String> userAnnotations) {
         super();
         this.certificateChainPath = certificateChainPath;
         this.credentialBundlePath = credentialBundlePath;
@@ -74,6 +77,7 @@ public class PodCertificateProjection implements Editable<PodCertificateProjecti
         this.keyType = keyType;
         this.maxExpirationSeconds = maxExpirationSeconds;
         this.signerName = signerName;
+        this.user = user;
         this.userAnnotations = userAnnotations;
     }
 
@@ -171,6 +175,22 @@ public class PodCertificateProjection implements Editable<PodCertificateProjecti
     @JsonProperty("signerName")
     public void setSignerName(String signerName) {
         this.signerName = signerName;
+    }
+
+    /**
+     * user is Optional: The owner UID of the created file. If specified, the item-level user field takes precedence over defaultUser. (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+     */
+    @JsonProperty("user")
+    public Long getUser() {
+        return user;
+    }
+
+    /**
+     * user is Optional: The owner UID of the created file. If specified, the item-level user field takes precedence over defaultUser. (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+     */
+    @JsonProperty("user")
+    public void setUser(Long user) {
+        this.user = user;
     }
 
     /**

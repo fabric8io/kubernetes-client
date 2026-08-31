@@ -25,7 +25,7 @@ public class DeviceBuilder extends DeviceFluent<DeviceBuilder> implements Visita
   }
 
   public Device build() {
-    Device buildable = new Device(fluent.getAllNodes(), fluent.getAllowMultipleAllocations(), fluent.getAttributes(), fluent.getBindingConditions(), fluent.getBindingFailureConditions(), fluent.getBindsToNode(), fluent.getCapacity(), fluent.buildConsumesCounters(), fluent.getName(), fluent.getNodeAllocatableResourceMappings(), fluent.getNodeName(), fluent.getNodeSelector(), fluent.buildTaints());
+    Device buildable = new Device(fluent.getAllNodes(), fluent.getAllowMultipleAllocations(), fluent.getAttributes(), fluent.getBindingConditions(), fluent.getBindingFailureConditions(), fluent.getBindsToNode(), fluent.getCapacity(), fluent.buildConsumesCounters(), fluent.getName(), fluent.getNodeAllocatableResources(), fluent.getNodeName(), fluent.getNodeSelector(), fluent.buildTaints());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

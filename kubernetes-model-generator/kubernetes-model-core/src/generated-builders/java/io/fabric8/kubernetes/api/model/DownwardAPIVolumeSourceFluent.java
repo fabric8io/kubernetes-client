@@ -3,6 +3,7 @@ package io.fabric8.kubernetes.api.model;
 import io.fabric8.kubernetes.api.builder.BaseFluent;
 import io.fabric8.kubernetes.api.builder.Nested;
 import java.lang.Integer;
+import java.lang.Long;
 import java.lang.Object;
 import java.lang.RuntimeException;
 import java.lang.String;
@@ -25,6 +26,7 @@ public class DownwardAPIVolumeSourceFluent<A extends io.fabric8.kubernetes.api.m
 
   private Map<String,Object> additionalProperties;
   private Integer defaultMode;
+  private Long defaultUser;
   private ArrayList<DownwardAPIVolumeFileBuilder> items = new ArrayList<DownwardAPIVolumeFileBuilder>();
 
   public DownwardAPIVolumeSourceFluent() {
@@ -130,6 +132,7 @@ public class DownwardAPIVolumeSourceFluent<A extends io.fabric8.kubernetes.api.m
     instance = instance != null ? instance : new DownwardAPIVolumeSource();
     if (instance != null) {
         this.withDefaultMode(instance.getDefaultMode());
+        this.withDefaultUser(instance.getDefaultUser());
         this.withItems(instance.getItems());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -185,6 +188,9 @@ public class DownwardAPIVolumeSourceFluent<A extends io.fabric8.kubernetes.api.m
     if (!(Objects.equals(defaultMode, that.defaultMode))) {
       return false;
     }
+    if (!(Objects.equals(defaultUser, that.defaultUser))) {
+      return false;
+    }
     if (!(Objects.equals(items, that.items))) {
       return false;
     }
@@ -202,12 +208,20 @@ public class DownwardAPIVolumeSourceFluent<A extends io.fabric8.kubernetes.api.m
     return this.defaultMode;
   }
   
+  public Long getDefaultUser() {
+    return this.defaultUser;
+  }
+  
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
   }
   
   public boolean hasDefaultMode() {
     return this.defaultMode != null;
+  }
+  
+  public boolean hasDefaultUser() {
+    return this.defaultUser != null;
   }
   
   public boolean hasItems() {
@@ -224,7 +238,7 @@ public class DownwardAPIVolumeSourceFluent<A extends io.fabric8.kubernetes.api.m
   }
   
   public int hashCode() {
-    return Objects.hash(defaultMode, items, additionalProperties);
+    return Objects.hash(defaultMode, defaultUser, items, additionalProperties);
   }
   
   public A removeAllFromItems(Collection<DownwardAPIVolumeFile> items) {
@@ -318,6 +332,11 @@ public class DownwardAPIVolumeSourceFluent<A extends io.fabric8.kubernetes.api.m
         sb.append(defaultMode);
         sb.append(",");
     }
+    if (!(defaultUser == null)) {
+        sb.append("defaultUser:");
+        sb.append(defaultUser);
+        sb.append(",");
+    }
     if (!(items == null) && !(items.isEmpty())) {
         sb.append("items:");
         sb.append(items);
@@ -342,6 +361,11 @@ public class DownwardAPIVolumeSourceFluent<A extends io.fabric8.kubernetes.api.m
   
   public A withDefaultMode(Integer defaultMode) {
     this.defaultMode = defaultMode;
+    return (A) this;
+  }
+  
+  public A withDefaultUser(Long defaultUser) {
+    this.defaultUser = defaultUser;
     return (A) this;
   }
   

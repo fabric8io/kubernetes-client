@@ -1,7 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.resource.v1alpha3;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -43,8 +45,10 @@ import lombok.experimental.Accessors;
     "driver",
     "generation",
     "nodeName",
+    "partitionSummary",
     "poolName",
     "resourceSliceCount",
+    "shareableSummary",
     "totalDevices",
     "unavailableDevices",
     "validationError"
@@ -84,10 +88,15 @@ public class PoolStatus implements Editable<PoolStatusBuilder>, KubernetesResour
     private Long generation;
     @JsonProperty("nodeName")
     private String nodeName;
+    @JsonProperty("partitionSummary")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<PartitionTypeStatus> partitionSummary = new ArrayList<>();
     @JsonProperty("poolName")
     private String poolName;
     @JsonProperty("resourceSliceCount")
     private Integer resourceSliceCount;
+    @JsonProperty("shareableSummary")
+    private ShareableSummaryStatus shareableSummary;
     @JsonProperty("totalDevices")
     private Integer totalDevices;
     @JsonProperty("unavailableDevices")
@@ -103,15 +112,17 @@ public class PoolStatus implements Editable<PoolStatusBuilder>, KubernetesResour
     public PoolStatus() {
     }
 
-    public PoolStatus(Integer allocatedDevices, Integer availableDevices, String driver, Long generation, String nodeName, String poolName, Integer resourceSliceCount, Integer totalDevices, Integer unavailableDevices, String validationError) {
+    public PoolStatus(Integer allocatedDevices, Integer availableDevices, String driver, Long generation, String nodeName, List<PartitionTypeStatus> partitionSummary, String poolName, Integer resourceSliceCount, ShareableSummaryStatus shareableSummary, Integer totalDevices, Integer unavailableDevices, String validationError) {
         super();
         this.allocatedDevices = allocatedDevices;
         this.availableDevices = availableDevices;
         this.driver = driver;
         this.generation = generation;
         this.nodeName = nodeName;
+        this.partitionSummary = partitionSummary;
         this.poolName = poolName;
         this.resourceSliceCount = resourceSliceCount;
+        this.shareableSummary = shareableSummary;
         this.totalDevices = totalDevices;
         this.unavailableDevices = unavailableDevices;
         this.validationError = validationError;
@@ -198,6 +209,23 @@ public class PoolStatus implements Editable<PoolStatusBuilder>, KubernetesResour
     }
 
     /**
+     * PartitionSummary reports allocatability per (attribute, partition type) for a partitionable pool that publishes SharedCounters. Each entry names the grouping attribute it was resolved from: the PartitionTypeAttribute declared by a device's own slice, or for devices whose slice declares none, the default named in the request. A pool that mixes partitions declared under different attributes reports each independently. When no slice declares an attribute and the request names no default, the pool reports no partition summary.
+     */
+    @JsonProperty("partitionSummary")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<PartitionTypeStatus> getPartitionSummary() {
+        return partitionSummary;
+    }
+
+    /**
+     * PartitionSummary reports allocatability per (attribute, partition type) for a partitionable pool that publishes SharedCounters. Each entry names the grouping attribute it was resolved from: the PartitionTypeAttribute declared by a device's own slice, or for devices whose slice declares none, the default named in the request. A pool that mixes partitions declared under different attributes reports each independently. When no slice declares an attribute and the request names no default, the pool reports no partition summary.
+     */
+    @JsonProperty("partitionSummary")
+    public void setPartitionSummary(List<PartitionTypeStatus> partitionSummary) {
+        this.partitionSummary = partitionSummary;
+    }
+
+    /**
      * PoolName is the name of the pool. Must be a valid resource pool name (DNS subdomains separated by "/").
      */
     @JsonProperty("poolName")
@@ -227,6 +255,22 @@ public class PoolStatus implements Editable<PoolStatusBuilder>, KubernetesResour
     @JsonProperty("resourceSliceCount")
     public void setResourceSliceCount(Integer resourceSliceCount) {
         this.resourceSliceCount = resourceSliceCount;
+    }
+
+    /**
+     * PoolStatus contains status information for a single resource pool.
+     */
+    @JsonProperty("shareableSummary")
+    public ShareableSummaryStatus getShareableSummary() {
+        return shareableSummary;
+    }
+
+    /**
+     * PoolStatus contains status information for a single resource pool.
+     */
+    @JsonProperty("shareableSummary")
+    public void setShareableSummary(ShareableSummaryStatus shareableSummary) {
+        this.shareableSummary = shareableSummary;
     }
 
     /**

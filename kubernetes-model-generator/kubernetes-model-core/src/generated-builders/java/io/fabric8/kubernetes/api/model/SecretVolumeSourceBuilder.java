@@ -25,7 +25,7 @@ public class SecretVolumeSourceBuilder extends SecretVolumeSourceFluent<SecretVo
   }
 
   public SecretVolumeSource build() {
-    SecretVolumeSource buildable = new SecretVolumeSource(fluent.getDefaultMode(), fluent.buildItems(), fluent.getOptional(), fluent.getSecretName());
+    SecretVolumeSource buildable = new SecretVolumeSource(fluent.getDefaultMode(), fluent.getDefaultUser(), fluent.buildItems(), fluent.getOptional(), fluent.getSecretName());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -23,6 +23,7 @@ import java.util.function.Predicate;
 public class TokenRequestSpecFluent<A extends io.fabric8.kubernetes.api.model.authentication.TokenRequestSpecFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
+  private Map<String,List<String>> attestations;
   private List<String> audiences = new ArrayList<String>();
   private BoundObjectReferenceBuilder boundObjectRef;
   private Long expirationSeconds;
@@ -64,6 +65,26 @@ public class TokenRequestSpecFluent<A extends io.fabric8.kubernetes.api.model.au
     return (A) this;
   }
   
+  public A addToAttestations(Map<String,List<String>> map) {
+    if (this.attestations == null && map != null) {
+      this.attestations = new LinkedHashMap();
+    }
+    if (map != null) {
+      this.attestations.putAll(map);
+    }
+    return (A) this;
+  }
+  
+  public A addToAttestations(String key,List<String> value) {
+    if (this.attestations == null && key != null && value != null) {
+      this.attestations = new LinkedHashMap();
+    }
+    if (key != null && value != null) {
+      this.attestations.put(key, value);
+    }
+    return (A) this;
+  }
+  
   public A addToAudiences(String... items) {
     if (this.audiences == null) {
       this.audiences = new ArrayList();
@@ -89,6 +110,7 @@ public class TokenRequestSpecFluent<A extends io.fabric8.kubernetes.api.model.au
   protected void copyInstance(TokenRequestSpec instance) {
     instance = instance != null ? instance : new TokenRequestSpec();
     if (instance != null) {
+        this.withAttestations(instance.getAttestations());
         this.withAudiences(instance.getAudiences());
         this.withBoundObjectRef(instance.getBoundObjectRef());
         this.withExpirationSeconds(instance.getExpirationSeconds());
@@ -119,6 +141,9 @@ public class TokenRequestSpecFluent<A extends io.fabric8.kubernetes.api.model.au
       return false;
     }
     TokenRequestSpecFluent that = (TokenRequestSpecFluent) o;
+    if (!(Objects.equals(attestations, that.attestations))) {
+      return false;
+    }
     if (!(Objects.equals(audiences, that.audiences))) {
       return false;
     }
@@ -136,6 +161,10 @@ public class TokenRequestSpecFluent<A extends io.fabric8.kubernetes.api.model.au
   
   public Map<String,Object> getAdditionalProperties() {
     return this.additionalProperties;
+  }
+  
+  public Map<String,List<String>> getAttestations() {
+    return this.attestations;
   }
   
   public String getAudience(int index) {
@@ -171,6 +200,10 @@ public class TokenRequestSpecFluent<A extends io.fabric8.kubernetes.api.model.au
     return this.additionalProperties != null;
   }
   
+  public boolean hasAttestations() {
+    return this.attestations != null;
+  }
+  
   public boolean hasAudiences() {
     return this.audiences != null && !(this.audiences.isEmpty());
   }
@@ -193,7 +226,7 @@ public class TokenRequestSpecFluent<A extends io.fabric8.kubernetes.api.model.au
   }
   
   public int hashCode() {
-    return Objects.hash(audiences, boundObjectRef, expirationSeconds, additionalProperties);
+    return Objects.hash(attestations, audiences, boundObjectRef, expirationSeconds, additionalProperties);
   }
   
   public A removeAllFromAudiences(Collection<String> items) {
@@ -230,6 +263,30 @@ public class TokenRequestSpecFluent<A extends io.fabric8.kubernetes.api.model.au
     return (A) this;
   }
   
+  public A removeFromAttestations(String key) {
+    if (this.attestations == null) {
+      return (A) this;
+    }
+    if (key != null && this.attestations != null) {
+      this.attestations.remove(key);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromAttestations(Map<String,List<String>> map) {
+    if (this.attestations == null) {
+      return (A) this;
+    }
+    if (map != null) {
+      for (Object key : map.keySet()) {
+        if (this.attestations != null) {
+          this.attestations.remove(key);
+        }
+      }
+    }
+    return (A) this;
+  }
+  
   public A removeFromAudiences(String... items) {
     if (this.audiences == null) {
       return (A) this;
@@ -251,6 +308,11 @@ public class TokenRequestSpecFluent<A extends io.fabric8.kubernetes.api.model.au
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
+    if (!(attestations == null) && !(attestations.isEmpty())) {
+        sb.append("attestations:");
+        sb.append(attestations);
+        sb.append(",");
+    }
     if (!(audiences == null) && !(audiences.isEmpty())) {
         sb.append("audiences:");
         sb.append(audiences);
@@ -279,6 +341,15 @@ public class TokenRequestSpecFluent<A extends io.fabric8.kubernetes.api.model.au
       this.additionalProperties = null;
     } else {
       this.additionalProperties = new LinkedHashMap(additionalProperties);
+    }
+    return (A) this;
+  }
+  
+  public <K,V>A withAttestations(Map<String,List<String>> attestations) {
+    if (attestations == null) {
+      this.attestations = null;
+    } else {
+      this.attestations = new LinkedHashMap(attestations);
     }
     return (A) this;
   }

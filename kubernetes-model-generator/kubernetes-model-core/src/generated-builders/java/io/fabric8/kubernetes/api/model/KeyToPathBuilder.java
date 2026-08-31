@@ -25,7 +25,7 @@ public class KeyToPathBuilder extends KeyToPathFluent<KeyToPathBuilder> implemen
   }
 
   public KeyToPath build() {
-    KeyToPath buildable = new KeyToPath(fluent.getKey(), fluent.getMode(), fluent.getPath());
+    KeyToPath buildable = new KeyToPath(fluent.getKey(), fluent.getMode(), fluent.getPath(), fluent.getUser());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

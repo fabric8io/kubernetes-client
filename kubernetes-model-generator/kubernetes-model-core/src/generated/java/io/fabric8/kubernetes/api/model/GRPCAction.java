@@ -23,6 +23,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "mode",
     "port",
     "service"
 })
@@ -37,6 +38,8 @@ import lombok.experimental.Accessors;
 public class GRPCAction implements Editable<GRPCActionBuilder>, KubernetesResource
 {
 
+    @JsonProperty("mode")
+    private String mode;
     @JsonProperty("port")
     private Integer port;
     @JsonProperty("service")
@@ -50,10 +53,27 @@ public class GRPCAction implements Editable<GRPCActionBuilder>, KubernetesResour
     public GRPCAction() {
     }
 
-    public GRPCAction(Integer port, String service) {
+    public GRPCAction(String mode, Integer port, String service) {
         super();
+        this.mode = mode;
         this.port = port;
         this.service = service;
+    }
+
+    /**
+     * mode specifies the connection mode for the gRPC health probe. Set to "TLS" to use TLS without certificate verification. Set to "Plaintext" to use a plaintext (insecure) connection explicitly. If not specified, the probe uses a plaintext (insecure) connection.
+     */
+    @JsonProperty("mode")
+    public String getMode() {
+        return mode;
+    }
+
+    /**
+     * mode specifies the connection mode for the gRPC health probe. Set to "TLS" to use TLS without certificate verification. Set to "Plaintext" to use a plaintext (insecure) connection explicitly. If not specified, the probe uses a plaintext (insecure) connection.
+     */
+    @JsonProperty("mode")
+    public void setMode(String mode) {
+        this.mode = mode;
     }
 
     /**

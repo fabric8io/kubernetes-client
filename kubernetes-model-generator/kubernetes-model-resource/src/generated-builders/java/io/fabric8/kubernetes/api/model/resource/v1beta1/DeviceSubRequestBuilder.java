@@ -25,7 +25,7 @@ public class DeviceSubRequestBuilder extends DeviceSubRequestFluent<DeviceSubReq
   }
 
   public DeviceSubRequest build() {
-    DeviceSubRequest buildable = new DeviceSubRequest(fluent.getAllocationMode(), fluent.buildCapacity(), fluent.getCount(), fluent.getDeviceClassName(), fluent.getName(), fluent.buildSelectors(), fluent.buildTolerations());
+    DeviceSubRequest buildable = new DeviceSubRequest(fluent.getAllocationMode(), fluent.buildCapacity(), fluent.getCount(), fluent.buildDerivedAttributes(), fluent.getDeviceClassName(), fluent.getName(), fluent.buildSelectors(), fluent.buildTolerations());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

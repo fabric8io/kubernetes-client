@@ -26,6 +26,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "defaultMode",
+    "defaultUser",
     "items",
     "optional",
     "secretName"
@@ -43,6 +44,8 @@ public class SecretVolumeSource implements Editable<SecretVolumeSourceBuilder>, 
 
     @JsonProperty("defaultMode")
     private Integer defaultMode;
+    @JsonProperty("defaultUser")
+    private Long defaultUser;
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<KeyToPath> items = new ArrayList<>();
@@ -59,9 +62,10 @@ public class SecretVolumeSource implements Editable<SecretVolumeSourceBuilder>, 
     public SecretVolumeSource() {
     }
 
-    public SecretVolumeSource(Integer defaultMode, List<KeyToPath> items, Boolean optional, String secretName) {
+    public SecretVolumeSource(Integer defaultMode, Long defaultUser, List<KeyToPath> items, Boolean optional, String secretName) {
         super();
         this.defaultMode = defaultMode;
+        this.defaultUser = defaultUser;
         this.items = items;
         this.optional = optional;
         this.secretName = secretName;
@@ -81,6 +85,22 @@ public class SecretVolumeSource implements Editable<SecretVolumeSourceBuilder>, 
     @JsonProperty("defaultMode")
     public void setDefaultMode(Integer defaultMode) {
         this.defaultMode = defaultMode;
+    }
+
+    /**
+     * defaultUser is Optional: The owner UID of the created files by default. The defaultUser field is only used as a fallback when the item-level user field is unset. (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+     */
+    @JsonProperty("defaultUser")
+    public Long getDefaultUser() {
+        return defaultUser;
+    }
+
+    /**
+     * defaultUser is Optional: The owner UID of the created files by default. The defaultUser field is only used as a fallback when the item-level user field is unset. (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+     */
+    @JsonProperty("defaultUser")
+    public void setDefaultUser(Long defaultUser) {
+        this.defaultUser = defaultUser;
     }
 
     /**

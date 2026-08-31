@@ -25,7 +25,7 @@ public class DeviceRequestAllocationResultBuilder extends DeviceRequestAllocatio
   }
 
   public DeviceRequestAllocationResult build() {
-    DeviceRequestAllocationResult buildable = new DeviceRequestAllocationResult(fluent.getAdminAccess(), fluent.getBindingConditions(), fluent.getBindingFailureConditions(), fluent.getConsumedCapacity(), fluent.getDevice(), fluent.getDriver(), fluent.getPool(), fluent.getRequest(), fluent.getShareID(), fluent.buildTolerations());
+    DeviceRequestAllocationResult buildable = new DeviceRequestAllocationResult(fluent.getAdminAccess(), fluent.getBindingConditions(), fluent.getBindingFailureConditions(), fluent.getConsumedCapacity(), fluent.getDevice(), fluent.getDriver(), fluent.getPool(), fluent.getRequest(), fluent.getShareID(), fluent.getSkipNodeOperations(), fluent.buildTolerations());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

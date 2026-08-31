@@ -169,7 +169,7 @@ public class ClusterRole implements Editable<ClusterRoleBuilder>, HasMetadata
     }
 
     /**
-     * Rules holds all the PolicyRules for this ClusterRole
+     * rules holds all the PolicyRules for this ClusterRole
      */
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -178,7 +178,7 @@ public class ClusterRole implements Editable<ClusterRoleBuilder>, HasMetadata
     }
 
     /**
-     * Rules holds all the PolicyRules for this ClusterRole
+     * rules holds all the PolicyRules for this ClusterRole
      */
     @JsonProperty("rules")
     public void setRules(List<PolicyRule> rules) {

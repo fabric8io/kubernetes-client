@@ -46,9 +46,11 @@ import lombok.experimental.Accessors;
     "driver",
     "nodeName",
     "nodeSelector",
+    "partitionTypeAttribute",
     "perDeviceNodeSelection",
     "pool",
-    "sharedCounters"
+    "sharedCounters",
+    "skipNodeOperations"
 })
 @ToString
 @EqualsAndHashCode
@@ -86,6 +88,8 @@ public class ResourceSliceSpec implements Editable<ResourceSliceSpecBuilder>, Ku
     private String nodeName;
     @JsonProperty("nodeSelector")
     private NodeSelector nodeSelector;
+    @JsonProperty("partitionTypeAttribute")
+    private String partitionTypeAttribute;
     @JsonProperty("perDeviceNodeSelection")
     private Boolean perDeviceNodeSelection;
     @JsonProperty("pool")
@@ -93,6 +97,9 @@ public class ResourceSliceSpec implements Editable<ResourceSliceSpecBuilder>, Ku
     @JsonProperty("sharedCounters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CounterSet> sharedCounters = new ArrayList<>();
+    @JsonProperty("skipNodeOperations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> skipNodeOperations = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -102,16 +109,18 @@ public class ResourceSliceSpec implements Editable<ResourceSliceSpecBuilder>, Ku
     public ResourceSliceSpec() {
     }
 
-    public ResourceSliceSpec(Boolean allNodes, List<Device> devices, String driver, String nodeName, NodeSelector nodeSelector, Boolean perDeviceNodeSelection, ResourcePool pool, List<CounterSet> sharedCounters) {
+    public ResourceSliceSpec(Boolean allNodes, List<Device> devices, String driver, String nodeName, NodeSelector nodeSelector, String partitionTypeAttribute, Boolean perDeviceNodeSelection, ResourcePool pool, List<CounterSet> sharedCounters, List<String> skipNodeOperations) {
         super();
         this.allNodes = allNodes;
         this.devices = devices;
         this.driver = driver;
         this.nodeName = nodeName;
         this.nodeSelector = nodeSelector;
+        this.partitionTypeAttribute = partitionTypeAttribute;
         this.perDeviceNodeSelection = perDeviceNodeSelection;
         this.pool = pool;
         this.sharedCounters = sharedCounters;
+        this.skipNodeOperations = skipNodeOperations;
     }
 
     /**
@@ -196,6 +205,22 @@ public class ResourceSliceSpec implements Editable<ResourceSliceSpecBuilder>, Ku
     }
 
     /**
+     * PartitionTypeAttribute names a string device attribute (by fully qualified name, e.g. "gpu.example.com/profile") whose value labels each device with its partition type, such as "Full" or "Half" for a MIG-style GPU.<br><p> <br><p> When set, every partitionable device in the slice must carry the attribute and devices sharing a value must share the same ConsumesCounters cost.
+     */
+    @JsonProperty("partitionTypeAttribute")
+    public String getPartitionTypeAttribute() {
+        return partitionTypeAttribute;
+    }
+
+    /**
+     * PartitionTypeAttribute names a string device attribute (by fully qualified name, e.g. "gpu.example.com/profile") whose value labels each device with its partition type, such as "Full" or "Half" for a MIG-style GPU.<br><p> <br><p> When set, every partitionable device in the slice must carry the attribute and devices sharing a value must share the same ConsumesCounters cost.
+     */
+    @JsonProperty("partitionTypeAttribute")
+    public void setPartitionTypeAttribute(String partitionTypeAttribute) {
+        this.partitionTypeAttribute = partitionTypeAttribute;
+    }
+
+    /**
      * PerDeviceNodeSelection defines whether the access from nodes to resources in the pool is set on the ResourceSlice level or on each device. If it is set to true, every device defined the ResourceSlice must specify this individually.<br><p> <br><p> Exactly one of NodeName, NodeSelector, AllNodes, and PerDeviceNodeSelection must be set.
      */
     @JsonProperty("perDeviceNodeSelection")
@@ -242,6 +267,23 @@ public class ResourceSliceSpec implements Editable<ResourceSliceSpecBuilder>, Ku
     @JsonProperty("sharedCounters")
     public void setSharedCounters(List<CounterSet> sharedCounters) {
         this.sharedCounters = sharedCounters;
+    }
+
+    /**
+     * SkipNodeOperations lists node-local resource operations (gRPC calls) that will be skipped for the devices in this slice when determining whether operations are necessary on the node. If all allocated devices for a driver in a claim skip an operation, that gRPC call will be skipped. Valid values are:<br><p> <br><p> - "NodePrepareResources": NodePrepareResources gRPC calls are skipped. This<br><p>   value cannot be specified unless "NodeUnprepareResources" is also listed<br><p>   (or "&#42;" is specified).<br><p> - "NodeUnprepareResources": NodeUnprepareResources gRPC calls are skipped. - "&#42;": All node-local resource operations are skipped.<br><p> <br><p> Other values may be added in the future. The kubelet must ignore unknown values.
+     */
+    @JsonProperty("skipNodeOperations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getSkipNodeOperations() {
+        return skipNodeOperations;
+    }
+
+    /**
+     * SkipNodeOperations lists node-local resource operations (gRPC calls) that will be skipped for the devices in this slice when determining whether operations are necessary on the node. If all allocated devices for a driver in a claim skip an operation, that gRPC call will be skipped. Valid values are:<br><p> <br><p> - "NodePrepareResources": NodePrepareResources gRPC calls are skipped. This<br><p>   value cannot be specified unless "NodeUnprepareResources" is also listed<br><p>   (or "&#42;" is specified).<br><p> - "NodeUnprepareResources": NodeUnprepareResources gRPC calls are skipped. - "&#42;": All node-local resource operations are skipped.<br><p> <br><p> Other values may be added in the future. The kubelet must ignore unknown values.
+     */
+    @JsonProperty("skipNodeOperations")
+    public void setSkipNodeOperations(List<String> skipNodeOperations) {
+        this.skipNodeOperations = skipNodeOperations;
     }
 
     @JsonIgnore

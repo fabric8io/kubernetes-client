@@ -85,7 +85,7 @@ public class ServiceCIDRSpec implements Editable<ServiceCIDRSpecBuilder>, Kubern
     }
 
     /**
-     * CIDRs defines the IP blocks in CIDR notation (e.g. "192.168.0.0/24" or "2001:db8::/64") from which to assign service cluster IPs. Max of two CIDRs is allowed, one of each IP family. This field is immutable.
+     * cidrs defines the IP blocks in CIDR notation (e.g. "192.168.0.0/24" or "2001:db8::/64") from which to assign service cluster IPs. Max of two CIDRs is allowed, one of each IP family. This field is immutable.
      */
     @JsonProperty("cidrs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -94,7 +94,7 @@ public class ServiceCIDRSpec implements Editable<ServiceCIDRSpecBuilder>, Kubern
     }
 
     /**
-     * CIDRs defines the IP blocks in CIDR notation (e.g. "192.168.0.0/24" or "2001:db8::/64") from which to assign service cluster IPs. Max of two CIDRs is allowed, one of each IP family. This field is immutable.
+     * cidrs defines the IP blocks in CIDR notation (e.g. "192.168.0.0/24" or "2001:db8::/64") from which to assign service cluster IPs. Max of two CIDRs is allowed, one of each IP family. This field is immutable.
      */
     @JsonProperty("cidrs")
     public void setCidrs(List<String> cidrs) {

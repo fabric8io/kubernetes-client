@@ -25,7 +25,7 @@ public class ConfigMapVolumeSourceBuilder extends ConfigMapVolumeSourceFluent<Co
   }
 
   public ConfigMapVolumeSource build() {
-    ConfigMapVolumeSource buildable = new ConfigMapVolumeSource(fluent.getDefaultMode(), fluent.buildItems(), fluent.getName(), fluent.getOptional());
+    ConfigMapVolumeSource buildable = new ConfigMapVolumeSource(fluent.getDefaultMode(), fluent.getDefaultUser(), fluent.buildItems(), fluent.getName(), fluent.getOptional());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

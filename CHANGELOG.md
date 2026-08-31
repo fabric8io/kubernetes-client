@@ -16,9 +16,17 @@
 * Fix #8033: bump gateway-api from 1.5.1 to 1.6.1
 
 #### New Features
+* Fix #7752: Support for Kubernetes v1.37.0 (Garhwal)
 * Fix #8033: gateway-api model gains `v1.TCPRoute` and `v1.UDPRoute` (both graduated from `v1alpha2` upstream in gateway-api v1.6.0). The `v1alpha2` types remain available, but upstream has deprecated them and will remove them in a future release, so new code should use the `v1` types
 
 #### _**Note**_: Breaking changes
+* Fix #7752: Kubernetes model API removals (removed upstream in Kubernetes v1.37.0). The following API versions have been completely removed from Kubernetes and are no longer available in the client:
+  - `certificates.k8s.io/v1alpha1/ClusterTrustBundle` → use `certificates.k8s.io/v1` or `v1beta1`
+  - `networking.k8s.io/v1beta1/IPAddress` → use `networking.k8s.io/v1`
+  - `networking.k8s.io/v1beta1/ServiceCIDR` → use `networking.k8s.io/v1`
+  - `storage.k8s.io/v1beta1/VolumeAttributesClass` → use `storage.k8s.io/v1`
+  - `scheduling.k8s.io/v1alpha2` (entire API version, 28 types) → use `v1alpha3` or `v1beta1`
+* Fix #7752: `VolumeMount` constructor signature changed (Kubernetes v1.37.0 added `bindMountOptions` field). The canonical constructor now takes `bindMountOptions` (List<String>) as its first parameter. Builder usage (`new VolumeMountBuilder().with...()`) is unaffected
 * Fix #8033: gateway-api model `v1.SessionPersistence` no longer exposes `idleTimeout` (removed upstream in gateway-api v1.6.0). Besides the field, this removes `getIdleTimeout()`/`setIdleTimeout()`, collapses the canonical constructor from five arguments to four, and drops `SessionPersistenceFluent.withIdleTimeout()`/`getIdleTimeout()`/`hasIdleTimeout()`, so the builder form (`withNewSessionPersistence().withIdleTimeout(...)`) no longer compiles. There is no runtime data loss: the class keeps its `@JsonAnyGetter`/`@JsonAnySetter`, and both the fluent and the builder carry `additionalProperties` through, so JSON or YAML still containing `idleTimeout` continues to deserialize and re-serialize intact
 * Fix #8028: (kube-api-test) `Fabric8ClientInjectionHandler` moved to `io.fabric8.kubeapitest.junit.inject`. It is resolved through `ServiceLoader`, so only code naming the class directly is affected
 * Fix #8028: (openshift-model) The bundle no longer exports or contains `io.fabric8.openshift.api.model.config.*`. Maven consumers are unaffected (`openshift-model-config` is a compile dependency), but OSGi deployments importing those packages must install the `openshift-model-config` bundle, which the `openshift-client` Karaf feature already does
