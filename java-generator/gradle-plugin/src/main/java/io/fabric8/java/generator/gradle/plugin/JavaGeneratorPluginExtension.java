@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 public abstract class JavaGeneratorPluginExtension {
 
   public static final String NAME = "javaGen";
@@ -33,10 +35,12 @@ public abstract class JavaGeneratorPluginExtension {
 
   private Config javaGeneratorConfig = Config.builder().build();
 
+  @Inject
   public JavaGeneratorPluginExtension(ProjectLayout layout) {
     this.layout = layout;
   }
 
+  @Deprecated
   public Config getConfig() {
     return javaGeneratorConfig;
   }
@@ -47,6 +51,7 @@ public abstract class JavaGeneratorPluginExtension {
    */
   public abstract RegularFileProperty getSource();
 
+  @Deprecated
   public File getSourceOrDefault() {
     return this.getSource().getAsFile().getOrElse(null);
   }
@@ -56,6 +61,7 @@ public abstract class JavaGeneratorPluginExtension {
    */
   public abstract ListProperty<String> getUrls();
 
+  @Deprecated
   public List<String> getUrlsOrDefault() {
     return this.getUrls().getOrElse(new ArrayList<>());
   }
@@ -66,6 +72,7 @@ public abstract class JavaGeneratorPluginExtension {
    */
   public abstract DirectoryProperty getDownloadTarget();
 
+  @Deprecated
   public File getDownloadTargetOrDefault() {
     return this.getDownloadTarget().getAsFile()
         .getOrElse(layout.getProjectDirectory()
@@ -80,6 +87,7 @@ public abstract class JavaGeneratorPluginExtension {
    */
   public abstract DirectoryProperty getTarget();
 
+  @Deprecated
   public File getTargetOrDefault() {
     return this.getTarget().getAsFile()
         .getOrElse(layout.getProjectDirectory()

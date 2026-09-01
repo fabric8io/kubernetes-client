@@ -54,6 +54,11 @@ public class ITGradleRunnerExtension implements BeforeEachCallback, AfterEachCal
             .map(File::new).collect(Collectors.toList()));
   }
 
+  public ITGradleRunnerExtension withoutDebug() {
+    gradleRunner = gradleRunner.withDebug(false);
+    return this;
+  }
+
   @Override
   public void afterEach(ExtensionContext context) {
     gradleRunner = null;
