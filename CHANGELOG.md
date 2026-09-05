@@ -16,6 +16,7 @@
 * Fix #8033: bump gateway-api from 1.5.1 to 1.6.1
 
 #### New Features
+* Fix #8041: (kubernetes-client-api, kubernetes-client) Add typed DSL accessors for `PodCertificateRequest` and `DeviceTaintRule`
 * Fix #7752: Support for Kubernetes v1.37.0 (Garhwal)
 * Fix #8033: gateway-api model gains `v1.TCPRoute` and `v1.UDPRoute` (both graduated from `v1alpha2` upstream in gateway-api v1.6.0). The `v1alpha2` types remain available, but upstream has deprecated them and will remove them in a future release, so new code should use the `v1` types
 
