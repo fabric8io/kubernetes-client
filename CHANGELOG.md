@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #7837: (kubernetes-client-api) `withShardSelector` accepts a typed `ShardSelector` next to the raw expression `String`. `ShardSelector`, `ShardRange`, `ShardField` and `ShardSelectorBuilder` render the `shardRange(<field>, '<hexStart>', '<hexEnd>')` CEL grammar, so shards 0 and 2 of an even four way split are `new ShardSelectorBuilder().addShard(0, 4).addShard(2, 4).build()` rather than hand-written hexadecimal bounds. Bounds outside the `[0x0, 0x10000000000000000]` hash space, empty ranges and out of range shard indexes are rejected on construction instead of by the API server
 
 #### Dependency Upgrade
 
