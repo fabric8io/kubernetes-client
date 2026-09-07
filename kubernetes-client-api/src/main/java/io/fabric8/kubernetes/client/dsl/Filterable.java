@@ -87,20 +87,6 @@ public interface Filterable<T> {
   T withShardSelector(String shardSelector);
 
   /**
-   * Sets the {@code shardSelector} list option from a typed {@link ShardSelector}, propagated to
-   * subsequent list, watch (including informer), and collection-delete requests. This feature is in
-   * alpha version, introduced in Kubernetes version 1.36, and must be enabled with the
-   * {@code ShardedListAndWatch} feature gate on your API server.
-   *
-   * @param shardSelector the shard selector, or {@code null} to clear
-   * @return filtered resource
-   * @see ShardSelector
-   */
-  default T withShardSelector(ShardSelector shardSelector) {
-    return withShardSelector(shardSelector == null ? null : shardSelector.expression());
-  }
-
-  /**
    * Filter with the object that this event is about.
    *
    * @param objectReference {@link ObjectReference} for providing information of referred object
