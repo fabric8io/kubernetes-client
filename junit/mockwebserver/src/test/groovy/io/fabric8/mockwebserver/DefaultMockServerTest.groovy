@@ -63,7 +63,7 @@ class DefaultMockServerTest extends Specification {
 		def result = server.getPort()
 
 		then:
-		assert result> 0
+		assert result > 0
 		assert result <= 65535
 	}
 
@@ -157,12 +157,8 @@ class DefaultMockServerTest extends Specification {
 	def "getLastRequest, with multiple requests, should return the latest request"() {
 		given:
 		def all = client.get(server.port, server.getHostName(), "/").send()
-				.compose { _ ->
-					client.get(server.port, server.getHostName(), "/one").send()
-				}
-				.compose { _ ->
-					client.get(server.port, server.getHostName(), "/two").send()
-				}
+				.compose { _ -> client.get(server.port, server.getHostName(), "/one").send() }
+				.compose { _ -> client.get(server.port, server.getHostName(), "/two").send() }
 		and: "An instance of PollingConditions"
 		def conditions = new PollingConditions(timeout: 10)
 
@@ -180,12 +176,8 @@ class DefaultMockServerTest extends Specification {
 	def "getLastRequest, with multiple requests, can be invoked multiple times"() {
 		given:
 		def all = client.get(server.port, server.getHostName(), "/").send()
-				.compose { _ ->
-					client.get(server.port, server.getHostName(), "/one").send()
-				}
-				.compose { _ ->
-					client.get(server.port, server.getHostName(), "/two").send()
-				}
+				.compose { _ -> client.get(server.port, server.getHostName(), "/one").send()}
+				.compose { _ -> client.get(server.port, server.getHostName(), "/two").send()}
 		and: "An instance of PollingConditions"
 		def conditions = new PollingConditions(timeout: 10)
 
@@ -205,12 +197,8 @@ class DefaultMockServerTest extends Specification {
 	def "getLastRequest, with multiple requests and reset, should return null"() {
 		given:
 		def all = client.get(server.port, server.getHostName(), "/").send()
-				.compose { _ ->
-					client.get(server.port, server.getHostName(), "/one").send()
-				}
-				.compose { _ ->
-					client.get(server.port, server.getHostName(), "/two").send()
-				}
+				.compose { _ -> client.get(server.port, server.getHostName(), "/one").send()}
+				.compose { _ -> client.get(server.port, server.getHostName(), "/two").send()}
 		and: "An instance of PollingConditions"
 		def conditions = new PollingConditions(timeout: 10)
 
@@ -224,7 +212,7 @@ class DefaultMockServerTest extends Specification {
 		server.reset()
 
 		then: "Expect getLastRequest to return null"
-		assert server.getLastRequest() == null
+		assert  server.getLastRequest() == null
 	}
 
 	def "takeRequest, with timeout and no requests, should return null and don't block after timeout"() {
@@ -356,7 +344,7 @@ class DefaultMockServerTest extends Specification {
 		and: "A list to store the received messages"
 		def receivedMessages = new ConcurrentLinkedQueue<String>()
 		and: "A WebSocket request"
-		def wsReq = wsClient.webSocket().connect(server.port, server.getHostName(), "/api/v1/users/watch")
+		def wsReq =wsClient.webSocket().connect(server.port, server.getHostName(), "/api/v1/users/watch")
 		and: "A WebSocket listener"
 		wsReq.onSuccess { ws ->
 			ws.textMessageHandler { text ->
@@ -633,9 +621,7 @@ class DefaultMockServerTest extends Specification {
 		and: "HTTP requests after WS connection initiated"
 		wsReq.onSuccess { ws ->
 			client.get(server.port, server.getHostName(), "/api/v1/create").send()
-			.compose { _ ->
-				client.get(server.port, server.getHostName(), "/api/v1/delete").send()
-			}
+					.compose { _ -> client.get(server.port, server.getHostName(), "/api/v1/delete").send() }
 		}
 		and: "An instance of PollingConditions"
 		def conditions = new PollingConditions(timeout: 10)

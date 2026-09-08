@@ -52,7 +52,7 @@ class MockWebServerTest extends Specification {
 		def result = server.getPort()
 
 		then:
-		assert result> 0
+		assert result > 0
 		assert result <= 65535
 	}
 

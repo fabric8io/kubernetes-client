@@ -25,13 +25,13 @@ class RecordedRequestTest extends Specification {
 		new RecordedRequest(httpVersion, method, path, Headers.builder().build(), new Buffer()).getRequestLine() == expected
 		where:
 		httpVersion | method | path | expected
-		"HTTP/1.1" | HttpMethod.GET | "/foo" | "GET /foo HTTP/1.1"
-		"HTTP/1.1" | HttpMethod.POST | "/bar" | "POST /bar HTTP/1.1"
-		"HTTP/1.0" | HttpMethod.PUT | "/baz" | "PUT /baz HTTP/1.0"
-		"HTTP/2" | HttpMethod.DELETE | "/qux" | "DELETE /qux HTTP/2"
-		"HTTP/1.1" | HttpMethod.PATCH | "/quux" | "PATCH /quux HTTP/1.1"
-		"HTTP/1.1" | HttpMethod.CONNECT | "/" | "CONNECT / HTTP/1.1"
-		"HTTP/1.1" | HttpMethod.OPTIONS | "/foo/bar" | "OPTIONS /foo/bar HTTP/1.1"
+		"HTTP/1.1"  | HttpMethod.GET | "/foo" | "GET /foo HTTP/1.1"
+		"HTTP/1.1"  | HttpMethod.POST | "/bar" | "POST /bar HTTP/1.1"
+		"HTTP/1.0"  | HttpMethod.PUT | "/baz" | "PUT /baz HTTP/1.0"
+		"HTTP/2"    | HttpMethod.DELETE | "/qux" | "DELETE /qux HTTP/2"
+		"HTTP/1.1"  | HttpMethod.PATCH | "/quux" | "PATCH /quux HTTP/1.1"
+		"HTTP/1.1"  | HttpMethod.CONNECT | "/" | "CONNECT / HTTP/1.1"
+		"HTTP/1.1"  | HttpMethod.OPTIONS | "/foo/bar" | "OPTIONS /foo/bar HTTP/1.1"
 	}
 
 	def "getPath returns path"() {
