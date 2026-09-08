@@ -170,7 +170,6 @@
           <systemPropertyVariables>
             <features.xml>${project.build.directory}/features.xml</features.xml>
             <features.repo>${project.build.directory}/features-repo</features.repo>
-            <karaf.version>${karaf.version}</karaf.version>
           </systemPropertyVariables>
         </configuration>
       </plugin>

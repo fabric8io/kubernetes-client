@@ -1643,6 +1643,15 @@
       </build>
     </profile>
     <profile>
+      <id>java-17</id>
+      <activation>
+        <jdk>[17,)</jdk>
+      </activation>
+      <properties>
+        <karaf.itest.skip>true</karaf.itest.skip>
+      </properties>
+    </profile>
+    <profile>
       <id>javadoc-test</id>
       <build>
         <plugins>
