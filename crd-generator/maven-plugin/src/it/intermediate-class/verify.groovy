@@ -26,8 +26,8 @@ Path basedirPath = basedir.toPath();
 	"myintermediatehasmetadatainterfaces.sample.fabric8.io-v1"
 ].each {
 	Verify.verifyContentEquals(
-			basedirPath.resolve(Paths.get("target", "classes", "META-INF", "fabric8", it + ".yml")),
-			basedirPath.resolve(Paths.get("expected",  it + ".yml")))
+	basedirPath.resolve(Paths.get("target", "classes", "META-INF", "fabric8", it + ".yml")),
+	basedirPath.resolve(Paths.get("expected", it + ".yml")))
 }
 
 true

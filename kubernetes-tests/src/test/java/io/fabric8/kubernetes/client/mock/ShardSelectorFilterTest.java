@@ -98,7 +98,7 @@ class ShardSelectorFilterTest {
   }
 
   private String decodedPathOfLastRequest() throws InterruptedException {
-    return URLDecoder.decode(server.getLastRequest().getPath(), StandardCharsets.UTF_8.name());
+    return URLDecoder.decode(server.getLastRequest().getPath(), StandardCharsets.UTF_8);
   }
 
   /**

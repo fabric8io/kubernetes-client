@@ -26,7 +26,9 @@ def bom = new XmlSlurper(false, false).parse(bomFile)
 
 // Verify reactor modules are included
 def deps = bom.dependencyManagement.dependencies.dependency
-def allDeps = deps.collect { "${it.groupId.text()}:${it.artifactId.text()}".toString() }
+def allDeps = deps.collect {
+	"${it.groupId.text()}:${it.artifactId.text()}".toString()
+}
 
 assert allDeps.contains("io.fabric8.it:module-client") : "BOM should include module-client, found: ${allDeps}"
 assert allDeps.contains("io.fabric8.it:module-server") : "BOM should include module-server, found: ${allDeps}"

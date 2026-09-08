@@ -49,7 +49,9 @@ class VertxMockWebSocketTest extends Specification {
 
 		and: "send is invoked from a background thread"
 		def returned = new CompletableFuture<Boolean>()
-		def thread = Thread.startDaemon { returned.complete(mockWebSocket.send("hello")) }
+		def thread = Thread.startDaemon {
+			returned.complete(mockWebSocket.send("hello"))
+		}
 
 		when: "the background thread parks waiting for the write Future"
 		new PollingConditions(timeout: 5).eventually {
@@ -78,7 +80,9 @@ class VertxMockWebSocketTest extends Specification {
 
 		and: "send is invoked from a background thread"
 		def returned = new CompletableFuture<Boolean>()
-		def thread = Thread.startDaemon { returned.complete(mockWebSocket.send([1, 2, 3] as byte[])) }
+		def thread = Thread.startDaemon {
+			returned.complete(mockWebSocket.send([1, 2, 3] as byte[]))
+		}
 
 		when: "the background thread parks waiting for the write Future"
 		new PollingConditions(timeout: 5).eventually {
