@@ -27,13 +27,13 @@ class MockResponseTest extends Specification {
 		new MockResponse().setResponseCode(code).getStatus() == expected
 		where:
 		code | expected
-		100 | "HTTP/1.1 100 Informational"
-		101 | "HTTP/1.1 101 Switching Protocols"
-		200 | "HTTP/1.1 200 OK"
-		300 | "HTTP/1.1 300 Redirection"
-		400 | "HTTP/1.1 400 Client Error"
-		500 | "HTTP/1.1 500 Server Error"
-		999 | "HTTP/1.1 999 Mock Response"
+		100  | "HTTP/1.1 100 Informational"
+		101  | "HTTP/1.1 101 Switching Protocols"
+		200  | "HTTP/1.1 200 OK"
+		300  | "HTTP/1.1 300 Redirection"
+		400  | "HTTP/1.1 400 Client Error"
+		500  | "HTTP/1.1 500 Server Error"
+		999  | "HTTP/1.1 999 Mock Response"
 	}
 
 	def "setBody(String) sets body"() {

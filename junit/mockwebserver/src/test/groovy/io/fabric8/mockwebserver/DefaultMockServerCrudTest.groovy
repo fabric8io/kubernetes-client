@@ -90,7 +90,7 @@ class DefaultMockServerCrudTest extends Specification {
 				.sendJson(new User(1L, "user", true))
 				.compose { _ ->
 					client.post(server.port, server.getHostName(), "/")
-					.sendJson(new User(2L, "user-2", true))
+							.sendJson(new User(2L, "user-2", true))
 				}
 		and: "An instance of PollingConditions"
 		def conditions = new PollingConditions(timeout: 10)
