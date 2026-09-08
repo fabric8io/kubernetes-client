@@ -86,7 +86,9 @@ assert pluginArtifactIds.contains("maven-enforcer-plugin") : "BOM should include
 def gpgPlugin = plugins.find { it.artifactId.text() == "maven-gpg-plugin" }
 assert gpgPlugin.version.text() == "3.2.8" : "maven-gpg-plugin version should be resolved to 3.2.8"
 
-def centralPlugin = plugins.find { it.artifactId.text() == "central-publishing-maven-plugin" }
+def centralPlugin = plugins.find {
+	it.artifactId.text() == "central-publishing-maven-plugin"
+}
 assert centralPlugin.version.text() == "0.9.0" : "central-publishing-maven-plugin version should be resolved to 0.9.0"
 
 // Verify plugin configuration was copied

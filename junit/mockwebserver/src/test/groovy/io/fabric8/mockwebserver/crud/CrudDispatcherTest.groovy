@@ -57,9 +57,9 @@ class CrudDispatcherTest extends Specification {
 		and: "A PATCH request to update the object"
 		var patch = postNew.compose { _ ->
 			client
-					.patch(server.port, server.hostName, "/namespace/test/name/one")
-					.putHeader("Content-Type", "application/strategic-merge-patch+json")
-					.sendBuffer(Buffer.buffer("""[{"op":"replace","path":"/foo/bar","value":"canary"}]"""))
+			.patch(server.port, server.hostName, "/namespace/test/name/one")
+			.putHeader("Content-Type", "application/strategic-merge-patch+json")
+			.sendBuffer(Buffer.buffer("""[{"op":"replace","path":"/foo/bar","value":"canary"}]"""))
 		}
 		and: "A GET request to retrieve and verify the object"
 		var get = patch.compose { _ ->
@@ -137,9 +137,9 @@ class CrudDispatcherTest extends Specification {
 		AttributeSet fromPath(String path) {
 			var set = new AttributeSet()
 			var parts = path.split("/")
-			if (parts.length > 2) {
+			if (parts.length> 2) {
 				set.add(new Attribute("namespace", parts[2]))
-			} else if (parts.length > 4) {
+			} else if (parts.length> 4) {
 				set.add(new Attribute("name", parts[4]))
 			}
 			return set

@@ -21,7 +21,9 @@ def outputDir = new File(basedir, "target/classes")
 
 // The output directory might exist but should not contain any BOM directories
 if (outputDir.exists()) {
-	def bomDirs = outputDir.listFiles()?.findAll { it.isDirectory() && it.name.endsWith("-bom") }
+	def bomDirs = outputDir.listFiles()?.findAll {
+		it.isDirectory() && it.name.endsWith("-bom")
+	}
 	assert bomDirs == null || bomDirs.isEmpty() : "No BOM directories should be created when no boms are configured"
 }
 

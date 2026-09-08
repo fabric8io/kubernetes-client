@@ -213,7 +213,7 @@ class DefaultMockServerWebSocketTest extends Specification {
 		and: "A list to store the received messages"
 		def receivedMessages = new ConcurrentLinkedQueue<String>()
 		and: "A Vert.x WebSocket completion handler"
-		Handler<AsyncResult<WebSocket>> completionHandler =  { ws ->
+		Handler<AsyncResult<WebSocket>> completionHandler = { ws ->
 			ws.result().textMessageHandler { text ->
 				receivedMessages.add(text)
 			}
