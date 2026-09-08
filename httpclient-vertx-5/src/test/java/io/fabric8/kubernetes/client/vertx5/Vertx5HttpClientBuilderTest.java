@@ -21,6 +21,8 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.PoolOptions;
 import io.vertx.core.http.WebSocketClientOptions;
 import io.vertx.core.impl.VertxImpl;
+import io.vertx.core.net.ProxyOptions;
+import io.vertx.core.net.ProxyType;
 import io.vertx.ext.web.client.WebClientOptions;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.DisplayName;
@@ -30,8 +32,11 @@ import org.junit.jupiter.api.Test;
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
+import static io.fabric8.kubernetes.client.utils.HttpClientUtils.basicCredentials;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -309,6 +314,126 @@ class Vertx5HttpClientBuilderTest {
       try (HttpClient client = builder.build()) {
         assertThat(client).isNotNull();
       }
+    }
+  }
+
+  @Nested
+  @DisplayName("Derived Client Transport Reuse")
+  class DerivedClientTransportTests {
+
+    @Test
+    @DisplayName("Derived client shares the original's WebSocket client instead of creating a second one")
+    void derivedClientReusesWebSocketClient() {
+      final Vertx5HttpClientFactory factory = new Vertx5HttpClientFactory();
+      try (Vertx5HttpClient<?> original = factory.newBuilder().build();
+          Vertx5HttpClient<?> derived = (Vertx5HttpClient<?>) original.newBuilder().build()) {
+        assertThat(derived.getWebSocketClient())
+            .as("a derived client cannot change TLS, proxy or protocol settings, so it must reuse the transport")
+            .isSameAs(original.getWebSocketClient());
+      }
+    }
+
+    @Test
+    @DisplayName("Derived client shares the original's HTTP client")
+    void derivedClientReusesHttpClient() {
+      final Vertx5HttpClientFactory factory = new Vertx5HttpClientFactory();
+      try (Vertx5HttpClient<?> original = factory.newBuilder().build();
+          Vertx5HttpClient<?> derived = (Vertx5HttpClient<?>) original.newBuilder().build()) {
+        assertThat(derived.getHttpClient()).isSameAs(original.getHttpClient());
+      }
+    }
+
+    @Test
+    @DisplayName("WebSocket customizations applied through additionalConfig survive on derived clients")
+    void derivedClientKeepsAdditionalConfigWebSocketCustomizations() {
+      final AtomicInteger additionalConfigInvocations = new AtomicInteger();
+      final Vertx5HttpClientFactory factory = new Vertx5HttpClientFactory() {
+        @Override
+        protected void additionalConfig(WebClientOptions webClientOptions, WebSocketClientOptions wsOptions,
+            PoolOptions poolOptions) {
+          additionalConfigInvocations.incrementAndGet();
+          wsOptions.setMaxFrameSize(4096);
+        }
+      };
+      try (Vertx5HttpClient<?> original = factory.newBuilder().build();
+          Vertx5HttpClient<?> derived = (Vertx5HttpClient<?>) original.newBuilder().build()) {
+        // additionalConfig only runs on the non-derived build, so the customization survives derivation exactly
+        // because the transport it was applied to is the one the derived client keeps using.
+        assertThat(additionalConfigInvocations)
+            .as("the derived build must not re-run additionalConfig, it has no options to apply it to")
+            .hasValue(1);
+        assertThat(derived.getWebSocketClient())
+            .as("reusing the transport is what keeps additionalConfig's WebSocket customizations alive")
+            .isSameAs(original.getWebSocketClient());
+      }
+    }
+  }
+
+  @Nested
+  @DisplayName("WebSocket Transport Settings")
+  class WebSocketTransportSettingsTests {
+
+    private WebSocketClientOptions buildAndCaptureWsOptions(Consumer<Vertx5HttpClientBuilder<?>> customizer) {
+      final AtomicReference<WebSocketClientOptions> captured = new AtomicReference<>();
+      final Vertx5HttpClientFactory factory = new Vertx5HttpClientFactory() {
+        @Override
+        protected void additionalConfig(WebClientOptions webClientOptions, WebSocketClientOptions wsOptions,
+            PoolOptions poolOptions) {
+          captured.set(wsOptions);
+        }
+      };
+      final Vertx5HttpClientBuilder<Vertx5HttpClientFactory> builder = factory.newBuilder();
+      customizer.accept(builder);
+      try (HttpClient client = builder.build()) {
+        assertNotNull(client);
+      }
+      return captured.get();
+    }
+
+    @Test
+    @DisplayName("WebSocket client honors the configured connect timeout")
+    void webSocketClientAppliesConnectTimeout() {
+      final WebSocketClientOptions wsOptions = buildAndCaptureWsOptions(
+          builder -> builder.connectTimeout(1234, TimeUnit.MILLISECONDS));
+      assertThat(wsOptions.getConnectTimeout())
+          .as("WebSocket connects would otherwise hang past the user's configured timeout")
+          .isEqualTo(1234);
+    }
+
+    @Test
+    @DisplayName("WebSocket client honors the configured HTTP proxy")
+    void webSocketClientAppliesHttpProxy() {
+      final WebSocketClientOptions wsOptions = buildAndCaptureWsOptions(
+          builder -> builder.proxyAddress(new InetSocketAddress("localhost", 3128)));
+      assertThat(wsOptions.getProxyOptions())
+          .as("exec/attach/portForward would otherwise bypass the configured egress proxy")
+          .isNotNull()
+          .returns("localhost", ProxyOptions::getHost)
+          .returns(3128, ProxyOptions::getPort)
+          .returns(ProxyType.HTTP, ProxyOptions::getType);
+    }
+
+    @Test
+    @DisplayName("WebSocket client honors the configured SOCKS5 proxy and its credentials")
+    void webSocketClientAppliesSocks5ProxyWithCredentials() {
+      final WebSocketClientOptions wsOptions = buildAndCaptureWsOptions(builder -> builder
+          .proxyType(HttpClient.ProxyType.SOCKS5)
+          .proxyAddress(new InetSocketAddress("localhost", 1080))
+          .proxyAuthorization(basicCredentials("user", "pass")));
+      assertThat(wsOptions.getProxyOptions())
+          .isNotNull()
+          .returns(ProxyType.SOCKS5, ProxyOptions::getType)
+          .returns("user", ProxyOptions::getUsername)
+          .returns("pass", ProxyOptions::getPassword);
+    }
+
+    @Test
+    @DisplayName("WebSocket client is left unproxied when the proxy type is DIRECT")
+    void webSocketClientSkipsProxyWhenDirect() {
+      final WebSocketClientOptions wsOptions = buildAndCaptureWsOptions(builder -> builder
+          .proxyType(HttpClient.ProxyType.DIRECT)
+          .proxyAddress(new InetSocketAddress("localhost", 3128)));
+      assertThat(wsOptions.getProxyOptions()).isNull();
     }
   }
 

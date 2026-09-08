@@ -25,7 +25,7 @@ public class ResourcePoolStatusRequestSpecBuilder extends ResourcePoolStatusRequ
   }
 
   public ResourcePoolStatusRequestSpec build() {
-    ResourcePoolStatusRequestSpec buildable = new ResourcePoolStatusRequestSpec(fluent.getDriver(), fluent.getLimit(), fluent.getPoolName());
+    ResourcePoolStatusRequestSpec buildable = new ResourcePoolStatusRequestSpec(fluent.getDefaultPartitionTypeAttribute(), fluent.getDriver(), fluent.getLimit(), fluent.getPoolName());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

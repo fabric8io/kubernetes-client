@@ -25,7 +25,7 @@ public class ProjectedVolumeSourceBuilder extends ProjectedVolumeSourceFluent<Pr
   }
 
   public ProjectedVolumeSource build() {
-    ProjectedVolumeSource buildable = new ProjectedVolumeSource(fluent.getDefaultMode(), fluent.buildSources());
+    ProjectedVolumeSource buildable = new ProjectedVolumeSource(fluent.getDefaultMode(), fluent.getDefaultUser(), fluent.buildSources());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -32,9 +32,11 @@ public class ResourceSliceSpecFluent<A extends io.fabric8.kubernetes.api.model.r
   private String driver;
   private String nodeName;
   private NodeSelector nodeSelector;
+  private String partitionTypeAttribute;
   private Boolean perDeviceNodeSelection;
   private ResourcePoolBuilder pool;
   private ArrayList<CounterSetBuilder> sharedCounters = new ArrayList<CounterSetBuilder>();
+  private List<String> skipNodeOperations = new ArrayList<String>();
 
   public ResourceSliceSpecFluent() {
   }
@@ -63,6 +65,16 @@ public class ResourceSliceSpecFluent<A extends io.fabric8.kubernetes.api.model.r
         CounterSetBuilder builder = new CounterSetBuilder(item);
         _visitables.get("sharedCounters").add(builder);
         this.sharedCounters.add(builder);
+    }
+    return (A) this;
+  }
+  
+  public A addAllToSkipNodeOperations(Collection<String> items) {
+    if (this.skipNodeOperations == null) {
+      this.skipNodeOperations = new ArrayList();
+    }
+    for (String item : items) {
+      this.skipNodeOperations.add(item);
     }
     return (A) this;
   }
@@ -157,6 +169,24 @@ public class ResourceSliceSpecFluent<A extends io.fabric8.kubernetes.api.model.r
     return (A) this;
   }
   
+  public A addToSkipNodeOperations(String... items) {
+    if (this.skipNodeOperations == null) {
+      this.skipNodeOperations = new ArrayList();
+    }
+    for (String item : items) {
+      this.skipNodeOperations.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addToSkipNodeOperations(int index,String item) {
+    if (this.skipNodeOperations == null) {
+      this.skipNodeOperations = new ArrayList();
+    }
+    this.skipNodeOperations.add(index, item);
+    return (A) this;
+  }
+  
   public Device buildDevice(int index) {
     return this.devices.get(index).build();
   }
@@ -219,9 +249,11 @@ public class ResourceSliceSpecFluent<A extends io.fabric8.kubernetes.api.model.r
         this.withDriver(instance.getDriver());
         this.withNodeName(instance.getNodeName());
         this.withNodeSelector(instance.getNodeSelector());
+        this.withPartitionTypeAttribute(instance.getPartitionTypeAttribute());
         this.withPerDeviceNodeSelection(instance.getPerDeviceNodeSelection());
         this.withPool(instance.getPool());
         this.withSharedCounters(instance.getSharedCounters());
+        this.withSkipNodeOperations(instance.getSkipNodeOperations());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -336,6 +368,9 @@ public class ResourceSliceSpecFluent<A extends io.fabric8.kubernetes.api.model.r
     if (!(Objects.equals(nodeSelector, that.nodeSelector))) {
       return false;
     }
+    if (!(Objects.equals(partitionTypeAttribute, that.partitionTypeAttribute))) {
+      return false;
+    }
     if (!(Objects.equals(perDeviceNodeSelection, that.perDeviceNodeSelection))) {
       return false;
     }
@@ -343,6 +378,9 @@ public class ResourceSliceSpecFluent<A extends io.fabric8.kubernetes.api.model.r
       return false;
     }
     if (!(Objects.equals(sharedCounters, that.sharedCounters))) {
+      return false;
+    }
+    if (!(Objects.equals(skipNodeOperations, that.skipNodeOperations))) {
       return false;
     }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
@@ -363,6 +401,23 @@ public class ResourceSliceSpecFluent<A extends io.fabric8.kubernetes.api.model.r
     return this.driver;
   }
   
+  public String getFirstSkipNodeOperation() {
+    return this.skipNodeOperations.get(0);
+  }
+  
+  public String getLastSkipNodeOperation() {
+    return this.skipNodeOperations.get(skipNodeOperations.size() - 1);
+  }
+  
+  public String getMatchingSkipNodeOperation(Predicate<String> predicate) {
+      for (String item : skipNodeOperations) {
+        if (predicate.test(item)) {
+          return item;
+        }
+      }
+      return null;
+  }
+  
   public String getNodeName() {
     return this.nodeName;
   }
@@ -371,8 +426,20 @@ public class ResourceSliceSpecFluent<A extends io.fabric8.kubernetes.api.model.r
     return this.nodeSelector;
   }
   
+  public String getPartitionTypeAttribute() {
+    return this.partitionTypeAttribute;
+  }
+  
   public Boolean getPerDeviceNodeSelection() {
     return this.perDeviceNodeSelection;
+  }
+  
+  public String getSkipNodeOperation(int index) {
+    return this.skipNodeOperations.get(index);
+  }
+  
+  public List<String> getSkipNodeOperations() {
+    return this.skipNodeOperations;
   }
   
   public boolean hasAdditionalProperties() {
@@ -409,12 +476,25 @@ public class ResourceSliceSpecFluent<A extends io.fabric8.kubernetes.api.model.r
       return false;
   }
   
+  public boolean hasMatchingSkipNodeOperation(Predicate<String> predicate) {
+      for (String item : skipNodeOperations) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
   public boolean hasNodeName() {
     return this.nodeName != null;
   }
   
   public boolean hasNodeSelector() {
     return this.nodeSelector != null;
+  }
+  
+  public boolean hasPartitionTypeAttribute() {
+    return this.partitionTypeAttribute != null;
   }
   
   public boolean hasPerDeviceNodeSelection() {
@@ -429,8 +509,12 @@ public class ResourceSliceSpecFluent<A extends io.fabric8.kubernetes.api.model.r
     return this.sharedCounters != null && !(this.sharedCounters.isEmpty());
   }
   
+  public boolean hasSkipNodeOperations() {
+    return this.skipNodeOperations != null && !(this.skipNodeOperations.isEmpty());
+  }
+  
   public int hashCode() {
-    return Objects.hash(allNodes, devices, driver, nodeName, nodeSelector, perDeviceNodeSelection, pool, sharedCounters, additionalProperties);
+    return Objects.hash(allNodes, devices, driver, nodeName, nodeSelector, partitionTypeAttribute, perDeviceNodeSelection, pool, sharedCounters, skipNodeOperations, additionalProperties);
   }
   
   public A removeAllFromDevices(Collection<Device> items) {
@@ -453,6 +537,16 @@ public class ResourceSliceSpecFluent<A extends io.fabric8.kubernetes.api.model.r
         CounterSetBuilder builder = new CounterSetBuilder(item);
         _visitables.get("sharedCounters").remove(builder);
         this.sharedCounters.remove(builder);
+    }
+    return (A) this;
+  }
+  
+  public A removeAllFromSkipNodeOperations(Collection<String> items) {
+    if (this.skipNodeOperations == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.skipNodeOperations.remove(item);
     }
     return (A) this;
   }
@@ -501,6 +595,16 @@ public class ResourceSliceSpecFluent<A extends io.fabric8.kubernetes.api.model.r
         CounterSetBuilder builder = new CounterSetBuilder(item);
         _visitables.get("sharedCounters").remove(builder);
         this.sharedCounters.remove(builder);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromSkipNodeOperations(String... items) {
+    if (this.skipNodeOperations == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.skipNodeOperations.remove(item);
     }
     return (A) this;
   }
@@ -575,6 +679,14 @@ public class ResourceSliceSpecFluent<A extends io.fabric8.kubernetes.api.model.r
     return (A) this;
   }
   
+  public A setToSkipNodeOperations(int index,String item) {
+    if (this.skipNodeOperations == null) {
+      this.skipNodeOperations = new ArrayList();
+    }
+    this.skipNodeOperations.set(index, item);
+    return (A) this;
+  }
+  
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
@@ -603,6 +715,11 @@ public class ResourceSliceSpecFluent<A extends io.fabric8.kubernetes.api.model.r
         sb.append(nodeSelector);
         sb.append(",");
     }
+    if (!(partitionTypeAttribute == null)) {
+        sb.append("partitionTypeAttribute:");
+        sb.append(partitionTypeAttribute);
+        sb.append(",");
+    }
     if (!(perDeviceNodeSelection == null)) {
         sb.append("perDeviceNodeSelection:");
         sb.append(perDeviceNodeSelection);
@@ -616,6 +733,11 @@ public class ResourceSliceSpecFluent<A extends io.fabric8.kubernetes.api.model.r
     if (!(sharedCounters == null) && !(sharedCounters.isEmpty())) {
         sb.append("sharedCounters:");
         sb.append(sharedCounters);
+        sb.append(",");
+    }
+    if (!(skipNodeOperations == null) && !(skipNodeOperations.isEmpty())) {
+        sb.append("skipNodeOperations:");
+        sb.append(skipNodeOperations);
         sb.append(",");
     }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
@@ -699,6 +821,11 @@ public class ResourceSliceSpecFluent<A extends io.fabric8.kubernetes.api.model.r
     return (A) this;
   }
   
+  public A withPartitionTypeAttribute(String partitionTypeAttribute) {
+    this.partitionTypeAttribute = partitionTypeAttribute;
+    return (A) this;
+  }
+  
   public A withPerDeviceNodeSelection() {
     return withPerDeviceNodeSelection(true);
   }
@@ -743,6 +870,31 @@ public class ResourceSliceSpecFluent<A extends io.fabric8.kubernetes.api.model.r
     if (sharedCounters != null) {
       for (CounterSet item : sharedCounters) {
         this.addToSharedCounters(item);
+      }
+    }
+    return (A) this;
+  }
+  
+  public A withSkipNodeOperations(List<String> skipNodeOperations) {
+    if (skipNodeOperations != null) {
+        this.skipNodeOperations = new ArrayList();
+        for (String item : skipNodeOperations) {
+          this.addToSkipNodeOperations(item);
+        }
+    } else {
+      this.skipNodeOperations = null;
+    }
+    return (A) this;
+  }
+  
+  public A withSkipNodeOperations(String... skipNodeOperations) {
+    if (this.skipNodeOperations != null) {
+        this.skipNodeOperations.clear();
+        _visitables.remove("skipNodeOperations");
+    }
+    if (skipNodeOperations != null) {
+      for (String item : skipNodeOperations) {
+        this.addToSkipNodeOperations(item);
       }
     }
     return (A) this;

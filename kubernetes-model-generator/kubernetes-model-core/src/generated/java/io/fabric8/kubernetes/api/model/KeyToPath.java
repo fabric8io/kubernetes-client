@@ -25,7 +25,8 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "key",
     "mode",
-    "path"
+    "path",
+    "user"
 })
 @ToString
 @EqualsAndHashCode
@@ -44,6 +45,8 @@ public class KeyToPath implements Editable<KeyToPathBuilder>, KubernetesResource
     private Integer mode;
     @JsonProperty("path")
     private String path;
+    @JsonProperty("user")
+    private Long user;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -53,11 +56,12 @@ public class KeyToPath implements Editable<KeyToPathBuilder>, KubernetesResource
     public KeyToPath() {
     }
 
-    public KeyToPath(String key, Integer mode, String path) {
+    public KeyToPath(String key, Integer mode, String path, Long user) {
         super();
         this.key = key;
         this.mode = mode;
         this.path = path;
+        this.user = user;
     }
 
     /**
@@ -106,6 +110,22 @@ public class KeyToPath implements Editable<KeyToPathBuilder>, KubernetesResource
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
+    }
+
+    /**
+     * user is Optional: The owner UID of the created file. If specified, the item-level user field takes precedence over defaultUser. (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+     */
+    @JsonProperty("user")
+    public Long getUser() {
+        return user;
+    }
+
+    /**
+     * user is Optional: The owner UID of the created file. If specified, the item-level user field takes precedence over defaultUser. (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+     */
+    @JsonProperty("user")
+    public void setUser(Long user) {
+        this.user = user;
     }
 
     @JsonIgnore

@@ -110,7 +110,7 @@ public class BoundObjectReference implements Editable<BoundObjectReferenceBuilde
     }
 
     /**
-     * kind of the referent. Valid kinds are 'Pod' and 'Secret'.
+     * kind of the referent. Valid kinds are 'Pod', 'Secret', 'Node', 'ValidatingWebhookConfiguration', and 'MutatingWebhookConfiguration'.
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -118,7 +118,7 @@ public class BoundObjectReference implements Editable<BoundObjectReferenceBuilde
     }
 
     /**
-     * kind of the referent. Valid kinds are 'Pod' and 'Secret'.
+     * kind of the referent. Valid kinds are 'Pod', 'Secret', 'Node', 'ValidatingWebhookConfiguration', and 'MutatingWebhookConfiguration'.
      */
     @JsonProperty("kind")
     public void setKind(String kind) {

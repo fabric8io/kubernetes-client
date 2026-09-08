@@ -46,6 +46,7 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
   private ArrayList<PodResourceClaimStatusBuilder> resourceClaimStatuses = new ArrayList<PodResourceClaimStatusBuilder>();
   private ResourceRequirementsBuilder resources;
   private String startTime;
+  private ArrayList<PodVolumeHealthBuilder> volumeHealth = new ArrayList<PodVolumeHealthBuilder>();
 
   public PodStatusFluent() {
   }
@@ -150,6 +151,18 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
     return (A) this;
   }
   
+  public A addAllToVolumeHealth(Collection<PodVolumeHealth> items) {
+    if (this.volumeHealth == null) {
+      this.volumeHealth = new ArrayList();
+    }
+    for (PodVolumeHealth item : items) {
+        PodVolumeHealthBuilder builder = new PodVolumeHealthBuilder(item);
+        _visitables.get("volumeHealth").add(builder);
+        this.volumeHealth.add(builder);
+    }
+    return (A) this;
+  }
+  
   public ConditionsNested<A> addNewCondition() {
     return new ConditionsNested(-1, null);
   }
@@ -224,6 +237,14 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
   
   public ResourceClaimStatusesNested<A> addNewResourceClaimStatusLike(PodResourceClaimStatus item) {
     return new ResourceClaimStatusesNested(-1, item);
+  }
+  
+  public VolumeHealthNested<A> addNewVolumeHealth() {
+    return new VolumeHealthNested(-1, null);
+  }
+  
+  public VolumeHealthNested<A> addNewVolumeHealthLike(PodVolumeHealth item) {
+    return new VolumeHealthNested(-1, item);
   }
   
   public A addToAdditionalProperties(Map<String,Object> map) {
@@ -482,6 +503,33 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
     return (A) this;
   }
   
+  public A addToVolumeHealth(PodVolumeHealth... items) {
+    if (this.volumeHealth == null) {
+      this.volumeHealth = new ArrayList();
+    }
+    for (PodVolumeHealth item : items) {
+        PodVolumeHealthBuilder builder = new PodVolumeHealthBuilder(item);
+        _visitables.get("volumeHealth").add(builder);
+        this.volumeHealth.add(builder);
+    }
+    return (A) this;
+  }
+  
+  public A addToVolumeHealth(int index,PodVolumeHealth item) {
+    if (this.volumeHealth == null) {
+      this.volumeHealth = new ArrayList();
+    }
+    PodVolumeHealthBuilder builder = new PodVolumeHealthBuilder(item);
+    if (index < 0 || index >= volumeHealth.size()) {
+        _visitables.get("volumeHealth").add(builder);
+        volumeHealth.add(builder);
+    } else {
+        _visitables.get("volumeHealth").add(builder);
+        volumeHealth.add(index, builder);
+    }
+    return (A) this;
+  }
+  
   public PodCondition buildCondition(int index) {
     return this.conditions.get(index).build();
   }
@@ -542,6 +590,10 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
     return this.resourceClaimStatuses.get(0).build();
   }
   
+  public PodVolumeHealth buildFirstVolumeHealth() {
+    return this.volumeHealth.get(0).build();
+  }
+  
   public HostIP buildHostIP(int index) {
     return this.hostIPs.get(index).build();
   }
@@ -588,6 +640,10 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
   
   public PodResourceClaimStatus buildLastResourceClaimStatus() {
     return this.resourceClaimStatuses.get(resourceClaimStatuses.size() - 1).build();
+  }
+  
+  public PodVolumeHealth buildLastVolumeHealth() {
+    return this.volumeHealth.get(volumeHealth.size() - 1).build();
   }
   
   public PodCondition buildMatchingCondition(Predicate<PodConditionBuilder> predicate) {
@@ -662,6 +718,15 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
       return null;
   }
   
+  public PodVolumeHealth buildMatchingVolumeHealth(Predicate<PodVolumeHealthBuilder> predicate) {
+      for (PodVolumeHealthBuilder item : volumeHealth) {
+        if (predicate.test(item)) {
+          return item.build();
+        }
+      }
+      return null;
+  }
+  
   public NodeAllocatableResourceClaimStatus buildNodeAllocatableResourceClaimStatus(int index) {
     return this.nodeAllocatableResourceClaimStatuses.get(index).build();
   }
@@ -690,6 +755,14 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
     return this.resources != null ? this.resources.build() : null;
   }
   
+  public List<PodVolumeHealth> buildVolumeHealth() {
+    return this.volumeHealth != null ? build(volumeHealth) : null;
+  }
+  
+  public PodVolumeHealth buildVolumeHealth(int index) {
+    return this.volumeHealth.get(index).build();
+  }
+  
   protected void copyInstance(PodStatus instance) {
     instance = instance != null ? instance : new PodStatus();
     if (instance != null) {
@@ -714,6 +787,7 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
         this.withResourceClaimStatuses(instance.getResourceClaimStatuses());
         this.withResources(instance.getResources());
         this.withStartTime(instance.getStartTime());
+        this.withVolumeHealth(instance.getVolumeHealth());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -799,6 +873,13 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
     return this.setNewResourceClaimStatusLike(0, this.buildResourceClaimStatus(0));
   }
   
+  public VolumeHealthNested<A> editFirstVolumeHealth() {
+    if (volumeHealth.size() == 0) {
+      throw new RuntimeException(String.format("Can't edit first %s. The list is empty.", "volumeHealth"));
+    }
+    return this.setNewVolumeHealthLike(0, this.buildVolumeHealth(0));
+  }
+  
   public HostIPsNested<A> editHostIP(int index) {
     if (hostIPs.size() <= index) {
       throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "hostIPs"));
@@ -875,6 +956,14 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
       throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "resourceClaimStatuses"));
     }
     return this.setNewResourceClaimStatusLike(index, this.buildResourceClaimStatus(index));
+  }
+  
+  public VolumeHealthNested<A> editLastVolumeHealth() {
+    int index = volumeHealth.size() - 1;
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "volumeHealth"));
+    }
+    return this.setNewVolumeHealthLike(index, this.buildVolumeHealth(index));
   }
   
   public ConditionsNested<A> editMatchingCondition(Predicate<PodConditionBuilder> predicate) {
@@ -989,6 +1078,20 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
     return this.setNewResourceClaimStatusLike(index, this.buildResourceClaimStatus(index));
   }
   
+  public VolumeHealthNested<A> editMatchingVolumeHealth(Predicate<PodVolumeHealthBuilder> predicate) {
+    int index = -1;
+    for (int i = 0;i < volumeHealth.size();i++) {
+      if (predicate.test(volumeHealth.get(i))) {
+          index = i;
+          break;
+      }
+    }
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit matching %s. No match found.", "volumeHealth"));
+    }
+    return this.setNewVolumeHealthLike(index, this.buildVolumeHealth(index));
+  }
+  
   public NodeAllocatableResourceClaimStatusesNested<A> editNodeAllocatableResourceClaimStatus(int index) {
     if (nodeAllocatableResourceClaimStatuses.size() <= index) {
       throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "nodeAllocatableResourceClaimStatuses"));
@@ -1028,6 +1131,13 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
   
   public ResourcesNested<A> editResources() {
     return this.withNewResourcesLike(Optional.ofNullable(this.buildResources()).orElse(null));
+  }
+  
+  public VolumeHealthNested<A> editVolumeHealth(int index) {
+    if (volumeHealth.size() <= index) {
+      throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "volumeHealth"));
+    }
+    return this.setNewVolumeHealthLike(index, this.buildVolumeHealth(index));
   }
   
   public boolean equals(Object o) {
@@ -1102,6 +1212,9 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
       return false;
     }
     if (!(Objects.equals(startTime, that.startTime))) {
+      return false;
+    }
+    if (!(Objects.equals(volumeHealth, that.volumeHealth))) {
       return false;
     }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
@@ -1266,6 +1379,15 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
       return false;
   }
   
+  public boolean hasMatchingVolumeHealth(Predicate<PodVolumeHealthBuilder> predicate) {
+      for (PodVolumeHealthBuilder item : volumeHealth) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
   public boolean hasMessage() {
     return this.message != null;
   }
@@ -1318,8 +1440,12 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
     return this.startTime != null;
   }
   
+  public boolean hasVolumeHealth() {
+    return this.volumeHealth != null && !(this.volumeHealth.isEmpty());
+  }
+  
   public int hashCode() {
-    return Objects.hash(allocatedResources, conditions, containerStatuses, ephemeralContainerStatuses, extendedResourceClaimStatus, hostIP, hostIPs, initContainerStatuses, message, nodeAllocatableResourceClaimStatuses, nominatedNodeName, observedGeneration, phase, podIP, podIPs, qosClass, reason, resize, resourceClaimStatuses, resources, startTime, additionalProperties);
+    return Objects.hash(allocatedResources, conditions, containerStatuses, ephemeralContainerStatuses, extendedResourceClaimStatus, hostIP, hostIPs, initContainerStatuses, message, nodeAllocatableResourceClaimStatuses, nominatedNodeName, observedGeneration, phase, podIP, podIPs, qosClass, reason, resize, resourceClaimStatuses, resources, startTime, volumeHealth, additionalProperties);
   }
   
   public A removeAllFromConditions(Collection<PodCondition> items) {
@@ -1414,6 +1540,18 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
         PodResourceClaimStatusBuilder builder = new PodResourceClaimStatusBuilder(item);
         _visitables.get("resourceClaimStatuses").remove(builder);
         this.resourceClaimStatuses.remove(builder);
+    }
+    return (A) this;
+  }
+  
+  public A removeAllFromVolumeHealth(Collection<PodVolumeHealth> items) {
+    if (this.volumeHealth == null) {
+      return (A) this;
+    }
+    for (PodVolumeHealth item : items) {
+        PodVolumeHealthBuilder builder = new PodVolumeHealthBuilder(item);
+        _visitables.get("volumeHealth").remove(builder);
+        this.volumeHealth.remove(builder);
     }
     return (A) this;
   }
@@ -1562,6 +1700,18 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
     return (A) this;
   }
   
+  public A removeFromVolumeHealth(PodVolumeHealth... items) {
+    if (this.volumeHealth == null) {
+      return (A) this;
+    }
+    for (PodVolumeHealth item : items) {
+        PodVolumeHealthBuilder builder = new PodVolumeHealthBuilder(item);
+        _visitables.get("volumeHealth").remove(builder);
+        this.volumeHealth.remove(builder);
+    }
+    return (A) this;
+  }
+  
   public A removeMatchingFromConditions(Predicate<PodConditionBuilder> predicate) {
     if (conditions == null) {
       return (A) this;
@@ -1690,6 +1840,22 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
     return (A) this;
   }
   
+  public A removeMatchingFromVolumeHealth(Predicate<PodVolumeHealthBuilder> predicate) {
+    if (volumeHealth == null) {
+      return (A) this;
+    }
+    Iterator<PodVolumeHealthBuilder> each = volumeHealth.iterator();
+    List visitables = _visitables.get("volumeHealth");
+    while (each.hasNext()) {
+        PodVolumeHealthBuilder builder = each.next();
+        if (predicate.test(builder)) {
+            visitables.remove(builder);
+            each.remove();
+        }
+    }
+    return (A) this;
+  }
+  
   public ConditionsNested<A> setNewConditionLike(int index,PodCondition item) {
     return new ConditionsNested(index, item);
   }
@@ -1720,6 +1886,10 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
   
   public ResourceClaimStatusesNested<A> setNewResourceClaimStatusLike(int index,PodResourceClaimStatus item) {
     return new ResourceClaimStatusesNested(index, item);
+  }
+  
+  public VolumeHealthNested<A> setNewVolumeHealthLike(int index,PodVolumeHealth item) {
+    return new VolumeHealthNested(index, item);
   }
   
   public A setToConditions(int index,PodCondition item) {
@@ -1842,6 +2012,21 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
     return (A) this;
   }
   
+  public A setToVolumeHealth(int index,PodVolumeHealth item) {
+    if (this.volumeHealth == null) {
+      this.volumeHealth = new ArrayList();
+    }
+    PodVolumeHealthBuilder builder = new PodVolumeHealthBuilder(item);
+    if (index < 0 || index >= volumeHealth.size()) {
+        _visitables.get("volumeHealth").add(builder);
+        volumeHealth.add(builder);
+    } else {
+        _visitables.get("volumeHealth").add(builder);
+        volumeHealth.set(index, builder);
+    }
+    return (A) this;
+  }
+  
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
@@ -1948,6 +2133,11 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
     if (!(startTime == null)) {
         sb.append("startTime:");
         sb.append(startTime);
+        sb.append(",");
+    }
+    if (!(volumeHealth == null) && !(volumeHealth.isEmpty())) {
+        sb.append("volumeHealth:");
+        sb.append(volumeHealth);
         sb.append(",");
     }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
@@ -2289,6 +2479,34 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
     this.startTime = startTime;
     return (A) this;
   }
+  
+  public A withVolumeHealth(List<PodVolumeHealth> volumeHealth) {
+    if (this.volumeHealth != null) {
+      this._visitables.get("volumeHealth").clear();
+    }
+    if (volumeHealth != null) {
+        this.volumeHealth = new ArrayList();
+        for (PodVolumeHealth item : volumeHealth) {
+          this.addToVolumeHealth(item);
+        }
+    } else {
+      this.volumeHealth = null;
+    }
+    return (A) this;
+  }
+  
+  public A withVolumeHealth(PodVolumeHealth... volumeHealth) {
+    if (this.volumeHealth != null) {
+        this.volumeHealth.clear();
+        _visitables.remove("volumeHealth");
+    }
+    if (volumeHealth != null) {
+      for (PodVolumeHealth item : volumeHealth) {
+        this.addToVolumeHealth(item);
+      }
+    }
+    return (A) this;
+  }
   public class ConditionsNested<N> extends PodConditionFluent<ConditionsNested<N>> implements Nested<N>{
   
     PodConditionBuilder builder;
@@ -2471,6 +2689,25 @@ public class PodStatusFluent<A extends io.fabric8.kubernetes.api.model.PodStatus
     }
     
     public N endResources() {
+      return and();
+    }
+    
+  }
+  public class VolumeHealthNested<N> extends PodVolumeHealthFluent<VolumeHealthNested<N>> implements Nested<N>{
+  
+    PodVolumeHealthBuilder builder;
+    int index;
+  
+    VolumeHealthNested(int index,PodVolumeHealth item) {
+      this.index = index;
+      this.builder = new PodVolumeHealthBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) PodStatusFluent.this.setToVolumeHealth(index, builder.build());
+    }
+    
+    public N endVolumeHealth() {
       return and();
     }
     

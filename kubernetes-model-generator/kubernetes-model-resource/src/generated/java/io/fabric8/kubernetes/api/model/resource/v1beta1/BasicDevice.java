@@ -49,7 +49,7 @@ import lombok.experimental.Accessors;
     "bindsToNode",
     "capacity",
     "consumesCounters",
-    "nodeAllocatableResourceMappings",
+    "nodeAllocatableResources",
     "nodeName",
     "nodeSelector",
     "taints"
@@ -100,9 +100,9 @@ public class BasicDevice implements Editable<BasicDeviceBuilder>, KubernetesReso
     @JsonProperty("consumesCounters")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<DeviceCounterConsumption> consumesCounters = new ArrayList<>();
-    @JsonProperty("nodeAllocatableResourceMappings")
+    @JsonProperty("nodeAllocatableResources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, NodeAllocatableResourceMapping> nodeAllocatableResourceMappings = new LinkedHashMap<>();
+    private Map<String, NodeAllocatableResource> nodeAllocatableResources = new LinkedHashMap<>();
     @JsonProperty("nodeName")
     private String nodeName;
     @JsonProperty("nodeSelector")
@@ -119,7 +119,7 @@ public class BasicDevice implements Editable<BasicDeviceBuilder>, KubernetesReso
     public BasicDevice() {
     }
 
-    public BasicDevice(Boolean allNodes, Boolean allowMultipleAllocations, Map<String, DeviceAttribute> attributes, List<String> bindingConditions, List<String> bindingFailureConditions, Boolean bindsToNode, Map<String, DeviceCapacity> capacity, List<DeviceCounterConsumption> consumesCounters, Map<String, NodeAllocatableResourceMapping> nodeAllocatableResourceMappings, String nodeName, NodeSelector nodeSelector, List<DeviceTaint> taints) {
+    public BasicDevice(Boolean allNodes, Boolean allowMultipleAllocations, Map<String, DeviceAttribute> attributes, List<String> bindingConditions, List<String> bindingFailureConditions, Boolean bindsToNode, Map<String, DeviceCapacity> capacity, List<DeviceCounterConsumption> consumesCounters, Map<String, NodeAllocatableResource> nodeAllocatableResources, String nodeName, NodeSelector nodeSelector, List<DeviceTaint> taints) {
         super();
         this.allNodes = allNodes;
         this.allowMultipleAllocations = allowMultipleAllocations;
@@ -129,7 +129,7 @@ public class BasicDevice implements Editable<BasicDeviceBuilder>, KubernetesReso
         this.bindsToNode = bindsToNode;
         this.capacity = capacity;
         this.consumesCounters = consumesCounters;
-        this.nodeAllocatableResourceMappings = nodeAllocatableResourceMappings;
+        this.nodeAllocatableResources = nodeAllocatableResources;
         this.nodeName = nodeName;
         this.nodeSelector = nodeSelector;
         this.taints = taints;
@@ -269,20 +269,20 @@ public class BasicDevice implements Editable<BasicDeviceBuilder>, KubernetesReso
     }
 
     /**
-     * NodeAllocatableResourceMappings defines the mapping of node resources that are managed by the DRA driver exposing this device. This includes resources currently reported in v1.Node `status.allocatable` that are not extended resources (see https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#extended-resources). Examples include "cpu", "memory", "ephemeral-storage", and hugepages. In addition to standard requests made through the Pod `spec`, these resources can also be requested through claims and allocated by the DRA driver. For example, a CPU DRA driver might allocate exclusive CPUs or auxiliary node memory dependencies of an accelerator device. The keys of this map are the node-allocatable resource names (e.g., "cpu", "memory"). Extended resource names are not permitted as keys.
+     * NodeAllocatableResources defines the mapping of node resources that are managed by the DRA driver exposing this device. This includes resources currently reported in v1.Node `status.allocatable` that are not extended resources (see https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#extended-resources). Examples include "cpu", "memory", "ephemeral-storage", and hugepages. In addition to standard requests made through the Pod `spec`, these resources can also be requested through claims and allocated by the DRA driver. For example, a CPU DRA driver might allocate exclusive CPUs or auxiliary node memory dependencies of an accelerator device. The keys of this map are the node-allocatable resource names (e.g., "cpu", "memory"). Extended resource names are not permitted as keys.
      */
-    @JsonProperty("nodeAllocatableResourceMappings")
+    @JsonProperty("nodeAllocatableResources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, NodeAllocatableResourceMapping> getNodeAllocatableResourceMappings() {
-        return nodeAllocatableResourceMappings;
+    public Map<String, NodeAllocatableResource> getNodeAllocatableResources() {
+        return nodeAllocatableResources;
     }
 
     /**
-     * NodeAllocatableResourceMappings defines the mapping of node resources that are managed by the DRA driver exposing this device. This includes resources currently reported in v1.Node `status.allocatable` that are not extended resources (see https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#extended-resources). Examples include "cpu", "memory", "ephemeral-storage", and hugepages. In addition to standard requests made through the Pod `spec`, these resources can also be requested through claims and allocated by the DRA driver. For example, a CPU DRA driver might allocate exclusive CPUs or auxiliary node memory dependencies of an accelerator device. The keys of this map are the node-allocatable resource names (e.g., "cpu", "memory"). Extended resource names are not permitted as keys.
+     * NodeAllocatableResources defines the mapping of node resources that are managed by the DRA driver exposing this device. This includes resources currently reported in v1.Node `status.allocatable` that are not extended resources (see https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#extended-resources). Examples include "cpu", "memory", "ephemeral-storage", and hugepages. In addition to standard requests made through the Pod `spec`, these resources can also be requested through claims and allocated by the DRA driver. For example, a CPU DRA driver might allocate exclusive CPUs or auxiliary node memory dependencies of an accelerator device. The keys of this map are the node-allocatable resource names (e.g., "cpu", "memory"). Extended resource names are not permitted as keys.
      */
-    @JsonProperty("nodeAllocatableResourceMappings")
-    public void setNodeAllocatableResourceMappings(Map<String, NodeAllocatableResourceMapping> nodeAllocatableResourceMappings) {
-        this.nodeAllocatableResourceMappings = nodeAllocatableResourceMappings;
+    @JsonProperty("nodeAllocatableResources")
+    public void setNodeAllocatableResources(Map<String, NodeAllocatableResource> nodeAllocatableResources) {
+        this.nodeAllocatableResources = nodeAllocatableResources;
     }
 
     /**

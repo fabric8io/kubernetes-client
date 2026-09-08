@@ -26,8 +26,9 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "containers",
-    "resourceClaimName",
-    "resources"
+    "mapping",
+    "overhead",
+    "resourceClaimName"
 })
 @ToString
 @EqualsAndHashCode
@@ -43,11 +44,14 @@ public class NodeAllocatableResourceClaimStatus implements Editable<NodeAllocata
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> containers = new ArrayList<>();
+    @JsonProperty("mapping")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<NodeAllocatableMappedResources> mapping = new ArrayList<>();
+    @JsonProperty("overhead")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<NodeAllocatableOverheadResources> overhead = new ArrayList<>();
     @JsonProperty("resourceClaimName")
     private String resourceClaimName;
-    @JsonProperty("resources")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Map<String, Quantity> resources = new LinkedHashMap<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -57,11 +61,12 @@ public class NodeAllocatableResourceClaimStatus implements Editable<NodeAllocata
     public NodeAllocatableResourceClaimStatus() {
     }
 
-    public NodeAllocatableResourceClaimStatus(List<String> containers, String resourceClaimName, Map<String, Quantity> resources) {
+    public NodeAllocatableResourceClaimStatus(List<String> containers, List<NodeAllocatableMappedResources> mapping, List<NodeAllocatableOverheadResources> overhead, String resourceClaimName) {
         super();
         this.containers = containers;
+        this.mapping = mapping;
+        this.overhead = overhead;
         this.resourceClaimName = resourceClaimName;
-        this.resources = resources;
     }
 
     /**
@@ -82,6 +87,40 @@ public class NodeAllocatableResourceClaimStatus implements Editable<NodeAllocata
     }
 
     /**
+     * Mapping contains allocations through devices mapped in the device spec's `nodeAllocatableResources[...].mapping` field. This is used by kubelet for pod level and container-level cgroup enforcement.
+     */
+    @JsonProperty("mapping")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<NodeAllocatableMappedResources> getMapping() {
+        return mapping;
+    }
+
+    /**
+     * Mapping contains allocations through devices mapped in the device spec's `nodeAllocatableResources[...].mapping` field. This is used by kubelet for pod level and container-level cgroup enforcement.
+     */
+    @JsonProperty("mapping")
+    public void setMapping(List<NodeAllocatableMappedResources> mapping) {
+        this.mapping = mapping;
+    }
+
+    /**
+     * Overhead contains allocations through devices mapped in the device spec's `nodeAllocatableResources[...].overhead` field. This is used by kubelet for pod level and container-level cgroup enforcement.
+     */
+    @JsonProperty("overhead")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<NodeAllocatableOverheadResources> getOverhead() {
+        return overhead;
+    }
+
+    /**
+     * Overhead contains allocations through devices mapped in the device spec's `nodeAllocatableResources[...].overhead` field. This is used by kubelet for pod level and container-level cgroup enforcement.
+     */
+    @JsonProperty("overhead")
+    public void setOverhead(List<NodeAllocatableOverheadResources> overhead) {
+        this.overhead = overhead;
+    }
+
+    /**
      * ResourceClaimName is the resource claim referenced by the pod that resulted in this node allocatable resource allocation.
      */
     @JsonProperty("resourceClaimName")
@@ -95,23 +134,6 @@ public class NodeAllocatableResourceClaimStatus implements Editable<NodeAllocata
     @JsonProperty("resourceClaimName")
     public void setResourceClaimName(String resourceClaimName) {
         this.resourceClaimName = resourceClaimName;
-    }
-
-    /**
-     * Resources is a map of the node-allocatable resource name to the aggregate quantity allocated to the claim.
-     */
-    @JsonProperty("resources")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public Map<String, Quantity> getResources() {
-        return resources;
-    }
-
-    /**
-     * Resources is a map of the node-allocatable resource name to the aggregate quantity allocated to the claim.
-     */
-    @JsonProperty("resources")
-    public void setResources(Map<String, Quantity> resources) {
-        this.resources = resources;
     }
 
     @JsonIgnore

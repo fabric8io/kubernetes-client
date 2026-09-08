@@ -49,6 +49,7 @@ import lombok.experimental.Accessors;
     "parallelism",
     "podFailurePolicy",
     "podReplacementPolicy",
+    "scheduling",
     "selector",
     "successPolicy",
     "suspend",
@@ -102,6 +103,8 @@ public class JobSpec implements Editable<JobSpecBuilder>, KubernetesResource
     private PodFailurePolicy podFailurePolicy;
     @JsonProperty("podReplacementPolicy")
     private String podReplacementPolicy;
+    @JsonProperty("scheduling")
+    private JobSchedulingConfiguration scheduling;
     @JsonProperty("selector")
     private LabelSelector selector;
     @JsonProperty("successPolicy")
@@ -121,7 +124,7 @@ public class JobSpec implements Editable<JobSpecBuilder>, KubernetesResource
     public JobSpec() {
     }
 
-    public JobSpec(Long activeDeadlineSeconds, Integer backoffLimit, Integer backoffLimitPerIndex, String completionMode, Integer completions, String managedBy, Boolean manualSelector, Integer maxFailedIndexes, Integer parallelism, PodFailurePolicy podFailurePolicy, String podReplacementPolicy, LabelSelector selector, SuccessPolicy successPolicy, Boolean suspend, PodTemplateSpec template, Integer ttlSecondsAfterFinished) {
+    public JobSpec(Long activeDeadlineSeconds, Integer backoffLimit, Integer backoffLimitPerIndex, String completionMode, Integer completions, String managedBy, Boolean manualSelector, Integer maxFailedIndexes, Integer parallelism, PodFailurePolicy podFailurePolicy, String podReplacementPolicy, JobSchedulingConfiguration scheduling, LabelSelector selector, SuccessPolicy successPolicy, Boolean suspend, PodTemplateSpec template, Integer ttlSecondsAfterFinished) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;
         this.backoffLimit = backoffLimit;
@@ -134,6 +137,7 @@ public class JobSpec implements Editable<JobSpecBuilder>, KubernetesResource
         this.parallelism = parallelism;
         this.podFailurePolicy = podFailurePolicy;
         this.podReplacementPolicy = podReplacementPolicy;
+        this.scheduling = scheduling;
         this.selector = selector;
         this.successPolicy = successPolicy;
         this.suspend = suspend;
@@ -315,6 +319,22 @@ public class JobSpec implements Editable<JobSpecBuilder>, KubernetesResource
     @JsonProperty("podReplacementPolicy")
     public void setPodReplacementPolicy(String podReplacementPolicy) {
         this.podReplacementPolicy = podReplacementPolicy;
+    }
+
+    /**
+     * JobSpec describes how the job execution will look like.
+     */
+    @JsonProperty("scheduling")
+    public JobSchedulingConfiguration getScheduling() {
+        return scheduling;
+    }
+
+    /**
+     * JobSpec describes how the job execution will look like.
+     */
+    @JsonProperty("scheduling")
+    public void setScheduling(JobSchedulingConfiguration scheduling) {
+        this.scheduling = scheduling;
     }
 
     /**

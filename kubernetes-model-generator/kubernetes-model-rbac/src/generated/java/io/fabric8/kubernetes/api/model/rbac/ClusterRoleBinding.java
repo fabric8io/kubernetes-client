@@ -169,7 +169,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder>, 
     }
 
     /**
-     * Subjects holds references to the objects the role applies to.
+     * subjects holds references to the objects the role applies to.
      */
     @JsonProperty("subjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -178,7 +178,7 @@ public class ClusterRoleBinding implements Editable<ClusterRoleBindingBuilder>, 
     }
 
     /**
-     * Subjects holds references to the objects the role applies to.
+     * subjects holds references to the objects the role applies to.
      */
     @JsonProperty("subjects")
     public void setSubjects(List<Subject> subjects) {

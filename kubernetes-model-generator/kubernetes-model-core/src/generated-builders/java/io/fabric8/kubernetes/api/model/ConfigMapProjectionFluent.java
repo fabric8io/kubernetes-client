@@ -4,6 +4,7 @@ import io.fabric8.kubernetes.api.builder.BaseFluent;
 import io.fabric8.kubernetes.api.builder.Nested;
 import java.lang.Boolean;
 import java.lang.Integer;
+import java.lang.Long;
 import java.lang.Object;
 import java.lang.RuntimeException;
 import java.lang.String;
@@ -52,8 +53,8 @@ public class ConfigMapProjectionFluent<A extends io.fabric8.kubernetes.api.model
     return new ItemsNested(-1, null);
   }
   
-  public A addNewItem(String key,Integer mode,String path) {
-    return (A) this.addToItems(new KeyToPath(key, mode, path));
+  public A addNewItem(String key,Integer mode,String path,Long user) {
+    return (A) this.addToItems(new KeyToPath(key, mode, path, user));
   }
   
   public ItemsNested<A> addNewItemLike(KeyToPath item) {

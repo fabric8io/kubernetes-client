@@ -270,7 +270,7 @@ public class JobStatus implements Editable<JobStatusBuilder>, KubernetesResource
     }
 
     /**
-     * The number of pods which are terminating (in phase Pending or Running and have a deletionTimestamp).<br><p> <br><p> This field is beta-level. The job controller populates the field when the feature gate JobPodReplacementPolicy is enabled (enabled by default).
+     * The number of pods which are terminating (in phase Pending or Running and have a deletionTimestamp).
      */
     @JsonProperty("terminating")
     public Integer getTerminating() {
@@ -278,7 +278,7 @@ public class JobStatus implements Editable<JobStatusBuilder>, KubernetesResource
     }
 
     /**
-     * The number of pods which are terminating (in phase Pending or Running and have a deletionTimestamp).<br><p> <br><p> This field is beta-level. The job controller populates the field when the feature gate JobPodReplacementPolicy is enabled (enabled by default).
+     * The number of pods which are terminating (in phase Pending or Running and have a deletionTimestamp).
      */
     @JsonProperty("terminating")
     public void setTerminating(Integer terminating) {

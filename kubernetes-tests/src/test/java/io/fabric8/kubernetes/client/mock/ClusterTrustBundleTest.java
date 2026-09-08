@@ -15,10 +15,10 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundle;
-import io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundleBuilder;
-import io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundleList;
-import io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundleListBuilder;
+import io.fabric8.kubernetes.api.model.certificates.v1.ClusterTrustBundle;
+import io.fabric8.kubernetes.api.model.certificates.v1.ClusterTrustBundleBuilder;
+import io.fabric8.kubernetes.api.model.certificates.v1.ClusterTrustBundleList;
+import io.fabric8.kubernetes.api.model.certificates.v1.ClusterTrustBundleListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
@@ -36,12 +36,12 @@ class ClusterTrustBundleTest {
   @Test
   void get() {
     // Given
-    server.expect().get().withPath("/apis/certificates.k8s.io/v1alpha1/clustertrustbundles/example.com:mysigner:foo")
+    server.expect().get().withPath("/apis/certificates.k8s.io/v1/clustertrustbundles/example.com:mysigner:foo")
         .andReturn(HttpURLConnection.HTTP_OK, createNewClusterTrustBundle())
         .once();
 
     // When
-    ClusterTrustBundle clusterTrustBundle = client.certificates().v1alpha1().clusterTrustBundles()
+    ClusterTrustBundle clusterTrustBundle = client.certificates().v1().clusterTrustBundles()
         .withName("example.com:mysigner:foo").get();
 
     // Then
@@ -53,14 +53,14 @@ class ClusterTrustBundleTest {
   @Test
   void list() {
     // Given
-    server.expect().get().withPath("/apis/certificates.k8s.io/v1alpha1/clustertrustbundles")
+    server.expect().get().withPath("/apis/certificates.k8s.io/v1/clustertrustbundles")
         .andReturn(HttpURLConnection.HTTP_OK, new ClusterTrustBundleListBuilder()
             .addToItems(createNewClusterTrustBundle())
             .build())
         .once();
 
     // When
-    ClusterTrustBundleList clusterTrustBundleList = client.certificates().v1alpha1().clusterTrustBundles().list();
+    ClusterTrustBundleList clusterTrustBundleList = client.certificates().v1().clusterTrustBundles().list();
 
     // Then
     assertThat(clusterTrustBundleList).isNotNull();
@@ -72,12 +72,12 @@ class ClusterTrustBundleTest {
   @Test
   void delete() {
     // Given
-    server.expect().delete().withPath("/apis/certificates.k8s.io/v1alpha1/clustertrustbundles/example.com:mysigner:foo")
+    server.expect().delete().withPath("/apis/certificates.k8s.io/v1/clustertrustbundles/example.com:mysigner:foo")
         .andReturn(HttpURLConnection.HTTP_OK, createNewClusterTrustBundle())
         .once();
 
     // When
-    boolean isDeleted = client.certificates().v1alpha1().clusterTrustBundles().withName("example.com:mysigner:foo").delete()
+    boolean isDeleted = client.certificates().v1().clusterTrustBundles().withName("example.com:mysigner:foo").delete()
         .size() == 1;
 
     // Then

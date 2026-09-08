@@ -119,7 +119,7 @@ public class VolumeAttributesClass implements Editable<VolumeAttributesClassBuil
     }
 
     /**
-     * Name of the CSI driver This field is immutable.
+     * driverName is the name of the CSI driver This field is immutable.
      */
     @JsonProperty("driverName")
     public String getDriverName() {
@@ -127,7 +127,7 @@ public class VolumeAttributesClass implements Editable<VolumeAttributesClassBuil
     }
 
     /**
-     * Name of the CSI driver This field is immutable.
+     * driverName is the name of the CSI driver This field is immutable.
      */
     @JsonProperty("driverName")
     public void setDriverName(String driverName) {

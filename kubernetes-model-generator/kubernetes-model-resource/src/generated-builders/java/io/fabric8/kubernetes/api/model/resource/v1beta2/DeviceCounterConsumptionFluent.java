@@ -5,9 +5,13 @@ import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
 import java.lang.SuppressWarnings;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 /**
  * Generated
@@ -16,6 +20,7 @@ import java.util.Objects;
 public class DeviceCounterConsumptionFluent<A extends io.fabric8.kubernetes.api.model.resource.v1beta2.DeviceCounterConsumptionFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
+  private List<String> compatibilityGroups = new ArrayList<String>();
   private String counterSet;
   private Map<String,Counter> counters;
 
@@ -26,6 +31,16 @@ public class DeviceCounterConsumptionFluent<A extends io.fabric8.kubernetes.api.
     this.copyInstance(instance);
   }
 
+  public A addAllToCompatibilityGroups(Collection<String> items) {
+    if (this.compatibilityGroups == null) {
+      this.compatibilityGroups = new ArrayList();
+    }
+    for (String item : items) {
+      this.compatibilityGroups.add(item);
+    }
+    return (A) this;
+  }
+  
   public A addToAdditionalProperties(Map<String,Object> map) {
     if (this.additionalProperties == null && map != null) {
       this.additionalProperties = new LinkedHashMap();
@@ -43,6 +58,24 @@ public class DeviceCounterConsumptionFluent<A extends io.fabric8.kubernetes.api.
     if (key != null && value != null) {
       this.additionalProperties.put(key, value);
     }
+    return (A) this;
+  }
+  
+  public A addToCompatibilityGroups(String... items) {
+    if (this.compatibilityGroups == null) {
+      this.compatibilityGroups = new ArrayList();
+    }
+    for (String item : items) {
+      this.compatibilityGroups.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addToCompatibilityGroups(int index,String item) {
+    if (this.compatibilityGroups == null) {
+      this.compatibilityGroups = new ArrayList();
+    }
+    this.compatibilityGroups.add(index, item);
     return (A) this;
   }
   
@@ -69,6 +102,7 @@ public class DeviceCounterConsumptionFluent<A extends io.fabric8.kubernetes.api.
   protected void copyInstance(DeviceCounterConsumption instance) {
     instance = instance != null ? instance : new DeviceCounterConsumption();
     if (instance != null) {
+        this.withCompatibilityGroups(instance.getCompatibilityGroups());
         this.withCounterSet(instance.getCounterSet());
         this.withCounters(instance.getCounters());
         this.withAdditionalProperties(instance.getAdditionalProperties());
@@ -86,6 +120,9 @@ public class DeviceCounterConsumptionFluent<A extends io.fabric8.kubernetes.api.
       return false;
     }
     DeviceCounterConsumptionFluent that = (DeviceCounterConsumptionFluent) o;
+    if (!(Objects.equals(compatibilityGroups, that.compatibilityGroups))) {
+      return false;
+    }
     if (!(Objects.equals(counterSet, that.counterSet))) {
       return false;
     }
@@ -102,6 +139,14 @@ public class DeviceCounterConsumptionFluent<A extends io.fabric8.kubernetes.api.
     return this.additionalProperties;
   }
   
+  public String getCompatibilityGroup(int index) {
+    return this.compatibilityGroups.get(index);
+  }
+  
+  public List<String> getCompatibilityGroups() {
+    return this.compatibilityGroups;
+  }
+  
   public String getCounterSet() {
     return this.counterSet;
   }
@@ -110,8 +155,29 @@ public class DeviceCounterConsumptionFluent<A extends io.fabric8.kubernetes.api.
     return this.counters;
   }
   
+  public String getFirstCompatibilityGroup() {
+    return this.compatibilityGroups.get(0);
+  }
+  
+  public String getLastCompatibilityGroup() {
+    return this.compatibilityGroups.get(compatibilityGroups.size() - 1);
+  }
+  
+  public String getMatchingCompatibilityGroup(Predicate<String> predicate) {
+      for (String item : compatibilityGroups) {
+        if (predicate.test(item)) {
+          return item;
+        }
+      }
+      return null;
+  }
+  
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
+  }
+  
+  public boolean hasCompatibilityGroups() {
+    return this.compatibilityGroups != null && !(this.compatibilityGroups.isEmpty());
   }
   
   public boolean hasCounterSet() {
@@ -122,8 +188,27 @@ public class DeviceCounterConsumptionFluent<A extends io.fabric8.kubernetes.api.
     return this.counters != null;
   }
   
+  public boolean hasMatchingCompatibilityGroup(Predicate<String> predicate) {
+      for (String item : compatibilityGroups) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
   public int hashCode() {
-    return Objects.hash(counterSet, counters, additionalProperties);
+    return Objects.hash(compatibilityGroups, counterSet, counters, additionalProperties);
+  }
+  
+  public A removeAllFromCompatibilityGroups(Collection<String> items) {
+    if (this.compatibilityGroups == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.compatibilityGroups.remove(item);
+    }
+    return (A) this;
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -146,6 +231,16 @@ public class DeviceCounterConsumptionFluent<A extends io.fabric8.kubernetes.api.
           this.additionalProperties.remove(key);
         }
       }
+    }
+    return (A) this;
+  }
+  
+  public A removeFromCompatibilityGroups(String... items) {
+    if (this.compatibilityGroups == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.compatibilityGroups.remove(item);
     }
     return (A) this;
   }
@@ -174,9 +269,22 @@ public class DeviceCounterConsumptionFluent<A extends io.fabric8.kubernetes.api.
     return (A) this;
   }
   
+  public A setToCompatibilityGroups(int index,String item) {
+    if (this.compatibilityGroups == null) {
+      this.compatibilityGroups = new ArrayList();
+    }
+    this.compatibilityGroups.set(index, item);
+    return (A) this;
+  }
+  
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
+    if (!(compatibilityGroups == null) && !(compatibilityGroups.isEmpty())) {
+        sb.append("compatibilityGroups:");
+        sb.append(compatibilityGroups);
+        sb.append(",");
+    }
     if (!(counterSet == null)) {
         sb.append("counterSet:");
         sb.append(counterSet);
@@ -200,6 +308,31 @@ public class DeviceCounterConsumptionFluent<A extends io.fabric8.kubernetes.api.
       this.additionalProperties = null;
     } else {
       this.additionalProperties = new LinkedHashMap(additionalProperties);
+    }
+    return (A) this;
+  }
+  
+  public A withCompatibilityGroups(List<String> compatibilityGroups) {
+    if (compatibilityGroups != null) {
+        this.compatibilityGroups = new ArrayList();
+        for (String item : compatibilityGroups) {
+          this.addToCompatibilityGroups(item);
+        }
+    } else {
+      this.compatibilityGroups = null;
+    }
+    return (A) this;
+  }
+  
+  public A withCompatibilityGroups(String... compatibilityGroups) {
+    if (this.compatibilityGroups != null) {
+        this.compatibilityGroups.clear();
+        _visitables.remove("compatibilityGroups");
+    }
+    if (compatibilityGroups != null) {
+      for (String item : compatibilityGroups) {
+        this.addToCompatibilityGroups(item);
+      }
     }
     return (A) this;
   }

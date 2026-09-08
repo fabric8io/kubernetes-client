@@ -15,11 +15,17 @@
  */
 package io.fabric8.kubernetes.client.jetty;
 
+import io.fabric8.kubernetes.client.http.HttpClient.ProxyType;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.mockwebserver.DefaultMockServer;
 import io.fabric8.mockwebserver.utils.ResponseProviders;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.eclipse.jetty.client.HttpClient;
+import org.eclipse.jetty.client.HttpProxy;
+import org.eclipse.jetty.client.ProxyConfiguration;
+import org.eclipse.jetty.client.Socks4Proxy;
+import org.eclipse.jetty.client.Socks5Proxy;
+import org.eclipse.jetty.client.api.Authentication;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.junit.jupiter.api.AfterAll;
@@ -28,13 +34,20 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.URI;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static io.fabric8.kubernetes.client.utils.HttpClientUtils.basicCredentials;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class JettyHttpClientBuilderTest {
+
+  private static final String PROXY_ORIGIN = "localhost:3128";
+  private static final InetSocketAddress PROXY_ADDRESS = new InetSocketAddress("localhost", 3128);
 
   private static DefaultMockServer server;
   private static JettyHttpClientFactory factory;
@@ -182,5 +195,70 @@ class JettyHttpClientBuilderTest {
       SslContextFactory.Client sslContextFactory = client.getJetty().getSslContextFactory();
       assertThat(sslContextFactory).isNotNull();
     }
+  }
+
+  @Test
+  @DisplayName("proxyAddress, configures the HTTP proxy on the WebSocket transport as well as the HTTP one")
+  void httpProxyIsConfiguredOnBothTransports() {
+    try (var client = factory.newBuilder().proxyAddress(PROXY_ADDRESS).build()) {
+      assertThat(proxiesOf(client.getJetty()))
+          .as("the HTTP transport should be proxied")
+          .singleElement().isInstanceOf(HttpProxy.class)
+          .returns(PROXY_ORIGIN, proxy -> proxy.getAddress().asString());
+      assertThat(proxiesOf(client.getJettyWs().getHttpClient()))
+          .as("exec/attach/portForward would otherwise bypass the configured egress proxy")
+          .singleElement().isInstanceOf(HttpProxy.class)
+          .returns(PROXY_ORIGIN, proxy -> proxy.getAddress().asString());
+    }
+  }
+
+  @Test
+  @DisplayName("proxyType SOCKS4, configures the SOCKS4 proxy on the WebSocket transport as well as the HTTP one")
+  void socks4ProxyIsConfiguredOnBothTransports() {
+    try (var client = factory.newBuilder().proxyType(ProxyType.SOCKS4).proxyAddress(PROXY_ADDRESS).build()) {
+      assertThat(proxiesOf(client.getJetty())).singleElement().isInstanceOf(Socks4Proxy.class);
+      assertThat(proxiesOf(client.getJettyWs().getHttpClient())).singleElement().isInstanceOf(Socks4Proxy.class);
+    }
+  }
+
+  @Test
+  @DisplayName("proxyType SOCKS5, configures the SOCKS5 proxy on the WebSocket transport as well as the HTTP one")
+  void socks5ProxyIsConfiguredOnBothTransports() {
+    try (var client = factory.newBuilder().proxyType(ProxyType.SOCKS5).proxyAddress(PROXY_ADDRESS).build()) {
+      assertThat(proxiesOf(client.getJetty())).singleElement().isInstanceOf(Socks5Proxy.class);
+      assertThat(proxiesOf(client.getJettyWs().getHttpClient())).singleElement().isInstanceOf(Socks5Proxy.class);
+    }
+  }
+
+  @Test
+  @DisplayName("proxyAuthorization, registers the proxy credentials on the WebSocket transport as well as the HTTP one")
+  void proxyAuthenticationIsRegisteredOnBothTransports() {
+    try (var client = factory.newBuilder()
+        .proxyAddress(PROXY_ADDRESS)
+        .proxyAuthorization(basicCredentials("user", "pass"))
+        .build()) {
+      final URI proxyUri = URI.create("http://" + PROXY_ORIGIN);
+      assertThat(client.getJetty().getAuthenticationStore()
+          .findAuthentication("Basic", proxyUri, Authentication.ANY_REALM))
+          .as("the HTTP transport should be able to answer the proxy's 407")
+          .isNotNull();
+      assertThat(client.getJettyWs().getHttpClient().getAuthenticationStore()
+          .findAuthentication("Basic", proxyUri, Authentication.ANY_REALM))
+          .as("the WebSocket transport has its own store, so it needs its own entry to answer the proxy's 407")
+          .isNotNull();
+    }
+  }
+
+  @Test
+  @DisplayName("proxyType DIRECT, leaves both transports unproxied even when an address is set")
+  void directProxyLeavesBothTransportsUnproxied() {
+    try (var client = factory.newBuilder().proxyType(ProxyType.DIRECT).proxyAddress(PROXY_ADDRESS).build()) {
+      assertThat(proxiesOf(client.getJetty())).isEmpty();
+      assertThat(proxiesOf(client.getJettyWs().getHttpClient())).isEmpty();
+    }
+  }
+
+  private static List<ProxyConfiguration.Proxy> proxiesOf(HttpClient httpClient) {
+    return httpClient.getProxyConfiguration().getProxies();
   }
 }

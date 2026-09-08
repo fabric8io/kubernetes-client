@@ -104,17 +104,23 @@ public class JettyHttpClientBuilder
     sharedWebSocketClient.getHttpClient().setMaxConnectionsPerDestination(MAX_CONNECTIONS);
     if (proxyType != ProxyType.DIRECT && proxyAddress != null) {
       Origin.Address address = new Origin.Address(proxyAddress.getHostString(), proxyAddress.getPort());
+      // The WebSocket client runs on its own HttpClient, so it needs the proxy configured separately. Without it
+      // exec/attach/portForward and WebSocket-backed watches dial the API server directly and bypass the proxy.
+      final HttpClient wsHttpClient = sharedWebSocketClient.getHttpClient();
       // Jetty allows for the differentiation of proxy being secure separately from the destination,
       // but we'll always set that flag to false
       switch (proxyType) {
         case HTTP:
           sharedHttpClient.getProxyConfiguration().addProxy(new HttpProxy(address, false));
+          wsHttpClient.getProxyConfiguration().addProxy(new HttpProxy(address, false));
           break;
         case SOCKS4:
           sharedHttpClient.getProxyConfiguration().addProxy(new Socks4Proxy(address, false));
+          wsHttpClient.getProxyConfiguration().addProxy(new Socks4Proxy(address, false));
           break;
         case SOCKS5:
           sharedHttpClient.getProxyConfiguration().addProxy(new Socks5Proxy(address, false));
+          wsHttpClient.getProxyConfiguration().addProxy(new Socks5Proxy(address, false));
           break;
         default:
           throw new KubernetesClientException("Unsupported proxy type");
@@ -128,6 +134,8 @@ public class JettyHttpClientBuilder
           throw KubernetesClientException.launderThrowable(e);
         }
         sharedHttpClient.getAuthenticationStore()
+            .addAuthentication(new BasicAuthentication(proxyUri, Authentication.ANY_REALM, userPassword[0], userPassword[1]));
+        wsHttpClient.getAuthenticationStore()
             .addAuthentication(new BasicAuthentication(proxyUri, Authentication.ANY_REALM, userPassword[0], userPassword[1]));
       } else {
         addProxyAuthInterceptor();

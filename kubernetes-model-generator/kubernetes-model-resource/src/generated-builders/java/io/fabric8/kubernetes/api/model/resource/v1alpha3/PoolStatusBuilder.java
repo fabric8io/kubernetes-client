@@ -25,7 +25,7 @@ public class PoolStatusBuilder extends PoolStatusFluent<PoolStatusBuilder> imple
   }
 
   public PoolStatus build() {
-    PoolStatus buildable = new PoolStatus(fluent.getAllocatedDevices(), fluent.getAvailableDevices(), fluent.getDriver(), fluent.getGeneration(), fluent.getNodeName(), fluent.getPoolName(), fluent.getResourceSliceCount(), fluent.getTotalDevices(), fluent.getUnavailableDevices(), fluent.getValidationError());
+    PoolStatus buildable = new PoolStatus(fluent.getAllocatedDevices(), fluent.getAvailableDevices(), fluent.getDriver(), fluent.getGeneration(), fluent.getNodeName(), fluent.buildPartitionSummary(), fluent.getPoolName(), fluent.getResourceSliceCount(), fluent.buildShareableSummary(), fluent.getTotalDevices(), fluent.getUnavailableDevices(), fluent.getValidationError());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

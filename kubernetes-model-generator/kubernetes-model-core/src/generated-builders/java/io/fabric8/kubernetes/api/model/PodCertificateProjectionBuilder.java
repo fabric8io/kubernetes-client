@@ -25,7 +25,7 @@ public class PodCertificateProjectionBuilder extends PodCertificateProjectionFlu
   }
 
   public PodCertificateProjection build() {
-    PodCertificateProjection buildable = new PodCertificateProjection(fluent.getCertificateChainPath(), fluent.getCredentialBundlePath(), fluent.getKeyPath(), fluent.getKeyType(), fluent.getMaxExpirationSeconds(), fluent.getSignerName(), fluent.getUserAnnotations());
+    PodCertificateProjection buildable = new PodCertificateProjection(fluent.getCertificateChainPath(), fluent.getCredentialBundlePath(), fluent.getKeyPath(), fluent.getKeyType(), fluent.getMaxExpirationSeconds(), fluent.getSignerName(), fluent.getUser(), fluent.getUserAnnotations());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

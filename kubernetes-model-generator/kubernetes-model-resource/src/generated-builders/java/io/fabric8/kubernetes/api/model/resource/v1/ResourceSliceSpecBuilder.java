@@ -25,7 +25,7 @@ public class ResourceSliceSpecBuilder extends ResourceSliceSpecFluent<ResourceSl
   }
 
   public ResourceSliceSpec build() {
-    ResourceSliceSpec buildable = new ResourceSliceSpec(fluent.getAllNodes(), fluent.buildDevices(), fluent.getDriver(), fluent.getNodeName(), fluent.getNodeSelector(), fluent.getPerDeviceNodeSelection(), fluent.buildPool(), fluent.buildSharedCounters());
+    ResourceSliceSpec buildable = new ResourceSliceSpec(fluent.getAllNodes(), fluent.buildDevices(), fluent.getDriver(), fluent.getNodeName(), fluent.getNodeSelector(), fluent.getPartitionTypeAttribute(), fluent.getPerDeviceNodeSelection(), fluent.buildPool(), fluent.buildSharedCounters(), fluent.getSkipNodeOperations());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

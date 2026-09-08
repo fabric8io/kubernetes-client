@@ -90,7 +90,7 @@ public class UDPRouteRule implements Editable<UDPRouteRuleBuilder>, KubernetesRe
     }
 
     /**
-     * BackendRefs defines the backend(s) where matching requests should be sent. If unspecified or invalid (refers to a nonexistent resource or a Service with no endpoints), the underlying implementation MUST actively reject connection attempts to this backend. Packet drops must respect weight; if an invalid backend is requested to have 80% of the packets, then 80% of packets must be dropped instead.<br><p> <br><p> Support: Core for Kubernetes Service<br><p> <br><p> Support: Extended for Kubernetes ServiceImport<br><p> <br><p> Support: Implementation-specific for any other resource<br><p> <br><p> Support for weight: Extended
+     * BackendRefs defines the backend(s) where matching requests should be sent. If unspecified or invalid (refers to a nonexistent resource or a Service with no endpoints), the underlying implementation MUST actively reject connection attempts to this backend. Packet drops must respect weight; if an invalid backend is requested to have 80% of the packets, then 80% of packets must be dropped instead.<br><p> <br><p> Support: Extended for Kubernetes Service
      */
     @JsonProperty("backendRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -99,7 +99,7 @@ public class UDPRouteRule implements Editable<UDPRouteRuleBuilder>, KubernetesRe
     }
 
     /**
-     * BackendRefs defines the backend(s) where matching requests should be sent. If unspecified or invalid (refers to a nonexistent resource or a Service with no endpoints), the underlying implementation MUST actively reject connection attempts to this backend. Packet drops must respect weight; if an invalid backend is requested to have 80% of the packets, then 80% of packets must be dropped instead.<br><p> <br><p> Support: Core for Kubernetes Service<br><p> <br><p> Support: Extended for Kubernetes ServiceImport<br><p> <br><p> Support: Implementation-specific for any other resource<br><p> <br><p> Support for weight: Extended
+     * BackendRefs defines the backend(s) where matching requests should be sent. If unspecified or invalid (refers to a nonexistent resource or a Service with no endpoints), the underlying implementation MUST actively reject connection attempts to this backend. Packet drops must respect weight; if an invalid backend is requested to have 80% of the packets, then 80% of packets must be dropped instead.<br><p> <br><p> Support: Extended for Kubernetes Service
      */
     @JsonProperty("backendRefs")
     public void setBackendRefs(List<BackendRef> backendRefs) {
@@ -107,7 +107,7 @@ public class UDPRouteRule implements Editable<UDPRouteRuleBuilder>, KubernetesRe
     }
 
     /**
-     * Name is the name of the route rule. This name MUST be unique within a Route if it is set.<br><p> <br><p> Support: Extended
+     * Name is the name of the route rule. This name MUST be unique within a Route if it is set.
      */
     @JsonProperty("name")
     public String getName() {
@@ -115,7 +115,7 @@ public class UDPRouteRule implements Editable<UDPRouteRuleBuilder>, KubernetesRe
     }
 
     /**
-     * Name is the name of the route rule. This name MUST be unique within a Route if it is set.<br><p> <br><p> Support: Extended
+     * Name is the name of the route rule. This name MUST be unique within a Route if it is set.
      */
     @JsonProperty("name")
     public void setName(String name) {

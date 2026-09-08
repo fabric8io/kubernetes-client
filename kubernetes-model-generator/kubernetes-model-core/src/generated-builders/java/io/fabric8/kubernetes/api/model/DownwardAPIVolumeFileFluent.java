@@ -3,6 +3,7 @@ package io.fabric8.kubernetes.api.model;
 import io.fabric8.kubernetes.api.builder.BaseFluent;
 import io.fabric8.kubernetes.api.builder.Nested;
 import java.lang.Integer;
+import java.lang.Long;
 import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
@@ -23,6 +24,7 @@ public class DownwardAPIVolumeFileFluent<A extends io.fabric8.kubernetes.api.mod
   private Integer mode;
   private String path;
   private ResourceFieldSelectorBuilder resourceFieldRef;
+  private Long user;
 
   public DownwardAPIVolumeFileFluent() {
   }
@@ -66,6 +68,7 @@ public class DownwardAPIVolumeFileFluent<A extends io.fabric8.kubernetes.api.mod
         this.withMode(instance.getMode());
         this.withPath(instance.getPath());
         this.withResourceFieldRef(instance.getResourceFieldRef());
+        this.withUser(instance.getUser());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -117,6 +120,9 @@ public class DownwardAPIVolumeFileFluent<A extends io.fabric8.kubernetes.api.mod
     if (!(Objects.equals(resourceFieldRef, that.resourceFieldRef))) {
       return false;
     }
+    if (!(Objects.equals(user, that.user))) {
+      return false;
+    }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
       return false;
     }
@@ -133,6 +139,10 @@ public class DownwardAPIVolumeFileFluent<A extends io.fabric8.kubernetes.api.mod
   
   public String getPath() {
     return this.path;
+  }
+  
+  public Long getUser() {
+    return this.user;
   }
   
   public boolean hasAdditionalProperties() {
@@ -155,8 +165,12 @@ public class DownwardAPIVolumeFileFluent<A extends io.fabric8.kubernetes.api.mod
     return this.resourceFieldRef != null;
   }
   
+  public boolean hasUser() {
+    return this.user != null;
+  }
+  
   public int hashCode() {
-    return Objects.hash(fieldRef, mode, path, resourceFieldRef, additionalProperties);
+    return Objects.hash(fieldRef, mode, path, resourceFieldRef, user, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -204,6 +218,11 @@ public class DownwardAPIVolumeFileFluent<A extends io.fabric8.kubernetes.api.mod
     if (!(resourceFieldRef == null)) {
         sb.append("resourceFieldRef:");
         sb.append(resourceFieldRef);
+        sb.append(",");
+    }
+    if (!(user == null)) {
+        sb.append("user:");
+        sb.append(user);
         sb.append(",");
     }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
@@ -274,6 +293,11 @@ public class DownwardAPIVolumeFileFluent<A extends io.fabric8.kubernetes.api.mod
         this.resourceFieldRef = null;
         this._visitables.get("resourceFieldRef").remove(this.resourceFieldRef);
     }
+    return (A) this;
+  }
+  
+  public A withUser(Long user) {
+    this.user = user;
     return (A) this;
   }
   public class FieldRefNested<N> extends ObjectFieldSelectorFluent<FieldRefNested<N>> implements Nested<N>{

@@ -30,6 +30,7 @@ public class DeviceRequestFluent<A extends io.fabric8.kubernetes.api.model.resou
   private String allocationMode;
   private CapacityRequirementsBuilder capacity;
   private Long count;
+  private ArrayList<DeviceDerivedAttributeBuilder> derivedAttributes = new ArrayList<DeviceDerivedAttributeBuilder>();
   private String deviceClassName;
   private ArrayList<DeviceSubRequestBuilder> firstAvailable = new ArrayList<DeviceSubRequestBuilder>();
   private String name;
@@ -43,6 +44,18 @@ public class DeviceRequestFluent<A extends io.fabric8.kubernetes.api.model.resou
     this.copyInstance(instance);
   }
 
+  public A addAllToDerivedAttributes(Collection<DeviceDerivedAttribute> items) {
+    if (this.derivedAttributes == null) {
+      this.derivedAttributes = new ArrayList();
+    }
+    for (DeviceDerivedAttribute item : items) {
+        DeviceDerivedAttributeBuilder builder = new DeviceDerivedAttributeBuilder(item);
+        _visitables.get("derivedAttributes").add(builder);
+        this.derivedAttributes.add(builder);
+    }
+    return (A) this;
+  }
+  
   public A addAllToFirstAvailable(Collection<DeviceSubRequest> items) {
     if (this.firstAvailable == null) {
       this.firstAvailable = new ArrayList();
@@ -77,6 +90,18 @@ public class DeviceRequestFluent<A extends io.fabric8.kubernetes.api.model.resou
         this.tolerations.add(builder);
     }
     return (A) this;
+  }
+  
+  public DerivedAttributesNested<A> addNewDerivedAttribute() {
+    return new DerivedAttributesNested(-1, null);
+  }
+  
+  public A addNewDerivedAttribute(String expression,String name) {
+    return (A) this.addToDerivedAttributes(new DeviceDerivedAttribute(expression, name));
+  }
+  
+  public DerivedAttributesNested<A> addNewDerivedAttributeLike(DeviceDerivedAttribute item) {
+    return new DerivedAttributesNested(-1, item);
   }
   
   public FirstAvailableNested<A> addNewFirstAvailable() {
@@ -123,6 +148,33 @@ public class DeviceRequestFluent<A extends io.fabric8.kubernetes.api.model.resou
     }
     if (key != null && value != null) {
       this.additionalProperties.put(key, value);
+    }
+    return (A) this;
+  }
+  
+  public A addToDerivedAttributes(DeviceDerivedAttribute... items) {
+    if (this.derivedAttributes == null) {
+      this.derivedAttributes = new ArrayList();
+    }
+    for (DeviceDerivedAttribute item : items) {
+        DeviceDerivedAttributeBuilder builder = new DeviceDerivedAttributeBuilder(item);
+        _visitables.get("derivedAttributes").add(builder);
+        this.derivedAttributes.add(builder);
+    }
+    return (A) this;
+  }
+  
+  public A addToDerivedAttributes(int index,DeviceDerivedAttribute item) {
+    if (this.derivedAttributes == null) {
+      this.derivedAttributes = new ArrayList();
+    }
+    DeviceDerivedAttributeBuilder builder = new DeviceDerivedAttributeBuilder(item);
+    if (index < 0 || index >= derivedAttributes.size()) {
+        _visitables.get("derivedAttributes").add(builder);
+        derivedAttributes.add(builder);
+    } else {
+        _visitables.get("derivedAttributes").add(builder);
+        derivedAttributes.add(index, builder);
     }
     return (A) this;
   }
@@ -212,12 +264,24 @@ public class DeviceRequestFluent<A extends io.fabric8.kubernetes.api.model.resou
     return this.capacity != null ? this.capacity.build() : null;
   }
   
+  public DeviceDerivedAttribute buildDerivedAttribute(int index) {
+    return this.derivedAttributes.get(index).build();
+  }
+  
+  public List<DeviceDerivedAttribute> buildDerivedAttributes() {
+    return this.derivedAttributes != null ? build(derivedAttributes) : null;
+  }
+  
   public List<DeviceSubRequest> buildFirstAvailable() {
     return this.firstAvailable != null ? build(firstAvailable) : null;
   }
   
   public DeviceSubRequest buildFirstAvailable(int index) {
     return this.firstAvailable.get(index).build();
+  }
+  
+  public DeviceDerivedAttribute buildFirstDerivedAttribute() {
+    return this.derivedAttributes.get(0).build();
   }
   
   public DeviceSubRequest buildFirstFirstAvailable() {
@@ -232,6 +296,10 @@ public class DeviceRequestFluent<A extends io.fabric8.kubernetes.api.model.resou
     return this.tolerations.get(0).build();
   }
   
+  public DeviceDerivedAttribute buildLastDerivedAttribute() {
+    return this.derivedAttributes.get(derivedAttributes.size() - 1).build();
+  }
+  
   public DeviceSubRequest buildLastFirstAvailable() {
     return this.firstAvailable.get(firstAvailable.size() - 1).build();
   }
@@ -242,6 +310,15 @@ public class DeviceRequestFluent<A extends io.fabric8.kubernetes.api.model.resou
   
   public DeviceToleration buildLastToleration() {
     return this.tolerations.get(tolerations.size() - 1).build();
+  }
+  
+  public DeviceDerivedAttribute buildMatchingDerivedAttribute(Predicate<DeviceDerivedAttributeBuilder> predicate) {
+      for (DeviceDerivedAttributeBuilder item : derivedAttributes) {
+        if (predicate.test(item)) {
+          return item.build();
+        }
+      }
+      return null;
   }
   
   public DeviceSubRequest buildMatchingFirstAvailable(Predicate<DeviceSubRequestBuilder> predicate) {
@@ -294,6 +371,7 @@ public class DeviceRequestFluent<A extends io.fabric8.kubernetes.api.model.resou
         this.withAllocationMode(instance.getAllocationMode());
         this.withCapacity(instance.getCapacity());
         this.withCount(instance.getCount());
+        this.withDerivedAttributes(instance.getDerivedAttributes());
         this.withDeviceClassName(instance.getDeviceClassName());
         this.withFirstAvailable(instance.getFirstAvailable());
         this.withName(instance.getName());
@@ -307,11 +385,25 @@ public class DeviceRequestFluent<A extends io.fabric8.kubernetes.api.model.resou
     return this.withNewCapacityLike(Optional.ofNullable(this.buildCapacity()).orElse(null));
   }
   
+  public DerivedAttributesNested<A> editDerivedAttribute(int index) {
+    if (derivedAttributes.size() <= index) {
+      throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "derivedAttributes"));
+    }
+    return this.setNewDerivedAttributeLike(index, this.buildDerivedAttribute(index));
+  }
+  
   public FirstAvailableNested<A> editFirstAvailable(int index) {
     if (firstAvailable.size() <= index) {
       throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "firstAvailable"));
     }
     return this.setNewFirstAvailableLike(index, this.buildFirstAvailable(index));
+  }
+  
+  public DerivedAttributesNested<A> editFirstDerivedAttribute() {
+    if (derivedAttributes.size() == 0) {
+      throw new RuntimeException(String.format("Can't edit first %s. The list is empty.", "derivedAttributes"));
+    }
+    return this.setNewDerivedAttributeLike(0, this.buildDerivedAttribute(0));
   }
   
   public FirstAvailableNested<A> editFirstFirstAvailable() {
@@ -333,6 +425,14 @@ public class DeviceRequestFluent<A extends io.fabric8.kubernetes.api.model.resou
       throw new RuntimeException(String.format("Can't edit first %s. The list is empty.", "tolerations"));
     }
     return this.setNewTolerationLike(0, this.buildToleration(0));
+  }
+  
+  public DerivedAttributesNested<A> editLastDerivedAttribute() {
+    int index = derivedAttributes.size() - 1;
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "derivedAttributes"));
+    }
+    return this.setNewDerivedAttributeLike(index, this.buildDerivedAttribute(index));
   }
   
   public FirstAvailableNested<A> editLastFirstAvailable() {
@@ -357,6 +457,20 @@ public class DeviceRequestFluent<A extends io.fabric8.kubernetes.api.model.resou
       throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "tolerations"));
     }
     return this.setNewTolerationLike(index, this.buildToleration(index));
+  }
+  
+  public DerivedAttributesNested<A> editMatchingDerivedAttribute(Predicate<DeviceDerivedAttributeBuilder> predicate) {
+    int index = -1;
+    for (int i = 0;i < derivedAttributes.size();i++) {
+      if (predicate.test(derivedAttributes.get(i))) {
+          index = i;
+          break;
+      }
+    }
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit matching %s. No match found.", "derivedAttributes"));
+    }
+    return this.setNewDerivedAttributeLike(index, this.buildDerivedAttribute(index));
   }
   
   public FirstAvailableNested<A> editMatchingFirstAvailable(Predicate<DeviceSubRequestBuilder> predicate) {
@@ -446,6 +560,9 @@ public class DeviceRequestFluent<A extends io.fabric8.kubernetes.api.model.resou
     if (!(Objects.equals(count, that.count))) {
       return false;
     }
+    if (!(Objects.equals(derivedAttributes, that.derivedAttributes))) {
+      return false;
+    }
     if (!(Objects.equals(deviceClassName, that.deviceClassName))) {
       return false;
     }
@@ -511,12 +628,25 @@ public class DeviceRequestFluent<A extends io.fabric8.kubernetes.api.model.resou
     return this.count != null;
   }
   
+  public boolean hasDerivedAttributes() {
+    return this.derivedAttributes != null && !(this.derivedAttributes.isEmpty());
+  }
+  
   public boolean hasDeviceClassName() {
     return this.deviceClassName != null;
   }
   
   public boolean hasFirstAvailable() {
     return this.firstAvailable != null && !(this.firstAvailable.isEmpty());
+  }
+  
+  public boolean hasMatchingDerivedAttribute(Predicate<DeviceDerivedAttributeBuilder> predicate) {
+      for (DeviceDerivedAttributeBuilder item : derivedAttributes) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
   }
   
   public boolean hasMatchingFirstAvailable(Predicate<DeviceSubRequestBuilder> predicate) {
@@ -559,7 +689,19 @@ public class DeviceRequestFluent<A extends io.fabric8.kubernetes.api.model.resou
   }
   
   public int hashCode() {
-    return Objects.hash(adminAccess, allocationMode, capacity, count, deviceClassName, firstAvailable, name, selectors, tolerations, additionalProperties);
+    return Objects.hash(adminAccess, allocationMode, capacity, count, derivedAttributes, deviceClassName, firstAvailable, name, selectors, tolerations, additionalProperties);
+  }
+  
+  public A removeAllFromDerivedAttributes(Collection<DeviceDerivedAttribute> items) {
+    if (this.derivedAttributes == null) {
+      return (A) this;
+    }
+    for (DeviceDerivedAttribute item : items) {
+        DeviceDerivedAttributeBuilder builder = new DeviceDerivedAttributeBuilder(item);
+        _visitables.get("derivedAttributes").remove(builder);
+        this.derivedAttributes.remove(builder);
+    }
+    return (A) this;
   }
   
   public A removeAllFromFirstAvailable(Collection<DeviceSubRequest> items) {
@@ -622,6 +764,18 @@ public class DeviceRequestFluent<A extends io.fabric8.kubernetes.api.model.resou
     return (A) this;
   }
   
+  public A removeFromDerivedAttributes(DeviceDerivedAttribute... items) {
+    if (this.derivedAttributes == null) {
+      return (A) this;
+    }
+    for (DeviceDerivedAttribute item : items) {
+        DeviceDerivedAttributeBuilder builder = new DeviceDerivedAttributeBuilder(item);
+        _visitables.get("derivedAttributes").remove(builder);
+        this.derivedAttributes.remove(builder);
+    }
+    return (A) this;
+  }
+  
   public A removeFromFirstAvailable(DeviceSubRequest... items) {
     if (this.firstAvailable == null) {
       return (A) this;
@@ -654,6 +808,22 @@ public class DeviceRequestFluent<A extends io.fabric8.kubernetes.api.model.resou
         DeviceTolerationBuilder builder = new DeviceTolerationBuilder(item);
         _visitables.get("tolerations").remove(builder);
         this.tolerations.remove(builder);
+    }
+    return (A) this;
+  }
+  
+  public A removeMatchingFromDerivedAttributes(Predicate<DeviceDerivedAttributeBuilder> predicate) {
+    if (derivedAttributes == null) {
+      return (A) this;
+    }
+    Iterator<DeviceDerivedAttributeBuilder> each = derivedAttributes.iterator();
+    List visitables = _visitables.get("derivedAttributes");
+    while (each.hasNext()) {
+        DeviceDerivedAttributeBuilder builder = each.next();
+        if (predicate.test(builder)) {
+            visitables.remove(builder);
+            each.remove();
+        }
     }
     return (A) this;
   }
@@ -706,6 +876,10 @@ public class DeviceRequestFluent<A extends io.fabric8.kubernetes.api.model.resou
     return (A) this;
   }
   
+  public DerivedAttributesNested<A> setNewDerivedAttributeLike(int index,DeviceDerivedAttribute item) {
+    return new DerivedAttributesNested(index, item);
+  }
+  
   public FirstAvailableNested<A> setNewFirstAvailableLike(int index,DeviceSubRequest item) {
     return new FirstAvailableNested(index, item);
   }
@@ -716,6 +890,21 @@ public class DeviceRequestFluent<A extends io.fabric8.kubernetes.api.model.resou
   
   public TolerationsNested<A> setNewTolerationLike(int index,DeviceToleration item) {
     return new TolerationsNested(index, item);
+  }
+  
+  public A setToDerivedAttributes(int index,DeviceDerivedAttribute item) {
+    if (this.derivedAttributes == null) {
+      this.derivedAttributes = new ArrayList();
+    }
+    DeviceDerivedAttributeBuilder builder = new DeviceDerivedAttributeBuilder(item);
+    if (index < 0 || index >= derivedAttributes.size()) {
+        _visitables.get("derivedAttributes").add(builder);
+        derivedAttributes.add(builder);
+    } else {
+        _visitables.get("derivedAttributes").add(builder);
+        derivedAttributes.set(index, builder);
+    }
+    return (A) this;
   }
   
   public A setToFirstAvailable(int index,DeviceSubRequest item) {
@@ -784,6 +973,11 @@ public class DeviceRequestFluent<A extends io.fabric8.kubernetes.api.model.resou
     if (!(count == null)) {
         sb.append("count:");
         sb.append(count);
+        sb.append(",");
+    }
+    if (!(derivedAttributes == null) && !(derivedAttributes.isEmpty())) {
+        sb.append("derivedAttributes:");
+        sb.append(derivedAttributes);
         sb.append(",");
     }
     if (!(deviceClassName == null)) {
@@ -856,6 +1050,34 @@ public class DeviceRequestFluent<A extends io.fabric8.kubernetes.api.model.resou
   
   public A withCount(Long count) {
     this.count = count;
+    return (A) this;
+  }
+  
+  public A withDerivedAttributes(List<DeviceDerivedAttribute> derivedAttributes) {
+    if (this.derivedAttributes != null) {
+      this._visitables.get("derivedAttributes").clear();
+    }
+    if (derivedAttributes != null) {
+        this.derivedAttributes = new ArrayList();
+        for (DeviceDerivedAttribute item : derivedAttributes) {
+          this.addToDerivedAttributes(item);
+        }
+    } else {
+      this.derivedAttributes = null;
+    }
+    return (A) this;
+  }
+  
+  public A withDerivedAttributes(DeviceDerivedAttribute... derivedAttributes) {
+    if (this.derivedAttributes != null) {
+        this.derivedAttributes.clear();
+        _visitables.remove("derivedAttributes");
+    }
+    if (derivedAttributes != null) {
+      for (DeviceDerivedAttribute item : derivedAttributes) {
+        this.addToDerivedAttributes(item);
+      }
+    }
     return (A) this;
   }
   
@@ -973,6 +1195,25 @@ public class DeviceRequestFluent<A extends io.fabric8.kubernetes.api.model.resou
     }
     
     public N endCapacity() {
+      return and();
+    }
+    
+  }
+  public class DerivedAttributesNested<N> extends DeviceDerivedAttributeFluent<DerivedAttributesNested<N>> implements Nested<N>{
+  
+    DeviceDerivedAttributeBuilder builder;
+    int index;
+  
+    DerivedAttributesNested(int index,DeviceDerivedAttribute item) {
+      this.index = index;
+      this.builder = new DeviceDerivedAttributeBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) DeviceRequestFluent.this.setToDerivedAttributes(index, builder.build());
+    }
+    
+    public N endDerivedAttribute() {
       return and();
     }
     

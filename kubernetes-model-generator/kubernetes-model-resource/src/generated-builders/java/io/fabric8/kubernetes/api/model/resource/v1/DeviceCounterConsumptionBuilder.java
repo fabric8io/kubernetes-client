@@ -25,7 +25,7 @@ public class DeviceCounterConsumptionBuilder extends DeviceCounterConsumptionFlu
   }
 
   public DeviceCounterConsumption build() {
-    DeviceCounterConsumption buildable = new DeviceCounterConsumption(fluent.getCounterSet(), fluent.getCounters());
+    DeviceCounterConsumption buildable = new DeviceCounterConsumption(fluent.getCompatibilityGroups(), fluent.getCounterSet(), fluent.getCounters());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

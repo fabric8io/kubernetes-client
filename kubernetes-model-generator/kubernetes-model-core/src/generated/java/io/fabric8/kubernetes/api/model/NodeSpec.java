@@ -29,6 +29,7 @@ import lombok.experimental.Accessors;
     "externalID",
     "podCIDR",
     "podCIDRs",
+    "podPreemptionPolicy",
     "providerID",
     "taints",
     "unschedulable"
@@ -53,6 +54,8 @@ public class NodeSpec implements Editable<NodeSpecBuilder>, KubernetesResource
     @JsonProperty("podCIDRs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> podCIDRs = new ArrayList<>();
+    @JsonProperty("podPreemptionPolicy")
+    private NodePodPreemptionPolicy podPreemptionPolicy;
     @JsonProperty("providerID")
     private String providerID;
     @JsonProperty("taints")
@@ -69,12 +72,13 @@ public class NodeSpec implements Editable<NodeSpecBuilder>, KubernetesResource
     public NodeSpec() {
     }
 
-    public NodeSpec(NodeConfigSource configSource, String externalID, String podCIDR, List<String> podCIDRs, String providerID, List<Taint> taints, Boolean unschedulable) {
+    public NodeSpec(NodeConfigSource configSource, String externalID, String podCIDR, List<String> podCIDRs, NodePodPreemptionPolicy podPreemptionPolicy, String providerID, List<Taint> taints, Boolean unschedulable) {
         super();
         this.configSource = configSource;
         this.externalID = externalID;
         this.podCIDR = podCIDR;
         this.podCIDRs = podCIDRs;
+        this.podPreemptionPolicy = podPreemptionPolicy;
         this.providerID = providerID;
         this.taints = taints;
         this.unschedulable = unschedulable;
@@ -143,6 +147,22 @@ public class NodeSpec implements Editable<NodeSpecBuilder>, KubernetesResource
     @JsonProperty("podCIDRs")
     public void setPodCIDRs(List<String> podCIDRs) {
         this.podCIDRs = podCIDRs;
+    }
+
+    /**
+     * NodeSpec describes the attributes that a node is created with.
+     */
+    @JsonProperty("podPreemptionPolicy")
+    public NodePodPreemptionPolicy getPodPreemptionPolicy() {
+        return podPreemptionPolicy;
+    }
+
+    /**
+     * NodeSpec describes the attributes that a node is created with.
+     */
+    @JsonProperty("podPreemptionPolicy")
+    public void setPodPreemptionPolicy(NodePodPreemptionPolicy podPreemptionPolicy) {
+        this.podPreemptionPolicy = podPreemptionPolicy;
     }
 
     /**

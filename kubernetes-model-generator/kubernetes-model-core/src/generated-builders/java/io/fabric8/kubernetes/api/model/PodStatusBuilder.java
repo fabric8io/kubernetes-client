@@ -25,7 +25,7 @@ public class PodStatusBuilder extends PodStatusFluent<PodStatusBuilder> implemen
   }
 
   public PodStatus build() {
-    PodStatus buildable = new PodStatus(fluent.getAllocatedResources(), fluent.buildConditions(), fluent.buildContainerStatuses(), fluent.buildEphemeralContainerStatuses(), fluent.buildExtendedResourceClaimStatus(), fluent.getHostIP(), fluent.buildHostIPs(), fluent.buildInitContainerStatuses(), fluent.getMessage(), fluent.buildNodeAllocatableResourceClaimStatuses(), fluent.getNominatedNodeName(), fluent.getObservedGeneration(), fluent.getPhase(), fluent.getPodIP(), fluent.buildPodIPs(), fluent.getQosClass(), fluent.getReason(), fluent.getResize(), fluent.buildResourceClaimStatuses(), fluent.buildResources(), fluent.getStartTime());
+    PodStatus buildable = new PodStatus(fluent.getAllocatedResources(), fluent.buildConditions(), fluent.buildContainerStatuses(), fluent.buildEphemeralContainerStatuses(), fluent.buildExtendedResourceClaimStatus(), fluent.getHostIP(), fluent.buildHostIPs(), fluent.buildInitContainerStatuses(), fluent.getMessage(), fluent.buildNodeAllocatableResourceClaimStatuses(), fluent.getNominatedNodeName(), fluent.getObservedGeneration(), fluent.getPhase(), fluent.getPodIP(), fluent.buildPodIPs(), fluent.getQosClass(), fluent.getReason(), fluent.getResize(), fluent.buildResourceClaimStatuses(), fluent.buildResources(), fluent.getStartTime(), fluent.buildVolumeHealth());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

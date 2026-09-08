@@ -67,10 +67,6 @@ public class HorizontalPodAutoscalerStatusFluent<A extends io.fabric8.kubernetes
     return new ConditionsNested(-1, null);
   }
   
-  public A addNewCondition(String lastTransitionTime,String message,String reason,String status,String type) {
-    return (A) this.addToConditions(new HorizontalPodAutoscalerCondition(lastTransitionTime, message, reason, status, type));
-  }
-  
   public ConditionsNested<A> addNewConditionLike(HorizontalPodAutoscalerCondition item) {
     return new ConditionsNested(-1, item);
   }

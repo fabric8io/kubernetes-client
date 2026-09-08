@@ -1,1 +1,1 @@
-io.fabric8.kubeapitest.junit.Fabric8ClientInjectionHandler
+io.fabric8.kubeapitest.junit.inject.Fabric8ClientInjectionHandler

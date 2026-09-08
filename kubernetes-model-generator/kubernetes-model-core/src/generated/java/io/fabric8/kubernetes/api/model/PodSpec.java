@@ -33,6 +33,7 @@ import lombok.experimental.Accessors;
     "dnsPolicy",
     "enableServiceLinks",
     "ephemeralContainers",
+    "evictionResponders",
     "hostAliases",
     "hostIPC",
     "hostNetwork",
@@ -97,6 +98,9 @@ public class PodSpec implements Editable<PodSpecBuilder>, KubernetesResource
     @JsonProperty("ephemeralContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<EphemeralContainer> ephemeralContainers = new ArrayList<>();
+    @JsonProperty("evictionResponders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<EvictionResponder> evictionResponders = new ArrayList<>();
     @JsonProperty("hostAliases")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<HostAlias> hostAliases = new ArrayList<>();
@@ -185,7 +189,7 @@ public class PodSpec implements Editable<PodSpecBuilder>, KubernetesResource
     public PodSpec() {
     }
 
-    public PodSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, Boolean hostUsers, String hostname, String hostnameOverride, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, String priorityClassName, List<PodReadinessGate> readinessGates, List<PodResourceClaim> resourceClaims, ResourceRequirements resources, String restartPolicy, String runtimeClassName, String schedulerName, List<PodSchedulingGate> schedulingGates, PodSchedulingGroup schedulingGroup, PodSecurityContext securityContext, String serviceAccount, String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, String subdomain, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes) {
+    public PodSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<EvictionResponder> evictionResponders, List<HostAlias> hostAliases, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, Boolean hostUsers, String hostname, String hostnameOverride, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, String priorityClassName, List<PodReadinessGate> readinessGates, List<PodResourceClaim> resourceClaims, ResourceRequirements resources, String restartPolicy, String runtimeClassName, String schedulerName, List<PodSchedulingGate> schedulingGates, PodSchedulingGroup schedulingGroup, PodSecurityContext securityContext, String serviceAccount, String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, String subdomain, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;
         this.affinity = affinity;
@@ -195,6 +199,7 @@ public class PodSpec implements Editable<PodSpecBuilder>, KubernetesResource
         this.dnsPolicy = dnsPolicy;
         this.enableServiceLinks = enableServiceLinks;
         this.ephemeralContainers = ephemeralContainers;
+        this.evictionResponders = evictionResponders;
         this.hostAliases = hostAliases;
         this.hostIPC = hostIPC;
         this.hostNetwork = hostNetwork;
@@ -362,6 +367,23 @@ public class PodSpec implements Editable<PodSpecBuilder>, KubernetesResource
     }
 
     /**
+     * evictionResponders reference responders that react to Evictions based on EvictionRequests. Responders should observe and communicate through the Eviction Resource API to help with the graceful termination of a pod. The responders are selected sequentially, according to their specified priority.<br><p> <br><p> Responders should periodically report on an eviction progress by updating the .status.responders[].heartbeatTime field of the Eviction object. If this field is not updated within the heartbeat deadline defined by the Eviction API (currently 20 minutes), the eviction is passed over to the next responder with a lower priority. If there is no other responder, the last default imperative-eviction.k8s.io/evictor responder with a priority of 100 will evict the pod using the imperative Eviction API (pods/&lt;name&gt;/eviction subresource).<br><p> <br><p> The maximum length of the responders list is 10. Responders are not supported when the pod is part of a PodGroup (.spec.schedulingGroup is set). This field can only be set on creation and is immutable afterwards.
+     */
+    @JsonProperty("evictionResponders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<EvictionResponder> getEvictionResponders() {
+        return evictionResponders;
+    }
+
+    /**
+     * evictionResponders reference responders that react to Evictions based on EvictionRequests. Responders should observe and communicate through the Eviction Resource API to help with the graceful termination of a pod. The responders are selected sequentially, according to their specified priority.<br><p> <br><p> Responders should periodically report on an eviction progress by updating the .status.responders[].heartbeatTime field of the Eviction object. If this field is not updated within the heartbeat deadline defined by the Eviction API (currently 20 minutes), the eviction is passed over to the next responder with a lower priority. If there is no other responder, the last default imperative-eviction.k8s.io/evictor responder with a priority of 100 will evict the pod using the imperative Eviction API (pods/&lt;name&gt;/eviction subresource).<br><p> <br><p> The maximum length of the responders list is 10. Responders are not supported when the pod is part of a PodGroup (.spec.schedulingGroup is set). This field can only be set on creation and is immutable afterwards.
+     */
+    @JsonProperty("evictionResponders")
+    public void setEvictionResponders(List<EvictionResponder> evictionResponders) {
+        this.evictionResponders = evictionResponders;
+    }
+
+    /**
      * HostAliases is an optional list of hosts and IPs that will be injected into the pod's hosts file if specified.
      */
     @JsonProperty("hostAliases")
@@ -459,7 +481,7 @@ public class PodSpec implements Editable<PodSpecBuilder>, KubernetesResource
     }
 
     /**
-     * HostnameOverride specifies an explicit override for the pod's hostname as perceived by the pod. This field only specifies the pod's hostname and does not affect its DNS records. When this field is set to a non-empty string: - It takes precedence over the values set in `hostname` and `subdomain`. - The Pod's hostname will be set to this value. - `setHostnameAsFQDN` must be nil or set to false. - `hostNetwork` must be set to false.<br><p> <br><p> This field must be a valid DNS subdomain as defined in RFC 1123 and contain at most 64 characters. Requires the HostnameOverride feature gate to be enabled.
+     * HostnameOverride specifies an explicit override for the pod's hostname as perceived by the pod. This field only specifies the pod's hostname and does not affect its DNS records. When this field is set to a non-empty string: - It takes precedence over the values set in `hostname` and `subdomain`. - The Pod's hostname will be set to this value. - `setHostnameAsFQDN` must be nil or set to false. - `hostNetwork` must be set to false.<br><p> <br><p> This field must be a valid DNS subdomain as defined in RFC 1123 and contain at most 64 characters.
      */
     @JsonProperty("hostnameOverride")
     public String getHostnameOverride() {
@@ -467,7 +489,7 @@ public class PodSpec implements Editable<PodSpecBuilder>, KubernetesResource
     }
 
     /**
-     * HostnameOverride specifies an explicit override for the pod's hostname as perceived by the pod. This field only specifies the pod's hostname and does not affect its DNS records. When this field is set to a non-empty string: - It takes precedence over the values set in `hostname` and `subdomain`. - The Pod's hostname will be set to this value. - `setHostnameAsFQDN` must be nil or set to false. - `hostNetwork` must be set to false.<br><p> <br><p> This field must be a valid DNS subdomain as defined in RFC 1123 and contain at most 64 characters. Requires the HostnameOverride feature gate to be enabled.
+     * HostnameOverride specifies an explicit override for the pod's hostname as perceived by the pod. This field only specifies the pod's hostname and does not affect its DNS records. When this field is set to a non-empty string: - It takes precedence over the values set in `hostname` and `subdomain`. - The Pod's hostname will be set to this value. - `setHostnameAsFQDN` must be nil or set to false. - `hostNetwork` must be set to false.<br><p> <br><p> This field must be a valid DNS subdomain as defined in RFC 1123 and contain at most 64 characters.
      */
     @JsonProperty("hostnameOverride")
     public void setHostnameOverride(String hostnameOverride) {
@@ -575,7 +597,7 @@ public class PodSpec implements Editable<PodSpecBuilder>, KubernetesResource
     }
 
     /**
-     * PreemptionPolicy is the Policy for preempting pods with lower priority. One of Never, PreemptLowerPriority. Defaults to PreemptLowerPriority if unset.
+     * PreemptionPolicy is the Policy for preempting pods with lower priority. One of Never, PreemptLowerPriority. When Priority Admission Controller is enabled, it prevents users from setting this field. The admission controller populates this field from PriorityClassName. Defaults to PreemptLowerPriority if unset.
      */
     @JsonProperty("preemptionPolicy")
     public String getPreemptionPolicy() {
@@ -583,7 +605,7 @@ public class PodSpec implements Editable<PodSpecBuilder>, KubernetesResource
     }
 
     /**
-     * PreemptionPolicy is the Policy for preempting pods with lower priority. One of Never, PreemptLowerPriority. Defaults to PreemptLowerPriority if unset.
+     * PreemptionPolicy is the Policy for preempting pods with lower priority. One of Never, PreemptLowerPriority. When Priority Admission Controller is enabled, it prevents users from setting this field. The admission controller populates this field from PriorityClassName. Defaults to PreemptLowerPriority if unset.
      */
     @JsonProperty("preemptionPolicy")
     public void setPreemptionPolicy(String preemptionPolicy) {

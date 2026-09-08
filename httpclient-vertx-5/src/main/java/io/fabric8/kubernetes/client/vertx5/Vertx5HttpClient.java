@@ -30,7 +30,6 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.RequestOptions;
 import io.vertx.core.http.UpgradeRejectedException;
 import io.vertx.core.http.WebSocketClient;
-import io.vertx.core.http.WebSocketClientOptions;
 import io.vertx.core.http.WebSocketConnectOptions;
 import lombok.Getter;
 
@@ -49,6 +48,7 @@ public class Vertx5HttpClient<F extends io.fabric8.kubernetes.client.http.HttpCl
   private final Vertx vertx;
   @Getter
   private final HttpClient httpClient;
+  @Getter
   private final WebSocketClient webSocketClient;
   private final boolean closeVertx;
 
@@ -62,50 +62,28 @@ public class Vertx5HttpClient<F extends io.fabric8.kubernetes.client.http.HttpCl
     super(config.getClientBuilder(), config.getClosed());
     this.vertx = config.getClientBuilder().vertx;
     this.httpClient = config.getHttpClient();
-    this.webSocketClient = createWebSocketClient(config);
+    this.webSocketClient = config.getWebSocketClient();
     this.closeVertx = config.isCloseVertx();
   }
 
   /**
-   * Creates WebSocket client based on configuration.
-   * Uses custom options if provided, otherwise creates with defaults.
+   * Creates a Vertx5HttpClient around already built transports.
+   * For internal use by {@link Vertx5HttpClientBuilder}.
    */
-  private WebSocketClient createWebSocketClient(final Vertx5HttpClientConfiguration<F> config) {
-    final WebSocketClientOptions options = config.getWebSocketOptions();
-    return options != null
-        ? vertx.createWebSocketClient(options)
-        : vertx.createWebSocketClient();
-  }
-
-  /**
-   * Creates Vertx5HttpClient with default WebSocket configuration.
-   * For internal use by Vertx5HttpClientBuilder.
-   */
-  static <F extends io.fabric8.kubernetes.client.http.HttpClient.Factory> Vertx5HttpClient<F> createWithDefaults(
+  static <F extends io.fabric8.kubernetes.client.http.HttpClient.Factory> Vertx5HttpClient<F> create(
       final Vertx5HttpClientBuilder<F> builder,
       final AtomicBoolean closed,
       final HttpClient httpClient,
+      final WebSocketClient webSocketClient,
       final boolean closeVertx) {
 
-    final Vertx5HttpClientConfiguration<F> config = Vertx5HttpClientConfiguration.withDefaultWebSocket(builder, closed,
-        httpClient, closeVertx);
-    return new Vertx5HttpClient<>(config);
-  }
-
-  /**
-   * Creates Vertx5HttpClient with custom WebSocket configuration.
-   * For internal use by Vertx5HttpClientBuilder.
-   */
-  static <F extends io.fabric8.kubernetes.client.http.HttpClient.Factory> Vertx5HttpClient<F> createWithWebSocketOptions(
-      final Vertx5HttpClientBuilder<F> builder,
-      final AtomicBoolean closed,
-      final HttpClient httpClient,
-      final WebSocketClientOptions wsOptions,
-      final boolean closeVertx) {
-
-    final Vertx5HttpClientConfiguration<F> config = Vertx5HttpClientConfiguration.withCustomWebSocket(
-        builder, closed, httpClient, wsOptions, closeVertx);
-    return new Vertx5HttpClient<>(config);
+    return new Vertx5HttpClient<>(Vertx5HttpClientConfiguration.<F> builder()
+        .clientBuilder(builder)
+        .closed(closed)
+        .httpClient(httpClient)
+        .webSocketClient(webSocketClient)
+        .closeVertx(closeVertx)
+        .build());
   }
 
   @Override

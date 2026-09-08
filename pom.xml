@@ -106,7 +106,7 @@
     <!-- API versions -->
     <jsr305.version>3.0.2</jsr305.version>
     <gradle-api.version>8.5</gradle-api.version>
-    <groovy-api.version>5.0.7</groovy-api.version>
+    <groovy-api.version>5.0.8</groovy-api.version>
 
     <!-- Testing versions -->
     <junit4.version>4.13.2</junit4.version>
@@ -141,7 +141,7 @@
     <jmustache.version>1.16</jmustache.version>
     <picocli.version>4.7.7</picocli.version>
     <swagger-request-validator-core.version>2.46.1</swagger-request-validator-core.version>
-    <swagger-parser.version>2.1.45</swagger-parser.version>
+    <swagger-parser.version>2.1.46</swagger-parser.version>
 
     <!-- Maven plugin versions -->
     <buildnumber.plugin.version>3.3.0</buildnumber.plugin.version>
@@ -211,8 +211,8 @@
       /META-INF/jandex.idx=target/classes/META-INF/jandex.idx
     </osgi.include.resources.default>
     <osgi.include.resources>${osgi.include.resources.default}</osgi.include.resources>
-    <karaf.itest.skip>true</karaf.itest.skip>
-    <project.build.outputTimestamp>2026-06-29T08:36:26Z</project.build.outputTimestamp>
+    <karaf.itest.skip>false</karaf.itest.skip>
+    <project.build.outputTimestamp>2026-09-04T14:48:18Z</project.build.outputTimestamp>
     <validation-api.version>2.0.1.Final</validation-api.version>
     <revapi.version>0.15.1</revapi.version>
     <revapi-java.version>0.28.4</revapi-java.version>

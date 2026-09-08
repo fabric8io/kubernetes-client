@@ -34,7 +34,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses.
+ * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
  */
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -133,7 +133,7 @@ public class Gateway implements Editable<GatewayBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses.
+     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
      */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
@@ -141,7 +141,7 @@ public class Gateway implements Editable<GatewayBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses.
+     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
      */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
@@ -149,7 +149,7 @@ public class Gateway implements Editable<GatewayBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses.
+     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
      */
     @JsonProperty("spec")
     public GatewaySpec getSpec() {
@@ -157,7 +157,7 @@ public class Gateway implements Editable<GatewayBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses.
+     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
      */
     @JsonProperty("spec")
     public void setSpec(GatewaySpec spec) {
@@ -165,7 +165,7 @@ public class Gateway implements Editable<GatewayBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses.
+     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
      */
     @JsonProperty("status")
     public GatewayStatus getStatus() {
@@ -173,7 +173,7 @@ public class Gateway implements Editable<GatewayBuilder>, HasMetadata, Namespace
     }
 
     /**
-     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses.
+     * Gateway represents an instance of a service-traffic handling infrastructure by binding Listeners to a set of IP addresses. A Gateway name SHOULD be compliant with RFC 1035, consisting of a maximum of 63 lower case alphanumeric characters or hyphens ('-'), and MUST start and end with an alphanumeric character.
      */
     @JsonProperty("status")
     public void setStatus(GatewayStatus status) {

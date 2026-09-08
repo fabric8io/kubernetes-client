@@ -32,6 +32,7 @@ import lombok.experimental.Accessors;
     "machineID",
     "operatingSystem",
     "osImage",
+    "runningInUserNamespace",
     "swap",
     "systemUUID"
 })
@@ -64,6 +65,8 @@ public class NodeSystemInfo implements Editable<NodeSystemInfoBuilder>, Kubernet
     private String operatingSystem;
     @JsonProperty("osImage")
     private String osImage;
+    @JsonProperty("runningInUserNamespace")
+    private Boolean runningInUserNamespace;
     @JsonProperty("swap")
     private NodeSwapStatus swap;
     @JsonProperty("systemUUID")
@@ -77,7 +80,7 @@ public class NodeSystemInfo implements Editable<NodeSystemInfoBuilder>, Kubernet
     public NodeSystemInfo() {
     }
 
-    public NodeSystemInfo(String architecture, String bootID, String containerRuntimeVersion, String kernelVersion, String kubeProxyVersion, String kubeletVersion, String machineID, String operatingSystem, String osImage, NodeSwapStatus swap, String systemUUID) {
+    public NodeSystemInfo(String architecture, String bootID, String containerRuntimeVersion, String kernelVersion, String kubeProxyVersion, String kubeletVersion, String machineID, String operatingSystem, String osImage, Boolean runningInUserNamespace, NodeSwapStatus swap, String systemUUID) {
         super();
         this.architecture = architecture;
         this.bootID = bootID;
@@ -88,6 +91,7 @@ public class NodeSystemInfo implements Editable<NodeSystemInfoBuilder>, Kubernet
         this.machineID = machineID;
         this.operatingSystem = operatingSystem;
         this.osImage = osImage;
+        this.runningInUserNamespace = runningInUserNamespace;
         this.swap = swap;
         this.systemUUID = systemUUID;
     }
@@ -234,6 +238,22 @@ public class NodeSystemInfo implements Editable<NodeSystemInfoBuilder>, Kubernet
     @JsonProperty("osImage")
     public void setOsImage(String osImage) {
         this.osImage = osImage;
+    }
+
+    /**
+     * Whether the node is running in a user namespace.
+     */
+    @JsonProperty("runningInUserNamespace")
+    public Boolean getRunningInUserNamespace() {
+        return runningInUserNamespace;
+    }
+
+    /**
+     * Whether the node is running in a user namespace.
+     */
+    @JsonProperty("runningInUserNamespace")
+    public void setRunningInUserNamespace(Boolean runningInUserNamespace) {
+        this.runningInUserNamespace = runningInUserNamespace;
     }
 
     /**

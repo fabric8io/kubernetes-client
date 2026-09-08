@@ -25,7 +25,7 @@ public class ServiceAccountTokenProjectionBuilder extends ServiceAccountTokenPro
   }
 
   public ServiceAccountTokenProjection build() {
-    ServiceAccountTokenProjection buildable = new ServiceAccountTokenProjection(fluent.getAudience(), fluent.getExpirationSeconds(), fluent.getPath());
+    ServiceAccountTokenProjection buildable = new ServiceAccountTokenProjection(fluent.getAudience(), fluent.getExpirationSeconds(), fluent.getPath(), fluent.getUser());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

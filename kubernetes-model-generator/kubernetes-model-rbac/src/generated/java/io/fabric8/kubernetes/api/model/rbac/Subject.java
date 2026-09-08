@@ -94,7 +94,7 @@ public class Subject implements Editable<SubjectBuilder>, KubernetesResource
     }
 
     /**
-     * APIGroup holds the API group of the referenced subject. Defaults to "" for ServiceAccount subjects. Defaults to "rbac.authorization.k8s.io" for User and Group subjects.
+     * apiGroup holds the API group of the referenced subject. Defaults to "" for ServiceAccount subjects. Defaults to "rbac.authorization.k8s.io" for User and Group subjects.
      */
     @JsonProperty("apiGroup")
     public String getApiGroup() {
@@ -102,7 +102,7 @@ public class Subject implements Editable<SubjectBuilder>, KubernetesResource
     }
 
     /**
-     * APIGroup holds the API group of the referenced subject. Defaults to "" for ServiceAccount subjects. Defaults to "rbac.authorization.k8s.io" for User and Group subjects.
+     * apiGroup holds the API group of the referenced subject. Defaults to "" for ServiceAccount subjects. Defaults to "rbac.authorization.k8s.io" for User and Group subjects.
      */
     @JsonProperty("apiGroup")
     public void setApiGroup(String apiGroup) {
@@ -110,7 +110,7 @@ public class Subject implements Editable<SubjectBuilder>, KubernetesResource
     }
 
     /**
-     * Kind of object being referenced. Values defined by this API group are "User", "Group", and "ServiceAccount". If the Authorizer does not recognized the kind value, the Authorizer should report an error.
+     * kind of object being referenced. Values defined by this API group are "User", "Group", and "ServiceAccount". If the Authorizer does not recognized the kind value, the Authorizer should report an error.
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -118,7 +118,7 @@ public class Subject implements Editable<SubjectBuilder>, KubernetesResource
     }
 
     /**
-     * Kind of object being referenced. Values defined by this API group are "User", "Group", and "ServiceAccount". If the Authorizer does not recognized the kind value, the Authorizer should report an error.
+     * kind of object being referenced. Values defined by this API group are "User", "Group", and "ServiceAccount". If the Authorizer does not recognized the kind value, the Authorizer should report an error.
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
@@ -126,7 +126,7 @@ public class Subject implements Editable<SubjectBuilder>, KubernetesResource
     }
 
     /**
-     * Name of the object being referenced.
+     * name of the object being referenced.
      */
     @JsonProperty("name")
     public String getName() {
@@ -134,7 +134,7 @@ public class Subject implements Editable<SubjectBuilder>, KubernetesResource
     }
 
     /**
-     * Name of the object being referenced.
+     * name of the object being referenced.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -142,7 +142,7 @@ public class Subject implements Editable<SubjectBuilder>, KubernetesResource
     }
 
     /**
-     * Namespace of the referenced object.  If the object kind is non-namespace, such as "User" or "Group", and this value is not empty the Authorizer should report an error.
+     * namespace of the referenced object.  If the object kind is non-namespace, such as "User" or "Group", and this value is not empty the Authorizer should report an error.
      */
     @JsonProperty("namespace")
     public String getNamespace() {
@@ -150,7 +150,7 @@ public class Subject implements Editable<SubjectBuilder>, KubernetesResource
     }
 
     /**
-     * Namespace of the referenced object.  If the object kind is non-namespace, such as "User" or "Group", and this value is not empty the Authorizer should report an error.
+     * namespace of the referenced object.  If the object kind is non-namespace, such as "User" or "Group", and this value is not empty the Authorizer should report an error.
      */
     @JsonProperty("namespace")
     public void setNamespace(String namespace) {

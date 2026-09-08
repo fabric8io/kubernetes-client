@@ -3,6 +3,7 @@ package io.fabric8.kubernetes.api.model;
 import io.fabric8.kubernetes.api.builder.BaseFluent;
 import io.fabric8.kubernetes.api.builder.Nested;
 import java.lang.Integer;
+import java.lang.Long;
 import java.lang.Object;
 import java.lang.RuntimeException;
 import java.lang.String;
@@ -25,6 +26,7 @@ public class ProjectedVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mod
 
   private Map<String,Object> additionalProperties;
   private Integer defaultMode;
+  private Long defaultUser;
   private ArrayList<VolumeProjectionBuilder> sources = new ArrayList<VolumeProjectionBuilder>();
 
   public ProjectedVolumeSourceFluent() {
@@ -130,6 +132,7 @@ public class ProjectedVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mod
     instance = instance != null ? instance : new ProjectedVolumeSource();
     if (instance != null) {
         this.withDefaultMode(instance.getDefaultMode());
+        this.withDefaultUser(instance.getDefaultUser());
         this.withSources(instance.getSources());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -185,6 +188,9 @@ public class ProjectedVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mod
     if (!(Objects.equals(defaultMode, that.defaultMode))) {
       return false;
     }
+    if (!(Objects.equals(defaultUser, that.defaultUser))) {
+      return false;
+    }
     if (!(Objects.equals(sources, that.sources))) {
       return false;
     }
@@ -202,12 +208,20 @@ public class ProjectedVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mod
     return this.defaultMode;
   }
   
+  public Long getDefaultUser() {
+    return this.defaultUser;
+  }
+  
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
   }
   
   public boolean hasDefaultMode() {
     return this.defaultMode != null;
+  }
+  
+  public boolean hasDefaultUser() {
+    return this.defaultUser != null;
   }
   
   public boolean hasMatchingSource(Predicate<VolumeProjectionBuilder> predicate) {
@@ -224,7 +238,7 @@ public class ProjectedVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mod
   }
   
   public int hashCode() {
-    return Objects.hash(defaultMode, sources, additionalProperties);
+    return Objects.hash(defaultMode, defaultUser, sources, additionalProperties);
   }
   
   public A removeAllFromSources(Collection<VolumeProjection> items) {
@@ -318,6 +332,11 @@ public class ProjectedVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mod
         sb.append(defaultMode);
         sb.append(",");
     }
+    if (!(defaultUser == null)) {
+        sb.append("defaultUser:");
+        sb.append(defaultUser);
+        sb.append(",");
+    }
     if (!(sources == null) && !(sources.isEmpty())) {
         sb.append("sources:");
         sb.append(sources);
@@ -342,6 +361,11 @@ public class ProjectedVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mod
   
   public A withDefaultMode(Integer defaultMode) {
     this.defaultMode = defaultMode;
+    return (A) this;
+  }
+  
+  public A withDefaultUser(Long defaultUser) {
+    this.defaultUser = defaultUser;
     return (A) this;
   }
   

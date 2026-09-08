@@ -27,7 +27,8 @@ import lombok.experimental.Accessors;
     "name",
     "optional",
     "path",
-    "signerName"
+    "signerName",
+    "user"
 })
 @ToString
 @EqualsAndHashCode
@@ -50,6 +51,8 @@ public class ClusterTrustBundleProjection implements Editable<ClusterTrustBundle
     private String path;
     @JsonProperty("signerName")
     private String signerName;
+    @JsonProperty("user")
+    private Long user;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -59,13 +62,14 @@ public class ClusterTrustBundleProjection implements Editable<ClusterTrustBundle
     public ClusterTrustBundleProjection() {
     }
 
-    public ClusterTrustBundleProjection(LabelSelector labelSelector, String name, Boolean optional, String path, String signerName) {
+    public ClusterTrustBundleProjection(LabelSelector labelSelector, String name, Boolean optional, String path, String signerName, Long user) {
         super();
         this.labelSelector = labelSelector;
         this.name = name;
         this.optional = optional;
         this.path = path;
         this.signerName = signerName;
+        this.user = user;
     }
 
     /**
@@ -146,6 +150,22 @@ public class ClusterTrustBundleProjection implements Editable<ClusterTrustBundle
     @JsonProperty("signerName")
     public void setSignerName(String signerName) {
         this.signerName = signerName;
+    }
+
+    /**
+     * user is Optional: The owner UID of the created file. If specified, the item-level user field takes precedence over defaultUser. (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+     */
+    @JsonProperty("user")
+    public Long getUser() {
+        return user;
+    }
+
+    /**
+     * user is Optional: The owner UID of the created file. If specified, the item-level user field takes precedence over defaultUser. (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+     */
+    @JsonProperty("user")
+    public void setUser(Long user) {
+        this.user = user;
     }
 
     @JsonIgnore

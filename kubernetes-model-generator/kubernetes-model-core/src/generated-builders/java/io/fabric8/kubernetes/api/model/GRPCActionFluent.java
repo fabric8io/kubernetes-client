@@ -17,6 +17,7 @@ import java.util.Objects;
 public class GRPCActionFluent<A extends io.fabric8.kubernetes.api.model.GRPCActionFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
+  private String mode;
   private Integer port;
   private String service;
 
@@ -50,6 +51,7 @@ public class GRPCActionFluent<A extends io.fabric8.kubernetes.api.model.GRPCActi
   protected void copyInstance(GRPCAction instance) {
     instance = instance != null ? instance : new GRPCAction();
     if (instance != null) {
+        this.withMode(instance.getMode());
         this.withPort(instance.getPort());
         this.withService(instance.getService());
         this.withAdditionalProperties(instance.getAdditionalProperties());
@@ -67,6 +69,9 @@ public class GRPCActionFluent<A extends io.fabric8.kubernetes.api.model.GRPCActi
       return false;
     }
     GRPCActionFluent that = (GRPCActionFluent) o;
+    if (!(Objects.equals(mode, that.mode))) {
+      return false;
+    }
     if (!(Objects.equals(port, that.port))) {
       return false;
     }
@@ -83,6 +88,10 @@ public class GRPCActionFluent<A extends io.fabric8.kubernetes.api.model.GRPCActi
     return this.additionalProperties;
   }
   
+  public String getMode() {
+    return this.mode;
+  }
+  
   public Integer getPort() {
     return this.port;
   }
@@ -95,6 +104,10 @@ public class GRPCActionFluent<A extends io.fabric8.kubernetes.api.model.GRPCActi
     return this.additionalProperties != null;
   }
   
+  public boolean hasMode() {
+    return this.mode != null;
+  }
+  
   public boolean hasPort() {
     return this.port != null;
   }
@@ -104,7 +117,7 @@ public class GRPCActionFluent<A extends io.fabric8.kubernetes.api.model.GRPCActi
   }
   
   public int hashCode() {
-    return Objects.hash(port, service, additionalProperties);
+    return Objects.hash(mode, port, service, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -134,6 +147,11 @@ public class GRPCActionFluent<A extends io.fabric8.kubernetes.api.model.GRPCActi
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
+    if (!(mode == null)) {
+        sb.append("mode:");
+        sb.append(mode);
+        sb.append(",");
+    }
     if (!(port == null)) {
         sb.append("port:");
         sb.append(port);
@@ -158,6 +176,11 @@ public class GRPCActionFluent<A extends io.fabric8.kubernetes.api.model.GRPCActi
     } else {
       this.additionalProperties = new LinkedHashMap(additionalProperties);
     }
+    return (A) this;
+  }
+  
+  public A withMode(String mode) {
+    this.mode = mode;
     return (A) this;
   }
   
