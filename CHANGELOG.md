@@ -5,12 +5,14 @@
 #### Bugs
 
 #### Improvements
+* Fix #8009: Java baseline upgraded to Java 17, enabling access to modern language features, better performance, and long-term support
 
 #### Dependency Upgrade
 
 #### New Features
 
 #### _**Note**_: Breaking changes
+* Fix #8009: Java baseline upgraded from Java 11 to Java 17. The project now requires Java 17 or higher to compile and run (`maven.compiler.source`, `maven.compiler.target`, and `maven.compiler.release` are all set to 17). Users on Java 11 must upgrade to Java 17+ to use version 8.0.0 and later
 
 ### 7.9.0 (2026-09-04)
 

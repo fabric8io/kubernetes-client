@@ -6,7 +6,7 @@ This file provides guidance to AI coding agents (GitHub Copilot, Claude Code, et
 
 ## Project Overview
 
-Fabric8 Kubernetes Client is a Java client library that provides access to the full Kubernetes and OpenShift REST APIs via a fluent DSL. The project is a large multi-module Maven build targeting Java 11+, with pluggable HTTP client implementations and extensive extension modules for Kubernetes ecosystem projects (Knative, Tekton, Istio, etc.).
+Fabric8 Kubernetes Client is a Java client library that provides access to the full Kubernetes and OpenShift REST APIs via a fluent DSL. The project is a large multi-module Maven build targeting Java 17+, with pluggable HTTP client implementations and extensive extension modules for Kubernetes ecosystem projects (Knative, Tekton, Istio, etc.).
 
 ## Working Effectively
 
@@ -92,7 +92,7 @@ docker run --rm \
   -v "$PWD:/work" \
   -v "$HOME/.m2:/host-m2" \
   -w /work \
-  maven:3.9-eclipse-temurin-11 \
+  maven:3.9-eclipse-temurin-17 \
   mvn -pl kubernetes-tests \
       -Dtest='SomeFlakyTest#someFlakyMethod' \
       -Dmaven.repo.local=/host-m2/repository \
@@ -129,7 +129,7 @@ kubernetes-client/                    # Root project
 ├── crd-generator/                    # CRD generator from Java classes
 ├── generator-annotations/            # Annotations for code generation
 │
-├── httpclient-jdk/                   # Java 11+ HTTP client implementation
+├── httpclient-jdk/                   # Java HTTP client implementation
 ├── httpclient-okhttp/                # OkHttp3 implementation
 ├── httpclient-jetty/                 # Jetty HTTP client
 ├── httpclient-vertx/                 # Vert.x HTTP client (default)
@@ -220,7 +220,7 @@ mvn spotless:check
 - No wildcard imports (e.g., use `import java.util.List;` not `import java.util.*;`)
 - Apache License 2.0 headers required on all source files
 - Use fluent/DSL-style API design
-- Java 11+ syntax allowed
+- Java 17+ syntax allowed
 
 ## Testing Guidelines
 

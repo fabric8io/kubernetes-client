@@ -175,9 +175,9 @@
     <really-executable-jar-maven-plugin.version>2.1.1</really-executable-jar-maven-plugin.version>
 
     <!-- Other options -->
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.release>17</maven.compiler.release>
     <skipTests>false</skipTests>
     <generate.targetDirectory>${project.basedir}/src/generated/java</generate.targetDirectory>
     <generate.targetResourcesDirectory>${project.basedir}/src/generated/resources</generate.targetResourcesDirectory>

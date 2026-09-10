@@ -178,8 +178,8 @@ To always create an own index, set `forceIndex` to `true`.
 ## Cross-JDK version builds (forked JVM)
 
 By default, CRD generation runs in-process within the JVM that executes Maven. If the project is
-compiled with a newer JDK than the one running Maven (e.g. Maven on JDK 11, project compiled for
-JDK 17), the plugin will fail with `UnsupportedClassVersionError` when it tries to load the
+compiled with a newer JDK than the one running Maven (e.g. Maven on JDK 17, project compiled for
+JDK 21), the plugin will fail with `UnsupportedClassVersionError` when it tries to load the
 compiled class files.
 
 To fix this, configure the plugin to fork a separate JVM process using a compatible JDK. There are

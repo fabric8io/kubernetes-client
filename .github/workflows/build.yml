@@ -44,8 +44,6 @@ jobs:
       fail-fast: false
       matrix:
         environment:
-          - java: 11
-            os: ubuntu-24.04-arm
           - java: 17
             os: ubuntu-24.04-arm
           - java: 21
