@@ -5,14 +5,16 @@
 #### Bugs
 
 #### Improvements
-* Fix #8009: Java baseline upgraded to Java 17, enabling access to modern language features, better performance, and long-term support
 
 #### Dependency Upgrade
+* Fix #8050: (karaf) The Karaf feature bundles Aries SPI-Fly 1.3.7 (from 1.3.0) and ASM 9.10.1 (from 8.0.1), the versions required to weave Java 17 bytecode
 
 #### New Features
 
 #### _**Note**_: Breaking changes
-* Fix #8009: Java baseline upgraded from Java 11 to Java 17. The project now requires Java 17 or higher to compile and run (`maven.compiler.source`, `maven.compiler.target`, and `maven.compiler.release` are all set to 17). Users on Java 11 must upgrade to Java 17+ to use version 8.0.0 and later
+* Check detailed migration documentation for breaking changes in [8.0.0](./doc/MIGRATION-v8.md)
+* Fix #8009: Moved Java baseline from 11 to 17. In addition to the runtime requirement, the Maven plugins, the Gradle plugin and the annotation processor now require a Java 17+ JVM to run the build, and the OSGi bundles declare `osgi.ee=JavaSE 17`
+* Fix #8050: (karaf) The `kubernetes-karaf` feature repository no longer defines its own `scr` feature. `kubernetes-client` now depends on the `scr` feature provided by the Karaf distribution, which supplies the Declarative Services API bundles and the `scr:*` shell commands
 
 ### 7.9.0 (2026-09-04)
 

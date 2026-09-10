@@ -128,8 +128,6 @@
 
     <conscrypt-openjdk-uber.bundle.version>1.4.2_1</conscrypt-openjdk-uber.bundle.version>
     <automaton.bundle.version>1.11-8_1</automaton.bundle.version>
-    <aries-spifly.bundle.version>1.3.0</aries-spifly.bundle.version>
-    <asm.bundle.version>8.0.1</asm.bundle.version>
     <slf4j.version>2.0.18</slf4j.version>
     <log4j.version>2.26.1</log4j.version>
     <lombok.version>1.18.46</lombok.version>
@@ -137,7 +135,6 @@
     <commons-io.version>2.22.0</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
     <guava.version>33.6.0-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
     <osgi.annotations.version>1.5.1</osgi.annotations.version>
-    <felix.scr.version>2.0.6</felix.scr.version>
     <jmustache.version>1.16</jmustache.version>
     <picocli.version>4.7.7</picocli.version>
     <swagger-request-validator-core.version>2.46.1</swagger-request-validator-core.version>
@@ -1028,27 +1025,34 @@
         <plugin>
           <artifactId>maven-enforcer-plugin</artifactId>
           <version>${maven.enforcer.plugin.version}</version>
-          <!-- <executions>
+          <executions>
             <execution>
-              <id>enforce-maven</id>
+              <id>enforce-java</id>
               <goals>
                 <goal>enforce</goal>
               </goals>
               <configuration>
                 <failFast>true</failFast>
                 <rules>
-                  <requireMavenVersion>
-                    <version>[3.2.5,)</version>
-                  </requireMavenVersion>
+                  <requireJavaVersion>
+                    <version>[17,)</version>
+                    <message>The Fabric8 Kubernetes Client requires JDK 17 or later to build (see doc/MIGRATION-v8.md).</message>
+                  </requireJavaVersion>
                 </rules>
               </configuration>
             </execution>
-          </executions> -->
+          </executions>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-plugin-plugin</artifactId>
           <version>${maven.plugin.plugin.version}</version>
+          <configuration>
+            <!-- Recorded in the generated plugin descriptor so that Maven reports a readable
+                 error when the plugin is used on an older JVM, instead of the
+                 UnsupportedClassVersionError the Java 17 bytecode would otherwise produce -->
+            <requiredJavaVersion>${maven.compiler.release}</requiredJavaVersion>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -1641,15 +1645,6 @@
           </plugin>
         </plugins>
       </build>
-    </profile>
-    <profile>
-      <id>java-17</id>
-      <activation>
-        <jdk>[17,)</jdk>
-      </activation>
-      <properties>
-        <karaf.itest.skip>true</karaf.itest.skip>
-      </properties>
     </profile>
     <profile>
       <id>javadoc-test</id>

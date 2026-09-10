@@ -58,7 +58,10 @@ jobs:
           cache: 'maven'
       - name: Build Project
         shell: bash
-        run: ./mvnw ${MAVEN_ARGS} install
+        # The Karaf integration tests are skipped here: they take ~3x longer on Windows than on
+        # Linux and the Karaf shell emits a spurious "Terminal has been closed" error annotation
+        # on shutdown. The Linux build matrix covers them on both Java 17 and 21.
+        run: ./mvnw ${MAVEN_ARGS} install -Dkaraf.itest.skip=true
       - name: Drop in-repo artifacts before cache save
         # Don't let io.fabric8:* jars installed by this run leak into the cache that future
         # runs restore. Only third-party dependencies should be cached.
