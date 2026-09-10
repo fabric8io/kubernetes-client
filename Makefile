@@ -58,7 +58,7 @@ generate-model: openapi-generate-schema openapi-generate-java-classes
 
 .PHONY: sonar
 sonar: clean
-	mvn $(MAVEN_ARGS) -Pcoverage install
+	mvn $(MAVEN_ARGS) -Pcoverage,sonar install
 	mvn -Pcoverage,sonar sonar:sonar -DskipTests
 
 .PHONY: javadoc
