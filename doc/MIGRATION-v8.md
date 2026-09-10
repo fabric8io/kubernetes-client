@@ -4,6 +4,7 @@
 - [Java baseline set to Java 17](#java-17)
   - [Build tooling requires a Java 17 runtime](#java-17-build-tooling)
   - [OSGi bundles require JavaSE 17](#java-17-osgi)
+- [Karaf: the bundled `scr` feature has been removed](#karaf-scr)
 
 
 > [!NOTE]
@@ -40,3 +41,16 @@ If you need the build JVM to stay on an older release, the CRD generator Maven p
 The published bundles now declare `Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=17))"`, up from `version=11`.
 
 This is a *resolution* requirement, not just a runtime one: on an OSGi framework running Java 11 the bundles will fail to resolve rather than failing later at class load. Karaf users need a container running on Java 17 or newer.
+
+## Karaf: the bundled `scr` feature has been removed <a href="#karaf-scr" id="karaf-scr"/>
+
+The `io.fabric8.kubernetes:kubernetes-karaf` feature repository used to define its own `scr` feature, pinning a single Felix SCR bundle. That definition has been removed, and `kubernetes-client` now depends on the `scr` feature provided by the Karaf distribution.
+
+For most users this needs no action: Karaf provides `scr` out of the box, and installing `kubernetes-client` pulls it in as before.
+
+Two things change if you were relying on the old behaviour:
+
+- **If you installed our `scr` feature explicitly** (`feature:install scr` resolving against our repository, or a `<feature>scr</feature>` reference in your own descriptor), you now get Karaf's. Karaf's is a superset: besides the SCR implementation it also supplies the Declarative Services API bundles and, through its conditionals, the `scr:list` / `scr:info` shell commands and the SCR MBean.
+- **If you build a custom Karaf assembly**, make sure the Karaf standard feature repository is on the descriptor list. Our repository no longer carries a `scr` feature to fall back on, so an assembly that registers only the fabric8 repository will now fail to resolve `kubernetes-client` — loudly, at assembly time, rather than silently producing a container where the client cannot activate.
+
+The old definition was not self-contained: Felix SCR 2.0.6 exported the Declarative Services API itself, but 2.2.18 and later import it instead, so a single-bundle `scr` feature no longer carries everything it needs. Because ours was versioned with the project version it also outranked Karaf's, so an unversioned `scr` request selected the incomplete definition.

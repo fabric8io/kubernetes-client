@@ -3,17 +3,18 @@
 ### 8.0-SNAPSHOT
 
 #### Bugs
-* Fix #8050: (karaf) `KubernetesClient` can be activated as an OSGi service again under the Java 17 baseline. Aries SPI-Fly (1.3.0) and ASM (8.0.1) predate Java 17 bytecode, so SPI-Fly's weaving hook failed with `Unsupported class file major version 61`, `ServiceLoader` call sites were never woven, and no `HttpClient.Factory` could be found. The feature now ships Aries SPI-Fly 1.3.7 and ASM 9.10.1, which moves SPI-Fly's ASM import range from `[8.0,9)` to `[9.6,10)`. The `scr` feature the Karaf feature repository used to define (pinning Felix SCR 2.0.6, which provides `osgi.extender=osgi.component` 1.3 while the client requires 1.5+, and which shadowed Karaf's own `scr` feature) has been removed: `kubernetes-client` now depends on the `scr` feature provided by Karaf, so the Declarative Services API bundles and the `scr:*` shell commands come from the distribution. The Karaf integration tests no longer skip on JDK 17+, so this is covered by CI again
 
 #### Improvements
 
 #### Dependency Upgrade
+* Fix #8050: (karaf) The Karaf feature bundles Aries SPI-Fly 1.3.7 (from 1.3.0) and ASM 9.10.1 (from 8.0.1), the versions required to weave Java 17 bytecode
 
 #### New Features
 
 #### _**Note**_: Breaking changes
 * Check detailed migration documentation for breaking changes in [8.0.0](./doc/MIGRATION-v8.md)
 * Fix #8009: Moved Java baseline from 11 to 17. In addition to the runtime requirement, the Maven plugins, the Gradle plugin and the annotation processor now require a Java 17+ JVM to run the build, and the OSGi bundles declare `osgi.ee=JavaSE 17`
+* Fix #8050: (karaf) The `kubernetes-karaf` feature repository no longer defines its own `scr` feature. `kubernetes-client` now depends on the `scr` feature provided by the Karaf distribution, which supplies the Declarative Services API bundles and the `scr:*` shell commands
 
 ### 7.9.0 (2026-09-04)
 
