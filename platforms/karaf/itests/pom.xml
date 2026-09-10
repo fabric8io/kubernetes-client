@@ -155,6 +155,9 @@
                 <feature>openshift-client</feature>
               </features>
               <descriptors>
+                <!-- Karaf's own repository provides the scr feature (and the DS API bundles it
+                     pulls in), which our features depend on but deliberately do not redefine -->
+                <descriptor>mvn:org.apache.karaf.features/standard/${karaf.version}/xml/features</descriptor>
                 <descriptor>file:${project.build.directory}/features.xml</descriptor>
               </descriptors>
             </configuration>

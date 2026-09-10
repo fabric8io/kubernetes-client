@@ -36,6 +36,11 @@
   <properties>
     <karaf.version>4.4.11</karaf.version>
     <osgi.version>6.0.0</osgi.version>
+    <!-- Only consumed by features/src/main/resources/feature.xml. SPI-Fly weaves the
+         ServiceLoader call sites the client relies on, so ASM must be able to read the
+         bytecode we compile: keep ASM within the range SPI-Fly imports (1.3.7 -> [9.6,10)). -->
+    <aries-spifly.bundle.version>1.3.7</aries-spifly.bundle.version>
+    <asm.bundle.version>9.10.1</asm.bundle.version>
     <!--  NOT Updated because of: https://github.com/ops4j/org.ops4j.pax.exam2/issues/1020#issuecomment-1011133020 causing instability in CI -->
     <pax.exam.version>4.14.0</pax.exam.version>
   </properties>
