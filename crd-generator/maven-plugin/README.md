@@ -201,7 +201,7 @@ This can be configured in the plugin `<configuration>` or passed on the command 
         <goal>generate</goal>
       </goals>
       <configuration>
-        <javaExecutable>/path/to/jdk17/bin/java</javaExecutable>
+        <javaExecutable>/path/to/jdk21/bin/java</javaExecutable>
       </configuration>
     </execution>
   </executions>
@@ -221,10 +221,10 @@ toolchain is active in the build — no extra `<configuration>` needed in the pl
   <toolchain>
     <type>jdk</type>
     <provides>
-      <version>17</version>
+      <version>21</version>
     </provides>
     <configuration>
-      <jdkHome>/path/to/jdk17</jdkHome>
+      <jdkHome>/path/to/jdk21</jdkHome>
     </configuration>
   </toolchain>
 </toolchains>
@@ -246,7 +246,7 @@ toolchain is active in the build — no extra `<configuration>` needed in the pl
   <configuration>
     <toolchains>
       <jdk>
-        <version>17</version>
+        <version>21</version>
       </jdk>
     </toolchains>
   </configuration>
