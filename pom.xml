@@ -1025,27 +1025,34 @@
         <plugin>
           <artifactId>maven-enforcer-plugin</artifactId>
           <version>${maven.enforcer.plugin.version}</version>
-          <!-- <executions>
+          <executions>
             <execution>
-              <id>enforce-maven</id>
+              <id>enforce-java</id>
               <goals>
                 <goal>enforce</goal>
               </goals>
               <configuration>
                 <failFast>true</failFast>
                 <rules>
-                  <requireMavenVersion>
-                    <version>[3.2.5,)</version>
-                  </requireMavenVersion>
+                  <requireJavaVersion>
+                    <version>[17,)</version>
+                    <message>The Fabric8 Kubernetes Client requires JDK 17 or later to build (see doc/MIGRATION-v8.md).</message>
+                  </requireJavaVersion>
                 </rules>
               </configuration>
             </execution>
-          </executions> -->
+          </executions>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-plugin-plugin</artifactId>
           <version>${maven.plugin.plugin.version}</version>
+          <configuration>
+            <!-- Recorded in the generated plugin descriptor so that Maven reports a readable
+                 error when the plugin is used on an older JVM, instead of the
+                 UnsupportedClassVersionError the Java 17 bytecode would otherwise produce -->
+            <requiredJavaVersion>${maven.compiler.release}</requiredJavaVersion>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
