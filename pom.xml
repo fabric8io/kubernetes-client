@@ -128,7 +128,7 @@
 
     <conscrypt-openjdk-uber.bundle.version>1.4.2_1</conscrypt-openjdk-uber.bundle.version>
     <automaton.bundle.version>1.11-8_1</automaton.bundle.version>
-    <slf4j.version>2.0.18</slf4j.version>
+    <slf4j.version>2.0.19</slf4j.version>
     <log4j.version>2.26.1</log4j.version>
     <lombok.version>1.18.48</lombok.version>
     <commons-compress.version>1.28.0</commons-compress.version>
