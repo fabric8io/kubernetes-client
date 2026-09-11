@@ -53,13 +53,20 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: 'maven'
+      - name: Verify Go module resolves on a clean checkout
+        # Dependency bots run `go get`/`go mod tidy` before generation. The committed doc.go stubs keep that working;
+        # this step catches a regression before the tree fills up with generated files.
+        working-directory: kubernetes-model-generator/openapi/generator
+        run: |
+          go mod tidy
+          git diff --exit-code go.mod go.sum
       - name: Generate model
         run: make generate-model
       - name: Check No Schema file modified
         run: |
           git add .
           IGNORED_PATTERNS="validation-schema.json"
-          INCLUDE_PATTERNS="kube-schema.json\|src/generated/java\|src/generated-builders/java\|src/generated/resources\|openapi/schemas/"
+          INCLUDE_PATTERNS="kube-schema.json\|openapi/generator/cmd/generated_\|src/generated/java\|src/generated-builders/java\|src/generated/resources\|openapi/schemas/"
           MODIFIED_FILES_COUNT=$(git status | grep -v "$IGNORED_PATTERNS" | grep "$INCLUDE_PATTERNS" | wc -l)
           if [ $MODIFIED_FILES_COUNT -eq "0" ]; then
             echo "No Schema files modified. Build Success.";

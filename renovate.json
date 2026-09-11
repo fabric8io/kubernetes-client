@@ -1,0 +1,168 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "security:gomodIndirectSecurityUpdates",
+    ":semanticCommitTypeAll(chore)"
+  ],
+  "enabledManagers": [
+    "maven",
+    "gomod",
+    "github-actions"
+  ],
+  "ignorePaths": [
+    "**/src/it/**"
+  ],
+  "prConcurrentLimit": 0,
+  "prHourlyLimit": 10,
+  "minimumReleaseAge": "3 days",
+  "postUpdateOptions": [
+    "gomodTidy"
+  ],
+  "packageRules": [
+    {
+      "matchManagers": ["maven"],
+      "reviewers": ["oscerd", "rohanKanojia", "manusa"]
+    },
+    {
+      "description": "httpclient-vertx (4.x) and httpclient-vertx-5 (5.x) each stay on their own major",
+      "matchPackageNames": ["io.vertx:**"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "description": "swagger-request-validator 3.x requires Java 21; we still target Java 17",
+      "matchPackageNames": ["com.atlassian.oai:**"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "matchPackageNames": ["org.bouncycastle:**"],
+      "groupName": "bouncycastle"
+    },
+    {
+      "matchPackageNames": ["com.fasterxml.jackson**"],
+      "groupName": "jackson"
+    },
+    {
+      "matchPackageNames": ["org.eclipse.jetty**"],
+      "groupName": "jetty"
+    },
+    {
+      "matchPackageNames": ["org.keycloak:**"],
+      "groupName": "keycloak"
+    },
+    {
+      "matchPackageNames": ["com.squareup.okhttp3:**"],
+      "groupName": "okhttp"
+    },
+    {
+      "matchPackageNames": ["org.apache.maven.plugins:**", "org.apache.maven:**", "org.codehaus.mojo:**"],
+      "groupName": "maven-plugins"
+    },
+    {
+      "matchPackageNames": [
+        "org.junit**",
+        "org.mockito:**",
+        "org.assertj:**",
+        "org.awaitility:**",
+        "com.approvaltests:**",
+        "org.spockframework:**"
+      ],
+      "groupName": "testing"
+    },
+    {
+      "matchPackageNames": ["org.apache.logging.log4j:**", "org.slf4j:**", "ch.qos.logback**"],
+      "groupName": "logging"
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "groupName": "github-actions"
+    },
+    {
+      "description": "replace directives in go.mod are deliberate pins: keep them visible on the dashboard but don't open PRs unasked",
+      "matchManagers": ["gomod"],
+      "matchDepTypes": ["replace"],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Pseudo-version pins: the current version is never in the release list, so no release age can be established and a digest update would be withheld forever under minimumReleaseAge",
+      "matchManagers": ["gomod"],
+      "matchCurrentValue": "/^v0\\.0\\.0-/",
+      "minimumReleaseAge": null
+    },
+    {
+      "description": "Nested modules without tags of their own: the lookup falls back to the parent repo's tags, which don't contain the package. Only track pseudo-versions (digests)",
+      "matchPackageNames": [
+        "github.com/ovn-org/ovn-kubernetes/go-controller",
+        "github.com/chaos-mesh/chaos-mesh/api",
+        "github.com/openshift/hive/apis"
+      ],
+      "allowedVersions": "/^v0\\.0\\.0-/"
+    },
+    {
+      "matchPackageNames": ["k8s.io/**", "sigs.k8s.io/**"],
+      "groupName": "kubernetes"
+    },
+    {
+      "matchPackageNames": ["github.com/openshift/**"],
+      "groupName": "openshift"
+    },
+    {
+      "matchPackageNames": ["knative.dev/**"],
+      "groupName": "knative"
+    },
+    {
+      "matchPackageNames": ["go.opentelemetry.io/**"],
+      "groupName": "opentelemetry"
+    },
+    {
+      "matchPackageNames": ["golang.org/x/**"],
+      "groupName": "golang-x"
+    },
+    {
+      "matchPackageNames": ["google.golang.org/**", "github.com/google/**"],
+      "groupName": "google-apis"
+    },
+    {
+      "matchPackageNames": ["github.com/go-openapi/**"],
+      "groupName": "go-openapi"
+    },
+    {
+      "matchPackageNames": ["github.com/operator-framework/**"],
+      "groupName": "operator-framework"
+    },
+    {
+      "matchPackageNames": ["github.com/tektoncd/**"],
+      "groupName": "tektoncd"
+    },
+    {
+      "matchPackageNames": ["github.com/metal3-io/**"],
+      "groupName": "metal3-io"
+    },
+    {
+      "matchPackageNames": ["github.com/stolostron/**"],
+      "groupName": "stolostron"
+    },
+    {
+      "matchPackageNames": ["open-cluster-management.io/**"],
+      "groupName": "open-cluster-management"
+    },
+    {
+      "matchPackageNames": ["github.com/prometheus/**", "github.com/prometheus-operator/**"],
+      "groupName": "prometheus"
+    },
+    {
+      "matchPackageNames": ["github.com/cloudevents/**"],
+      "groupName": "cloudevents"
+    },
+    {
+      "matchPackageNames": ["github.com/Azure/**"],
+      "groupName": "azure"
+    },
+    {
+      "matchPackageNames": ["go.uber.org/**"],
+      "groupName": "go-uber"
+    }
+  ]
+}
