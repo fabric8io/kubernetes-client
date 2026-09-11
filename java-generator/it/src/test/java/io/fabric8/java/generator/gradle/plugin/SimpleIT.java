@@ -18,11 +18,14 @@ package io.fabric8.java.generator.gradle.plugin;
 import org.gradle.testkit.runner.BuildResult;
 import org.gradle.testkit.runner.UnexpectedBuildFailure;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisabledForJreRange(min = JRE.JAVA_25, disabledReason = "Gradle 8.x does not support JDK 25+")
 class SimpleIT {
 
   @RegisterExtension

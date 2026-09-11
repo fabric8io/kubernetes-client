@@ -64,6 +64,15 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>@maven.compiler.plugin.version@</version>
+        <configuration>
+          <!-- Required by Lombok on JDK 23+: annotation processing is disabled by default (JDK-8321314) -->
+          <proc>full</proc>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>io.fabric8</groupId>
         <artifactId>java-generator-maven-plugin</artifactId>
         <version>@project.version@</version>
