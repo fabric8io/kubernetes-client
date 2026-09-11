@@ -133,7 +133,7 @@
     <lombok.version>1.18.46</lombok.version>
     <commons-compress.version>1.28.0</commons-compress.version>
     <commons-io.version>2.22.0</commons-io.version> <!-- Required by Gradle Testing Toolkit -->
-    <guava.version>33.6.0-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
+    <guava.version>33.7.1-jre</guava.version> <!-- Required by Gradle Testing Toolkit -->
     <osgi.annotations.version>1.5.1</osgi.annotations.version>
     <jmustache.version>1.16</jmustache.version>
     <picocli.version>4.7.7</picocli.version>
