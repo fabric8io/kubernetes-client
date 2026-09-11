@@ -1,0 +1,122 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "enabledManagers": [
+    "maven",
+    "gomod",
+    "github-actions"
+  ],
+  "ignorePaths": [
+    "**/src/it/**"
+  ],
+  "prConcurrentLimit": 0,
+  "prHourlyLimit": 0,
+  "postUpdateOptions": [
+    "gomodTidy"
+  ],
+  "packageRules": [
+    {
+      "matchManagers": ["maven"],
+      "reviewers": ["oscerd", "rohanKanojia", "manusa"]
+    },
+    {
+      "description": "httpclient-vertx (4.x) and httpclient-vertx-5 (5.x) each stay on their own major",
+      "matchPackageNames": ["io.vertx:**"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "description": "swagger-request-validator 3.x requires Java 21; we still target Java 17",
+      "matchPackageNames": ["com.atlassian.oai:**"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "matchPackageNames": ["org.bouncycastle:**"],
+      "groupName": "bouncycastle"
+    },
+    {
+      "matchPackageNames": ["com.fasterxml.jackson**"],
+      "groupName": "jackson"
+    },
+    {
+      "matchPackageNames": ["org.eclipse.jetty**"],
+      "groupName": "jetty"
+    },
+    {
+      "matchPackageNames": ["org.keycloak:**"],
+      "groupName": "keycloak"
+    },
+    {
+      "matchPackageNames": ["com.squareup.okhttp3:**"],
+      "groupName": "okhttp"
+    },
+    {
+      "matchPackageNames": ["org.apache.maven.plugins:**", "org.apache.maven:**", "org.codehaus.mojo:**"],
+      "groupName": "maven-plugins"
+    },
+    {
+      "matchPackageNames": [
+        "org.junit**",
+        "org.mockito:**",
+        "org.assertj:**",
+        "org.awaitility:**",
+        "com.approvaltests:**",
+        "org.spockframework:**"
+      ],
+      "groupName": "testing"
+    },
+    {
+      "matchPackageNames": ["org.apache.logging.log4j:**", "org.slf4j:**", "ch.qos.logback**"],
+      "groupName": "logging"
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "groupName": "github-actions"
+    },
+    {
+      "description": "replace directives in go.mod are deliberate pins, keep them manual",
+      "matchManagers": ["gomod"],
+      "matchDepTypes": ["replace"],
+      "enabled": false
+    },
+    {
+      "matchPackageNames": ["k8s.io/**", "sigs.k8s.io/**"],
+      "groupName": "kubernetes"
+    },
+    {
+      "matchPackageNames": ["github.com/openshift/**"],
+      "groupName": "openshift"
+    },
+    {
+      "matchPackageNames": ["knative.dev/**"],
+      "groupName": "knative"
+    },
+    {
+      "matchPackageNames": ["github.com/operator-framework/**"],
+      "groupName": "operator-framework"
+    },
+    {
+      "matchPackageNames": ["github.com/tektoncd/**"],
+      "groupName": "tektoncd"
+    },
+    {
+      "matchPackageNames": ["github.com/metal3-io/**"],
+      "groupName": "metal3-io"
+    },
+    {
+      "matchPackageNames": ["github.com/stolostron/**"],
+      "groupName": "stolostron"
+    },
+    {
+      "matchPackageNames": ["open-cluster-management.io/**"],
+      "groupName": "open-cluster-management"
+    },
+    {
+      "matchPackageNames": ["github.com/prometheus/**", "github.com/prometheus-operator/**"],
+      "groupName": "prometheus"
+    }
+  ]
+}
