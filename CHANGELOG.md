@@ -1,6 +1,22 @@
 ## CHANGELOG
 
-### 7.9-SNAPSHOT
+### 8.0-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+* Fix #8050: (karaf) The Karaf feature bundles Aries SPI-Fly 1.3.7 (from 1.3.0) and ASM 9.10.1 (from 8.0.1), the versions required to weave Java 17 bytecode
+
+#### New Features
+
+#### _**Note**_: Breaking changes
+* Check detailed migration documentation for breaking changes in [8.0.0](./doc/MIGRATION-v8.md)
+* Fix #8009: Moved Java baseline from 11 to 17. In addition to the runtime requirement, the Maven plugins, the Gradle plugin and the annotation processor now require a Java 17+ JVM to run the build, and the OSGi bundles declare `osgi.ee=JavaSE 17`
+* Fix #8050: (karaf) The `kubernetes-karaf` feature repository no longer defines its own `scr` feature. `kubernetes-client` now depends on the `scr` feature provided by the Karaf distribution, which supplies the Declarative Services API bundles and the `scr:*` shell commands
+
+### 7.9.0 (2026-09-04)
 
 #### Bugs
 * Fix #8024: (httpclient-vertx-5) WebSocket operations (`exec`/`attach`/`portForward`/WebSocket-backed watches) on a *derived* client - one produced by calling `newBuilder()`/`build()` on an already-built `HttpClient` - no longer fall back to Vert.x's bare `WebSocketClient` defaults. `Vertx5HttpClientBuilder.build()`'s short-circuit path for derived clients reused the original client's plain HTTP connection (with its configuration intact) but always created a brand-new `WebSocketClient` with no options at all, discarding both the trust/key material (so TLS verified against the JVM default trust store instead of the configured cluster CA) and the configured limits (`maxFrameSize`/`maxMessageSize` fell back to 64 KiB/256 KiB instead of unlimited, and `maxConnections` to 50 instead of 8192, so oversized `exec`/`attach` messages were silently dropped even on plain HTTP). This affects `kubernetes-httpclient-vertx-5` only, which is opt-in - the bundled default `kubernetes-httpclient-vertx` (Vert.x 4) serves WebSockets from the same client it reuses when deriving and was never affected - and it is present in 7.6.0 through 7.8.0. Derivation happens more often than it looks: `OpenShiftClientImpl` derives on every `adapt(OpenShiftClient.class)` to install its OAuth token-refresh interceptor, `OpenShiftOAuthInterceptor` derives on every token refresh, and `BaseClient#newClient` derives whenever a differing `RequestConfig` is set. Derived clients now reuse the original's `WebSocketClient` outright, the same way they already reused its HTTP client, so they can no longer drift from it and no second transport is allocated per derivation. Note that sharing the transport also means closing any client in a derived family closes it for the whole family: `close()` on a client obtained from `adapt(OpenShiftClient.class)` now ends WebSocket operations on the client it was derived from as well, which is already what happened to that client's HTTP requests and what the other four implementations do. Nothing usable is lost, since the original's HTTP client was closed regardless; what changes is that the per-derivation `WebSocketClient` is no longer left behind unclosed
@@ -14,10 +30,21 @@
 * Fix #7427: (build) JDK 25 build support — commit Sundrio-generated Builder/Fluent classes as source for `kubernetes-client-api` and `openshift-client-api`, and configure explicit Lombok `annotationProcessorPaths` project-wide. JDK 23+ defaults to `-proc:none`, silently skipping classpath-based annotation processor discovery; without explicit processor paths, Lombok and Sundrio APT stopped running and the build failed with missing getters/setters and Builder classes
 
 #### Dependency Upgrade
+* Fix #8033: bump gateway-api from 1.5.1 to 1.6.1
 
 #### New Features
+* Fix #7752: Support for Kubernetes v1.37.0 (Garhwal)
+* Fix #8033: gateway-api model gains `v1.TCPRoute` and `v1.UDPRoute` (both graduated from `v1alpha2` upstream in gateway-api v1.6.0). The `v1alpha2` types remain available, but upstream has deprecated them and will remove them in a future release, so new code should use the `v1` types
 
 #### _**Note**_: Breaking changes
+* Fix #7752: Kubernetes model API removals (removed upstream in Kubernetes v1.37.0). The following API versions have been completely removed from Kubernetes and are no longer available in the client:
+  - `certificates.k8s.io/v1alpha1/ClusterTrustBundle` → use `certificates.k8s.io/v1` or `v1beta1`
+  - `networking.k8s.io/v1beta1/IPAddress` → use `networking.k8s.io/v1`
+  - `networking.k8s.io/v1beta1/ServiceCIDR` → use `networking.k8s.io/v1`
+  - `storage.k8s.io/v1beta1/VolumeAttributesClass` → use `storage.k8s.io/v1`
+  - `scheduling.k8s.io/v1alpha2` (entire API version, 28 types) → use `v1alpha3` or `v1beta1`
+* Fix #7752: `VolumeMount` constructor signature changed (Kubernetes v1.37.0 added `bindMountOptions` field). The canonical constructor now takes `bindMountOptions` (List<String>) as its first parameter. Builder usage (`new VolumeMountBuilder().with...()`) is unaffected
+* Fix #8033: gateway-api model `v1.SessionPersistence` no longer exposes `idleTimeout` (removed upstream in gateway-api v1.6.0). Besides the field, this removes `getIdleTimeout()`/`setIdleTimeout()`, collapses the canonical constructor from five arguments to four, and drops `SessionPersistenceFluent.withIdleTimeout()`/`getIdleTimeout()`/`hasIdleTimeout()`, so the builder form (`withNewSessionPersistence().withIdleTimeout(...)`) no longer compiles. There is no runtime data loss: the class keeps its `@JsonAnyGetter`/`@JsonAnySetter`, and both the fluent and the builder carry `additionalProperties` through, so JSON or YAML still containing `idleTimeout` continues to deserialize and re-serialize intact
 * Fix #8028: (kube-api-test) `Fabric8ClientInjectionHandler` moved to `io.fabric8.kubeapitest.junit.inject`. It is resolved through `ServiceLoader`, so only code naming the class directly is affected
 * Fix #8028: (openshift-model) The bundle no longer exports or contains `io.fabric8.openshift.api.model.config.*`. Maven consumers are unaffected (`openshift-model-config` is a compile dependency), but OSGi deployments importing those packages must install the `openshift-model-config` bundle, which the `openshift-client` Karaf feature already does
 

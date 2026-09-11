@@ -25,7 +25,7 @@ public class NodeAllocatableResourceClaimStatusBuilder extends NodeAllocatableRe
   }
 
   public NodeAllocatableResourceClaimStatus build() {
-    NodeAllocatableResourceClaimStatus buildable = new NodeAllocatableResourceClaimStatus(fluent.getContainers(), fluent.getResourceClaimName(), fluent.getResources());
+    NodeAllocatableResourceClaimStatus buildable = new NodeAllocatableResourceClaimStatus(fluent.getContainers(), fluent.buildMapping(), fluent.buildOverhead(), fluent.getResourceClaimName());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -170,7 +170,7 @@ public class RoleBinding implements Editable<RoleBindingBuilder>, HasMetadata, N
     }
 
     /**
-     * Subjects holds references to the objects the role applies to.
+     * subjects holds references to the objects the role applies to.
      */
     @JsonProperty("subjects")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -179,7 +179,7 @@ public class RoleBinding implements Editable<RoleBindingBuilder>, HasMetadata, N
     }
 
     /**
-     * Subjects holds references to the objects the role applies to.
+     * subjects holds references to the objects the role applies to.
      */
     @JsonProperty("subjects")
     public void setSubjects(List<Subject> subjects) {

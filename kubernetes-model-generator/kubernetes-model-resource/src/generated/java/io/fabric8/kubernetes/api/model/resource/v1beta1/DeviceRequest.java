@@ -44,6 +44,7 @@ import lombok.experimental.Accessors;
     "allocationMode",
     "capacity",
     "count",
+    "derivedAttributes",
     "deviceClassName",
     "firstAvailable",
     "name",
@@ -83,6 +84,9 @@ public class DeviceRequest implements Editable<DeviceRequestBuilder>, Kubernetes
     private CapacityRequirements capacity;
     @JsonProperty("count")
     private Long count;
+    @JsonProperty("derivedAttributes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<DeviceDerivedAttribute> derivedAttributes = new ArrayList<>();
     @JsonProperty("deviceClassName")
     private String deviceClassName;
     @JsonProperty("firstAvailable")
@@ -105,12 +109,13 @@ public class DeviceRequest implements Editable<DeviceRequestBuilder>, Kubernetes
     public DeviceRequest() {
     }
 
-    public DeviceRequest(Boolean adminAccess, String allocationMode, CapacityRequirements capacity, Long count, String deviceClassName, List<DeviceSubRequest> firstAvailable, String name, List<DeviceSelector> selectors, List<DeviceToleration> tolerations) {
+    public DeviceRequest(Boolean adminAccess, String allocationMode, CapacityRequirements capacity, Long count, List<DeviceDerivedAttribute> derivedAttributes, String deviceClassName, List<DeviceSubRequest> firstAvailable, String name, List<DeviceSelector> selectors, List<DeviceToleration> tolerations) {
         super();
         this.adminAccess = adminAccess;
         this.allocationMode = allocationMode;
         this.capacity = capacity;
         this.count = count;
+        this.derivedAttributes = derivedAttributes;
         this.deviceClassName = deviceClassName;
         this.firstAvailable = firstAvailable;
         this.name = name;
@@ -180,6 +185,23 @@ public class DeviceRequest implements Editable<DeviceRequestBuilder>, Kubernetes
     @JsonProperty("count")
     public void setCount(Long count) {
         this.count = count;
+    }
+
+    /**
+     * DerivedAttributes defines a set of virtual attributes computed via CEL expressions for each candidate device. These virtual attributes can be referenced in `.devices.constraints` to align and match different devices (e.g., co-allocating a GPU and a NIC on the same NUMA node) even if their drivers publish different attributes. Derived attributes are not available via `device.attributes` in the CEL environment when evaluating selector expressions.<br><p> <br><p> Derived attributes allow you to extract, transform, or normalize topology information (such as extracting a NUMA index from a complex topology string or renaming a vendor-specific attribute) into a common virtual attribute name at scheduling time. The scheduler then evaluates these virtual attributes exactly like static attributes when matching constraints.<br><p> <br><p> Every derived attribute defined in this list must be referenced by at least one MatchAttribute or DistinctAttribute constraint in the `.devices.constraints` list.<br><p> <br><p> The maximum number of derived attributes is 32.<br><p> <br><p> This is an alpha field and requires enabling the DRADerivedAttributes feature gate.
+     */
+    @JsonProperty("derivedAttributes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<DeviceDerivedAttribute> getDerivedAttributes() {
+        return derivedAttributes;
+    }
+
+    /**
+     * DerivedAttributes defines a set of virtual attributes computed via CEL expressions for each candidate device. These virtual attributes can be referenced in `.devices.constraints` to align and match different devices (e.g., co-allocating a GPU and a NIC on the same NUMA node) even if their drivers publish different attributes. Derived attributes are not available via `device.attributes` in the CEL environment when evaluating selector expressions.<br><p> <br><p> Derived attributes allow you to extract, transform, or normalize topology information (such as extracting a NUMA index from a complex topology string or renaming a vendor-specific attribute) into a common virtual attribute name at scheduling time. The scheduler then evaluates these virtual attributes exactly like static attributes when matching constraints.<br><p> <br><p> Every derived attribute defined in this list must be referenced by at least one MatchAttribute or DistinctAttribute constraint in the `.devices.constraints` list.<br><p> <br><p> The maximum number of derived attributes is 32.<br><p> <br><p> This is an alpha field and requires enabling the DRADerivedAttributes feature gate.
+     */
+    @JsonProperty("derivedAttributes")
+    public void setDerivedAttributes(List<DeviceDerivedAttribute> derivedAttributes) {
+        this.derivedAttributes = derivedAttributes;
     }
 
     /**

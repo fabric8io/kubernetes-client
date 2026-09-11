@@ -290,8 +290,8 @@ public class ResourcePoolStatusRequestFluent<A extends io.fabric8.kubernetes.api
     return new SpecNested(null);
   }
   
-  public A withNewSpec(String driver,Integer limit,String poolName) {
-    return (A) this.withSpec(new ResourcePoolStatusRequestSpec(driver, limit, poolName));
+  public A withNewSpec(String defaultPartitionTypeAttribute,String driver,Integer limit,String poolName) {
+    return (A) this.withSpec(new ResourcePoolStatusRequestSpec(defaultPartitionTypeAttribute, driver, limit, poolName));
   }
   
   public SpecNested<A> withNewSpecLike(ResourcePoolStatusRequestSpec item) {

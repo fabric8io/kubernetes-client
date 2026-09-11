@@ -29,6 +29,7 @@ import lombok.experimental.Accessors;
     "httpHeaders",
     "path",
     "port",
+    "protocol",
     "scheme"
 })
 @ToString
@@ -51,6 +52,8 @@ public class HTTPGetAction implements Editable<HTTPGetActionBuilder>, Kubernetes
     private String path;
     @JsonProperty("port")
     private IntOrString port;
+    @JsonProperty("protocol")
+    private String protocol;
     @JsonProperty("scheme")
     private String scheme;
     @JsonIgnore
@@ -62,12 +65,13 @@ public class HTTPGetAction implements Editable<HTTPGetActionBuilder>, Kubernetes
     public HTTPGetAction() {
     }
 
-    public HTTPGetAction(String host, List<HTTPHeader> httpHeaders, String path, IntOrString port, String scheme) {
+    public HTTPGetAction(String host, List<HTTPHeader> httpHeaders, String path, IntOrString port, String protocol, String scheme) {
         super();
         this.host = host;
         this.httpHeaders = httpHeaders;
         this.path = path;
         this.port = port;
+        this.protocol = protocol;
         this.scheme = scheme;
     }
 
@@ -134,6 +138,22 @@ public class HTTPGetAction implements Editable<HTTPGetActionBuilder>, Kubernetes
     @JsonProperty("port")
     public void setPort(IntOrString port) {
         this.port = port;
+    }
+
+    /**
+     * Protocol selects the wire protocol for the probe connection. Nil defaults to HTTP/1.1.
+     */
+    @JsonProperty("protocol")
+    public String getProtocol() {
+        return protocol;
+    }
+
+    /**
+     * Protocol selects the wire protocol for the probe connection. Nil defaults to HTTP/1.1.
+     */
+    @JsonProperty("protocol")
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
     }
 
     /**

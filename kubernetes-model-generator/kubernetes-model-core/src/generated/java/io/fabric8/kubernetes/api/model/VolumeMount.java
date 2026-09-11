@@ -1,7 +1,9 @@
 
 package io.fabric8.kubernetes.api.model;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -23,6 +25,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "bindMountOptions",
     "mountPath",
     "mountPropagation",
     "name",
@@ -42,6 +45,9 @@ import lombok.experimental.Accessors;
 public class VolumeMount implements Editable<VolumeMountBuilder>, KubernetesResource
 {
 
+    @JsonProperty("bindMountOptions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> bindMountOptions = new ArrayList<>();
     @JsonProperty("mountPath")
     private String mountPath;
     @JsonProperty("mountPropagation")
@@ -65,8 +71,9 @@ public class VolumeMount implements Editable<VolumeMountBuilder>, KubernetesReso
     public VolumeMount() {
     }
 
-    public VolumeMount(String mountPath, String mountPropagation, String name, Boolean readOnly, String recursiveReadOnly, String subPath, String subPathExpr) {
+    public VolumeMount(List<String> bindMountOptions, String mountPath, String mountPropagation, String name, Boolean readOnly, String recursiveReadOnly, String subPath, String subPathExpr) {
         super();
+        this.bindMountOptions = bindMountOptions;
         this.mountPath = mountPath;
         this.mountPropagation = mountPropagation;
         this.name = name;
@@ -77,7 +84,24 @@ public class VolumeMount implements Editable<VolumeMountBuilder>, KubernetesReso
     }
 
     /**
-     * Path within the container at which the volume should be mounted.  Must not contain ':'.
+     * bindMountOptions is the list of additional bind mount options to apply when mounting this volume into the container. Allowed values are noexec, nodev, and nosuid. These are Linux mount options and have no effect on Windows nodes. This field is not supported with image volumes. This is an alpha field and requires enabling the VolumeBindMountOptions feature gate.
+     */
+    @JsonProperty("bindMountOptions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getBindMountOptions() {
+        return bindMountOptions;
+    }
+
+    /**
+     * bindMountOptions is the list of additional bind mount options to apply when mounting this volume into the container. Allowed values are noexec, nodev, and nosuid. These are Linux mount options and have no effect on Windows nodes. This field is not supported with image volumes. This is an alpha field and requires enabling the VolumeBindMountOptions feature gate.
+     */
+    @JsonProperty("bindMountOptions")
+    public void setBindMountOptions(List<String> bindMountOptions) {
+        this.bindMountOptions = bindMountOptions;
+    }
+
+    /**
+     * Path within the container at which the volume should be mounted.
      */
     @JsonProperty("mountPath")
     public String getMountPath() {
@@ -85,7 +109,7 @@ public class VolumeMount implements Editable<VolumeMountBuilder>, KubernetesReso
     }
 
     /**
-     * Path within the container at which the volume should be mounted.  Must not contain ':'.
+     * Path within the container at which the volume should be mounted.
      */
     @JsonProperty("mountPath")
     public void setMountPath(String mountPath) {

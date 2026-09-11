@@ -43,7 +43,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "spec"
+    "spec",
+    "status"
 })
 @ToString
 @EqualsAndHashCode
@@ -80,6 +81,8 @@ public class CSINode implements Editable<CSINodeBuilder>, HasMetadata
     private ObjectMeta metadata;
     @JsonProperty("spec")
     private CSINodeSpec spec;
+    @JsonProperty("status")
+    private CSINodeStatus status;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -89,12 +92,13 @@ public class CSINode implements Editable<CSINodeBuilder>, HasMetadata
     public CSINode() {
     }
 
-    public CSINode(String apiVersion, String kind, ObjectMeta metadata, CSINodeSpec spec) {
+    public CSINode(String apiVersion, String kind, ObjectMeta metadata, CSINodeSpec spec, CSINodeStatus status) {
         super();
         this.apiVersion = apiVersion;
         this.kind = kind;
         this.metadata = metadata;
         this.spec = spec;
+        this.status = status;
     }
 
     /**
@@ -159,6 +163,22 @@ public class CSINode implements Editable<CSINodeBuilder>, HasMetadata
     @JsonProperty("spec")
     public void setSpec(CSINodeSpec spec) {
         this.spec = spec;
+    }
+
+    /**
+     * CSINode holds information about all CSI drivers installed on a node. CSI drivers do not need to create the CSINode object directly. As long as they use the node-driver-registrar sidecar container, the kubelet will automatically populate the CSINode object for the CSI driver as part of kubelet plugin registration. CSINode has the same name as a node. If the object is missing, it means either there are no CSI Drivers available on the node, or the Kubelet version is low enough that it doesn't create this object. CSINode has an OwnerReference that points to the corresponding node object.
+     */
+    @JsonProperty("status")
+    public CSINodeStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * CSINode holds information about all CSI drivers installed on a node. CSI drivers do not need to create the CSINode object directly. As long as they use the node-driver-registrar sidecar container, the kubelet will automatically populate the CSINode object for the CSI driver as part of kubelet plugin registration. CSINode has the same name as a node. If the object is missing, it means either there are no CSI Drivers available on the node, or the Kubelet version is low enough that it doesn't create this object. CSINode has an OwnerReference that points to the corresponding node object.
+     */
+    @JsonProperty("status")
+    public void setStatus(CSINodeStatus status) {
+        this.status = status;
     }
 
     @JsonIgnore

@@ -60,7 +60,7 @@ public class ResourceStatus implements Editable<ResourceStatusBuilder>, Kubernet
     }
 
     /**
-     * Name of the resource. Must be unique within the pod and in case of non-DRA resource, match one of the resources from the pod spec. For DRA resources, the value must be "claim:&lt;claim_name&gt;/&lt;request&gt;". When this status is reported about a container, the "claim_name" and "request" must match one of the claims of this container.
+     * Name of the resource. Must be unique within the pod and in case of non-DRA resource, match one of the resources from the pod spec. For DRA resources, the value must be "claim:&lt;claim_name&gt;/&lt;request&gt;" when container.resources.claims[&#42;].request is set or "claim:&lt;claim_name&gt;" when container.resources.claims[&#42;].request is empty. For DRA-backed extended resources, "claim:&lt;claim_name&gt;/&lt;request&gt;" is used when the claim name and request name are recorded in pod.status.extendedResourceClaimStatus. When this status is reported about a container, the "claim_name" and "request" must match one of the claims of this container.
      */
     @JsonProperty("name")
     public String getName() {
@@ -68,7 +68,7 @@ public class ResourceStatus implements Editable<ResourceStatusBuilder>, Kubernet
     }
 
     /**
-     * Name of the resource. Must be unique within the pod and in case of non-DRA resource, match one of the resources from the pod spec. For DRA resources, the value must be "claim:&lt;claim_name&gt;/&lt;request&gt;". When this status is reported about a container, the "claim_name" and "request" must match one of the claims of this container.
+     * Name of the resource. Must be unique within the pod and in case of non-DRA resource, match one of the resources from the pod spec. For DRA resources, the value must be "claim:&lt;claim_name&gt;/&lt;request&gt;" when container.resources.claims[&#42;].request is set or "claim:&lt;claim_name&gt;" when container.resources.claims[&#42;].request is empty. For DRA-backed extended resources, "claim:&lt;claim_name&gt;/&lt;request&gt;" is used when the claim name and request name are recorded in pod.status.extendedResourceClaimStatus. When this status is reported about a container, the "claim_name" and "request" must match one of the claims of this container.
      */
     @JsonProperty("name")
     public void setName(String name) {

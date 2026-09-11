@@ -45,7 +45,8 @@ import lombok.experimental.Accessors;
     "resize",
     "resourceClaimStatuses",
     "resources",
-    "startTime"
+    "startTime",
+    "volumeHealth"
 })
 @ToString
 @EqualsAndHashCode
@@ -109,6 +110,9 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
     private ResourceRequirements resources;
     @JsonProperty("startTime")
     private String startTime;
+    @JsonProperty("volumeHealth")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<PodVolumeHealth> volumeHealth = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -118,7 +122,7 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
     public PodStatus() {
     }
 
-    public PodStatus(Map<String, Quantity> allocatedResources, List<PodCondition> conditions, List<ContainerStatus> containerStatuses, List<ContainerStatus> ephemeralContainerStatuses, PodExtendedResourceClaimStatus extendedResourceClaimStatus, String hostIP, List<HostIP> hostIPs, List<ContainerStatus> initContainerStatuses, String message, List<NodeAllocatableResourceClaimStatus> nodeAllocatableResourceClaimStatuses, String nominatedNodeName, Long observedGeneration, String phase, String podIP, List<PodIP> podIPs, String qosClass, String reason, String resize, List<PodResourceClaimStatus> resourceClaimStatuses, ResourceRequirements resources, String startTime) {
+    public PodStatus(Map<String, Quantity> allocatedResources, List<PodCondition> conditions, List<ContainerStatus> containerStatuses, List<ContainerStatus> ephemeralContainerStatuses, PodExtendedResourceClaimStatus extendedResourceClaimStatus, String hostIP, List<HostIP> hostIPs, List<ContainerStatus> initContainerStatuses, String message, List<NodeAllocatableResourceClaimStatus> nodeAllocatableResourceClaimStatuses, String nominatedNodeName, Long observedGeneration, String phase, String podIP, List<PodIP> podIPs, String qosClass, String reason, String resize, List<PodResourceClaimStatus> resourceClaimStatuses, ResourceRequirements resources, String startTime, List<PodVolumeHealth> volumeHealth) {
         super();
         this.allocatedResources = allocatedResources;
         this.conditions = conditions;
@@ -141,6 +145,7 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
         this.resourceClaimStatuses = resourceClaimStatuses;
         this.resources = resources;
         this.startTime = startTime;
+        this.volumeHealth = volumeHealth;
     }
 
     /**
@@ -486,6 +491,23 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
     @JsonProperty("startTime")
     public void setStartTime(String startTime) {
         this.startTime = startTime;
+    }
+
+    /**
+     * volumeHealth contains node-reported health for each volume the pod is using. Populated by the kubelet on the pod's node.
+     */
+    @JsonProperty("volumeHealth")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<PodVolumeHealth> getVolumeHealth() {
+        return volumeHealth;
+    }
+
+    /**
+     * volumeHealth contains node-reported health for each volume the pod is using. Populated by the kubelet on the pod's node.
+     */
+    @JsonProperty("volumeHealth")
+    public void setVolumeHealth(List<PodVolumeHealth> volumeHealth) {
+        this.volumeHealth = volumeHealth;
     }
 
     @JsonIgnore

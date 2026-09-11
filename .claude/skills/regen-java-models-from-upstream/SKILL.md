@@ -1,7 +1,7 @@
 ---
 name: regen-java-models-from-upstream
-description: Bump a Go dependency from a failing Dependabot PR in the Kubernetes model generator, adapt the generator to upstream Go API changes, regenerate Java models, fix Java compilation, update CHANGELOG, and open a PR that closes the Dependabot one.
-argument-hint: "<dependabot-pr-number>"
+description: Bump a Go dependency from a failing Renovate PR in the Kubernetes model generator, adapt the generator to upstream Go API changes, regenerate Java models, fix Java compilation, update CHANGELOG, and open a PR that closes the Renovate one.
+argument-hint: "<renovate-pr-number>"
 disable-model-invocation: true
 allowed-tools: Read, Edit, Write, Grep, Glob, Bash, AskUserQuestion, Agent
 ---
@@ -9,7 +9,7 @@ allowed-tools: Read, Edit, Write, Grep, Glob, Bash, AskUserQuestion, Agent
 # Go Dependency Bump
 
 You are performing a Go dependency bump for the Fabric8 Kubernetes Client project.
-The user provides a Dependabot PR number. Your job is to bump the dependency, regenerate models, fix any issues, and create a clean PR that closes the Dependabot one. The user may already be on a dedicated branch (e.g., in a git worktree) — detect this and skip branch creation if so.
+The user provides a Renovate PR number. Your job is to bump the dependency, regenerate models, fix any issues, and create a clean PR that closes the Renovate one. The user may already be on a dedicated branch (e.g., in a git worktree) — detect this and skip branch creation if so.
 
 ultrathink
 
@@ -19,7 +19,7 @@ ultrathink
 !`${CLAUDE_SKILL_DIR}/scripts/get-dep-context.sh $0`
 ```
 
-## Step 1: Analyze the Dependabot PR
+## Step 1: Analyze the Renovate PR
 
 From the context above, extract:
 - **Single-dep or grouped PR?** — see below.
@@ -29,12 +29,12 @@ From the context above, extract:
 
 ### Single-dep vs grouped PR
 
-Dependabot groups are configured in `.github/dependabot.yml` (e.g., `kubernetes`, `openshift`, `knative`, `opentelemetry`, `golang-x`, `operator-framework`, etc.). When a group has multiple eligible updates, Dependabot opens a single PR for the whole group.
+Renovate groups are configured as `groupName` package rules in `renovate.json` (e.g., `kubernetes`, `openshift`, `knative`, `opentelemetry`, `golang-x`, `operator-framework`, etc.). When a group has multiple eligible updates, Renovate opens a single PR for the whole group.
 
 Signals of a grouped PR:
-- Title like `chore(deps): bump the <group-name> group in /... with N updates`
-- Branch like `dependabot/go_modules/.../<group-name>-<hash>`
-- PR body lists multiple `Updates ...` blocks
+- Title like `chore(deps): update <group-name>` (single-dep PRs read `chore(deps): update module <module-path> to v<new>`)
+- Branch like `renovate/<group-name>` (single-dep PRs use `renovate/<module-path>-<major>.x`)
+- PR body table lists several modules
 
 Extract the **group name** and the **full list of (module, old, new)** tuples from the PR body. All subsequent steps (branch, CHANGELOG, commit, PR) must reflect every dep in the group.
 
@@ -90,7 +90,7 @@ Review the Go error output and `go.mod` replace directives to determine if relat
 
 Check if the dependency (or any of its transitive dependencies) conflicts with existing `replace` directives in `go.mod`. The file has two replace blocks:
 1. **Version convergence** — forces compatible versions across OpenShift/K8s ecosystem
-2. **Dependabot workarounds** — forces pseudo-versions for modules where Dependabot picks invalid tagged major versions
+2. **Bot workarounds** — forces pseudo-versions for modules where a dependency bot picks invalid tagged major versions
 
 If a new replace directive is needed, add it to the appropriate block with a comment explaining why.
 
@@ -243,10 +243,10 @@ chore(deps): bump <readable-dep-name> from <old-version> to <new-version>
 
 <Optional: explanation of special handling — replace directives, generator fixes, cascade bumps>
 
-Closes #<dependabot-pr-number>
+Closes #<renovate-pr-number>
 ```
 
-**IMPORTANT**: Include `Closes #<dependabot-pr-number>` to auto-close the Dependabot PR.
+**IMPORTANT**: Include `Closes #<renovate-pr-number>` to auto-close the Renovate PR.
 
 **For grouped PRs**, use a group-level subject and list each dep in the body:
 
@@ -257,7 +257,7 @@ chore(deps): bump the <group-name> group
 - <module-path> from <old> to <new>
 - ...
 
-Closes #<dependabot-pr-number>
+Closes #<renovate-pr-number>
 ```
 
 ## Step 9: Push and Create PR
@@ -275,12 +275,12 @@ gh pr create --repo fabric8io/kubernetes-client --title "chore(deps): bump <dep>
 ## Summary
 <1-3 bullet points describing what changed>
 
-Closes #<dependabot-pr-number>
+Closes #<renovate-pr-number>
 EOF
 )"
 ```
 
-**For grouped PRs**, mirror the commit style — title `chore(deps): bump the <group-name> group`, body `## Summary` lists each `<module-path> from <old> to <new>` as bullets, and closes the single Dependabot group PR.
+**For grouped PRs**, mirror the commit style — title `chore(deps): bump the <group-name> group`, body `## Summary` lists each `<module-path> from <old> to <new>` as bullets, and closes the single Renovate group PR.
 
 **IMPORTANT**: Do NOT include a "Test plan" section or "Generated with Claude Code" footer in the PR body.
 

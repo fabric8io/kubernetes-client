@@ -25,7 +25,7 @@ public class DeviceRequestBuilder extends DeviceRequestFluent<DeviceRequestBuild
   }
 
   public DeviceRequest build() {
-    DeviceRequest buildable = new DeviceRequest(fluent.getAdminAccess(), fluent.getAllocationMode(), fluent.buildCapacity(), fluent.getCount(), fluent.getDeviceClassName(), fluent.buildFirstAvailable(), fluent.getName(), fluent.buildSelectors(), fluent.buildTolerations());
+    DeviceRequest buildable = new DeviceRequest(fluent.getAdminAccess(), fluent.getAllocationMode(), fluent.buildCapacity(), fluent.getCount(), fluent.buildDerivedAttributes(), fluent.getDeviceClassName(), fluent.buildFirstAvailable(), fluent.getName(), fluent.buildSelectors(), fluent.buildTolerations());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -4,6 +4,7 @@ import io.fabric8.kubernetes.api.builder.BaseFluent;
 import io.fabric8.kubernetes.api.builder.Nested;
 import java.lang.Boolean;
 import java.lang.Integer;
+import java.lang.Long;
 import java.lang.Object;
 import java.lang.RuntimeException;
 import java.lang.String;
@@ -26,6 +27,7 @@ public class SecretVolumeSourceFluent<A extends io.fabric8.kubernetes.api.model.
 
   private Map<String,Object> additionalProperties;
   private Integer defaultMode;
+  private Long defaultUser;
   private ArrayList<KeyToPathBuilder> items = new ArrayList<KeyToPathBuilder>();
   private Boolean optional;
   private String secretName;
@@ -53,8 +55,8 @@ public class SecretVolumeSourceFluent<A extends io.fabric8.kubernetes.api.model.
     return new ItemsNested(-1, null);
   }
   
-  public A addNewItem(String key,Integer mode,String path) {
-    return (A) this.addToItems(new KeyToPath(key, mode, path));
+  public A addNewItem(String key,Integer mode,String path,Long user) {
+    return (A) this.addToItems(new KeyToPath(key, mode, path, user));
   }
   
   public ItemsNested<A> addNewItemLike(KeyToPath item) {
@@ -137,6 +139,7 @@ public class SecretVolumeSourceFluent<A extends io.fabric8.kubernetes.api.model.
     instance = instance != null ? instance : new SecretVolumeSource();
     if (instance != null) {
         this.withDefaultMode(instance.getDefaultMode());
+        this.withDefaultUser(instance.getDefaultUser());
         this.withItems(instance.getItems());
         this.withOptional(instance.getOptional());
         this.withSecretName(instance.getSecretName());
@@ -194,6 +197,9 @@ public class SecretVolumeSourceFluent<A extends io.fabric8.kubernetes.api.model.
     if (!(Objects.equals(defaultMode, that.defaultMode))) {
       return false;
     }
+    if (!(Objects.equals(defaultUser, that.defaultUser))) {
+      return false;
+    }
     if (!(Objects.equals(items, that.items))) {
       return false;
     }
@@ -217,6 +223,10 @@ public class SecretVolumeSourceFluent<A extends io.fabric8.kubernetes.api.model.
     return this.defaultMode;
   }
   
+  public Long getDefaultUser() {
+    return this.defaultUser;
+  }
+  
   public Boolean getOptional() {
     return this.optional;
   }
@@ -231,6 +241,10 @@ public class SecretVolumeSourceFluent<A extends io.fabric8.kubernetes.api.model.
   
   public boolean hasDefaultMode() {
     return this.defaultMode != null;
+  }
+  
+  public boolean hasDefaultUser() {
+    return this.defaultUser != null;
   }
   
   public boolean hasItems() {
@@ -255,7 +269,7 @@ public class SecretVolumeSourceFluent<A extends io.fabric8.kubernetes.api.model.
   }
   
   public int hashCode() {
-    return Objects.hash(defaultMode, items, optional, secretName, additionalProperties);
+    return Objects.hash(defaultMode, defaultUser, items, optional, secretName, additionalProperties);
   }
   
   public A removeAllFromItems(Collection<KeyToPath> items) {
@@ -349,6 +363,11 @@ public class SecretVolumeSourceFluent<A extends io.fabric8.kubernetes.api.model.
         sb.append(defaultMode);
         sb.append(",");
     }
+    if (!(defaultUser == null)) {
+        sb.append("defaultUser:");
+        sb.append(defaultUser);
+        sb.append(",");
+    }
     if (!(items == null) && !(items.isEmpty())) {
         sb.append("items:");
         sb.append(items);
@@ -383,6 +402,11 @@ public class SecretVolumeSourceFluent<A extends io.fabric8.kubernetes.api.model.
   
   public A withDefaultMode(Integer defaultMode) {
     this.defaultMode = defaultMode;
+    return (A) this;
+  }
+  
+  public A withDefaultUser(Long defaultUser) {
+    this.defaultUser = defaultUser;
     return (A) this;
   }
   

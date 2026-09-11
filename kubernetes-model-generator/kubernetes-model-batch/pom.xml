@@ -41,6 +41,10 @@
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-core</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-model-scheduling</artifactId>
+    </dependency>
   </dependencies>
 
   <!-- The build config that snapshots/compiles the committed sundrio Builders is generic and lives

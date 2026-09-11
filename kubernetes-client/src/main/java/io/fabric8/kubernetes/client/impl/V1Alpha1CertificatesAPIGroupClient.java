@@ -15,19 +15,16 @@
  */
 package io.fabric8.kubernetes.client.impl;
 
-import io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundle;
-import io.fabric8.kubernetes.api.model.certificates.v1alpha1.ClusterTrustBundleList;
-import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1Alpha1CertificatesAPIGroupDSL;
 import io.fabric8.kubernetes.client.extension.ClientAdapter;
 
+/**
+ * @deprecated certificates.k8s.io/v1alpha1 API has been removed in Kubernetes 1.37.
+ *             Use {@link V1CertificatesAPIGroupClient} or {@link V1beta1CertificatesAPIGroupClient} instead.
+ */
+@Deprecated
 public class V1Alpha1CertificatesAPIGroupClient extends ClientAdapter<V1Alpha1CertificatesAPIGroupClient>
     implements V1Alpha1CertificatesAPIGroupDSL {
-  @Override
-  public NonNamespaceOperation<ClusterTrustBundle, ClusterTrustBundleList, Resource<ClusterTrustBundle>> clusterTrustBundles() {
-    return resources(ClusterTrustBundle.class, ClusterTrustBundleList.class);
-  }
 
   @Override
   public V1Alpha1CertificatesAPIGroupClient newInstance() {

@@ -38,6 +38,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "defaultPartitionTypeAttribute",
     "driver",
     "limit",
     "poolName"
@@ -67,6 +68,8 @@ import lombok.experimental.Accessors;
 public class ResourcePoolStatusRequestSpec implements Editable<ResourcePoolStatusRequestSpecBuilder>, KubernetesResource
 {
 
+    @JsonProperty("defaultPartitionTypeAttribute")
+    private String defaultPartitionTypeAttribute;
     @JsonProperty("driver")
     private String driver;
     @JsonProperty("limit")
@@ -82,11 +85,28 @@ public class ResourcePoolStatusRequestSpec implements Editable<ResourcePoolStatu
     public ResourcePoolStatusRequestSpec() {
     }
 
-    public ResourcePoolStatusRequestSpec(String driver, Integer limit, String poolName) {
+    public ResourcePoolStatusRequestSpec(String defaultPartitionTypeAttribute, String driver, Integer limit, String poolName) {
         super();
+        this.defaultPartitionTypeAttribute = defaultPartitionTypeAttribute;
         this.driver = driver;
         this.limit = limit;
         this.poolName = poolName;
+    }
+
+    /**
+     * DefaultPartitionTypeAttribute optionally names a device attribute (by its fully qualified name, e.g. "gpu.example.com/profile") to use as the default grouping attribute for partitionable devices whose slice has not declared one themselves.<br><p> <br><p> A slice's own PartitionTypeAttribute always takes precedence. This default applies only to devices whose slice does not declare one, so that a request can still get an accurate partitionSummary from a driver that has not been updated to declare it. When neither the slice nor this default names an attribute, a partitionable pool reports no partitionSummary.<br><p> <br><p> Must include the domain qualifier.
+     */
+    @JsonProperty("defaultPartitionTypeAttribute")
+    public String getDefaultPartitionTypeAttribute() {
+        return defaultPartitionTypeAttribute;
+    }
+
+    /**
+     * DefaultPartitionTypeAttribute optionally names a device attribute (by its fully qualified name, e.g. "gpu.example.com/profile") to use as the default grouping attribute for partitionable devices whose slice has not declared one themselves.<br><p> <br><p> A slice's own PartitionTypeAttribute always takes precedence. This default applies only to devices whose slice does not declare one, so that a request can still get an accurate partitionSummary from a driver that has not been updated to declare it. When neither the slice nor this default names an attribute, a partitionable pool reports no partitionSummary.<br><p> <br><p> Must include the domain qualifier.
+     */
+    @JsonProperty("defaultPartitionTypeAttribute")
+    public void setDefaultPartitionTypeAttribute(String defaultPartitionTypeAttribute) {
+        this.defaultPartitionTypeAttribute = defaultPartitionTypeAttribute;
     }
 
     /**

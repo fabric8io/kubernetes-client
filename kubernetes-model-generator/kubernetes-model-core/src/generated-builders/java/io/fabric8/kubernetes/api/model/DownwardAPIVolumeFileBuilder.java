@@ -25,7 +25,7 @@ public class DownwardAPIVolumeFileBuilder extends DownwardAPIVolumeFileFluent<Do
   }
 
   public DownwardAPIVolumeFile build() {
-    DownwardAPIVolumeFile buildable = new DownwardAPIVolumeFile(fluent.buildFieldRef(), fluent.getMode(), fluent.getPath(), fluent.buildResourceFieldRef());
+    DownwardAPIVolumeFile buildable = new DownwardAPIVolumeFile(fluent.buildFieldRef(), fluent.getMode(), fluent.getPath(), fluent.buildResourceFieldRef(), fluent.getUser());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

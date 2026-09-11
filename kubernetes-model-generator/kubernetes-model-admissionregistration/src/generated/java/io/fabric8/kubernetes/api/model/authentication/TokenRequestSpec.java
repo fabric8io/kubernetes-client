@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "attestations",
     "audiences",
     "boundObjectRef",
     "expirationSeconds"
@@ -69,6 +70,9 @@ import lombok.experimental.Accessors;
 public class TokenRequestSpec implements Editable<TokenRequestSpecBuilder>, KubernetesResource
 {
 
+    @JsonProperty("attestations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, List<String>> attestations = new LinkedHashMap<>();
     @JsonProperty("audiences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> audiences = new ArrayList<>();
@@ -85,11 +89,29 @@ public class TokenRequestSpec implements Editable<TokenRequestSpecBuilder>, Kube
     public TokenRequestSpec() {
     }
 
-    public TokenRequestSpec(List<String> audiences, BoundObjectReference boundObjectRef, Long expirationSeconds) {
+    public TokenRequestSpec(Map<String, List<String>> attestations, List<String> audiences, BoundObjectReference boundObjectRef, Long expirationSeconds) {
         super();
+        this.attestations = attestations;
         this.audiences = audiences;
         this.boundObjectRef = boundObjectRef;
         this.expirationSeconds = expirationSeconds;
+    }
+
+    /**
+     * attestations is a map of well-known keys to string-slice values. The values for each key have a specific semantic meaning, which is documented on the key definition. Requesters of tokens may ask the Kubernetes API Server to attest to certain claims. The API Server may perform authorization checks depending on the key of this map.
+     */
+    @JsonProperty("attestations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, List<String>> getAttestations() {
+        return attestations;
+    }
+
+    /**
+     * attestations is a map of well-known keys to string-slice values. The values for each key have a specific semantic meaning, which is documented on the key definition. Requesters of tokens may ask the Kubernetes API Server to attest to certain claims. The API Server may perform authorization checks depending on the key of this map.
+     */
+    @JsonProperty("attestations")
+    public void setAttestations(Map<String, List<String>> attestations) {
+        this.attestations = attestations;
     }
 
     /**

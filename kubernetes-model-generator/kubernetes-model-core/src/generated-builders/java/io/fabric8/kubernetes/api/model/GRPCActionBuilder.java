@@ -25,7 +25,7 @@ public class GRPCActionBuilder extends GRPCActionFluent<GRPCActionBuilder> imple
   }
 
   public GRPCAction build() {
-    GRPCAction buildable = new GRPCAction(fluent.getPort(), fluent.getService());
+    GRPCAction buildable = new GRPCAction(fluent.getMode(), fluent.getPort(), fluent.getService());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

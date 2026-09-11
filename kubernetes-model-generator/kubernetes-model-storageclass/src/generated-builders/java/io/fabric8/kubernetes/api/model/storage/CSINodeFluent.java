@@ -25,6 +25,7 @@ public class CSINodeFluent<A extends io.fabric8.kubernetes.api.model.storage.CSI
   private String kind;
   private ObjectMetaBuilder metadata;
   private CSINodeSpecBuilder spec;
+  private CSINodeStatusBuilder status;
 
   public CSINodeFluent() {
   }
@@ -61,6 +62,10 @@ public class CSINodeFluent<A extends io.fabric8.kubernetes.api.model.storage.CSI
     return this.spec != null ? this.spec.build() : null;
   }
   
+  public CSINodeStatus buildStatus() {
+    return this.status != null ? this.status.build() : null;
+  }
+  
   protected void copyInstance(CSINode instance) {
     instance = instance != null ? instance : new CSINode();
     if (instance != null) {
@@ -68,6 +73,7 @@ public class CSINodeFluent<A extends io.fabric8.kubernetes.api.model.storage.CSI
         this.withKind(instance.getKind());
         this.withMetadata(instance.getMetadata());
         this.withSpec(instance.getSpec());
+        this.withStatus(instance.getStatus());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -92,8 +98,20 @@ public class CSINodeFluent<A extends io.fabric8.kubernetes.api.model.storage.CSI
     return this.withNewSpecLike(Optional.ofNullable(this.buildSpec()).orElse(item));
   }
   
+  public StatusNested<A> editOrNewStatus() {
+    return this.withNewStatusLike(Optional.ofNullable(this.buildStatus()).orElse(new CSINodeStatusBuilder().build()));
+  }
+  
+  public StatusNested<A> editOrNewStatusLike(CSINodeStatus item) {
+    return this.withNewStatusLike(Optional.ofNullable(this.buildStatus()).orElse(item));
+  }
+  
   public SpecNested<A> editSpec() {
     return this.withNewSpecLike(Optional.ofNullable(this.buildSpec()).orElse(null));
+  }
+  
+  public StatusNested<A> editStatus() {
+    return this.withNewStatusLike(Optional.ofNullable(this.buildStatus()).orElse(null));
   }
   
   public boolean equals(Object o) {
@@ -117,6 +135,9 @@ public class CSINodeFluent<A extends io.fabric8.kubernetes.api.model.storage.CSI
       return false;
     }
     if (!(Objects.equals(spec, that.spec))) {
+      return false;
+    }
+    if (!(Objects.equals(status, that.status))) {
       return false;
     }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
@@ -157,8 +178,12 @@ public class CSINodeFluent<A extends io.fabric8.kubernetes.api.model.storage.CSI
     return this.spec != null;
   }
   
+  public boolean hasStatus() {
+    return this.status != null;
+  }
+  
   public int hashCode() {
-    return Objects.hash(apiVersion, kind, metadata, spec, additionalProperties);
+    return Objects.hash(apiVersion, kind, metadata, spec, status, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -206,6 +231,11 @@ public class CSINodeFluent<A extends io.fabric8.kubernetes.api.model.storage.CSI
     if (!(spec == null)) {
         sb.append("spec:");
         sb.append(spec);
+        sb.append(",");
+    }
+    if (!(status == null)) {
+        sb.append("status:");
+        sb.append(status);
         sb.append(",");
     }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
@@ -263,6 +293,14 @@ public class CSINodeFluent<A extends io.fabric8.kubernetes.api.model.storage.CSI
     return new SpecNested(item);
   }
   
+  public StatusNested<A> withNewStatus() {
+    return new StatusNested(null);
+  }
+  
+  public StatusNested<A> withNewStatusLike(CSINodeStatus item) {
+    return new StatusNested(item);
+  }
+  
   public A withSpec(CSINodeSpec spec) {
     this._visitables.remove("spec");
     if (spec != null) {
@@ -271,6 +309,18 @@ public class CSINodeFluent<A extends io.fabric8.kubernetes.api.model.storage.CSI
     } else {
         this.spec = null;
         this._visitables.get("spec").remove(this.spec);
+    }
+    return (A) this;
+  }
+  
+  public A withStatus(CSINodeStatus status) {
+    this._visitables.remove("status");
+    if (status != null) {
+        this.status = new CSINodeStatusBuilder(status);
+        this._visitables.get("status").add(this.status);
+    } else {
+        this.status = null;
+        this._visitables.get("status").remove(this.status);
     }
     return (A) this;
   }
@@ -304,6 +354,23 @@ public class CSINodeFluent<A extends io.fabric8.kubernetes.api.model.storage.CSI
     }
     
     public N endSpec() {
+      return and();
+    }
+    
+  }
+  public class StatusNested<N> extends CSINodeStatusFluent<StatusNested<N>> implements Nested<N>{
+  
+    CSINodeStatusBuilder builder;
+  
+    StatusNested(CSINodeStatus item) {
+      this.builder = new CSINodeStatusBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) CSINodeFluent.this.withStatus(builder.build());
+    }
+    
+    public N endStatus() {
       return and();
     }
     

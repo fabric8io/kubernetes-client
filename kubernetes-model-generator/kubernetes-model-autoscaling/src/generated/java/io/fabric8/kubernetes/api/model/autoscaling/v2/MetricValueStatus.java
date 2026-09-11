@@ -91,7 +91,7 @@ public class MetricValueStatus implements Editable<MetricValueStatusBuilder>, Ku
     }
 
     /**
-     * currentAverageUtilization is the current value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods.
+     * averageUtilization is the current value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods.
      */
     @JsonProperty("averageUtilization")
     public Integer getAverageUtilization() {
@@ -99,7 +99,7 @@ public class MetricValueStatus implements Editable<MetricValueStatusBuilder>, Ku
     }
 
     /**
-     * currentAverageUtilization is the current value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods.
+     * averageUtilization is the current value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods.
      */
     @JsonProperty("averageUtilization")
     public void setAverageUtilization(Integer averageUtilization) {

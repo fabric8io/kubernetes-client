@@ -25,7 +25,7 @@ public class NodeSystemInfoBuilder extends NodeSystemInfoFluent<NodeSystemInfoBu
   }
 
   public NodeSystemInfo build() {
-    NodeSystemInfo buildable = new NodeSystemInfo(fluent.getArchitecture(), fluent.getBootID(), fluent.getContainerRuntimeVersion(), fluent.getKernelVersion(), fluent.getKubeProxyVersion(), fluent.getKubeletVersion(), fluent.getMachineID(), fluent.getOperatingSystem(), fluent.getOsImage(), fluent.buildSwap(), fluent.getSystemUUID());
+    NodeSystemInfo buildable = new NodeSystemInfo(fluent.getArchitecture(), fluent.getBootID(), fluent.getContainerRuntimeVersion(), fluent.getKernelVersion(), fluent.getKubeProxyVersion(), fluent.getKubeletVersion(), fluent.getMachineID(), fluent.getOperatingSystem(), fluent.getOsImage(), fluent.getRunningInUserNamespace(), fluent.buildSwap(), fluent.getSystemUUID());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

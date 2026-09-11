@@ -6,9 +6,13 @@ import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
 import java.lang.SuppressWarnings;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 /**
  * Generated
@@ -17,6 +21,7 @@ import java.util.Objects;
 public class VolumeMountFluent<A extends io.fabric8.kubernetes.api.model.VolumeMountFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
+  private List<String> bindMountOptions = new ArrayList<String>();
   private String mountPath;
   private String mountPropagation;
   private String name;
@@ -32,6 +37,16 @@ public class VolumeMountFluent<A extends io.fabric8.kubernetes.api.model.VolumeM
     this.copyInstance(instance);
   }
 
+  public A addAllToBindMountOptions(Collection<String> items) {
+    if (this.bindMountOptions == null) {
+      this.bindMountOptions = new ArrayList();
+    }
+    for (String item : items) {
+      this.bindMountOptions.add(item);
+    }
+    return (A) this;
+  }
+  
   public A addToAdditionalProperties(Map<String,Object> map) {
     if (this.additionalProperties == null && map != null) {
       this.additionalProperties = new LinkedHashMap();
@@ -52,9 +67,28 @@ public class VolumeMountFluent<A extends io.fabric8.kubernetes.api.model.VolumeM
     return (A) this;
   }
   
+  public A addToBindMountOptions(String... items) {
+    if (this.bindMountOptions == null) {
+      this.bindMountOptions = new ArrayList();
+    }
+    for (String item : items) {
+      this.bindMountOptions.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addToBindMountOptions(int index,String item) {
+    if (this.bindMountOptions == null) {
+      this.bindMountOptions = new ArrayList();
+    }
+    this.bindMountOptions.add(index, item);
+    return (A) this;
+  }
+  
   protected void copyInstance(VolumeMount instance) {
     instance = instance != null ? instance : new VolumeMount();
     if (instance != null) {
+        this.withBindMountOptions(instance.getBindMountOptions());
         this.withMountPath(instance.getMountPath());
         this.withMountPropagation(instance.getMountPropagation());
         this.withName(instance.getName());
@@ -77,6 +111,9 @@ public class VolumeMountFluent<A extends io.fabric8.kubernetes.api.model.VolumeM
       return false;
     }
     VolumeMountFluent that = (VolumeMountFluent) o;
+    if (!(Objects.equals(bindMountOptions, that.bindMountOptions))) {
+      return false;
+    }
     if (!(Objects.equals(mountPath, that.mountPath))) {
       return false;
     }
@@ -106,6 +143,31 @@ public class VolumeMountFluent<A extends io.fabric8.kubernetes.api.model.VolumeM
   
   public Map<String,Object> getAdditionalProperties() {
     return this.additionalProperties;
+  }
+  
+  public String getBindMountOption(int index) {
+    return this.bindMountOptions.get(index);
+  }
+  
+  public List<String> getBindMountOptions() {
+    return this.bindMountOptions;
+  }
+  
+  public String getFirstBindMountOption() {
+    return this.bindMountOptions.get(0);
+  }
+  
+  public String getLastBindMountOption() {
+    return this.bindMountOptions.get(bindMountOptions.size() - 1);
+  }
+  
+  public String getMatchingBindMountOption(Predicate<String> predicate) {
+      for (String item : bindMountOptions) {
+        if (predicate.test(item)) {
+          return item;
+        }
+      }
+      return null;
   }
   
   public String getMountPath() {
@@ -140,6 +202,19 @@ public class VolumeMountFluent<A extends io.fabric8.kubernetes.api.model.VolumeM
     return this.additionalProperties != null;
   }
   
+  public boolean hasBindMountOptions() {
+    return this.bindMountOptions != null && !(this.bindMountOptions.isEmpty());
+  }
+  
+  public boolean hasMatchingBindMountOption(Predicate<String> predicate) {
+      for (String item : bindMountOptions) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
   public boolean hasMountPath() {
     return this.mountPath != null;
   }
@@ -169,7 +244,17 @@ public class VolumeMountFluent<A extends io.fabric8.kubernetes.api.model.VolumeM
   }
   
   public int hashCode() {
-    return Objects.hash(mountPath, mountPropagation, name, readOnly, recursiveReadOnly, subPath, subPathExpr, additionalProperties);
+    return Objects.hash(bindMountOptions, mountPath, mountPropagation, name, readOnly, recursiveReadOnly, subPath, subPathExpr, additionalProperties);
+  }
+  
+  public A removeAllFromBindMountOptions(Collection<String> items) {
+    if (this.bindMountOptions == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.bindMountOptions.remove(item);
+    }
+    return (A) this;
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -196,9 +281,32 @@ public class VolumeMountFluent<A extends io.fabric8.kubernetes.api.model.VolumeM
     return (A) this;
   }
   
+  public A removeFromBindMountOptions(String... items) {
+    if (this.bindMountOptions == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.bindMountOptions.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A setToBindMountOptions(int index,String item) {
+    if (this.bindMountOptions == null) {
+      this.bindMountOptions = new ArrayList();
+    }
+    this.bindMountOptions.set(index, item);
+    return (A) this;
+  }
+  
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
+    if (!(bindMountOptions == null) && !(bindMountOptions.isEmpty())) {
+        sb.append("bindMountOptions:");
+        sb.append(bindMountOptions);
+        sb.append(",");
+    }
     if (!(mountPath == null)) {
         sb.append("mountPath:");
         sb.append(mountPath);
@@ -247,6 +355,31 @@ public class VolumeMountFluent<A extends io.fabric8.kubernetes.api.model.VolumeM
       this.additionalProperties = null;
     } else {
       this.additionalProperties = new LinkedHashMap(additionalProperties);
+    }
+    return (A) this;
+  }
+  
+  public A withBindMountOptions(List<String> bindMountOptions) {
+    if (bindMountOptions != null) {
+        this.bindMountOptions = new ArrayList();
+        for (String item : bindMountOptions) {
+          this.addToBindMountOptions(item);
+        }
+    } else {
+      this.bindMountOptions = null;
+    }
+    return (A) this;
+  }
+  
+  public A withBindMountOptions(String... bindMountOptions) {
+    if (this.bindMountOptions != null) {
+        this.bindMountOptions.clear();
+        _visitables.remove("bindMountOptions");
+    }
+    if (bindMountOptions != null) {
+      for (String item : bindMountOptions) {
+        this.addToBindMountOptions(item);
+      }
     }
     return (A) this;
   }

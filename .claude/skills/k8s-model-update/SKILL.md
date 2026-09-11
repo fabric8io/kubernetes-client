@@ -29,11 +29,9 @@ The process has four user-confirmation checkpoints so nothing ships without revi
 
 ## Prerequisites
 
-- **Minimum Java 11** — required to build and run the project.
-- **Java 11 is the preferred JDK for model generation** (`make generate-model`). JDK 25 is NOT supported.
-- **`make format` requires minimum Java 17** — the Spotless formatter and license-header tooling need JDK 17+.
+- **Java 17** — required to build the project, to generate the model (`make generate-model`) and to run `make format`. JDK 25 is NOT supported.
 
-Before starting, verify the active JDK version (`java -version`). Switch JDK versions between steps as needed (e.g., JDK 11 for generation, JDK 17+ for formatting).
+Before starting, verify the active JDK version (`java -version`).
 
 ---
 

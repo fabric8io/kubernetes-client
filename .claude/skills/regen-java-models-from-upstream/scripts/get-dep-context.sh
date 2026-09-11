@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Fetches context for a Dependabot Go dependency bump PR
+# Fetches context for a Renovate Go dependency bump PR
 # Usage: get-dep-context.sh <pr-number>
 set -euo pipefail
 # Redirect stderr to stdout so Claude Code doesn't treat gh CLI warnings as errors

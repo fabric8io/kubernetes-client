@@ -24,6 +24,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "medium",
+    "mode",
     "sizeLimit"
 })
 @ToString
@@ -39,6 +40,8 @@ public class EmptyDirVolumeSource implements Editable<EmptyDirVolumeSourceBuilde
 
     @JsonProperty("medium")
     private String medium;
+    @JsonProperty("mode")
+    private Integer mode;
     @JsonProperty("sizeLimit")
     private Quantity sizeLimit;
     @JsonIgnore
@@ -50,9 +53,10 @@ public class EmptyDirVolumeSource implements Editable<EmptyDirVolumeSourceBuilde
     public EmptyDirVolumeSource() {
     }
 
-    public EmptyDirVolumeSource(String medium, Quantity sizeLimit) {
+    public EmptyDirVolumeSource(String medium, Integer mode, Quantity sizeLimit) {
         super();
         this.medium = medium;
+        this.mode = mode;
         this.sizeLimit = sizeLimit;
     }
 
@@ -70,6 +74,22 @@ public class EmptyDirVolumeSource implements Editable<EmptyDirVolumeSourceBuilde
     @JsonProperty("medium")
     public void setMedium(String medium) {
         this.medium = medium;
+    }
+
+    /**
+     * mode specifies the permission bits for the emptyDir directory, in numeric notation (e.g., 0755, 01777). Must be a value between 0000 and 01777. If not specified, defaults to 0777. This might be in conflict with other options that affect the file mode, like fsGroup. If fsGroup is specified, the fsGroup permissions will override the mode specified here. This field has no effect on Windows. This field is alpha and requires EmptyDirVolumeMode featuregate to be enabled.
+     */
+    @JsonProperty("mode")
+    public Integer getMode() {
+        return mode;
+    }
+
+    /**
+     * mode specifies the permission bits for the emptyDir directory, in numeric notation (e.g., 0755, 01777). Must be a value between 0000 and 01777. If not specified, defaults to 0777. This might be in conflict with other options that affect the file mode, like fsGroup. If fsGroup is specified, the fsGroup permissions will override the mode specified here. This field has no effect on Windows. This field is alpha and requires EmptyDirVolumeMode featuregate to be enabled.
+     */
+    @JsonProperty("mode")
+    public void setMode(Integer mode) {
+        this.mode = mode;
     }
 
     /**

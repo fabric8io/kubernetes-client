@@ -2,6 +2,7 @@ package io.fabric8.kubernetes.api.model;
 
 import io.fabric8.kubernetes.api.builder.BaseFluent;
 import java.lang.Integer;
+import java.lang.Long;
 import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
@@ -20,6 +21,7 @@ public class KeyToPathFluent<A extends io.fabric8.kubernetes.api.model.KeyToPath
   private String key;
   private Integer mode;
   private String path;
+  private Long user;
 
   public KeyToPathFluent() {
   }
@@ -54,6 +56,7 @@ public class KeyToPathFluent<A extends io.fabric8.kubernetes.api.model.KeyToPath
         this.withKey(instance.getKey());
         this.withMode(instance.getMode());
         this.withPath(instance.getPath());
+        this.withUser(instance.getUser());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -78,6 +81,9 @@ public class KeyToPathFluent<A extends io.fabric8.kubernetes.api.model.KeyToPath
     if (!(Objects.equals(path, that.path))) {
       return false;
     }
+    if (!(Objects.equals(user, that.user))) {
+      return false;
+    }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
       return false;
     }
@@ -100,6 +106,10 @@ public class KeyToPathFluent<A extends io.fabric8.kubernetes.api.model.KeyToPath
     return this.path;
   }
   
+  public Long getUser() {
+    return this.user;
+  }
+  
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
   }
@@ -116,8 +126,12 @@ public class KeyToPathFluent<A extends io.fabric8.kubernetes.api.model.KeyToPath
     return this.path != null;
   }
   
+  public boolean hasUser() {
+    return this.user != null;
+  }
+  
   public int hashCode() {
-    return Objects.hash(key, mode, path, additionalProperties);
+    return Objects.hash(key, mode, path, user, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -162,6 +176,11 @@ public class KeyToPathFluent<A extends io.fabric8.kubernetes.api.model.KeyToPath
         sb.append(path);
         sb.append(",");
     }
+    if (!(user == null)) {
+        sb.append("user:");
+        sb.append(user);
+        sb.append(",");
+    }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
         sb.append("additionalProperties:");
         sb.append(additionalProperties);
@@ -191,6 +210,11 @@ public class KeyToPathFluent<A extends io.fabric8.kubernetes.api.model.KeyToPath
   
   public A withPath(String path) {
     this.path = path;
+    return (A) this;
+  }
+  
+  public A withUser(Long user) {
+    this.user = user;
     return (A) this;
   }
   
