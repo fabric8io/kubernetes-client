@@ -53,6 +53,13 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: 'maven'
+      - name: Verify Go module resolves on a clean checkout
+        # Dependency bots run `go get`/`go mod tidy` before generation. The committed doc.go stubs keep that working;
+        # this step catches a regression before the tree fills up with generated files.
+        working-directory: kubernetes-model-generator/openapi/generator
+        run: |
+          go mod tidy
+          git diff --exit-code go.mod go.sum
       - name: Generate model
         run: make generate-model
       - name: Check No Schema file modified

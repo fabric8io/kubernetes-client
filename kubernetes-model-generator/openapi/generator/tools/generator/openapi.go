@@ -1,6 +1,3 @@
-////go:build ignore
-//// +build ignore
-
 /**
  * Copyright (C) 2015 Red Hat, Inc.
  *
@@ -19,10 +16,12 @@
 package main
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/openapi"
 	"github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator/pkg/packages"
+	"go/token"
 	"k8s.io/kube-openapi/cmd/openapi-gen/args"
 	"os"
 	"path/filepath"
@@ -31,8 +30,8 @@ import (
 
 // docTemplate is the committed placeholder for each generated package.
 // It keeps the package resolvable on a clean checkout, so that `go get`, `go mod tidy` and dependency bots work before
-// generation has run. The tool writes it when missing so that a new module can't be added without it (CI fails on the
-// resulting untracked file).
+// generation has run. The tool (re)writes it whenever it is missing or differs, so that a new or renamed module can't be
+// added without it: CI fails on the resulting untracked or modified file.
 const docTemplate = `/**
  * Copyright (C) 2015 Red Hat, Inc.
  *
@@ -56,16 +55,43 @@ package %[1]s
 `
 
 func ensureDocFile(outputName string) error {
+	if !token.IsIdentifier(outputName) {
+		return fmt.Errorf("output package name %q is not a valid Go identifier", outputName)
+	}
 	docFile := filepath.Join(outputName, "doc.go")
-	if _, err := os.Stat(docFile); err == nil {
+	expected := []byte(fmt.Sprintf(docTemplate, outputName))
+	current, err := os.ReadFile(docFile)
+	if err == nil && bytes.Equal(current, expected) {
 		return nil
-	} else if !errors.Is(err, os.ErrNotExist) {
+	} else if err != nil && !errors.Is(err, os.ErrNotExist) {
 		return err
 	}
 	if err := os.MkdirAll(outputName, 0o755); err != nil {
 		return err
 	}
-	return os.WriteFile(docFile, []byte(fmt.Sprintf(docTemplate, outputName)), 0o644)
+	return os.WriteFile(docFile, expected, 0o644)
+}
+
+// checkOrphanPackages fails when a generated_* directory has no module producing it (e.g. a module was removed but
+// its committed doc.go wasn't), since neither `go build` nor the CI drift check would notice.
+func checkOrphanPackages() error {
+	dirs, err := filepath.Glob("generated_*")
+	if err != nil {
+		return err
+	}
+	for _, dir := range dirs {
+		known := false
+		for _, m := range modules {
+			if m.outputName == dir {
+				known = true
+				break
+			}
+		}
+		if !known {
+			return fmt.Errorf("directory %q has no module producing it; remove it or add it to the modules list", dir)
+		}
+	}
+	return nil
 }
 
 type module struct {
@@ -91,6 +117,9 @@ var modules = []module{
 func main() {
 	startTime := time.Now()
 	fmt.Println("OpenAPI code generation started...")
+	if err := checkOrphanPackages(); err != nil {
+		panic(fmt.Errorf("OpenAPI code generation error: %w", err))
+	}
 	for _, m := range modules {
 		taskStartTime := time.Now()
 		if err := ensureDocFile(m.outputName); err != nil {

@@ -1,7 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "config:recommended",
+    "security:gomodIndirectSecurityUpdates",
+    ":semanticCommitTypeAll(chore)"
   ],
   "enabledManagers": [
     "maven",
@@ -12,7 +14,8 @@
     "**/src/it/**"
   ],
   "prConcurrentLimit": 0,
-  "prHourlyLimit": 0,
+  "prHourlyLimit": 10,
+  "minimumReleaseAge": "3 days",
   "postUpdateOptions": [
     "gomodTidy"
   ],
@@ -77,10 +80,19 @@
       "groupName": "github-actions"
     },
     {
-      "description": "replace directives in go.mod are deliberate pins, keep them manual",
+      "description": "replace directives in go.mod are deliberate pins: keep them visible on the dashboard but don't open PRs unasked",
       "matchManagers": ["gomod"],
       "matchDepTypes": ["replace"],
-      "enabled": false
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Nested modules without tags of their own: the lookup falls back to the parent repo's tags, which don't contain the package. Only track pseudo-versions (digests)",
+      "matchPackageNames": [
+        "github.com/ovn-org/ovn-kubernetes/go-controller",
+        "github.com/chaos-mesh/chaos-mesh/api",
+        "github.com/openshift/hive/apis"
+      ],
+      "allowedVersions": "/^v0\\.0\\.0-/"
     },
     {
       "matchPackageNames": ["k8s.io/**", "sigs.k8s.io/**"],
@@ -93,6 +105,22 @@
     {
       "matchPackageNames": ["knative.dev/**"],
       "groupName": "knative"
+    },
+    {
+      "matchPackageNames": ["go.opentelemetry.io/**"],
+      "groupName": "opentelemetry"
+    },
+    {
+      "matchPackageNames": ["golang.org/x/**"],
+      "groupName": "golang-x"
+    },
+    {
+      "matchPackageNames": ["google.golang.org/**", "github.com/google/**"],
+      "groupName": "google-apis"
+    },
+    {
+      "matchPackageNames": ["github.com/go-openapi/**"],
+      "groupName": "go-openapi"
     },
     {
       "matchPackageNames": ["github.com/operator-framework/**"],
@@ -117,6 +145,18 @@
     {
       "matchPackageNames": ["github.com/prometheus/**", "github.com/prometheus-operator/**"],
       "groupName": "prometheus"
+    },
+    {
+      "matchPackageNames": ["github.com/cloudevents/**"],
+      "groupName": "cloudevents"
+    },
+    {
+      "matchPackageNames": ["github.com/Azure/**"],
+      "groupName": "azure"
+    },
+    {
+      "matchPackageNames": ["go.uber.org/**"],
+      "groupName": "go-uber"
     }
   ]
 }
