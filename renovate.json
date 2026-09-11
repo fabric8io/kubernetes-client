@@ -86,6 +86,12 @@
       "dependencyDashboardApproval": true
     },
     {
+      "description": "Pseudo-version pins: the current version is never in the release list, so no release age can be established and a digest update would be withheld forever under minimumReleaseAge",
+      "matchManagers": ["gomod"],
+      "matchCurrentValue": "/^v0\\.0\\.0-/",
+      "minimumReleaseAge": null
+    },
+    {
       "description": "Nested modules without tags of their own: the lookup falls back to the parent repo's tags, which don't contain the package. Only track pseudo-versions (digests)",
       "matchPackageNames": [
         "github.com/ovn-org/ovn-kubernetes/go-controller",
