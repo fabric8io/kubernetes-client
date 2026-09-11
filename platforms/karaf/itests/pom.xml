@@ -195,5 +195,35 @@
         </dependency>
       </dependencies>
     </profile>
+    <!--
+      Skip Karaf integration tests on JDK 25 due to Apache Karaf 4.4.11 incompatibility.
+
+      Root Cause:
+      - Karaf 4.4.11 uses javax.security.auth.Subject.getSubject(AccessControlContext)
+      - This method was deprecated for removal in JDK 17
+      - In JDK 25, it now throws UnsupportedOperationException instead of working
+      - See: https://docs.oracle.com/en/java/javase/25/docs/api/java.base/javax/security/auth/Subject.html
+
+      Error Message:
+        java.lang.UnsupportedOperationException: getSubject is not supported
+          at java.base/javax.security.auth.Subject.getSubject(Subject.java:277)
+          at org.apache.karaf.shell.support.ShellUtil.getCurrentUserName(ShellUtil.java:216)
+
+      Tracking:
+      - Upstream Karaf Issues: https://github.com/apache/karaf/issues/2082
+                               https://github.com/apache/karaf/issues/2208
+      - Fix targeted for: Apache Karaf 4.5.0 (not yet released as of 2026-09-12)
+
+      This profile will be removed once Karaf is upgraded to a JDK 25-compatible version.
+    -->
+    <profile>
+      <id>skip-karaf-jdk25</id>
+      <activation>
+        <jdk>25</jdk>
+      </activation>
+      <properties>
+        <karaf.itest.skip>true</karaf.itest.skip>
+      </properties>
+    </profile>
   </profiles>
 </project>
