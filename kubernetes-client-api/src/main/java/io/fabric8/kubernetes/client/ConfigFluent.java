@@ -84,6 +84,14 @@ public class ConfigFluent<A extends ConfigFluent<A>> extends SundrioConfigFluent
     return this.withLoggingInterval(Integer.valueOf(loggingInterval));
   }
 
+  public A withPodCopyMaxFileBytes(long podCopyMaxFileBytes) {
+    return this.withPodCopyMaxFileBytes(Long.valueOf(podCopyMaxFileBytes));
+  }
+
+  public A withPodCopyMaxTotalBytes(long podCopyMaxTotalBytes) {
+    return this.withPodCopyMaxTotalBytes(Long.valueOf(podCopyMaxTotalBytes));
+  }
+
   public A withHttp2Disable(boolean http2Disable) {
     return this.withHttp2Disable(Boolean.valueOf(http2Disable));
   }
