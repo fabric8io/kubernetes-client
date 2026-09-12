@@ -141,11 +141,11 @@
     <swagger-parser.version>2.1.48</swagger-parser.version>
 
     <!-- Maven plugin versions -->
-    <buildnumber.plugin.version>3.3.0</buildnumber.plugin.version>
-    <exec.maven-plugin.version>3.6.3</exec.maven-plugin.version>
+    <buildnumber.plugin.version>3.3.1</buildnumber.plugin.version>
+    <exec.maven-plugin.version>3.6.4</exec.maven-plugin.version>
     <maven.compiler.plugin.version>3.16.0</maven.compiler.plugin.version>
     <maven.bundle.plugin.version>6.1.2</maven.bundle.plugin.version>
-    <maven.buildhelper.plugin.version>3.6.1</maven.buildhelper.plugin.version>
+    <maven.buildhelper.plugin.version>3.6.2</maven.buildhelper.plugin.version>
     <maven.jar.plugin.version>3.5.1</maven.jar.plugin.version>
     <maven.surefire.plugin.version>3.6.0</maven.surefire.plugin.version>
     <maven.resources.plugin.version>3.5.0</maven.resources.plugin.version>
