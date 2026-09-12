@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #7837: (kubernetes-client-api) `withShardSelector` accepts a typed `ShardSelector` next to the raw expression `String`. `ShardSelector`, `ShardRange`, `ShardField` and `ShardSelectorBuilder` render the `shardRange(<field>, '<hexStart>', '<hexEnd>')` CEL grammar, so shards 0 and 2 of an even four way split are `new ShardSelectorBuilder().addShard(0, 4).addShard(2, 4).build()` rather than hand-written hexadecimal bounds. Bounds outside the `[0x0, 0x10000000000000000]` hash space, empty ranges and out of range shard indexes are rejected on construction instead of by the API server
 
 #### Dependency Upgrade
 * Fix #8050: (karaf) The Karaf feature bundles Aries SPI-Fly 1.3.7 (from 1.3.0) and ASM 9.10.1 (from 8.0.1), the versions required to weave Java 17 bytecode
