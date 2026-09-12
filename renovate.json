@@ -48,6 +48,11 @@
       "enabled": false
     },
     {
+      "description": "org.gradle:gradle-all is not published to Maven Central. gradle-api-maven-plugin synthesizes it locally from the Gradle distribution, so the lookup can only ever fail. gradle-api.version is a compatibility floor for the Gradle plugin and is bumped deliberately",
+      "matchPackageNames": ["org.gradle:gradle-all"],
+      "enabled": false
+    },
+    {
       "matchPackageNames": ["org.bouncycastle:**"],
       "groupName": "bouncycastle"
     },
