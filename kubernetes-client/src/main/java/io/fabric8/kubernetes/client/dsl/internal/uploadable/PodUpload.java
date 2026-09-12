@@ -144,7 +144,7 @@ public class PodUpload {
     if (!uploaded) {
       // best effort delete of the failed upload
       try (ExecWatch rm = operation.writingOutput(new ByteArrayOutputStream()).exec("sh", "-c",
-          String.format("rm %s", fileName))) {
+          String.format("rm -- %s", shellQuote(fileName)))) {
         if (!Utils.waitUntilReady(rm.exitCode(), operation.getRequestConfig().getUploadRequestTimeout(), TimeUnit.MILLISECONDS)
             || !Integer.valueOf(0).equals(rm.exitCode().getNow(null))) {
           logger.warn("delete of temporary tar file {} may not have completed", fileName);
@@ -165,7 +165,8 @@ public class PodUpload {
   }
 
   static String extractTarCommand(String directory, String tar) {
-    return String.format("mkdir -p %1$s; tar -C %1$s -xmf %2$s; e=$?; rm %2$s; exit $e", shellQuote(directory), tar);
+    return String.format("mkdir -p -- %1$s; tar -C %1$s -xmf %2$s; e=$?; rm -- %2$s; exit $e",
+        shellQuote(directory), shellQuote(tar));
   }
 
   private static void addFileToTar(String fileName, File file, TarArchiveOutputStream tar)
