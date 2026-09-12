@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.impl.BaseClient;
 import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
+import io.fabric8.openshift.api.model.WebHookTrigger;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -135,5 +136,15 @@ class BuildConfigOperationsImplTest {
     impl.submitToApiServer(new ByteArrayInputStream(new byte[0]), 0);
 
     Mockito.verify(response, Mockito.times(1)).body();
+  }
+
+  @Test
+  void triggerRejectsTraversalSecret() {
+    assertThrows(IllegalArgumentException.class, () -> new BuildConfigOperationsImpl(client)
+        .inNamespace("ns")
+        .withName("build-config")
+        .withSecret("../buildconfigs/other")
+        .withType("github")
+        .trigger(new WebHookTrigger()));
   }
 }

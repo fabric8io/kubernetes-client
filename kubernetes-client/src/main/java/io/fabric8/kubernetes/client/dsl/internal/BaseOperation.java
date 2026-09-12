@@ -902,7 +902,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   private URL getCompleteResourceUrl() throws MalformedURLException {
     URL requestUrl = getNamespacedUrl(checkNamespace(item));
     if (name != null) {
-      requestUrl = new URL(URLUtils.join(requestUrl.toString(), name));
+      requestUrl = new URL(URLUtils.join(requestUrl.toString(), URLUtils.encodePathSegment(name)));
     }
     return requestUrl;
   }
