@@ -15,7 +15,12 @@
  */
 package io.fabric8.kubernetes.schema.generator.model;
 
+import io.fabric8.kubernetes.schema.generator.GeneratorException;
 import io.fabric8.kubernetes.schema.generator.GeneratorSettings;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.media.ObjectSchema;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -26,10 +31,12 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ModelGeneratorTest {
 
@@ -47,6 +54,33 @@ class ModelGeneratorTest {
         .builderPackage("io.fabric8.kubernetes.api.builder")
         .includeGenerationRegex("^io\\.k8s\\.api\\.core\\.v1\\.(Pod|Service|ConfigMap)$")
         .skipGenerationRegex("^io\\.k8s\\.apimachinery\\.pkg\\.runtime\\.RawExtension$");
+  }
+
+  @Test
+  void rejectsInjectedEnumExtensionDuringFullGeneration(@TempDir File tempDir) {
+    ObjectSchema mode = new ObjectSchema();
+    mode.setExtensions(new HashMap<>());
+    mode.getExtensions().put("x-kubernetes-fabric8-type", "enum");
+    mode.getExtensions().put(
+        "x-kubernetes-fabric8-enum-values",
+        "ACTIVE(0),INJECTED(1); static { System.exit(0); } //");
+
+    OpenAPI openAPI = new OpenAPI()
+        .paths(new Paths())
+        .components(new Components().addSchemas("io.example.Mode", mode));
+    GeneratorSettings settings = GeneratorSettings.builder()
+        .logger(Logger.getLogger(ModelGeneratorTest.class.getName()))
+        .openAPI(openAPI)
+        .outputDirectory(tempDir)
+        .packageName("io.example")
+        .builderPackage("io.example.builder")
+        .includeGenerationRegex("^io\\.example\\.Mode$")
+        .build();
+
+    assertThatThrownBy(() -> new ModelGenerator(settings).generate())
+        .isInstanceOf(GeneratorException.class)
+        .hasMessageContaining("Invalid x-kubernetes-fabric8-enum-values entry");
+    assertThat(settings.getGeneratedSourcesDirectory()).doesNotExist();
   }
 
   @Nested
