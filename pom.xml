@@ -92,8 +92,8 @@
     <okhttp.version>5.4.0</okhttp.version>
     <jackson.version>2.22.2</jackson.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
-    <!-- fix as jackson-annotations version 2.20 was released, Refer: https://github.com/FasterXML/jackson-bom/blob/54f854ba1ce69c5827f8acf6d08ba2d7ce36233c/pom.xml#L53-L62 -->
-    <jackson.bundle.version.annotations>2.21</jackson.bundle.version.annotations>
+    <!-- jackson-bom decouples jackson-annotations from jackson.version since 2.20 (it drops the patch segment). Keep in sync with jackson-bom's jackson.version.annotations, Refer: https://github.com/FasterXML/jackson-bom/blob/54f854ba1ce69c5827f8acf6d08ba2d7ce36233c/pom.xml#L53-L62 -->
+    <jackson.bundle.version.annotations>2.22</jackson.bundle.version.annotations>
     <jetty.version>11.0.26</jetty.version>
     <maven-core.version>3.9.16</maven-core.version>
     <maven-plugin-annotations.version>3.16.0</maven-plugin-annotations.version>
