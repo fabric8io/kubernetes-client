@@ -37,6 +37,7 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ServiceLoader;
@@ -268,9 +269,12 @@ public class HttpClientUtils {
     if (scheme == null) {
       throw new MalformedURLException("No protocol specified on proxy URL");
     }
-    scheme = scheme.toLowerCase();
-    if (scheme.startsWith("http")) {
+    scheme = scheme.toLowerCase(Locale.ROOT);
+    if (scheme.equals("http")) {
       return HttpClient.ProxyType.HTTP;
+    }
+    if (scheme.equals("https")) {
+      throw new MalformedURLException("https proxy URLs are not supported");
     }
     if (scheme.equals("socks4")) {
       return HttpClient.ProxyType.SOCKS4;
