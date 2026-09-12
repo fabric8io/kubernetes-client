@@ -8,7 +8,18 @@
   "enabledManagers": [
     "maven",
     "gomod",
-    "github-actions"
+    "github-actions",
+    "custom.regex"
+  ],
+  "customManagers": [
+    {
+      "description": "jackson.bundle.version.annotations pins the jackson-annotations OSGi bundle in the Karaf feature. jackson-bom decouples it from jackson.version (2.20+ drops the patch segment), and it is not a dependency declaration, so the maven manager never sees it. Tracking it here keeps it in the same grouped jackson PR",
+      "customType": "regex",
+      "managerFilePatterns": ["/^pom\\.xml$/"],
+      "matchStrings": ["<jackson\\.bundle\\.version\\.annotations>(?<currentValue>.*?)</jackson\\.bundle\\.version\\.annotations>"],
+      "depNameTemplate": "com.fasterxml.jackson.core:jackson-annotations",
+      "datasourceTemplate": "maven"
+    }
   ],
   "ignorePaths": [
     "**/src/it/**"
@@ -31,9 +42,9 @@
       "enabled": false
     },
     {
-      "description": "swagger-request-validator 3.x requires Java 21; we still target Java 17",
+      "description": "swagger-request-validator 3.x requires Java 21; we still target Java 17. 3.x also renamed the artifact to openapi-request-validator-core, which arrives as a replacement rather than a major, so both update types are disabled",
       "matchPackageNames": ["com.atlassian.oai:**"],
-      "matchUpdateTypes": ["major"],
+      "matchUpdateTypes": ["major", "replacement"],
       "enabled": false
     },
     {
