@@ -230,11 +230,28 @@ public class KubeConfigUtils {
       clientConfig.setAutoOAuthToken(currentAuthInfo.getToken());
       clientConfig.setUsername(currentAuthInfo.getUsername());
       clientConfig.setPassword(currentAuthInfo.getPassword());
+      mergeKubeConfigImpersonation(clientConfig, currentAuthInfo);
       if (Utils.isNullOrEmpty(clientConfig.getAutoOAuthToken()) && currentAuthInfo.getAuthProvider() != null) {
         mergeKubeConfigAuthProviderConfig(clientConfig, currentAuthInfo);
       } else if (clientConfig.getOauthTokenProvider() == null) { // https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
         mergeKubeConfigExecCredential(clientConfig, currentAuthInfo.getExec(), configFile);
       }
+    }
+  }
+
+  private static void mergeKubeConfigImpersonation(
+      io.fabric8.kubernetes.client.Config clientConfig, AuthInfo currentAuthInfo) {
+    if (Utils.isNotNullOrEmpty(currentAuthInfo.getAs())) {
+      clientConfig.setImpersonateUsername(currentAuthInfo.getAs());
+    }
+    if (currentAuthInfo.getAsGroups() != null) {
+      clientConfig.setImpersonateGroups(currentAuthInfo.getAsGroups().toArray(new String[0]));
+    }
+    if (currentAuthInfo.getAsUserExtra() != null) {
+      clientConfig.setImpersonateExtras(currentAuthInfo.getAsUserExtra());
+    }
+    if (Utils.isNotNullOrEmpty(currentAuthInfo.getAsUid())) {
+      throw new KubernetesClientException("Kubeconfig as-uid impersonation is not supported");
     }
   }
 
