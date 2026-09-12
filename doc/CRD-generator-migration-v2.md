@@ -1,3 +1,11 @@
+---
+title: "CRD Generator Migration v1 to v2"
+description: "Guide for migrating from CRD Generator v1 to CRD Generator v2"
+draft: false
+weight: 12
+bookHidden: true
+---
+
 # Migration from CRD Generator v1 to CRD Generator v2
 
 ## Overview

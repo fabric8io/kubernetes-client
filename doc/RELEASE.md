@@ -1,3 +1,10 @@
+---
+title: "Release Process"
+description: "Release process and CI pipeline details for the Fabric8 Kubernetes Client"
+draft: true
+weight: 200
+---
+
 ## Kubernetes Client 6.x
 
 The CI pipeline for the Kubernetes Client 6.x is outdated and no longer functional with the new Sonatype Maven Central.

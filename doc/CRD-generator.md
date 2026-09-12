@@ -1,3 +1,11 @@
+---
+title: "CRD Generator"
+description: "Generate Custom Resource Definitions from Java classes"
+draft: false
+weight: 10
+bookHidden: true
+---
+
 # CRD Generator
 
 The [CRD Generator annotation processing tool (APT)](../crd-generator/apt/README.md) (`io.fabric8:crd-generator-apt`) and its API (`io.fabric8:crd-generator-api`) are being deprecated and will eventually be removed once we offer a complete replacement for all users.

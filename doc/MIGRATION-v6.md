@@ -1,3 +1,11 @@
+---
+title: "Migration from 5.x to 6.x"
+description: "Guide for migrating from Fabric8 Kubernetes Client 5.x to 6.x"
+draft: false
+weight: 101
+bookHidden: true
+---
+
 # Migration from 5.x to 6.x
 
 ## Contents:

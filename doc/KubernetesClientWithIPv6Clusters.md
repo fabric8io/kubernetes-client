@@ -1,3 +1,11 @@
+---
+title: "Using KubernetesClient with IPv6 Clusters"
+description: "How to use the Fabric8 Kubernetes Client with IPv6-based Kubernetes clusters"
+draft: false
+weight: 30
+bookHidden: true
+---
+
 # Using KubernetesClient with IPv6 based Kubernetes Clusters
 
 Right now Fabric8 Kubernetes Client doesn't work with IPv6 based Kubernetes Clusters due to an issue in OkHttp [square/okhttp#5889](https://github.com/square/okhttp/pull/5889). The issue is solved for OkHttp 4, but Fabric8 Kubernetes Client depends on OkHttp 3.x.

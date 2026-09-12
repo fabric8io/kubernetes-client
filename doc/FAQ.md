@@ -1,3 +1,11 @@
+---
+title: "Frequently Asked Questions"
+description: "Common questions and answers about the Fabric8 Kubernetes Client"
+draft: false
+weight: 2
+bookHidden: true
+---
+
 # Frequently Asked Questions:
 
 ### How do I use KubernetesClient with IPv6 Kubernetes Clusters?
