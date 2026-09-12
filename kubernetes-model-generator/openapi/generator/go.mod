@@ -89,7 +89,6 @@ replace (
 
 // Issues with dependabot, force pseudo-versions as replacements since dependabot will try to replace with invalid tagged major versions
 replace (
-	github.com/chaos-mesh/chaos-mesh => github.com/chaos-mesh/chaos-mesh v0.0.0-20250513055240-4db47f53978c
 	github.com/chaos-mesh/chaos-mesh/api => github.com/chaos-mesh/chaos-mesh/api v0.0.0-20250513055240-4db47f53978c
 	github.com/stolostron/multicluster-observability-operator => github.com/stolostron/multicluster-observability-operator v0.0.0-20250726172846-3a17a1a4168e
 	github.com/stolostron/multiclusterhub-operator => github.com/stolostron/multiclusterhub-operator v0.0.0-20250728181123-c3e46b4bdbbc
