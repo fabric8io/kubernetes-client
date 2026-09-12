@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AzureChaosSpec is the content of the specification for an AzureChaos
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "secretName",
     "subscriptionID",
     "vmName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -280,6 +271,106 @@ public class AzureChaosSpec implements Editable<AzureChaosSpecBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AzureChaosSpec)) {
+            return false;
+        }
+        AzureChaosSpec other = (AzureChaosSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$action = this.getAction();
+        Object other$action = other.getAction();
+        if (this$action == null ? other$action != null : !this$action.equals(other$action)) {
+            return false;
+        }
+        Object this$diskName = this.getDiskName();
+        Object other$diskName = other.getDiskName();
+        if (this$diskName == null ? other$diskName != null : !this$diskName.equals(other$diskName)) {
+            return false;
+        }
+        Object this$duration = this.getDuration();
+        Object other$duration = other.getDuration();
+        if (this$duration == null ? other$duration != null : !this$duration.equals(other$duration)) {
+            return false;
+        }
+        Object this$lun = this.getLun();
+        Object other$lun = other.getLun();
+        if (this$lun == null ? other$lun != null : !this$lun.equals(other$lun)) {
+            return false;
+        }
+        Object this$remoteCluster = this.getRemoteCluster();
+        Object other$remoteCluster = other.getRemoteCluster();
+        if (this$remoteCluster == null ? other$remoteCluster != null : !this$remoteCluster.equals(other$remoteCluster)) {
+            return false;
+        }
+        Object this$resourceGroupName = this.getResourceGroupName();
+        Object other$resourceGroupName = other.getResourceGroupName();
+        if (this$resourceGroupName == null ? other$resourceGroupName != null : !this$resourceGroupName.equals(other$resourceGroupName)) {
+            return false;
+        }
+        Object this$secretName = this.getSecretName();
+        Object other$secretName = other.getSecretName();
+        if (this$secretName == null ? other$secretName != null : !this$secretName.equals(other$secretName)) {
+            return false;
+        }
+        Object this$subscriptionID = this.getSubscriptionID();
+        Object other$subscriptionID = other.getSubscriptionID();
+        if (this$subscriptionID == null ? other$subscriptionID != null : !this$subscriptionID.equals(other$subscriptionID)) {
+            return false;
+        }
+        Object this$vmName = this.getVmName();
+        Object other$vmName = other.getVmName();
+        if (this$vmName == null ? other$vmName != null : !this$vmName.equals(other$vmName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AzureChaosSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $action = this.getAction();
+        result = result * prime + ($action == null ? 43 : $action.hashCode());
+        Object $diskName = this.getDiskName();
+        result = result * prime + ($diskName == null ? 43 : $diskName.hashCode());
+        Object $duration = this.getDuration();
+        result = result * prime + ($duration == null ? 43 : $duration.hashCode());
+        Object $lun = this.getLun();
+        result = result * prime + ($lun == null ? 43 : $lun.hashCode());
+        Object $remoteCluster = this.getRemoteCluster();
+        result = result * prime + ($remoteCluster == null ? 43 : $remoteCluster.hashCode());
+        Object $resourceGroupName = this.getResourceGroupName();
+        result = result * prime + ($resourceGroupName == null ? 43 : $resourceGroupName.hashCode());
+        Object $secretName = this.getSecretName();
+        result = result * prime + ($secretName == null ? 43 : $secretName.hashCode());
+        Object $subscriptionID = this.getSubscriptionID();
+        result = result * prime + ($subscriptionID == null ? 43 : $subscriptionID.hashCode());
+        Object $vmName = this.getVmName();
+        result = result * prime + ($vmName == null ? 43 : $vmName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AzureChaosSpec(" + "action=" + this.getAction() + ", diskName=" + this.getDiskName() + ", duration=" + this.getDuration() + ", lun=" + this.getLun() + ", remoteCluster=" + this.getRemoteCluster() + ", resourceGroupName=" + this.getResourceGroupName() + ", secretName=" + this.getSecretName() + ", subscriptionID=" + this.getSubscriptionID() + ", vmName=" + this.getVmName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

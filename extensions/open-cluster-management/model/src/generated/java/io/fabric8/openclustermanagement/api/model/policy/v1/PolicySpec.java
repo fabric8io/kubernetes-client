@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PolicySpec defines the configurations of the policy engine resources to deliver to the managed clusters.
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "hubTemplateOptions",
     "policy-templates",
     "remediationAction"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -226,6 +217,85 @@ public class PolicySpec implements Editable<PolicySpecBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PolicySpec)) {
+            return false;
+        }
+        PolicySpec other = (PolicySpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$copyPolicyMetadata = this.getCopyPolicyMetadata();
+        Object other$copyPolicyMetadata = other.getCopyPolicyMetadata();
+        if (this$copyPolicyMetadata == null ? other$copyPolicyMetadata != null : !this$copyPolicyMetadata.equals(other$copyPolicyMetadata)) {
+            return false;
+        }
+        Object this$dependencies = this.getDependencies();
+        Object other$dependencies = other.getDependencies();
+        if (this$dependencies == null ? other$dependencies != null : !this$dependencies.equals(other$dependencies)) {
+            return false;
+        }
+        Object this$disabled = this.getDisabled();
+        Object other$disabled = other.getDisabled();
+        if (this$disabled == null ? other$disabled != null : !this$disabled.equals(other$disabled)) {
+            return false;
+        }
+        Object this$hubTemplateOptions = this.getHubTemplateOptions();
+        Object other$hubTemplateOptions = other.getHubTemplateOptions();
+        if (this$hubTemplateOptions == null ? other$hubTemplateOptions != null : !this$hubTemplateOptions.equals(other$hubTemplateOptions)) {
+            return false;
+        }
+        Object this$policyTemplates = this.getPolicyTemplates();
+        Object other$policyTemplates = other.getPolicyTemplates();
+        if (this$policyTemplates == null ? other$policyTemplates != null : !this$policyTemplates.equals(other$policyTemplates)) {
+            return false;
+        }
+        Object this$remediationAction = this.getRemediationAction();
+        Object other$remediationAction = other.getRemediationAction();
+        if (this$remediationAction == null ? other$remediationAction != null : !this$remediationAction.equals(other$remediationAction)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PolicySpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $copyPolicyMetadata = this.getCopyPolicyMetadata();
+        result = result * prime + ($copyPolicyMetadata == null ? 43 : $copyPolicyMetadata.hashCode());
+        Object $dependencies = this.getDependencies();
+        result = result * prime + ($dependencies == null ? 43 : $dependencies.hashCode());
+        Object $disabled = this.getDisabled();
+        result = result * prime + ($disabled == null ? 43 : $disabled.hashCode());
+        Object $hubTemplateOptions = this.getHubTemplateOptions();
+        result = result * prime + ($hubTemplateOptions == null ? 43 : $hubTemplateOptions.hashCode());
+        Object $policyTemplates = this.getPolicyTemplates();
+        result = result * prime + ($policyTemplates == null ? 43 : $policyTemplates.hashCode());
+        Object $remediationAction = this.getRemediationAction();
+        result = result * prime + ($remediationAction == null ? 43 : $remediationAction.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PolicySpec(" + "copyPolicyMetadata=" + this.getCopyPolicyMetadata() + ", dependencies=" + this.getDependencies() + ", disabled=" + this.getDisabled() + ", hubTemplateOptions=" + this.getHubTemplateOptions() + ", policyTemplates=" + this.getPolicyTemplates() + ", remediationAction=" + this.getRemediationAction() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,21 +30,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "bootstrapServers",
     "net"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -135,6 +126,57 @@ public class KafkaAuthSpec implements Editable<KafkaAuthSpecBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof KafkaAuthSpec)) {
+            return false;
+        }
+        KafkaAuthSpec other = (KafkaAuthSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bootstrapServers = this.getBootstrapServers();
+        Object other$bootstrapServers = other.getBootstrapServers();
+        if (this$bootstrapServers == null ? other$bootstrapServers != null : !this$bootstrapServers.equals(other$bootstrapServers)) {
+            return false;
+        }
+        Object this$net = this.getNet();
+        Object other$net = other.getNet();
+        if (this$net == null ? other$net != null : !this$net.equals(other$net)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof KafkaAuthSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bootstrapServers = this.getBootstrapServers();
+        result = result * prime + ($bootstrapServers == null ? 43 : $bootstrapServers.hashCode());
+        Object $net = this.getNet();
+        result = result * prime + ($net == null ? 43 : $net.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "KafkaAuthSpec(" + "bootstrapServers=" + this.getBootstrapServers() + ", net=" + this.getNet() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

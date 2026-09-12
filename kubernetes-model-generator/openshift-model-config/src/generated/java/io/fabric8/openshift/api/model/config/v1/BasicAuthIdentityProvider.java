@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * BasicAuthPasswordIdentityProvider provides identities for users authenticating using HTTP basic auth credentials
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "tlsClientCert",
     "tlsClientKey",
     "url"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -179,6 +170,71 @@ public class BasicAuthIdentityProvider implements Editable<BasicAuthIdentityProv
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BasicAuthIdentityProvider)) {
+            return false;
+        }
+        BasicAuthIdentityProvider other = (BasicAuthIdentityProvider) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ca = this.getCa();
+        Object other$ca = other.getCa();
+        if (this$ca == null ? other$ca != null : !this$ca.equals(other$ca)) {
+            return false;
+        }
+        Object this$tlsClientCert = this.getTlsClientCert();
+        Object other$tlsClientCert = other.getTlsClientCert();
+        if (this$tlsClientCert == null ? other$tlsClientCert != null : !this$tlsClientCert.equals(other$tlsClientCert)) {
+            return false;
+        }
+        Object this$tlsClientKey = this.getTlsClientKey();
+        Object other$tlsClientKey = other.getTlsClientKey();
+        if (this$tlsClientKey == null ? other$tlsClientKey != null : !this$tlsClientKey.equals(other$tlsClientKey)) {
+            return false;
+        }
+        Object this$url = this.getUrl();
+        Object other$url = other.getUrl();
+        if (this$url == null ? other$url != null : !this$url.equals(other$url)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BasicAuthIdentityProvider;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ca = this.getCa();
+        result = result * prime + ($ca == null ? 43 : $ca.hashCode());
+        Object $tlsClientCert = this.getTlsClientCert();
+        result = result * prime + ($tlsClientCert == null ? 43 : $tlsClientCert.hashCode());
+        Object $tlsClientKey = this.getTlsClientKey();
+        result = result * prime + ($tlsClientKey == null ? 43 : $tlsClientKey.hashCode());
+        Object $url = this.getUrl();
+        result = result * prime + ($url == null ? 43 : $url.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BasicAuthIdentityProvider(" + "ca=" + this.getCa() + ", tlsClientCert=" + this.getTlsClientCert() + ", tlsClientKey=" + this.getTlsClientKey() + ", url=" + this.getUrl() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

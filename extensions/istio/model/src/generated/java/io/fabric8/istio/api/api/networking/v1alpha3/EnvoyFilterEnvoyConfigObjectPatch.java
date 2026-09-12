@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Changes to be made to various envoy config objects.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "applyTo",
     "match",
     "patch"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class EnvoyFilterEnvoyConfigObjectPatch implements Editable<EnvoyFilterEn
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EnvoyFilterEnvoyConfigObjectPatch)) {
+            return false;
+        }
+        EnvoyFilterEnvoyConfigObjectPatch other = (EnvoyFilterEnvoyConfigObjectPatch) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$applyTo = this.getApplyTo();
+        Object other$applyTo = other.getApplyTo();
+        if (this$applyTo == null ? other$applyTo != null : !this$applyTo.equals(other$applyTo)) {
+            return false;
+        }
+        Object this$match = this.getMatch();
+        Object other$match = other.getMatch();
+        if (this$match == null ? other$match != null : !this$match.equals(other$match)) {
+            return false;
+        }
+        Object this$patch = this.getPatch();
+        Object other$patch = other.getPatch();
+        if (this$patch == null ? other$patch != null : !this$patch.equals(other$patch)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EnvoyFilterEnvoyConfigObjectPatch;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $applyTo = this.getApplyTo();
+        result = result * prime + ($applyTo == null ? 43 : $applyTo.hashCode());
+        Object $match = this.getMatch();
+        result = result * prime + ($match == null ? 43 : $match.hashCode());
+        Object $patch = this.getPatch();
+        result = result * prime + ($patch == null ? 43 : $patch.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EnvoyFilterEnvoyConfigObjectPatch(" + "applyTo=" + this.getApplyTo() + ", match=" + this.getMatch() + ", patch=" + this.getPatch() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

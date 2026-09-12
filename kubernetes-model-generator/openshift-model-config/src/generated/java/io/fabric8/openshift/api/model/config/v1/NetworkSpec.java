@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NetworkSpec is the desired network configuration. As a general rule, this SHOULD NOT be read directly. Instead, you should consume the NetworkStatus, as it indicates the currently deployed configuration. Currently, most spec fields are immutable after installation. Please view the individual ones for further details on each.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "networkType",
     "serviceNetwork",
     "serviceNodePortRange"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -225,6 +216,85 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkSpec)) {
+            return false;
+        }
+        NetworkSpec other = (NetworkSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterNetwork = this.getClusterNetwork();
+        Object other$clusterNetwork = other.getClusterNetwork();
+        if (this$clusterNetwork == null ? other$clusterNetwork != null : !this$clusterNetwork.equals(other$clusterNetwork)) {
+            return false;
+        }
+        Object this$externalIP = this.getExternalIP();
+        Object other$externalIP = other.getExternalIP();
+        if (this$externalIP == null ? other$externalIP != null : !this$externalIP.equals(other$externalIP)) {
+            return false;
+        }
+        Object this$networkDiagnostics = this.getNetworkDiagnostics();
+        Object other$networkDiagnostics = other.getNetworkDiagnostics();
+        if (this$networkDiagnostics == null ? other$networkDiagnostics != null : !this$networkDiagnostics.equals(other$networkDiagnostics)) {
+            return false;
+        }
+        Object this$networkType = this.getNetworkType();
+        Object other$networkType = other.getNetworkType();
+        if (this$networkType == null ? other$networkType != null : !this$networkType.equals(other$networkType)) {
+            return false;
+        }
+        Object this$serviceNetwork = this.getServiceNetwork();
+        Object other$serviceNetwork = other.getServiceNetwork();
+        if (this$serviceNetwork == null ? other$serviceNetwork != null : !this$serviceNetwork.equals(other$serviceNetwork)) {
+            return false;
+        }
+        Object this$serviceNodePortRange = this.getServiceNodePortRange();
+        Object other$serviceNodePortRange = other.getServiceNodePortRange();
+        if (this$serviceNodePortRange == null ? other$serviceNodePortRange != null : !this$serviceNodePortRange.equals(other$serviceNodePortRange)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterNetwork = this.getClusterNetwork();
+        result = result * prime + ($clusterNetwork == null ? 43 : $clusterNetwork.hashCode());
+        Object $externalIP = this.getExternalIP();
+        result = result * prime + ($externalIP == null ? 43 : $externalIP.hashCode());
+        Object $networkDiagnostics = this.getNetworkDiagnostics();
+        result = result * prime + ($networkDiagnostics == null ? 43 : $networkDiagnostics.hashCode());
+        Object $networkType = this.getNetworkType();
+        result = result * prime + ($networkType == null ? 43 : $networkType.hashCode());
+        Object $serviceNetwork = this.getServiceNetwork();
+        result = result * prime + ($serviceNetwork == null ? 43 : $serviceNetwork.hashCode());
+        Object $serviceNodePortRange = this.getServiceNodePortRange();
+        result = result * prime + ($serviceNodePortRange == null ? 43 : $serviceNodePortRange.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkSpec(" + "clusterNetwork=" + this.getClusterNetwork() + ", externalIP=" + this.getExternalIP() + ", networkDiagnostics=" + this.getNetworkDiagnostics() + ", networkType=" + this.getNetworkType() + ", serviceNetwork=" + this.getServiceNetwork() + ", serviceNodePortRange=" + this.getServiceNodePortRange() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

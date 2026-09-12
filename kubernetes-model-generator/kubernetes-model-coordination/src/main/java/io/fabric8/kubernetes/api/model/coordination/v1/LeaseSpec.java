@@ -40,9 +40,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 import java.time.ZonedDateTime;
 import java.util.HashMap;
@@ -50,43 +47,18 @@ import java.util.Map;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "acquireTime",
-    "holderIdentity",
-    "leaseDurationSeconds",
-    "leaseTransitions",
-    "preferredHolder",
-    "renewTime",
-    "strategy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
-})
+@JsonPropertyOrder({ "apiVersion", "kind", "metadata", "acquireTime", "holderIdentity", "leaseDurationSeconds",
+    "leaseTransitions", "preferredHolder", "renewTime", "strategy" })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @BuildableReference(ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
-    @BuildableReference(Container.class),
-    @BuildableReference(PodTemplateSpec.class),
-    @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(IntOrString.class),
-    @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
-    @BuildableReference(PersistentVolumeClaim.class),
-    @BuildableReference(EnvVar.class),
-    @BuildableReference(ContainerPort.class),
-    @BuildableReference(Volume.class),
-    @BuildableReference(VolumeMount.class)
-})
+    @BuildableReference(ObjectMeta.class), @BuildableReference(LabelSelector.class), @BuildableReference(Container.class),
+    @BuildableReference(PodTemplateSpec.class), @BuildableReference(ResourceRequirements.class),
+    @BuildableReference(IntOrString.class), @BuildableReference(ObjectReference.class),
+    @BuildableReference(LocalObjectReference.class), @BuildableReference(PersistentVolumeClaim.class),
+    @BuildableReference(EnvVar.class), @BuildableReference(ContainerPort.class), @BuildableReference(Volume.class),
+    @BuildableReference(VolumeMount.class) })
 public class LeaseSpec implements Editable<LeaseSpecBuilder>, KubernetesResource {
-
   @JsonProperty("acquireTime")
-  @JsonFormat(timezone = "UTC", pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'")
+  @JsonFormat(timezone = "UTC", pattern = "yyyy-MM-dd\'T\'HH:mm:ss.SSSSSS\'Z\'")
   private ZonedDateTime acquireTime;
   @JsonProperty("holderIdentity")
   private String holderIdentity;
@@ -97,7 +69,7 @@ public class LeaseSpec implements Editable<LeaseSpecBuilder>, KubernetesResource
   @JsonProperty("preferredHolder")
   private String preferredHolder;
   @JsonProperty("renewTime")
-  @JsonFormat(timezone = "UTC", pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'")
+  @JsonFormat(timezone = "UTC", pattern = "yyyy-MM-dd\'T\'HH:mm:ss.SSSSSS\'Z\'")
   private ZonedDateTime renewTime;
   @JsonProperty("strategy")
   private String strategy;
@@ -211,5 +183,86 @@ public class LeaseSpec implements Editable<LeaseSpecBuilder>, KubernetesResource
 
   public void setAdditionalProperties(Map<String, Object> additionalProperties) {
     this.additionalProperties = additionalProperties;
+  }
+
+  @java.lang.Override
+  public java.lang.String toString() {
+    return "LeaseSpec(acquireTime=" + this.getAcquireTime() + ", holderIdentity=" + this.getHolderIdentity()
+        + ", leaseDurationSeconds=" + this.getLeaseDurationSeconds() + ", leaseTransitions=" + this.getLeaseTransitions()
+        + ", preferredHolder=" + this.getPreferredHolder() + ", renewTime=" + this.getRenewTime() + ", strategy="
+        + this.getStrategy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
+  }
+
+  @java.lang.Override
+  public boolean equals(final java.lang.Object o) {
+    if (o == this)
+      return true;
+    if (!(o instanceof LeaseSpec))
+      return false;
+    final LeaseSpec other = (LeaseSpec) o;
+    if (!other.canEqual((java.lang.Object) this))
+      return false;
+    final java.lang.Object this$leaseDurationSeconds = this.getLeaseDurationSeconds();
+    final java.lang.Object other$leaseDurationSeconds = other.getLeaseDurationSeconds();
+    if (this$leaseDurationSeconds == null ? other$leaseDurationSeconds != null
+        : !this$leaseDurationSeconds.equals(other$leaseDurationSeconds))
+      return false;
+    final java.lang.Object this$leaseTransitions = this.getLeaseTransitions();
+    final java.lang.Object other$leaseTransitions = other.getLeaseTransitions();
+    if (this$leaseTransitions == null ? other$leaseTransitions != null : !this$leaseTransitions.equals(other$leaseTransitions))
+      return false;
+    final java.lang.Object this$acquireTime = this.getAcquireTime();
+    final java.lang.Object other$acquireTime = other.getAcquireTime();
+    if (this$acquireTime == null ? other$acquireTime != null : !this$acquireTime.equals(other$acquireTime))
+      return false;
+    final java.lang.Object this$holderIdentity = this.getHolderIdentity();
+    final java.lang.Object other$holderIdentity = other.getHolderIdentity();
+    if (this$holderIdentity == null ? other$holderIdentity != null : !this$holderIdentity.equals(other$holderIdentity))
+      return false;
+    final java.lang.Object this$preferredHolder = this.getPreferredHolder();
+    final java.lang.Object other$preferredHolder = other.getPreferredHolder();
+    if (this$preferredHolder == null ? other$preferredHolder != null : !this$preferredHolder.equals(other$preferredHolder))
+      return false;
+    final java.lang.Object this$renewTime = this.getRenewTime();
+    final java.lang.Object other$renewTime = other.getRenewTime();
+    if (this$renewTime == null ? other$renewTime != null : !this$renewTime.equals(other$renewTime))
+      return false;
+    final java.lang.Object this$strategy = this.getStrategy();
+    final java.lang.Object other$strategy = other.getStrategy();
+    if (this$strategy == null ? other$strategy != null : !this$strategy.equals(other$strategy))
+      return false;
+    final java.lang.Object this$additionalProperties = this.getAdditionalProperties();
+    final java.lang.Object other$additionalProperties = other.getAdditionalProperties();
+    if (this$additionalProperties == null ? other$additionalProperties != null
+        : !this$additionalProperties.equals(other$additionalProperties))
+      return false;
+    return true;
+  }
+
+  protected boolean canEqual(final java.lang.Object other) {
+    return other instanceof LeaseSpec;
+  }
+
+  @java.lang.Override
+  public int hashCode() {
+    final int PRIME = 59;
+    int result = 1;
+    final java.lang.Object $leaseDurationSeconds = this.getLeaseDurationSeconds();
+    result = result * PRIME + ($leaseDurationSeconds == null ? 43 : $leaseDurationSeconds.hashCode());
+    final java.lang.Object $leaseTransitions = this.getLeaseTransitions();
+    result = result * PRIME + ($leaseTransitions == null ? 43 : $leaseTransitions.hashCode());
+    final java.lang.Object $acquireTime = this.getAcquireTime();
+    result = result * PRIME + ($acquireTime == null ? 43 : $acquireTime.hashCode());
+    final java.lang.Object $holderIdentity = this.getHolderIdentity();
+    result = result * PRIME + ($holderIdentity == null ? 43 : $holderIdentity.hashCode());
+    final java.lang.Object $preferredHolder = this.getPreferredHolder();
+    result = result * PRIME + ($preferredHolder == null ? 43 : $preferredHolder.hashCode());
+    final java.lang.Object $renewTime = this.getRenewTime();
+    result = result * PRIME + ($renewTime == null ? 43 : $renewTime.hashCode());
+    final java.lang.Object $strategy = this.getStrategy();
+    result = result * PRIME + ($strategy == null ? 43 : $strategy.hashCode());
+    final java.lang.Object $additionalProperties = this.getAdditionalProperties();
+    result = result * PRIME + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+    return result;
   }
 }

@@ -17,9 +17,6 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -32,12 +29,6 @@ import lombok.experimental.Accessors;
     "orphanDependents",
     "preconditions",
     "propagationPolicy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Version("v1")
@@ -188,6 +179,99 @@ public class DeleteOptions implements Editable<DeleteOptionsBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DeleteOptions)) {
+            return false;
+        }
+        DeleteOptions other = (DeleteOptions) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$dryRun = this.getDryRun();
+        Object other$dryRun = other.getDryRun();
+        if (this$dryRun == null ? other$dryRun != null : !this$dryRun.equals(other$dryRun)) {
+            return false;
+        }
+        Object this$gracePeriodSeconds = this.getGracePeriodSeconds();
+        Object other$gracePeriodSeconds = other.getGracePeriodSeconds();
+        if (this$gracePeriodSeconds == null ? other$gracePeriodSeconds != null : !this$gracePeriodSeconds.equals(other$gracePeriodSeconds)) {
+            return false;
+        }
+        Object this$ignoreStoreReadErrorWithClusterBreakingPotential = this.getIgnoreStoreReadErrorWithClusterBreakingPotential();
+        Object other$ignoreStoreReadErrorWithClusterBreakingPotential = other.getIgnoreStoreReadErrorWithClusterBreakingPotential();
+        if (this$ignoreStoreReadErrorWithClusterBreakingPotential == null ? other$ignoreStoreReadErrorWithClusterBreakingPotential != null : !this$ignoreStoreReadErrorWithClusterBreakingPotential.equals(other$ignoreStoreReadErrorWithClusterBreakingPotential)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$orphanDependents = this.getOrphanDependents();
+        Object other$orphanDependents = other.getOrphanDependents();
+        if (this$orphanDependents == null ? other$orphanDependents != null : !this$orphanDependents.equals(other$orphanDependents)) {
+            return false;
+        }
+        Object this$preconditions = this.getPreconditions();
+        Object other$preconditions = other.getPreconditions();
+        if (this$preconditions == null ? other$preconditions != null : !this$preconditions.equals(other$preconditions)) {
+            return false;
+        }
+        Object this$propagationPolicy = this.getPropagationPolicy();
+        Object other$propagationPolicy = other.getPropagationPolicy();
+        if (this$propagationPolicy == null ? other$propagationPolicy != null : !this$propagationPolicy.equals(other$propagationPolicy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DeleteOptions;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $dryRun = this.getDryRun();
+        result = result * prime + ($dryRun == null ? 43 : $dryRun.hashCode());
+        Object $gracePeriodSeconds = this.getGracePeriodSeconds();
+        result = result * prime + ($gracePeriodSeconds == null ? 43 : $gracePeriodSeconds.hashCode());
+        Object $ignoreStoreReadErrorWithClusterBreakingPotential = this.getIgnoreStoreReadErrorWithClusterBreakingPotential();
+        result = result * prime + ($ignoreStoreReadErrorWithClusterBreakingPotential == null ? 43 : $ignoreStoreReadErrorWithClusterBreakingPotential.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $orphanDependents = this.getOrphanDependents();
+        result = result * prime + ($orphanDependents == null ? 43 : $orphanDependents.hashCode());
+        Object $preconditions = this.getPreconditions();
+        result = result * prime + ($preconditions == null ? 43 : $preconditions.hashCode());
+        Object $propagationPolicy = this.getPropagationPolicy();
+        result = result * prime + ($propagationPolicy == null ? 43 : $propagationPolicy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DeleteOptions(" + "apiVersion=" + this.getApiVersion() + ", dryRun=" + this.getDryRun() + ", gracePeriodSeconds=" + this.getGracePeriodSeconds() + ", ignoreStoreReadErrorWithClusterBreakingPotential=" + this.getIgnoreStoreReadErrorWithClusterBreakingPotential() + ", kind=" + this.getKind() + ", orphanDependents=" + this.getOrphanDependents() + ", preconditions=" + this.getPreconditions() + ", propagationPolicy=" + this.getPropagationPolicy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

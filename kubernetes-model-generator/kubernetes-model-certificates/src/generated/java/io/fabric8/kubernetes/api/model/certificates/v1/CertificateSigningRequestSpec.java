@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CertificateSigningRequestSpec contains the certificate request.
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "uid",
     "usages",
     "username"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -268,6 +259,99 @@ public class CertificateSigningRequestSpec implements Editable<CertificateSignin
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CertificateSigningRequestSpec)) {
+            return false;
+        }
+        CertificateSigningRequestSpec other = (CertificateSigningRequestSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$expirationSeconds = this.getExpirationSeconds();
+        Object other$expirationSeconds = other.getExpirationSeconds();
+        if (this$expirationSeconds == null ? other$expirationSeconds != null : !this$expirationSeconds.equals(other$expirationSeconds)) {
+            return false;
+        }
+        Object this$extra = this.getExtra();
+        Object other$extra = other.getExtra();
+        if (this$extra == null ? other$extra != null : !this$extra.equals(other$extra)) {
+            return false;
+        }
+        Object this$groups = this.getGroups();
+        Object other$groups = other.getGroups();
+        if (this$groups == null ? other$groups != null : !this$groups.equals(other$groups)) {
+            return false;
+        }
+        Object this$request = this.getRequest();
+        Object other$request = other.getRequest();
+        if (this$request == null ? other$request != null : !this$request.equals(other$request)) {
+            return false;
+        }
+        Object this$signerName = this.getSignerName();
+        Object other$signerName = other.getSignerName();
+        if (this$signerName == null ? other$signerName != null : !this$signerName.equals(other$signerName)) {
+            return false;
+        }
+        Object this$uid = this.getUid();
+        Object other$uid = other.getUid();
+        if (this$uid == null ? other$uid != null : !this$uid.equals(other$uid)) {
+            return false;
+        }
+        Object this$usages = this.getUsages();
+        Object other$usages = other.getUsages();
+        if (this$usages == null ? other$usages != null : !this$usages.equals(other$usages)) {
+            return false;
+        }
+        Object this$username = this.getUsername();
+        Object other$username = other.getUsername();
+        if (this$username == null ? other$username != null : !this$username.equals(other$username)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CertificateSigningRequestSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $expirationSeconds = this.getExpirationSeconds();
+        result = result * prime + ($expirationSeconds == null ? 43 : $expirationSeconds.hashCode());
+        Object $extra = this.getExtra();
+        result = result * prime + ($extra == null ? 43 : $extra.hashCode());
+        Object $groups = this.getGroups();
+        result = result * prime + ($groups == null ? 43 : $groups.hashCode());
+        Object $request = this.getRequest();
+        result = result * prime + ($request == null ? 43 : $request.hashCode());
+        Object $signerName = this.getSignerName();
+        result = result * prime + ($signerName == null ? 43 : $signerName.hashCode());
+        Object $uid = this.getUid();
+        result = result * prime + ($uid == null ? 43 : $uid.hashCode());
+        Object $usages = this.getUsages();
+        result = result * prime + ($usages == null ? 43 : $usages.hashCode());
+        Object $username = this.getUsername();
+        result = result * prime + ($username == null ? 43 : $username.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CertificateSigningRequestSpec(" + "expirationSeconds=" + this.getExpirationSeconds() + ", extra=" + this.getExtra() + ", groups=" + this.getGroups() + ", request=" + this.getRequest() + ", signerName=" + this.getSignerName() + ", uid=" + this.getUid() + ", usages=" + this.getUsages() + ", username=" + this.getUsername() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

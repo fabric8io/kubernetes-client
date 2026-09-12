@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MatchResources decides whether to run the admission control policy on an object based on whether it meets the match criteria. The exclude rules take precedence over include rules (if a resource matches both, it is excluded)
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "namespaceSelector",
     "objectSelector",
     "resourceRules"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -206,6 +197,78 @@ public class MatchResources implements Editable<MatchResourcesBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MatchResources)) {
+            return false;
+        }
+        MatchResources other = (MatchResources) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$excludeResourceRules = this.getExcludeResourceRules();
+        Object other$excludeResourceRules = other.getExcludeResourceRules();
+        if (this$excludeResourceRules == null ? other$excludeResourceRules != null : !this$excludeResourceRules.equals(other$excludeResourceRules)) {
+            return false;
+        }
+        Object this$matchPolicy = this.getMatchPolicy();
+        Object other$matchPolicy = other.getMatchPolicy();
+        if (this$matchPolicy == null ? other$matchPolicy != null : !this$matchPolicy.equals(other$matchPolicy)) {
+            return false;
+        }
+        Object this$namespaceSelector = this.getNamespaceSelector();
+        Object other$namespaceSelector = other.getNamespaceSelector();
+        if (this$namespaceSelector == null ? other$namespaceSelector != null : !this$namespaceSelector.equals(other$namespaceSelector)) {
+            return false;
+        }
+        Object this$objectSelector = this.getObjectSelector();
+        Object other$objectSelector = other.getObjectSelector();
+        if (this$objectSelector == null ? other$objectSelector != null : !this$objectSelector.equals(other$objectSelector)) {
+            return false;
+        }
+        Object this$resourceRules = this.getResourceRules();
+        Object other$resourceRules = other.getResourceRules();
+        if (this$resourceRules == null ? other$resourceRules != null : !this$resourceRules.equals(other$resourceRules)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MatchResources;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $excludeResourceRules = this.getExcludeResourceRules();
+        result = result * prime + ($excludeResourceRules == null ? 43 : $excludeResourceRules.hashCode());
+        Object $matchPolicy = this.getMatchPolicy();
+        result = result * prime + ($matchPolicy == null ? 43 : $matchPolicy.hashCode());
+        Object $namespaceSelector = this.getNamespaceSelector();
+        result = result * prime + ($namespaceSelector == null ? 43 : $namespaceSelector.hashCode());
+        Object $objectSelector = this.getObjectSelector();
+        result = result * prime + ($objectSelector == null ? 43 : $objectSelector.hashCode());
+        Object $resourceRules = this.getResourceRules();
+        result = result * prime + ($resourceRules == null ? 43 : $resourceRules.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MatchResources(" + "excludeResourceRules=" + this.getExcludeResourceRules() + ", matchPolicy=" + this.getMatchPolicy() + ", namespaceSelector=" + this.getNamespaceSelector() + ", objectSelector=" + this.getObjectSelector() + ", resourceRules=" + this.getResourceRules() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

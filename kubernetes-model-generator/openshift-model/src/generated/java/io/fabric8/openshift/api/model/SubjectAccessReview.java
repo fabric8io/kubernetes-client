@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SubjectAccessReview is an object for requesting information about whether a user or group can perform an action<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
@@ -56,12 +53,6 @@ import lombok.experimental.Accessors;
     "scopes",
     "user",
     "verb"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -411,6 +402,148 @@ public class SubjectAccessReview implements Editable<SubjectAccessReviewBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SubjectAccessReview)) {
+            return false;
+        }
+        SubjectAccessReview other = (SubjectAccessReview) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$content = this.getContent();
+        Object other$content = other.getContent();
+        if (this$content == null ? other$content != null : !this$content.equals(other$content)) {
+            return false;
+        }
+        Object this$groups = this.getGroups();
+        Object other$groups = other.getGroups();
+        if (this$groups == null ? other$groups != null : !this$groups.equals(other$groups)) {
+            return false;
+        }
+        Object this$isNonResourceURL = this.getIsNonResourceURL();
+        Object other$isNonResourceURL = other.getIsNonResourceURL();
+        if (this$isNonResourceURL == null ? other$isNonResourceURL != null : !this$isNonResourceURL.equals(other$isNonResourceURL)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$namespace = this.getNamespace();
+        Object other$namespace = other.getNamespace();
+        if (this$namespace == null ? other$namespace != null : !this$namespace.equals(other$namespace)) {
+            return false;
+        }
+        Object this$path = this.getPath();
+        Object other$path = other.getPath();
+        if (this$path == null ? other$path != null : !this$path.equals(other$path)) {
+            return false;
+        }
+        Object this$resource = this.getResource();
+        Object other$resource = other.getResource();
+        if (this$resource == null ? other$resource != null : !this$resource.equals(other$resource)) {
+            return false;
+        }
+        Object this$resourceAPIGroup = this.getResourceAPIGroup();
+        Object other$resourceAPIGroup = other.getResourceAPIGroup();
+        if (this$resourceAPIGroup == null ? other$resourceAPIGroup != null : !this$resourceAPIGroup.equals(other$resourceAPIGroup)) {
+            return false;
+        }
+        Object this$resourceAPIVersion = this.getResourceAPIVersion();
+        Object other$resourceAPIVersion = other.getResourceAPIVersion();
+        if (this$resourceAPIVersion == null ? other$resourceAPIVersion != null : !this$resourceAPIVersion.equals(other$resourceAPIVersion)) {
+            return false;
+        }
+        Object this$resourceName = this.getResourceName();
+        Object other$resourceName = other.getResourceName();
+        if (this$resourceName == null ? other$resourceName != null : !this$resourceName.equals(other$resourceName)) {
+            return false;
+        }
+        Object this$scopes = this.getScopes();
+        Object other$scopes = other.getScopes();
+        if (this$scopes == null ? other$scopes != null : !this$scopes.equals(other$scopes)) {
+            return false;
+        }
+        Object this$user = this.getUser();
+        Object other$user = other.getUser();
+        if (this$user == null ? other$user != null : !this$user.equals(other$user)) {
+            return false;
+        }
+        Object this$verb = this.getVerb();
+        Object other$verb = other.getVerb();
+        if (this$verb == null ? other$verb != null : !this$verb.equals(other$verb)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SubjectAccessReview;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $content = this.getContent();
+        result = result * prime + ($content == null ? 43 : $content.hashCode());
+        Object $groups = this.getGroups();
+        result = result * prime + ($groups == null ? 43 : $groups.hashCode());
+        Object $isNonResourceURL = this.getIsNonResourceURL();
+        result = result * prime + ($isNonResourceURL == null ? 43 : $isNonResourceURL.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $namespace = this.getNamespace();
+        result = result * prime + ($namespace == null ? 43 : $namespace.hashCode());
+        Object $path = this.getPath();
+        result = result * prime + ($path == null ? 43 : $path.hashCode());
+        Object $resource = this.getResource();
+        result = result * prime + ($resource == null ? 43 : $resource.hashCode());
+        Object $resourceAPIGroup = this.getResourceAPIGroup();
+        result = result * prime + ($resourceAPIGroup == null ? 43 : $resourceAPIGroup.hashCode());
+        Object $resourceAPIVersion = this.getResourceAPIVersion();
+        result = result * prime + ($resourceAPIVersion == null ? 43 : $resourceAPIVersion.hashCode());
+        Object $resourceName = this.getResourceName();
+        result = result * prime + ($resourceName == null ? 43 : $resourceName.hashCode());
+        Object $scopes = this.getScopes();
+        result = result * prime + ($scopes == null ? 43 : $scopes.hashCode());
+        Object $user = this.getUser();
+        result = result * prime + ($user == null ? 43 : $user.hashCode());
+        Object $verb = this.getVerb();
+        result = result * prime + ($verb == null ? 43 : $verb.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SubjectAccessReview(" + "apiVersion=" + this.getApiVersion() + ", content=" + this.getContent() + ", groups=" + this.getGroups() + ", isNonResourceURL=" + this.getIsNonResourceURL() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata() + ", namespace=" + this.getNamespace() + ", path=" + this.getPath() + ", resource=" + this.getResource() + ", resourceAPIGroup=" + this.getResourceAPIGroup() + ", resourceAPIVersion=" + this.getResourceAPIVersion() + ", resourceName=" + this.getResourceName() + ", scopes=" + this.getScopes() + ", user=" + this.getUser() + ", verb=" + this.getVerb() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

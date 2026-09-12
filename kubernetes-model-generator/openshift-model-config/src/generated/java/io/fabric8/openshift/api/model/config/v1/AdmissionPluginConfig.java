@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AdmissionPluginConfig holds the necessary configuration options for admission plugins
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "configuration",
     "location"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -141,6 +132,57 @@ public class AdmissionPluginConfig implements Editable<AdmissionPluginConfigBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AdmissionPluginConfig)) {
+            return false;
+        }
+        AdmissionPluginConfig other = (AdmissionPluginConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$configuration = this.getConfiguration();
+        Object other$configuration = other.getConfiguration();
+        if (this$configuration == null ? other$configuration != null : !this$configuration.equals(other$configuration)) {
+            return false;
+        }
+        Object this$location = this.getLocation();
+        Object other$location = other.getLocation();
+        if (this$location == null ? other$location != null : !this$location.equals(other$location)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AdmissionPluginConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $configuration = this.getConfiguration();
+        result = result * prime + ($configuration == null ? 43 : $configuration.hashCode());
+        Object $location = this.getLocation();
+        result = result * prime + ($location == null ? 43 : $location.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AdmissionPluginConfig(" + "configuration=" + this.getConfiguration() + ", location=" + this.getLocation() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

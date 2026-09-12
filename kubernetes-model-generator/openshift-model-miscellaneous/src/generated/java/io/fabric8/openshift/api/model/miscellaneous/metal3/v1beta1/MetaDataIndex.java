@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MetaDataIndex contains the information to render the index.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "prefix",
     "step",
     "suffix"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,78 @@ public class MetaDataIndex implements Editable<MetaDataIndexBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MetaDataIndex)) {
+            return false;
+        }
+        MetaDataIndex other = (MetaDataIndex) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$key = this.getKey();
+        Object other$key = other.getKey();
+        if (this$key == null ? other$key != null : !this$key.equals(other$key)) {
+            return false;
+        }
+        Object this$offset = this.getOffset();
+        Object other$offset = other.getOffset();
+        if (this$offset == null ? other$offset != null : !this$offset.equals(other$offset)) {
+            return false;
+        }
+        Object this$prefix = this.getPrefix();
+        Object other$prefix = other.getPrefix();
+        if (this$prefix == null ? other$prefix != null : !this$prefix.equals(other$prefix)) {
+            return false;
+        }
+        Object this$step = this.getStep();
+        Object other$step = other.getStep();
+        if (this$step == null ? other$step != null : !this$step.equals(other$step)) {
+            return false;
+        }
+        Object this$suffix = this.getSuffix();
+        Object other$suffix = other.getSuffix();
+        if (this$suffix == null ? other$suffix != null : !this$suffix.equals(other$suffix)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MetaDataIndex;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $key = this.getKey();
+        result = result * prime + ($key == null ? 43 : $key.hashCode());
+        Object $offset = this.getOffset();
+        result = result * prime + ($offset == null ? 43 : $offset.hashCode());
+        Object $prefix = this.getPrefix();
+        result = result * prime + ($prefix == null ? 43 : $prefix.hashCode());
+        Object $step = this.getStep();
+        result = result * prime + ($step == null ? 43 : $step.hashCode());
+        Object $suffix = this.getSuffix();
+        result = result * prime + ($suffix == null ? 43 : $suffix.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MetaDataIndex(" + "key=" + this.getKey() + ", offset=" + this.getOffset() + ", prefix=" + this.getPrefix() + ", step=" + this.getStep() + ", suffix=" + this.getSuffix() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

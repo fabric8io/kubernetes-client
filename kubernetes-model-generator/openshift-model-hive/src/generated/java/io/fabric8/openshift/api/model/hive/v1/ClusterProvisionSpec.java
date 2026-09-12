@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClusterProvisionSpec defines the results of provisioning a cluster.
@@ -53,12 +50,6 @@ import lombok.experimental.Accessors;
     "prevInfraID",
     "prevProvisionName",
     "stage"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -383,6 +374,141 @@ public class ClusterProvisionSpec implements Editable<ClusterProvisionSpecBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterProvisionSpec)) {
+            return false;
+        }
+        ClusterProvisionSpec other = (ClusterProvisionSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$adminKubeconfigSecretRef = this.getAdminKubeconfigSecretRef();
+        Object other$adminKubeconfigSecretRef = other.getAdminKubeconfigSecretRef();
+        if (this$adminKubeconfigSecretRef == null ? other$adminKubeconfigSecretRef != null : !this$adminKubeconfigSecretRef.equals(other$adminKubeconfigSecretRef)) {
+            return false;
+        }
+        Object this$adminPasswordSecretRef = this.getAdminPasswordSecretRef();
+        Object other$adminPasswordSecretRef = other.getAdminPasswordSecretRef();
+        if (this$adminPasswordSecretRef == null ? other$adminPasswordSecretRef != null : !this$adminPasswordSecretRef.equals(other$adminPasswordSecretRef)) {
+            return false;
+        }
+        Object this$attempt = this.getAttempt();
+        Object other$attempt = other.getAttempt();
+        if (this$attempt == null ? other$attempt != null : !this$attempt.equals(other$attempt)) {
+            return false;
+        }
+        Object this$clusterDeploymentRef = this.getClusterDeploymentRef();
+        Object other$clusterDeploymentRef = other.getClusterDeploymentRef();
+        if (this$clusterDeploymentRef == null ? other$clusterDeploymentRef != null : !this$clusterDeploymentRef.equals(other$clusterDeploymentRef)) {
+            return false;
+        }
+        Object this$clusterID = this.getClusterID();
+        Object other$clusterID = other.getClusterID();
+        if (this$clusterID == null ? other$clusterID != null : !this$clusterID.equals(other$clusterID)) {
+            return false;
+        }
+        Object this$infraID = this.getInfraID();
+        Object other$infraID = other.getInfraID();
+        if (this$infraID == null ? other$infraID != null : !this$infraID.equals(other$infraID)) {
+            return false;
+        }
+        Object this$installLog = this.getInstallLog();
+        Object other$installLog = other.getInstallLog();
+        if (this$installLog == null ? other$installLog != null : !this$installLog.equals(other$installLog)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$metadataJSON = this.getMetadataJSON();
+        Object other$metadataJSON = other.getMetadataJSON();
+        if (this$metadataJSON == null ? other$metadataJSON != null : !this$metadataJSON.equals(other$metadataJSON)) {
+            return false;
+        }
+        Object this$podSpec = this.getPodSpec();
+        Object other$podSpec = other.getPodSpec();
+        if (this$podSpec == null ? other$podSpec != null : !this$podSpec.equals(other$podSpec)) {
+            return false;
+        }
+        Object this$prevClusterID = this.getPrevClusterID();
+        Object other$prevClusterID = other.getPrevClusterID();
+        if (this$prevClusterID == null ? other$prevClusterID != null : !this$prevClusterID.equals(other$prevClusterID)) {
+            return false;
+        }
+        Object this$prevInfraID = this.getPrevInfraID();
+        Object other$prevInfraID = other.getPrevInfraID();
+        if (this$prevInfraID == null ? other$prevInfraID != null : !this$prevInfraID.equals(other$prevInfraID)) {
+            return false;
+        }
+        Object this$prevProvisionName = this.getPrevProvisionName();
+        Object other$prevProvisionName = other.getPrevProvisionName();
+        if (this$prevProvisionName == null ? other$prevProvisionName != null : !this$prevProvisionName.equals(other$prevProvisionName)) {
+            return false;
+        }
+        Object this$stage = this.getStage();
+        Object other$stage = other.getStage();
+        if (this$stage == null ? other$stage != null : !this$stage.equals(other$stage)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterProvisionSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $adminKubeconfigSecretRef = this.getAdminKubeconfigSecretRef();
+        result = result * prime + ($adminKubeconfigSecretRef == null ? 43 : $adminKubeconfigSecretRef.hashCode());
+        Object $adminPasswordSecretRef = this.getAdminPasswordSecretRef();
+        result = result * prime + ($adminPasswordSecretRef == null ? 43 : $adminPasswordSecretRef.hashCode());
+        Object $attempt = this.getAttempt();
+        result = result * prime + ($attempt == null ? 43 : $attempt.hashCode());
+        Object $clusterDeploymentRef = this.getClusterDeploymentRef();
+        result = result * prime + ($clusterDeploymentRef == null ? 43 : $clusterDeploymentRef.hashCode());
+        Object $clusterID = this.getClusterID();
+        result = result * prime + ($clusterID == null ? 43 : $clusterID.hashCode());
+        Object $infraID = this.getInfraID();
+        result = result * prime + ($infraID == null ? 43 : $infraID.hashCode());
+        Object $installLog = this.getInstallLog();
+        result = result * prime + ($installLog == null ? 43 : $installLog.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $metadataJSON = this.getMetadataJSON();
+        result = result * prime + ($metadataJSON == null ? 43 : $metadataJSON.hashCode());
+        Object $podSpec = this.getPodSpec();
+        result = result * prime + ($podSpec == null ? 43 : $podSpec.hashCode());
+        Object $prevClusterID = this.getPrevClusterID();
+        result = result * prime + ($prevClusterID == null ? 43 : $prevClusterID.hashCode());
+        Object $prevInfraID = this.getPrevInfraID();
+        result = result * prime + ($prevInfraID == null ? 43 : $prevInfraID.hashCode());
+        Object $prevProvisionName = this.getPrevProvisionName();
+        result = result * prime + ($prevProvisionName == null ? 43 : $prevProvisionName.hashCode());
+        Object $stage = this.getStage();
+        result = result * prime + ($stage == null ? 43 : $stage.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterProvisionSpec(" + "adminKubeconfigSecretRef=" + this.getAdminKubeconfigSecretRef() + ", adminPasswordSecretRef=" + this.getAdminPasswordSecretRef() + ", attempt=" + this.getAttempt() + ", clusterDeploymentRef=" + this.getClusterDeploymentRef() + ", clusterID=" + this.getClusterID() + ", infraID=" + this.getInfraID() + ", installLog=" + this.getInstallLog() + ", metadata=" + this.getMetadata() + ", metadataJSON=" + this.getMetadataJSON() + ", podSpec=" + this.getPodSpec() + ", prevClusterID=" + this.getPrevClusterID() + ", prevInfraID=" + this.getPrevInfraID() + ", prevProvisionName=" + this.getPrevProvisionName() + ", stage=" + this.getStage() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

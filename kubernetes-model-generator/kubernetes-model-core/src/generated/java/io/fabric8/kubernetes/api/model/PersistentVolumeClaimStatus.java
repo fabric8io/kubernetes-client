@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PersistentVolumeClaimStatus is the current status of a persistent volume claim.
@@ -34,12 +31,6 @@ import lombok.experimental.Accessors;
     "healthStatus",
     "modifyVolumeStatus",
     "phase"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -263,6 +254,106 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PersistentVolumeClaimStatus)) {
+            return false;
+        }
+        PersistentVolumeClaimStatus other = (PersistentVolumeClaimStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$accessModes = this.getAccessModes();
+        Object other$accessModes = other.getAccessModes();
+        if (this$accessModes == null ? other$accessModes != null : !this$accessModes.equals(other$accessModes)) {
+            return false;
+        }
+        Object this$allocatedResourceStatuses = this.getAllocatedResourceStatuses();
+        Object other$allocatedResourceStatuses = other.getAllocatedResourceStatuses();
+        if (this$allocatedResourceStatuses == null ? other$allocatedResourceStatuses != null : !this$allocatedResourceStatuses.equals(other$allocatedResourceStatuses)) {
+            return false;
+        }
+        Object this$allocatedResources = this.getAllocatedResources();
+        Object other$allocatedResources = other.getAllocatedResources();
+        if (this$allocatedResources == null ? other$allocatedResources != null : !this$allocatedResources.equals(other$allocatedResources)) {
+            return false;
+        }
+        Object this$capacity = this.getCapacity();
+        Object other$capacity = other.getCapacity();
+        if (this$capacity == null ? other$capacity != null : !this$capacity.equals(other$capacity)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$currentVolumeAttributesClassName = this.getCurrentVolumeAttributesClassName();
+        Object other$currentVolumeAttributesClassName = other.getCurrentVolumeAttributesClassName();
+        if (this$currentVolumeAttributesClassName == null ? other$currentVolumeAttributesClassName != null : !this$currentVolumeAttributesClassName.equals(other$currentVolumeAttributesClassName)) {
+            return false;
+        }
+        Object this$healthStatus = this.getHealthStatus();
+        Object other$healthStatus = other.getHealthStatus();
+        if (this$healthStatus == null ? other$healthStatus != null : !this$healthStatus.equals(other$healthStatus)) {
+            return false;
+        }
+        Object this$modifyVolumeStatus = this.getModifyVolumeStatus();
+        Object other$modifyVolumeStatus = other.getModifyVolumeStatus();
+        if (this$modifyVolumeStatus == null ? other$modifyVolumeStatus != null : !this$modifyVolumeStatus.equals(other$modifyVolumeStatus)) {
+            return false;
+        }
+        Object this$phase = this.getPhase();
+        Object other$phase = other.getPhase();
+        if (this$phase == null ? other$phase != null : !this$phase.equals(other$phase)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PersistentVolumeClaimStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $accessModes = this.getAccessModes();
+        result = result * prime + ($accessModes == null ? 43 : $accessModes.hashCode());
+        Object $allocatedResourceStatuses = this.getAllocatedResourceStatuses();
+        result = result * prime + ($allocatedResourceStatuses == null ? 43 : $allocatedResourceStatuses.hashCode());
+        Object $allocatedResources = this.getAllocatedResources();
+        result = result * prime + ($allocatedResources == null ? 43 : $allocatedResources.hashCode());
+        Object $capacity = this.getCapacity();
+        result = result * prime + ($capacity == null ? 43 : $capacity.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $currentVolumeAttributesClassName = this.getCurrentVolumeAttributesClassName();
+        result = result * prime + ($currentVolumeAttributesClassName == null ? 43 : $currentVolumeAttributesClassName.hashCode());
+        Object $healthStatus = this.getHealthStatus();
+        result = result * prime + ($healthStatus == null ? 43 : $healthStatus.hashCode());
+        Object $modifyVolumeStatus = this.getModifyVolumeStatus();
+        result = result * prime + ($modifyVolumeStatus == null ? 43 : $modifyVolumeStatus.hashCode());
+        Object $phase = this.getPhase();
+        result = result * prime + ($phase == null ? 43 : $phase.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PersistentVolumeClaimStatus(" + "accessModes=" + this.getAccessModes() + ", allocatedResourceStatuses=" + this.getAllocatedResourceStatuses() + ", allocatedResources=" + this.getAllocatedResources() + ", capacity=" + this.getCapacity() + ", conditions=" + this.getConditions() + ", currentVolumeAttributesClassName=" + this.getCurrentVolumeAttributesClassName() + ", healthStatus=" + this.getHealthStatus() + ", modifyVolumeStatus=" + this.getModifyVolumeStatus() + ", phase=" + this.getPhase() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

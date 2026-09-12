@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * GenericAPIServerConfig is an inline-able struct for aggregated apiservers that need to store data in etcd
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "kubeClientConfig",
     "servingInfo",
     "storageConfig"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -223,6 +214,85 @@ public class GenericAPIServerConfig implements Editable<GenericAPIServerConfigBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GenericAPIServerConfig)) {
+            return false;
+        }
+        GenericAPIServerConfig other = (GenericAPIServerConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$admission = this.getAdmission();
+        Object other$admission = other.getAdmission();
+        if (this$admission == null ? other$admission != null : !this$admission.equals(other$admission)) {
+            return false;
+        }
+        Object this$auditConfig = this.getAuditConfig();
+        Object other$auditConfig = other.getAuditConfig();
+        if (this$auditConfig == null ? other$auditConfig != null : !this$auditConfig.equals(other$auditConfig)) {
+            return false;
+        }
+        Object this$corsAllowedOrigins = this.getCorsAllowedOrigins();
+        Object other$corsAllowedOrigins = other.getCorsAllowedOrigins();
+        if (this$corsAllowedOrigins == null ? other$corsAllowedOrigins != null : !this$corsAllowedOrigins.equals(other$corsAllowedOrigins)) {
+            return false;
+        }
+        Object this$kubeClientConfig = this.getKubeClientConfig();
+        Object other$kubeClientConfig = other.getKubeClientConfig();
+        if (this$kubeClientConfig == null ? other$kubeClientConfig != null : !this$kubeClientConfig.equals(other$kubeClientConfig)) {
+            return false;
+        }
+        Object this$servingInfo = this.getServingInfo();
+        Object other$servingInfo = other.getServingInfo();
+        if (this$servingInfo == null ? other$servingInfo != null : !this$servingInfo.equals(other$servingInfo)) {
+            return false;
+        }
+        Object this$storageConfig = this.getStorageConfig();
+        Object other$storageConfig = other.getStorageConfig();
+        if (this$storageConfig == null ? other$storageConfig != null : !this$storageConfig.equals(other$storageConfig)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GenericAPIServerConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $admission = this.getAdmission();
+        result = result * prime + ($admission == null ? 43 : $admission.hashCode());
+        Object $auditConfig = this.getAuditConfig();
+        result = result * prime + ($auditConfig == null ? 43 : $auditConfig.hashCode());
+        Object $corsAllowedOrigins = this.getCorsAllowedOrigins();
+        result = result * prime + ($corsAllowedOrigins == null ? 43 : $corsAllowedOrigins.hashCode());
+        Object $kubeClientConfig = this.getKubeClientConfig();
+        result = result * prime + ($kubeClientConfig == null ? 43 : $kubeClientConfig.hashCode());
+        Object $servingInfo = this.getServingInfo();
+        result = result * prime + ($servingInfo == null ? 43 : $servingInfo.hashCode());
+        Object $storageConfig = this.getStorageConfig();
+        result = result * prime + ($storageConfig == null ? 43 : $storageConfig.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GenericAPIServerConfig(" + "admission=" + this.getAdmission() + ", auditConfig=" + this.getAuditConfig() + ", corsAllowedOrigins=" + this.getCorsAllowedOrigins() + ", kubeClientConfig=" + this.getKubeClientConfig() + ", servingInfo=" + this.getServingInfo() + ", storageConfig=" + this.getStorageConfig() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

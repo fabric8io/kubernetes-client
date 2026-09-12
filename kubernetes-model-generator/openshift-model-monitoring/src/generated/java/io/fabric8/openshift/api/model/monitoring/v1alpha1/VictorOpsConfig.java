@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VictorOpsConfig configures notifications via VictorOps. See https://prometheus.io/docs/alerting/latest/configuration/#victorops_config
@@ -51,12 +48,6 @@ import lombok.experimental.Accessors;
     "routingKey",
     "sendResolved",
     "stateMessage"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -305,6 +296,113 @@ public class VictorOpsConfig implements Editable<VictorOpsConfigBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VictorOpsConfig)) {
+            return false;
+        }
+        VictorOpsConfig other = (VictorOpsConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiKey = this.getApiKey();
+        Object other$apiKey = other.getApiKey();
+        if (this$apiKey == null ? other$apiKey != null : !this$apiKey.equals(other$apiKey)) {
+            return false;
+        }
+        Object this$apiUrl = this.getApiUrl();
+        Object other$apiUrl = other.getApiUrl();
+        if (this$apiUrl == null ? other$apiUrl != null : !this$apiUrl.equals(other$apiUrl)) {
+            return false;
+        }
+        Object this$customFields = this.getCustomFields();
+        Object other$customFields = other.getCustomFields();
+        if (this$customFields == null ? other$customFields != null : !this$customFields.equals(other$customFields)) {
+            return false;
+        }
+        Object this$entityDisplayName = this.getEntityDisplayName();
+        Object other$entityDisplayName = other.getEntityDisplayName();
+        if (this$entityDisplayName == null ? other$entityDisplayName != null : !this$entityDisplayName.equals(other$entityDisplayName)) {
+            return false;
+        }
+        Object this$httpConfig = this.getHttpConfig();
+        Object other$httpConfig = other.getHttpConfig();
+        if (this$httpConfig == null ? other$httpConfig != null : !this$httpConfig.equals(other$httpConfig)) {
+            return false;
+        }
+        Object this$messageType = this.getMessageType();
+        Object other$messageType = other.getMessageType();
+        if (this$messageType == null ? other$messageType != null : !this$messageType.equals(other$messageType)) {
+            return false;
+        }
+        Object this$monitoringTool = this.getMonitoringTool();
+        Object other$monitoringTool = other.getMonitoringTool();
+        if (this$monitoringTool == null ? other$monitoringTool != null : !this$monitoringTool.equals(other$monitoringTool)) {
+            return false;
+        }
+        Object this$routingKey = this.getRoutingKey();
+        Object other$routingKey = other.getRoutingKey();
+        if (this$routingKey == null ? other$routingKey != null : !this$routingKey.equals(other$routingKey)) {
+            return false;
+        }
+        Object this$sendResolved = this.getSendResolved();
+        Object other$sendResolved = other.getSendResolved();
+        if (this$sendResolved == null ? other$sendResolved != null : !this$sendResolved.equals(other$sendResolved)) {
+            return false;
+        }
+        Object this$stateMessage = this.getStateMessage();
+        Object other$stateMessage = other.getStateMessage();
+        if (this$stateMessage == null ? other$stateMessage != null : !this$stateMessage.equals(other$stateMessage)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VictorOpsConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiKey = this.getApiKey();
+        result = result * prime + ($apiKey == null ? 43 : $apiKey.hashCode());
+        Object $apiUrl = this.getApiUrl();
+        result = result * prime + ($apiUrl == null ? 43 : $apiUrl.hashCode());
+        Object $customFields = this.getCustomFields();
+        result = result * prime + ($customFields == null ? 43 : $customFields.hashCode());
+        Object $entityDisplayName = this.getEntityDisplayName();
+        result = result * prime + ($entityDisplayName == null ? 43 : $entityDisplayName.hashCode());
+        Object $httpConfig = this.getHttpConfig();
+        result = result * prime + ($httpConfig == null ? 43 : $httpConfig.hashCode());
+        Object $messageType = this.getMessageType();
+        result = result * prime + ($messageType == null ? 43 : $messageType.hashCode());
+        Object $monitoringTool = this.getMonitoringTool();
+        result = result * prime + ($monitoringTool == null ? 43 : $monitoringTool.hashCode());
+        Object $routingKey = this.getRoutingKey();
+        result = result * prime + ($routingKey == null ? 43 : $routingKey.hashCode());
+        Object $sendResolved = this.getSendResolved();
+        result = result * prime + ($sendResolved == null ? 43 : $sendResolved.hashCode());
+        Object $stateMessage = this.getStateMessage();
+        result = result * prime + ($stateMessage == null ? 43 : $stateMessage.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VictorOpsConfig(" + "apiKey=" + this.getApiKey() + ", apiUrl=" + this.getApiUrl() + ", customFields=" + this.getCustomFields() + ", entityDisplayName=" + this.getEntityDisplayName() + ", httpConfig=" + this.getHttpConfig() + ", messageType=" + this.getMessageType() + ", monitoringTool=" + this.getMonitoringTool() + ", routingKey=" + this.getRoutingKey() + ", sendResolved=" + this.getSendResolved() + ", stateMessage=" + this.getStateMessage() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

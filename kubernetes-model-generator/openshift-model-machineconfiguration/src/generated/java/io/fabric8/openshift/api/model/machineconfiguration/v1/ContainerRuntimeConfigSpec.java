@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ContainerRuntimeConfigSpec defines the desired state of ContainerRuntimeConfig
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "containerRuntimeConfig",
     "machineConfigPoolSelector"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -139,6 +130,57 @@ public class ContainerRuntimeConfigSpec implements Editable<ContainerRuntimeConf
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ContainerRuntimeConfigSpec)) {
+            return false;
+        }
+        ContainerRuntimeConfigSpec other = (ContainerRuntimeConfigSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$containerRuntimeConfig = this.getContainerRuntimeConfig();
+        Object other$containerRuntimeConfig = other.getContainerRuntimeConfig();
+        if (this$containerRuntimeConfig == null ? other$containerRuntimeConfig != null : !this$containerRuntimeConfig.equals(other$containerRuntimeConfig)) {
+            return false;
+        }
+        Object this$machineConfigPoolSelector = this.getMachineConfigPoolSelector();
+        Object other$machineConfigPoolSelector = other.getMachineConfigPoolSelector();
+        if (this$machineConfigPoolSelector == null ? other$machineConfigPoolSelector != null : !this$machineConfigPoolSelector.equals(other$machineConfigPoolSelector)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ContainerRuntimeConfigSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $containerRuntimeConfig = this.getContainerRuntimeConfig();
+        result = result * prime + ($containerRuntimeConfig == null ? 43 : $containerRuntimeConfig.hashCode());
+        Object $machineConfigPoolSelector = this.getMachineConfigPoolSelector();
+        result = result * prime + ($machineConfigPoolSelector == null ? 43 : $machineConfigPoolSelector.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ContainerRuntimeConfigSpec(" + "containerRuntimeConfig=" + this.getContainerRuntimeConfig() + ", machineConfigPoolSelector=" + this.getMachineConfigPoolSelector() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

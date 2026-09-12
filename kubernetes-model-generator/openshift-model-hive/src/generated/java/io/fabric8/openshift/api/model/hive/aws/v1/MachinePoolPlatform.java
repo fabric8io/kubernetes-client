@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MachinePoolPlatform stores the configuration for a machine pool installed on AWS.
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "type",
     "userTags",
     "zones"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -270,6 +261,99 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachinePoolPlatform)) {
+            return false;
+        }
+        MachinePoolPlatform other = (MachinePoolPlatform) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$additionalSecurityGroupIDs = this.getAdditionalSecurityGroupIDs();
+        Object other$additionalSecurityGroupIDs = other.getAdditionalSecurityGroupIDs();
+        if (this$additionalSecurityGroupIDs == null ? other$additionalSecurityGroupIDs != null : !this$additionalSecurityGroupIDs.equals(other$additionalSecurityGroupIDs)) {
+            return false;
+        }
+        Object this$metadataService = this.getMetadataService();
+        Object other$metadataService = other.getMetadataService();
+        if (this$metadataService == null ? other$metadataService != null : !this$metadataService.equals(other$metadataService)) {
+            return false;
+        }
+        Object this$rootVolume = this.getRootVolume();
+        Object other$rootVolume = other.getRootVolume();
+        if (this$rootVolume == null ? other$rootVolume != null : !this$rootVolume.equals(other$rootVolume)) {
+            return false;
+        }
+        Object this$spotMarketOptions = this.getSpotMarketOptions();
+        Object other$spotMarketOptions = other.getSpotMarketOptions();
+        if (this$spotMarketOptions == null ? other$spotMarketOptions != null : !this$spotMarketOptions.equals(other$spotMarketOptions)) {
+            return false;
+        }
+        Object this$subnets = this.getSubnets();
+        Object other$subnets = other.getSubnets();
+        if (this$subnets == null ? other$subnets != null : !this$subnets.equals(other$subnets)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$userTags = this.getUserTags();
+        Object other$userTags = other.getUserTags();
+        if (this$userTags == null ? other$userTags != null : !this$userTags.equals(other$userTags)) {
+            return false;
+        }
+        Object this$zones = this.getZones();
+        Object other$zones = other.getZones();
+        if (this$zones == null ? other$zones != null : !this$zones.equals(other$zones)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachinePoolPlatform;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $additionalSecurityGroupIDs = this.getAdditionalSecurityGroupIDs();
+        result = result * prime + ($additionalSecurityGroupIDs == null ? 43 : $additionalSecurityGroupIDs.hashCode());
+        Object $metadataService = this.getMetadataService();
+        result = result * prime + ($metadataService == null ? 43 : $metadataService.hashCode());
+        Object $rootVolume = this.getRootVolume();
+        result = result * prime + ($rootVolume == null ? 43 : $rootVolume.hashCode());
+        Object $spotMarketOptions = this.getSpotMarketOptions();
+        result = result * prime + ($spotMarketOptions == null ? 43 : $spotMarketOptions.hashCode());
+        Object $subnets = this.getSubnets();
+        result = result * prime + ($subnets == null ? 43 : $subnets.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $userTags = this.getUserTags();
+        result = result * prime + ($userTags == null ? 43 : $userTags.hashCode());
+        Object $zones = this.getZones();
+        result = result * prime + ($zones == null ? 43 : $zones.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachinePoolPlatform(" + "additionalSecurityGroupIDs=" + this.getAdditionalSecurityGroupIDs() + ", metadataService=" + this.getMetadataService() + ", rootVolume=" + this.getRootVolume() + ", spotMarketOptions=" + this.getSpotMarketOptions() + ", subnets=" + this.getSubnets() + ", type=" + this.getType() + ", userTags=" + this.getUserTags() + ", zones=" + this.getZones() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

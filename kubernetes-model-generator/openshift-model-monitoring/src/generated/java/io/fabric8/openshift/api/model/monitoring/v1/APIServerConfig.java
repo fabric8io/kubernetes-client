@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * APIServerConfig defines how the Prometheus server connects to the Kubernetes API server.<br><p> <br><p> More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "proxyFromEnvironment",
     "proxyUrl",
     "tlsConfig"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -303,6 +294,113 @@ public class APIServerConfig implements Editable<APIServerConfigBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof APIServerConfig)) {
+            return false;
+        }
+        APIServerConfig other = (APIServerConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$authorization = this.getAuthorization();
+        Object other$authorization = other.getAuthorization();
+        if (this$authorization == null ? other$authorization != null : !this$authorization.equals(other$authorization)) {
+            return false;
+        }
+        Object this$basicAuth = this.getBasicAuth();
+        Object other$basicAuth = other.getBasicAuth();
+        if (this$basicAuth == null ? other$basicAuth != null : !this$basicAuth.equals(other$basicAuth)) {
+            return false;
+        }
+        Object this$bearerToken = this.getBearerToken();
+        Object other$bearerToken = other.getBearerToken();
+        if (this$bearerToken == null ? other$bearerToken != null : !this$bearerToken.equals(other$bearerToken)) {
+            return false;
+        }
+        Object this$bearerTokenFile = this.getBearerTokenFile();
+        Object other$bearerTokenFile = other.getBearerTokenFile();
+        if (this$bearerTokenFile == null ? other$bearerTokenFile != null : !this$bearerTokenFile.equals(other$bearerTokenFile)) {
+            return false;
+        }
+        Object this$host = this.getHost();
+        Object other$host = other.getHost();
+        if (this$host == null ? other$host != null : !this$host.equals(other$host)) {
+            return false;
+        }
+        Object this$noProxy = this.getNoProxy();
+        Object other$noProxy = other.getNoProxy();
+        if (this$noProxy == null ? other$noProxy != null : !this$noProxy.equals(other$noProxy)) {
+            return false;
+        }
+        Object this$proxyConnectHeader = this.getProxyConnectHeader();
+        Object other$proxyConnectHeader = other.getProxyConnectHeader();
+        if (this$proxyConnectHeader == null ? other$proxyConnectHeader != null : !this$proxyConnectHeader.equals(other$proxyConnectHeader)) {
+            return false;
+        }
+        Object this$proxyFromEnvironment = this.getProxyFromEnvironment();
+        Object other$proxyFromEnvironment = other.getProxyFromEnvironment();
+        if (this$proxyFromEnvironment == null ? other$proxyFromEnvironment != null : !this$proxyFromEnvironment.equals(other$proxyFromEnvironment)) {
+            return false;
+        }
+        Object this$proxyUrl = this.getProxyUrl();
+        Object other$proxyUrl = other.getProxyUrl();
+        if (this$proxyUrl == null ? other$proxyUrl != null : !this$proxyUrl.equals(other$proxyUrl)) {
+            return false;
+        }
+        Object this$tlsConfig = this.getTlsConfig();
+        Object other$tlsConfig = other.getTlsConfig();
+        if (this$tlsConfig == null ? other$tlsConfig != null : !this$tlsConfig.equals(other$tlsConfig)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof APIServerConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $authorization = this.getAuthorization();
+        result = result * prime + ($authorization == null ? 43 : $authorization.hashCode());
+        Object $basicAuth = this.getBasicAuth();
+        result = result * prime + ($basicAuth == null ? 43 : $basicAuth.hashCode());
+        Object $bearerToken = this.getBearerToken();
+        result = result * prime + ($bearerToken == null ? 43 : $bearerToken.hashCode());
+        Object $bearerTokenFile = this.getBearerTokenFile();
+        result = result * prime + ($bearerTokenFile == null ? 43 : $bearerTokenFile.hashCode());
+        Object $host = this.getHost();
+        result = result * prime + ($host == null ? 43 : $host.hashCode());
+        Object $noProxy = this.getNoProxy();
+        result = result * prime + ($noProxy == null ? 43 : $noProxy.hashCode());
+        Object $proxyConnectHeader = this.getProxyConnectHeader();
+        result = result * prime + ($proxyConnectHeader == null ? 43 : $proxyConnectHeader.hashCode());
+        Object $proxyFromEnvironment = this.getProxyFromEnvironment();
+        result = result * prime + ($proxyFromEnvironment == null ? 43 : $proxyFromEnvironment.hashCode());
+        Object $proxyUrl = this.getProxyUrl();
+        result = result * prime + ($proxyUrl == null ? 43 : $proxyUrl.hashCode());
+        Object $tlsConfig = this.getTlsConfig();
+        result = result * prime + ($tlsConfig == null ? 43 : $tlsConfig.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "APIServerConfig(" + "authorization=" + this.getAuthorization() + ", basicAuth=" + this.getBasicAuth() + ", bearerToken=" + this.getBearerToken() + ", bearerTokenFile=" + this.getBearerTokenFile() + ", host=" + this.getHost() + ", noProxy=" + this.getNoProxy() + ", proxyConnectHeader=" + this.getProxyConnectHeader() + ", proxyFromEnvironment=" + this.getProxyFromEnvironment() + ", proxyUrl=" + this.getProxyUrl() + ", tlsConfig=" + this.getTlsConfig() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

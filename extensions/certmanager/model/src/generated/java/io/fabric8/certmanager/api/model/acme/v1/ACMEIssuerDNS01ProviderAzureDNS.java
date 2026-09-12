@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ACMEIssuerDNS01ProviderAzureDNS is a structure containing the configuration for Azure DNS
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "subscriptionID",
     "tenantID",
     "zoneType"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -281,6 +272,106 @@ public class ACMEIssuerDNS01ProviderAzureDNS implements Editable<ACMEIssuerDNS01
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ACMEIssuerDNS01ProviderAzureDNS)) {
+            return false;
+        }
+        ACMEIssuerDNS01ProviderAzureDNS other = (ACMEIssuerDNS01ProviderAzureDNS) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clientID = this.getClientID();
+        Object other$clientID = other.getClientID();
+        if (this$clientID == null ? other$clientID != null : !this$clientID.equals(other$clientID)) {
+            return false;
+        }
+        Object this$clientSecretSecretRef = this.getClientSecretSecretRef();
+        Object other$clientSecretSecretRef = other.getClientSecretSecretRef();
+        if (this$clientSecretSecretRef == null ? other$clientSecretSecretRef != null : !this$clientSecretSecretRef.equals(other$clientSecretSecretRef)) {
+            return false;
+        }
+        Object this$environment = this.getEnvironment();
+        Object other$environment = other.getEnvironment();
+        if (this$environment == null ? other$environment != null : !this$environment.equals(other$environment)) {
+            return false;
+        }
+        Object this$hostedZoneName = this.getHostedZoneName();
+        Object other$hostedZoneName = other.getHostedZoneName();
+        if (this$hostedZoneName == null ? other$hostedZoneName != null : !this$hostedZoneName.equals(other$hostedZoneName)) {
+            return false;
+        }
+        Object this$managedIdentity = this.getManagedIdentity();
+        Object other$managedIdentity = other.getManagedIdentity();
+        if (this$managedIdentity == null ? other$managedIdentity != null : !this$managedIdentity.equals(other$managedIdentity)) {
+            return false;
+        }
+        Object this$resourceGroupName = this.getResourceGroupName();
+        Object other$resourceGroupName = other.getResourceGroupName();
+        if (this$resourceGroupName == null ? other$resourceGroupName != null : !this$resourceGroupName.equals(other$resourceGroupName)) {
+            return false;
+        }
+        Object this$subscriptionID = this.getSubscriptionID();
+        Object other$subscriptionID = other.getSubscriptionID();
+        if (this$subscriptionID == null ? other$subscriptionID != null : !this$subscriptionID.equals(other$subscriptionID)) {
+            return false;
+        }
+        Object this$tenantID = this.getTenantID();
+        Object other$tenantID = other.getTenantID();
+        if (this$tenantID == null ? other$tenantID != null : !this$tenantID.equals(other$tenantID)) {
+            return false;
+        }
+        Object this$zoneType = this.getZoneType();
+        Object other$zoneType = other.getZoneType();
+        if (this$zoneType == null ? other$zoneType != null : !this$zoneType.equals(other$zoneType)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ACMEIssuerDNS01ProviderAzureDNS;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clientID = this.getClientID();
+        result = result * prime + ($clientID == null ? 43 : $clientID.hashCode());
+        Object $clientSecretSecretRef = this.getClientSecretSecretRef();
+        result = result * prime + ($clientSecretSecretRef == null ? 43 : $clientSecretSecretRef.hashCode());
+        Object $environment = this.getEnvironment();
+        result = result * prime + ($environment == null ? 43 : $environment.hashCode());
+        Object $hostedZoneName = this.getHostedZoneName();
+        result = result * prime + ($hostedZoneName == null ? 43 : $hostedZoneName.hashCode());
+        Object $managedIdentity = this.getManagedIdentity();
+        result = result * prime + ($managedIdentity == null ? 43 : $managedIdentity.hashCode());
+        Object $resourceGroupName = this.getResourceGroupName();
+        result = result * prime + ($resourceGroupName == null ? 43 : $resourceGroupName.hashCode());
+        Object $subscriptionID = this.getSubscriptionID();
+        result = result * prime + ($subscriptionID == null ? 43 : $subscriptionID.hashCode());
+        Object $tenantID = this.getTenantID();
+        result = result * prime + ($tenantID == null ? 43 : $tenantID.hashCode());
+        Object $zoneType = this.getZoneType();
+        result = result * prime + ($zoneType == null ? 43 : $zoneType.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ACMEIssuerDNS01ProviderAzureDNS(" + "clientID=" + this.getClientID() + ", clientSecretSecretRef=" + this.getClientSecretSecretRef() + ", environment=" + this.getEnvironment() + ", hostedZoneName=" + this.getHostedZoneName() + ", managedIdentity=" + this.getManagedIdentity() + ", resourceGroupName=" + this.getResourceGroupName() + ", subscriptionID=" + this.getSubscriptionID() + ", tenantID=" + this.getTenantID() + ", zoneType=" + this.getZoneType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CouchDbSourceSpec defines the desired state of CouchDbSource
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "feed",
     "serviceAccountName",
     "sink"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -201,6 +192,78 @@ public class CouchDbSourceSpec implements Editable<CouchDbSourceSpecBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CouchDbSourceSpec)) {
+            return false;
+        }
+        CouchDbSourceSpec other = (CouchDbSourceSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$credentials = this.getCredentials();
+        Object other$credentials = other.getCredentials();
+        if (this$credentials == null ? other$credentials != null : !this$credentials.equals(other$credentials)) {
+            return false;
+        }
+        Object this$database = this.getDatabase();
+        Object other$database = other.getDatabase();
+        if (this$database == null ? other$database != null : !this$database.equals(other$database)) {
+            return false;
+        }
+        Object this$feed = this.getFeed();
+        Object other$feed = other.getFeed();
+        if (this$feed == null ? other$feed != null : !this$feed.equals(other$feed)) {
+            return false;
+        }
+        Object this$serviceAccountName = this.getServiceAccountName();
+        Object other$serviceAccountName = other.getServiceAccountName();
+        if (this$serviceAccountName == null ? other$serviceAccountName != null : !this$serviceAccountName.equals(other$serviceAccountName)) {
+            return false;
+        }
+        Object this$sink = this.getSink();
+        Object other$sink = other.getSink();
+        if (this$sink == null ? other$sink != null : !this$sink.equals(other$sink)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CouchDbSourceSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $credentials = this.getCredentials();
+        result = result * prime + ($credentials == null ? 43 : $credentials.hashCode());
+        Object $database = this.getDatabase();
+        result = result * prime + ($database == null ? 43 : $database.hashCode());
+        Object $feed = this.getFeed();
+        result = result * prime + ($feed == null ? 43 : $feed.hashCode());
+        Object $serviceAccountName = this.getServiceAccountName();
+        result = result * prime + ($serviceAccountName == null ? 43 : $serviceAccountName.hashCode());
+        Object $sink = this.getSink();
+        result = result * prime + ($sink == null ? 43 : $sink.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CouchDbSourceSpec(" + "credentials=" + this.getCredentials() + ", database=" + this.getDatabase() + ", feed=" + this.getFeed() + ", serviceAccountName=" + this.getServiceAccountName() + ", sink=" + this.getSink() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

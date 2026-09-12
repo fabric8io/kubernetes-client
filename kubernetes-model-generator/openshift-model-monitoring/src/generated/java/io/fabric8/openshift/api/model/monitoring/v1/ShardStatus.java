@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
     "shardID",
     "unavailableReplicas",
     "updatedReplicas"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -196,6 +187,78 @@ public class ShardStatus implements Editable<ShardStatusBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ShardStatus)) {
+            return false;
+        }
+        ShardStatus other = (ShardStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$availableReplicas = this.getAvailableReplicas();
+        Object other$availableReplicas = other.getAvailableReplicas();
+        if (this$availableReplicas == null ? other$availableReplicas != null : !this$availableReplicas.equals(other$availableReplicas)) {
+            return false;
+        }
+        Object this$replicas = this.getReplicas();
+        Object other$replicas = other.getReplicas();
+        if (this$replicas == null ? other$replicas != null : !this$replicas.equals(other$replicas)) {
+            return false;
+        }
+        Object this$shardID = this.getShardID();
+        Object other$shardID = other.getShardID();
+        if (this$shardID == null ? other$shardID != null : !this$shardID.equals(other$shardID)) {
+            return false;
+        }
+        Object this$unavailableReplicas = this.getUnavailableReplicas();
+        Object other$unavailableReplicas = other.getUnavailableReplicas();
+        if (this$unavailableReplicas == null ? other$unavailableReplicas != null : !this$unavailableReplicas.equals(other$unavailableReplicas)) {
+            return false;
+        }
+        Object this$updatedReplicas = this.getUpdatedReplicas();
+        Object other$updatedReplicas = other.getUpdatedReplicas();
+        if (this$updatedReplicas == null ? other$updatedReplicas != null : !this$updatedReplicas.equals(other$updatedReplicas)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ShardStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $availableReplicas = this.getAvailableReplicas();
+        result = result * prime + ($availableReplicas == null ? 43 : $availableReplicas.hashCode());
+        Object $replicas = this.getReplicas();
+        result = result * prime + ($replicas == null ? 43 : $replicas.hashCode());
+        Object $shardID = this.getShardID();
+        result = result * prime + ($shardID == null ? 43 : $shardID.hashCode());
+        Object $unavailableReplicas = this.getUnavailableReplicas();
+        result = result * prime + ($unavailableReplicas == null ? 43 : $unavailableReplicas.hashCode());
+        Object $updatedReplicas = this.getUpdatedReplicas();
+        result = result * prime + ($updatedReplicas == null ? 43 : $updatedReplicas.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ShardStatus(" + "availableReplicas=" + this.getAvailableReplicas() + ", replicas=" + this.getReplicas() + ", shardID=" + this.getShardID() + ", unavailableReplicas=" + this.getUnavailableReplicas() + ", updatedReplicas=" + this.getUpdatedReplicas() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

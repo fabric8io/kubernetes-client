@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Conditions specified in a listener match must be met for the patch to be applied to a specific listener across all filter chains, or a specific filter chain inside the listener.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "name",
     "portName",
     "portNumber"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,78 @@ public class EnvoyFilterListenerMatch implements Editable<EnvoyFilterListenerMat
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EnvoyFilterListenerMatch)) {
+            return false;
+        }
+        EnvoyFilterListenerMatch other = (EnvoyFilterListenerMatch) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$filterChain = this.getFilterChain();
+        Object other$filterChain = other.getFilterChain();
+        if (this$filterChain == null ? other$filterChain != null : !this$filterChain.equals(other$filterChain)) {
+            return false;
+        }
+        Object this$listenerFilter = this.getListenerFilter();
+        Object other$listenerFilter = other.getListenerFilter();
+        if (this$listenerFilter == null ? other$listenerFilter != null : !this$listenerFilter.equals(other$listenerFilter)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$portName = this.getPortName();
+        Object other$portName = other.getPortName();
+        if (this$portName == null ? other$portName != null : !this$portName.equals(other$portName)) {
+            return false;
+        }
+        Object this$portNumber = this.getPortNumber();
+        Object other$portNumber = other.getPortNumber();
+        if (this$portNumber == null ? other$portNumber != null : !this$portNumber.equals(other$portNumber)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EnvoyFilterListenerMatch;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $filterChain = this.getFilterChain();
+        result = result * prime + ($filterChain == null ? 43 : $filterChain.hashCode());
+        Object $listenerFilter = this.getListenerFilter();
+        result = result * prime + ($listenerFilter == null ? 43 : $listenerFilter.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $portName = this.getPortName();
+        result = result * prime + ($portName == null ? 43 : $portName.hashCode());
+        Object $portNumber = this.getPortNumber();
+        result = result * prime + ($portNumber == null ? 43 : $portNumber.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EnvoyFilterListenerMatch(" + "filterChain=" + this.getFilterChain() + ", listenerFilter=" + this.getListenerFilter() + ", name=" + this.getName() + ", portName=" + this.getPortName() + ", portNumber=" + this.getPortNumber() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

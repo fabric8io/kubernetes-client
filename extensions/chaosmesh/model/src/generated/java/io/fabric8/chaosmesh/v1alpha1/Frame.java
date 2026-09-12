@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Frame defines the function signature and predicate in function's body
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "funcname",
     "parameters",
     "predicate"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class Frame implements Editable<FrameBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Frame)) {
+            return false;
+        }
+        Frame other = (Frame) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$funcname = this.getFuncname();
+        Object other$funcname = other.getFuncname();
+        if (this$funcname == null ? other$funcname != null : !this$funcname.equals(other$funcname)) {
+            return false;
+        }
+        Object this$parameters = this.getParameters();
+        Object other$parameters = other.getParameters();
+        if (this$parameters == null ? other$parameters != null : !this$parameters.equals(other$parameters)) {
+            return false;
+        }
+        Object this$predicate = this.getPredicate();
+        Object other$predicate = other.getPredicate();
+        if (this$predicate == null ? other$predicate != null : !this$predicate.equals(other$predicate)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Frame;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $funcname = this.getFuncname();
+        result = result * prime + ($funcname == null ? 43 : $funcname.hashCode());
+        Object $parameters = this.getParameters();
+        result = result * prime + ($parameters == null ? 43 : $parameters.hashCode());
+        Object $predicate = this.getPredicate();
+        result = result * prime + ($predicate == null ? 43 : $predicate.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Frame(" + "funcname=" + this.getFuncname() + ", parameters=" + this.getParameters() + ", predicate=" + this.getPredicate() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

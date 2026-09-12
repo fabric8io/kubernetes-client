@@ -22,9 +22,6 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.Setter;
-import lombok.ToString;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -36,19 +33,15 @@ import java.io.Serializable;
  */
 @JsonSerialize(using = AnyType.Serializer.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@ToString
-@Setter
-@EqualsAndHashCode
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 public class AnyType implements Serializable {
-
   protected Object value;
 
   public AnyType() {
   }
 
-  @JsonCreator
   //Builders are generated for the first non-empty constructor found.
+  @JsonCreator
   @Buildable(editableEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder")
   public AnyType(Object value) {
     this.value = value;
@@ -68,11 +61,47 @@ public class AnyType implements Serializable {
   }
 
   public static class Serializer extends JsonSerializer<AnyType> {
-
     @Override
     public void serialize(AnyType value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
       jgen.writeObject(value.value);
     }
   }
 
+  @java.lang.Override
+  public java.lang.String toString() {
+    return "AnyType(value=" + this.getValue() + ")";
+  }
+
+  public void setValue(final Object value) {
+    this.value = value;
+  }
+
+  @java.lang.Override
+  public boolean equals(final java.lang.Object o) {
+    if (o == this)
+      return true;
+    if (!(o instanceof AnyType))
+      return false;
+    final AnyType other = (AnyType) o;
+    if (!other.canEqual((java.lang.Object) this))
+      return false;
+    final java.lang.Object this$value = this.getValue();
+    final java.lang.Object other$value = other.getValue();
+    if (this$value == null ? other$value != null : !this$value.equals(other$value))
+      return false;
+    return true;
+  }
+
+  protected boolean canEqual(final java.lang.Object other) {
+    return other instanceof AnyType;
+  }
+
+  @java.lang.Override
+  public int hashCode() {
+    final int PRIME = 59;
+    int result = 1;
+    final java.lang.Object $value = this.getValue();
+    result = result * PRIME + ($value == null ? 43 : $value.hashCode());
+    return result;
+  }
 }

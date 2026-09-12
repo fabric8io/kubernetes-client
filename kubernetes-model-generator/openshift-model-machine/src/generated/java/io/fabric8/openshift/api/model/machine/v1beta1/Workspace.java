@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * WorkspaceConfig defines a workspace configuration for the vSphere cloud provider.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "resourcePool",
     "server",
     "vmGroup"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -219,6 +210,85 @@ public class Workspace implements Editable<WorkspaceBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Workspace)) {
+            return false;
+        }
+        Workspace other = (Workspace) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$datacenter = this.getDatacenter();
+        Object other$datacenter = other.getDatacenter();
+        if (this$datacenter == null ? other$datacenter != null : !this$datacenter.equals(other$datacenter)) {
+            return false;
+        }
+        Object this$datastore = this.getDatastore();
+        Object other$datastore = other.getDatastore();
+        if (this$datastore == null ? other$datastore != null : !this$datastore.equals(other$datastore)) {
+            return false;
+        }
+        Object this$folder = this.getFolder();
+        Object other$folder = other.getFolder();
+        if (this$folder == null ? other$folder != null : !this$folder.equals(other$folder)) {
+            return false;
+        }
+        Object this$resourcePool = this.getResourcePool();
+        Object other$resourcePool = other.getResourcePool();
+        if (this$resourcePool == null ? other$resourcePool != null : !this$resourcePool.equals(other$resourcePool)) {
+            return false;
+        }
+        Object this$server = this.getServer();
+        Object other$server = other.getServer();
+        if (this$server == null ? other$server != null : !this$server.equals(other$server)) {
+            return false;
+        }
+        Object this$vmGroup = this.getVmGroup();
+        Object other$vmGroup = other.getVmGroup();
+        if (this$vmGroup == null ? other$vmGroup != null : !this$vmGroup.equals(other$vmGroup)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Workspace;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $datacenter = this.getDatacenter();
+        result = result * prime + ($datacenter == null ? 43 : $datacenter.hashCode());
+        Object $datastore = this.getDatastore();
+        result = result * prime + ($datastore == null ? 43 : $datastore.hashCode());
+        Object $folder = this.getFolder();
+        result = result * prime + ($folder == null ? 43 : $folder.hashCode());
+        Object $resourcePool = this.getResourcePool();
+        result = result * prime + ($resourcePool == null ? 43 : $resourcePool.hashCode());
+        Object $server = this.getServer();
+        result = result * prime + ($server == null ? 43 : $server.hashCode());
+        Object $vmGroup = this.getVmGroup();
+        result = result * prime + ($vmGroup == null ? 43 : $vmGroup.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Workspace(" + "datacenter=" + this.getDatacenter() + ", datastore=" + this.getDatastore() + ", folder=" + this.getFolder() + ", resourcePool=" + this.getResourcePool() + ", server=" + this.getServer() + ", vmGroup=" + this.getVmGroup() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

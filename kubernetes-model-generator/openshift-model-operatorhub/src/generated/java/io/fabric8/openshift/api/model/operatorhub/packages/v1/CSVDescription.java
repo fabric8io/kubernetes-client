@@ -34,9 +34,6 @@ import io.fabric8.openshift.api.model.operatorhub.v1alpha1.CustomResourceDefinit
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.InstallMode;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CSVDescription defines a description of a CSV
@@ -60,12 +57,6 @@ import lombok.experimental.Accessors;
     "provider",
     "relatedImages",
     "version"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -442,6 +433,155 @@ public class CSVDescription implements Editable<CSVDescriptionBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CSVDescription)) {
+            return false;
+        }
+        CSVDescription other = (CSVDescription) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$annotations = this.getAnnotations();
+        Object other$annotations = other.getAnnotations();
+        if (this$annotations == null ? other$annotations != null : !this$annotations.equals(other$annotations)) {
+            return false;
+        }
+        Object this$apiservicedefinitions = this.getApiservicedefinitions();
+        Object other$apiservicedefinitions = other.getApiservicedefinitions();
+        if (this$apiservicedefinitions == null ? other$apiservicedefinitions != null : !this$apiservicedefinitions.equals(other$apiservicedefinitions)) {
+            return false;
+        }
+        Object this$customresourcedefinitions = this.getCustomresourcedefinitions();
+        Object other$customresourcedefinitions = other.getCustomresourcedefinitions();
+        if (this$customresourcedefinitions == null ? other$customresourcedefinitions != null : !this$customresourcedefinitions.equals(other$customresourcedefinitions)) {
+            return false;
+        }
+        Object this$description = this.getDescription();
+        Object other$description = other.getDescription();
+        if (this$description == null ? other$description != null : !this$description.equals(other$description)) {
+            return false;
+        }
+        Object this$displayName = this.getDisplayName();
+        Object other$displayName = other.getDisplayName();
+        if (this$displayName == null ? other$displayName != null : !this$displayName.equals(other$displayName)) {
+            return false;
+        }
+        Object this$icon = this.getIcon();
+        Object other$icon = other.getIcon();
+        if (this$icon == null ? other$icon != null : !this$icon.equals(other$icon)) {
+            return false;
+        }
+        Object this$installModes = this.getInstallModes();
+        Object other$installModes = other.getInstallModes();
+        if (this$installModes == null ? other$installModes != null : !this$installModes.equals(other$installModes)) {
+            return false;
+        }
+        Object this$keywords = this.getKeywords();
+        Object other$keywords = other.getKeywords();
+        if (this$keywords == null ? other$keywords != null : !this$keywords.equals(other$keywords)) {
+            return false;
+        }
+        Object this$links = this.getLinks();
+        Object other$links = other.getLinks();
+        if (this$links == null ? other$links != null : !this$links.equals(other$links)) {
+            return false;
+        }
+        Object this$maintainers = this.getMaintainers();
+        Object other$maintainers = other.getMaintainers();
+        if (this$maintainers == null ? other$maintainers != null : !this$maintainers.equals(other$maintainers)) {
+            return false;
+        }
+        Object this$maturity = this.getMaturity();
+        Object other$maturity = other.getMaturity();
+        if (this$maturity == null ? other$maturity != null : !this$maturity.equals(other$maturity)) {
+            return false;
+        }
+        Object this$minKubeVersion = this.getMinKubeVersion();
+        Object other$minKubeVersion = other.getMinKubeVersion();
+        if (this$minKubeVersion == null ? other$minKubeVersion != null : !this$minKubeVersion.equals(other$minKubeVersion)) {
+            return false;
+        }
+        Object this$nativeApis = this.getNativeApis();
+        Object other$nativeApis = other.getNativeApis();
+        if (this$nativeApis == null ? other$nativeApis != null : !this$nativeApis.equals(other$nativeApis)) {
+            return false;
+        }
+        Object this$provider = this.getProvider();
+        Object other$provider = other.getProvider();
+        if (this$provider == null ? other$provider != null : !this$provider.equals(other$provider)) {
+            return false;
+        }
+        Object this$relatedImages = this.getRelatedImages();
+        Object other$relatedImages = other.getRelatedImages();
+        if (this$relatedImages == null ? other$relatedImages != null : !this$relatedImages.equals(other$relatedImages)) {
+            return false;
+        }
+        Object this$version = this.getVersion();
+        Object other$version = other.getVersion();
+        if (this$version == null ? other$version != null : !this$version.equals(other$version)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CSVDescription;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $annotations = this.getAnnotations();
+        result = result * prime + ($annotations == null ? 43 : $annotations.hashCode());
+        Object $apiservicedefinitions = this.getApiservicedefinitions();
+        result = result * prime + ($apiservicedefinitions == null ? 43 : $apiservicedefinitions.hashCode());
+        Object $customresourcedefinitions = this.getCustomresourcedefinitions();
+        result = result * prime + ($customresourcedefinitions == null ? 43 : $customresourcedefinitions.hashCode());
+        Object $description = this.getDescription();
+        result = result * prime + ($description == null ? 43 : $description.hashCode());
+        Object $displayName = this.getDisplayName();
+        result = result * prime + ($displayName == null ? 43 : $displayName.hashCode());
+        Object $icon = this.getIcon();
+        result = result * prime + ($icon == null ? 43 : $icon.hashCode());
+        Object $installModes = this.getInstallModes();
+        result = result * prime + ($installModes == null ? 43 : $installModes.hashCode());
+        Object $keywords = this.getKeywords();
+        result = result * prime + ($keywords == null ? 43 : $keywords.hashCode());
+        Object $links = this.getLinks();
+        result = result * prime + ($links == null ? 43 : $links.hashCode());
+        Object $maintainers = this.getMaintainers();
+        result = result * prime + ($maintainers == null ? 43 : $maintainers.hashCode());
+        Object $maturity = this.getMaturity();
+        result = result * prime + ($maturity == null ? 43 : $maturity.hashCode());
+        Object $minKubeVersion = this.getMinKubeVersion();
+        result = result * prime + ($minKubeVersion == null ? 43 : $minKubeVersion.hashCode());
+        Object $nativeApis = this.getNativeApis();
+        result = result * prime + ($nativeApis == null ? 43 : $nativeApis.hashCode());
+        Object $provider = this.getProvider();
+        result = result * prime + ($provider == null ? 43 : $provider.hashCode());
+        Object $relatedImages = this.getRelatedImages();
+        result = result * prime + ($relatedImages == null ? 43 : $relatedImages.hashCode());
+        Object $version = this.getVersion();
+        result = result * prime + ($version == null ? 43 : $version.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CSVDescription(" + "annotations=" + this.getAnnotations() + ", apiservicedefinitions=" + this.getApiservicedefinitions() + ", customresourcedefinitions=" + this.getCustomresourcedefinitions() + ", description=" + this.getDescription() + ", displayName=" + this.getDisplayName() + ", icon=" + this.getIcon() + ", installModes=" + this.getInstallModes() + ", keywords=" + this.getKeywords() + ", links=" + this.getLinks() + ", maintainers=" + this.getMaintainers() + ", maturity=" + this.getMaturity() + ", minKubeVersion=" + this.getMinKubeVersion() + ", nativeApis=" + this.getNativeApis() + ", provider=" + this.getProvider() + ", relatedImages=" + this.getRelatedImages() + ", version=" + this.getVersion() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RelabelConfig allows dynamic rewriting of label sets for alerts. See Prometheus documentation: - https://prometheus.io/docs/prometheus/latest/configuration/configuration/#alert_relabel_configs - https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "separator",
     "sourceLabels",
     "targetLabel"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -243,6 +234,92 @@ public class RelabelConfig implements Editable<RelabelConfigBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RelabelConfig)) {
+            return false;
+        }
+        RelabelConfig other = (RelabelConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$action = this.getAction();
+        Object other$action = other.getAction();
+        if (this$action == null ? other$action != null : !this$action.equals(other$action)) {
+            return false;
+        }
+        Object this$modulus = this.getModulus();
+        Object other$modulus = other.getModulus();
+        if (this$modulus == null ? other$modulus != null : !this$modulus.equals(other$modulus)) {
+            return false;
+        }
+        Object this$regex = this.getRegex();
+        Object other$regex = other.getRegex();
+        if (this$regex == null ? other$regex != null : !this$regex.equals(other$regex)) {
+            return false;
+        }
+        Object this$replacement = this.getReplacement();
+        Object other$replacement = other.getReplacement();
+        if (this$replacement == null ? other$replacement != null : !this$replacement.equals(other$replacement)) {
+            return false;
+        }
+        Object this$separator = this.getSeparator();
+        Object other$separator = other.getSeparator();
+        if (this$separator == null ? other$separator != null : !this$separator.equals(other$separator)) {
+            return false;
+        }
+        Object this$sourceLabels = this.getSourceLabels();
+        Object other$sourceLabels = other.getSourceLabels();
+        if (this$sourceLabels == null ? other$sourceLabels != null : !this$sourceLabels.equals(other$sourceLabels)) {
+            return false;
+        }
+        Object this$targetLabel = this.getTargetLabel();
+        Object other$targetLabel = other.getTargetLabel();
+        if (this$targetLabel == null ? other$targetLabel != null : !this$targetLabel.equals(other$targetLabel)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RelabelConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $action = this.getAction();
+        result = result * prime + ($action == null ? 43 : $action.hashCode());
+        Object $modulus = this.getModulus();
+        result = result * prime + ($modulus == null ? 43 : $modulus.hashCode());
+        Object $regex = this.getRegex();
+        result = result * prime + ($regex == null ? 43 : $regex.hashCode());
+        Object $replacement = this.getReplacement();
+        result = result * prime + ($replacement == null ? 43 : $replacement.hashCode());
+        Object $separator = this.getSeparator();
+        result = result * prime + ($separator == null ? 43 : $separator.hashCode());
+        Object $sourceLabels = this.getSourceLabels();
+        result = result * prime + ($sourceLabels == null ? 43 : $sourceLabels.hashCode());
+        Object $targetLabel = this.getTargetLabel();
+        result = result * prime + ($targetLabel == null ? 43 : $targetLabel.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RelabelConfig(" + "action=" + this.getAction() + ", modulus=" + this.getModulus() + ", regex=" + this.getRegex() + ", replacement=" + this.getReplacement() + ", separator=" + this.getSeparator() + ", sourceLabels=" + this.getSourceLabels() + ", targetLabel=" + this.getTargetLabel() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

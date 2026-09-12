@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RecommendedPodResources is the recommendation of resources computed by autoscaler. It contains a recommendation for each container in the pod (except for those with `ContainerScalingMode` set to 'Off').
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "containerRecommendations"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -124,6 +115,50 @@ public class RecommendedPodResources implements Editable<RecommendedPodResources
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RecommendedPodResources)) {
+            return false;
+        }
+        RecommendedPodResources other = (RecommendedPodResources) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$containerRecommendations = this.getContainerRecommendations();
+        Object other$containerRecommendations = other.getContainerRecommendations();
+        if (this$containerRecommendations == null ? other$containerRecommendations != null : !this$containerRecommendations.equals(other$containerRecommendations)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RecommendedPodResources;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $containerRecommendations = this.getContainerRecommendations();
+        result = result * prime + ($containerRecommendations == null ? 43 : $containerRecommendations.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RecommendedPodResources(" + "containerRecommendations=" + this.getContainerRecommendations() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

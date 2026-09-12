@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Stressors defines plenty of stressors supported to stress system components out. You can use one or more of them to make up various kinds of stresses
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "cpu",
     "memory"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class Stressors implements Editable<StressorsBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Stressors)) {
+            return false;
+        }
+        Stressors other = (Stressors) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cpu = this.getCpu();
+        Object other$cpu = other.getCpu();
+        if (this$cpu == null ? other$cpu != null : !this$cpu.equals(other$cpu)) {
+            return false;
+        }
+        Object this$memory = this.getMemory();
+        Object other$memory = other.getMemory();
+        if (this$memory == null ? other$memory != null : !this$memory.equals(other$memory)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Stressors;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cpu = this.getCpu();
+        result = result * prime + ($cpu == null ? 43 : $cpu.hashCode());
+        Object $memory = this.getMemory();
+        result = result * prime + ($memory == null ? 43 : $memory.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Stressors(" + "cpu=" + this.getCpu() + ", memory=" + this.getMemory() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

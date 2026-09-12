@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ObservabilityAddonSpec is the spec of observability addon.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "resources",
     "scrapeSizeLimitBytes",
     "workers"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,78 @@ public class ObservabilityAddonSpec implements Editable<ObservabilityAddonSpecBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ObservabilityAddonSpec)) {
+            return false;
+        }
+        ObservabilityAddonSpec other = (ObservabilityAddonSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$enableMetrics = this.getEnableMetrics();
+        Object other$enableMetrics = other.getEnableMetrics();
+        if (this$enableMetrics == null ? other$enableMetrics != null : !this$enableMetrics.equals(other$enableMetrics)) {
+            return false;
+        }
+        Object this$interval = this.getInterval();
+        Object other$interval = other.getInterval();
+        if (this$interval == null ? other$interval != null : !this$interval.equals(other$interval)) {
+            return false;
+        }
+        Object this$resources = this.getResources();
+        Object other$resources = other.getResources();
+        if (this$resources == null ? other$resources != null : !this$resources.equals(other$resources)) {
+            return false;
+        }
+        Object this$scrapeSizeLimitBytes = this.getScrapeSizeLimitBytes();
+        Object other$scrapeSizeLimitBytes = other.getScrapeSizeLimitBytes();
+        if (this$scrapeSizeLimitBytes == null ? other$scrapeSizeLimitBytes != null : !this$scrapeSizeLimitBytes.equals(other$scrapeSizeLimitBytes)) {
+            return false;
+        }
+        Object this$workers = this.getWorkers();
+        Object other$workers = other.getWorkers();
+        if (this$workers == null ? other$workers != null : !this$workers.equals(other$workers)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ObservabilityAddonSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $enableMetrics = this.getEnableMetrics();
+        result = result * prime + ($enableMetrics == null ? 43 : $enableMetrics.hashCode());
+        Object $interval = this.getInterval();
+        result = result * prime + ($interval == null ? 43 : $interval.hashCode());
+        Object $resources = this.getResources();
+        result = result * prime + ($resources == null ? 43 : $resources.hashCode());
+        Object $scrapeSizeLimitBytes = this.getScrapeSizeLimitBytes();
+        result = result * prime + ($scrapeSizeLimitBytes == null ? 43 : $scrapeSizeLimitBytes.hashCode());
+        Object $workers = this.getWorkers();
+        result = result * prime + ($workers == null ? 43 : $workers.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ObservabilityAddonSpec(" + "enableMetrics=" + this.getEnableMetrics() + ", interval=" + this.getInterval() + ", resources=" + this.getResources() + ", scrapeSizeLimitBytes=" + this.getScrapeSizeLimitBytes() + ", workers=" + this.getWorkers() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

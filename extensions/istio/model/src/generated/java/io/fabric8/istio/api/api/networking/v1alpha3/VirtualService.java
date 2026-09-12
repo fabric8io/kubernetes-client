@@ -33,9 +33,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Configuration affecting traffic routing.<br><p> <br><p> &lt;!-- crd generation tags that should apply these routes" representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "http",
     "tcp",
     "tls"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -239,6 +230,85 @@ public class VirtualService implements Editable<VirtualServiceBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VirtualService)) {
+            return false;
+        }
+        VirtualService other = (VirtualService) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$exportTo = this.getExportTo();
+        Object other$exportTo = other.getExportTo();
+        if (this$exportTo == null ? other$exportTo != null : !this$exportTo.equals(other$exportTo)) {
+            return false;
+        }
+        Object this$gateways = this.getGateways();
+        Object other$gateways = other.getGateways();
+        if (this$gateways == null ? other$gateways != null : !this$gateways.equals(other$gateways)) {
+            return false;
+        }
+        Object this$hosts = this.getHosts();
+        Object other$hosts = other.getHosts();
+        if (this$hosts == null ? other$hosts != null : !this$hosts.equals(other$hosts)) {
+            return false;
+        }
+        Object this$http = this.getHttp();
+        Object other$http = other.getHttp();
+        if (this$http == null ? other$http != null : !this$http.equals(other$http)) {
+            return false;
+        }
+        Object this$tcp = this.getTcp();
+        Object other$tcp = other.getTcp();
+        if (this$tcp == null ? other$tcp != null : !this$tcp.equals(other$tcp)) {
+            return false;
+        }
+        Object this$tls = this.getTls();
+        Object other$tls = other.getTls();
+        if (this$tls == null ? other$tls != null : !this$tls.equals(other$tls)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VirtualService;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $exportTo = this.getExportTo();
+        result = result * prime + ($exportTo == null ? 43 : $exportTo.hashCode());
+        Object $gateways = this.getGateways();
+        result = result * prime + ($gateways == null ? 43 : $gateways.hashCode());
+        Object $hosts = this.getHosts();
+        result = result * prime + ($hosts == null ? 43 : $hosts.hashCode());
+        Object $http = this.getHttp();
+        result = result * prime + ($http == null ? 43 : $http.hashCode());
+        Object $tcp = this.getTcp();
+        result = result * prime + ($tcp == null ? 43 : $tcp.hashCode());
+        Object $tls = this.getTls();
+        result = result * prime + ($tls == null ? 43 : $tls.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VirtualService(" + "exportTo=" + this.getExportTo() + ", gateways=" + this.getGateways() + ", hosts=" + this.getHosts() + ", http=" + this.getHttp() + ", tcp=" + this.getTcp() + ", tls=" + this.getTls() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

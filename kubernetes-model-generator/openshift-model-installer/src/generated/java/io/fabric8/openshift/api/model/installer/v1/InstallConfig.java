@@ -33,9 +33,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * InstallConfig is the configuration for an OpenShift install.
@@ -68,12 +65,6 @@ import lombok.experimental.Accessors;
     "publish",
     "pullSecret",
     "sshKey"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -615,6 +606,218 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof InstallConfig)) {
+            return false;
+        }
+        InstallConfig other = (InstallConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$additionalTrustBundle = this.getAdditionalTrustBundle();
+        Object other$additionalTrustBundle = other.getAdditionalTrustBundle();
+        if (this$additionalTrustBundle == null ? other$additionalTrustBundle != null : !this$additionalTrustBundle.equals(other$additionalTrustBundle)) {
+            return false;
+        }
+        Object this$additionalTrustBundlePolicy = this.getAdditionalTrustBundlePolicy();
+        Object other$additionalTrustBundlePolicy = other.getAdditionalTrustBundlePolicy();
+        if (this$additionalTrustBundlePolicy == null ? other$additionalTrustBundlePolicy != null : !this$additionalTrustBundlePolicy.equals(other$additionalTrustBundlePolicy)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$arbiter = this.getArbiter();
+        Object other$arbiter = other.getArbiter();
+        if (this$arbiter == null ? other$arbiter != null : !this$arbiter.equals(other$arbiter)) {
+            return false;
+        }
+        Object this$baseDomain = this.getBaseDomain();
+        Object other$baseDomain = other.getBaseDomain();
+        if (this$baseDomain == null ? other$baseDomain != null : !this$baseDomain.equals(other$baseDomain)) {
+            return false;
+        }
+        Object this$bootstrapInPlace = this.getBootstrapInPlace();
+        Object other$bootstrapInPlace = other.getBootstrapInPlace();
+        if (this$bootstrapInPlace == null ? other$bootstrapInPlace != null : !this$bootstrapInPlace.equals(other$bootstrapInPlace)) {
+            return false;
+        }
+        Object this$capabilities = this.getCapabilities();
+        Object other$capabilities = other.getCapabilities();
+        if (this$capabilities == null ? other$capabilities != null : !this$capabilities.equals(other$capabilities)) {
+            return false;
+        }
+        Object this$compute = this.getCompute();
+        Object other$compute = other.getCompute();
+        if (this$compute == null ? other$compute != null : !this$compute.equals(other$compute)) {
+            return false;
+        }
+        Object this$controlPlane = this.getControlPlane();
+        Object other$controlPlane = other.getControlPlane();
+        if (this$controlPlane == null ? other$controlPlane != null : !this$controlPlane.equals(other$controlPlane)) {
+            return false;
+        }
+        Object this$cpuPartitioningMode = this.getCpuPartitioningMode();
+        Object other$cpuPartitioningMode = other.getCpuPartitioningMode();
+        if (this$cpuPartitioningMode == null ? other$cpuPartitioningMode != null : !this$cpuPartitioningMode.equals(other$cpuPartitioningMode)) {
+            return false;
+        }
+        Object this$credentialsMode = this.getCredentialsMode();
+        Object other$credentialsMode = other.getCredentialsMode();
+        if (this$credentialsMode == null ? other$credentialsMode != null : !this$credentialsMode.equals(other$credentialsMode)) {
+            return false;
+        }
+        Object this$featureGates = this.getFeatureGates();
+        Object other$featureGates = other.getFeatureGates();
+        if (this$featureGates == null ? other$featureGates != null : !this$featureGates.equals(other$featureGates)) {
+            return false;
+        }
+        Object this$featureSet = this.getFeatureSet();
+        Object other$featureSet = other.getFeatureSet();
+        if (this$featureSet == null ? other$featureSet != null : !this$featureSet.equals(other$featureSet)) {
+            return false;
+        }
+        Object this$fips = this.getFips();
+        Object other$fips = other.getFips();
+        if (this$fips == null ? other$fips != null : !this$fips.equals(other$fips)) {
+            return false;
+        }
+        Object this$imageContentSources = this.getImageContentSources();
+        Object other$imageContentSources = other.getImageContentSources();
+        if (this$imageContentSources == null ? other$imageContentSources != null : !this$imageContentSources.equals(other$imageContentSources)) {
+            return false;
+        }
+        Object this$imageDigestSources = this.getImageDigestSources();
+        Object other$imageDigestSources = other.getImageDigestSources();
+        if (this$imageDigestSources == null ? other$imageDigestSources != null : !this$imageDigestSources.equals(other$imageDigestSources)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$networking = this.getNetworking();
+        Object other$networking = other.getNetworking();
+        if (this$networking == null ? other$networking != null : !this$networking.equals(other$networking)) {
+            return false;
+        }
+        Object this$operatorPublishingStrategy = this.getOperatorPublishingStrategy();
+        Object other$operatorPublishingStrategy = other.getOperatorPublishingStrategy();
+        if (this$operatorPublishingStrategy == null ? other$operatorPublishingStrategy != null : !this$operatorPublishingStrategy.equals(other$operatorPublishingStrategy)) {
+            return false;
+        }
+        Object this$platform = this.getPlatform();
+        Object other$platform = other.getPlatform();
+        if (this$platform == null ? other$platform != null : !this$platform.equals(other$platform)) {
+            return false;
+        }
+        Object this$proxy = this.getProxy();
+        Object other$proxy = other.getProxy();
+        if (this$proxy == null ? other$proxy != null : !this$proxy.equals(other$proxy)) {
+            return false;
+        }
+        Object this$publish = this.getPublish();
+        Object other$publish = other.getPublish();
+        if (this$publish == null ? other$publish != null : !this$publish.equals(other$publish)) {
+            return false;
+        }
+        Object this$pullSecret = this.getPullSecret();
+        Object other$pullSecret = other.getPullSecret();
+        if (this$pullSecret == null ? other$pullSecret != null : !this$pullSecret.equals(other$pullSecret)) {
+            return false;
+        }
+        Object this$sshKey = this.getSshKey();
+        Object other$sshKey = other.getSshKey();
+        if (this$sshKey == null ? other$sshKey != null : !this$sshKey.equals(other$sshKey)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof InstallConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $additionalTrustBundle = this.getAdditionalTrustBundle();
+        result = result * prime + ($additionalTrustBundle == null ? 43 : $additionalTrustBundle.hashCode());
+        Object $additionalTrustBundlePolicy = this.getAdditionalTrustBundlePolicy();
+        result = result * prime + ($additionalTrustBundlePolicy == null ? 43 : $additionalTrustBundlePolicy.hashCode());
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $arbiter = this.getArbiter();
+        result = result * prime + ($arbiter == null ? 43 : $arbiter.hashCode());
+        Object $baseDomain = this.getBaseDomain();
+        result = result * prime + ($baseDomain == null ? 43 : $baseDomain.hashCode());
+        Object $bootstrapInPlace = this.getBootstrapInPlace();
+        result = result * prime + ($bootstrapInPlace == null ? 43 : $bootstrapInPlace.hashCode());
+        Object $capabilities = this.getCapabilities();
+        result = result * prime + ($capabilities == null ? 43 : $capabilities.hashCode());
+        Object $compute = this.getCompute();
+        result = result * prime + ($compute == null ? 43 : $compute.hashCode());
+        Object $controlPlane = this.getControlPlane();
+        result = result * prime + ($controlPlane == null ? 43 : $controlPlane.hashCode());
+        Object $cpuPartitioningMode = this.getCpuPartitioningMode();
+        result = result * prime + ($cpuPartitioningMode == null ? 43 : $cpuPartitioningMode.hashCode());
+        Object $credentialsMode = this.getCredentialsMode();
+        result = result * prime + ($credentialsMode == null ? 43 : $credentialsMode.hashCode());
+        Object $featureGates = this.getFeatureGates();
+        result = result * prime + ($featureGates == null ? 43 : $featureGates.hashCode());
+        Object $featureSet = this.getFeatureSet();
+        result = result * prime + ($featureSet == null ? 43 : $featureSet.hashCode());
+        Object $fips = this.getFips();
+        result = result * prime + ($fips == null ? 43 : $fips.hashCode());
+        Object $imageContentSources = this.getImageContentSources();
+        result = result * prime + ($imageContentSources == null ? 43 : $imageContentSources.hashCode());
+        Object $imageDigestSources = this.getImageDigestSources();
+        result = result * prime + ($imageDigestSources == null ? 43 : $imageDigestSources.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $networking = this.getNetworking();
+        result = result * prime + ($networking == null ? 43 : $networking.hashCode());
+        Object $operatorPublishingStrategy = this.getOperatorPublishingStrategy();
+        result = result * prime + ($operatorPublishingStrategy == null ? 43 : $operatorPublishingStrategy.hashCode());
+        Object $platform = this.getPlatform();
+        result = result * prime + ($platform == null ? 43 : $platform.hashCode());
+        Object $proxy = this.getProxy();
+        result = result * prime + ($proxy == null ? 43 : $proxy.hashCode());
+        Object $publish = this.getPublish();
+        result = result * prime + ($publish == null ? 43 : $publish.hashCode());
+        Object $pullSecret = this.getPullSecret();
+        result = result * prime + ($pullSecret == null ? 43 : $pullSecret.hashCode());
+        Object $sshKey = this.getSshKey();
+        result = result * prime + ($sshKey == null ? 43 : $sshKey.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "InstallConfig(" + "additionalTrustBundle=" + this.getAdditionalTrustBundle() + ", additionalTrustBundlePolicy=" + this.getAdditionalTrustBundlePolicy() + ", apiVersion=" + this.getApiVersion() + ", arbiter=" + this.getArbiter() + ", baseDomain=" + this.getBaseDomain() + ", bootstrapInPlace=" + this.getBootstrapInPlace() + ", capabilities=" + this.getCapabilities() + ", compute=" + this.getCompute() + ", controlPlane=" + this.getControlPlane() + ", cpuPartitioningMode=" + this.getCpuPartitioningMode() + ", credentialsMode=" + this.getCredentialsMode() + ", featureGates=" + this.getFeatureGates() + ", featureSet=" + this.getFeatureSet() + ", fips=" + this.getFips() + ", imageContentSources=" + this.getImageContentSources() + ", imageDigestSources=" + this.getImageDigestSources() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata() + ", networking=" + this.getNetworking() + ", operatorPublishingStrategy=" + this.getOperatorPublishingStrategy() + ", platform=" + this.getPlatform() + ", proxy=" + this.getProxy() + ", publish=" + this.getPublish() + ", pullSecret=" + this.getPullSecret() + ", sshKey=" + this.getSshKey() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

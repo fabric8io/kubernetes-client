@@ -35,9 +35,6 @@ import io.fabric8.openshift.api.model.monitoring.v1.SafeAuthorization;
 import io.fabric8.openshift.api.model.monitoring.v1.SafeTLSConfig;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ConsulSDConfig defines a Consul service discovery configuration See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#consul_sd_config
@@ -70,12 +67,6 @@ import lombok.experimental.Accessors;
     "tags",
     "tlsConfig",
     "tokenRef"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -615,6 +606,218 @@ public class ConsulSDConfig implements Editable<ConsulSDConfigBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConsulSDConfig)) {
+            return false;
+        }
+        ConsulSDConfig other = (ConsulSDConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allowStale = this.getAllowStale();
+        Object other$allowStale = other.getAllowStale();
+        if (this$allowStale == null ? other$allowStale != null : !this$allowStale.equals(other$allowStale)) {
+            return false;
+        }
+        Object this$authorization = this.getAuthorization();
+        Object other$authorization = other.getAuthorization();
+        if (this$authorization == null ? other$authorization != null : !this$authorization.equals(other$authorization)) {
+            return false;
+        }
+        Object this$basicAuth = this.getBasicAuth();
+        Object other$basicAuth = other.getBasicAuth();
+        if (this$basicAuth == null ? other$basicAuth != null : !this$basicAuth.equals(other$basicAuth)) {
+            return false;
+        }
+        Object this$datacenter = this.getDatacenter();
+        Object other$datacenter = other.getDatacenter();
+        if (this$datacenter == null ? other$datacenter != null : !this$datacenter.equals(other$datacenter)) {
+            return false;
+        }
+        Object this$enableHTTP2 = this.getEnableHTTP2();
+        Object other$enableHTTP2 = other.getEnableHTTP2();
+        if (this$enableHTTP2 == null ? other$enableHTTP2 != null : !this$enableHTTP2.equals(other$enableHTTP2)) {
+            return false;
+        }
+        Object this$filter = this.getFilter();
+        Object other$filter = other.getFilter();
+        if (this$filter == null ? other$filter != null : !this$filter.equals(other$filter)) {
+            return false;
+        }
+        Object this$followRedirects = this.getFollowRedirects();
+        Object other$followRedirects = other.getFollowRedirects();
+        if (this$followRedirects == null ? other$followRedirects != null : !this$followRedirects.equals(other$followRedirects)) {
+            return false;
+        }
+        Object this$healthFilter = this.getHealthFilter();
+        Object other$healthFilter = other.getHealthFilter();
+        if (this$healthFilter == null ? other$healthFilter != null : !this$healthFilter.equals(other$healthFilter)) {
+            return false;
+        }
+        Object this$namespace = this.getNamespace();
+        Object other$namespace = other.getNamespace();
+        if (this$namespace == null ? other$namespace != null : !this$namespace.equals(other$namespace)) {
+            return false;
+        }
+        Object this$noProxy = this.getNoProxy();
+        Object other$noProxy = other.getNoProxy();
+        if (this$noProxy == null ? other$noProxy != null : !this$noProxy.equals(other$noProxy)) {
+            return false;
+        }
+        Object this$nodeMeta = this.getNodeMeta();
+        Object other$nodeMeta = other.getNodeMeta();
+        if (this$nodeMeta == null ? other$nodeMeta != null : !this$nodeMeta.equals(other$nodeMeta)) {
+            return false;
+        }
+        Object this$oauth2 = this.getOauth2();
+        Object other$oauth2 = other.getOauth2();
+        if (this$oauth2 == null ? other$oauth2 != null : !this$oauth2.equals(other$oauth2)) {
+            return false;
+        }
+        Object this$partition = this.getPartition();
+        Object other$partition = other.getPartition();
+        if (this$partition == null ? other$partition != null : !this$partition.equals(other$partition)) {
+            return false;
+        }
+        Object this$pathPrefix = this.getPathPrefix();
+        Object other$pathPrefix = other.getPathPrefix();
+        if (this$pathPrefix == null ? other$pathPrefix != null : !this$pathPrefix.equals(other$pathPrefix)) {
+            return false;
+        }
+        Object this$proxyConnectHeader = this.getProxyConnectHeader();
+        Object other$proxyConnectHeader = other.getProxyConnectHeader();
+        if (this$proxyConnectHeader == null ? other$proxyConnectHeader != null : !this$proxyConnectHeader.equals(other$proxyConnectHeader)) {
+            return false;
+        }
+        Object this$proxyFromEnvironment = this.getProxyFromEnvironment();
+        Object other$proxyFromEnvironment = other.getProxyFromEnvironment();
+        if (this$proxyFromEnvironment == null ? other$proxyFromEnvironment != null : !this$proxyFromEnvironment.equals(other$proxyFromEnvironment)) {
+            return false;
+        }
+        Object this$proxyUrl = this.getProxyUrl();
+        Object other$proxyUrl = other.getProxyUrl();
+        if (this$proxyUrl == null ? other$proxyUrl != null : !this$proxyUrl.equals(other$proxyUrl)) {
+            return false;
+        }
+        Object this$refreshInterval = this.getRefreshInterval();
+        Object other$refreshInterval = other.getRefreshInterval();
+        if (this$refreshInterval == null ? other$refreshInterval != null : !this$refreshInterval.equals(other$refreshInterval)) {
+            return false;
+        }
+        Object this$scheme = this.getScheme();
+        Object other$scheme = other.getScheme();
+        if (this$scheme == null ? other$scheme != null : !this$scheme.equals(other$scheme)) {
+            return false;
+        }
+        Object this$server = this.getServer();
+        Object other$server = other.getServer();
+        if (this$server == null ? other$server != null : !this$server.equals(other$server)) {
+            return false;
+        }
+        Object this$services = this.getServices();
+        Object other$services = other.getServices();
+        if (this$services == null ? other$services != null : !this$services.equals(other$services)) {
+            return false;
+        }
+        Object this$tagSeparator = this.getTagSeparator();
+        Object other$tagSeparator = other.getTagSeparator();
+        if (this$tagSeparator == null ? other$tagSeparator != null : !this$tagSeparator.equals(other$tagSeparator)) {
+            return false;
+        }
+        Object this$tags = this.getTags();
+        Object other$tags = other.getTags();
+        if (this$tags == null ? other$tags != null : !this$tags.equals(other$tags)) {
+            return false;
+        }
+        Object this$tlsConfig = this.getTlsConfig();
+        Object other$tlsConfig = other.getTlsConfig();
+        if (this$tlsConfig == null ? other$tlsConfig != null : !this$tlsConfig.equals(other$tlsConfig)) {
+            return false;
+        }
+        Object this$tokenRef = this.getTokenRef();
+        Object other$tokenRef = other.getTokenRef();
+        if (this$tokenRef == null ? other$tokenRef != null : !this$tokenRef.equals(other$tokenRef)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConsulSDConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allowStale = this.getAllowStale();
+        result = result * prime + ($allowStale == null ? 43 : $allowStale.hashCode());
+        Object $authorization = this.getAuthorization();
+        result = result * prime + ($authorization == null ? 43 : $authorization.hashCode());
+        Object $basicAuth = this.getBasicAuth();
+        result = result * prime + ($basicAuth == null ? 43 : $basicAuth.hashCode());
+        Object $datacenter = this.getDatacenter();
+        result = result * prime + ($datacenter == null ? 43 : $datacenter.hashCode());
+        Object $enableHTTP2 = this.getEnableHTTP2();
+        result = result * prime + ($enableHTTP2 == null ? 43 : $enableHTTP2.hashCode());
+        Object $filter = this.getFilter();
+        result = result * prime + ($filter == null ? 43 : $filter.hashCode());
+        Object $followRedirects = this.getFollowRedirects();
+        result = result * prime + ($followRedirects == null ? 43 : $followRedirects.hashCode());
+        Object $healthFilter = this.getHealthFilter();
+        result = result * prime + ($healthFilter == null ? 43 : $healthFilter.hashCode());
+        Object $namespace = this.getNamespace();
+        result = result * prime + ($namespace == null ? 43 : $namespace.hashCode());
+        Object $noProxy = this.getNoProxy();
+        result = result * prime + ($noProxy == null ? 43 : $noProxy.hashCode());
+        Object $nodeMeta = this.getNodeMeta();
+        result = result * prime + ($nodeMeta == null ? 43 : $nodeMeta.hashCode());
+        Object $oauth2 = this.getOauth2();
+        result = result * prime + ($oauth2 == null ? 43 : $oauth2.hashCode());
+        Object $partition = this.getPartition();
+        result = result * prime + ($partition == null ? 43 : $partition.hashCode());
+        Object $pathPrefix = this.getPathPrefix();
+        result = result * prime + ($pathPrefix == null ? 43 : $pathPrefix.hashCode());
+        Object $proxyConnectHeader = this.getProxyConnectHeader();
+        result = result * prime + ($proxyConnectHeader == null ? 43 : $proxyConnectHeader.hashCode());
+        Object $proxyFromEnvironment = this.getProxyFromEnvironment();
+        result = result * prime + ($proxyFromEnvironment == null ? 43 : $proxyFromEnvironment.hashCode());
+        Object $proxyUrl = this.getProxyUrl();
+        result = result * prime + ($proxyUrl == null ? 43 : $proxyUrl.hashCode());
+        Object $refreshInterval = this.getRefreshInterval();
+        result = result * prime + ($refreshInterval == null ? 43 : $refreshInterval.hashCode());
+        Object $scheme = this.getScheme();
+        result = result * prime + ($scheme == null ? 43 : $scheme.hashCode());
+        Object $server = this.getServer();
+        result = result * prime + ($server == null ? 43 : $server.hashCode());
+        Object $services = this.getServices();
+        result = result * prime + ($services == null ? 43 : $services.hashCode());
+        Object $tagSeparator = this.getTagSeparator();
+        result = result * prime + ($tagSeparator == null ? 43 : $tagSeparator.hashCode());
+        Object $tags = this.getTags();
+        result = result * prime + ($tags == null ? 43 : $tags.hashCode());
+        Object $tlsConfig = this.getTlsConfig();
+        result = result * prime + ($tlsConfig == null ? 43 : $tlsConfig.hashCode());
+        Object $tokenRef = this.getTokenRef();
+        result = result * prime + ($tokenRef == null ? 43 : $tokenRef.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConsulSDConfig(" + "allowStale=" + this.getAllowStale() + ", authorization=" + this.getAuthorization() + ", basicAuth=" + this.getBasicAuth() + ", datacenter=" + this.getDatacenter() + ", enableHTTP2=" + this.getEnableHTTP2() + ", filter=" + this.getFilter() + ", followRedirects=" + this.getFollowRedirects() + ", healthFilter=" + this.getHealthFilter() + ", namespace=" + this.getNamespace() + ", noProxy=" + this.getNoProxy() + ", nodeMeta=" + this.getNodeMeta() + ", oauth2=" + this.getOauth2() + ", partition=" + this.getPartition() + ", pathPrefix=" + this.getPathPrefix() + ", proxyConnectHeader=" + this.getProxyConnectHeader() + ", proxyFromEnvironment=" + this.getProxyFromEnvironment() + ", proxyUrl=" + this.getProxyUrl() + ", refreshInterval=" + this.getRefreshInterval() + ", scheme=" + this.getScheme() + ", server=" + this.getServer() + ", services=" + this.getServices() + ", tagSeparator=" + this.getTagSeparator() + ", tags=" + this.getTags() + ", tlsConfig=" + this.getTlsConfig() + ", tokenRef=" + this.getTokenRef() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

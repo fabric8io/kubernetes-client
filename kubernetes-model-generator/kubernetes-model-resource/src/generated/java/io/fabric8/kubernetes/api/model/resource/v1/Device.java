@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Device represents one individual hardware instance that can be selected based on its attributes. Besides the name, exactly one field must be set.
@@ -54,12 +51,6 @@ import lombok.experimental.Accessors;
     "nodeName",
     "nodeSelector",
     "taints"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -377,6 +368,134 @@ public class Device implements Editable<DeviceBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Device)) {
+            return false;
+        }
+        Device other = (Device) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allNodes = this.getAllNodes();
+        Object other$allNodes = other.getAllNodes();
+        if (this$allNodes == null ? other$allNodes != null : !this$allNodes.equals(other$allNodes)) {
+            return false;
+        }
+        Object this$allowMultipleAllocations = this.getAllowMultipleAllocations();
+        Object other$allowMultipleAllocations = other.getAllowMultipleAllocations();
+        if (this$allowMultipleAllocations == null ? other$allowMultipleAllocations != null : !this$allowMultipleAllocations.equals(other$allowMultipleAllocations)) {
+            return false;
+        }
+        Object this$attributes = this.getAttributes();
+        Object other$attributes = other.getAttributes();
+        if (this$attributes == null ? other$attributes != null : !this$attributes.equals(other$attributes)) {
+            return false;
+        }
+        Object this$bindingConditions = this.getBindingConditions();
+        Object other$bindingConditions = other.getBindingConditions();
+        if (this$bindingConditions == null ? other$bindingConditions != null : !this$bindingConditions.equals(other$bindingConditions)) {
+            return false;
+        }
+        Object this$bindingFailureConditions = this.getBindingFailureConditions();
+        Object other$bindingFailureConditions = other.getBindingFailureConditions();
+        if (this$bindingFailureConditions == null ? other$bindingFailureConditions != null : !this$bindingFailureConditions.equals(other$bindingFailureConditions)) {
+            return false;
+        }
+        Object this$bindsToNode = this.getBindsToNode();
+        Object other$bindsToNode = other.getBindsToNode();
+        if (this$bindsToNode == null ? other$bindsToNode != null : !this$bindsToNode.equals(other$bindsToNode)) {
+            return false;
+        }
+        Object this$capacity = this.getCapacity();
+        Object other$capacity = other.getCapacity();
+        if (this$capacity == null ? other$capacity != null : !this$capacity.equals(other$capacity)) {
+            return false;
+        }
+        Object this$consumesCounters = this.getConsumesCounters();
+        Object other$consumesCounters = other.getConsumesCounters();
+        if (this$consumesCounters == null ? other$consumesCounters != null : !this$consumesCounters.equals(other$consumesCounters)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$nodeAllocatableResources = this.getNodeAllocatableResources();
+        Object other$nodeAllocatableResources = other.getNodeAllocatableResources();
+        if (this$nodeAllocatableResources == null ? other$nodeAllocatableResources != null : !this$nodeAllocatableResources.equals(other$nodeAllocatableResources)) {
+            return false;
+        }
+        Object this$nodeName = this.getNodeName();
+        Object other$nodeName = other.getNodeName();
+        if (this$nodeName == null ? other$nodeName != null : !this$nodeName.equals(other$nodeName)) {
+            return false;
+        }
+        Object this$nodeSelector = this.getNodeSelector();
+        Object other$nodeSelector = other.getNodeSelector();
+        if (this$nodeSelector == null ? other$nodeSelector != null : !this$nodeSelector.equals(other$nodeSelector)) {
+            return false;
+        }
+        Object this$taints = this.getTaints();
+        Object other$taints = other.getTaints();
+        if (this$taints == null ? other$taints != null : !this$taints.equals(other$taints)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Device;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allNodes = this.getAllNodes();
+        result = result * prime + ($allNodes == null ? 43 : $allNodes.hashCode());
+        Object $allowMultipleAllocations = this.getAllowMultipleAllocations();
+        result = result * prime + ($allowMultipleAllocations == null ? 43 : $allowMultipleAllocations.hashCode());
+        Object $attributes = this.getAttributes();
+        result = result * prime + ($attributes == null ? 43 : $attributes.hashCode());
+        Object $bindingConditions = this.getBindingConditions();
+        result = result * prime + ($bindingConditions == null ? 43 : $bindingConditions.hashCode());
+        Object $bindingFailureConditions = this.getBindingFailureConditions();
+        result = result * prime + ($bindingFailureConditions == null ? 43 : $bindingFailureConditions.hashCode());
+        Object $bindsToNode = this.getBindsToNode();
+        result = result * prime + ($bindsToNode == null ? 43 : $bindsToNode.hashCode());
+        Object $capacity = this.getCapacity();
+        result = result * prime + ($capacity == null ? 43 : $capacity.hashCode());
+        Object $consumesCounters = this.getConsumesCounters();
+        result = result * prime + ($consumesCounters == null ? 43 : $consumesCounters.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $nodeAllocatableResources = this.getNodeAllocatableResources();
+        result = result * prime + ($nodeAllocatableResources == null ? 43 : $nodeAllocatableResources.hashCode());
+        Object $nodeName = this.getNodeName();
+        result = result * prime + ($nodeName == null ? 43 : $nodeName.hashCode());
+        Object $nodeSelector = this.getNodeSelector();
+        result = result * prime + ($nodeSelector == null ? 43 : $nodeSelector.hashCode());
+        Object $taints = this.getTaints();
+        result = result * prime + ($taints == null ? 43 : $taints.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Device(" + "allNodes=" + this.getAllNodes() + ", allowMultipleAllocations=" + this.getAllowMultipleAllocations() + ", attributes=" + this.getAttributes() + ", bindingConditions=" + this.getBindingConditions() + ", bindingFailureConditions=" + this.getBindingFailureConditions() + ", bindsToNode=" + this.getBindsToNode() + ", capacity=" + this.getCapacity() + ", consumesCounters=" + this.getConsumesCounters() + ", name=" + this.getName() + ", nodeAllocatableResources=" + this.getNodeAllocatableResources() + ", nodeName=" + this.getNodeName() + ", nodeSelector=" + this.getNodeSelector() + ", taints=" + this.getTaints() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

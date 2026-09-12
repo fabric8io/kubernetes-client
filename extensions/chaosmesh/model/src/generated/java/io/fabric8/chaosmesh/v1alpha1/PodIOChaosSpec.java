@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PodIOChaosSpec defines the desired state of IOChaos
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "actions",
     "container",
     "volumeMountPath"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -164,6 +155,64 @@ public class PodIOChaosSpec implements Editable<PodIOChaosSpecBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodIOChaosSpec)) {
+            return false;
+        }
+        PodIOChaosSpec other = (PodIOChaosSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$actions = this.getActions();
+        Object other$actions = other.getActions();
+        if (this$actions == null ? other$actions != null : !this$actions.equals(other$actions)) {
+            return false;
+        }
+        Object this$container = this.getContainer();
+        Object other$container = other.getContainer();
+        if (this$container == null ? other$container != null : !this$container.equals(other$container)) {
+            return false;
+        }
+        Object this$volumeMountPath = this.getVolumeMountPath();
+        Object other$volumeMountPath = other.getVolumeMountPath();
+        if (this$volumeMountPath == null ? other$volumeMountPath != null : !this$volumeMountPath.equals(other$volumeMountPath)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodIOChaosSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $actions = this.getActions();
+        result = result * prime + ($actions == null ? 43 : $actions.hashCode());
+        Object $container = this.getContainer();
+        result = result * prime + ($container == null ? 43 : $container.hashCode());
+        Object $volumeMountPath = this.getVolumeMountPath();
+        result = result * prime + ($volumeMountPath == null ? 43 : $volumeMountPath.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodIOChaosSpec(" + "actions=" + this.getActions() + ", container=" + this.getContainer() + ", volumeMountPath=" + this.getVolumeMountPath() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

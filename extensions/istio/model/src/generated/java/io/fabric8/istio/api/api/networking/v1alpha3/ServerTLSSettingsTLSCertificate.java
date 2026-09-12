@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TLSCertificate describes the server's TLS certificate.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "caCertificates",
     "privateKey",
     "serverCertificate"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class ServerTLSSettingsTLSCertificate implements Editable<ServerTLSSettin
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ServerTLSSettingsTLSCertificate)) {
+            return false;
+        }
+        ServerTLSSettingsTLSCertificate other = (ServerTLSSettingsTLSCertificate) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$caCertificates = this.getCaCertificates();
+        Object other$caCertificates = other.getCaCertificates();
+        if (this$caCertificates == null ? other$caCertificates != null : !this$caCertificates.equals(other$caCertificates)) {
+            return false;
+        }
+        Object this$privateKey = this.getPrivateKey();
+        Object other$privateKey = other.getPrivateKey();
+        if (this$privateKey == null ? other$privateKey != null : !this$privateKey.equals(other$privateKey)) {
+            return false;
+        }
+        Object this$serverCertificate = this.getServerCertificate();
+        Object other$serverCertificate = other.getServerCertificate();
+        if (this$serverCertificate == null ? other$serverCertificate != null : !this$serverCertificate.equals(other$serverCertificate)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ServerTLSSettingsTLSCertificate;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $caCertificates = this.getCaCertificates();
+        result = result * prime + ($caCertificates == null ? 43 : $caCertificates.hashCode());
+        Object $privateKey = this.getPrivateKey();
+        result = result * prime + ($privateKey == null ? 43 : $privateKey.hashCode());
+        Object $serverCertificate = this.getServerCertificate();
+        result = result * prime + ($serverCertificate == null ? 43 : $serverCertificate.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ServerTLSSettingsTLSCertificate(" + "caCertificates=" + this.getCaCertificates() + ", privateKey=" + this.getPrivateKey() + ", serverCertificate=" + this.getServerCertificate() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

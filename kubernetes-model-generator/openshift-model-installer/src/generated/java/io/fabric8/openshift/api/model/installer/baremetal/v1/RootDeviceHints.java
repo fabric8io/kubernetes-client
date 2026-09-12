@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RootDeviceHints holds the hints for specifying the storage location for the root filesystem for the image.
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "wwn",
     "wwnVendorExtension",
     "wwnWithExtension"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -300,6 +291,113 @@ public class RootDeviceHints implements Editable<RootDeviceHintsBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RootDeviceHints)) {
+            return false;
+        }
+        RootDeviceHints other = (RootDeviceHints) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$deviceName = this.getDeviceName();
+        Object other$deviceName = other.getDeviceName();
+        if (this$deviceName == null ? other$deviceName != null : !this$deviceName.equals(other$deviceName)) {
+            return false;
+        }
+        Object this$hctl = this.getHctl();
+        Object other$hctl = other.getHctl();
+        if (this$hctl == null ? other$hctl != null : !this$hctl.equals(other$hctl)) {
+            return false;
+        }
+        Object this$minSizeGigabytes = this.getMinSizeGigabytes();
+        Object other$minSizeGigabytes = other.getMinSizeGigabytes();
+        if (this$minSizeGigabytes == null ? other$minSizeGigabytes != null : !this$minSizeGigabytes.equals(other$minSizeGigabytes)) {
+            return false;
+        }
+        Object this$model = this.getModel();
+        Object other$model = other.getModel();
+        if (this$model == null ? other$model != null : !this$model.equals(other$model)) {
+            return false;
+        }
+        Object this$rotational = this.getRotational();
+        Object other$rotational = other.getRotational();
+        if (this$rotational == null ? other$rotational != null : !this$rotational.equals(other$rotational)) {
+            return false;
+        }
+        Object this$serialNumber = this.getSerialNumber();
+        Object other$serialNumber = other.getSerialNumber();
+        if (this$serialNumber == null ? other$serialNumber != null : !this$serialNumber.equals(other$serialNumber)) {
+            return false;
+        }
+        Object this$vendor = this.getVendor();
+        Object other$vendor = other.getVendor();
+        if (this$vendor == null ? other$vendor != null : !this$vendor.equals(other$vendor)) {
+            return false;
+        }
+        Object this$wwn = this.getWwn();
+        Object other$wwn = other.getWwn();
+        if (this$wwn == null ? other$wwn != null : !this$wwn.equals(other$wwn)) {
+            return false;
+        }
+        Object this$wwnVendorExtension = this.getWwnVendorExtension();
+        Object other$wwnVendorExtension = other.getWwnVendorExtension();
+        if (this$wwnVendorExtension == null ? other$wwnVendorExtension != null : !this$wwnVendorExtension.equals(other$wwnVendorExtension)) {
+            return false;
+        }
+        Object this$wwnWithExtension = this.getWwnWithExtension();
+        Object other$wwnWithExtension = other.getWwnWithExtension();
+        if (this$wwnWithExtension == null ? other$wwnWithExtension != null : !this$wwnWithExtension.equals(other$wwnWithExtension)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RootDeviceHints;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $deviceName = this.getDeviceName();
+        result = result * prime + ($deviceName == null ? 43 : $deviceName.hashCode());
+        Object $hctl = this.getHctl();
+        result = result * prime + ($hctl == null ? 43 : $hctl.hashCode());
+        Object $minSizeGigabytes = this.getMinSizeGigabytes();
+        result = result * prime + ($minSizeGigabytes == null ? 43 : $minSizeGigabytes.hashCode());
+        Object $model = this.getModel();
+        result = result * prime + ($model == null ? 43 : $model.hashCode());
+        Object $rotational = this.getRotational();
+        result = result * prime + ($rotational == null ? 43 : $rotational.hashCode());
+        Object $serialNumber = this.getSerialNumber();
+        result = result * prime + ($serialNumber == null ? 43 : $serialNumber.hashCode());
+        Object $vendor = this.getVendor();
+        result = result * prime + ($vendor == null ? 43 : $vendor.hashCode());
+        Object $wwn = this.getWwn();
+        result = result * prime + ($wwn == null ? 43 : $wwn.hashCode());
+        Object $wwnVendorExtension = this.getWwnVendorExtension();
+        result = result * prime + ($wwnVendorExtension == null ? 43 : $wwnVendorExtension.hashCode());
+        Object $wwnWithExtension = this.getWwnWithExtension();
+        result = result * prime + ($wwnWithExtension == null ? 43 : $wwnWithExtension.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RootDeviceHints(" + "deviceName=" + this.getDeviceName() + ", hctl=" + this.getHctl() + ", minSizeGigabytes=" + this.getMinSizeGigabytes() + ", model=" + this.getModel() + ", rotational=" + this.getRotational() + ", serialNumber=" + this.getSerialNumber() + ", vendor=" + this.getVendor() + ", wwn=" + this.getWwn() + ", wwnVendorExtension=" + this.getWwnVendorExtension() + ", wwnWithExtension=" + this.getWwnWithExtension() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

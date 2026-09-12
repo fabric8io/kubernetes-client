@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.config.v1.IdentityProvider;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SyncIdentityProviderCommonSpec defines the identity providers to sync
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "identityProviders"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -125,6 +116,50 @@ public class SyncIdentityProviderCommonSpec implements Editable<SyncIdentityProv
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SyncIdentityProviderCommonSpec)) {
+            return false;
+        }
+        SyncIdentityProviderCommonSpec other = (SyncIdentityProviderCommonSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$identityProviders = this.getIdentityProviders();
+        Object other$identityProviders = other.getIdentityProviders();
+        if (this$identityProviders == null ? other$identityProviders != null : !this$identityProviders.equals(other$identityProviders)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SyncIdentityProviderCommonSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $identityProviders = this.getIdentityProviders();
+        result = result * prime + ($identityProviders == null ? 43 : $identityProviders.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SyncIdentityProviderCommonSpec(" + "identityProviders=" + this.getIdentityProviders() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

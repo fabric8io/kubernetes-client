@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ConsoleSpec is the specification of the desired behavior of the Console.
@@ -50,12 +47,6 @@ import lombok.experimental.Accessors;
     "providers",
     "route",
     "unsupportedConfigOverrides"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -308,6 +299,113 @@ public class ConsoleSpec implements Editable<ConsoleSpecBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConsoleSpec)) {
+            return false;
+        }
+        ConsoleSpec other = (ConsoleSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$customization = this.getCustomization();
+        Object other$customization = other.getCustomization();
+        if (this$customization == null ? other$customization != null : !this$customization.equals(other$customization)) {
+            return false;
+        }
+        Object this$ingress = this.getIngress();
+        Object other$ingress = other.getIngress();
+        if (this$ingress == null ? other$ingress != null : !this$ingress.equals(other$ingress)) {
+            return false;
+        }
+        Object this$logLevel = this.getLogLevel();
+        Object other$logLevel = other.getLogLevel();
+        if (this$logLevel == null ? other$logLevel != null : !this$logLevel.equals(other$logLevel)) {
+            return false;
+        }
+        Object this$managementState = this.getManagementState();
+        Object other$managementState = other.getManagementState();
+        if (this$managementState == null ? other$managementState != null : !this$managementState.equals(other$managementState)) {
+            return false;
+        }
+        Object this$observedConfig = this.getObservedConfig();
+        Object other$observedConfig = other.getObservedConfig();
+        if (this$observedConfig == null ? other$observedConfig != null : !this$observedConfig.equals(other$observedConfig)) {
+            return false;
+        }
+        Object this$operatorLogLevel = this.getOperatorLogLevel();
+        Object other$operatorLogLevel = other.getOperatorLogLevel();
+        if (this$operatorLogLevel == null ? other$operatorLogLevel != null : !this$operatorLogLevel.equals(other$operatorLogLevel)) {
+            return false;
+        }
+        Object this$plugins = this.getPlugins();
+        Object other$plugins = other.getPlugins();
+        if (this$plugins == null ? other$plugins != null : !this$plugins.equals(other$plugins)) {
+            return false;
+        }
+        Object this$providers = this.getProviders();
+        Object other$providers = other.getProviders();
+        if (this$providers == null ? other$providers != null : !this$providers.equals(other$providers)) {
+            return false;
+        }
+        Object this$route = this.getRoute();
+        Object other$route = other.getRoute();
+        if (this$route == null ? other$route != null : !this$route.equals(other$route)) {
+            return false;
+        }
+        Object this$unsupportedConfigOverrides = this.getUnsupportedConfigOverrides();
+        Object other$unsupportedConfigOverrides = other.getUnsupportedConfigOverrides();
+        if (this$unsupportedConfigOverrides == null ? other$unsupportedConfigOverrides != null : !this$unsupportedConfigOverrides.equals(other$unsupportedConfigOverrides)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConsoleSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $customization = this.getCustomization();
+        result = result * prime + ($customization == null ? 43 : $customization.hashCode());
+        Object $ingress = this.getIngress();
+        result = result * prime + ($ingress == null ? 43 : $ingress.hashCode());
+        Object $logLevel = this.getLogLevel();
+        result = result * prime + ($logLevel == null ? 43 : $logLevel.hashCode());
+        Object $managementState = this.getManagementState();
+        result = result * prime + ($managementState == null ? 43 : $managementState.hashCode());
+        Object $observedConfig = this.getObservedConfig();
+        result = result * prime + ($observedConfig == null ? 43 : $observedConfig.hashCode());
+        Object $operatorLogLevel = this.getOperatorLogLevel();
+        result = result * prime + ($operatorLogLevel == null ? 43 : $operatorLogLevel.hashCode());
+        Object $plugins = this.getPlugins();
+        result = result * prime + ($plugins == null ? 43 : $plugins.hashCode());
+        Object $providers = this.getProviders();
+        result = result * prime + ($providers == null ? 43 : $providers.hashCode());
+        Object $route = this.getRoute();
+        result = result * prime + ($route == null ? 43 : $route.hashCode());
+        Object $unsupportedConfigOverrides = this.getUnsupportedConfigOverrides();
+        result = result * prime + ($unsupportedConfigOverrides == null ? 43 : $unsupportedConfigOverrides.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConsoleSpec(" + "customization=" + this.getCustomization() + ", ingress=" + this.getIngress() + ", logLevel=" + this.getLogLevel() + ", managementState=" + this.getManagementState() + ", observedConfig=" + this.getObservedConfig() + ", operatorLogLevel=" + this.getOperatorLogLevel() + ", plugins=" + this.getPlugins() + ", providers=" + this.getProviders() + ", route=" + this.getRoute() + ", unsupportedConfigOverrides=" + this.getUnsupportedConfigOverrides() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * InternalTaskModifier implements TaskModifier for resources that are built-in to Tekton Pipelines.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "stepsToAppend",
     "stepsToPrepend",
     "volumes"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -168,6 +159,64 @@ public class InternalTaskModifier implements Editable<InternalTaskModifierBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof InternalTaskModifier)) {
+            return false;
+        }
+        InternalTaskModifier other = (InternalTaskModifier) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$stepsToAppend = this.getStepsToAppend();
+        Object other$stepsToAppend = other.getStepsToAppend();
+        if (this$stepsToAppend == null ? other$stepsToAppend != null : !this$stepsToAppend.equals(other$stepsToAppend)) {
+            return false;
+        }
+        Object this$stepsToPrepend = this.getStepsToPrepend();
+        Object other$stepsToPrepend = other.getStepsToPrepend();
+        if (this$stepsToPrepend == null ? other$stepsToPrepend != null : !this$stepsToPrepend.equals(other$stepsToPrepend)) {
+            return false;
+        }
+        Object this$volumes = this.getVolumes();
+        Object other$volumes = other.getVolumes();
+        if (this$volumes == null ? other$volumes != null : !this$volumes.equals(other$volumes)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof InternalTaskModifier;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $stepsToAppend = this.getStepsToAppend();
+        result = result * prime + ($stepsToAppend == null ? 43 : $stepsToAppend.hashCode());
+        Object $stepsToPrepend = this.getStepsToPrepend();
+        result = result * prime + ($stepsToPrepend == null ? 43 : $stepsToPrepend.hashCode());
+        Object $volumes = this.getVolumes();
+        result = result * prime + ($volumes == null ? 43 : $volumes.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "InternalTaskModifier(" + "stepsToAppend=" + this.getStepsToAppend() + ", stepsToPrepend=" + this.getStepsToPrepend() + ", volumes=" + this.getVolumes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -33,9 +33,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageRegistrySpec defines the specs for the running registry.
@@ -64,12 +61,6 @@ import lombok.experimental.Accessors;
     "tolerations",
     "topologySpreadConstraints",
     "unsupportedConfigOverrides"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -537,6 +528,190 @@ public class ImageRegistrySpec implements Editable<ImageRegistrySpecBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageRegistrySpec)) {
+            return false;
+        }
+        ImageRegistrySpec other = (ImageRegistrySpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$affinity = this.getAffinity();
+        Object other$affinity = other.getAffinity();
+        if (this$affinity == null ? other$affinity != null : !this$affinity.equals(other$affinity)) {
+            return false;
+        }
+        Object this$defaultRoute = this.getDefaultRoute();
+        Object other$defaultRoute = other.getDefaultRoute();
+        if (this$defaultRoute == null ? other$defaultRoute != null : !this$defaultRoute.equals(other$defaultRoute)) {
+            return false;
+        }
+        Object this$disableRedirect = this.getDisableRedirect();
+        Object other$disableRedirect = other.getDisableRedirect();
+        if (this$disableRedirect == null ? other$disableRedirect != null : !this$disableRedirect.equals(other$disableRedirect)) {
+            return false;
+        }
+        Object this$httpSecret = this.getHttpSecret();
+        Object other$httpSecret = other.getHttpSecret();
+        if (this$httpSecret == null ? other$httpSecret != null : !this$httpSecret.equals(other$httpSecret)) {
+            return false;
+        }
+        Object this$logLevel = this.getLogLevel();
+        Object other$logLevel = other.getLogLevel();
+        if (this$logLevel == null ? other$logLevel != null : !this$logLevel.equals(other$logLevel)) {
+            return false;
+        }
+        Object this$logging = this.getLogging();
+        Object other$logging = other.getLogging();
+        if (this$logging == null ? other$logging != null : !this$logging.equals(other$logging)) {
+            return false;
+        }
+        Object this$managementState = this.getManagementState();
+        Object other$managementState = other.getManagementState();
+        if (this$managementState == null ? other$managementState != null : !this$managementState.equals(other$managementState)) {
+            return false;
+        }
+        Object this$nodeSelector = this.getNodeSelector();
+        Object other$nodeSelector = other.getNodeSelector();
+        if (this$nodeSelector == null ? other$nodeSelector != null : !this$nodeSelector.equals(other$nodeSelector)) {
+            return false;
+        }
+        Object this$observedConfig = this.getObservedConfig();
+        Object other$observedConfig = other.getObservedConfig();
+        if (this$observedConfig == null ? other$observedConfig != null : !this$observedConfig.equals(other$observedConfig)) {
+            return false;
+        }
+        Object this$operatorLogLevel = this.getOperatorLogLevel();
+        Object other$operatorLogLevel = other.getOperatorLogLevel();
+        if (this$operatorLogLevel == null ? other$operatorLogLevel != null : !this$operatorLogLevel.equals(other$operatorLogLevel)) {
+            return false;
+        }
+        Object this$proxy = this.getProxy();
+        Object other$proxy = other.getProxy();
+        if (this$proxy == null ? other$proxy != null : !this$proxy.equals(other$proxy)) {
+            return false;
+        }
+        Object this$readOnly = this.getReadOnly();
+        Object other$readOnly = other.getReadOnly();
+        if (this$readOnly == null ? other$readOnly != null : !this$readOnly.equals(other$readOnly)) {
+            return false;
+        }
+        Object this$replicas = this.getReplicas();
+        Object other$replicas = other.getReplicas();
+        if (this$replicas == null ? other$replicas != null : !this$replicas.equals(other$replicas)) {
+            return false;
+        }
+        Object this$requests = this.getRequests();
+        Object other$requests = other.getRequests();
+        if (this$requests == null ? other$requests != null : !this$requests.equals(other$requests)) {
+            return false;
+        }
+        Object this$resources = this.getResources();
+        Object other$resources = other.getResources();
+        if (this$resources == null ? other$resources != null : !this$resources.equals(other$resources)) {
+            return false;
+        }
+        Object this$rolloutStrategy = this.getRolloutStrategy();
+        Object other$rolloutStrategy = other.getRolloutStrategy();
+        if (this$rolloutStrategy == null ? other$rolloutStrategy != null : !this$rolloutStrategy.equals(other$rolloutStrategy)) {
+            return false;
+        }
+        Object this$routes = this.getRoutes();
+        Object other$routes = other.getRoutes();
+        if (this$routes == null ? other$routes != null : !this$routes.equals(other$routes)) {
+            return false;
+        }
+        Object this$storage = this.getStorage();
+        Object other$storage = other.getStorage();
+        if (this$storage == null ? other$storage != null : !this$storage.equals(other$storage)) {
+            return false;
+        }
+        Object this$tolerations = this.getTolerations();
+        Object other$tolerations = other.getTolerations();
+        if (this$tolerations == null ? other$tolerations != null : !this$tolerations.equals(other$tolerations)) {
+            return false;
+        }
+        Object this$topologySpreadConstraints = this.getTopologySpreadConstraints();
+        Object other$topologySpreadConstraints = other.getTopologySpreadConstraints();
+        if (this$topologySpreadConstraints == null ? other$topologySpreadConstraints != null : !this$topologySpreadConstraints.equals(other$topologySpreadConstraints)) {
+            return false;
+        }
+        Object this$unsupportedConfigOverrides = this.getUnsupportedConfigOverrides();
+        Object other$unsupportedConfigOverrides = other.getUnsupportedConfigOverrides();
+        if (this$unsupportedConfigOverrides == null ? other$unsupportedConfigOverrides != null : !this$unsupportedConfigOverrides.equals(other$unsupportedConfigOverrides)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageRegistrySpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $affinity = this.getAffinity();
+        result = result * prime + ($affinity == null ? 43 : $affinity.hashCode());
+        Object $defaultRoute = this.getDefaultRoute();
+        result = result * prime + ($defaultRoute == null ? 43 : $defaultRoute.hashCode());
+        Object $disableRedirect = this.getDisableRedirect();
+        result = result * prime + ($disableRedirect == null ? 43 : $disableRedirect.hashCode());
+        Object $httpSecret = this.getHttpSecret();
+        result = result * prime + ($httpSecret == null ? 43 : $httpSecret.hashCode());
+        Object $logLevel = this.getLogLevel();
+        result = result * prime + ($logLevel == null ? 43 : $logLevel.hashCode());
+        Object $logging = this.getLogging();
+        result = result * prime + ($logging == null ? 43 : $logging.hashCode());
+        Object $managementState = this.getManagementState();
+        result = result * prime + ($managementState == null ? 43 : $managementState.hashCode());
+        Object $nodeSelector = this.getNodeSelector();
+        result = result * prime + ($nodeSelector == null ? 43 : $nodeSelector.hashCode());
+        Object $observedConfig = this.getObservedConfig();
+        result = result * prime + ($observedConfig == null ? 43 : $observedConfig.hashCode());
+        Object $operatorLogLevel = this.getOperatorLogLevel();
+        result = result * prime + ($operatorLogLevel == null ? 43 : $operatorLogLevel.hashCode());
+        Object $proxy = this.getProxy();
+        result = result * prime + ($proxy == null ? 43 : $proxy.hashCode());
+        Object $readOnly = this.getReadOnly();
+        result = result * prime + ($readOnly == null ? 43 : $readOnly.hashCode());
+        Object $replicas = this.getReplicas();
+        result = result * prime + ($replicas == null ? 43 : $replicas.hashCode());
+        Object $requests = this.getRequests();
+        result = result * prime + ($requests == null ? 43 : $requests.hashCode());
+        Object $resources = this.getResources();
+        result = result * prime + ($resources == null ? 43 : $resources.hashCode());
+        Object $rolloutStrategy = this.getRolloutStrategy();
+        result = result * prime + ($rolloutStrategy == null ? 43 : $rolloutStrategy.hashCode());
+        Object $routes = this.getRoutes();
+        result = result * prime + ($routes == null ? 43 : $routes.hashCode());
+        Object $storage = this.getStorage();
+        result = result * prime + ($storage == null ? 43 : $storage.hashCode());
+        Object $tolerations = this.getTolerations();
+        result = result * prime + ($tolerations == null ? 43 : $tolerations.hashCode());
+        Object $topologySpreadConstraints = this.getTopologySpreadConstraints();
+        result = result * prime + ($topologySpreadConstraints == null ? 43 : $topologySpreadConstraints.hashCode());
+        Object $unsupportedConfigOverrides = this.getUnsupportedConfigOverrides();
+        result = result * prime + ($unsupportedConfigOverrides == null ? 43 : $unsupportedConfigOverrides.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageRegistrySpec(" + "affinity=" + this.getAffinity() + ", defaultRoute=" + this.getDefaultRoute() + ", disableRedirect=" + this.getDisableRedirect() + ", httpSecret=" + this.getHttpSecret() + ", logLevel=" + this.getLogLevel() + ", logging=" + this.getLogging() + ", managementState=" + this.getManagementState() + ", nodeSelector=" + this.getNodeSelector() + ", observedConfig=" + this.getObservedConfig() + ", operatorLogLevel=" + this.getOperatorLogLevel() + ", proxy=" + this.getProxy() + ", readOnly=" + this.getReadOnly() + ", replicas=" + this.getReplicas() + ", requests=" + this.getRequests() + ", resources=" + this.getResources() + ", rolloutStrategy=" + this.getRolloutStrategy() + ", routes=" + this.getRoutes() + ", storage=" + this.getStorage() + ", tolerations=" + this.getTolerations() + ", topologySpreadConstraints=" + this.getTopologySpreadConstraints() + ", unsupportedConfigOverrides=" + this.getUnsupportedConfigOverrides() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

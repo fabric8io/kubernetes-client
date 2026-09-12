@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ServerlessServiceSpec describes the ServerlessService.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "numActivators",
     "objectRef",
     "protocolType"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class ServerlessServiceSpec implements Editable<ServerlessServiceSpecBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ServerlessServiceSpec)) {
+            return false;
+        }
+        ServerlessServiceSpec other = (ServerlessServiceSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$mode = this.getMode();
+        Object other$mode = other.getMode();
+        if (this$mode == null ? other$mode != null : !this$mode.equals(other$mode)) {
+            return false;
+        }
+        Object this$numActivators = this.getNumActivators();
+        Object other$numActivators = other.getNumActivators();
+        if (this$numActivators == null ? other$numActivators != null : !this$numActivators.equals(other$numActivators)) {
+            return false;
+        }
+        Object this$objectRef = this.getObjectRef();
+        Object other$objectRef = other.getObjectRef();
+        if (this$objectRef == null ? other$objectRef != null : !this$objectRef.equals(other$objectRef)) {
+            return false;
+        }
+        Object this$protocolType = this.getProtocolType();
+        Object other$protocolType = other.getProtocolType();
+        if (this$protocolType == null ? other$protocolType != null : !this$protocolType.equals(other$protocolType)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ServerlessServiceSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $mode = this.getMode();
+        result = result * prime + ($mode == null ? 43 : $mode.hashCode());
+        Object $numActivators = this.getNumActivators();
+        result = result * prime + ($numActivators == null ? 43 : $numActivators.hashCode());
+        Object $objectRef = this.getObjectRef();
+        result = result * prime + ($objectRef == null ? 43 : $objectRef.hashCode());
+        Object $protocolType = this.getProtocolType();
+        result = result * prime + ($protocolType == null ? 43 : $protocolType.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ServerlessServiceSpec(" + "mode=" + this.getMode() + ", numActivators=" + this.getNumActivators() + ", objectRef=" + this.getObjectRef() + ", protocolType=" + this.getProtocolType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

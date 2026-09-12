@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NetworkStatus is for network status annotation for pod
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "mac",
     "mtu",
     "name"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -286,6 +277,106 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkStatus)) {
+            return false;
+        }
+        NetworkStatus other = (NetworkStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$_default = this.getDefault();
+        Object other$_default = other.getDefault();
+        if (this$_default == null ? other$_default != null : !this$_default.equals(other$_default)) {
+            return false;
+        }
+        Object this$deviceInfo = this.getDeviceInfo();
+        Object other$deviceInfo = other.getDeviceInfo();
+        if (this$deviceInfo == null ? other$deviceInfo != null : !this$deviceInfo.equals(other$deviceInfo)) {
+            return false;
+        }
+        Object this$dns = this.getDns();
+        Object other$dns = other.getDns();
+        if (this$dns == null ? other$dns != null : !this$dns.equals(other$dns)) {
+            return false;
+        }
+        Object this$gateway = this.getGateway();
+        Object other$gateway = other.getGateway();
+        if (this$gateway == null ? other$gateway != null : !this$gateway.equals(other$gateway)) {
+            return false;
+        }
+        Object this$_interface = this.getInterface();
+        Object other$_interface = other.getInterface();
+        if (this$_interface == null ? other$_interface != null : !this$_interface.equals(other$_interface)) {
+            return false;
+        }
+        Object this$ips = this.getIps();
+        Object other$ips = other.getIps();
+        if (this$ips == null ? other$ips != null : !this$ips.equals(other$ips)) {
+            return false;
+        }
+        Object this$mac = this.getMac();
+        Object other$mac = other.getMac();
+        if (this$mac == null ? other$mac != null : !this$mac.equals(other$mac)) {
+            return false;
+        }
+        Object this$mtu = this.getMtu();
+        Object other$mtu = other.getMtu();
+        if (this$mtu == null ? other$mtu != null : !this$mtu.equals(other$mtu)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $_default = this.getDefault();
+        result = result * prime + ($_default == null ? 43 : $_default.hashCode());
+        Object $deviceInfo = this.getDeviceInfo();
+        result = result * prime + ($deviceInfo == null ? 43 : $deviceInfo.hashCode());
+        Object $dns = this.getDns();
+        result = result * prime + ($dns == null ? 43 : $dns.hashCode());
+        Object $gateway = this.getGateway();
+        result = result * prime + ($gateway == null ? 43 : $gateway.hashCode());
+        Object $_interface = this.getInterface();
+        result = result * prime + ($_interface == null ? 43 : $_interface.hashCode());
+        Object $ips = this.getIps();
+        result = result * prime + ($ips == null ? 43 : $ips.hashCode());
+        Object $mac = this.getMac();
+        result = result * prime + ($mac == null ? 43 : $mac.hashCode());
+        Object $mtu = this.getMtu();
+        result = result * prime + ($mtu == null ? 43 : $mtu.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkStatus(" + "_default=" + this.getDefault() + ", deviceInfo=" + this.getDeviceInfo() + ", dns=" + this.getDns() + ", gateway=" + this.getGateway() + ", _interface=" + this.getInterface() + ", ips=" + this.getIps() + ", mac=" + this.getMac() + ", mtu=" + this.getMtu() + ", name=" + this.getName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

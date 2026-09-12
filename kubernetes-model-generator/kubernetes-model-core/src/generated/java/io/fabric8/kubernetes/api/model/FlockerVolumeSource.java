@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Represents a Flocker volume mounted by the Flocker agent. One and only one of datasetName and datasetUUID should be set. Flocker volumes do not support ownership management or SELinux relabeling.
@@ -25,12 +22,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "datasetName",
     "datasetUUID"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -111,6 +102,57 @@ public class FlockerVolumeSource implements Editable<FlockerVolumeSourceBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof FlockerVolumeSource)) {
+            return false;
+        }
+        FlockerVolumeSource other = (FlockerVolumeSource) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$datasetName = this.getDatasetName();
+        Object other$datasetName = other.getDatasetName();
+        if (this$datasetName == null ? other$datasetName != null : !this$datasetName.equals(other$datasetName)) {
+            return false;
+        }
+        Object this$datasetUUID = this.getDatasetUUID();
+        Object other$datasetUUID = other.getDatasetUUID();
+        if (this$datasetUUID == null ? other$datasetUUID != null : !this$datasetUUID.equals(other$datasetUUID)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof FlockerVolumeSource;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $datasetName = this.getDatasetName();
+        result = result * prime + ($datasetName == null ? 43 : $datasetName.hashCode());
+        Object $datasetUUID = this.getDatasetUUID();
+        result = result * prime + ($datasetUUID == null ? 43 : $datasetUUID.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "FlockerVolumeSource(" + "datasetName=" + this.getDatasetName() + ", datasetUUID=" + this.getDatasetUUID() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

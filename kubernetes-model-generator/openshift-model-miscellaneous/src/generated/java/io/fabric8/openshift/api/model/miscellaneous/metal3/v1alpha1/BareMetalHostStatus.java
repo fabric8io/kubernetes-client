@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * BareMetalHostStatus defines the observed state of BareMetalHost.
@@ -53,12 +50,6 @@ import lombok.experimental.Accessors;
     "poweredOn",
     "provisioning",
     "triedCredentials"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -364,6 +355,134 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BareMetalHostStatus)) {
+            return false;
+        }
+        BareMetalHostStatus other = (BareMetalHostStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$errorCount = this.getErrorCount();
+        Object other$errorCount = other.getErrorCount();
+        if (this$errorCount == null ? other$errorCount != null : !this$errorCount.equals(other$errorCount)) {
+            return false;
+        }
+        Object this$errorMessage = this.getErrorMessage();
+        Object other$errorMessage = other.getErrorMessage();
+        if (this$errorMessage == null ? other$errorMessage != null : !this$errorMessage.equals(other$errorMessage)) {
+            return false;
+        }
+        Object this$errorType = this.getErrorType();
+        Object other$errorType = other.getErrorType();
+        if (this$errorType == null ? other$errorType != null : !this$errorType.equals(other$errorType)) {
+            return false;
+        }
+        Object this$goodCredentials = this.getGoodCredentials();
+        Object other$goodCredentials = other.getGoodCredentials();
+        if (this$goodCredentials == null ? other$goodCredentials != null : !this$goodCredentials.equals(other$goodCredentials)) {
+            return false;
+        }
+        Object this$hardware = this.getHardware();
+        Object other$hardware = other.getHardware();
+        if (this$hardware == null ? other$hardware != null : !this$hardware.equals(other$hardware)) {
+            return false;
+        }
+        Object this$hardwareProfile = this.getHardwareProfile();
+        Object other$hardwareProfile = other.getHardwareProfile();
+        if (this$hardwareProfile == null ? other$hardwareProfile != null : !this$hardwareProfile.equals(other$hardwareProfile)) {
+            return false;
+        }
+        Object this$lastUpdated = this.getLastUpdated();
+        Object other$lastUpdated = other.getLastUpdated();
+        if (this$lastUpdated == null ? other$lastUpdated != null : !this$lastUpdated.equals(other$lastUpdated)) {
+            return false;
+        }
+        Object this$operationHistory = this.getOperationHistory();
+        Object other$operationHistory = other.getOperationHistory();
+        if (this$operationHistory == null ? other$operationHistory != null : !this$operationHistory.equals(other$operationHistory)) {
+            return false;
+        }
+        Object this$operationalStatus = this.getOperationalStatus();
+        Object other$operationalStatus = other.getOperationalStatus();
+        if (this$operationalStatus == null ? other$operationalStatus != null : !this$operationalStatus.equals(other$operationalStatus)) {
+            return false;
+        }
+        Object this$poweredOn = this.getPoweredOn();
+        Object other$poweredOn = other.getPoweredOn();
+        if (this$poweredOn == null ? other$poweredOn != null : !this$poweredOn.equals(other$poweredOn)) {
+            return false;
+        }
+        Object this$provisioning = this.getProvisioning();
+        Object other$provisioning = other.getProvisioning();
+        if (this$provisioning == null ? other$provisioning != null : !this$provisioning.equals(other$provisioning)) {
+            return false;
+        }
+        Object this$triedCredentials = this.getTriedCredentials();
+        Object other$triedCredentials = other.getTriedCredentials();
+        if (this$triedCredentials == null ? other$triedCredentials != null : !this$triedCredentials.equals(other$triedCredentials)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BareMetalHostStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $errorCount = this.getErrorCount();
+        result = result * prime + ($errorCount == null ? 43 : $errorCount.hashCode());
+        Object $errorMessage = this.getErrorMessage();
+        result = result * prime + ($errorMessage == null ? 43 : $errorMessage.hashCode());
+        Object $errorType = this.getErrorType();
+        result = result * prime + ($errorType == null ? 43 : $errorType.hashCode());
+        Object $goodCredentials = this.getGoodCredentials();
+        result = result * prime + ($goodCredentials == null ? 43 : $goodCredentials.hashCode());
+        Object $hardware = this.getHardware();
+        result = result * prime + ($hardware == null ? 43 : $hardware.hashCode());
+        Object $hardwareProfile = this.getHardwareProfile();
+        result = result * prime + ($hardwareProfile == null ? 43 : $hardwareProfile.hashCode());
+        Object $lastUpdated = this.getLastUpdated();
+        result = result * prime + ($lastUpdated == null ? 43 : $lastUpdated.hashCode());
+        Object $operationHistory = this.getOperationHistory();
+        result = result * prime + ($operationHistory == null ? 43 : $operationHistory.hashCode());
+        Object $operationalStatus = this.getOperationalStatus();
+        result = result * prime + ($operationalStatus == null ? 43 : $operationalStatus.hashCode());
+        Object $poweredOn = this.getPoweredOn();
+        result = result * prime + ($poweredOn == null ? 43 : $poweredOn.hashCode());
+        Object $provisioning = this.getProvisioning();
+        result = result * prime + ($provisioning == null ? 43 : $provisioning.hashCode());
+        Object $triedCredentials = this.getTriedCredentials();
+        result = result * prime + ($triedCredentials == null ? 43 : $triedCredentials.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BareMetalHostStatus(" + "conditions=" + this.getConditions() + ", errorCount=" + this.getErrorCount() + ", errorMessage=" + this.getErrorMessage() + ", errorType=" + this.getErrorType() + ", goodCredentials=" + this.getGoodCredentials() + ", hardware=" + this.getHardware() + ", hardwareProfile=" + this.getHardwareProfile() + ", lastUpdated=" + this.getLastUpdated() + ", operationHistory=" + this.getOperationHistory() + ", operationalStatus=" + this.getOperationalStatus() + ", poweredOn=" + this.getPoweredOn() + ", provisioning=" + this.getProvisioning() + ", triedCredentials=" + this.getTriedCredentials() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

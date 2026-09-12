@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Validation specifies the CEL expression which is used to apply the validation.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "message",
     "messageExpression",
     "reason"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class Validation implements Editable<ValidationBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Validation)) {
+            return false;
+        }
+        Validation other = (Validation) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$expression = this.getExpression();
+        Object other$expression = other.getExpression();
+        if (this$expression == null ? other$expression != null : !this$expression.equals(other$expression)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$messageExpression = this.getMessageExpression();
+        Object other$messageExpression = other.getMessageExpression();
+        if (this$messageExpression == null ? other$messageExpression != null : !this$messageExpression.equals(other$messageExpression)) {
+            return false;
+        }
+        Object this$reason = this.getReason();
+        Object other$reason = other.getReason();
+        if (this$reason == null ? other$reason != null : !this$reason.equals(other$reason)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Validation;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $expression = this.getExpression();
+        result = result * prime + ($expression == null ? 43 : $expression.hashCode());
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $messageExpression = this.getMessageExpression();
+        result = result * prime + ($messageExpression == null ? 43 : $messageExpression.hashCode());
+        Object $reason = this.getReason();
+        result = result * prime + ($reason == null ? 43 : $reason.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Validation(" + "expression=" + this.getExpression() + ", message=" + this.getMessage() + ", messageExpression=" + this.getMessageExpression() + ", reason=" + this.getReason() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

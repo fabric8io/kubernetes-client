@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ServiceMonitorSpec defines the specification parameters for a ServiceMonitor.
@@ -64,12 +61,6 @@ import lombok.experimental.Accessors;
     "serviceDiscoveryRole",
     "targetLabels",
     "targetLimit"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -590,6 +581,211 @@ public class ServiceMonitorSpec implements Editable<ServiceMonitorSpecBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ServiceMonitorSpec)) {
+            return false;
+        }
+        ServiceMonitorSpec other = (ServiceMonitorSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$attachMetadata = this.getAttachMetadata();
+        Object other$attachMetadata = other.getAttachMetadata();
+        if (this$attachMetadata == null ? other$attachMetadata != null : !this$attachMetadata.equals(other$attachMetadata)) {
+            return false;
+        }
+        Object this$bodySizeLimit = this.getBodySizeLimit();
+        Object other$bodySizeLimit = other.getBodySizeLimit();
+        if (this$bodySizeLimit == null ? other$bodySizeLimit != null : !this$bodySizeLimit.equals(other$bodySizeLimit)) {
+            return false;
+        }
+        Object this$convertClassicHistogramsToNHCB = this.getConvertClassicHistogramsToNHCB();
+        Object other$convertClassicHistogramsToNHCB = other.getConvertClassicHistogramsToNHCB();
+        if (this$convertClassicHistogramsToNHCB == null ? other$convertClassicHistogramsToNHCB != null : !this$convertClassicHistogramsToNHCB.equals(other$convertClassicHistogramsToNHCB)) {
+            return false;
+        }
+        Object this$endpoints = this.getEndpoints();
+        Object other$endpoints = other.getEndpoints();
+        if (this$endpoints == null ? other$endpoints != null : !this$endpoints.equals(other$endpoints)) {
+            return false;
+        }
+        Object this$fallbackScrapeProtocol = this.getFallbackScrapeProtocol();
+        Object other$fallbackScrapeProtocol = other.getFallbackScrapeProtocol();
+        if (this$fallbackScrapeProtocol == null ? other$fallbackScrapeProtocol != null : !this$fallbackScrapeProtocol.equals(other$fallbackScrapeProtocol)) {
+            return false;
+        }
+        Object this$jobLabel = this.getJobLabel();
+        Object other$jobLabel = other.getJobLabel();
+        if (this$jobLabel == null ? other$jobLabel != null : !this$jobLabel.equals(other$jobLabel)) {
+            return false;
+        }
+        Object this$keepDroppedTargets = this.getKeepDroppedTargets();
+        Object other$keepDroppedTargets = other.getKeepDroppedTargets();
+        if (this$keepDroppedTargets == null ? other$keepDroppedTargets != null : !this$keepDroppedTargets.equals(other$keepDroppedTargets)) {
+            return false;
+        }
+        Object this$labelLimit = this.getLabelLimit();
+        Object other$labelLimit = other.getLabelLimit();
+        if (this$labelLimit == null ? other$labelLimit != null : !this$labelLimit.equals(other$labelLimit)) {
+            return false;
+        }
+        Object this$labelNameLengthLimit = this.getLabelNameLengthLimit();
+        Object other$labelNameLengthLimit = other.getLabelNameLengthLimit();
+        if (this$labelNameLengthLimit == null ? other$labelNameLengthLimit != null : !this$labelNameLengthLimit.equals(other$labelNameLengthLimit)) {
+            return false;
+        }
+        Object this$labelValueLengthLimit = this.getLabelValueLengthLimit();
+        Object other$labelValueLengthLimit = other.getLabelValueLengthLimit();
+        if (this$labelValueLengthLimit == null ? other$labelValueLengthLimit != null : !this$labelValueLengthLimit.equals(other$labelValueLengthLimit)) {
+            return false;
+        }
+        Object this$namespaceSelector = this.getNamespaceSelector();
+        Object other$namespaceSelector = other.getNamespaceSelector();
+        if (this$namespaceSelector == null ? other$namespaceSelector != null : !this$namespaceSelector.equals(other$namespaceSelector)) {
+            return false;
+        }
+        Object this$nativeHistogramBucketLimit = this.getNativeHistogramBucketLimit();
+        Object other$nativeHistogramBucketLimit = other.getNativeHistogramBucketLimit();
+        if (this$nativeHistogramBucketLimit == null ? other$nativeHistogramBucketLimit != null : !this$nativeHistogramBucketLimit.equals(other$nativeHistogramBucketLimit)) {
+            return false;
+        }
+        Object this$nativeHistogramMinBucketFactor = this.getNativeHistogramMinBucketFactor();
+        Object other$nativeHistogramMinBucketFactor = other.getNativeHistogramMinBucketFactor();
+        if (this$nativeHistogramMinBucketFactor == null ? other$nativeHistogramMinBucketFactor != null : !this$nativeHistogramMinBucketFactor.equals(other$nativeHistogramMinBucketFactor)) {
+            return false;
+        }
+        Object this$podTargetLabels = this.getPodTargetLabels();
+        Object other$podTargetLabels = other.getPodTargetLabels();
+        if (this$podTargetLabels == null ? other$podTargetLabels != null : !this$podTargetLabels.equals(other$podTargetLabels)) {
+            return false;
+        }
+        Object this$sampleLimit = this.getSampleLimit();
+        Object other$sampleLimit = other.getSampleLimit();
+        if (this$sampleLimit == null ? other$sampleLimit != null : !this$sampleLimit.equals(other$sampleLimit)) {
+            return false;
+        }
+        Object this$scrapeClass = this.getScrapeClass();
+        Object other$scrapeClass = other.getScrapeClass();
+        if (this$scrapeClass == null ? other$scrapeClass != null : !this$scrapeClass.equals(other$scrapeClass)) {
+            return false;
+        }
+        Object this$scrapeClassicHistograms = this.getScrapeClassicHistograms();
+        Object other$scrapeClassicHistograms = other.getScrapeClassicHistograms();
+        if (this$scrapeClassicHistograms == null ? other$scrapeClassicHistograms != null : !this$scrapeClassicHistograms.equals(other$scrapeClassicHistograms)) {
+            return false;
+        }
+        Object this$scrapeNativeHistograms = this.getScrapeNativeHistograms();
+        Object other$scrapeNativeHistograms = other.getScrapeNativeHistograms();
+        if (this$scrapeNativeHistograms == null ? other$scrapeNativeHistograms != null : !this$scrapeNativeHistograms.equals(other$scrapeNativeHistograms)) {
+            return false;
+        }
+        Object this$scrapeProtocols = this.getScrapeProtocols();
+        Object other$scrapeProtocols = other.getScrapeProtocols();
+        if (this$scrapeProtocols == null ? other$scrapeProtocols != null : !this$scrapeProtocols.equals(other$scrapeProtocols)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$selectorMechanism = this.getSelectorMechanism();
+        Object other$selectorMechanism = other.getSelectorMechanism();
+        if (this$selectorMechanism == null ? other$selectorMechanism != null : !this$selectorMechanism.equals(other$selectorMechanism)) {
+            return false;
+        }
+        Object this$serviceDiscoveryRole = this.getServiceDiscoveryRole();
+        Object other$serviceDiscoveryRole = other.getServiceDiscoveryRole();
+        if (this$serviceDiscoveryRole == null ? other$serviceDiscoveryRole != null : !this$serviceDiscoveryRole.equals(other$serviceDiscoveryRole)) {
+            return false;
+        }
+        Object this$targetLabels = this.getTargetLabels();
+        Object other$targetLabels = other.getTargetLabels();
+        if (this$targetLabels == null ? other$targetLabels != null : !this$targetLabels.equals(other$targetLabels)) {
+            return false;
+        }
+        Object this$targetLimit = this.getTargetLimit();
+        Object other$targetLimit = other.getTargetLimit();
+        if (this$targetLimit == null ? other$targetLimit != null : !this$targetLimit.equals(other$targetLimit)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ServiceMonitorSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $attachMetadata = this.getAttachMetadata();
+        result = result * prime + ($attachMetadata == null ? 43 : $attachMetadata.hashCode());
+        Object $bodySizeLimit = this.getBodySizeLimit();
+        result = result * prime + ($bodySizeLimit == null ? 43 : $bodySizeLimit.hashCode());
+        Object $convertClassicHistogramsToNHCB = this.getConvertClassicHistogramsToNHCB();
+        result = result * prime + ($convertClassicHistogramsToNHCB == null ? 43 : $convertClassicHistogramsToNHCB.hashCode());
+        Object $endpoints = this.getEndpoints();
+        result = result * prime + ($endpoints == null ? 43 : $endpoints.hashCode());
+        Object $fallbackScrapeProtocol = this.getFallbackScrapeProtocol();
+        result = result * prime + ($fallbackScrapeProtocol == null ? 43 : $fallbackScrapeProtocol.hashCode());
+        Object $jobLabel = this.getJobLabel();
+        result = result * prime + ($jobLabel == null ? 43 : $jobLabel.hashCode());
+        Object $keepDroppedTargets = this.getKeepDroppedTargets();
+        result = result * prime + ($keepDroppedTargets == null ? 43 : $keepDroppedTargets.hashCode());
+        Object $labelLimit = this.getLabelLimit();
+        result = result * prime + ($labelLimit == null ? 43 : $labelLimit.hashCode());
+        Object $labelNameLengthLimit = this.getLabelNameLengthLimit();
+        result = result * prime + ($labelNameLengthLimit == null ? 43 : $labelNameLengthLimit.hashCode());
+        Object $labelValueLengthLimit = this.getLabelValueLengthLimit();
+        result = result * prime + ($labelValueLengthLimit == null ? 43 : $labelValueLengthLimit.hashCode());
+        Object $namespaceSelector = this.getNamespaceSelector();
+        result = result * prime + ($namespaceSelector == null ? 43 : $namespaceSelector.hashCode());
+        Object $nativeHistogramBucketLimit = this.getNativeHistogramBucketLimit();
+        result = result * prime + ($nativeHistogramBucketLimit == null ? 43 : $nativeHistogramBucketLimit.hashCode());
+        Object $nativeHistogramMinBucketFactor = this.getNativeHistogramMinBucketFactor();
+        result = result * prime + ($nativeHistogramMinBucketFactor == null ? 43 : $nativeHistogramMinBucketFactor.hashCode());
+        Object $podTargetLabels = this.getPodTargetLabels();
+        result = result * prime + ($podTargetLabels == null ? 43 : $podTargetLabels.hashCode());
+        Object $sampleLimit = this.getSampleLimit();
+        result = result * prime + ($sampleLimit == null ? 43 : $sampleLimit.hashCode());
+        Object $scrapeClass = this.getScrapeClass();
+        result = result * prime + ($scrapeClass == null ? 43 : $scrapeClass.hashCode());
+        Object $scrapeClassicHistograms = this.getScrapeClassicHistograms();
+        result = result * prime + ($scrapeClassicHistograms == null ? 43 : $scrapeClassicHistograms.hashCode());
+        Object $scrapeNativeHistograms = this.getScrapeNativeHistograms();
+        result = result * prime + ($scrapeNativeHistograms == null ? 43 : $scrapeNativeHistograms.hashCode());
+        Object $scrapeProtocols = this.getScrapeProtocols();
+        result = result * prime + ($scrapeProtocols == null ? 43 : $scrapeProtocols.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $selectorMechanism = this.getSelectorMechanism();
+        result = result * prime + ($selectorMechanism == null ? 43 : $selectorMechanism.hashCode());
+        Object $serviceDiscoveryRole = this.getServiceDiscoveryRole();
+        result = result * prime + ($serviceDiscoveryRole == null ? 43 : $serviceDiscoveryRole.hashCode());
+        Object $targetLabels = this.getTargetLabels();
+        result = result * prime + ($targetLabels == null ? 43 : $targetLabels.hashCode());
+        Object $targetLimit = this.getTargetLimit();
+        result = result * prime + ($targetLimit == null ? 43 : $targetLimit.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ServiceMonitorSpec(" + "attachMetadata=" + this.getAttachMetadata() + ", bodySizeLimit=" + this.getBodySizeLimit() + ", convertClassicHistogramsToNHCB=" + this.getConvertClassicHistogramsToNHCB() + ", endpoints=" + this.getEndpoints() + ", fallbackScrapeProtocol=" + this.getFallbackScrapeProtocol() + ", jobLabel=" + this.getJobLabel() + ", keepDroppedTargets=" + this.getKeepDroppedTargets() + ", labelLimit=" + this.getLabelLimit() + ", labelNameLengthLimit=" + this.getLabelNameLengthLimit() + ", labelValueLengthLimit=" + this.getLabelValueLengthLimit() + ", namespaceSelector=" + this.getNamespaceSelector() + ", nativeHistogramBucketLimit=" + this.getNativeHistogramBucketLimit() + ", nativeHistogramMinBucketFactor=" + this.getNativeHistogramMinBucketFactor() + ", podTargetLabels=" + this.getPodTargetLabels() + ", sampleLimit=" + this.getSampleLimit() + ", scrapeClass=" + this.getScrapeClass() + ", scrapeClassicHistograms=" + this.getScrapeClassicHistograms() + ", scrapeNativeHistograms=" + this.getScrapeNativeHistograms() + ", scrapeProtocols=" + this.getScrapeProtocols() + ", selector=" + this.getSelector() + ", selectorMechanism=" + this.getSelectorMechanism() + ", serviceDiscoveryRole=" + this.getServiceDiscoveryRole() + ", targetLabels=" + this.getTargetLabels() + ", targetLimit=" + this.getTargetLimit() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

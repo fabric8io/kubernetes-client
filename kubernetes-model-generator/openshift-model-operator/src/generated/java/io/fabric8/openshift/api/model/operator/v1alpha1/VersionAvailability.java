@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VersionAvailability gives information about the synchronization and operational status of a particular version of the component DEPRECATED: Use fields in v1.OperatorStatus instead
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "readyReplicas",
     "updatedReplicas",
     "version"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -206,6 +197,78 @@ public class VersionAvailability implements Editable<VersionAvailabilityBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VersionAvailability)) {
+            return false;
+        }
+        VersionAvailability other = (VersionAvailability) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$errors = this.getErrors();
+        Object other$errors = other.getErrors();
+        if (this$errors == null ? other$errors != null : !this$errors.equals(other$errors)) {
+            return false;
+        }
+        Object this$generations = this.getGenerations();
+        Object other$generations = other.getGenerations();
+        if (this$generations == null ? other$generations != null : !this$generations.equals(other$generations)) {
+            return false;
+        }
+        Object this$readyReplicas = this.getReadyReplicas();
+        Object other$readyReplicas = other.getReadyReplicas();
+        if (this$readyReplicas == null ? other$readyReplicas != null : !this$readyReplicas.equals(other$readyReplicas)) {
+            return false;
+        }
+        Object this$updatedReplicas = this.getUpdatedReplicas();
+        Object other$updatedReplicas = other.getUpdatedReplicas();
+        if (this$updatedReplicas == null ? other$updatedReplicas != null : !this$updatedReplicas.equals(other$updatedReplicas)) {
+            return false;
+        }
+        Object this$version = this.getVersion();
+        Object other$version = other.getVersion();
+        if (this$version == null ? other$version != null : !this$version.equals(other$version)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VersionAvailability;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $errors = this.getErrors();
+        result = result * prime + ($errors == null ? 43 : $errors.hashCode());
+        Object $generations = this.getGenerations();
+        result = result * prime + ($generations == null ? 43 : $generations.hashCode());
+        Object $readyReplicas = this.getReadyReplicas();
+        result = result * prime + ($readyReplicas == null ? 43 : $readyReplicas.hashCode());
+        Object $updatedReplicas = this.getUpdatedReplicas();
+        result = result * prime + ($updatedReplicas == null ? 43 : $updatedReplicas.hashCode());
+        Object $version = this.getVersion();
+        result = result * prime + ($version == null ? 43 : $version.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VersionAvailability(" + "errors=" + this.getErrors() + ", generations=" + this.getGenerations() + ", readyReplicas=" + this.getReadyReplicas() + ", updatedReplicas=" + this.getUpdatedReplicas() + ", version=" + this.getVersion() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

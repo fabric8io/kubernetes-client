@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ScheduleStatus is the status of a schedule object
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "active",
     "time"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -144,6 +135,57 @@ public class ScheduleStatus implements Editable<ScheduleStatusBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ScheduleStatus)) {
+            return false;
+        }
+        ScheduleStatus other = (ScheduleStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$active = this.getActive();
+        Object other$active = other.getActive();
+        if (this$active == null ? other$active != null : !this$active.equals(other$active)) {
+            return false;
+        }
+        Object this$time = this.getTime();
+        Object other$time = other.getTime();
+        if (this$time == null ? other$time != null : !this$time.equals(other$time)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ScheduleStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $active = this.getActive();
+        result = result * prime + ($active == null ? 43 : $active.hashCode());
+        Object $time = this.getTime();
+        result = result * prime + ($time == null ? 43 : $time.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ScheduleStatus(" + "active=" + this.getActive() + ", time=" + this.getTime() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

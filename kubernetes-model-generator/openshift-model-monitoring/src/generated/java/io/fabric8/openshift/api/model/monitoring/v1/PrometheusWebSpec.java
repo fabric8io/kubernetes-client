@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PrometheusWebSpec defines the configuration of the Prometheus web server.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "maxConnections",
     "pageTitle",
     "tlsConfig"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -179,6 +170,71 @@ public class PrometheusWebSpec implements Editable<PrometheusWebSpecBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PrometheusWebSpec)) {
+            return false;
+        }
+        PrometheusWebSpec other = (PrometheusWebSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$httpConfig = this.getHttpConfig();
+        Object other$httpConfig = other.getHttpConfig();
+        if (this$httpConfig == null ? other$httpConfig != null : !this$httpConfig.equals(other$httpConfig)) {
+            return false;
+        }
+        Object this$maxConnections = this.getMaxConnections();
+        Object other$maxConnections = other.getMaxConnections();
+        if (this$maxConnections == null ? other$maxConnections != null : !this$maxConnections.equals(other$maxConnections)) {
+            return false;
+        }
+        Object this$pageTitle = this.getPageTitle();
+        Object other$pageTitle = other.getPageTitle();
+        if (this$pageTitle == null ? other$pageTitle != null : !this$pageTitle.equals(other$pageTitle)) {
+            return false;
+        }
+        Object this$tlsConfig = this.getTlsConfig();
+        Object other$tlsConfig = other.getTlsConfig();
+        if (this$tlsConfig == null ? other$tlsConfig != null : !this$tlsConfig.equals(other$tlsConfig)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PrometheusWebSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $httpConfig = this.getHttpConfig();
+        result = result * prime + ($httpConfig == null ? 43 : $httpConfig.hashCode());
+        Object $maxConnections = this.getMaxConnections();
+        result = result * prime + ($maxConnections == null ? 43 : $maxConnections.hashCode());
+        Object $pageTitle = this.getPageTitle();
+        result = result * prime + ($pageTitle == null ? 43 : $pageTitle.hashCode());
+        Object $tlsConfig = this.getTlsConfig();
+        result = result * prime + ($tlsConfig == null ? 43 : $tlsConfig.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PrometheusWebSpec(" + "httpConfig=" + this.getHttpConfig() + ", maxConnections=" + this.getMaxConnections() + ", pageTitle=" + this.getPageTitle() + ", tlsConfig=" + this.getTlsConfig() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

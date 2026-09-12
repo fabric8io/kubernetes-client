@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * EndpointsJSON represents the JSON format to override IBM Cloud Terraform provider utilized service endpoints. https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints#file-structure-for-endpoints-file
@@ -51,12 +48,6 @@ import lombok.experimental.Accessors;
     "IBMCLOUD_RESOURCE_CATALOG_API_ENDPOINT",
     "IBMCLOUD_RESOURCE_CONTROLLER_API_ENDPOINT",
     "IBMCLOUD_RESOURCE_MANAGEMENT_API_ENDPOINT"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -360,6 +351,134 @@ public class EndpointsJSON implements Editable<EndpointsJSONBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EndpointsJSON)) {
+            return false;
+        }
+        EndpointsJSON other = (EndpointsJSON) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$iBMCLOUDCISAPIENDPOINT = this.getIBMCLOUDCISAPIENDPOINT();
+        Object other$iBMCLOUDCISAPIENDPOINT = other.getIBMCLOUDCISAPIENDPOINT();
+        if (this$iBMCLOUDCISAPIENDPOINT == null ? other$iBMCLOUDCISAPIENDPOINT != null : !this$iBMCLOUDCISAPIENDPOINT.equals(other$iBMCLOUDCISAPIENDPOINT)) {
+            return false;
+        }
+        Object this$iBMCLOUDCOSCONFIGENDPOINT = this.getIBMCLOUDCOSCONFIGENDPOINT();
+        Object other$iBMCLOUDCOSCONFIGENDPOINT = other.getIBMCLOUDCOSCONFIGENDPOINT();
+        if (this$iBMCLOUDCOSCONFIGENDPOINT == null ? other$iBMCLOUDCOSCONFIGENDPOINT != null : !this$iBMCLOUDCOSCONFIGENDPOINT.equals(other$iBMCLOUDCOSCONFIGENDPOINT)) {
+            return false;
+        }
+        Object this$iBMCLOUDCOSENDPOINT = this.getIBMCLOUDCOSENDPOINT();
+        Object other$iBMCLOUDCOSENDPOINT = other.getIBMCLOUDCOSENDPOINT();
+        if (this$iBMCLOUDCOSENDPOINT == null ? other$iBMCLOUDCOSENDPOINT != null : !this$iBMCLOUDCOSENDPOINT.equals(other$iBMCLOUDCOSENDPOINT)) {
+            return false;
+        }
+        Object this$iBMCLOUDGSAPIENDPOINT = this.getIBMCLOUDGSAPIENDPOINT();
+        Object other$iBMCLOUDGSAPIENDPOINT = other.getIBMCLOUDGSAPIENDPOINT();
+        if (this$iBMCLOUDGSAPIENDPOINT == null ? other$iBMCLOUDGSAPIENDPOINT != null : !this$iBMCLOUDGSAPIENDPOINT.equals(other$iBMCLOUDGSAPIENDPOINT)) {
+            return false;
+        }
+        Object this$iBMCLOUDGTAPIENDPOINT = this.getIBMCLOUDGTAPIENDPOINT();
+        Object other$iBMCLOUDGTAPIENDPOINT = other.getIBMCLOUDGTAPIENDPOINT();
+        if (this$iBMCLOUDGTAPIENDPOINT == null ? other$iBMCLOUDGTAPIENDPOINT != null : !this$iBMCLOUDGTAPIENDPOINT.equals(other$iBMCLOUDGTAPIENDPOINT)) {
+            return false;
+        }
+        Object this$iBMCLOUDHPCSAPIENDPOINT = this.getIBMCLOUDHPCSAPIENDPOINT();
+        Object other$iBMCLOUDHPCSAPIENDPOINT = other.getIBMCLOUDHPCSAPIENDPOINT();
+        if (this$iBMCLOUDHPCSAPIENDPOINT == null ? other$iBMCLOUDHPCSAPIENDPOINT != null : !this$iBMCLOUDHPCSAPIENDPOINT.equals(other$iBMCLOUDHPCSAPIENDPOINT)) {
+            return false;
+        }
+        Object this$iBMCLOUDIAMAPIENDPOINT = this.getIBMCLOUDIAMAPIENDPOINT();
+        Object other$iBMCLOUDIAMAPIENDPOINT = other.getIBMCLOUDIAMAPIENDPOINT();
+        if (this$iBMCLOUDIAMAPIENDPOINT == null ? other$iBMCLOUDIAMAPIENDPOINT != null : !this$iBMCLOUDIAMAPIENDPOINT.equals(other$iBMCLOUDIAMAPIENDPOINT)) {
+            return false;
+        }
+        Object this$iBMCLOUDISNGAPIENDPOINT = this.getIBMCLOUDISNGAPIENDPOINT();
+        Object other$iBMCLOUDISNGAPIENDPOINT = other.getIBMCLOUDISNGAPIENDPOINT();
+        if (this$iBMCLOUDISNGAPIENDPOINT == null ? other$iBMCLOUDISNGAPIENDPOINT != null : !this$iBMCLOUDISNGAPIENDPOINT.equals(other$iBMCLOUDISNGAPIENDPOINT)) {
+            return false;
+        }
+        Object this$iBMCLOUDKPAPIENDPOINT = this.getIBMCLOUDKPAPIENDPOINT();
+        Object other$iBMCLOUDKPAPIENDPOINT = other.getIBMCLOUDKPAPIENDPOINT();
+        if (this$iBMCLOUDKPAPIENDPOINT == null ? other$iBMCLOUDKPAPIENDPOINT != null : !this$iBMCLOUDKPAPIENDPOINT.equals(other$iBMCLOUDKPAPIENDPOINT)) {
+            return false;
+        }
+        Object this$iBMCLOUDPRIVATEDNSAPIENDPOINT = this.getIBMCLOUDPRIVATEDNSAPIENDPOINT();
+        Object other$iBMCLOUDPRIVATEDNSAPIENDPOINT = other.getIBMCLOUDPRIVATEDNSAPIENDPOINT();
+        if (this$iBMCLOUDPRIVATEDNSAPIENDPOINT == null ? other$iBMCLOUDPRIVATEDNSAPIENDPOINT != null : !this$iBMCLOUDPRIVATEDNSAPIENDPOINT.equals(other$iBMCLOUDPRIVATEDNSAPIENDPOINT)) {
+            return false;
+        }
+        Object this$iBMCLOUDRESOURCECATALOGAPIENDPOINT = this.getIBMCLOUDRESOURCECATALOGAPIENDPOINT();
+        Object other$iBMCLOUDRESOURCECATALOGAPIENDPOINT = other.getIBMCLOUDRESOURCECATALOGAPIENDPOINT();
+        if (this$iBMCLOUDRESOURCECATALOGAPIENDPOINT == null ? other$iBMCLOUDRESOURCECATALOGAPIENDPOINT != null : !this$iBMCLOUDRESOURCECATALOGAPIENDPOINT.equals(other$iBMCLOUDRESOURCECATALOGAPIENDPOINT)) {
+            return false;
+        }
+        Object this$iBMCLOUDRESOURCECONTROLLERAPIENDPOINT = this.getIBMCLOUDRESOURCECONTROLLERAPIENDPOINT();
+        Object other$iBMCLOUDRESOURCECONTROLLERAPIENDPOINT = other.getIBMCLOUDRESOURCECONTROLLERAPIENDPOINT();
+        if (this$iBMCLOUDRESOURCECONTROLLERAPIENDPOINT == null ? other$iBMCLOUDRESOURCECONTROLLERAPIENDPOINT != null : !this$iBMCLOUDRESOURCECONTROLLERAPIENDPOINT.equals(other$iBMCLOUDRESOURCECONTROLLERAPIENDPOINT)) {
+            return false;
+        }
+        Object this$iBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT = this.getIBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT();
+        Object other$iBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT = other.getIBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT();
+        if (this$iBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT == null ? other$iBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT != null : !this$iBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT.equals(other$iBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EndpointsJSON;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $iBMCLOUDCISAPIENDPOINT = this.getIBMCLOUDCISAPIENDPOINT();
+        result = result * prime + ($iBMCLOUDCISAPIENDPOINT == null ? 43 : $iBMCLOUDCISAPIENDPOINT.hashCode());
+        Object $iBMCLOUDCOSCONFIGENDPOINT = this.getIBMCLOUDCOSCONFIGENDPOINT();
+        result = result * prime + ($iBMCLOUDCOSCONFIGENDPOINT == null ? 43 : $iBMCLOUDCOSCONFIGENDPOINT.hashCode());
+        Object $iBMCLOUDCOSENDPOINT = this.getIBMCLOUDCOSENDPOINT();
+        result = result * prime + ($iBMCLOUDCOSENDPOINT == null ? 43 : $iBMCLOUDCOSENDPOINT.hashCode());
+        Object $iBMCLOUDGSAPIENDPOINT = this.getIBMCLOUDGSAPIENDPOINT();
+        result = result * prime + ($iBMCLOUDGSAPIENDPOINT == null ? 43 : $iBMCLOUDGSAPIENDPOINT.hashCode());
+        Object $iBMCLOUDGTAPIENDPOINT = this.getIBMCLOUDGTAPIENDPOINT();
+        result = result * prime + ($iBMCLOUDGTAPIENDPOINT == null ? 43 : $iBMCLOUDGTAPIENDPOINT.hashCode());
+        Object $iBMCLOUDHPCSAPIENDPOINT = this.getIBMCLOUDHPCSAPIENDPOINT();
+        result = result * prime + ($iBMCLOUDHPCSAPIENDPOINT == null ? 43 : $iBMCLOUDHPCSAPIENDPOINT.hashCode());
+        Object $iBMCLOUDIAMAPIENDPOINT = this.getIBMCLOUDIAMAPIENDPOINT();
+        result = result * prime + ($iBMCLOUDIAMAPIENDPOINT == null ? 43 : $iBMCLOUDIAMAPIENDPOINT.hashCode());
+        Object $iBMCLOUDISNGAPIENDPOINT = this.getIBMCLOUDISNGAPIENDPOINT();
+        result = result * prime + ($iBMCLOUDISNGAPIENDPOINT == null ? 43 : $iBMCLOUDISNGAPIENDPOINT.hashCode());
+        Object $iBMCLOUDKPAPIENDPOINT = this.getIBMCLOUDKPAPIENDPOINT();
+        result = result * prime + ($iBMCLOUDKPAPIENDPOINT == null ? 43 : $iBMCLOUDKPAPIENDPOINT.hashCode());
+        Object $iBMCLOUDPRIVATEDNSAPIENDPOINT = this.getIBMCLOUDPRIVATEDNSAPIENDPOINT();
+        result = result * prime + ($iBMCLOUDPRIVATEDNSAPIENDPOINT == null ? 43 : $iBMCLOUDPRIVATEDNSAPIENDPOINT.hashCode());
+        Object $iBMCLOUDRESOURCECATALOGAPIENDPOINT = this.getIBMCLOUDRESOURCECATALOGAPIENDPOINT();
+        result = result * prime + ($iBMCLOUDRESOURCECATALOGAPIENDPOINT == null ? 43 : $iBMCLOUDRESOURCECATALOGAPIENDPOINT.hashCode());
+        Object $iBMCLOUDRESOURCECONTROLLERAPIENDPOINT = this.getIBMCLOUDRESOURCECONTROLLERAPIENDPOINT();
+        result = result * prime + ($iBMCLOUDRESOURCECONTROLLERAPIENDPOINT == null ? 43 : $iBMCLOUDRESOURCECONTROLLERAPIENDPOINT.hashCode());
+        Object $iBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT = this.getIBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT();
+        result = result * prime + ($iBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT == null ? 43 : $iBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EndpointsJSON(" + "iBMCLOUDCISAPIENDPOINT=" + this.getIBMCLOUDCISAPIENDPOINT() + ", iBMCLOUDCOSCONFIGENDPOINT=" + this.getIBMCLOUDCOSCONFIGENDPOINT() + ", iBMCLOUDCOSENDPOINT=" + this.getIBMCLOUDCOSENDPOINT() + ", iBMCLOUDGSAPIENDPOINT=" + this.getIBMCLOUDGSAPIENDPOINT() + ", iBMCLOUDGTAPIENDPOINT=" + this.getIBMCLOUDGTAPIENDPOINT() + ", iBMCLOUDHPCSAPIENDPOINT=" + this.getIBMCLOUDHPCSAPIENDPOINT() + ", iBMCLOUDIAMAPIENDPOINT=" + this.getIBMCLOUDIAMAPIENDPOINT() + ", iBMCLOUDISNGAPIENDPOINT=" + this.getIBMCLOUDISNGAPIENDPOINT() + ", iBMCLOUDKPAPIENDPOINT=" + this.getIBMCLOUDKPAPIENDPOINT() + ", iBMCLOUDPRIVATEDNSAPIENDPOINT=" + this.getIBMCLOUDPRIVATEDNSAPIENDPOINT() + ", iBMCLOUDRESOURCECATALOGAPIENDPOINT=" + this.getIBMCLOUDRESOURCECATALOGAPIENDPOINT() + ", iBMCLOUDRESOURCECONTROLLERAPIENDPOINT=" + this.getIBMCLOUDRESOURCECONTROLLERAPIENDPOINT() + ", iBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT=" + this.getIBMCLOUDRESOURCEMANAGEMENTAPIENDPOINT() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HardwareDetails collects all of the information about hardware discovered on the host.
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "ramMebibytes",
     "storage",
     "systemVendor"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -245,6 +236,92 @@ public class HardwareDetails implements Editable<HardwareDetailsBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HardwareDetails)) {
+            return false;
+        }
+        HardwareDetails other = (HardwareDetails) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cpu = this.getCpu();
+        Object other$cpu = other.getCpu();
+        if (this$cpu == null ? other$cpu != null : !this$cpu.equals(other$cpu)) {
+            return false;
+        }
+        Object this$firmware = this.getFirmware();
+        Object other$firmware = other.getFirmware();
+        if (this$firmware == null ? other$firmware != null : !this$firmware.equals(other$firmware)) {
+            return false;
+        }
+        Object this$hostname = this.getHostname();
+        Object other$hostname = other.getHostname();
+        if (this$hostname == null ? other$hostname != null : !this$hostname.equals(other$hostname)) {
+            return false;
+        }
+        Object this$nics = this.getNics();
+        Object other$nics = other.getNics();
+        if (this$nics == null ? other$nics != null : !this$nics.equals(other$nics)) {
+            return false;
+        }
+        Object this$ramMebibytes = this.getRamMebibytes();
+        Object other$ramMebibytes = other.getRamMebibytes();
+        if (this$ramMebibytes == null ? other$ramMebibytes != null : !this$ramMebibytes.equals(other$ramMebibytes)) {
+            return false;
+        }
+        Object this$storage = this.getStorage();
+        Object other$storage = other.getStorage();
+        if (this$storage == null ? other$storage != null : !this$storage.equals(other$storage)) {
+            return false;
+        }
+        Object this$systemVendor = this.getSystemVendor();
+        Object other$systemVendor = other.getSystemVendor();
+        if (this$systemVendor == null ? other$systemVendor != null : !this$systemVendor.equals(other$systemVendor)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HardwareDetails;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cpu = this.getCpu();
+        result = result * prime + ($cpu == null ? 43 : $cpu.hashCode());
+        Object $firmware = this.getFirmware();
+        result = result * prime + ($firmware == null ? 43 : $firmware.hashCode());
+        Object $hostname = this.getHostname();
+        result = result * prime + ($hostname == null ? 43 : $hostname.hashCode());
+        Object $nics = this.getNics();
+        result = result * prime + ($nics == null ? 43 : $nics.hashCode());
+        Object $ramMebibytes = this.getRamMebibytes();
+        result = result * prime + ($ramMebibytes == null ? 43 : $ramMebibytes.hashCode());
+        Object $storage = this.getStorage();
+        result = result * prime + ($storage == null ? 43 : $storage.hashCode());
+        Object $systemVendor = this.getSystemVendor();
+        result = result * prime + ($systemVendor == null ? 43 : $systemVendor.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HardwareDetails(" + "cpu=" + this.getCpu() + ", firmware=" + this.getFirmware() + ", hostname=" + this.getHostname() + ", nics=" + this.getNics() + ", ramMebibytes=" + this.getRamMebibytes() + ", storage=" + this.getStorage() + ", systemVendor=" + this.getSystemVendor() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

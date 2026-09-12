@@ -33,9 +33,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "seccompProfile",
     "supplementalGroups",
     "sysctls"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -274,6 +265,106 @@ public class ACMEChallengeSolverHTTP01IngressPodSecurityContext implements Edita
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ACMEChallengeSolverHTTP01IngressPodSecurityContext)) {
+            return false;
+        }
+        ACMEChallengeSolverHTTP01IngressPodSecurityContext other = (ACMEChallengeSolverHTTP01IngressPodSecurityContext) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$fsGroup = this.getFsGroup();
+        Object other$fsGroup = other.getFsGroup();
+        if (this$fsGroup == null ? other$fsGroup != null : !this$fsGroup.equals(other$fsGroup)) {
+            return false;
+        }
+        Object this$fsGroupChangePolicy = this.getFsGroupChangePolicy();
+        Object other$fsGroupChangePolicy = other.getFsGroupChangePolicy();
+        if (this$fsGroupChangePolicy == null ? other$fsGroupChangePolicy != null : !this$fsGroupChangePolicy.equals(other$fsGroupChangePolicy)) {
+            return false;
+        }
+        Object this$runAsGroup = this.getRunAsGroup();
+        Object other$runAsGroup = other.getRunAsGroup();
+        if (this$runAsGroup == null ? other$runAsGroup != null : !this$runAsGroup.equals(other$runAsGroup)) {
+            return false;
+        }
+        Object this$runAsNonRoot = this.getRunAsNonRoot();
+        Object other$runAsNonRoot = other.getRunAsNonRoot();
+        if (this$runAsNonRoot == null ? other$runAsNonRoot != null : !this$runAsNonRoot.equals(other$runAsNonRoot)) {
+            return false;
+        }
+        Object this$runAsUser = this.getRunAsUser();
+        Object other$runAsUser = other.getRunAsUser();
+        if (this$runAsUser == null ? other$runAsUser != null : !this$runAsUser.equals(other$runAsUser)) {
+            return false;
+        }
+        Object this$seLinuxOptions = this.getSeLinuxOptions();
+        Object other$seLinuxOptions = other.getSeLinuxOptions();
+        if (this$seLinuxOptions == null ? other$seLinuxOptions != null : !this$seLinuxOptions.equals(other$seLinuxOptions)) {
+            return false;
+        }
+        Object this$seccompProfile = this.getSeccompProfile();
+        Object other$seccompProfile = other.getSeccompProfile();
+        if (this$seccompProfile == null ? other$seccompProfile != null : !this$seccompProfile.equals(other$seccompProfile)) {
+            return false;
+        }
+        Object this$supplementalGroups = this.getSupplementalGroups();
+        Object other$supplementalGroups = other.getSupplementalGroups();
+        if (this$supplementalGroups == null ? other$supplementalGroups != null : !this$supplementalGroups.equals(other$supplementalGroups)) {
+            return false;
+        }
+        Object this$sysctls = this.getSysctls();
+        Object other$sysctls = other.getSysctls();
+        if (this$sysctls == null ? other$sysctls != null : !this$sysctls.equals(other$sysctls)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ACMEChallengeSolverHTTP01IngressPodSecurityContext;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $fsGroup = this.getFsGroup();
+        result = result * prime + ($fsGroup == null ? 43 : $fsGroup.hashCode());
+        Object $fsGroupChangePolicy = this.getFsGroupChangePolicy();
+        result = result * prime + ($fsGroupChangePolicy == null ? 43 : $fsGroupChangePolicy.hashCode());
+        Object $runAsGroup = this.getRunAsGroup();
+        result = result * prime + ($runAsGroup == null ? 43 : $runAsGroup.hashCode());
+        Object $runAsNonRoot = this.getRunAsNonRoot();
+        result = result * prime + ($runAsNonRoot == null ? 43 : $runAsNonRoot.hashCode());
+        Object $runAsUser = this.getRunAsUser();
+        result = result * prime + ($runAsUser == null ? 43 : $runAsUser.hashCode());
+        Object $seLinuxOptions = this.getSeLinuxOptions();
+        result = result * prime + ($seLinuxOptions == null ? 43 : $seLinuxOptions.hashCode());
+        Object $seccompProfile = this.getSeccompProfile();
+        result = result * prime + ($seccompProfile == null ? 43 : $seccompProfile.hashCode());
+        Object $supplementalGroups = this.getSupplementalGroups();
+        result = result * prime + ($supplementalGroups == null ? 43 : $supplementalGroups.hashCode());
+        Object $sysctls = this.getSysctls();
+        result = result * prime + ($sysctls == null ? 43 : $sysctls.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ACMEChallengeSolverHTTP01IngressPodSecurityContext(" + "fsGroup=" + this.getFsGroup() + ", fsGroupChangePolicy=" + this.getFsGroupChangePolicy() + ", runAsGroup=" + this.getRunAsGroup() + ", runAsNonRoot=" + this.getRunAsNonRoot() + ", runAsUser=" + this.getRunAsUser() + ", seLinuxOptions=" + this.getSeLinuxOptions() + ", seccompProfile=" + this.getSeccompProfile() + ", supplementalGroups=" + this.getSupplementalGroups() + ", sysctls=" + this.getSysctls() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClusterPoolSpec defines the desired state of the ClusterPool.
@@ -58,12 +55,6 @@ import lombok.experimental.Accessors;
     "runningCount",
     "size",
     "skipMachinePools"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -470,6 +461,169 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterPoolSpec)) {
+            return false;
+        }
+        ClusterPoolSpec other = (ClusterPoolSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$annotations = this.getAnnotations();
+        Object other$annotations = other.getAnnotations();
+        if (this$annotations == null ? other$annotations != null : !this$annotations.equals(other$annotations)) {
+            return false;
+        }
+        Object this$baseDomain = this.getBaseDomain();
+        Object other$baseDomain = other.getBaseDomain();
+        if (this$baseDomain == null ? other$baseDomain != null : !this$baseDomain.equals(other$baseDomain)) {
+            return false;
+        }
+        Object this$claimLifetime = this.getClaimLifetime();
+        Object other$claimLifetime = other.getClaimLifetime();
+        if (this$claimLifetime == null ? other$claimLifetime != null : !this$claimLifetime.equals(other$claimLifetime)) {
+            return false;
+        }
+        Object this$hibernateAfter = this.getHibernateAfter();
+        Object other$hibernateAfter = other.getHibernateAfter();
+        if (this$hibernateAfter == null ? other$hibernateAfter != null : !this$hibernateAfter.equals(other$hibernateAfter)) {
+            return false;
+        }
+        Object this$hibernationConfig = this.getHibernationConfig();
+        Object other$hibernationConfig = other.getHibernationConfig();
+        if (this$hibernationConfig == null ? other$hibernationConfig != null : !this$hibernationConfig.equals(other$hibernationConfig)) {
+            return false;
+        }
+        Object this$imageSetRef = this.getImageSetRef();
+        Object other$imageSetRef = other.getImageSetRef();
+        if (this$imageSetRef == null ? other$imageSetRef != null : !this$imageSetRef.equals(other$imageSetRef)) {
+            return false;
+        }
+        Object this$installAttemptsLimit = this.getInstallAttemptsLimit();
+        Object other$installAttemptsLimit = other.getInstallAttemptsLimit();
+        if (this$installAttemptsLimit == null ? other$installAttemptsLimit != null : !this$installAttemptsLimit.equals(other$installAttemptsLimit)) {
+            return false;
+        }
+        Object this$installConfigSecretTemplateRef = this.getInstallConfigSecretTemplateRef();
+        Object other$installConfigSecretTemplateRef = other.getInstallConfigSecretTemplateRef();
+        if (this$installConfigSecretTemplateRef == null ? other$installConfigSecretTemplateRef != null : !this$installConfigSecretTemplateRef.equals(other$installConfigSecretTemplateRef)) {
+            return false;
+        }
+        Object this$installerEnv = this.getInstallerEnv();
+        Object other$installerEnv = other.getInstallerEnv();
+        if (this$installerEnv == null ? other$installerEnv != null : !this$installerEnv.equals(other$installerEnv)) {
+            return false;
+        }
+        Object this$inventory = this.getInventory();
+        Object other$inventory = other.getInventory();
+        if (this$inventory == null ? other$inventory != null : !this$inventory.equals(other$inventory)) {
+            return false;
+        }
+        Object this$labels = this.getLabels();
+        Object other$labels = other.getLabels();
+        if (this$labels == null ? other$labels != null : !this$labels.equals(other$labels)) {
+            return false;
+        }
+        Object this$maxConcurrent = this.getMaxConcurrent();
+        Object other$maxConcurrent = other.getMaxConcurrent();
+        if (this$maxConcurrent == null ? other$maxConcurrent != null : !this$maxConcurrent.equals(other$maxConcurrent)) {
+            return false;
+        }
+        Object this$maxSize = this.getMaxSize();
+        Object other$maxSize = other.getMaxSize();
+        if (this$maxSize == null ? other$maxSize != null : !this$maxSize.equals(other$maxSize)) {
+            return false;
+        }
+        Object this$platform = this.getPlatform();
+        Object other$platform = other.getPlatform();
+        if (this$platform == null ? other$platform != null : !this$platform.equals(other$platform)) {
+            return false;
+        }
+        Object this$pullSecretRef = this.getPullSecretRef();
+        Object other$pullSecretRef = other.getPullSecretRef();
+        if (this$pullSecretRef == null ? other$pullSecretRef != null : !this$pullSecretRef.equals(other$pullSecretRef)) {
+            return false;
+        }
+        Object this$runningCount = this.getRunningCount();
+        Object other$runningCount = other.getRunningCount();
+        if (this$runningCount == null ? other$runningCount != null : !this$runningCount.equals(other$runningCount)) {
+            return false;
+        }
+        Object this$size = this.getSize();
+        Object other$size = other.getSize();
+        if (this$size == null ? other$size != null : !this$size.equals(other$size)) {
+            return false;
+        }
+        Object this$skipMachinePools = this.getSkipMachinePools();
+        Object other$skipMachinePools = other.getSkipMachinePools();
+        if (this$skipMachinePools == null ? other$skipMachinePools != null : !this$skipMachinePools.equals(other$skipMachinePools)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterPoolSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $annotations = this.getAnnotations();
+        result = result * prime + ($annotations == null ? 43 : $annotations.hashCode());
+        Object $baseDomain = this.getBaseDomain();
+        result = result * prime + ($baseDomain == null ? 43 : $baseDomain.hashCode());
+        Object $claimLifetime = this.getClaimLifetime();
+        result = result * prime + ($claimLifetime == null ? 43 : $claimLifetime.hashCode());
+        Object $hibernateAfter = this.getHibernateAfter();
+        result = result * prime + ($hibernateAfter == null ? 43 : $hibernateAfter.hashCode());
+        Object $hibernationConfig = this.getHibernationConfig();
+        result = result * prime + ($hibernationConfig == null ? 43 : $hibernationConfig.hashCode());
+        Object $imageSetRef = this.getImageSetRef();
+        result = result * prime + ($imageSetRef == null ? 43 : $imageSetRef.hashCode());
+        Object $installAttemptsLimit = this.getInstallAttemptsLimit();
+        result = result * prime + ($installAttemptsLimit == null ? 43 : $installAttemptsLimit.hashCode());
+        Object $installConfigSecretTemplateRef = this.getInstallConfigSecretTemplateRef();
+        result = result * prime + ($installConfigSecretTemplateRef == null ? 43 : $installConfigSecretTemplateRef.hashCode());
+        Object $installerEnv = this.getInstallerEnv();
+        result = result * prime + ($installerEnv == null ? 43 : $installerEnv.hashCode());
+        Object $inventory = this.getInventory();
+        result = result * prime + ($inventory == null ? 43 : $inventory.hashCode());
+        Object $labels = this.getLabels();
+        result = result * prime + ($labels == null ? 43 : $labels.hashCode());
+        Object $maxConcurrent = this.getMaxConcurrent();
+        result = result * prime + ($maxConcurrent == null ? 43 : $maxConcurrent.hashCode());
+        Object $maxSize = this.getMaxSize();
+        result = result * prime + ($maxSize == null ? 43 : $maxSize.hashCode());
+        Object $platform = this.getPlatform();
+        result = result * prime + ($platform == null ? 43 : $platform.hashCode());
+        Object $pullSecretRef = this.getPullSecretRef();
+        result = result * prime + ($pullSecretRef == null ? 43 : $pullSecretRef.hashCode());
+        Object $runningCount = this.getRunningCount();
+        result = result * prime + ($runningCount == null ? 43 : $runningCount.hashCode());
+        Object $size = this.getSize();
+        result = result * prime + ($size == null ? 43 : $size.hashCode());
+        Object $skipMachinePools = this.getSkipMachinePools();
+        result = result * prime + ($skipMachinePools == null ? 43 : $skipMachinePools.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterPoolSpec(" + "annotations=" + this.getAnnotations() + ", baseDomain=" + this.getBaseDomain() + ", claimLifetime=" + this.getClaimLifetime() + ", hibernateAfter=" + this.getHibernateAfter() + ", hibernationConfig=" + this.getHibernationConfig() + ", imageSetRef=" + this.getImageSetRef() + ", installAttemptsLimit=" + this.getInstallAttemptsLimit() + ", installConfigSecretTemplateRef=" + this.getInstallConfigSecretTemplateRef() + ", installerEnv=" + this.getInstallerEnv() + ", inventory=" + this.getInventory() + ", labels=" + this.getLabels() + ", maxConcurrent=" + this.getMaxConcurrent() + ", maxSize=" + this.getMaxSize() + ", platform=" + this.getPlatform() + ", pullSecretRef=" + this.getPullSecretRef() + ", runningCount=" + this.getRunningCount() + ", size=" + this.getSize() + ", skipMachinePools=" + this.getSkipMachinePools() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

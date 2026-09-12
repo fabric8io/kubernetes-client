@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ConsolePluginProxy holds information on various service types to which console's backend will proxy the plugin's requests.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "authorization",
     "caCertificate",
     "endpoint"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class ConsolePluginProxy implements Editable<ConsolePluginProxyBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConsolePluginProxy)) {
+            return false;
+        }
+        ConsolePluginProxy other = (ConsolePluginProxy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$alias = this.getAlias();
+        Object other$alias = other.getAlias();
+        if (this$alias == null ? other$alias != null : !this$alias.equals(other$alias)) {
+            return false;
+        }
+        Object this$authorization = this.getAuthorization();
+        Object other$authorization = other.getAuthorization();
+        if (this$authorization == null ? other$authorization != null : !this$authorization.equals(other$authorization)) {
+            return false;
+        }
+        Object this$caCertificate = this.getCaCertificate();
+        Object other$caCertificate = other.getCaCertificate();
+        if (this$caCertificate == null ? other$caCertificate != null : !this$caCertificate.equals(other$caCertificate)) {
+            return false;
+        }
+        Object this$endpoint = this.getEndpoint();
+        Object other$endpoint = other.getEndpoint();
+        if (this$endpoint == null ? other$endpoint != null : !this$endpoint.equals(other$endpoint)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConsolePluginProxy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $alias = this.getAlias();
+        result = result * prime + ($alias == null ? 43 : $alias.hashCode());
+        Object $authorization = this.getAuthorization();
+        result = result * prime + ($authorization == null ? 43 : $authorization.hashCode());
+        Object $caCertificate = this.getCaCertificate();
+        result = result * prime + ($caCertificate == null ? 43 : $caCertificate.hashCode());
+        Object $endpoint = this.getEndpoint();
+        result = result * prime + ($endpoint == null ? 43 : $endpoint.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConsolePluginProxy(" + "alias=" + this.getAlias() + ", authorization=" + this.getAuthorization() + ", caCertificate=" + this.getCaCertificate() + ", endpoint=" + this.getEndpoint() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

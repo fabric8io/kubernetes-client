@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MultiClusterHubSpec defines the desired state of MultiClusterHub
@@ -55,12 +52,6 @@ import lombok.experimental.Accessors;
     "overrides",
     "separateCertificateManagement",
     "tolerations"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -387,6 +378,141 @@ public class MultiClusterHubSpec implements Editable<MultiClusterHubSpecBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MultiClusterHubSpec)) {
+            return false;
+        }
+        MultiClusterHubSpec other = (MultiClusterHubSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$availabilityConfig = this.getAvailabilityConfig();
+        Object other$availabilityConfig = other.getAvailabilityConfig();
+        if (this$availabilityConfig == null ? other$availabilityConfig != null : !this$availabilityConfig.equals(other$availabilityConfig)) {
+            return false;
+        }
+        Object this$customCAConfigmap = this.getCustomCAConfigmap();
+        Object other$customCAConfigmap = other.getCustomCAConfigmap();
+        if (this$customCAConfigmap == null ? other$customCAConfigmap != null : !this$customCAConfigmap.equals(other$customCAConfigmap)) {
+            return false;
+        }
+        Object this$disableHubSelfManagement = this.getDisableHubSelfManagement();
+        Object other$disableHubSelfManagement = other.getDisableHubSelfManagement();
+        if (this$disableHubSelfManagement == null ? other$disableHubSelfManagement != null : !this$disableHubSelfManagement.equals(other$disableHubSelfManagement)) {
+            return false;
+        }
+        Object this$disableUpdateClusterImageSets = this.getDisableUpdateClusterImageSets();
+        Object other$disableUpdateClusterImageSets = other.getDisableUpdateClusterImageSets();
+        if (this$disableUpdateClusterImageSets == null ? other$disableUpdateClusterImageSets != null : !this$disableUpdateClusterImageSets.equals(other$disableUpdateClusterImageSets)) {
+            return false;
+        }
+        Object this$enableClusterBackup = this.getEnableClusterBackup();
+        Object other$enableClusterBackup = other.getEnableClusterBackup();
+        if (this$enableClusterBackup == null ? other$enableClusterBackup != null : !this$enableClusterBackup.equals(other$enableClusterBackup)) {
+            return false;
+        }
+        Object this$enableClusterProxyAddon = this.getEnableClusterProxyAddon();
+        Object other$enableClusterProxyAddon = other.getEnableClusterProxyAddon();
+        if (this$enableClusterProxyAddon == null ? other$enableClusterProxyAddon != null : !this$enableClusterProxyAddon.equals(other$enableClusterProxyAddon)) {
+            return false;
+        }
+        Object this$hive = this.getHive();
+        Object other$hive = other.getHive();
+        if (this$hive == null ? other$hive != null : !this$hive.equals(other$hive)) {
+            return false;
+        }
+        Object this$imagePullSecret = this.getImagePullSecret();
+        Object other$imagePullSecret = other.getImagePullSecret();
+        if (this$imagePullSecret == null ? other$imagePullSecret != null : !this$imagePullSecret.equals(other$imagePullSecret)) {
+            return false;
+        }
+        Object this$ingress = this.getIngress();
+        Object other$ingress = other.getIngress();
+        if (this$ingress == null ? other$ingress != null : !this$ingress.equals(other$ingress)) {
+            return false;
+        }
+        Object this$localClusterName = this.getLocalClusterName();
+        Object other$localClusterName = other.getLocalClusterName();
+        if (this$localClusterName == null ? other$localClusterName != null : !this$localClusterName.equals(other$localClusterName)) {
+            return false;
+        }
+        Object this$nodeSelector = this.getNodeSelector();
+        Object other$nodeSelector = other.getNodeSelector();
+        if (this$nodeSelector == null ? other$nodeSelector != null : !this$nodeSelector.equals(other$nodeSelector)) {
+            return false;
+        }
+        Object this$overrides = this.getOverrides();
+        Object other$overrides = other.getOverrides();
+        if (this$overrides == null ? other$overrides != null : !this$overrides.equals(other$overrides)) {
+            return false;
+        }
+        Object this$separateCertificateManagement = this.getSeparateCertificateManagement();
+        Object other$separateCertificateManagement = other.getSeparateCertificateManagement();
+        if (this$separateCertificateManagement == null ? other$separateCertificateManagement != null : !this$separateCertificateManagement.equals(other$separateCertificateManagement)) {
+            return false;
+        }
+        Object this$tolerations = this.getTolerations();
+        Object other$tolerations = other.getTolerations();
+        if (this$tolerations == null ? other$tolerations != null : !this$tolerations.equals(other$tolerations)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MultiClusterHubSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $availabilityConfig = this.getAvailabilityConfig();
+        result = result * prime + ($availabilityConfig == null ? 43 : $availabilityConfig.hashCode());
+        Object $customCAConfigmap = this.getCustomCAConfigmap();
+        result = result * prime + ($customCAConfigmap == null ? 43 : $customCAConfigmap.hashCode());
+        Object $disableHubSelfManagement = this.getDisableHubSelfManagement();
+        result = result * prime + ($disableHubSelfManagement == null ? 43 : $disableHubSelfManagement.hashCode());
+        Object $disableUpdateClusterImageSets = this.getDisableUpdateClusterImageSets();
+        result = result * prime + ($disableUpdateClusterImageSets == null ? 43 : $disableUpdateClusterImageSets.hashCode());
+        Object $enableClusterBackup = this.getEnableClusterBackup();
+        result = result * prime + ($enableClusterBackup == null ? 43 : $enableClusterBackup.hashCode());
+        Object $enableClusterProxyAddon = this.getEnableClusterProxyAddon();
+        result = result * prime + ($enableClusterProxyAddon == null ? 43 : $enableClusterProxyAddon.hashCode());
+        Object $hive = this.getHive();
+        result = result * prime + ($hive == null ? 43 : $hive.hashCode());
+        Object $imagePullSecret = this.getImagePullSecret();
+        result = result * prime + ($imagePullSecret == null ? 43 : $imagePullSecret.hashCode());
+        Object $ingress = this.getIngress();
+        result = result * prime + ($ingress == null ? 43 : $ingress.hashCode());
+        Object $localClusterName = this.getLocalClusterName();
+        result = result * prime + ($localClusterName == null ? 43 : $localClusterName.hashCode());
+        Object $nodeSelector = this.getNodeSelector();
+        result = result * prime + ($nodeSelector == null ? 43 : $nodeSelector.hashCode());
+        Object $overrides = this.getOverrides();
+        result = result * prime + ($overrides == null ? 43 : $overrides.hashCode());
+        Object $separateCertificateManagement = this.getSeparateCertificateManagement();
+        result = result * prime + ($separateCertificateManagement == null ? 43 : $separateCertificateManagement.hashCode());
+        Object $tolerations = this.getTolerations();
+        result = result * prime + ($tolerations == null ? 43 : $tolerations.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MultiClusterHubSpec(" + "availabilityConfig=" + this.getAvailabilityConfig() + ", customCAConfigmap=" + this.getCustomCAConfigmap() + ", disableHubSelfManagement=" + this.getDisableHubSelfManagement() + ", disableUpdateClusterImageSets=" + this.getDisableUpdateClusterImageSets() + ", enableClusterBackup=" + this.getEnableClusterBackup() + ", enableClusterProxyAddon=" + this.getEnableClusterProxyAddon() + ", hive=" + this.getHive() + ", imagePullSecret=" + this.getImagePullSecret() + ", ingress=" + this.getIngress() + ", localClusterName=" + this.getLocalClusterName() + ", nodeSelector=" + this.getNodeSelector() + ", overrides=" + this.getOverrides() + ", separateCertificateManagement=" + this.getSeparateCertificateManagement() + ", tolerations=" + this.getTolerations() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

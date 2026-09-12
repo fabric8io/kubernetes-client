@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ConsolePluginSpec is the desired plugin configuration.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "displayName",
     "i18n",
     "proxy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -206,6 +197,78 @@ public class ConsolePluginSpec implements Editable<ConsolePluginSpecBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConsolePluginSpec)) {
+            return false;
+        }
+        ConsolePluginSpec other = (ConsolePluginSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$backend = this.getBackend();
+        Object other$backend = other.getBackend();
+        if (this$backend == null ? other$backend != null : !this$backend.equals(other$backend)) {
+            return false;
+        }
+        Object this$contentSecurityPolicy = this.getContentSecurityPolicy();
+        Object other$contentSecurityPolicy = other.getContentSecurityPolicy();
+        if (this$contentSecurityPolicy == null ? other$contentSecurityPolicy != null : !this$contentSecurityPolicy.equals(other$contentSecurityPolicy)) {
+            return false;
+        }
+        Object this$displayName = this.getDisplayName();
+        Object other$displayName = other.getDisplayName();
+        if (this$displayName == null ? other$displayName != null : !this$displayName.equals(other$displayName)) {
+            return false;
+        }
+        Object this$i18n = this.getI18n();
+        Object other$i18n = other.getI18n();
+        if (this$i18n == null ? other$i18n != null : !this$i18n.equals(other$i18n)) {
+            return false;
+        }
+        Object this$proxy = this.getProxy();
+        Object other$proxy = other.getProxy();
+        if (this$proxy == null ? other$proxy != null : !this$proxy.equals(other$proxy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConsolePluginSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $backend = this.getBackend();
+        result = result * prime + ($backend == null ? 43 : $backend.hashCode());
+        Object $contentSecurityPolicy = this.getContentSecurityPolicy();
+        result = result * prime + ($contentSecurityPolicy == null ? 43 : $contentSecurityPolicy.hashCode());
+        Object $displayName = this.getDisplayName();
+        result = result * prime + ($displayName == null ? 43 : $displayName.hashCode());
+        Object $i18n = this.getI18n();
+        result = result * prime + ($i18n == null ? 43 : $i18n.hashCode());
+        Object $proxy = this.getProxy();
+        result = result * prime + ($proxy == null ? 43 : $proxy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConsolePluginSpec(" + "backend=" + this.getBackend() + ", contentSecurityPolicy=" + this.getContentSecurityPolicy() + ", displayName=" + this.getDisplayName() + ", i18n=" + this.getI18n() + ", proxy=" + this.getProxy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

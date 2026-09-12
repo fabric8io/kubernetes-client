@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Represents a Ceph Filesystem mount that lasts the lifetime of a pod Cephfs volumes do not support ownership management or SELinux relabeling.
@@ -31,12 +28,6 @@ import lombok.experimental.Accessors;
     "secretFile",
     "secretRef",
     "user"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -195,6 +186,85 @@ public class CephFSPersistentVolumeSource implements Editable<CephFSPersistentVo
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CephFSPersistentVolumeSource)) {
+            return false;
+        }
+        CephFSPersistentVolumeSource other = (CephFSPersistentVolumeSource) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$monitors = this.getMonitors();
+        Object other$monitors = other.getMonitors();
+        if (this$monitors == null ? other$monitors != null : !this$monitors.equals(other$monitors)) {
+            return false;
+        }
+        Object this$path = this.getPath();
+        Object other$path = other.getPath();
+        if (this$path == null ? other$path != null : !this$path.equals(other$path)) {
+            return false;
+        }
+        Object this$readOnly = this.getReadOnly();
+        Object other$readOnly = other.getReadOnly();
+        if (this$readOnly == null ? other$readOnly != null : !this$readOnly.equals(other$readOnly)) {
+            return false;
+        }
+        Object this$secretFile = this.getSecretFile();
+        Object other$secretFile = other.getSecretFile();
+        if (this$secretFile == null ? other$secretFile != null : !this$secretFile.equals(other$secretFile)) {
+            return false;
+        }
+        Object this$secretRef = this.getSecretRef();
+        Object other$secretRef = other.getSecretRef();
+        if (this$secretRef == null ? other$secretRef != null : !this$secretRef.equals(other$secretRef)) {
+            return false;
+        }
+        Object this$user = this.getUser();
+        Object other$user = other.getUser();
+        if (this$user == null ? other$user != null : !this$user.equals(other$user)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CephFSPersistentVolumeSource;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $monitors = this.getMonitors();
+        result = result * prime + ($monitors == null ? 43 : $monitors.hashCode());
+        Object $path = this.getPath();
+        result = result * prime + ($path == null ? 43 : $path.hashCode());
+        Object $readOnly = this.getReadOnly();
+        result = result * prime + ($readOnly == null ? 43 : $readOnly.hashCode());
+        Object $secretFile = this.getSecretFile();
+        result = result * prime + ($secretFile == null ? 43 : $secretFile.hashCode());
+        Object $secretRef = this.getSecretRef();
+        result = result * prime + ($secretRef == null ? 43 : $secretRef.hashCode());
+        Object $user = this.getUser();
+        result = result * prime + ($user == null ? 43 : $user.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CephFSPersistentVolumeSource(" + "monitors=" + this.getMonitors() + ", path=" + this.getPath() + ", readOnly=" + this.getReadOnly() + ", secretFile=" + this.getSecretFile() + ", secretRef=" + this.getSecretRef() + ", user=" + this.getUser() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Disk defines the type of disk (etcd, swap or user-defined) and the configuration of each disk type.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "swap",
     "type",
     "userDefined"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class Disk implements Editable<DiskBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Disk)) {
+            return false;
+        }
+        Disk other = (Disk) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$etcd = this.getEtcd();
+        Object other$etcd = other.getEtcd();
+        if (this$etcd == null ? other$etcd != null : !this$etcd.equals(other$etcd)) {
+            return false;
+        }
+        Object this$swap = this.getSwap();
+        Object other$swap = other.getSwap();
+        if (this$swap == null ? other$swap != null : !this$swap.equals(other$swap)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$userDefined = this.getUserDefined();
+        Object other$userDefined = other.getUserDefined();
+        if (this$userDefined == null ? other$userDefined != null : !this$userDefined.equals(other$userDefined)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Disk;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $etcd = this.getEtcd();
+        result = result * prime + ($etcd == null ? 43 : $etcd.hashCode());
+        Object $swap = this.getSwap();
+        result = result * prime + ($swap == null ? 43 : $swap.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $userDefined = this.getUserDefined();
+        result = result * prime + ($userDefined == null ? 43 : $userDefined.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Disk(" + "etcd=" + this.getEtcd() + ", swap=" + this.getSwap() + ", type=" + this.getType() + ", userDefined=" + this.getUserDefined() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

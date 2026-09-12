@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedCluster;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AddonAgentConfig is the configurations for addon agents.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "KlusterletAddonConfig",
     "ManagedCluster",
     "NodeSelector"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -223,6 +214,85 @@ public class AddonAgentConfig implements Editable<AddonAgentConfigBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AddonAgentConfig)) {
+            return false;
+        }
+        AddonAgentConfig other = (AddonAgentConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$imagePullPolicy = this.getImagePullPolicy();
+        Object other$imagePullPolicy = other.getImagePullPolicy();
+        if (this$imagePullPolicy == null ? other$imagePullPolicy != null : !this$imagePullPolicy.equals(other$imagePullPolicy)) {
+            return false;
+        }
+        Object this$imagePullSecret = this.getImagePullSecret();
+        Object other$imagePullSecret = other.getImagePullSecret();
+        if (this$imagePullSecret == null ? other$imagePullSecret != null : !this$imagePullSecret.equals(other$imagePullSecret)) {
+            return false;
+        }
+        Object this$imagePullSecretNamespace = this.getImagePullSecretNamespace();
+        Object other$imagePullSecretNamespace = other.getImagePullSecretNamespace();
+        if (this$imagePullSecretNamespace == null ? other$imagePullSecretNamespace != null : !this$imagePullSecretNamespace.equals(other$imagePullSecretNamespace)) {
+            return false;
+        }
+        Object this$klusterletAddonConfig = this.getKlusterletAddonConfig();
+        Object other$klusterletAddonConfig = other.getKlusterletAddonConfig();
+        if (this$klusterletAddonConfig == null ? other$klusterletAddonConfig != null : !this$klusterletAddonConfig.equals(other$klusterletAddonConfig)) {
+            return false;
+        }
+        Object this$managedCluster = this.getManagedCluster();
+        Object other$managedCluster = other.getManagedCluster();
+        if (this$managedCluster == null ? other$managedCluster != null : !this$managedCluster.equals(other$managedCluster)) {
+            return false;
+        }
+        Object this$nodeSelector = this.getNodeSelector();
+        Object other$nodeSelector = other.getNodeSelector();
+        if (this$nodeSelector == null ? other$nodeSelector != null : !this$nodeSelector.equals(other$nodeSelector)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AddonAgentConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $imagePullPolicy = this.getImagePullPolicy();
+        result = result * prime + ($imagePullPolicy == null ? 43 : $imagePullPolicy.hashCode());
+        Object $imagePullSecret = this.getImagePullSecret();
+        result = result * prime + ($imagePullSecret == null ? 43 : $imagePullSecret.hashCode());
+        Object $imagePullSecretNamespace = this.getImagePullSecretNamespace();
+        result = result * prime + ($imagePullSecretNamespace == null ? 43 : $imagePullSecretNamespace.hashCode());
+        Object $klusterletAddonConfig = this.getKlusterletAddonConfig();
+        result = result * prime + ($klusterletAddonConfig == null ? 43 : $klusterletAddonConfig.hashCode());
+        Object $managedCluster = this.getManagedCluster();
+        result = result * prime + ($managedCluster == null ? 43 : $managedCluster.hashCode());
+        Object $nodeSelector = this.getNodeSelector();
+        result = result * prime + ($nodeSelector == null ? 43 : $nodeSelector.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AddonAgentConfig(" + "imagePullPolicy=" + this.getImagePullPolicy() + ", imagePullSecret=" + this.getImagePullSecret() + ", imagePullSecretNamespace=" + this.getImagePullSecretNamespace() + ", klusterletAddonConfig=" + this.getKlusterletAddonConfig() + ", managedCluster=" + this.getManagedCluster() + ", nodeSelector=" + this.getNodeSelector() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

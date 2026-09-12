@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CustomResourceDefinitionSpec describes how a user wants their resource to appear
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "preserveUnknownFields",
     "scope",
     "versions"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -224,6 +215,85 @@ public class CustomResourceDefinitionSpec implements Editable<CustomResourceDefi
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CustomResourceDefinitionSpec)) {
+            return false;
+        }
+        CustomResourceDefinitionSpec other = (CustomResourceDefinitionSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conversion = this.getConversion();
+        Object other$conversion = other.getConversion();
+        if (this$conversion == null ? other$conversion != null : !this$conversion.equals(other$conversion)) {
+            return false;
+        }
+        Object this$group = this.getGroup();
+        Object other$group = other.getGroup();
+        if (this$group == null ? other$group != null : !this$group.equals(other$group)) {
+            return false;
+        }
+        Object this$names = this.getNames();
+        Object other$names = other.getNames();
+        if (this$names == null ? other$names != null : !this$names.equals(other$names)) {
+            return false;
+        }
+        Object this$preserveUnknownFields = this.getPreserveUnknownFields();
+        Object other$preserveUnknownFields = other.getPreserveUnknownFields();
+        if (this$preserveUnknownFields == null ? other$preserveUnknownFields != null : !this$preserveUnknownFields.equals(other$preserveUnknownFields)) {
+            return false;
+        }
+        Object this$scope = this.getScope();
+        Object other$scope = other.getScope();
+        if (this$scope == null ? other$scope != null : !this$scope.equals(other$scope)) {
+            return false;
+        }
+        Object this$versions = this.getVersions();
+        Object other$versions = other.getVersions();
+        if (this$versions == null ? other$versions != null : !this$versions.equals(other$versions)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CustomResourceDefinitionSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conversion = this.getConversion();
+        result = result * prime + ($conversion == null ? 43 : $conversion.hashCode());
+        Object $group = this.getGroup();
+        result = result * prime + ($group == null ? 43 : $group.hashCode());
+        Object $names = this.getNames();
+        result = result * prime + ($names == null ? 43 : $names.hashCode());
+        Object $preserveUnknownFields = this.getPreserveUnknownFields();
+        result = result * prime + ($preserveUnknownFields == null ? 43 : $preserveUnknownFields.hashCode());
+        Object $scope = this.getScope();
+        result = result * prime + ($scope == null ? 43 : $scope.hashCode());
+        Object $versions = this.getVersions();
+        result = result * prime + ($versions == null ? 43 : $versions.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CustomResourceDefinitionSpec(" + "conversion=" + this.getConversion() + ", group=" + this.getGroup() + ", names=" + this.getNames() + ", preserveUnknownFields=" + this.getPreserveUnknownFields() + ", scope=" + this.getScope() + ", versions=" + this.getVersions() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

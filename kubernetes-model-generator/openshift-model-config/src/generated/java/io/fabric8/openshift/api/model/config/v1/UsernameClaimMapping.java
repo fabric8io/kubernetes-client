@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -37,12 +34,6 @@ import lombok.experimental.Accessors;
     "claim",
     "prefix",
     "prefixPolicy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -150,6 +141,64 @@ public class UsernameClaimMapping implements Editable<UsernameClaimMappingBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof UsernameClaimMapping)) {
+            return false;
+        }
+        UsernameClaimMapping other = (UsernameClaimMapping) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$claim = this.getClaim();
+        Object other$claim = other.getClaim();
+        if (this$claim == null ? other$claim != null : !this$claim.equals(other$claim)) {
+            return false;
+        }
+        Object this$prefix = this.getPrefix();
+        Object other$prefix = other.getPrefix();
+        if (this$prefix == null ? other$prefix != null : !this$prefix.equals(other$prefix)) {
+            return false;
+        }
+        Object this$prefixPolicy = this.getPrefixPolicy();
+        Object other$prefixPolicy = other.getPrefixPolicy();
+        if (this$prefixPolicy == null ? other$prefixPolicy != null : !this$prefixPolicy.equals(other$prefixPolicy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof UsernameClaimMapping;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $claim = this.getClaim();
+        result = result * prime + ($claim == null ? 43 : $claim.hashCode());
+        Object $prefix = this.getPrefix();
+        result = result * prime + ($prefix == null ? 43 : $prefix.hashCode());
+        Object $prefixPolicy = this.getPrefixPolicy();
+        result = result * prime + ($prefixPolicy == null ? 43 : $prefixPolicy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "UsernameClaimMapping(" + "claim=" + this.getClaim() + ", prefix=" + this.getPrefix() + ", prefixPolicy=" + this.getPrefixPolicy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

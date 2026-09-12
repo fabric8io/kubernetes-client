@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "showHeaders",
     "showProperties",
     "showStreams"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -351,6 +342,134 @@ public class Log implements Editable<LogBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Log)) {
+            return false;
+        }
+        Log other = (Log) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$level = this.getLevel();
+        Object other$level = other.getLevel();
+        if (this$level == null ? other$level != null : !this$level.equals(other$level)) {
+            return false;
+        }
+        Object this$logMask = this.getLogMask();
+        Object other$logMask = other.getLogMask();
+        if (this$logMask == null ? other$logMask != null : !this$logMask.equals(other$logMask)) {
+            return false;
+        }
+        Object this$loggerName = this.getLoggerName();
+        Object other$loggerName = other.getLoggerName();
+        if (this$loggerName == null ? other$loggerName != null : !this$loggerName.equals(other$loggerName)) {
+            return false;
+        }
+        Object this$marker = this.getMarker();
+        Object other$marker = other.getMarker();
+        if (this$marker == null ? other$marker != null : !this$marker.equals(other$marker)) {
+            return false;
+        }
+        Object this$multiline = this.getMultiline();
+        Object other$multiline = other.getMultiline();
+        if (this$multiline == null ? other$multiline != null : !this$multiline.equals(other$multiline)) {
+            return false;
+        }
+        Object this$showAllProperties = this.getShowAllProperties();
+        Object other$showAllProperties = other.getShowAllProperties();
+        if (this$showAllProperties == null ? other$showAllProperties != null : !this$showAllProperties.equals(other$showAllProperties)) {
+            return false;
+        }
+        Object this$showBody = this.getShowBody();
+        Object other$showBody = other.getShowBody();
+        if (this$showBody == null ? other$showBody != null : !this$showBody.equals(other$showBody)) {
+            return false;
+        }
+        Object this$showBodyType = this.getShowBodyType();
+        Object other$showBodyType = other.getShowBodyType();
+        if (this$showBodyType == null ? other$showBodyType != null : !this$showBodyType.equals(other$showBodyType)) {
+            return false;
+        }
+        Object this$showCachedStreams = this.getShowCachedStreams();
+        Object other$showCachedStreams = other.getShowCachedStreams();
+        if (this$showCachedStreams == null ? other$showCachedStreams != null : !this$showCachedStreams.equals(other$showCachedStreams)) {
+            return false;
+        }
+        Object this$showExchangePattern = this.getShowExchangePattern();
+        Object other$showExchangePattern = other.getShowExchangePattern();
+        if (this$showExchangePattern == null ? other$showExchangePattern != null : !this$showExchangePattern.equals(other$showExchangePattern)) {
+            return false;
+        }
+        Object this$showHeaders = this.getShowHeaders();
+        Object other$showHeaders = other.getShowHeaders();
+        if (this$showHeaders == null ? other$showHeaders != null : !this$showHeaders.equals(other$showHeaders)) {
+            return false;
+        }
+        Object this$showProperties = this.getShowProperties();
+        Object other$showProperties = other.getShowProperties();
+        if (this$showProperties == null ? other$showProperties != null : !this$showProperties.equals(other$showProperties)) {
+            return false;
+        }
+        Object this$showStreams = this.getShowStreams();
+        Object other$showStreams = other.getShowStreams();
+        if (this$showStreams == null ? other$showStreams != null : !this$showStreams.equals(other$showStreams)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Log;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $level = this.getLevel();
+        result = result * prime + ($level == null ? 43 : $level.hashCode());
+        Object $logMask = this.getLogMask();
+        result = result * prime + ($logMask == null ? 43 : $logMask.hashCode());
+        Object $loggerName = this.getLoggerName();
+        result = result * prime + ($loggerName == null ? 43 : $loggerName.hashCode());
+        Object $marker = this.getMarker();
+        result = result * prime + ($marker == null ? 43 : $marker.hashCode());
+        Object $multiline = this.getMultiline();
+        result = result * prime + ($multiline == null ? 43 : $multiline.hashCode());
+        Object $showAllProperties = this.getShowAllProperties();
+        result = result * prime + ($showAllProperties == null ? 43 : $showAllProperties.hashCode());
+        Object $showBody = this.getShowBody();
+        result = result * prime + ($showBody == null ? 43 : $showBody.hashCode());
+        Object $showBodyType = this.getShowBodyType();
+        result = result * prime + ($showBodyType == null ? 43 : $showBodyType.hashCode());
+        Object $showCachedStreams = this.getShowCachedStreams();
+        result = result * prime + ($showCachedStreams == null ? 43 : $showCachedStreams.hashCode());
+        Object $showExchangePattern = this.getShowExchangePattern();
+        result = result * prime + ($showExchangePattern == null ? 43 : $showExchangePattern.hashCode());
+        Object $showHeaders = this.getShowHeaders();
+        result = result * prime + ($showHeaders == null ? 43 : $showHeaders.hashCode());
+        Object $showProperties = this.getShowProperties();
+        result = result * prime + ($showProperties == null ? 43 : $showProperties.hashCode());
+        Object $showStreams = this.getShowStreams();
+        result = result * prime + ($showStreams == null ? 43 : $showStreams.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Log(" + "level=" + this.getLevel() + ", logMask=" + this.getLogMask() + ", loggerName=" + this.getLoggerName() + ", marker=" + this.getMarker() + ", multiline=" + this.getMultiline() + ", showAllProperties=" + this.getShowAllProperties() + ", showBody=" + this.getShowBody() + ", showBodyType=" + this.getShowBodyType() + ", showCachedStreams=" + this.getShowCachedStreams() + ", showExchangePattern=" + this.getShowExchangePattern() + ", showHeaders=" + this.getShowHeaders() + ", showProperties=" + this.getShowProperties() + ", showStreams=" + this.getShowStreams() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * BandwidthSpec defines detail of bandwidth limit.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "minburst",
     "peakrate",
     "rate"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,78 @@ public class BandwidthSpec implements Editable<BandwidthSpecBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BandwidthSpec)) {
+            return false;
+        }
+        BandwidthSpec other = (BandwidthSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$buffer = this.getBuffer();
+        Object other$buffer = other.getBuffer();
+        if (this$buffer == null ? other$buffer != null : !this$buffer.equals(other$buffer)) {
+            return false;
+        }
+        Object this$limit = this.getLimit();
+        Object other$limit = other.getLimit();
+        if (this$limit == null ? other$limit != null : !this$limit.equals(other$limit)) {
+            return false;
+        }
+        Object this$minburst = this.getMinburst();
+        Object other$minburst = other.getMinburst();
+        if (this$minburst == null ? other$minburst != null : !this$minburst.equals(other$minburst)) {
+            return false;
+        }
+        Object this$peakrate = this.getPeakrate();
+        Object other$peakrate = other.getPeakrate();
+        if (this$peakrate == null ? other$peakrate != null : !this$peakrate.equals(other$peakrate)) {
+            return false;
+        }
+        Object this$rate = this.getRate();
+        Object other$rate = other.getRate();
+        if (this$rate == null ? other$rate != null : !this$rate.equals(other$rate)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BandwidthSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $buffer = this.getBuffer();
+        result = result * prime + ($buffer == null ? 43 : $buffer.hashCode());
+        Object $limit = this.getLimit();
+        result = result * prime + ($limit == null ? 43 : $limit.hashCode());
+        Object $minburst = this.getMinburst();
+        result = result * prime + ($minburst == null ? 43 : $minburst.hashCode());
+        Object $peakrate = this.getPeakrate();
+        result = result * prime + ($peakrate == null ? 43 : $peakrate.hashCode());
+        Object $rate = this.getRate();
+        result = result * prime + ($rate == null ? 43 : $rate.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BandwidthSpec(" + "buffer=" + this.getBuffer() + ", limit=" + this.getLimit() + ", minburst=" + this.getMinburst() + ", peakrate=" + this.getPeakrate() + ", rate=" + this.getRate() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

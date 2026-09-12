@@ -15,9 +15,6 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OwnerReference contains enough information to let you identify an owning object. An owning object must be in the same namespace as the dependent, or be cluster-scoped, so there is no namespace field.
@@ -31,12 +28,6 @@ import lombok.experimental.Accessors;
     "controller",
     "name",
     "uid"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Version("v1")
@@ -195,6 +186,85 @@ public class OwnerReference implements Editable<OwnerReferenceBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OwnerReference)) {
+            return false;
+        }
+        OwnerReference other = (OwnerReference) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$blockOwnerDeletion = this.getBlockOwnerDeletion();
+        Object other$blockOwnerDeletion = other.getBlockOwnerDeletion();
+        if (this$blockOwnerDeletion == null ? other$blockOwnerDeletion != null : !this$blockOwnerDeletion.equals(other$blockOwnerDeletion)) {
+            return false;
+        }
+        Object this$controller = this.getController();
+        Object other$controller = other.getController();
+        if (this$controller == null ? other$controller != null : !this$controller.equals(other$controller)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$uid = this.getUid();
+        Object other$uid = other.getUid();
+        if (this$uid == null ? other$uid != null : !this$uid.equals(other$uid)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OwnerReference;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $blockOwnerDeletion = this.getBlockOwnerDeletion();
+        result = result * prime + ($blockOwnerDeletion == null ? 43 : $blockOwnerDeletion.hashCode());
+        Object $controller = this.getController();
+        result = result * prime + ($controller == null ? 43 : $controller.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $uid = this.getUid();
+        result = result * prime + ($uid == null ? 43 : $uid.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OwnerReference(" + "apiVersion=" + this.getApiVersion() + ", blockOwnerDeletion=" + this.getBlockOwnerDeletion() + ", controller=" + this.getController() + ", kind=" + this.getKind() + ", name=" + this.getName() + ", uid=" + this.getUid() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

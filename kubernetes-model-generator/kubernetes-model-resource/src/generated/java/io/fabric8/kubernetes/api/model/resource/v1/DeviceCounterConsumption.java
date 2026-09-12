@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DeviceCounterConsumption defines a set of counters that a device will consume from a CounterSet.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "compatibilityGroups",
     "counterSet",
     "counters"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -166,6 +157,64 @@ public class DeviceCounterConsumption implements Editable<DeviceCounterConsumpti
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DeviceCounterConsumption)) {
+            return false;
+        }
+        DeviceCounterConsumption other = (DeviceCounterConsumption) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$compatibilityGroups = this.getCompatibilityGroups();
+        Object other$compatibilityGroups = other.getCompatibilityGroups();
+        if (this$compatibilityGroups == null ? other$compatibilityGroups != null : !this$compatibilityGroups.equals(other$compatibilityGroups)) {
+            return false;
+        }
+        Object this$counterSet = this.getCounterSet();
+        Object other$counterSet = other.getCounterSet();
+        if (this$counterSet == null ? other$counterSet != null : !this$counterSet.equals(other$counterSet)) {
+            return false;
+        }
+        Object this$counters = this.getCounters();
+        Object other$counters = other.getCounters();
+        if (this$counters == null ? other$counters != null : !this$counters.equals(other$counters)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DeviceCounterConsumption;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $compatibilityGroups = this.getCompatibilityGroups();
+        result = result * prime + ($compatibilityGroups == null ? 43 : $compatibilityGroups.hashCode());
+        Object $counterSet = this.getCounterSet();
+        result = result * prime + ($counterSet == null ? 43 : $counterSet.hashCode());
+        Object $counters = this.getCounters();
+        result = result * prime + ($counters == null ? 43 : $counters.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DeviceCounterConsumption(" + "compatibilityGroups=" + this.getCompatibilityGroups() + ", counterSet=" + this.getCounterSet() + ", counters=" + this.getCounters() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

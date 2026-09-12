@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Platform stores all the global configuration that all machinesets use.
@@ -55,12 +52,6 @@ import lombok.experimental.Accessors;
     "userProvisionedDNS",
     "userTags",
     "vpc"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -408,6 +399,148 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Platform)) {
+            return false;
+        }
+        Platform other = (Platform) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$amiID = this.getAmiID();
+        Object other$amiID = other.getAmiID();
+        if (this$amiID == null ? other$amiID != null : !this$amiID.equals(other$amiID)) {
+            return false;
+        }
+        Object this$bestEffortDeleteIgnition = this.getBestEffortDeleteIgnition();
+        Object other$bestEffortDeleteIgnition = other.getBestEffortDeleteIgnition();
+        if (this$bestEffortDeleteIgnition == null ? other$bestEffortDeleteIgnition != null : !this$bestEffortDeleteIgnition.equals(other$bestEffortDeleteIgnition)) {
+            return false;
+        }
+        Object this$defaultMachinePlatform = this.getDefaultMachinePlatform();
+        Object other$defaultMachinePlatform = other.getDefaultMachinePlatform();
+        if (this$defaultMachinePlatform == null ? other$defaultMachinePlatform != null : !this$defaultMachinePlatform.equals(other$defaultMachinePlatform)) {
+            return false;
+        }
+        Object this$hostedZone = this.getHostedZone();
+        Object other$hostedZone = other.getHostedZone();
+        if (this$hostedZone == null ? other$hostedZone != null : !this$hostedZone.equals(other$hostedZone)) {
+            return false;
+        }
+        Object this$hostedZoneRole = this.getHostedZoneRole();
+        Object other$hostedZoneRole = other.getHostedZoneRole();
+        if (this$hostedZoneRole == null ? other$hostedZoneRole != null : !this$hostedZoneRole.equals(other$hostedZoneRole)) {
+            return false;
+        }
+        Object this$lbType = this.getLbType();
+        Object other$lbType = other.getLbType();
+        if (this$lbType == null ? other$lbType != null : !this$lbType.equals(other$lbType)) {
+            return false;
+        }
+        Object this$preserveBootstrapIgnition = this.getPreserveBootstrapIgnition();
+        Object other$preserveBootstrapIgnition = other.getPreserveBootstrapIgnition();
+        if (this$preserveBootstrapIgnition == null ? other$preserveBootstrapIgnition != null : !this$preserveBootstrapIgnition.equals(other$preserveBootstrapIgnition)) {
+            return false;
+        }
+        Object this$propagateUserTags = this.getPropagateUserTags();
+        Object other$propagateUserTags = other.getPropagateUserTags();
+        if (this$propagateUserTags == null ? other$propagateUserTags != null : !this$propagateUserTags.equals(other$propagateUserTags)) {
+            return false;
+        }
+        Object this$publicIpv4Pool = this.getPublicIpv4Pool();
+        Object other$publicIpv4Pool = other.getPublicIpv4Pool();
+        if (this$publicIpv4Pool == null ? other$publicIpv4Pool != null : !this$publicIpv4Pool.equals(other$publicIpv4Pool)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$serviceEndpoints = this.getServiceEndpoints();
+        Object other$serviceEndpoints = other.getServiceEndpoints();
+        if (this$serviceEndpoints == null ? other$serviceEndpoints != null : !this$serviceEndpoints.equals(other$serviceEndpoints)) {
+            return false;
+        }
+        Object this$subnets = this.getSubnets();
+        Object other$subnets = other.getSubnets();
+        if (this$subnets == null ? other$subnets != null : !this$subnets.equals(other$subnets)) {
+            return false;
+        }
+        Object this$userProvisionedDNS = this.getUserProvisionedDNS();
+        Object other$userProvisionedDNS = other.getUserProvisionedDNS();
+        if (this$userProvisionedDNS == null ? other$userProvisionedDNS != null : !this$userProvisionedDNS.equals(other$userProvisionedDNS)) {
+            return false;
+        }
+        Object this$userTags = this.getUserTags();
+        Object other$userTags = other.getUserTags();
+        if (this$userTags == null ? other$userTags != null : !this$userTags.equals(other$userTags)) {
+            return false;
+        }
+        Object this$vpc = this.getVpc();
+        Object other$vpc = other.getVpc();
+        if (this$vpc == null ? other$vpc != null : !this$vpc.equals(other$vpc)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Platform;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $amiID = this.getAmiID();
+        result = result * prime + ($amiID == null ? 43 : $amiID.hashCode());
+        Object $bestEffortDeleteIgnition = this.getBestEffortDeleteIgnition();
+        result = result * prime + ($bestEffortDeleteIgnition == null ? 43 : $bestEffortDeleteIgnition.hashCode());
+        Object $defaultMachinePlatform = this.getDefaultMachinePlatform();
+        result = result * prime + ($defaultMachinePlatform == null ? 43 : $defaultMachinePlatform.hashCode());
+        Object $hostedZone = this.getHostedZone();
+        result = result * prime + ($hostedZone == null ? 43 : $hostedZone.hashCode());
+        Object $hostedZoneRole = this.getHostedZoneRole();
+        result = result * prime + ($hostedZoneRole == null ? 43 : $hostedZoneRole.hashCode());
+        Object $lbType = this.getLbType();
+        result = result * prime + ($lbType == null ? 43 : $lbType.hashCode());
+        Object $preserveBootstrapIgnition = this.getPreserveBootstrapIgnition();
+        result = result * prime + ($preserveBootstrapIgnition == null ? 43 : $preserveBootstrapIgnition.hashCode());
+        Object $propagateUserTags = this.getPropagateUserTags();
+        result = result * prime + ($propagateUserTags == null ? 43 : $propagateUserTags.hashCode());
+        Object $publicIpv4Pool = this.getPublicIpv4Pool();
+        result = result * prime + ($publicIpv4Pool == null ? 43 : $publicIpv4Pool.hashCode());
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $serviceEndpoints = this.getServiceEndpoints();
+        result = result * prime + ($serviceEndpoints == null ? 43 : $serviceEndpoints.hashCode());
+        Object $subnets = this.getSubnets();
+        result = result * prime + ($subnets == null ? 43 : $subnets.hashCode());
+        Object $userProvisionedDNS = this.getUserProvisionedDNS();
+        result = result * prime + ($userProvisionedDNS == null ? 43 : $userProvisionedDNS.hashCode());
+        Object $userTags = this.getUserTags();
+        result = result * prime + ($userTags == null ? 43 : $userTags.hashCode());
+        Object $vpc = this.getVpc();
+        result = result * prime + ($vpc == null ? 43 : $vpc.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Platform(" + "amiID=" + this.getAmiID() + ", bestEffortDeleteIgnition=" + this.getBestEffortDeleteIgnition() + ", defaultMachinePlatform=" + this.getDefaultMachinePlatform() + ", hostedZone=" + this.getHostedZone() + ", hostedZoneRole=" + this.getHostedZoneRole() + ", lbType=" + this.getLbType() + ", preserveBootstrapIgnition=" + this.getPreserveBootstrapIgnition() + ", propagateUserTags=" + this.getPropagateUserTags() + ", publicIpv4Pool=" + this.getPublicIpv4Pool() + ", region=" + this.getRegion() + ", serviceEndpoints=" + this.getServiceEndpoints() + ", subnets=" + this.getSubnets() + ", userProvisionedDNS=" + this.getUserProvisionedDNS() + ", userTags=" + this.getUserTags() + ", vpc=" + this.getVpc() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

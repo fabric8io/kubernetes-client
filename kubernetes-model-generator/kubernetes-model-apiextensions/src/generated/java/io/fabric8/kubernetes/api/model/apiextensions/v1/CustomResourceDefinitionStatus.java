@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CustomResourceDefinitionStatus indicates the state of the CustomResourceDefinition
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "conditions",
     "observedGeneration",
     "storedVersions"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -186,6 +177,71 @@ public class CustomResourceDefinitionStatus implements Editable<CustomResourceDe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CustomResourceDefinitionStatus)) {
+            return false;
+        }
+        CustomResourceDefinitionStatus other = (CustomResourceDefinitionStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$acceptedNames = this.getAcceptedNames();
+        Object other$acceptedNames = other.getAcceptedNames();
+        if (this$acceptedNames == null ? other$acceptedNames != null : !this$acceptedNames.equals(other$acceptedNames)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$storedVersions = this.getStoredVersions();
+        Object other$storedVersions = other.getStoredVersions();
+        if (this$storedVersions == null ? other$storedVersions != null : !this$storedVersions.equals(other$storedVersions)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CustomResourceDefinitionStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $acceptedNames = this.getAcceptedNames();
+        result = result * prime + ($acceptedNames == null ? 43 : $acceptedNames.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $storedVersions = this.getStoredVersions();
+        result = result * prime + ($storedVersions == null ? 43 : $storedVersions.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CustomResourceDefinitionStatus(" + "acceptedNames=" + this.getAcceptedNames() + ", conditions=" + this.getConditions() + ", observedGeneration=" + this.getObservedGeneration() + ", storedVersions=" + this.getStoredVersions() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

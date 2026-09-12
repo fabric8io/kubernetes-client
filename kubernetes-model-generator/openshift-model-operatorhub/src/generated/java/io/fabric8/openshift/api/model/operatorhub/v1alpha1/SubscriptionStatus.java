@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "lastUpdated",
     "reason",
     "state"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -285,6 +276,113 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SubscriptionStatus)) {
+            return false;
+        }
+        SubscriptionStatus other = (SubscriptionStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$catalogHealth = this.getCatalogHealth();
+        Object other$catalogHealth = other.getCatalogHealth();
+        if (this$catalogHealth == null ? other$catalogHealth != null : !this$catalogHealth.equals(other$catalogHealth)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$currentCSV = this.getCurrentCSV();
+        Object other$currentCSV = other.getCurrentCSV();
+        if (this$currentCSV == null ? other$currentCSV != null : !this$currentCSV.equals(other$currentCSV)) {
+            return false;
+        }
+        Object this$installPlanGeneration = this.getInstallPlanGeneration();
+        Object other$installPlanGeneration = other.getInstallPlanGeneration();
+        if (this$installPlanGeneration == null ? other$installPlanGeneration != null : !this$installPlanGeneration.equals(other$installPlanGeneration)) {
+            return false;
+        }
+        Object this$installPlanRef = this.getInstallPlanRef();
+        Object other$installPlanRef = other.getInstallPlanRef();
+        if (this$installPlanRef == null ? other$installPlanRef != null : !this$installPlanRef.equals(other$installPlanRef)) {
+            return false;
+        }
+        Object this$installedCSV = this.getInstalledCSV();
+        Object other$installedCSV = other.getInstalledCSV();
+        if (this$installedCSV == null ? other$installedCSV != null : !this$installedCSV.equals(other$installedCSV)) {
+            return false;
+        }
+        Object this$installplan = this.getInstallplan();
+        Object other$installplan = other.getInstallplan();
+        if (this$installplan == null ? other$installplan != null : !this$installplan.equals(other$installplan)) {
+            return false;
+        }
+        Object this$lastUpdated = this.getLastUpdated();
+        Object other$lastUpdated = other.getLastUpdated();
+        if (this$lastUpdated == null ? other$lastUpdated != null : !this$lastUpdated.equals(other$lastUpdated)) {
+            return false;
+        }
+        Object this$reason = this.getReason();
+        Object other$reason = other.getReason();
+        if (this$reason == null ? other$reason != null : !this$reason.equals(other$reason)) {
+            return false;
+        }
+        Object this$state = this.getState();
+        Object other$state = other.getState();
+        if (this$state == null ? other$state != null : !this$state.equals(other$state)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SubscriptionStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $catalogHealth = this.getCatalogHealth();
+        result = result * prime + ($catalogHealth == null ? 43 : $catalogHealth.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $currentCSV = this.getCurrentCSV();
+        result = result * prime + ($currentCSV == null ? 43 : $currentCSV.hashCode());
+        Object $installPlanGeneration = this.getInstallPlanGeneration();
+        result = result * prime + ($installPlanGeneration == null ? 43 : $installPlanGeneration.hashCode());
+        Object $installPlanRef = this.getInstallPlanRef();
+        result = result * prime + ($installPlanRef == null ? 43 : $installPlanRef.hashCode());
+        Object $installedCSV = this.getInstalledCSV();
+        result = result * prime + ($installedCSV == null ? 43 : $installedCSV.hashCode());
+        Object $installplan = this.getInstallplan();
+        result = result * prime + ($installplan == null ? 43 : $installplan.hashCode());
+        Object $lastUpdated = this.getLastUpdated();
+        result = result * prime + ($lastUpdated == null ? 43 : $lastUpdated.hashCode());
+        Object $reason = this.getReason();
+        result = result * prime + ($reason == null ? 43 : $reason.hashCode());
+        Object $state = this.getState();
+        result = result * prime + ($state == null ? 43 : $state.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SubscriptionStatus(" + "catalogHealth=" + this.getCatalogHealth() + ", conditions=" + this.getConditions() + ", currentCSV=" + this.getCurrentCSV() + ", installPlanGeneration=" + this.getInstallPlanGeneration() + ", installPlanRef=" + this.getInstallPlanRef() + ", installedCSV=" + this.getInstalledCSV() + ", installplan=" + this.getInstallplan() + ", lastUpdated=" + this.getLastUpdated() + ", reason=" + this.getReason() + ", state=" + this.getState() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

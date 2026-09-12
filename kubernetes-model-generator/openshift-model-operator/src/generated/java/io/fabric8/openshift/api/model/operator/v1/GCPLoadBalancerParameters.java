@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * GCPLoadBalancerParameters provides configuration settings that are specific to GCP load balancers.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "clientAccess"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -120,6 +111,50 @@ public class GCPLoadBalancerParameters implements Editable<GCPLoadBalancerParame
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GCPLoadBalancerParameters)) {
+            return false;
+        }
+        GCPLoadBalancerParameters other = (GCPLoadBalancerParameters) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clientAccess = this.getClientAccess();
+        Object other$clientAccess = other.getClientAccess();
+        if (this$clientAccess == null ? other$clientAccess != null : !this$clientAccess.equals(other$clientAccess)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GCPLoadBalancerParameters;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clientAccess = this.getClientAccess();
+        result = result * prime + ($clientAccess == null ? 43 : $clientAccess.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GCPLoadBalancerParameters(" + "clientAccess=" + this.getClientAccess() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

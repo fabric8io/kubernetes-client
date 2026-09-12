@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * FlowSchemaSpec describes how the FlowSchema's specification looks like.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "matchingPrecedence",
     "priorityLevelConfiguration",
     "rules"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class FlowSchemaSpec implements Editable<FlowSchemaSpecBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof FlowSchemaSpec)) {
+            return false;
+        }
+        FlowSchemaSpec other = (FlowSchemaSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$distinguisherMethod = this.getDistinguisherMethod();
+        Object other$distinguisherMethod = other.getDistinguisherMethod();
+        if (this$distinguisherMethod == null ? other$distinguisherMethod != null : !this$distinguisherMethod.equals(other$distinguisherMethod)) {
+            return false;
+        }
+        Object this$matchingPrecedence = this.getMatchingPrecedence();
+        Object other$matchingPrecedence = other.getMatchingPrecedence();
+        if (this$matchingPrecedence == null ? other$matchingPrecedence != null : !this$matchingPrecedence.equals(other$matchingPrecedence)) {
+            return false;
+        }
+        Object this$priorityLevelConfiguration = this.getPriorityLevelConfiguration();
+        Object other$priorityLevelConfiguration = other.getPriorityLevelConfiguration();
+        if (this$priorityLevelConfiguration == null ? other$priorityLevelConfiguration != null : !this$priorityLevelConfiguration.equals(other$priorityLevelConfiguration)) {
+            return false;
+        }
+        Object this$rules = this.getRules();
+        Object other$rules = other.getRules();
+        if (this$rules == null ? other$rules != null : !this$rules.equals(other$rules)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof FlowSchemaSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $distinguisherMethod = this.getDistinguisherMethod();
+        result = result * prime + ($distinguisherMethod == null ? 43 : $distinguisherMethod.hashCode());
+        Object $matchingPrecedence = this.getMatchingPrecedence();
+        result = result * prime + ($matchingPrecedence == null ? 43 : $matchingPrecedence.hashCode());
+        Object $priorityLevelConfiguration = this.getPriorityLevelConfiguration();
+        result = result * prime + ($priorityLevelConfiguration == null ? 43 : $priorityLevelConfiguration.hashCode());
+        Object $rules = this.getRules();
+        result = result * prime + ($rules == null ? 43 : $rules.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "FlowSchemaSpec(" + "distinguisherMethod=" + this.getDistinguisherMethod() + ", matchingPrecedence=" + this.getMatchingPrecedence() + ", priorityLevelConfiguration=" + this.getPriorityLevelConfiguration() + ", rules=" + this.getRules() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

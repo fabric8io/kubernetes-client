@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OAuth2 configures OAuth2 settings.
@@ -50,12 +47,6 @@ import lombok.experimental.Accessors;
     "scopes",
     "tlsConfig",
     "tokenUrl"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -308,6 +299,113 @@ public class OAuth2 implements Editable<OAuth2Builder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OAuth2)) {
+            return false;
+        }
+        OAuth2 other = (OAuth2) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clientId = this.getClientId();
+        Object other$clientId = other.getClientId();
+        if (this$clientId == null ? other$clientId != null : !this$clientId.equals(other$clientId)) {
+            return false;
+        }
+        Object this$clientSecret = this.getClientSecret();
+        Object other$clientSecret = other.getClientSecret();
+        if (this$clientSecret == null ? other$clientSecret != null : !this$clientSecret.equals(other$clientSecret)) {
+            return false;
+        }
+        Object this$endpointParams = this.getEndpointParams();
+        Object other$endpointParams = other.getEndpointParams();
+        if (this$endpointParams == null ? other$endpointParams != null : !this$endpointParams.equals(other$endpointParams)) {
+            return false;
+        }
+        Object this$noProxy = this.getNoProxy();
+        Object other$noProxy = other.getNoProxy();
+        if (this$noProxy == null ? other$noProxy != null : !this$noProxy.equals(other$noProxy)) {
+            return false;
+        }
+        Object this$proxyConnectHeader = this.getProxyConnectHeader();
+        Object other$proxyConnectHeader = other.getProxyConnectHeader();
+        if (this$proxyConnectHeader == null ? other$proxyConnectHeader != null : !this$proxyConnectHeader.equals(other$proxyConnectHeader)) {
+            return false;
+        }
+        Object this$proxyFromEnvironment = this.getProxyFromEnvironment();
+        Object other$proxyFromEnvironment = other.getProxyFromEnvironment();
+        if (this$proxyFromEnvironment == null ? other$proxyFromEnvironment != null : !this$proxyFromEnvironment.equals(other$proxyFromEnvironment)) {
+            return false;
+        }
+        Object this$proxyUrl = this.getProxyUrl();
+        Object other$proxyUrl = other.getProxyUrl();
+        if (this$proxyUrl == null ? other$proxyUrl != null : !this$proxyUrl.equals(other$proxyUrl)) {
+            return false;
+        }
+        Object this$scopes = this.getScopes();
+        Object other$scopes = other.getScopes();
+        if (this$scopes == null ? other$scopes != null : !this$scopes.equals(other$scopes)) {
+            return false;
+        }
+        Object this$tlsConfig = this.getTlsConfig();
+        Object other$tlsConfig = other.getTlsConfig();
+        if (this$tlsConfig == null ? other$tlsConfig != null : !this$tlsConfig.equals(other$tlsConfig)) {
+            return false;
+        }
+        Object this$tokenUrl = this.getTokenUrl();
+        Object other$tokenUrl = other.getTokenUrl();
+        if (this$tokenUrl == null ? other$tokenUrl != null : !this$tokenUrl.equals(other$tokenUrl)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OAuth2;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clientId = this.getClientId();
+        result = result * prime + ($clientId == null ? 43 : $clientId.hashCode());
+        Object $clientSecret = this.getClientSecret();
+        result = result * prime + ($clientSecret == null ? 43 : $clientSecret.hashCode());
+        Object $endpointParams = this.getEndpointParams();
+        result = result * prime + ($endpointParams == null ? 43 : $endpointParams.hashCode());
+        Object $noProxy = this.getNoProxy();
+        result = result * prime + ($noProxy == null ? 43 : $noProxy.hashCode());
+        Object $proxyConnectHeader = this.getProxyConnectHeader();
+        result = result * prime + ($proxyConnectHeader == null ? 43 : $proxyConnectHeader.hashCode());
+        Object $proxyFromEnvironment = this.getProxyFromEnvironment();
+        result = result * prime + ($proxyFromEnvironment == null ? 43 : $proxyFromEnvironment.hashCode());
+        Object $proxyUrl = this.getProxyUrl();
+        result = result * prime + ($proxyUrl == null ? 43 : $proxyUrl.hashCode());
+        Object $scopes = this.getScopes();
+        result = result * prime + ($scopes == null ? 43 : $scopes.hashCode());
+        Object $tlsConfig = this.getTlsConfig();
+        result = result * prime + ($tlsConfig == null ? 43 : $tlsConfig.hashCode());
+        Object $tokenUrl = this.getTokenUrl();
+        result = result * prime + ($tokenUrl == null ? 43 : $tokenUrl.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OAuth2(" + "clientId=" + this.getClientId() + ", clientSecret=" + this.getClientSecret() + ", endpointParams=" + this.getEndpointParams() + ", noProxy=" + this.getNoProxy() + ", proxyConnectHeader=" + this.getProxyConnectHeader() + ", proxyFromEnvironment=" + this.getProxyFromEnvironment() + ", proxyUrl=" + this.getProxyUrl() + ", scopes=" + this.getScopes() + ", tlsConfig=" + this.getTlsConfig() + ", tokenUrl=" + this.getTokenUrl() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

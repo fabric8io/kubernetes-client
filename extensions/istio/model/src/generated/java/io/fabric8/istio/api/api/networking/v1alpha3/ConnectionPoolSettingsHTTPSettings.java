@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Settings applicable to HTTP1.1/HTTP2/GRPC connections.
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "maxRequestsPerConnection",
     "maxRetries",
     "useClientProtocol"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -260,6 +251,99 @@ public class ConnectionPoolSettingsHTTPSettings implements Editable<ConnectionPo
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConnectionPoolSettingsHTTPSettings)) {
+            return false;
+        }
+        ConnectionPoolSettingsHTTPSettings other = (ConnectionPoolSettingsHTTPSettings) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$h2UpgradePolicy = this.getH2UpgradePolicy();
+        Object other$h2UpgradePolicy = other.getH2UpgradePolicy();
+        if (this$h2UpgradePolicy == null ? other$h2UpgradePolicy != null : !this$h2UpgradePolicy.equals(other$h2UpgradePolicy)) {
+            return false;
+        }
+        Object this$http1MaxPendingRequests = this.getHttp1MaxPendingRequests();
+        Object other$http1MaxPendingRequests = other.getHttp1MaxPendingRequests();
+        if (this$http1MaxPendingRequests == null ? other$http1MaxPendingRequests != null : !this$http1MaxPendingRequests.equals(other$http1MaxPendingRequests)) {
+            return false;
+        }
+        Object this$http2MaxRequests = this.getHttp2MaxRequests();
+        Object other$http2MaxRequests = other.getHttp2MaxRequests();
+        if (this$http2MaxRequests == null ? other$http2MaxRequests != null : !this$http2MaxRequests.equals(other$http2MaxRequests)) {
+            return false;
+        }
+        Object this$idleTimeout = this.getIdleTimeout();
+        Object other$idleTimeout = other.getIdleTimeout();
+        if (this$idleTimeout == null ? other$idleTimeout != null : !this$idleTimeout.equals(other$idleTimeout)) {
+            return false;
+        }
+        Object this$maxConcurrentStreams = this.getMaxConcurrentStreams();
+        Object other$maxConcurrentStreams = other.getMaxConcurrentStreams();
+        if (this$maxConcurrentStreams == null ? other$maxConcurrentStreams != null : !this$maxConcurrentStreams.equals(other$maxConcurrentStreams)) {
+            return false;
+        }
+        Object this$maxRequestsPerConnection = this.getMaxRequestsPerConnection();
+        Object other$maxRequestsPerConnection = other.getMaxRequestsPerConnection();
+        if (this$maxRequestsPerConnection == null ? other$maxRequestsPerConnection != null : !this$maxRequestsPerConnection.equals(other$maxRequestsPerConnection)) {
+            return false;
+        }
+        Object this$maxRetries = this.getMaxRetries();
+        Object other$maxRetries = other.getMaxRetries();
+        if (this$maxRetries == null ? other$maxRetries != null : !this$maxRetries.equals(other$maxRetries)) {
+            return false;
+        }
+        Object this$useClientProtocol = this.getUseClientProtocol();
+        Object other$useClientProtocol = other.getUseClientProtocol();
+        if (this$useClientProtocol == null ? other$useClientProtocol != null : !this$useClientProtocol.equals(other$useClientProtocol)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConnectionPoolSettingsHTTPSettings;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $h2UpgradePolicy = this.getH2UpgradePolicy();
+        result = result * prime + ($h2UpgradePolicy == null ? 43 : $h2UpgradePolicy.hashCode());
+        Object $http1MaxPendingRequests = this.getHttp1MaxPendingRequests();
+        result = result * prime + ($http1MaxPendingRequests == null ? 43 : $http1MaxPendingRequests.hashCode());
+        Object $http2MaxRequests = this.getHttp2MaxRequests();
+        result = result * prime + ($http2MaxRequests == null ? 43 : $http2MaxRequests.hashCode());
+        Object $idleTimeout = this.getIdleTimeout();
+        result = result * prime + ($idleTimeout == null ? 43 : $idleTimeout.hashCode());
+        Object $maxConcurrentStreams = this.getMaxConcurrentStreams();
+        result = result * prime + ($maxConcurrentStreams == null ? 43 : $maxConcurrentStreams.hashCode());
+        Object $maxRequestsPerConnection = this.getMaxRequestsPerConnection();
+        result = result * prime + ($maxRequestsPerConnection == null ? 43 : $maxRequestsPerConnection.hashCode());
+        Object $maxRetries = this.getMaxRetries();
+        result = result * prime + ($maxRetries == null ? 43 : $maxRetries.hashCode());
+        Object $useClientProtocol = this.getUseClientProtocol();
+        result = result * prime + ($useClientProtocol == null ? 43 : $useClientProtocol.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConnectionPoolSettingsHTTPSettings(" + "h2UpgradePolicy=" + this.getH2UpgradePolicy() + ", http1MaxPendingRequests=" + this.getHttp1MaxPendingRequests() + ", http2MaxRequests=" + this.getHttp2MaxRequests() + ", idleTimeout=" + this.getIdleTimeout() + ", maxConcurrentStreams=" + this.getMaxConcurrentStreams() + ", maxRequestsPerConnection=" + this.getMaxRequestsPerConnection() + ", maxRetries=" + this.getMaxRetries() + ", useClientProtocol=" + this.getUseClientProtocol() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

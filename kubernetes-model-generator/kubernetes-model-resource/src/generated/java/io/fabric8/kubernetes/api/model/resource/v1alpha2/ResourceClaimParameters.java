@@ -33,9 +33,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ResourceClaimParameters defines resource requests for a ResourceClaim in an in-tree format understood by Kubernetes.
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "driverRequests",
     "generatedFrom",
     "shareable"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -229,6 +220,85 @@ public class ResourceClaimParameters implements Editable<ResourceClaimParameters
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ResourceClaimParameters)) {
+            return false;
+        }
+        ResourceClaimParameters other = (ResourceClaimParameters) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$driverRequests = this.getDriverRequests();
+        Object other$driverRequests = other.getDriverRequests();
+        if (this$driverRequests == null ? other$driverRequests != null : !this$driverRequests.equals(other$driverRequests)) {
+            return false;
+        }
+        Object this$generatedFrom = this.getGeneratedFrom();
+        Object other$generatedFrom = other.getGeneratedFrom();
+        if (this$generatedFrom == null ? other$generatedFrom != null : !this$generatedFrom.equals(other$generatedFrom)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$shareable = this.getShareable();
+        Object other$shareable = other.getShareable();
+        if (this$shareable == null ? other$shareable != null : !this$shareable.equals(other$shareable)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ResourceClaimParameters;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $driverRequests = this.getDriverRequests();
+        result = result * prime + ($driverRequests == null ? 43 : $driverRequests.hashCode());
+        Object $generatedFrom = this.getGeneratedFrom();
+        result = result * prime + ($generatedFrom == null ? 43 : $generatedFrom.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $shareable = this.getShareable();
+        result = result * prime + ($shareable == null ? 43 : $shareable.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ResourceClaimParameters(" + "apiVersion=" + this.getApiVersion() + ", driverRequests=" + this.getDriverRequests() + ", generatedFrom=" + this.getGeneratedFrom() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata() + ", shareable=" + this.getShareable() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

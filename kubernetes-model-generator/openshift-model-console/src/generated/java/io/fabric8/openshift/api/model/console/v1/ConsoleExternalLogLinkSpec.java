@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ConsoleExternalLogLinkSpec is the desired log link configuration. The log link will appear on the logs tab of the pod details page.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "hrefTemplate",
     "namespaceFilter",
     "text"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class ConsoleExternalLogLinkSpec implements Editable<ConsoleExternalLogLi
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConsoleExternalLogLinkSpec)) {
+            return false;
+        }
+        ConsoleExternalLogLinkSpec other = (ConsoleExternalLogLinkSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$hrefTemplate = this.getHrefTemplate();
+        Object other$hrefTemplate = other.getHrefTemplate();
+        if (this$hrefTemplate == null ? other$hrefTemplate != null : !this$hrefTemplate.equals(other$hrefTemplate)) {
+            return false;
+        }
+        Object this$namespaceFilter = this.getNamespaceFilter();
+        Object other$namespaceFilter = other.getNamespaceFilter();
+        if (this$namespaceFilter == null ? other$namespaceFilter != null : !this$namespaceFilter.equals(other$namespaceFilter)) {
+            return false;
+        }
+        Object this$text = this.getText();
+        Object other$text = other.getText();
+        if (this$text == null ? other$text != null : !this$text.equals(other$text)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConsoleExternalLogLinkSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $hrefTemplate = this.getHrefTemplate();
+        result = result * prime + ($hrefTemplate == null ? 43 : $hrefTemplate.hashCode());
+        Object $namespaceFilter = this.getNamespaceFilter();
+        result = result * prime + ($namespaceFilter == null ? 43 : $namespaceFilter.hashCode());
+        Object $text = this.getText();
+        result = result * prime + ($text == null ? 43 : $text.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConsoleExternalLogLinkSpec(" + "hrefTemplate=" + this.getHrefTemplate() + ", namespaceFilter=" + this.getNamespaceFilter() + ", text=" + this.getText() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

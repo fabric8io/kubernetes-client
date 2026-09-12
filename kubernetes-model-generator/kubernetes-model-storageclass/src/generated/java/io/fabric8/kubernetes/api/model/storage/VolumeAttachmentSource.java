@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VolumeAttachmentSource represents a volume that should be attached. Right now only PersistentVolumes can be attached via external attacher, in the future we may allow also inline volumes in pods. Exactly one member can be set.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "inlineVolumeSpec",
     "persistentVolumeName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -141,6 +132,57 @@ public class VolumeAttachmentSource implements Editable<VolumeAttachmentSourceBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VolumeAttachmentSource)) {
+            return false;
+        }
+        VolumeAttachmentSource other = (VolumeAttachmentSource) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$inlineVolumeSpec = this.getInlineVolumeSpec();
+        Object other$inlineVolumeSpec = other.getInlineVolumeSpec();
+        if (this$inlineVolumeSpec == null ? other$inlineVolumeSpec != null : !this$inlineVolumeSpec.equals(other$inlineVolumeSpec)) {
+            return false;
+        }
+        Object this$persistentVolumeName = this.getPersistentVolumeName();
+        Object other$persistentVolumeName = other.getPersistentVolumeName();
+        if (this$persistentVolumeName == null ? other$persistentVolumeName != null : !this$persistentVolumeName.equals(other$persistentVolumeName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VolumeAttachmentSource;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $inlineVolumeSpec = this.getInlineVolumeSpec();
+        result = result * prime + ($inlineVolumeSpec == null ? 43 : $inlineVolumeSpec.hashCode());
+        Object $persistentVolumeName = this.getPersistentVolumeName();
+        result = result * prime + ($persistentVolumeName == null ? 43 : $persistentVolumeName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VolumeAttachmentSource(" + "inlineVolumeSpec=" + this.getInlineVolumeSpec() + ", persistentVolumeName=" + this.getPersistentVolumeName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

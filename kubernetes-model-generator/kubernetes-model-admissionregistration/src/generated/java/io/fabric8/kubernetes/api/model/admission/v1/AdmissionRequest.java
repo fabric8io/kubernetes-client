@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.kubernetes.api.model.authentication.UserInfo;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -53,12 +50,6 @@ import lombok.experimental.Accessors;
     "subResource",
     "uid",
     "userInfo"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -316,6 +307,148 @@ public class AdmissionRequest implements Editable<AdmissionRequestBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AdmissionRequest)) {
+            return false;
+        }
+        AdmissionRequest other = (AdmissionRequest) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$dryRun = this.getDryRun();
+        Object other$dryRun = other.getDryRun();
+        if (this$dryRun == null ? other$dryRun != null : !this$dryRun.equals(other$dryRun)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$namespace = this.getNamespace();
+        Object other$namespace = other.getNamespace();
+        if (this$namespace == null ? other$namespace != null : !this$namespace.equals(other$namespace)) {
+            return false;
+        }
+        Object this$object = this.getObject();
+        Object other$object = other.getObject();
+        if (this$object == null ? other$object != null : !this$object.equals(other$object)) {
+            return false;
+        }
+        Object this$oldObject = this.getOldObject();
+        Object other$oldObject = other.getOldObject();
+        if (this$oldObject == null ? other$oldObject != null : !this$oldObject.equals(other$oldObject)) {
+            return false;
+        }
+        Object this$operation = this.getOperation();
+        Object other$operation = other.getOperation();
+        if (this$operation == null ? other$operation != null : !this$operation.equals(other$operation)) {
+            return false;
+        }
+        Object this$options = this.getOptions();
+        Object other$options = other.getOptions();
+        if (this$options == null ? other$options != null : !this$options.equals(other$options)) {
+            return false;
+        }
+        Object this$requestKind = this.getRequestKind();
+        Object other$requestKind = other.getRequestKind();
+        if (this$requestKind == null ? other$requestKind != null : !this$requestKind.equals(other$requestKind)) {
+            return false;
+        }
+        Object this$requestResource = this.getRequestResource();
+        Object other$requestResource = other.getRequestResource();
+        if (this$requestResource == null ? other$requestResource != null : !this$requestResource.equals(other$requestResource)) {
+            return false;
+        }
+        Object this$requestSubResource = this.getRequestSubResource();
+        Object other$requestSubResource = other.getRequestSubResource();
+        if (this$requestSubResource == null ? other$requestSubResource != null : !this$requestSubResource.equals(other$requestSubResource)) {
+            return false;
+        }
+        Object this$resource = this.getResource();
+        Object other$resource = other.getResource();
+        if (this$resource == null ? other$resource != null : !this$resource.equals(other$resource)) {
+            return false;
+        }
+        Object this$subResource = this.getSubResource();
+        Object other$subResource = other.getSubResource();
+        if (this$subResource == null ? other$subResource != null : !this$subResource.equals(other$subResource)) {
+            return false;
+        }
+        Object this$uid = this.getUid();
+        Object other$uid = other.getUid();
+        if (this$uid == null ? other$uid != null : !this$uid.equals(other$uid)) {
+            return false;
+        }
+        Object this$userInfo = this.getUserInfo();
+        Object other$userInfo = other.getUserInfo();
+        if (this$userInfo == null ? other$userInfo != null : !this$userInfo.equals(other$userInfo)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AdmissionRequest;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $dryRun = this.getDryRun();
+        result = result * prime + ($dryRun == null ? 43 : $dryRun.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $namespace = this.getNamespace();
+        result = result * prime + ($namespace == null ? 43 : $namespace.hashCode());
+        Object $object = this.getObject();
+        result = result * prime + ($object == null ? 43 : $object.hashCode());
+        Object $oldObject = this.getOldObject();
+        result = result * prime + ($oldObject == null ? 43 : $oldObject.hashCode());
+        Object $operation = this.getOperation();
+        result = result * prime + ($operation == null ? 43 : $operation.hashCode());
+        Object $options = this.getOptions();
+        result = result * prime + ($options == null ? 43 : $options.hashCode());
+        Object $requestKind = this.getRequestKind();
+        result = result * prime + ($requestKind == null ? 43 : $requestKind.hashCode());
+        Object $requestResource = this.getRequestResource();
+        result = result * prime + ($requestResource == null ? 43 : $requestResource.hashCode());
+        Object $requestSubResource = this.getRequestSubResource();
+        result = result * prime + ($requestSubResource == null ? 43 : $requestSubResource.hashCode());
+        Object $resource = this.getResource();
+        result = result * prime + ($resource == null ? 43 : $resource.hashCode());
+        Object $subResource = this.getSubResource();
+        result = result * prime + ($subResource == null ? 43 : $subResource.hashCode());
+        Object $uid = this.getUid();
+        result = result * prime + ($uid == null ? 43 : $uid.hashCode());
+        Object $userInfo = this.getUserInfo();
+        result = result * prime + ($userInfo == null ? 43 : $userInfo.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AdmissionRequest(" + "dryRun=" + this.getDryRun() + ", kind=" + this.getKind() + ", name=" + this.getName() + ", namespace=" + this.getNamespace() + ", object=" + this.getObject() + ", oldObject=" + this.getOldObject() + ", operation=" + this.getOperation() + ", options=" + this.getOptions() + ", requestKind=" + this.getRequestKind() + ", requestResource=" + this.getRequestResource() + ", requestSubResource=" + this.getRequestSubResource() + ", resource=" + this.getResource() + ", subResource=" + this.getSubResource() + ", uid=" + this.getUid() + ", userInfo=" + this.getUserInfo() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

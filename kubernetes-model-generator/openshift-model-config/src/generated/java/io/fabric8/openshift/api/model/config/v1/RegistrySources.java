@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RegistrySources holds cluster-wide information about how to handle the registries config.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "blockedRegistries",
     "containerRuntimeSearchRegistries",
     "insecureRegistries"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -189,6 +180,71 @@ public class RegistrySources implements Editable<RegistrySourcesBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RegistrySources)) {
+            return false;
+        }
+        RegistrySources other = (RegistrySources) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allowedRegistries = this.getAllowedRegistries();
+        Object other$allowedRegistries = other.getAllowedRegistries();
+        if (this$allowedRegistries == null ? other$allowedRegistries != null : !this$allowedRegistries.equals(other$allowedRegistries)) {
+            return false;
+        }
+        Object this$blockedRegistries = this.getBlockedRegistries();
+        Object other$blockedRegistries = other.getBlockedRegistries();
+        if (this$blockedRegistries == null ? other$blockedRegistries != null : !this$blockedRegistries.equals(other$blockedRegistries)) {
+            return false;
+        }
+        Object this$containerRuntimeSearchRegistries = this.getContainerRuntimeSearchRegistries();
+        Object other$containerRuntimeSearchRegistries = other.getContainerRuntimeSearchRegistries();
+        if (this$containerRuntimeSearchRegistries == null ? other$containerRuntimeSearchRegistries != null : !this$containerRuntimeSearchRegistries.equals(other$containerRuntimeSearchRegistries)) {
+            return false;
+        }
+        Object this$insecureRegistries = this.getInsecureRegistries();
+        Object other$insecureRegistries = other.getInsecureRegistries();
+        if (this$insecureRegistries == null ? other$insecureRegistries != null : !this$insecureRegistries.equals(other$insecureRegistries)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RegistrySources;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allowedRegistries = this.getAllowedRegistries();
+        result = result * prime + ($allowedRegistries == null ? 43 : $allowedRegistries.hashCode());
+        Object $blockedRegistries = this.getBlockedRegistries();
+        result = result * prime + ($blockedRegistries == null ? 43 : $blockedRegistries.hashCode());
+        Object $containerRuntimeSearchRegistries = this.getContainerRuntimeSearchRegistries();
+        result = result * prime + ($containerRuntimeSearchRegistries == null ? 43 : $containerRuntimeSearchRegistries.hashCode());
+        Object $insecureRegistries = this.getInsecureRegistries();
+        result = result * prime + ($insecureRegistries == null ? 43 : $insecureRegistries.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RegistrySources(" + "allowedRegistries=" + this.getAllowedRegistries() + ", blockedRegistries=" + this.getBlockedRegistries() + ", containerRuntimeSearchRegistries=" + this.getContainerRuntimeSearchRegistries() + ", insecureRegistries=" + this.getInsecureRegistries() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

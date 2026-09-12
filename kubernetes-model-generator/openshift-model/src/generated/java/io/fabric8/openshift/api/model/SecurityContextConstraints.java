@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SecurityContextConstraints governs the ability to make requests that affect the SecurityContext that will be applied to a container. For historical reasons SCC was exposed under the core Kubernetes API group. That exposure is deprecated and will be removed in a future release - users should instead use the security.openshift.io group to manage SecurityContextConstraints.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
@@ -69,12 +66,6 @@ import lombok.experimental.Accessors;
     "userNamespaceLevel",
     "users",
     "volumes"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -685,6 +676,239 @@ public class SecurityContextConstraints implements Editable<SecurityContextConst
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SecurityContextConstraints)) {
+            return false;
+        }
+        SecurityContextConstraints other = (SecurityContextConstraints) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allowHostDirVolumePlugin = this.getAllowHostDirVolumePlugin();
+        Object other$allowHostDirVolumePlugin = other.getAllowHostDirVolumePlugin();
+        if (this$allowHostDirVolumePlugin == null ? other$allowHostDirVolumePlugin != null : !this$allowHostDirVolumePlugin.equals(other$allowHostDirVolumePlugin)) {
+            return false;
+        }
+        Object this$allowHostIPC = this.getAllowHostIPC();
+        Object other$allowHostIPC = other.getAllowHostIPC();
+        if (this$allowHostIPC == null ? other$allowHostIPC != null : !this$allowHostIPC.equals(other$allowHostIPC)) {
+            return false;
+        }
+        Object this$allowHostNetwork = this.getAllowHostNetwork();
+        Object other$allowHostNetwork = other.getAllowHostNetwork();
+        if (this$allowHostNetwork == null ? other$allowHostNetwork != null : !this$allowHostNetwork.equals(other$allowHostNetwork)) {
+            return false;
+        }
+        Object this$allowHostPID = this.getAllowHostPID();
+        Object other$allowHostPID = other.getAllowHostPID();
+        if (this$allowHostPID == null ? other$allowHostPID != null : !this$allowHostPID.equals(other$allowHostPID)) {
+            return false;
+        }
+        Object this$allowHostPorts = this.getAllowHostPorts();
+        Object other$allowHostPorts = other.getAllowHostPorts();
+        if (this$allowHostPorts == null ? other$allowHostPorts != null : !this$allowHostPorts.equals(other$allowHostPorts)) {
+            return false;
+        }
+        Object this$allowPrivilegeEscalation = this.getAllowPrivilegeEscalation();
+        Object other$allowPrivilegeEscalation = other.getAllowPrivilegeEscalation();
+        if (this$allowPrivilegeEscalation == null ? other$allowPrivilegeEscalation != null : !this$allowPrivilegeEscalation.equals(other$allowPrivilegeEscalation)) {
+            return false;
+        }
+        Object this$allowPrivilegedContainer = this.getAllowPrivilegedContainer();
+        Object other$allowPrivilegedContainer = other.getAllowPrivilegedContainer();
+        if (this$allowPrivilegedContainer == null ? other$allowPrivilegedContainer != null : !this$allowPrivilegedContainer.equals(other$allowPrivilegedContainer)) {
+            return false;
+        }
+        Object this$allowedCapabilities = this.getAllowedCapabilities();
+        Object other$allowedCapabilities = other.getAllowedCapabilities();
+        if (this$allowedCapabilities == null ? other$allowedCapabilities != null : !this$allowedCapabilities.equals(other$allowedCapabilities)) {
+            return false;
+        }
+        Object this$allowedFlexVolumes = this.getAllowedFlexVolumes();
+        Object other$allowedFlexVolumes = other.getAllowedFlexVolumes();
+        if (this$allowedFlexVolumes == null ? other$allowedFlexVolumes != null : !this$allowedFlexVolumes.equals(other$allowedFlexVolumes)) {
+            return false;
+        }
+        Object this$allowedUnsafeSysctls = this.getAllowedUnsafeSysctls();
+        Object other$allowedUnsafeSysctls = other.getAllowedUnsafeSysctls();
+        if (this$allowedUnsafeSysctls == null ? other$allowedUnsafeSysctls != null : !this$allowedUnsafeSysctls.equals(other$allowedUnsafeSysctls)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$defaultAddCapabilities = this.getDefaultAddCapabilities();
+        Object other$defaultAddCapabilities = other.getDefaultAddCapabilities();
+        if (this$defaultAddCapabilities == null ? other$defaultAddCapabilities != null : !this$defaultAddCapabilities.equals(other$defaultAddCapabilities)) {
+            return false;
+        }
+        Object this$defaultAllowPrivilegeEscalation = this.getDefaultAllowPrivilegeEscalation();
+        Object other$defaultAllowPrivilegeEscalation = other.getDefaultAllowPrivilegeEscalation();
+        if (this$defaultAllowPrivilegeEscalation == null ? other$defaultAllowPrivilegeEscalation != null : !this$defaultAllowPrivilegeEscalation.equals(other$defaultAllowPrivilegeEscalation)) {
+            return false;
+        }
+        Object this$forbiddenSysctls = this.getForbiddenSysctls();
+        Object other$forbiddenSysctls = other.getForbiddenSysctls();
+        if (this$forbiddenSysctls == null ? other$forbiddenSysctls != null : !this$forbiddenSysctls.equals(other$forbiddenSysctls)) {
+            return false;
+        }
+        Object this$fsGroup = this.getFsGroup();
+        Object other$fsGroup = other.getFsGroup();
+        if (this$fsGroup == null ? other$fsGroup != null : !this$fsGroup.equals(other$fsGroup)) {
+            return false;
+        }
+        Object this$groups = this.getGroups();
+        Object other$groups = other.getGroups();
+        if (this$groups == null ? other$groups != null : !this$groups.equals(other$groups)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$priority = this.getPriority();
+        Object other$priority = other.getPriority();
+        if (this$priority == null ? other$priority != null : !this$priority.equals(other$priority)) {
+            return false;
+        }
+        Object this$readOnlyRootFilesystem = this.getReadOnlyRootFilesystem();
+        Object other$readOnlyRootFilesystem = other.getReadOnlyRootFilesystem();
+        if (this$readOnlyRootFilesystem == null ? other$readOnlyRootFilesystem != null : !this$readOnlyRootFilesystem.equals(other$readOnlyRootFilesystem)) {
+            return false;
+        }
+        Object this$requiredDropCapabilities = this.getRequiredDropCapabilities();
+        Object other$requiredDropCapabilities = other.getRequiredDropCapabilities();
+        if (this$requiredDropCapabilities == null ? other$requiredDropCapabilities != null : !this$requiredDropCapabilities.equals(other$requiredDropCapabilities)) {
+            return false;
+        }
+        Object this$runAsUser = this.getRunAsUser();
+        Object other$runAsUser = other.getRunAsUser();
+        if (this$runAsUser == null ? other$runAsUser != null : !this$runAsUser.equals(other$runAsUser)) {
+            return false;
+        }
+        Object this$seLinuxContext = this.getSeLinuxContext();
+        Object other$seLinuxContext = other.getSeLinuxContext();
+        if (this$seLinuxContext == null ? other$seLinuxContext != null : !this$seLinuxContext.equals(other$seLinuxContext)) {
+            return false;
+        }
+        Object this$seccompProfiles = this.getSeccompProfiles();
+        Object other$seccompProfiles = other.getSeccompProfiles();
+        if (this$seccompProfiles == null ? other$seccompProfiles != null : !this$seccompProfiles.equals(other$seccompProfiles)) {
+            return false;
+        }
+        Object this$supplementalGroups = this.getSupplementalGroups();
+        Object other$supplementalGroups = other.getSupplementalGroups();
+        if (this$supplementalGroups == null ? other$supplementalGroups != null : !this$supplementalGroups.equals(other$supplementalGroups)) {
+            return false;
+        }
+        Object this$userNamespaceLevel = this.getUserNamespaceLevel();
+        Object other$userNamespaceLevel = other.getUserNamespaceLevel();
+        if (this$userNamespaceLevel == null ? other$userNamespaceLevel != null : !this$userNamespaceLevel.equals(other$userNamespaceLevel)) {
+            return false;
+        }
+        Object this$users = this.getUsers();
+        Object other$users = other.getUsers();
+        if (this$users == null ? other$users != null : !this$users.equals(other$users)) {
+            return false;
+        }
+        Object this$volumes = this.getVolumes();
+        Object other$volumes = other.getVolumes();
+        if (this$volumes == null ? other$volumes != null : !this$volumes.equals(other$volumes)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SecurityContextConstraints;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allowHostDirVolumePlugin = this.getAllowHostDirVolumePlugin();
+        result = result * prime + ($allowHostDirVolumePlugin == null ? 43 : $allowHostDirVolumePlugin.hashCode());
+        Object $allowHostIPC = this.getAllowHostIPC();
+        result = result * prime + ($allowHostIPC == null ? 43 : $allowHostIPC.hashCode());
+        Object $allowHostNetwork = this.getAllowHostNetwork();
+        result = result * prime + ($allowHostNetwork == null ? 43 : $allowHostNetwork.hashCode());
+        Object $allowHostPID = this.getAllowHostPID();
+        result = result * prime + ($allowHostPID == null ? 43 : $allowHostPID.hashCode());
+        Object $allowHostPorts = this.getAllowHostPorts();
+        result = result * prime + ($allowHostPorts == null ? 43 : $allowHostPorts.hashCode());
+        Object $allowPrivilegeEscalation = this.getAllowPrivilegeEscalation();
+        result = result * prime + ($allowPrivilegeEscalation == null ? 43 : $allowPrivilegeEscalation.hashCode());
+        Object $allowPrivilegedContainer = this.getAllowPrivilegedContainer();
+        result = result * prime + ($allowPrivilegedContainer == null ? 43 : $allowPrivilegedContainer.hashCode());
+        Object $allowedCapabilities = this.getAllowedCapabilities();
+        result = result * prime + ($allowedCapabilities == null ? 43 : $allowedCapabilities.hashCode());
+        Object $allowedFlexVolumes = this.getAllowedFlexVolumes();
+        result = result * prime + ($allowedFlexVolumes == null ? 43 : $allowedFlexVolumes.hashCode());
+        Object $allowedUnsafeSysctls = this.getAllowedUnsafeSysctls();
+        result = result * prime + ($allowedUnsafeSysctls == null ? 43 : $allowedUnsafeSysctls.hashCode());
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $defaultAddCapabilities = this.getDefaultAddCapabilities();
+        result = result * prime + ($defaultAddCapabilities == null ? 43 : $defaultAddCapabilities.hashCode());
+        Object $defaultAllowPrivilegeEscalation = this.getDefaultAllowPrivilegeEscalation();
+        result = result * prime + ($defaultAllowPrivilegeEscalation == null ? 43 : $defaultAllowPrivilegeEscalation.hashCode());
+        Object $forbiddenSysctls = this.getForbiddenSysctls();
+        result = result * prime + ($forbiddenSysctls == null ? 43 : $forbiddenSysctls.hashCode());
+        Object $fsGroup = this.getFsGroup();
+        result = result * prime + ($fsGroup == null ? 43 : $fsGroup.hashCode());
+        Object $groups = this.getGroups();
+        result = result * prime + ($groups == null ? 43 : $groups.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $priority = this.getPriority();
+        result = result * prime + ($priority == null ? 43 : $priority.hashCode());
+        Object $readOnlyRootFilesystem = this.getReadOnlyRootFilesystem();
+        result = result * prime + ($readOnlyRootFilesystem == null ? 43 : $readOnlyRootFilesystem.hashCode());
+        Object $requiredDropCapabilities = this.getRequiredDropCapabilities();
+        result = result * prime + ($requiredDropCapabilities == null ? 43 : $requiredDropCapabilities.hashCode());
+        Object $runAsUser = this.getRunAsUser();
+        result = result * prime + ($runAsUser == null ? 43 : $runAsUser.hashCode());
+        Object $seLinuxContext = this.getSeLinuxContext();
+        result = result * prime + ($seLinuxContext == null ? 43 : $seLinuxContext.hashCode());
+        Object $seccompProfiles = this.getSeccompProfiles();
+        result = result * prime + ($seccompProfiles == null ? 43 : $seccompProfiles.hashCode());
+        Object $supplementalGroups = this.getSupplementalGroups();
+        result = result * prime + ($supplementalGroups == null ? 43 : $supplementalGroups.hashCode());
+        Object $userNamespaceLevel = this.getUserNamespaceLevel();
+        result = result * prime + ($userNamespaceLevel == null ? 43 : $userNamespaceLevel.hashCode());
+        Object $users = this.getUsers();
+        result = result * prime + ($users == null ? 43 : $users.hashCode());
+        Object $volumes = this.getVolumes();
+        result = result * prime + ($volumes == null ? 43 : $volumes.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SecurityContextConstraints(" + "allowHostDirVolumePlugin=" + this.getAllowHostDirVolumePlugin() + ", allowHostIPC=" + this.getAllowHostIPC() + ", allowHostNetwork=" + this.getAllowHostNetwork() + ", allowHostPID=" + this.getAllowHostPID() + ", allowHostPorts=" + this.getAllowHostPorts() + ", allowPrivilegeEscalation=" + this.getAllowPrivilegeEscalation() + ", allowPrivilegedContainer=" + this.getAllowPrivilegedContainer() + ", allowedCapabilities=" + this.getAllowedCapabilities() + ", allowedFlexVolumes=" + this.getAllowedFlexVolumes() + ", allowedUnsafeSysctls=" + this.getAllowedUnsafeSysctls() + ", apiVersion=" + this.getApiVersion() + ", defaultAddCapabilities=" + this.getDefaultAddCapabilities() + ", defaultAllowPrivilegeEscalation=" + this.getDefaultAllowPrivilegeEscalation() + ", forbiddenSysctls=" + this.getForbiddenSysctls() + ", fsGroup=" + this.getFsGroup() + ", groups=" + this.getGroups() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata() + ", priority=" + this.getPriority() + ", readOnlyRootFilesystem=" + this.getReadOnlyRootFilesystem() + ", requiredDropCapabilities=" + this.getRequiredDropCapabilities() + ", runAsUser=" + this.getRunAsUser() + ", seLinuxContext=" + this.getSeLinuxContext() + ", seccompProfiles=" + this.getSeccompProfiles() + ", supplementalGroups=" + this.getSupplementalGroups() + ", userNamespaceLevel=" + this.getUserNamespaceLevel() + ", users=" + this.getUsers() + ", volumes=" + this.getVolumes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

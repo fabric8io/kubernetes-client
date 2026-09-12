@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PrivateServiceConnectAccess configures access to the cluster API using GCP Private Service Connect
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "enabled",
     "serviceAttachment"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class PrivateServiceConnect implements Editable<PrivateServiceConnectBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PrivateServiceConnect)) {
+            return false;
+        }
+        PrivateServiceConnect other = (PrivateServiceConnect) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$enabled = this.getEnabled();
+        Object other$enabled = other.getEnabled();
+        if (this$enabled == null ? other$enabled != null : !this$enabled.equals(other$enabled)) {
+            return false;
+        }
+        Object this$serviceAttachment = this.getServiceAttachment();
+        Object other$serviceAttachment = other.getServiceAttachment();
+        if (this$serviceAttachment == null ? other$serviceAttachment != null : !this$serviceAttachment.equals(other$serviceAttachment)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PrivateServiceConnect;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $enabled = this.getEnabled();
+        result = result * prime + ($enabled == null ? 43 : $enabled.hashCode());
+        Object $serviceAttachment = this.getServiceAttachment();
+        result = result * prime + ($serviceAttachment == null ? 43 : $serviceAttachment.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PrivateServiceConnect(" + "enabled=" + this.getEnabled() + ", serviceAttachment=" + this.getServiceAttachment() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

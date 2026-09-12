@@ -26,9 +26,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SessionPersistence defines the desired state of SessionPersistence.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "cookieConfig",
     "sessionName",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -178,6 +169,71 @@ public class SessionPersistence implements Editable<SessionPersistenceBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SessionPersistence)) {
+            return false;
+        }
+        SessionPersistence other = (SessionPersistence) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$absoluteTimeout = this.getAbsoluteTimeout();
+        Object other$absoluteTimeout = other.getAbsoluteTimeout();
+        if (this$absoluteTimeout == null ? other$absoluteTimeout != null : !this$absoluteTimeout.equals(other$absoluteTimeout)) {
+            return false;
+        }
+        Object this$cookieConfig = this.getCookieConfig();
+        Object other$cookieConfig = other.getCookieConfig();
+        if (this$cookieConfig == null ? other$cookieConfig != null : !this$cookieConfig.equals(other$cookieConfig)) {
+            return false;
+        }
+        Object this$sessionName = this.getSessionName();
+        Object other$sessionName = other.getSessionName();
+        if (this$sessionName == null ? other$sessionName != null : !this$sessionName.equals(other$sessionName)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SessionPersistence;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $absoluteTimeout = this.getAbsoluteTimeout();
+        result = result * prime + ($absoluteTimeout == null ? 43 : $absoluteTimeout.hashCode());
+        Object $cookieConfig = this.getCookieConfig();
+        result = result * prime + ($cookieConfig == null ? 43 : $cookieConfig.hashCode());
+        Object $sessionName = this.getSessionName();
+        result = result * prime + ($sessionName == null ? 43 : $sessionName.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SessionPersistence(" + "absoluteTimeout=" + this.getAbsoluteTimeout() + ", cookieConfig=" + this.getCookieConfig() + ", sessionName=" + this.getSessionName() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

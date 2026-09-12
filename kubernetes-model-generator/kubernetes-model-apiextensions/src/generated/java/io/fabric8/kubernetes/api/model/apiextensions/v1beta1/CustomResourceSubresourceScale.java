@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CustomResourceSubresourceScale defines how to serve the scale subresource for CustomResources.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "labelSelectorPath",
     "specReplicasPath",
     "statusReplicasPath"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class CustomResourceSubresourceScale implements Editable<CustomResourceSu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CustomResourceSubresourceScale)) {
+            return false;
+        }
+        CustomResourceSubresourceScale other = (CustomResourceSubresourceScale) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$labelSelectorPath = this.getLabelSelectorPath();
+        Object other$labelSelectorPath = other.getLabelSelectorPath();
+        if (this$labelSelectorPath == null ? other$labelSelectorPath != null : !this$labelSelectorPath.equals(other$labelSelectorPath)) {
+            return false;
+        }
+        Object this$specReplicasPath = this.getSpecReplicasPath();
+        Object other$specReplicasPath = other.getSpecReplicasPath();
+        if (this$specReplicasPath == null ? other$specReplicasPath != null : !this$specReplicasPath.equals(other$specReplicasPath)) {
+            return false;
+        }
+        Object this$statusReplicasPath = this.getStatusReplicasPath();
+        Object other$statusReplicasPath = other.getStatusReplicasPath();
+        if (this$statusReplicasPath == null ? other$statusReplicasPath != null : !this$statusReplicasPath.equals(other$statusReplicasPath)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CustomResourceSubresourceScale;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $labelSelectorPath = this.getLabelSelectorPath();
+        result = result * prime + ($labelSelectorPath == null ? 43 : $labelSelectorPath.hashCode());
+        Object $specReplicasPath = this.getSpecReplicasPath();
+        result = result * prime + ($specReplicasPath == null ? 43 : $specReplicasPath.hashCode());
+        Object $statusReplicasPath = this.getStatusReplicasPath();
+        result = result * prime + ($statusReplicasPath == null ? 43 : $statusReplicasPath.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CustomResourceSubresourceScale(" + "labelSelectorPath=" + this.getLabelSelectorPath() + ", specReplicasPath=" + this.getSpecReplicasPath() + ", statusReplicasPath=" + this.getStatusReplicasPath() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

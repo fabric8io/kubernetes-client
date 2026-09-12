@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Connection pool settings for an upstream host. The settings apply to each individual host in the upstream service.  See Envoy's [circuit breaker](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/circuit_breaking) for more details. Connection pool settings can be applied at the TCP level as well as at HTTP level.<br><p> <br><p> For example, the following rule sets a limit of 100 connections to redis service called myredissrv with a connect timeout of 30ms<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: bookinfo-redis<br><p> <br><p> spec:<br><p> <br><p> 	host: myredissrv.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  connectionPool:<br><p> 	    tcp:<br><p> 	      maxConnections: 100<br><p> 	      connectTimeout: 30ms<br><p> 	      tcpKeepalive:<br><p> 	        time: 7200s<br><p> 	        interval: 75s<br><p> <br><p> ```
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "http",
     "tcp"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class ConnectionPoolSettings implements Editable<ConnectionPoolSettingsBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConnectionPoolSettings)) {
+            return false;
+        }
+        ConnectionPoolSettings other = (ConnectionPoolSettings) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$http = this.getHttp();
+        Object other$http = other.getHttp();
+        if (this$http == null ? other$http != null : !this$http.equals(other$http)) {
+            return false;
+        }
+        Object this$tcp = this.getTcp();
+        Object other$tcp = other.getTcp();
+        if (this$tcp == null ? other$tcp != null : !this$tcp.equals(other$tcp)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConnectionPoolSettings;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $http = this.getHttp();
+        result = result * prime + ($http == null ? 43 : $http.hashCode());
+        Object $tcp = this.getTcp();
+        result = result * prime + ($tcp == null ? 43 : $tcp.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConnectionPoolSettings(" + "http=" + this.getHttp() + ", tcp=" + this.getTcp() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

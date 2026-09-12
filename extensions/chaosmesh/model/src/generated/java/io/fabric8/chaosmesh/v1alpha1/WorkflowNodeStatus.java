@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "conditionalBranchesStatus",
     "conditions",
     "finishedChildren"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -194,6 +185,78 @@ public class WorkflowNodeStatus implements Editable<WorkflowNodeStatusBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof WorkflowNodeStatus)) {
+            return false;
+        }
+        WorkflowNodeStatus other = (WorkflowNodeStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$activeChildren = this.getActiveChildren();
+        Object other$activeChildren = other.getActiveChildren();
+        if (this$activeChildren == null ? other$activeChildren != null : !this$activeChildren.equals(other$activeChildren)) {
+            return false;
+        }
+        Object this$chaosResource = this.getChaosResource();
+        Object other$chaosResource = other.getChaosResource();
+        if (this$chaosResource == null ? other$chaosResource != null : !this$chaosResource.equals(other$chaosResource)) {
+            return false;
+        }
+        Object this$conditionalBranchesStatus = this.getConditionalBranchesStatus();
+        Object other$conditionalBranchesStatus = other.getConditionalBranchesStatus();
+        if (this$conditionalBranchesStatus == null ? other$conditionalBranchesStatus != null : !this$conditionalBranchesStatus.equals(other$conditionalBranchesStatus)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$finishedChildren = this.getFinishedChildren();
+        Object other$finishedChildren = other.getFinishedChildren();
+        if (this$finishedChildren == null ? other$finishedChildren != null : !this$finishedChildren.equals(other$finishedChildren)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof WorkflowNodeStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $activeChildren = this.getActiveChildren();
+        result = result * prime + ($activeChildren == null ? 43 : $activeChildren.hashCode());
+        Object $chaosResource = this.getChaosResource();
+        result = result * prime + ($chaosResource == null ? 43 : $chaosResource.hashCode());
+        Object $conditionalBranchesStatus = this.getConditionalBranchesStatus();
+        result = result * prime + ($conditionalBranchesStatus == null ? 43 : $conditionalBranchesStatus.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $finishedChildren = this.getFinishedChildren();
+        result = result * prime + ($finishedChildren == null ? 43 : $finishedChildren.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WorkflowNodeStatus(" + "activeChildren=" + this.getActiveChildren() + ", chaosResource=" + this.getChaosResource() + ", conditionalBranchesStatus=" + this.getConditionalBranchesStatus() + ", conditions=" + this.getConditions() + ", finishedChildren=" + this.getFinishedChildren() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

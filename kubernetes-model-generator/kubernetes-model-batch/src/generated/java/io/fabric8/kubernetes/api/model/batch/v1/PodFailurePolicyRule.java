@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PodFailurePolicyRule describes how a pod failure is handled when the requirements are met. One of onExitCodes and onPodConditions, but not both, can be used in each rule.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "action",
     "onExitCodes",
     "onPodConditions"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -164,6 +155,64 @@ public class PodFailurePolicyRule implements Editable<PodFailurePolicyRuleBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodFailurePolicyRule)) {
+            return false;
+        }
+        PodFailurePolicyRule other = (PodFailurePolicyRule) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$action = this.getAction();
+        Object other$action = other.getAction();
+        if (this$action == null ? other$action != null : !this$action.equals(other$action)) {
+            return false;
+        }
+        Object this$onExitCodes = this.getOnExitCodes();
+        Object other$onExitCodes = other.getOnExitCodes();
+        if (this$onExitCodes == null ? other$onExitCodes != null : !this$onExitCodes.equals(other$onExitCodes)) {
+            return false;
+        }
+        Object this$onPodConditions = this.getOnPodConditions();
+        Object other$onPodConditions = other.getOnPodConditions();
+        if (this$onPodConditions == null ? other$onPodConditions != null : !this$onPodConditions.equals(other$onPodConditions)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodFailurePolicyRule;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $action = this.getAction();
+        result = result * prime + ($action == null ? 43 : $action.hashCode());
+        Object $onExitCodes = this.getOnExitCodes();
+        result = result * prime + ($onExitCodes == null ? 43 : $onExitCodes.hashCode());
+        Object $onPodConditions = this.getOnPodConditions();
+        result = result * prime + ($onPodConditions == null ? 43 : $onPodConditions.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodFailurePolicyRule(" + "action=" + this.getAction() + ", onExitCodes=" + this.getOnExitCodes() + ", onPodConditions=" + this.getOnPodConditions() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

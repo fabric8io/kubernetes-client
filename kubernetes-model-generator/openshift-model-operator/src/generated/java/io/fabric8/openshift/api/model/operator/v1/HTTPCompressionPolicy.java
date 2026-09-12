@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * httpCompressionPolicy turns on compression for the specified MIME types.<br><p> <br><p> This field is optional, and its absence implies that compression should not be enabled globally in HAProxy.<br><p> <br><p> If httpCompressionPolicy exists, compression should be enabled only for the specified MIME types.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "mimeTypes"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -124,6 +115,50 @@ public class HTTPCompressionPolicy implements Editable<HTTPCompressionPolicyBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HTTPCompressionPolicy)) {
+            return false;
+        }
+        HTTPCompressionPolicy other = (HTTPCompressionPolicy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$mimeTypes = this.getMimeTypes();
+        Object other$mimeTypes = other.getMimeTypes();
+        if (this$mimeTypes == null ? other$mimeTypes != null : !this$mimeTypes.equals(other$mimeTypes)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HTTPCompressionPolicy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $mimeTypes = this.getMimeTypes();
+        result = result * prime + ($mimeTypes == null ? 43 : $mimeTypes.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HTTPCompressionPolicy(" + "mimeTypes=" + this.getMimeTypes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

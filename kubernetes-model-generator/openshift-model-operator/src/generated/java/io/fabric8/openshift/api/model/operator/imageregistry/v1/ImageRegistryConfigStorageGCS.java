@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageRegistryConfigStorageGCS holds GCS configuration.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "keyID",
     "projectID",
     "region"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class ImageRegistryConfigStorageGCS implements Editable<ImageRegistryConf
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageRegistryConfigStorageGCS)) {
+            return false;
+        }
+        ImageRegistryConfigStorageGCS other = (ImageRegistryConfigStorageGCS) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bucket = this.getBucket();
+        Object other$bucket = other.getBucket();
+        if (this$bucket == null ? other$bucket != null : !this$bucket.equals(other$bucket)) {
+            return false;
+        }
+        Object this$keyID = this.getKeyID();
+        Object other$keyID = other.getKeyID();
+        if (this$keyID == null ? other$keyID != null : !this$keyID.equals(other$keyID)) {
+            return false;
+        }
+        Object this$projectID = this.getProjectID();
+        Object other$projectID = other.getProjectID();
+        if (this$projectID == null ? other$projectID != null : !this$projectID.equals(other$projectID)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageRegistryConfigStorageGCS;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bucket = this.getBucket();
+        result = result * prime + ($bucket == null ? 43 : $bucket.hashCode());
+        Object $keyID = this.getKeyID();
+        result = result * prime + ($keyID == null ? 43 : $keyID.hashCode());
+        Object $projectID = this.getProjectID();
+        result = result * prime + ($projectID == null ? 43 : $projectID.hashCode());
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageRegistryConfigStorageGCS(" + "bucket=" + this.getBucket() + ", keyID=" + this.getKeyID() + ", projectID=" + this.getProjectID() + ", region=" + this.getRegion() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

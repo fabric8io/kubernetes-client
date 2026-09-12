@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ConfigMapBuildSource describes a configmap and its destination directory that will be used only at the build time. The content of the configmap referenced here will be copied into the destination directory instead of mounting.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "configMap",
     "destinationDir"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class ConfigMapBuildSource implements Editable<ConfigMapBuildSourceBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConfigMapBuildSource)) {
+            return false;
+        }
+        ConfigMapBuildSource other = (ConfigMapBuildSource) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$configMap = this.getConfigMap();
+        Object other$configMap = other.getConfigMap();
+        if (this$configMap == null ? other$configMap != null : !this$configMap.equals(other$configMap)) {
+            return false;
+        }
+        Object this$destinationDir = this.getDestinationDir();
+        Object other$destinationDir = other.getDestinationDir();
+        if (this$destinationDir == null ? other$destinationDir != null : !this$destinationDir.equals(other$destinationDir)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConfigMapBuildSource;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $configMap = this.getConfigMap();
+        result = result * prime + ($configMap == null ? 43 : $configMap.hashCode());
+        Object $destinationDir = this.getDestinationDir();
+        result = result * prime + ($destinationDir == null ? 43 : $destinationDir.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConfigMapBuildSource(" + "configMap=" + this.getConfigMap() + ", destinationDir=" + this.getDestinationDir() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

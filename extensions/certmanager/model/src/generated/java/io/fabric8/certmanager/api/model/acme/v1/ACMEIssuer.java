@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ACMEIssuer contains the specification for an ACME issuer. This uses the RFC8555 specification to obtain certificates by completing 'challenges' to prove ownership of domain identifiers. Earlier draft versions of the ACME specification are not supported.
@@ -52,12 +49,6 @@ import lombok.experimental.Accessors;
     "server",
     "skipTLSVerify",
     "solvers"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -325,6 +316,120 @@ public class ACMEIssuer implements Editable<ACMEIssuerBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ACMEIssuer)) {
+            return false;
+        }
+        ACMEIssuer other = (ACMEIssuer) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$caBundle = this.getCaBundle();
+        Object other$caBundle = other.getCaBundle();
+        if (this$caBundle == null ? other$caBundle != null : !this$caBundle.equals(other$caBundle)) {
+            return false;
+        }
+        Object this$disableAccountKeyGeneration = this.getDisableAccountKeyGeneration();
+        Object other$disableAccountKeyGeneration = other.getDisableAccountKeyGeneration();
+        if (this$disableAccountKeyGeneration == null ? other$disableAccountKeyGeneration != null : !this$disableAccountKeyGeneration.equals(other$disableAccountKeyGeneration)) {
+            return false;
+        }
+        Object this$email = this.getEmail();
+        Object other$email = other.getEmail();
+        if (this$email == null ? other$email != null : !this$email.equals(other$email)) {
+            return false;
+        }
+        Object this$enableDurationFeature = this.getEnableDurationFeature();
+        Object other$enableDurationFeature = other.getEnableDurationFeature();
+        if (this$enableDurationFeature == null ? other$enableDurationFeature != null : !this$enableDurationFeature.equals(other$enableDurationFeature)) {
+            return false;
+        }
+        Object this$externalAccountBinding = this.getExternalAccountBinding();
+        Object other$externalAccountBinding = other.getExternalAccountBinding();
+        if (this$externalAccountBinding == null ? other$externalAccountBinding != null : !this$externalAccountBinding.equals(other$externalAccountBinding)) {
+            return false;
+        }
+        Object this$preferredChain = this.getPreferredChain();
+        Object other$preferredChain = other.getPreferredChain();
+        if (this$preferredChain == null ? other$preferredChain != null : !this$preferredChain.equals(other$preferredChain)) {
+            return false;
+        }
+        Object this$privateKeySecretRef = this.getPrivateKeySecretRef();
+        Object other$privateKeySecretRef = other.getPrivateKeySecretRef();
+        if (this$privateKeySecretRef == null ? other$privateKeySecretRef != null : !this$privateKeySecretRef.equals(other$privateKeySecretRef)) {
+            return false;
+        }
+        Object this$profile = this.getProfile();
+        Object other$profile = other.getProfile();
+        if (this$profile == null ? other$profile != null : !this$profile.equals(other$profile)) {
+            return false;
+        }
+        Object this$server = this.getServer();
+        Object other$server = other.getServer();
+        if (this$server == null ? other$server != null : !this$server.equals(other$server)) {
+            return false;
+        }
+        Object this$skipTLSVerify = this.getSkipTLSVerify();
+        Object other$skipTLSVerify = other.getSkipTLSVerify();
+        if (this$skipTLSVerify == null ? other$skipTLSVerify != null : !this$skipTLSVerify.equals(other$skipTLSVerify)) {
+            return false;
+        }
+        Object this$solvers = this.getSolvers();
+        Object other$solvers = other.getSolvers();
+        if (this$solvers == null ? other$solvers != null : !this$solvers.equals(other$solvers)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ACMEIssuer;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $caBundle = this.getCaBundle();
+        result = result * prime + ($caBundle == null ? 43 : $caBundle.hashCode());
+        Object $disableAccountKeyGeneration = this.getDisableAccountKeyGeneration();
+        result = result * prime + ($disableAccountKeyGeneration == null ? 43 : $disableAccountKeyGeneration.hashCode());
+        Object $email = this.getEmail();
+        result = result * prime + ($email == null ? 43 : $email.hashCode());
+        Object $enableDurationFeature = this.getEnableDurationFeature();
+        result = result * prime + ($enableDurationFeature == null ? 43 : $enableDurationFeature.hashCode());
+        Object $externalAccountBinding = this.getExternalAccountBinding();
+        result = result * prime + ($externalAccountBinding == null ? 43 : $externalAccountBinding.hashCode());
+        Object $preferredChain = this.getPreferredChain();
+        result = result * prime + ($preferredChain == null ? 43 : $preferredChain.hashCode());
+        Object $privateKeySecretRef = this.getPrivateKeySecretRef();
+        result = result * prime + ($privateKeySecretRef == null ? 43 : $privateKeySecretRef.hashCode());
+        Object $profile = this.getProfile();
+        result = result * prime + ($profile == null ? 43 : $profile.hashCode());
+        Object $server = this.getServer();
+        result = result * prime + ($server == null ? 43 : $server.hashCode());
+        Object $skipTLSVerify = this.getSkipTLSVerify();
+        result = result * prime + ($skipTLSVerify == null ? 43 : $skipTLSVerify.hashCode());
+        Object $solvers = this.getSolvers();
+        result = result * prime + ($solvers == null ? 43 : $solvers.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ACMEIssuer(" + "caBundle=" + this.getCaBundle() + ", disableAccountKeyGeneration=" + this.getDisableAccountKeyGeneration() + ", email=" + this.getEmail() + ", enableDurationFeature=" + this.getEnableDurationFeature() + ", externalAccountBinding=" + this.getExternalAccountBinding() + ", preferredChain=" + this.getPreferredChain() + ", privateKeySecretRef=" + this.getPrivateKeySecretRef() + ", profile=" + this.getProfile() + ", server=" + this.getServer() + ", skipTLSVerify=" + this.getSkipTLSVerify() + ", solvers=" + this.getSolvers() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

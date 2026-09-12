@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.kubernetes.api.model.gatewayapi.v1.ParentReference;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TLSRouteSpec defines the desired state of a TLSRoute resource.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "parentRefs",
     "rules",
     "useDefaultGateways"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -189,6 +180,71 @@ public class TLSRouteSpec implements Editable<TLSRouteSpecBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TLSRouteSpec)) {
+            return false;
+        }
+        TLSRouteSpec other = (TLSRouteSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$hostnames = this.getHostnames();
+        Object other$hostnames = other.getHostnames();
+        if (this$hostnames == null ? other$hostnames != null : !this$hostnames.equals(other$hostnames)) {
+            return false;
+        }
+        Object this$parentRefs = this.getParentRefs();
+        Object other$parentRefs = other.getParentRefs();
+        if (this$parentRefs == null ? other$parentRefs != null : !this$parentRefs.equals(other$parentRefs)) {
+            return false;
+        }
+        Object this$rules = this.getRules();
+        Object other$rules = other.getRules();
+        if (this$rules == null ? other$rules != null : !this$rules.equals(other$rules)) {
+            return false;
+        }
+        Object this$useDefaultGateways = this.getUseDefaultGateways();
+        Object other$useDefaultGateways = other.getUseDefaultGateways();
+        if (this$useDefaultGateways == null ? other$useDefaultGateways != null : !this$useDefaultGateways.equals(other$useDefaultGateways)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TLSRouteSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $hostnames = this.getHostnames();
+        result = result * prime + ($hostnames == null ? 43 : $hostnames.hashCode());
+        Object $parentRefs = this.getParentRefs();
+        result = result * prime + ($parentRefs == null ? 43 : $parentRefs.hashCode());
+        Object $rules = this.getRules();
+        result = result * prime + ($rules == null ? 43 : $rules.hashCode());
+        Object $useDefaultGateways = this.getUseDefaultGateways();
+        result = result * prime + ($useDefaultGateways == null ? 43 : $useDefaultGateways.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TLSRouteSpec(" + "hostnames=" + this.getHostnames() + ", parentRefs=" + this.getParentRefs() + ", rules=" + this.getRules() + ", useDefaultGateways=" + this.getUseDefaultGateways() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

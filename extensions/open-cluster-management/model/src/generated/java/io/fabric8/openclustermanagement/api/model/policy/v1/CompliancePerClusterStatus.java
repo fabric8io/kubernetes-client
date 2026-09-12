@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CompliancePerClusterStatus reports the name of a managed cluster and its compliance state for this policy.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "clustername",
     "clusternamespace",
     "compliant"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class CompliancePerClusterStatus implements Editable<CompliancePerCluster
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CompliancePerClusterStatus)) {
+            return false;
+        }
+        CompliancePerClusterStatus other = (CompliancePerClusterStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clustername = this.getClustername();
+        Object other$clustername = other.getClustername();
+        if (this$clustername == null ? other$clustername != null : !this$clustername.equals(other$clustername)) {
+            return false;
+        }
+        Object this$clusternamespace = this.getClusternamespace();
+        Object other$clusternamespace = other.getClusternamespace();
+        if (this$clusternamespace == null ? other$clusternamespace != null : !this$clusternamespace.equals(other$clusternamespace)) {
+            return false;
+        }
+        Object this$compliant = this.getCompliant();
+        Object other$compliant = other.getCompliant();
+        if (this$compliant == null ? other$compliant != null : !this$compliant.equals(other$compliant)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CompliancePerClusterStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clustername = this.getClustername();
+        result = result * prime + ($clustername == null ? 43 : $clustername.hashCode());
+        Object $clusternamespace = this.getClusternamespace();
+        result = result * prime + ($clusternamespace == null ? 43 : $clusternamespace.hashCode());
+        Object $compliant = this.getCompliant();
+        result = result * prime + ($compliant == null ? 43 : $compliant.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CompliancePerClusterStatus(" + "clustername=" + this.getClustername() + ", clusternamespace=" + this.getClusternamespace() + ", compliant=" + this.getCompliant() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

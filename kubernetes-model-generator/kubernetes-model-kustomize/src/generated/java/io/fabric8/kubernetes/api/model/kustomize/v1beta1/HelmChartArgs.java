@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -50,12 +47,6 @@ import lombok.experimental.Accessors;
     "values",
     "valuesLocal",
     "valuesMerge"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -287,6 +278,134 @@ public class HelmChartArgs implements Editable<HelmChartArgsBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HelmChartArgs)) {
+            return false;
+        }
+        HelmChartArgs other = (HelmChartArgs) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$chartHome = this.getChartHome();
+        Object other$chartHome = other.getChartHome();
+        if (this$chartHome == null ? other$chartHome != null : !this$chartHome.equals(other$chartHome)) {
+            return false;
+        }
+        Object this$chartName = this.getChartName();
+        Object other$chartName = other.getChartName();
+        if (this$chartName == null ? other$chartName != null : !this$chartName.equals(other$chartName)) {
+            return false;
+        }
+        Object this$chartRepoName = this.getChartRepoName();
+        Object other$chartRepoName = other.getChartRepoName();
+        if (this$chartRepoName == null ? other$chartRepoName != null : !this$chartRepoName.equals(other$chartRepoName)) {
+            return false;
+        }
+        Object this$chartRepoUrl = this.getChartRepoUrl();
+        Object other$chartRepoUrl = other.getChartRepoUrl();
+        if (this$chartRepoUrl == null ? other$chartRepoUrl != null : !this$chartRepoUrl.equals(other$chartRepoUrl)) {
+            return false;
+        }
+        Object this$chartVersion = this.getChartVersion();
+        Object other$chartVersion = other.getChartVersion();
+        if (this$chartVersion == null ? other$chartVersion != null : !this$chartVersion.equals(other$chartVersion)) {
+            return false;
+        }
+        Object this$extraArgs = this.getExtraArgs();
+        Object other$extraArgs = other.getExtraArgs();
+        if (this$extraArgs == null ? other$extraArgs != null : !this$extraArgs.equals(other$extraArgs)) {
+            return false;
+        }
+        Object this$helmBin = this.getHelmBin();
+        Object other$helmBin = other.getHelmBin();
+        if (this$helmBin == null ? other$helmBin != null : !this$helmBin.equals(other$helmBin)) {
+            return false;
+        }
+        Object this$helmHome = this.getHelmHome();
+        Object other$helmHome = other.getHelmHome();
+        if (this$helmHome == null ? other$helmHome != null : !this$helmHome.equals(other$helmHome)) {
+            return false;
+        }
+        Object this$releaseName = this.getReleaseName();
+        Object other$releaseName = other.getReleaseName();
+        if (this$releaseName == null ? other$releaseName != null : !this$releaseName.equals(other$releaseName)) {
+            return false;
+        }
+        Object this$releaseNamespace = this.getReleaseNamespace();
+        Object other$releaseNamespace = other.getReleaseNamespace();
+        if (this$releaseNamespace == null ? other$releaseNamespace != null : !this$releaseNamespace.equals(other$releaseNamespace)) {
+            return false;
+        }
+        Object this$values = this.getValues();
+        Object other$values = other.getValues();
+        if (this$values == null ? other$values != null : !this$values.equals(other$values)) {
+            return false;
+        }
+        Object this$valuesLocal = this.getValuesLocal();
+        Object other$valuesLocal = other.getValuesLocal();
+        if (this$valuesLocal == null ? other$valuesLocal != null : !this$valuesLocal.equals(other$valuesLocal)) {
+            return false;
+        }
+        Object this$valuesMerge = this.getValuesMerge();
+        Object other$valuesMerge = other.getValuesMerge();
+        if (this$valuesMerge == null ? other$valuesMerge != null : !this$valuesMerge.equals(other$valuesMerge)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HelmChartArgs;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $chartHome = this.getChartHome();
+        result = result * prime + ($chartHome == null ? 43 : $chartHome.hashCode());
+        Object $chartName = this.getChartName();
+        result = result * prime + ($chartName == null ? 43 : $chartName.hashCode());
+        Object $chartRepoName = this.getChartRepoName();
+        result = result * prime + ($chartRepoName == null ? 43 : $chartRepoName.hashCode());
+        Object $chartRepoUrl = this.getChartRepoUrl();
+        result = result * prime + ($chartRepoUrl == null ? 43 : $chartRepoUrl.hashCode());
+        Object $chartVersion = this.getChartVersion();
+        result = result * prime + ($chartVersion == null ? 43 : $chartVersion.hashCode());
+        Object $extraArgs = this.getExtraArgs();
+        result = result * prime + ($extraArgs == null ? 43 : $extraArgs.hashCode());
+        Object $helmBin = this.getHelmBin();
+        result = result * prime + ($helmBin == null ? 43 : $helmBin.hashCode());
+        Object $helmHome = this.getHelmHome();
+        result = result * prime + ($helmHome == null ? 43 : $helmHome.hashCode());
+        Object $releaseName = this.getReleaseName();
+        result = result * prime + ($releaseName == null ? 43 : $releaseName.hashCode());
+        Object $releaseNamespace = this.getReleaseNamespace();
+        result = result * prime + ($releaseNamespace == null ? 43 : $releaseNamespace.hashCode());
+        Object $values = this.getValues();
+        result = result * prime + ($values == null ? 43 : $values.hashCode());
+        Object $valuesLocal = this.getValuesLocal();
+        result = result * prime + ($valuesLocal == null ? 43 : $valuesLocal.hashCode());
+        Object $valuesMerge = this.getValuesMerge();
+        result = result * prime + ($valuesMerge == null ? 43 : $valuesMerge.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HelmChartArgs(" + "chartHome=" + this.getChartHome() + ", chartName=" + this.getChartName() + ", chartRepoName=" + this.getChartRepoName() + ", chartRepoUrl=" + this.getChartRepoUrl() + ", chartVersion=" + this.getChartVersion() + ", extraArgs=" + this.getExtraArgs() + ", helmBin=" + this.getHelmBin() + ", helmHome=" + this.getHelmHome() + ", releaseName=" + this.getReleaseName() + ", releaseNamespace=" + this.getReleaseNamespace() + ", values=" + this.getValues() + ", valuesLocal=" + this.getValuesLocal() + ", valuesMerge=" + this.getValuesMerge() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

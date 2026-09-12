@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MetaDataHostInterface contains the information to render the object name.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "fromBootMAC",
     "interface",
     "key"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class MetaDataHostInterface implements Editable<MetaDataHostInterfaceBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MetaDataHostInterface)) {
+            return false;
+        }
+        MetaDataHostInterface other = (MetaDataHostInterface) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$fromBootMAC = this.getFromBootMAC();
+        Object other$fromBootMAC = other.getFromBootMAC();
+        if (this$fromBootMAC == null ? other$fromBootMAC != null : !this$fromBootMAC.equals(other$fromBootMAC)) {
+            return false;
+        }
+        Object this$_interface = this.getInterface();
+        Object other$_interface = other.getInterface();
+        if (this$_interface == null ? other$_interface != null : !this$_interface.equals(other$_interface)) {
+            return false;
+        }
+        Object this$key = this.getKey();
+        Object other$key = other.getKey();
+        if (this$key == null ? other$key != null : !this$key.equals(other$key)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MetaDataHostInterface;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $fromBootMAC = this.getFromBootMAC();
+        result = result * prime + ($fromBootMAC == null ? 43 : $fromBootMAC.hashCode());
+        Object $_interface = this.getInterface();
+        result = result * prime + ($_interface == null ? 43 : $_interface.hashCode());
+        Object $key = this.getKey();
+        result = result * prime + ($key == null ? 43 : $key.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MetaDataHostInterface(" + "fromBootMAC=" + this.getFromBootMAC() + ", _interface=" + this.getInterface() + ", key=" + this.getKey() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

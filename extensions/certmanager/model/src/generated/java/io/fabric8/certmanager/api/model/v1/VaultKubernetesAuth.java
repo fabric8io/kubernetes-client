@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Authenticate against Vault using a Kubernetes ServiceAccount token stored in a Secret.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "role",
     "secretRef",
     "serviceAccountRef"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -181,6 +172,71 @@ public class VaultKubernetesAuth implements Editable<VaultKubernetesAuthBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VaultKubernetesAuth)) {
+            return false;
+        }
+        VaultKubernetesAuth other = (VaultKubernetesAuth) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$mountPath = this.getMountPath();
+        Object other$mountPath = other.getMountPath();
+        if (this$mountPath == null ? other$mountPath != null : !this$mountPath.equals(other$mountPath)) {
+            return false;
+        }
+        Object this$role = this.getRole();
+        Object other$role = other.getRole();
+        if (this$role == null ? other$role != null : !this$role.equals(other$role)) {
+            return false;
+        }
+        Object this$secretRef = this.getSecretRef();
+        Object other$secretRef = other.getSecretRef();
+        if (this$secretRef == null ? other$secretRef != null : !this$secretRef.equals(other$secretRef)) {
+            return false;
+        }
+        Object this$serviceAccountRef = this.getServiceAccountRef();
+        Object other$serviceAccountRef = other.getServiceAccountRef();
+        if (this$serviceAccountRef == null ? other$serviceAccountRef != null : !this$serviceAccountRef.equals(other$serviceAccountRef)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VaultKubernetesAuth;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $mountPath = this.getMountPath();
+        result = result * prime + ($mountPath == null ? 43 : $mountPath.hashCode());
+        Object $role = this.getRole();
+        result = result * prime + ($role == null ? 43 : $role.hashCode());
+        Object $secretRef = this.getSecretRef();
+        result = result * prime + ($secretRef == null ? 43 : $secretRef.hashCode());
+        Object $serviceAccountRef = this.getServiceAccountRef();
+        result = result * prime + ($serviceAccountRef == null ? 43 : $serviceAccountRef.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VaultKubernetesAuth(" + "mountPath=" + this.getMountPath() + ", role=" + this.getRole() + ", secretRef=" + this.getSecretRef() + ", serviceAccountRef=" + this.getServiceAccountRef() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

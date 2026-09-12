@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DeploymentConfigRollbackSpec represents the options for rollback generation.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "includeTemplate",
     "includeTriggers",
     "revision"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -219,6 +210,85 @@ public class DeploymentConfigRollbackSpec implements Editable<DeploymentConfigRo
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DeploymentConfigRollbackSpec)) {
+            return false;
+        }
+        DeploymentConfigRollbackSpec other = (DeploymentConfigRollbackSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$from = this.getFrom();
+        Object other$from = other.getFrom();
+        if (this$from == null ? other$from != null : !this$from.equals(other$from)) {
+            return false;
+        }
+        Object this$includeReplicationMeta = this.getIncludeReplicationMeta();
+        Object other$includeReplicationMeta = other.getIncludeReplicationMeta();
+        if (this$includeReplicationMeta == null ? other$includeReplicationMeta != null : !this$includeReplicationMeta.equals(other$includeReplicationMeta)) {
+            return false;
+        }
+        Object this$includeStrategy = this.getIncludeStrategy();
+        Object other$includeStrategy = other.getIncludeStrategy();
+        if (this$includeStrategy == null ? other$includeStrategy != null : !this$includeStrategy.equals(other$includeStrategy)) {
+            return false;
+        }
+        Object this$includeTemplate = this.getIncludeTemplate();
+        Object other$includeTemplate = other.getIncludeTemplate();
+        if (this$includeTemplate == null ? other$includeTemplate != null : !this$includeTemplate.equals(other$includeTemplate)) {
+            return false;
+        }
+        Object this$includeTriggers = this.getIncludeTriggers();
+        Object other$includeTriggers = other.getIncludeTriggers();
+        if (this$includeTriggers == null ? other$includeTriggers != null : !this$includeTriggers.equals(other$includeTriggers)) {
+            return false;
+        }
+        Object this$revision = this.getRevision();
+        Object other$revision = other.getRevision();
+        if (this$revision == null ? other$revision != null : !this$revision.equals(other$revision)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DeploymentConfigRollbackSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $from = this.getFrom();
+        result = result * prime + ($from == null ? 43 : $from.hashCode());
+        Object $includeReplicationMeta = this.getIncludeReplicationMeta();
+        result = result * prime + ($includeReplicationMeta == null ? 43 : $includeReplicationMeta.hashCode());
+        Object $includeStrategy = this.getIncludeStrategy();
+        result = result * prime + ($includeStrategy == null ? 43 : $includeStrategy.hashCode());
+        Object $includeTemplate = this.getIncludeTemplate();
+        result = result * prime + ($includeTemplate == null ? 43 : $includeTemplate.hashCode());
+        Object $includeTriggers = this.getIncludeTriggers();
+        result = result * prime + ($includeTriggers == null ? 43 : $includeTriggers.hashCode());
+        Object $revision = this.getRevision();
+        result = result * prime + ($revision == null ? 43 : $revision.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DeploymentConfigRollbackSpec(" + "from=" + this.getFrom() + ", includeReplicationMeta=" + this.getIncludeReplicationMeta() + ", includeStrategy=" + this.getIncludeStrategy() + ", includeTemplate=" + this.getIncludeTemplate() + ", includeTriggers=" + this.getIncludeTriggers() + ", revision=" + this.getRevision() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

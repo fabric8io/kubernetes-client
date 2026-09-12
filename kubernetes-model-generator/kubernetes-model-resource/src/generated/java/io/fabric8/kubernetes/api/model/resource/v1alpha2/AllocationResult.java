@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AllocationResult contains attributes of an allocated resource.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "availableOnNodes",
     "resourceHandles",
     "shareable"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -165,6 +156,64 @@ public class AllocationResult implements Editable<AllocationResultBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AllocationResult)) {
+            return false;
+        }
+        AllocationResult other = (AllocationResult) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$availableOnNodes = this.getAvailableOnNodes();
+        Object other$availableOnNodes = other.getAvailableOnNodes();
+        if (this$availableOnNodes == null ? other$availableOnNodes != null : !this$availableOnNodes.equals(other$availableOnNodes)) {
+            return false;
+        }
+        Object this$resourceHandles = this.getResourceHandles();
+        Object other$resourceHandles = other.getResourceHandles();
+        if (this$resourceHandles == null ? other$resourceHandles != null : !this$resourceHandles.equals(other$resourceHandles)) {
+            return false;
+        }
+        Object this$shareable = this.getShareable();
+        Object other$shareable = other.getShareable();
+        if (this$shareable == null ? other$shareable != null : !this$shareable.equals(other$shareable)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AllocationResult;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $availableOnNodes = this.getAvailableOnNodes();
+        result = result * prime + ($availableOnNodes == null ? 43 : $availableOnNodes.hashCode());
+        Object $resourceHandles = this.getResourceHandles();
+        result = result * prime + ($resourceHandles == null ? 43 : $resourceHandles.hashCode());
+        Object $shareable = this.getShareable();
+        result = result * prime + ($shareable == null ? 43 : $shareable.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AllocationResult(" + "availableOnNodes=" + this.getAvailableOnNodes() + ", resourceHandles=" + this.getResourceHandles() + ", shareable=" + this.getShareable() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

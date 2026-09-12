@@ -30,21 +30,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "probe",
     "targets"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -129,6 +120,57 @@ public class DependsOn implements Editable<DependsOnBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DependsOn)) {
+            return false;
+        }
+        DependsOn other = (DependsOn) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$probe = this.getProbe();
+        Object other$probe = other.getProbe();
+        if (this$probe == null ? other$probe != null : !this$probe.equals(other$probe)) {
+            return false;
+        }
+        Object this$targets = this.getTargets();
+        Object other$targets = other.getTargets();
+        if (this$targets == null ? other$targets != null : !this$targets.equals(other$targets)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DependsOn;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $probe = this.getProbe();
+        result = result * prime + ($probe == null ? 43 : $probe.hashCode());
+        Object $targets = this.getTargets();
+        result = result * prime + ($targets == null ? 43 : $targets.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DependsOn(" + "probe=" + this.getProbe() + ", targets=" + this.getTargets() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

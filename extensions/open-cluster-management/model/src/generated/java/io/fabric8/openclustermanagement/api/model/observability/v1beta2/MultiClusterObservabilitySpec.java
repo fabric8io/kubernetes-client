@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openclustermanagement.api.model.shared.ObservabilityAddonSpec;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MultiClusterObservabilitySpec defines the desired state of MultiClusterObservability.
@@ -52,12 +49,6 @@ import lombok.experimental.Accessors;
     "observabilityAddonSpec",
     "storageConfig",
     "tolerations"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -308,6 +299,113 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MultiClusterObservabilitySpec)) {
+            return false;
+        }
+        MultiClusterObservabilitySpec other = (MultiClusterObservabilitySpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$advanced = this.getAdvanced();
+        Object other$advanced = other.getAdvanced();
+        if (this$advanced == null ? other$advanced != null : !this$advanced.equals(other$advanced)) {
+            return false;
+        }
+        Object this$capabilities = this.getCapabilities();
+        Object other$capabilities = other.getCapabilities();
+        if (this$capabilities == null ? other$capabilities != null : !this$capabilities.equals(other$capabilities)) {
+            return false;
+        }
+        Object this$enableDownsampling = this.getEnableDownsampling();
+        Object other$enableDownsampling = other.getEnableDownsampling();
+        if (this$enableDownsampling == null ? other$enableDownsampling != null : !this$enableDownsampling.equals(other$enableDownsampling)) {
+            return false;
+        }
+        Object this$imagePullPolicy = this.getImagePullPolicy();
+        Object other$imagePullPolicy = other.getImagePullPolicy();
+        if (this$imagePullPolicy == null ? other$imagePullPolicy != null : !this$imagePullPolicy.equals(other$imagePullPolicy)) {
+            return false;
+        }
+        Object this$imagePullSecret = this.getImagePullSecret();
+        Object other$imagePullSecret = other.getImagePullSecret();
+        if (this$imagePullSecret == null ? other$imagePullSecret != null : !this$imagePullSecret.equals(other$imagePullSecret)) {
+            return false;
+        }
+        Object this$instanceSize = this.getInstanceSize();
+        Object other$instanceSize = other.getInstanceSize();
+        if (this$instanceSize == null ? other$instanceSize != null : !this$instanceSize.equals(other$instanceSize)) {
+            return false;
+        }
+        Object this$nodeSelector = this.getNodeSelector();
+        Object other$nodeSelector = other.getNodeSelector();
+        if (this$nodeSelector == null ? other$nodeSelector != null : !this$nodeSelector.equals(other$nodeSelector)) {
+            return false;
+        }
+        Object this$observabilityAddonSpec = this.getObservabilityAddonSpec();
+        Object other$observabilityAddonSpec = other.getObservabilityAddonSpec();
+        if (this$observabilityAddonSpec == null ? other$observabilityAddonSpec != null : !this$observabilityAddonSpec.equals(other$observabilityAddonSpec)) {
+            return false;
+        }
+        Object this$storageConfig = this.getStorageConfig();
+        Object other$storageConfig = other.getStorageConfig();
+        if (this$storageConfig == null ? other$storageConfig != null : !this$storageConfig.equals(other$storageConfig)) {
+            return false;
+        }
+        Object this$tolerations = this.getTolerations();
+        Object other$tolerations = other.getTolerations();
+        if (this$tolerations == null ? other$tolerations != null : !this$tolerations.equals(other$tolerations)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MultiClusterObservabilitySpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $advanced = this.getAdvanced();
+        result = result * prime + ($advanced == null ? 43 : $advanced.hashCode());
+        Object $capabilities = this.getCapabilities();
+        result = result * prime + ($capabilities == null ? 43 : $capabilities.hashCode());
+        Object $enableDownsampling = this.getEnableDownsampling();
+        result = result * prime + ($enableDownsampling == null ? 43 : $enableDownsampling.hashCode());
+        Object $imagePullPolicy = this.getImagePullPolicy();
+        result = result * prime + ($imagePullPolicy == null ? 43 : $imagePullPolicy.hashCode());
+        Object $imagePullSecret = this.getImagePullSecret();
+        result = result * prime + ($imagePullSecret == null ? 43 : $imagePullSecret.hashCode());
+        Object $instanceSize = this.getInstanceSize();
+        result = result * prime + ($instanceSize == null ? 43 : $instanceSize.hashCode());
+        Object $nodeSelector = this.getNodeSelector();
+        result = result * prime + ($nodeSelector == null ? 43 : $nodeSelector.hashCode());
+        Object $observabilityAddonSpec = this.getObservabilityAddonSpec();
+        result = result * prime + ($observabilityAddonSpec == null ? 43 : $observabilityAddonSpec.hashCode());
+        Object $storageConfig = this.getStorageConfig();
+        result = result * prime + ($storageConfig == null ? 43 : $storageConfig.hashCode());
+        Object $tolerations = this.getTolerations();
+        result = result * prime + ($tolerations == null ? 43 : $tolerations.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MultiClusterObservabilitySpec(" + "advanced=" + this.getAdvanced() + ", capabilities=" + this.getCapabilities() + ", enableDownsampling=" + this.getEnableDownsampling() + ", imagePullPolicy=" + this.getImagePullPolicy() + ", imagePullSecret=" + this.getImagePullSecret() + ", instanceSize=" + this.getInstanceSize() + ", nodeSelector=" + this.getNodeSelector() + ", observabilityAddonSpec=" + this.getObservabilityAddonSpec() + ", storageConfig=" + this.getStorageConfig() + ", tolerations=" + this.getTolerations() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Represents a Glusterfs mount that lasts the lifetime of a pod. Glusterfs volumes do not support ownership management or SELinux relabeling.
@@ -26,12 +23,6 @@ import lombok.experimental.Accessors;
     "endpoints",
     "path",
     "readOnly"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -131,6 +122,64 @@ public class GlusterfsVolumeSource implements Editable<GlusterfsVolumeSourceBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GlusterfsVolumeSource)) {
+            return false;
+        }
+        GlusterfsVolumeSource other = (GlusterfsVolumeSource) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$endpoints = this.getEndpoints();
+        Object other$endpoints = other.getEndpoints();
+        if (this$endpoints == null ? other$endpoints != null : !this$endpoints.equals(other$endpoints)) {
+            return false;
+        }
+        Object this$path = this.getPath();
+        Object other$path = other.getPath();
+        if (this$path == null ? other$path != null : !this$path.equals(other$path)) {
+            return false;
+        }
+        Object this$readOnly = this.getReadOnly();
+        Object other$readOnly = other.getReadOnly();
+        if (this$readOnly == null ? other$readOnly != null : !this$readOnly.equals(other$readOnly)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GlusterfsVolumeSource;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $endpoints = this.getEndpoints();
+        result = result * prime + ($endpoints == null ? 43 : $endpoints.hashCode());
+        Object $path = this.getPath();
+        result = result * prime + ($path == null ? 43 : $path.hashCode());
+        Object $readOnly = this.getReadOnly();
+        result = result * prime + ($readOnly == null ? 43 : $readOnly.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GlusterfsVolumeSource(" + "endpoints=" + this.getEndpoints() + ", path=" + this.getPath() + ", readOnly=" + this.getReadOnly() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

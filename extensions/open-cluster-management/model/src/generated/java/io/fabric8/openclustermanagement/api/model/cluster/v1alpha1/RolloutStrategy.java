@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Rollout strategy to apply workload to the selected clusters by Placement and DecisionStrategy.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "progressive",
     "progressivePerGroup",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class RolloutStrategy implements Editable<RolloutStrategyBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RolloutStrategy)) {
+            return false;
+        }
+        RolloutStrategy other = (RolloutStrategy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$all = this.getAll();
+        Object other$all = other.getAll();
+        if (this$all == null ? other$all != null : !this$all.equals(other$all)) {
+            return false;
+        }
+        Object this$progressive = this.getProgressive();
+        Object other$progressive = other.getProgressive();
+        if (this$progressive == null ? other$progressive != null : !this$progressive.equals(other$progressive)) {
+            return false;
+        }
+        Object this$progressivePerGroup = this.getProgressivePerGroup();
+        Object other$progressivePerGroup = other.getProgressivePerGroup();
+        if (this$progressivePerGroup == null ? other$progressivePerGroup != null : !this$progressivePerGroup.equals(other$progressivePerGroup)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RolloutStrategy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $all = this.getAll();
+        result = result * prime + ($all == null ? 43 : $all.hashCode());
+        Object $progressive = this.getProgressive();
+        result = result * prime + ($progressive == null ? 43 : $progressive.hashCode());
+        Object $progressivePerGroup = this.getProgressivePerGroup();
+        result = result * prime + ($progressivePerGroup == null ? 43 : $progressivePerGroup.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RolloutStrategy(" + "all=" + this.getAll() + ", progressive=" + this.getProgressive() + ", progressivePerGroup=" + this.getProgressivePerGroup() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

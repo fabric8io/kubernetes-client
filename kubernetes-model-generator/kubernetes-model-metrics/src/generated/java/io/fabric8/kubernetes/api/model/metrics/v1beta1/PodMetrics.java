@@ -34,9 +34,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "containers",
     "timestamp",
     "window"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -191,6 +182,85 @@ public class PodMetrics implements Editable<PodMetricsBuilder>, HasMetadata, Nam
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodMetrics)) {
+            return false;
+        }
+        PodMetrics other = (PodMetrics) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$containers = this.getContainers();
+        Object other$containers = other.getContainers();
+        if (this$containers == null ? other$containers != null : !this$containers.equals(other$containers)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$timestamp = this.getTimestamp();
+        Object other$timestamp = other.getTimestamp();
+        if (this$timestamp == null ? other$timestamp != null : !this$timestamp.equals(other$timestamp)) {
+            return false;
+        }
+        Object this$window = this.getWindow();
+        Object other$window = other.getWindow();
+        if (this$window == null ? other$window != null : !this$window.equals(other$window)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodMetrics;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $containers = this.getContainers();
+        result = result * prime + ($containers == null ? 43 : $containers.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $timestamp = this.getTimestamp();
+        result = result * prime + ($timestamp == null ? 43 : $timestamp.hashCode());
+        Object $window = this.getWindow();
+        result = result * prime + ($window == null ? 43 : $window.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodMetrics(" + "apiVersion=" + this.getApiVersion() + ", containers=" + this.getContainers() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata() + ", timestamp=" + this.getTimestamp() + ", window=" + this.getWindow() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

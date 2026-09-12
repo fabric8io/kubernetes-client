@@ -33,9 +33,6 @@ import io.fabric8.kubernetes.api.model.VolumeDevice;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * StepTemplate is a template for a Step
@@ -54,12 +51,6 @@ import lombok.experimental.Accessors;
     "volumeDevices",
     "volumeMounts",
     "workingDir"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -337,6 +328,120 @@ public class StepTemplate implements Editable<StepTemplateBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof StepTemplate)) {
+            return false;
+        }
+        StepTemplate other = (StepTemplate) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$args = this.getArgs();
+        Object other$args = other.getArgs();
+        if (this$args == null ? other$args != null : !this$args.equals(other$args)) {
+            return false;
+        }
+        Object this$command = this.getCommand();
+        Object other$command = other.getCommand();
+        if (this$command == null ? other$command != null : !this$command.equals(other$command)) {
+            return false;
+        }
+        Object this$computeResources = this.getComputeResources();
+        Object other$computeResources = other.getComputeResources();
+        if (this$computeResources == null ? other$computeResources != null : !this$computeResources.equals(other$computeResources)) {
+            return false;
+        }
+        Object this$env = this.getEnv();
+        Object other$env = other.getEnv();
+        if (this$env == null ? other$env != null : !this$env.equals(other$env)) {
+            return false;
+        }
+        Object this$envFrom = this.getEnvFrom();
+        Object other$envFrom = other.getEnvFrom();
+        if (this$envFrom == null ? other$envFrom != null : !this$envFrom.equals(other$envFrom)) {
+            return false;
+        }
+        Object this$image = this.getImage();
+        Object other$image = other.getImage();
+        if (this$image == null ? other$image != null : !this$image.equals(other$image)) {
+            return false;
+        }
+        Object this$imagePullPolicy = this.getImagePullPolicy();
+        Object other$imagePullPolicy = other.getImagePullPolicy();
+        if (this$imagePullPolicy == null ? other$imagePullPolicy != null : !this$imagePullPolicy.equals(other$imagePullPolicy)) {
+            return false;
+        }
+        Object this$securityContext = this.getSecurityContext();
+        Object other$securityContext = other.getSecurityContext();
+        if (this$securityContext == null ? other$securityContext != null : !this$securityContext.equals(other$securityContext)) {
+            return false;
+        }
+        Object this$volumeDevices = this.getVolumeDevices();
+        Object other$volumeDevices = other.getVolumeDevices();
+        if (this$volumeDevices == null ? other$volumeDevices != null : !this$volumeDevices.equals(other$volumeDevices)) {
+            return false;
+        }
+        Object this$volumeMounts = this.getVolumeMounts();
+        Object other$volumeMounts = other.getVolumeMounts();
+        if (this$volumeMounts == null ? other$volumeMounts != null : !this$volumeMounts.equals(other$volumeMounts)) {
+            return false;
+        }
+        Object this$workingDir = this.getWorkingDir();
+        Object other$workingDir = other.getWorkingDir();
+        if (this$workingDir == null ? other$workingDir != null : !this$workingDir.equals(other$workingDir)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof StepTemplate;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $args = this.getArgs();
+        result = result * prime + ($args == null ? 43 : $args.hashCode());
+        Object $command = this.getCommand();
+        result = result * prime + ($command == null ? 43 : $command.hashCode());
+        Object $computeResources = this.getComputeResources();
+        result = result * prime + ($computeResources == null ? 43 : $computeResources.hashCode());
+        Object $env = this.getEnv();
+        result = result * prime + ($env == null ? 43 : $env.hashCode());
+        Object $envFrom = this.getEnvFrom();
+        result = result * prime + ($envFrom == null ? 43 : $envFrom.hashCode());
+        Object $image = this.getImage();
+        result = result * prime + ($image == null ? 43 : $image.hashCode());
+        Object $imagePullPolicy = this.getImagePullPolicy();
+        result = result * prime + ($imagePullPolicy == null ? 43 : $imagePullPolicy.hashCode());
+        Object $securityContext = this.getSecurityContext();
+        result = result * prime + ($securityContext == null ? 43 : $securityContext.hashCode());
+        Object $volumeDevices = this.getVolumeDevices();
+        result = result * prime + ($volumeDevices == null ? 43 : $volumeDevices.hashCode());
+        Object $volumeMounts = this.getVolumeMounts();
+        result = result * prime + ($volumeMounts == null ? 43 : $volumeMounts.hashCode());
+        Object $workingDir = this.getWorkingDir();
+        result = result * prime + ($workingDir == null ? 43 : $workingDir.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "StepTemplate(" + "args=" + this.getArgs() + ", command=" + this.getCommand() + ", computeResources=" + this.getComputeResources() + ", env=" + this.getEnv() + ", envFrom=" + this.getEnvFrom() + ", image=" + this.getImage() + ", imagePullPolicy=" + this.getImagePullPolicy() + ", securityContext=" + this.getSecurityContext() + ", volumeDevices=" + this.getVolumeDevices() + ", volumeMounts=" + this.getVolumeMounts() + ", workingDir=" + this.getWorkingDir() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

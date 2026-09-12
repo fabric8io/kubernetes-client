@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NetworkDataRoutev6 represents an ipv6 route object.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "network",
     "prefix",
     "services"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class NetworkDataRoutev6 implements Editable<NetworkDataRoutev6Builder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkDataRoutev6)) {
+            return false;
+        }
+        NetworkDataRoutev6 other = (NetworkDataRoutev6) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$gateway = this.getGateway();
+        Object other$gateway = other.getGateway();
+        if (this$gateway == null ? other$gateway != null : !this$gateway.equals(other$gateway)) {
+            return false;
+        }
+        Object this$network = this.getNetwork();
+        Object other$network = other.getNetwork();
+        if (this$network == null ? other$network != null : !this$network.equals(other$network)) {
+            return false;
+        }
+        Object this$prefix = this.getPrefix();
+        Object other$prefix = other.getPrefix();
+        if (this$prefix == null ? other$prefix != null : !this$prefix.equals(other$prefix)) {
+            return false;
+        }
+        Object this$services = this.getServices();
+        Object other$services = other.getServices();
+        if (this$services == null ? other$services != null : !this$services.equals(other$services)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkDataRoutev6;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $gateway = this.getGateway();
+        result = result * prime + ($gateway == null ? 43 : $gateway.hashCode());
+        Object $network = this.getNetwork();
+        result = result * prime + ($network == null ? 43 : $network.hashCode());
+        Object $prefix = this.getPrefix();
+        result = result * prime + ($prefix == null ? 43 : $prefix.hashCode());
+        Object $services = this.getServices();
+        result = result * prime + ($services == null ? 43 : $services.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkDataRoutev6(" + "gateway=" + this.getGateway() + ", network=" + this.getNetwork() + ", prefix=" + this.getPrefix() + ", services=" + this.getServices() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

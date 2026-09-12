@@ -34,9 +34,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * WasmPlugin provides a mechanism to extend the functionality provided by the Istio proxy through WebAssembly filters.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
@@ -60,12 +57,6 @@ import lombok.experimental.Accessors;
     "url",
     "verificationKey",
     "vmConfig"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -434,6 +425,155 @@ public class WasmPlugin implements Editable<WasmPluginBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof WasmPlugin)) {
+            return false;
+        }
+        WasmPlugin other = (WasmPlugin) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$failStrategy = this.getFailStrategy();
+        Object other$failStrategy = other.getFailStrategy();
+        if (this$failStrategy == null ? other$failStrategy != null : !this$failStrategy.equals(other$failStrategy)) {
+            return false;
+        }
+        Object this$imagePullPolicy = this.getImagePullPolicy();
+        Object other$imagePullPolicy = other.getImagePullPolicy();
+        if (this$imagePullPolicy == null ? other$imagePullPolicy != null : !this$imagePullPolicy.equals(other$imagePullPolicy)) {
+            return false;
+        }
+        Object this$imagePullSecret = this.getImagePullSecret();
+        Object other$imagePullSecret = other.getImagePullSecret();
+        if (this$imagePullSecret == null ? other$imagePullSecret != null : !this$imagePullSecret.equals(other$imagePullSecret)) {
+            return false;
+        }
+        Object this$match = this.getMatch();
+        Object other$match = other.getMatch();
+        if (this$match == null ? other$match != null : !this$match.equals(other$match)) {
+            return false;
+        }
+        Object this$phase = this.getPhase();
+        Object other$phase = other.getPhase();
+        if (this$phase == null ? other$phase != null : !this$phase.equals(other$phase)) {
+            return false;
+        }
+        Object this$pluginConfig = this.getPluginConfig();
+        Object other$pluginConfig = other.getPluginConfig();
+        if (this$pluginConfig == null ? other$pluginConfig != null : !this$pluginConfig.equals(other$pluginConfig)) {
+            return false;
+        }
+        Object this$pluginName = this.getPluginName();
+        Object other$pluginName = other.getPluginName();
+        if (this$pluginName == null ? other$pluginName != null : !this$pluginName.equals(other$pluginName)) {
+            return false;
+        }
+        Object this$priority = this.getPriority();
+        Object other$priority = other.getPriority();
+        if (this$priority == null ? other$priority != null : !this$priority.equals(other$priority)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$sha256 = this.getSha256();
+        Object other$sha256 = other.getSha256();
+        if (this$sha256 == null ? other$sha256 != null : !this$sha256.equals(other$sha256)) {
+            return false;
+        }
+        Object this$targetRef = this.getTargetRef();
+        Object other$targetRef = other.getTargetRef();
+        if (this$targetRef == null ? other$targetRef != null : !this$targetRef.equals(other$targetRef)) {
+            return false;
+        }
+        Object this$targetRefs = this.getTargetRefs();
+        Object other$targetRefs = other.getTargetRefs();
+        if (this$targetRefs == null ? other$targetRefs != null : !this$targetRefs.equals(other$targetRefs)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$url = this.getUrl();
+        Object other$url = other.getUrl();
+        if (this$url == null ? other$url != null : !this$url.equals(other$url)) {
+            return false;
+        }
+        Object this$verificationKey = this.getVerificationKey();
+        Object other$verificationKey = other.getVerificationKey();
+        if (this$verificationKey == null ? other$verificationKey != null : !this$verificationKey.equals(other$verificationKey)) {
+            return false;
+        }
+        Object this$vmConfig = this.getVmConfig();
+        Object other$vmConfig = other.getVmConfig();
+        if (this$vmConfig == null ? other$vmConfig != null : !this$vmConfig.equals(other$vmConfig)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof WasmPlugin;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $failStrategy = this.getFailStrategy();
+        result = result * prime + ($failStrategy == null ? 43 : $failStrategy.hashCode());
+        Object $imagePullPolicy = this.getImagePullPolicy();
+        result = result * prime + ($imagePullPolicy == null ? 43 : $imagePullPolicy.hashCode());
+        Object $imagePullSecret = this.getImagePullSecret();
+        result = result * prime + ($imagePullSecret == null ? 43 : $imagePullSecret.hashCode());
+        Object $match = this.getMatch();
+        result = result * prime + ($match == null ? 43 : $match.hashCode());
+        Object $phase = this.getPhase();
+        result = result * prime + ($phase == null ? 43 : $phase.hashCode());
+        Object $pluginConfig = this.getPluginConfig();
+        result = result * prime + ($pluginConfig == null ? 43 : $pluginConfig.hashCode());
+        Object $pluginName = this.getPluginName();
+        result = result * prime + ($pluginName == null ? 43 : $pluginName.hashCode());
+        Object $priority = this.getPriority();
+        result = result * prime + ($priority == null ? 43 : $priority.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $sha256 = this.getSha256();
+        result = result * prime + ($sha256 == null ? 43 : $sha256.hashCode());
+        Object $targetRef = this.getTargetRef();
+        result = result * prime + ($targetRef == null ? 43 : $targetRef.hashCode());
+        Object $targetRefs = this.getTargetRefs();
+        result = result * prime + ($targetRefs == null ? 43 : $targetRefs.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $url = this.getUrl();
+        result = result * prime + ($url == null ? 43 : $url.hashCode());
+        Object $verificationKey = this.getVerificationKey();
+        result = result * prime + ($verificationKey == null ? 43 : $verificationKey.hashCode());
+        Object $vmConfig = this.getVmConfig();
+        result = result * prime + ($vmConfig == null ? 43 : $vmConfig.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WasmPlugin(" + "failStrategy=" + this.getFailStrategy() + ", imagePullPolicy=" + this.getImagePullPolicy() + ", imagePullSecret=" + this.getImagePullSecret() + ", match=" + this.getMatch() + ", phase=" + this.getPhase() + ", pluginConfig=" + this.getPluginConfig() + ", pluginName=" + this.getPluginName() + ", priority=" + this.getPriority() + ", selector=" + this.getSelector() + ", sha256=" + this.getSha256() + ", targetRef=" + this.getTargetRef() + ", targetRefs=" + this.getTargetRefs() + ", type=" + this.getType() + ", url=" + this.getUrl() + ", verificationKey=" + this.getVerificationKey() + ", vmConfig=" + this.getVmConfig() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

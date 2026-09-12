@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * FeatureFlags holds the features configurations
@@ -62,12 +59,6 @@ import lombok.experimental.Accessors;
     "setSecurityContext",
     "setSecurityContextReadOnlyRootFilesystem",
     "verificationNoMatchPolicy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -580,6 +571,211 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof FeatureFlags)) {
+            return false;
+        }
+        FeatureFlags other = (FeatureFlags) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$awaitSidecarReadiness = this.getAwaitSidecarReadiness();
+        Object other$awaitSidecarReadiness = other.getAwaitSidecarReadiness();
+        if (this$awaitSidecarReadiness == null ? other$awaitSidecarReadiness != null : !this$awaitSidecarReadiness.equals(other$awaitSidecarReadiness)) {
+            return false;
+        }
+        Object this$coschedule = this.getCoschedule();
+        Object other$coschedule = other.getCoschedule();
+        if (this$coschedule == null ? other$coschedule != null : !this$coschedule.equals(other$coschedule)) {
+            return false;
+        }
+        Object this$disableCredsInit = this.getDisableCredsInit();
+        Object other$disableCredsInit = other.getDisableCredsInit();
+        if (this$disableCredsInit == null ? other$disableCredsInit != null : !this$disableCredsInit.equals(other$disableCredsInit)) {
+            return false;
+        }
+        Object this$disableInlineSpec = this.getDisableInlineSpec();
+        Object other$disableInlineSpec = other.getDisableInlineSpec();
+        if (this$disableInlineSpec == null ? other$disableInlineSpec != null : !this$disableInlineSpec.equals(other$disableInlineSpec)) {
+            return false;
+        }
+        Object this$enableAPIFields = this.getEnableAPIFields();
+        Object other$enableAPIFields = other.getEnableAPIFields();
+        if (this$enableAPIFields == null ? other$enableAPIFields != null : !this$enableAPIFields.equals(other$enableAPIFields)) {
+            return false;
+        }
+        Object this$enableArtifacts = this.getEnableArtifacts();
+        Object other$enableArtifacts = other.getEnableArtifacts();
+        if (this$enableArtifacts == null ? other$enableArtifacts != null : !this$enableArtifacts.equals(other$enableArtifacts)) {
+            return false;
+        }
+        Object this$enableCELInWhenExpression = this.getEnableCELInWhenExpression();
+        Object other$enableCELInWhenExpression = other.getEnableCELInWhenExpression();
+        if (this$enableCELInWhenExpression == null ? other$enableCELInWhenExpression != null : !this$enableCELInWhenExpression.equals(other$enableCELInWhenExpression)) {
+            return false;
+        }
+        Object this$enableConciseResolverSyntax = this.getEnableConciseResolverSyntax();
+        Object other$enableConciseResolverSyntax = other.getEnableConciseResolverSyntax();
+        if (this$enableConciseResolverSyntax == null ? other$enableConciseResolverSyntax != null : !this$enableConciseResolverSyntax.equals(other$enableConciseResolverSyntax)) {
+            return false;
+        }
+        Object this$enableKeepPodOnCancel = this.getEnableKeepPodOnCancel();
+        Object other$enableKeepPodOnCancel = other.getEnableKeepPodOnCancel();
+        if (this$enableKeepPodOnCancel == null ? other$enableKeepPodOnCancel != null : !this$enableKeepPodOnCancel.equals(other$enableKeepPodOnCancel)) {
+            return false;
+        }
+        Object this$enableKubernetesSidecar = this.getEnableKubernetesSidecar();
+        Object other$enableKubernetesSidecar = other.getEnableKubernetesSidecar();
+        if (this$enableKubernetesSidecar == null ? other$enableKubernetesSidecar != null : !this$enableKubernetesSidecar.equals(other$enableKubernetesSidecar)) {
+            return false;
+        }
+        Object this$enableParamEnum = this.getEnableParamEnum();
+        Object other$enableParamEnum = other.getEnableParamEnum();
+        if (this$enableParamEnum == null ? other$enableParamEnum != null : !this$enableParamEnum.equals(other$enableParamEnum)) {
+            return false;
+        }
+        Object this$enableProvenanceInStatus = this.getEnableProvenanceInStatus();
+        Object other$enableProvenanceInStatus = other.getEnableProvenanceInStatus();
+        if (this$enableProvenanceInStatus == null ? other$enableProvenanceInStatus != null : !this$enableProvenanceInStatus.equals(other$enableProvenanceInStatus)) {
+            return false;
+        }
+        Object this$enableStepActions = this.getEnableStepActions();
+        Object other$enableStepActions = other.getEnableStepActions();
+        if (this$enableStepActions == null ? other$enableStepActions != null : !this$enableStepActions.equals(other$enableStepActions)) {
+            return false;
+        }
+        Object this$enableTektonOCIBundles = this.getEnableTektonOCIBundles();
+        Object other$enableTektonOCIBundles = other.getEnableTektonOCIBundles();
+        if (this$enableTektonOCIBundles == null ? other$enableTektonOCIBundles != null : !this$enableTektonOCIBundles.equals(other$enableTektonOCIBundles)) {
+            return false;
+        }
+        Object this$enableWaitExponentialBackoff = this.getEnableWaitExponentialBackoff();
+        Object other$enableWaitExponentialBackoff = other.getEnableWaitExponentialBackoff();
+        if (this$enableWaitExponentialBackoff == null ? other$enableWaitExponentialBackoff != null : !this$enableWaitExponentialBackoff.equals(other$enableWaitExponentialBackoff)) {
+            return false;
+        }
+        Object this$enforceNonfalsifiability = this.getEnforceNonfalsifiability();
+        Object other$enforceNonfalsifiability = other.getEnforceNonfalsifiability();
+        if (this$enforceNonfalsifiability == null ? other$enforceNonfalsifiability != null : !this$enforceNonfalsifiability.equals(other$enforceNonfalsifiability)) {
+            return false;
+        }
+        Object this$maxResultSize = this.getMaxResultSize();
+        Object other$maxResultSize = other.getMaxResultSize();
+        if (this$maxResultSize == null ? other$maxResultSize != null : !this$maxResultSize.equals(other$maxResultSize)) {
+            return false;
+        }
+        Object this$requireGitSSHSecretKnownHosts = this.getRequireGitSSHSecretKnownHosts();
+        Object other$requireGitSSHSecretKnownHosts = other.getRequireGitSSHSecretKnownHosts();
+        if (this$requireGitSSHSecretKnownHosts == null ? other$requireGitSSHSecretKnownHosts != null : !this$requireGitSSHSecretKnownHosts.equals(other$requireGitSSHSecretKnownHosts)) {
+            return false;
+        }
+        Object this$resultExtractionMethod = this.getResultExtractionMethod();
+        Object other$resultExtractionMethod = other.getResultExtractionMethod();
+        if (this$resultExtractionMethod == null ? other$resultExtractionMethod != null : !this$resultExtractionMethod.equals(other$resultExtractionMethod)) {
+            return false;
+        }
+        Object this$runningInEnvWithInjectedSidecars = this.getRunningInEnvWithInjectedSidecars();
+        Object other$runningInEnvWithInjectedSidecars = other.getRunningInEnvWithInjectedSidecars();
+        if (this$runningInEnvWithInjectedSidecars == null ? other$runningInEnvWithInjectedSidecars != null : !this$runningInEnvWithInjectedSidecars.equals(other$runningInEnvWithInjectedSidecars)) {
+            return false;
+        }
+        Object this$sendCloudEventsForRuns = this.getSendCloudEventsForRuns();
+        Object other$sendCloudEventsForRuns = other.getSendCloudEventsForRuns();
+        if (this$sendCloudEventsForRuns == null ? other$sendCloudEventsForRuns != null : !this$sendCloudEventsForRuns.equals(other$sendCloudEventsForRuns)) {
+            return false;
+        }
+        Object this$setSecurityContext = this.getSetSecurityContext();
+        Object other$setSecurityContext = other.getSetSecurityContext();
+        if (this$setSecurityContext == null ? other$setSecurityContext != null : !this$setSecurityContext.equals(other$setSecurityContext)) {
+            return false;
+        }
+        Object this$setSecurityContextReadOnlyRootFilesystem = this.getSetSecurityContextReadOnlyRootFilesystem();
+        Object other$setSecurityContextReadOnlyRootFilesystem = other.getSetSecurityContextReadOnlyRootFilesystem();
+        if (this$setSecurityContextReadOnlyRootFilesystem == null ? other$setSecurityContextReadOnlyRootFilesystem != null : !this$setSecurityContextReadOnlyRootFilesystem.equals(other$setSecurityContextReadOnlyRootFilesystem)) {
+            return false;
+        }
+        Object this$verificationNoMatchPolicy = this.getVerificationNoMatchPolicy();
+        Object other$verificationNoMatchPolicy = other.getVerificationNoMatchPolicy();
+        if (this$verificationNoMatchPolicy == null ? other$verificationNoMatchPolicy != null : !this$verificationNoMatchPolicy.equals(other$verificationNoMatchPolicy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof FeatureFlags;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $awaitSidecarReadiness = this.getAwaitSidecarReadiness();
+        result = result * prime + ($awaitSidecarReadiness == null ? 43 : $awaitSidecarReadiness.hashCode());
+        Object $coschedule = this.getCoschedule();
+        result = result * prime + ($coschedule == null ? 43 : $coschedule.hashCode());
+        Object $disableCredsInit = this.getDisableCredsInit();
+        result = result * prime + ($disableCredsInit == null ? 43 : $disableCredsInit.hashCode());
+        Object $disableInlineSpec = this.getDisableInlineSpec();
+        result = result * prime + ($disableInlineSpec == null ? 43 : $disableInlineSpec.hashCode());
+        Object $enableAPIFields = this.getEnableAPIFields();
+        result = result * prime + ($enableAPIFields == null ? 43 : $enableAPIFields.hashCode());
+        Object $enableArtifacts = this.getEnableArtifacts();
+        result = result * prime + ($enableArtifacts == null ? 43 : $enableArtifacts.hashCode());
+        Object $enableCELInWhenExpression = this.getEnableCELInWhenExpression();
+        result = result * prime + ($enableCELInWhenExpression == null ? 43 : $enableCELInWhenExpression.hashCode());
+        Object $enableConciseResolverSyntax = this.getEnableConciseResolverSyntax();
+        result = result * prime + ($enableConciseResolverSyntax == null ? 43 : $enableConciseResolverSyntax.hashCode());
+        Object $enableKeepPodOnCancel = this.getEnableKeepPodOnCancel();
+        result = result * prime + ($enableKeepPodOnCancel == null ? 43 : $enableKeepPodOnCancel.hashCode());
+        Object $enableKubernetesSidecar = this.getEnableKubernetesSidecar();
+        result = result * prime + ($enableKubernetesSidecar == null ? 43 : $enableKubernetesSidecar.hashCode());
+        Object $enableParamEnum = this.getEnableParamEnum();
+        result = result * prime + ($enableParamEnum == null ? 43 : $enableParamEnum.hashCode());
+        Object $enableProvenanceInStatus = this.getEnableProvenanceInStatus();
+        result = result * prime + ($enableProvenanceInStatus == null ? 43 : $enableProvenanceInStatus.hashCode());
+        Object $enableStepActions = this.getEnableStepActions();
+        result = result * prime + ($enableStepActions == null ? 43 : $enableStepActions.hashCode());
+        Object $enableTektonOCIBundles = this.getEnableTektonOCIBundles();
+        result = result * prime + ($enableTektonOCIBundles == null ? 43 : $enableTektonOCIBundles.hashCode());
+        Object $enableWaitExponentialBackoff = this.getEnableWaitExponentialBackoff();
+        result = result * prime + ($enableWaitExponentialBackoff == null ? 43 : $enableWaitExponentialBackoff.hashCode());
+        Object $enforceNonfalsifiability = this.getEnforceNonfalsifiability();
+        result = result * prime + ($enforceNonfalsifiability == null ? 43 : $enforceNonfalsifiability.hashCode());
+        Object $maxResultSize = this.getMaxResultSize();
+        result = result * prime + ($maxResultSize == null ? 43 : $maxResultSize.hashCode());
+        Object $requireGitSSHSecretKnownHosts = this.getRequireGitSSHSecretKnownHosts();
+        result = result * prime + ($requireGitSSHSecretKnownHosts == null ? 43 : $requireGitSSHSecretKnownHosts.hashCode());
+        Object $resultExtractionMethod = this.getResultExtractionMethod();
+        result = result * prime + ($resultExtractionMethod == null ? 43 : $resultExtractionMethod.hashCode());
+        Object $runningInEnvWithInjectedSidecars = this.getRunningInEnvWithInjectedSidecars();
+        result = result * prime + ($runningInEnvWithInjectedSidecars == null ? 43 : $runningInEnvWithInjectedSidecars.hashCode());
+        Object $sendCloudEventsForRuns = this.getSendCloudEventsForRuns();
+        result = result * prime + ($sendCloudEventsForRuns == null ? 43 : $sendCloudEventsForRuns.hashCode());
+        Object $setSecurityContext = this.getSetSecurityContext();
+        result = result * prime + ($setSecurityContext == null ? 43 : $setSecurityContext.hashCode());
+        Object $setSecurityContextReadOnlyRootFilesystem = this.getSetSecurityContextReadOnlyRootFilesystem();
+        result = result * prime + ($setSecurityContextReadOnlyRootFilesystem == null ? 43 : $setSecurityContextReadOnlyRootFilesystem.hashCode());
+        Object $verificationNoMatchPolicy = this.getVerificationNoMatchPolicy();
+        result = result * prime + ($verificationNoMatchPolicy == null ? 43 : $verificationNoMatchPolicy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "FeatureFlags(" + "awaitSidecarReadiness=" + this.getAwaitSidecarReadiness() + ", coschedule=" + this.getCoschedule() + ", disableCredsInit=" + this.getDisableCredsInit() + ", disableInlineSpec=" + this.getDisableInlineSpec() + ", enableAPIFields=" + this.getEnableAPIFields() + ", enableArtifacts=" + this.getEnableArtifacts() + ", enableCELInWhenExpression=" + this.getEnableCELInWhenExpression() + ", enableConciseResolverSyntax=" + this.getEnableConciseResolverSyntax() + ", enableKeepPodOnCancel=" + this.getEnableKeepPodOnCancel() + ", enableKubernetesSidecar=" + this.getEnableKubernetesSidecar() + ", enableParamEnum=" + this.getEnableParamEnum() + ", enableProvenanceInStatus=" + this.getEnableProvenanceInStatus() + ", enableStepActions=" + this.getEnableStepActions() + ", enableTektonOCIBundles=" + this.getEnableTektonOCIBundles() + ", enableWaitExponentialBackoff=" + this.getEnableWaitExponentialBackoff() + ", enforceNonfalsifiability=" + this.getEnforceNonfalsifiability() + ", maxResultSize=" + this.getMaxResultSize() + ", requireGitSSHSecretKnownHosts=" + this.getRequireGitSSHSecretKnownHosts() + ", resultExtractionMethod=" + this.getResultExtractionMethod() + ", runningInEnvWithInjectedSidecars=" + this.getRunningInEnvWithInjectedSidecars() + ", sendCloudEventsForRuns=" + this.getSendCloudEventsForRuns() + ", setSecurityContext=" + this.getSetSecurityContext() + ", setSecurityContextReadOnlyRootFilesystem=" + this.getSetSecurityContextReadOnlyRootFilesystem() + ", verificationNoMatchPolicy=" + this.getVerificationNoMatchPolicy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

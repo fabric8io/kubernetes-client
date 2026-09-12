@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DiskSettings describe ephemeral disk settings for the os disk.
@@ -38,12 +35,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "ephemeralStorageLocation"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -119,6 +110,50 @@ public class DiskSettings implements Editable<DiskSettingsBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DiskSettings)) {
+            return false;
+        }
+        DiskSettings other = (DiskSettings) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ephemeralStorageLocation = this.getEphemeralStorageLocation();
+        Object other$ephemeralStorageLocation = other.getEphemeralStorageLocation();
+        if (this$ephemeralStorageLocation == null ? other$ephemeralStorageLocation != null : !this$ephemeralStorageLocation.equals(other$ephemeralStorageLocation)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DiskSettings;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ephemeralStorageLocation = this.getEphemeralStorageLocation();
+        result = result * prime + ($ephemeralStorageLocation == null ? 43 : $ephemeralStorageLocation.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DiskSettings(" + "ephemeralStorageLocation=" + this.getEphemeralStorageLocation() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

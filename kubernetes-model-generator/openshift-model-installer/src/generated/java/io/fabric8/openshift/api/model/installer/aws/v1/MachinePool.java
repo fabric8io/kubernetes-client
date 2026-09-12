@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MachinePool stores the configuration for a machine pool installed on AWS.
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "rootVolume",
     "type",
     "zones"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -286,6 +277,106 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachinePool)) {
+            return false;
+        }
+        MachinePool other = (MachinePool) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$additionalSecurityGroupIDs = this.getAdditionalSecurityGroupIDs();
+        Object other$additionalSecurityGroupIDs = other.getAdditionalSecurityGroupIDs();
+        if (this$additionalSecurityGroupIDs == null ? other$additionalSecurityGroupIDs != null : !this$additionalSecurityGroupIDs.equals(other$additionalSecurityGroupIDs)) {
+            return false;
+        }
+        Object this$amiID = this.getAmiID();
+        Object other$amiID = other.getAmiID();
+        if (this$amiID == null ? other$amiID != null : !this$amiID.equals(other$amiID)) {
+            return false;
+        }
+        Object this$cpuOptions = this.getCpuOptions();
+        Object other$cpuOptions = other.getCpuOptions();
+        if (this$cpuOptions == null ? other$cpuOptions != null : !this$cpuOptions.equals(other$cpuOptions)) {
+            return false;
+        }
+        Object this$iamProfile = this.getIamProfile();
+        Object other$iamProfile = other.getIamProfile();
+        if (this$iamProfile == null ? other$iamProfile != null : !this$iamProfile.equals(other$iamProfile)) {
+            return false;
+        }
+        Object this$iamRole = this.getIamRole();
+        Object other$iamRole = other.getIamRole();
+        if (this$iamRole == null ? other$iamRole != null : !this$iamRole.equals(other$iamRole)) {
+            return false;
+        }
+        Object this$metadataService = this.getMetadataService();
+        Object other$metadataService = other.getMetadataService();
+        if (this$metadataService == null ? other$metadataService != null : !this$metadataService.equals(other$metadataService)) {
+            return false;
+        }
+        Object this$rootVolume = this.getRootVolume();
+        Object other$rootVolume = other.getRootVolume();
+        if (this$rootVolume == null ? other$rootVolume != null : !this$rootVolume.equals(other$rootVolume)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$zones = this.getZones();
+        Object other$zones = other.getZones();
+        if (this$zones == null ? other$zones != null : !this$zones.equals(other$zones)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachinePool;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $additionalSecurityGroupIDs = this.getAdditionalSecurityGroupIDs();
+        result = result * prime + ($additionalSecurityGroupIDs == null ? 43 : $additionalSecurityGroupIDs.hashCode());
+        Object $amiID = this.getAmiID();
+        result = result * prime + ($amiID == null ? 43 : $amiID.hashCode());
+        Object $cpuOptions = this.getCpuOptions();
+        result = result * prime + ($cpuOptions == null ? 43 : $cpuOptions.hashCode());
+        Object $iamProfile = this.getIamProfile();
+        result = result * prime + ($iamProfile == null ? 43 : $iamProfile.hashCode());
+        Object $iamRole = this.getIamRole();
+        result = result * prime + ($iamRole == null ? 43 : $iamRole.hashCode());
+        Object $metadataService = this.getMetadataService();
+        result = result * prime + ($metadataService == null ? 43 : $metadataService.hashCode());
+        Object $rootVolume = this.getRootVolume();
+        result = result * prime + ($rootVolume == null ? 43 : $rootVolume.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $zones = this.getZones();
+        result = result * prime + ($zones == null ? 43 : $zones.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachinePool(" + "additionalSecurityGroupIDs=" + this.getAdditionalSecurityGroupIDs() + ", amiID=" + this.getAmiID() + ", cpuOptions=" + this.getCpuOptions() + ", iamProfile=" + this.getIamProfile() + ", iamRole=" + this.getIamRole() + ", metadataService=" + this.getMetadataService() + ", rootVolume=" + this.getRootVolume() + ", type=" + this.getType() + ", zones=" + this.getZones() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

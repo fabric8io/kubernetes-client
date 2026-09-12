@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImagePrunerSpec defines the specs for the running image pruner.
@@ -55,12 +52,6 @@ import lombok.experimental.Accessors;
     "successfulJobsHistoryLimit",
     "suspend",
     "tolerations"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -368,6 +359,134 @@ public class ImagePrunerSpec implements Editable<ImagePrunerSpecBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImagePrunerSpec)) {
+            return false;
+        }
+        ImagePrunerSpec other = (ImagePrunerSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$affinity = this.getAffinity();
+        Object other$affinity = other.getAffinity();
+        if (this$affinity == null ? other$affinity != null : !this$affinity.equals(other$affinity)) {
+            return false;
+        }
+        Object this$failedJobsHistoryLimit = this.getFailedJobsHistoryLimit();
+        Object other$failedJobsHistoryLimit = other.getFailedJobsHistoryLimit();
+        if (this$failedJobsHistoryLimit == null ? other$failedJobsHistoryLimit != null : !this$failedJobsHistoryLimit.equals(other$failedJobsHistoryLimit)) {
+            return false;
+        }
+        Object this$ignoreInvalidImageReferences = this.getIgnoreInvalidImageReferences();
+        Object other$ignoreInvalidImageReferences = other.getIgnoreInvalidImageReferences();
+        if (this$ignoreInvalidImageReferences == null ? other$ignoreInvalidImageReferences != null : !this$ignoreInvalidImageReferences.equals(other$ignoreInvalidImageReferences)) {
+            return false;
+        }
+        Object this$keepTagRevisions = this.getKeepTagRevisions();
+        Object other$keepTagRevisions = other.getKeepTagRevisions();
+        if (this$keepTagRevisions == null ? other$keepTagRevisions != null : !this$keepTagRevisions.equals(other$keepTagRevisions)) {
+            return false;
+        }
+        Object this$keepYoungerThan = this.getKeepYoungerThan();
+        Object other$keepYoungerThan = other.getKeepYoungerThan();
+        if (this$keepYoungerThan == null ? other$keepYoungerThan != null : !this$keepYoungerThan.equals(other$keepYoungerThan)) {
+            return false;
+        }
+        Object this$keepYoungerThanDuration = this.getKeepYoungerThanDuration();
+        Object other$keepYoungerThanDuration = other.getKeepYoungerThanDuration();
+        if (this$keepYoungerThanDuration == null ? other$keepYoungerThanDuration != null : !this$keepYoungerThanDuration.equals(other$keepYoungerThanDuration)) {
+            return false;
+        }
+        Object this$logLevel = this.getLogLevel();
+        Object other$logLevel = other.getLogLevel();
+        if (this$logLevel == null ? other$logLevel != null : !this$logLevel.equals(other$logLevel)) {
+            return false;
+        }
+        Object this$nodeSelector = this.getNodeSelector();
+        Object other$nodeSelector = other.getNodeSelector();
+        if (this$nodeSelector == null ? other$nodeSelector != null : !this$nodeSelector.equals(other$nodeSelector)) {
+            return false;
+        }
+        Object this$resources = this.getResources();
+        Object other$resources = other.getResources();
+        if (this$resources == null ? other$resources != null : !this$resources.equals(other$resources)) {
+            return false;
+        }
+        Object this$schedule = this.getSchedule();
+        Object other$schedule = other.getSchedule();
+        if (this$schedule == null ? other$schedule != null : !this$schedule.equals(other$schedule)) {
+            return false;
+        }
+        Object this$successfulJobsHistoryLimit = this.getSuccessfulJobsHistoryLimit();
+        Object other$successfulJobsHistoryLimit = other.getSuccessfulJobsHistoryLimit();
+        if (this$successfulJobsHistoryLimit == null ? other$successfulJobsHistoryLimit != null : !this$successfulJobsHistoryLimit.equals(other$successfulJobsHistoryLimit)) {
+            return false;
+        }
+        Object this$suspend = this.getSuspend();
+        Object other$suspend = other.getSuspend();
+        if (this$suspend == null ? other$suspend != null : !this$suspend.equals(other$suspend)) {
+            return false;
+        }
+        Object this$tolerations = this.getTolerations();
+        Object other$tolerations = other.getTolerations();
+        if (this$tolerations == null ? other$tolerations != null : !this$tolerations.equals(other$tolerations)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImagePrunerSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $affinity = this.getAffinity();
+        result = result * prime + ($affinity == null ? 43 : $affinity.hashCode());
+        Object $failedJobsHistoryLimit = this.getFailedJobsHistoryLimit();
+        result = result * prime + ($failedJobsHistoryLimit == null ? 43 : $failedJobsHistoryLimit.hashCode());
+        Object $ignoreInvalidImageReferences = this.getIgnoreInvalidImageReferences();
+        result = result * prime + ($ignoreInvalidImageReferences == null ? 43 : $ignoreInvalidImageReferences.hashCode());
+        Object $keepTagRevisions = this.getKeepTagRevisions();
+        result = result * prime + ($keepTagRevisions == null ? 43 : $keepTagRevisions.hashCode());
+        Object $keepYoungerThan = this.getKeepYoungerThan();
+        result = result * prime + ($keepYoungerThan == null ? 43 : $keepYoungerThan.hashCode());
+        Object $keepYoungerThanDuration = this.getKeepYoungerThanDuration();
+        result = result * prime + ($keepYoungerThanDuration == null ? 43 : $keepYoungerThanDuration.hashCode());
+        Object $logLevel = this.getLogLevel();
+        result = result * prime + ($logLevel == null ? 43 : $logLevel.hashCode());
+        Object $nodeSelector = this.getNodeSelector();
+        result = result * prime + ($nodeSelector == null ? 43 : $nodeSelector.hashCode());
+        Object $resources = this.getResources();
+        result = result * prime + ($resources == null ? 43 : $resources.hashCode());
+        Object $schedule = this.getSchedule();
+        result = result * prime + ($schedule == null ? 43 : $schedule.hashCode());
+        Object $successfulJobsHistoryLimit = this.getSuccessfulJobsHistoryLimit();
+        result = result * prime + ($successfulJobsHistoryLimit == null ? 43 : $successfulJobsHistoryLimit.hashCode());
+        Object $suspend = this.getSuspend();
+        result = result * prime + ($suspend == null ? 43 : $suspend.hashCode());
+        Object $tolerations = this.getTolerations();
+        result = result * prime + ($tolerations == null ? 43 : $tolerations.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImagePrunerSpec(" + "affinity=" + this.getAffinity() + ", failedJobsHistoryLimit=" + this.getFailedJobsHistoryLimit() + ", ignoreInvalidImageReferences=" + this.getIgnoreInvalidImageReferences() + ", keepTagRevisions=" + this.getKeepTagRevisions() + ", keepYoungerThan=" + this.getKeepYoungerThan() + ", keepYoungerThanDuration=" + this.getKeepYoungerThanDuration() + ", logLevel=" + this.getLogLevel() + ", nodeSelector=" + this.getNodeSelector() + ", resources=" + this.getResources() + ", schedule=" + this.getSchedule() + ", successfulJobsHistoryLimit=" + this.getSuccessfulJobsHistoryLimit() + ", suspend=" + this.getSuspend() + ", tolerations=" + this.getTolerations() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

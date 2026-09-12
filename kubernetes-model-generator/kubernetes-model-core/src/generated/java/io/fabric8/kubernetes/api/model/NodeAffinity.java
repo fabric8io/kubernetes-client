@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Node affinity is a group of node affinity scheduling rules.
@@ -27,12 +24,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "preferredDuringSchedulingIgnoredDuringExecution",
     "requiredDuringSchedulingIgnoredDuringExecution"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -115,6 +106,57 @@ public class NodeAffinity implements Editable<NodeAffinityBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NodeAffinity)) {
+            return false;
+        }
+        NodeAffinity other = (NodeAffinity) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$preferredDuringSchedulingIgnoredDuringExecution = this.getPreferredDuringSchedulingIgnoredDuringExecution();
+        Object other$preferredDuringSchedulingIgnoredDuringExecution = other.getPreferredDuringSchedulingIgnoredDuringExecution();
+        if (this$preferredDuringSchedulingIgnoredDuringExecution == null ? other$preferredDuringSchedulingIgnoredDuringExecution != null : !this$preferredDuringSchedulingIgnoredDuringExecution.equals(other$preferredDuringSchedulingIgnoredDuringExecution)) {
+            return false;
+        }
+        Object this$requiredDuringSchedulingIgnoredDuringExecution = this.getRequiredDuringSchedulingIgnoredDuringExecution();
+        Object other$requiredDuringSchedulingIgnoredDuringExecution = other.getRequiredDuringSchedulingIgnoredDuringExecution();
+        if (this$requiredDuringSchedulingIgnoredDuringExecution == null ? other$requiredDuringSchedulingIgnoredDuringExecution != null : !this$requiredDuringSchedulingIgnoredDuringExecution.equals(other$requiredDuringSchedulingIgnoredDuringExecution)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NodeAffinity;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $preferredDuringSchedulingIgnoredDuringExecution = this.getPreferredDuringSchedulingIgnoredDuringExecution();
+        result = result * prime + ($preferredDuringSchedulingIgnoredDuringExecution == null ? 43 : $preferredDuringSchedulingIgnoredDuringExecution.hashCode());
+        Object $requiredDuringSchedulingIgnoredDuringExecution = this.getRequiredDuringSchedulingIgnoredDuringExecution();
+        result = result * prime + ($requiredDuringSchedulingIgnoredDuringExecution == null ? 43 : $requiredDuringSchedulingIgnoredDuringExecution.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NodeAffinity(" + "preferredDuringSchedulingIgnoredDuringExecution=" + this.getPreferredDuringSchedulingIgnoredDuringExecution() + ", requiredDuringSchedulingIgnoredDuringExecution=" + this.getRequiredDuringSchedulingIgnoredDuringExecution() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

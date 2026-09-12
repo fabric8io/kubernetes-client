@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * EtcdConnectionInfo holds information necessary for connecting to an etcd server
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "certFile",
     "keyFile",
     "urls"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -183,6 +174,71 @@ public class EtcdConnectionInfo implements Editable<EtcdConnectionInfoBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EtcdConnectionInfo)) {
+            return false;
+        }
+        EtcdConnectionInfo other = (EtcdConnectionInfo) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ca = this.getCa();
+        Object other$ca = other.getCa();
+        if (this$ca == null ? other$ca != null : !this$ca.equals(other$ca)) {
+            return false;
+        }
+        Object this$certFile = this.getCertFile();
+        Object other$certFile = other.getCertFile();
+        if (this$certFile == null ? other$certFile != null : !this$certFile.equals(other$certFile)) {
+            return false;
+        }
+        Object this$keyFile = this.getKeyFile();
+        Object other$keyFile = other.getKeyFile();
+        if (this$keyFile == null ? other$keyFile != null : !this$keyFile.equals(other$keyFile)) {
+            return false;
+        }
+        Object this$urls = this.getUrls();
+        Object other$urls = other.getUrls();
+        if (this$urls == null ? other$urls != null : !this$urls.equals(other$urls)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EtcdConnectionInfo;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ca = this.getCa();
+        result = result * prime + ($ca == null ? 43 : $ca.hashCode());
+        Object $certFile = this.getCertFile();
+        result = result * prime + ($certFile == null ? 43 : $certFile.hashCode());
+        Object $keyFile = this.getKeyFile();
+        result = result * prime + ($keyFile == null ? 43 : $keyFile.hashCode());
+        Object $urls = this.getUrls();
+        result = result * prime + ($urls == null ? 43 : $urls.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EtcdConnectionInfo(" + "ca=" + this.getCa() + ", certFile=" + this.getCertFile() + ", keyFile=" + this.getKeyFile() + ", urls=" + this.getUrls() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

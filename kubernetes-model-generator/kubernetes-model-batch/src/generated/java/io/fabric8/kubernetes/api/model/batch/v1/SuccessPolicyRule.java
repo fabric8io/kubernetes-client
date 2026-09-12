@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SuccessPolicyRule describes rule for declaring a Job as succeeded. Each rule must have at least one of the "succeededIndexes" or "succeededCount" specified.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "succeededCount",
     "succeededIndexes"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class SuccessPolicyRule implements Editable<SuccessPolicyRuleBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SuccessPolicyRule)) {
+            return false;
+        }
+        SuccessPolicyRule other = (SuccessPolicyRule) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$succeededCount = this.getSucceededCount();
+        Object other$succeededCount = other.getSucceededCount();
+        if (this$succeededCount == null ? other$succeededCount != null : !this$succeededCount.equals(other$succeededCount)) {
+            return false;
+        }
+        Object this$succeededIndexes = this.getSucceededIndexes();
+        Object other$succeededIndexes = other.getSucceededIndexes();
+        if (this$succeededIndexes == null ? other$succeededIndexes != null : !this$succeededIndexes.equals(other$succeededIndexes)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SuccessPolicyRule;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $succeededCount = this.getSucceededCount();
+        result = result * prime + ($succeededCount == null ? 43 : $succeededCount.hashCode());
+        Object $succeededIndexes = this.getSucceededIndexes();
+        result = result * prime + ($succeededIndexes == null ? 43 : $succeededIndexes.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SuccessPolicyRule(" + "succeededCount=" + this.getSucceededCount() + ", succeededIndexes=" + this.getSucceededIndexes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

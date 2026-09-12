@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CustomBuildStrategy defines input parameters specific to Custom build.
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "from",
     "pullSecret",
     "secrets"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -246,6 +237,92 @@ public class CustomBuildStrategy implements Editable<CustomBuildStrategyBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CustomBuildStrategy)) {
+            return false;
+        }
+        CustomBuildStrategy other = (CustomBuildStrategy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$buildAPIVersion = this.getBuildAPIVersion();
+        Object other$buildAPIVersion = other.getBuildAPIVersion();
+        if (this$buildAPIVersion == null ? other$buildAPIVersion != null : !this$buildAPIVersion.equals(other$buildAPIVersion)) {
+            return false;
+        }
+        Object this$env = this.getEnv();
+        Object other$env = other.getEnv();
+        if (this$env == null ? other$env != null : !this$env.equals(other$env)) {
+            return false;
+        }
+        Object this$exposeDockerSocket = this.getExposeDockerSocket();
+        Object other$exposeDockerSocket = other.getExposeDockerSocket();
+        if (this$exposeDockerSocket == null ? other$exposeDockerSocket != null : !this$exposeDockerSocket.equals(other$exposeDockerSocket)) {
+            return false;
+        }
+        Object this$forcePull = this.getForcePull();
+        Object other$forcePull = other.getForcePull();
+        if (this$forcePull == null ? other$forcePull != null : !this$forcePull.equals(other$forcePull)) {
+            return false;
+        }
+        Object this$from = this.getFrom();
+        Object other$from = other.getFrom();
+        if (this$from == null ? other$from != null : !this$from.equals(other$from)) {
+            return false;
+        }
+        Object this$pullSecret = this.getPullSecret();
+        Object other$pullSecret = other.getPullSecret();
+        if (this$pullSecret == null ? other$pullSecret != null : !this$pullSecret.equals(other$pullSecret)) {
+            return false;
+        }
+        Object this$secrets = this.getSecrets();
+        Object other$secrets = other.getSecrets();
+        if (this$secrets == null ? other$secrets != null : !this$secrets.equals(other$secrets)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CustomBuildStrategy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $buildAPIVersion = this.getBuildAPIVersion();
+        result = result * prime + ($buildAPIVersion == null ? 43 : $buildAPIVersion.hashCode());
+        Object $env = this.getEnv();
+        result = result * prime + ($env == null ? 43 : $env.hashCode());
+        Object $exposeDockerSocket = this.getExposeDockerSocket();
+        result = result * prime + ($exposeDockerSocket == null ? 43 : $exposeDockerSocket.hashCode());
+        Object $forcePull = this.getForcePull();
+        result = result * prime + ($forcePull == null ? 43 : $forcePull.hashCode());
+        Object $from = this.getFrom();
+        result = result * prime + ($from == null ? 43 : $from.hashCode());
+        Object $pullSecret = this.getPullSecret();
+        result = result * prime + ($pullSecret == null ? 43 : $pullSecret.hashCode());
+        Object $secrets = this.getSecrets();
+        result = result * prime + ($secrets == null ? 43 : $secrets.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CustomBuildStrategy(" + "buildAPIVersion=" + this.getBuildAPIVersion() + ", env=" + this.getEnv() + ", exposeDockerSocket=" + this.getExposeDockerSocket() + ", forcePull=" + this.getForcePull() + ", from=" + this.getFrom() + ", pullSecret=" + this.getPullSecret() + ", secrets=" + this.getSecrets() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

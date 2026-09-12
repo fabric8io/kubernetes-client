@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OpenIDIdentityProvider provides identities for users authenticating using OpenID credentials
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "extraAuthorizeParameters",
     "extraScopes",
     "issuer"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -245,6 +236,92 @@ public class OpenIDIdentityProvider implements Editable<OpenIDIdentityProviderBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OpenIDIdentityProvider)) {
+            return false;
+        }
+        OpenIDIdentityProvider other = (OpenIDIdentityProvider) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ca = this.getCa();
+        Object other$ca = other.getCa();
+        if (this$ca == null ? other$ca != null : !this$ca.equals(other$ca)) {
+            return false;
+        }
+        Object this$claims = this.getClaims();
+        Object other$claims = other.getClaims();
+        if (this$claims == null ? other$claims != null : !this$claims.equals(other$claims)) {
+            return false;
+        }
+        Object this$clientID = this.getClientID();
+        Object other$clientID = other.getClientID();
+        if (this$clientID == null ? other$clientID != null : !this$clientID.equals(other$clientID)) {
+            return false;
+        }
+        Object this$clientSecret = this.getClientSecret();
+        Object other$clientSecret = other.getClientSecret();
+        if (this$clientSecret == null ? other$clientSecret != null : !this$clientSecret.equals(other$clientSecret)) {
+            return false;
+        }
+        Object this$extraAuthorizeParameters = this.getExtraAuthorizeParameters();
+        Object other$extraAuthorizeParameters = other.getExtraAuthorizeParameters();
+        if (this$extraAuthorizeParameters == null ? other$extraAuthorizeParameters != null : !this$extraAuthorizeParameters.equals(other$extraAuthorizeParameters)) {
+            return false;
+        }
+        Object this$extraScopes = this.getExtraScopes();
+        Object other$extraScopes = other.getExtraScopes();
+        if (this$extraScopes == null ? other$extraScopes != null : !this$extraScopes.equals(other$extraScopes)) {
+            return false;
+        }
+        Object this$issuer = this.getIssuer();
+        Object other$issuer = other.getIssuer();
+        if (this$issuer == null ? other$issuer != null : !this$issuer.equals(other$issuer)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OpenIDIdentityProvider;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ca = this.getCa();
+        result = result * prime + ($ca == null ? 43 : $ca.hashCode());
+        Object $claims = this.getClaims();
+        result = result * prime + ($claims == null ? 43 : $claims.hashCode());
+        Object $clientID = this.getClientID();
+        result = result * prime + ($clientID == null ? 43 : $clientID.hashCode());
+        Object $clientSecret = this.getClientSecret();
+        result = result * prime + ($clientSecret == null ? 43 : $clientSecret.hashCode());
+        Object $extraAuthorizeParameters = this.getExtraAuthorizeParameters();
+        result = result * prime + ($extraAuthorizeParameters == null ? 43 : $extraAuthorizeParameters.hashCode());
+        Object $extraScopes = this.getExtraScopes();
+        result = result * prime + ($extraScopes == null ? 43 : $extraScopes.hashCode());
+        Object $issuer = this.getIssuer();
+        result = result * prime + ($issuer == null ? 43 : $issuer.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OpenIDIdentityProvider(" + "ca=" + this.getCa() + ", claims=" + this.getClaims() + ", clientID=" + this.getClientID() + ", clientSecret=" + this.getClientSecret() + ", extraAuthorizeParameters=" + this.getExtraAuthorizeParameters() + ", extraScopes=" + this.getExtraScopes() + ", issuer=" + this.getIssuer() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

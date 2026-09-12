@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "operatorLogLevel",
     "succeededRevisionLimit",
     "unsupportedConfigOverrides"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -291,6 +282,120 @@ public class MachineConfigurationSpec implements Editable<MachineConfigurationSp
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachineConfigurationSpec)) {
+            return false;
+        }
+        MachineConfigurationSpec other = (MachineConfigurationSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$failedRevisionLimit = this.getFailedRevisionLimit();
+        Object other$failedRevisionLimit = other.getFailedRevisionLimit();
+        if (this$failedRevisionLimit == null ? other$failedRevisionLimit != null : !this$failedRevisionLimit.equals(other$failedRevisionLimit)) {
+            return false;
+        }
+        Object this$forceRedeploymentReason = this.getForceRedeploymentReason();
+        Object other$forceRedeploymentReason = other.getForceRedeploymentReason();
+        if (this$forceRedeploymentReason == null ? other$forceRedeploymentReason != null : !this$forceRedeploymentReason.equals(other$forceRedeploymentReason)) {
+            return false;
+        }
+        Object this$irreconcilableValidationOverrides = this.getIrreconcilableValidationOverrides();
+        Object other$irreconcilableValidationOverrides = other.getIrreconcilableValidationOverrides();
+        if (this$irreconcilableValidationOverrides == null ? other$irreconcilableValidationOverrides != null : !this$irreconcilableValidationOverrides.equals(other$irreconcilableValidationOverrides)) {
+            return false;
+        }
+        Object this$logLevel = this.getLogLevel();
+        Object other$logLevel = other.getLogLevel();
+        if (this$logLevel == null ? other$logLevel != null : !this$logLevel.equals(other$logLevel)) {
+            return false;
+        }
+        Object this$managedBootImages = this.getManagedBootImages();
+        Object other$managedBootImages = other.getManagedBootImages();
+        if (this$managedBootImages == null ? other$managedBootImages != null : !this$managedBootImages.equals(other$managedBootImages)) {
+            return false;
+        }
+        Object this$managementState = this.getManagementState();
+        Object other$managementState = other.getManagementState();
+        if (this$managementState == null ? other$managementState != null : !this$managementState.equals(other$managementState)) {
+            return false;
+        }
+        Object this$nodeDisruptionPolicy = this.getNodeDisruptionPolicy();
+        Object other$nodeDisruptionPolicy = other.getNodeDisruptionPolicy();
+        if (this$nodeDisruptionPolicy == null ? other$nodeDisruptionPolicy != null : !this$nodeDisruptionPolicy.equals(other$nodeDisruptionPolicy)) {
+            return false;
+        }
+        Object this$observedConfig = this.getObservedConfig();
+        Object other$observedConfig = other.getObservedConfig();
+        if (this$observedConfig == null ? other$observedConfig != null : !this$observedConfig.equals(other$observedConfig)) {
+            return false;
+        }
+        Object this$operatorLogLevel = this.getOperatorLogLevel();
+        Object other$operatorLogLevel = other.getOperatorLogLevel();
+        if (this$operatorLogLevel == null ? other$operatorLogLevel != null : !this$operatorLogLevel.equals(other$operatorLogLevel)) {
+            return false;
+        }
+        Object this$succeededRevisionLimit = this.getSucceededRevisionLimit();
+        Object other$succeededRevisionLimit = other.getSucceededRevisionLimit();
+        if (this$succeededRevisionLimit == null ? other$succeededRevisionLimit != null : !this$succeededRevisionLimit.equals(other$succeededRevisionLimit)) {
+            return false;
+        }
+        Object this$unsupportedConfigOverrides = this.getUnsupportedConfigOverrides();
+        Object other$unsupportedConfigOverrides = other.getUnsupportedConfigOverrides();
+        if (this$unsupportedConfigOverrides == null ? other$unsupportedConfigOverrides != null : !this$unsupportedConfigOverrides.equals(other$unsupportedConfigOverrides)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachineConfigurationSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $failedRevisionLimit = this.getFailedRevisionLimit();
+        result = result * prime + ($failedRevisionLimit == null ? 43 : $failedRevisionLimit.hashCode());
+        Object $forceRedeploymentReason = this.getForceRedeploymentReason();
+        result = result * prime + ($forceRedeploymentReason == null ? 43 : $forceRedeploymentReason.hashCode());
+        Object $irreconcilableValidationOverrides = this.getIrreconcilableValidationOverrides();
+        result = result * prime + ($irreconcilableValidationOverrides == null ? 43 : $irreconcilableValidationOverrides.hashCode());
+        Object $logLevel = this.getLogLevel();
+        result = result * prime + ($logLevel == null ? 43 : $logLevel.hashCode());
+        Object $managedBootImages = this.getManagedBootImages();
+        result = result * prime + ($managedBootImages == null ? 43 : $managedBootImages.hashCode());
+        Object $managementState = this.getManagementState();
+        result = result * prime + ($managementState == null ? 43 : $managementState.hashCode());
+        Object $nodeDisruptionPolicy = this.getNodeDisruptionPolicy();
+        result = result * prime + ($nodeDisruptionPolicy == null ? 43 : $nodeDisruptionPolicy.hashCode());
+        Object $observedConfig = this.getObservedConfig();
+        result = result * prime + ($observedConfig == null ? 43 : $observedConfig.hashCode());
+        Object $operatorLogLevel = this.getOperatorLogLevel();
+        result = result * prime + ($operatorLogLevel == null ? 43 : $operatorLogLevel.hashCode());
+        Object $succeededRevisionLimit = this.getSucceededRevisionLimit();
+        result = result * prime + ($succeededRevisionLimit == null ? 43 : $succeededRevisionLimit.hashCode());
+        Object $unsupportedConfigOverrides = this.getUnsupportedConfigOverrides();
+        result = result * prime + ($unsupportedConfigOverrides == null ? 43 : $unsupportedConfigOverrides.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachineConfigurationSpec(" + "failedRevisionLimit=" + this.getFailedRevisionLimit() + ", forceRedeploymentReason=" + this.getForceRedeploymentReason() + ", irreconcilableValidationOverrides=" + this.getIrreconcilableValidationOverrides() + ", logLevel=" + this.getLogLevel() + ", managedBootImages=" + this.getManagedBootImages() + ", managementState=" + this.getManagementState() + ", nodeDisruptionPolicy=" + this.getNodeDisruptionPolicy() + ", observedConfig=" + this.getObservedConfig() + ", operatorLogLevel=" + this.getOperatorLogLevel() + ", succeededRevisionLimit=" + this.getSucceededRevisionLimit() + ", unsupportedConfigOverrides=" + this.getUnsupportedConfigOverrides() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

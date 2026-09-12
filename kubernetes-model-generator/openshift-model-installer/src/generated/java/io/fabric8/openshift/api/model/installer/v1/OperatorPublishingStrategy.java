@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OperatorPublishingStrategy is used to control the visibility of the components which can be used to have a mix of public and private resources.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "apiserver",
     "ingress"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class OperatorPublishingStrategy implements Editable<OperatorPublishingSt
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OperatorPublishingStrategy)) {
+            return false;
+        }
+        OperatorPublishingStrategy other = (OperatorPublishingStrategy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiserver = this.getApiserver();
+        Object other$apiserver = other.getApiserver();
+        if (this$apiserver == null ? other$apiserver != null : !this$apiserver.equals(other$apiserver)) {
+            return false;
+        }
+        Object this$ingress = this.getIngress();
+        Object other$ingress = other.getIngress();
+        if (this$ingress == null ? other$ingress != null : !this$ingress.equals(other$ingress)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OperatorPublishingStrategy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiserver = this.getApiserver();
+        result = result * prime + ($apiserver == null ? 43 : $apiserver.hashCode());
+        Object $ingress = this.getIngress();
+        result = result * prime + ($ingress == null ? 43 : $ingress.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OperatorPublishingStrategy(" + "apiserver=" + this.getApiserver() + ", ingress=" + this.getIngress() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

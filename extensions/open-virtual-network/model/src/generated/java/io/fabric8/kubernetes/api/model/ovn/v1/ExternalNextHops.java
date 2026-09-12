@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ExternalNextHops contains slices of StaticHops and DynamicHops structures. Minimum is one StaticHop or one DynamicHop.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "dynamic",
     "static"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -146,6 +137,57 @@ public class ExternalNextHops implements Editable<ExternalNextHopsBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ExternalNextHops)) {
+            return false;
+        }
+        ExternalNextHops other = (ExternalNextHops) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$dynamic = this.getDynamic();
+        Object other$dynamic = other.getDynamic();
+        if (this$dynamic == null ? other$dynamic != null : !this$dynamic.equals(other$dynamic)) {
+            return false;
+        }
+        Object this$_static = this.getStatic();
+        Object other$_static = other.getStatic();
+        if (this$_static == null ? other$_static != null : !this$_static.equals(other$_static)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ExternalNextHops;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $dynamic = this.getDynamic();
+        result = result * prime + ($dynamic == null ? 43 : $dynamic.hashCode());
+        Object $_static = this.getStatic();
+        result = result * prime + ($_static == null ? 43 : $_static.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ExternalNextHops(" + "dynamic=" + this.getDynamic() + ", _static=" + this.getStatic() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

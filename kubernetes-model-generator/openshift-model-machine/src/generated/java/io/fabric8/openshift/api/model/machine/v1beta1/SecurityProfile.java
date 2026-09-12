@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SecurityProfile specifies the Security profile settings for a virtual machine or virtual machine scale set.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "encryptionAtHost",
     "settings"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -139,6 +130,57 @@ public class SecurityProfile implements Editable<SecurityProfileBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SecurityProfile)) {
+            return false;
+        }
+        SecurityProfile other = (SecurityProfile) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$encryptionAtHost = this.getEncryptionAtHost();
+        Object other$encryptionAtHost = other.getEncryptionAtHost();
+        if (this$encryptionAtHost == null ? other$encryptionAtHost != null : !this$encryptionAtHost.equals(other$encryptionAtHost)) {
+            return false;
+        }
+        Object this$settings = this.getSettings();
+        Object other$settings = other.getSettings();
+        if (this$settings == null ? other$settings != null : !this$settings.equals(other$settings)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SecurityProfile;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $encryptionAtHost = this.getEncryptionAtHost();
+        result = result * prime + ($encryptionAtHost == null ? 43 : $encryptionAtHost.hashCode());
+        Object $settings = this.getSettings();
+        result = result * prime + ($settings == null ? 43 : $settings.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SecurityProfile(" + "encryptionAtHost=" + this.getEncryptionAtHost() + ", settings=" + this.getSettings() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

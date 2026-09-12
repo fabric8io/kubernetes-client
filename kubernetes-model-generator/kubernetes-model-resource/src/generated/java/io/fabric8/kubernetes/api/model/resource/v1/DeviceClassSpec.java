@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DeviceClassSpec is used in a [DeviceClass] to define what can be allocated and how to configure it.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "config",
     "extendedResourceName",
     "selectors"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -166,6 +157,64 @@ public class DeviceClassSpec implements Editable<DeviceClassSpecBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DeviceClassSpec)) {
+            return false;
+        }
+        DeviceClassSpec other = (DeviceClassSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$config = this.getConfig();
+        Object other$config = other.getConfig();
+        if (this$config == null ? other$config != null : !this$config.equals(other$config)) {
+            return false;
+        }
+        Object this$extendedResourceName = this.getExtendedResourceName();
+        Object other$extendedResourceName = other.getExtendedResourceName();
+        if (this$extendedResourceName == null ? other$extendedResourceName != null : !this$extendedResourceName.equals(other$extendedResourceName)) {
+            return false;
+        }
+        Object this$selectors = this.getSelectors();
+        Object other$selectors = other.getSelectors();
+        if (this$selectors == null ? other$selectors != null : !this$selectors.equals(other$selectors)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DeviceClassSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $config = this.getConfig();
+        result = result * prime + ($config == null ? 43 : $config.hashCode());
+        Object $extendedResourceName = this.getExtendedResourceName();
+        result = result * prime + ($extendedResourceName == null ? 43 : $extendedResourceName.hashCode());
+        Object $selectors = this.getSelectors();
+        result = result * prime + ($selectors == null ? 43 : $selectors.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DeviceClassSpec(" + "config=" + this.getConfig() + ", extendedResourceName=" + this.getExtendedResourceName() + ", selectors=" + this.getSelectors() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

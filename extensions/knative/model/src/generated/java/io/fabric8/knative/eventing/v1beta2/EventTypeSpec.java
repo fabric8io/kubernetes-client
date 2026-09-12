@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "schemaData",
     "source",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -220,6 +211,92 @@ public class EventTypeSpec implements Editable<EventTypeSpecBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EventTypeSpec)) {
+            return false;
+        }
+        EventTypeSpec other = (EventTypeSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$broker = this.getBroker();
+        Object other$broker = other.getBroker();
+        if (this$broker == null ? other$broker != null : !this$broker.equals(other$broker)) {
+            return false;
+        }
+        Object this$description = this.getDescription();
+        Object other$description = other.getDescription();
+        if (this$description == null ? other$description != null : !this$description.equals(other$description)) {
+            return false;
+        }
+        Object this$reference = this.getReference();
+        Object other$reference = other.getReference();
+        if (this$reference == null ? other$reference != null : !this$reference.equals(other$reference)) {
+            return false;
+        }
+        Object this$schema = this.getSchema();
+        Object other$schema = other.getSchema();
+        if (this$schema == null ? other$schema != null : !this$schema.equals(other$schema)) {
+            return false;
+        }
+        Object this$schemaData = this.getSchemaData();
+        Object other$schemaData = other.getSchemaData();
+        if (this$schemaData == null ? other$schemaData != null : !this$schemaData.equals(other$schemaData)) {
+            return false;
+        }
+        Object this$source = this.getSource();
+        Object other$source = other.getSource();
+        if (this$source == null ? other$source != null : !this$source.equals(other$source)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EventTypeSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $broker = this.getBroker();
+        result = result * prime + ($broker == null ? 43 : $broker.hashCode());
+        Object $description = this.getDescription();
+        result = result * prime + ($description == null ? 43 : $description.hashCode());
+        Object $reference = this.getReference();
+        result = result * prime + ($reference == null ? 43 : $reference.hashCode());
+        Object $schema = this.getSchema();
+        result = result * prime + ($schema == null ? 43 : $schema.hashCode());
+        Object $schemaData = this.getSchemaData();
+        result = result * prime + ($schemaData == null ? 43 : $schemaData.hashCode());
+        Object $source = this.getSource();
+        result = result * prime + ($source == null ? 43 : $source.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EventTypeSpec(" + "broker=" + this.getBroker() + ", description=" + this.getDescription() + ", reference=" + this.getReference() + ", schema=" + this.getSchema() + ", schemaData=" + this.getSchemaData() + ", source=" + this.getSource() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

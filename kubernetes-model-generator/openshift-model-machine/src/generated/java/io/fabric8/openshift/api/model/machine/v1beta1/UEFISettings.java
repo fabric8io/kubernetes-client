@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * UEFISettings specifies the security settings like secure boot and vTPM used while creating the virtual machine.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "secureBoot",
     "virtualizedTrustedPlatformModule"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -139,6 +130,57 @@ public class UEFISettings implements Editable<UEFISettingsBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof UEFISettings)) {
+            return false;
+        }
+        UEFISettings other = (UEFISettings) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$secureBoot = this.getSecureBoot();
+        Object other$secureBoot = other.getSecureBoot();
+        if (this$secureBoot == null ? other$secureBoot != null : !this$secureBoot.equals(other$secureBoot)) {
+            return false;
+        }
+        Object this$virtualizedTrustedPlatformModule = this.getVirtualizedTrustedPlatformModule();
+        Object other$virtualizedTrustedPlatformModule = other.getVirtualizedTrustedPlatformModule();
+        if (this$virtualizedTrustedPlatformModule == null ? other$virtualizedTrustedPlatformModule != null : !this$virtualizedTrustedPlatformModule.equals(other$virtualizedTrustedPlatformModule)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof UEFISettings;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $secureBoot = this.getSecureBoot();
+        result = result * prime + ($secureBoot == null ? 43 : $secureBoot.hashCode());
+        Object $virtualizedTrustedPlatformModule = this.getVirtualizedTrustedPlatformModule();
+        result = result * prime + ($virtualizedTrustedPlatformModule == null ? 43 : $virtualizedTrustedPlatformModule.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "UEFISettings(" + "secureBoot=" + this.getSecureBoot() + ", virtualizedTrustedPlatformModule=" + this.getVirtualizedTrustedPlatformModule() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

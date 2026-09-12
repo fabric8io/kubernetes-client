@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PodsMetricSource indicates how to scale on a metric describing each pod in the current scale target (for example, transactions-processed-per-second). The values will be averaged together before being compared to the target value.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "metric",
     "target"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class PodsMetricSource implements Editable<PodsMetricSourceBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodsMetricSource)) {
+            return false;
+        }
+        PodsMetricSource other = (PodsMetricSource) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$metric = this.getMetric();
+        Object other$metric = other.getMetric();
+        if (this$metric == null ? other$metric != null : !this$metric.equals(other$metric)) {
+            return false;
+        }
+        Object this$target = this.getTarget();
+        Object other$target = other.getTarget();
+        if (this$target == null ? other$target != null : !this$target.equals(other$target)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodsMetricSource;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $metric = this.getMetric();
+        result = result * prime + ($metric == null ? 43 : $metric.hashCode());
+        Object $target = this.getTarget();
+        result = result * prime + ($target == null ? 43 : $target.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodsMetricSource(" + "metric=" + this.getMetric() + ", target=" + this.getTarget() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

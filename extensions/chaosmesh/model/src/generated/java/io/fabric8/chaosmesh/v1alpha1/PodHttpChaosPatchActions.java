@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PodHttpChaosPatchActions defines possible patch-actions of HttpChaos.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "body",
     "headers",
     "queries"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -166,6 +157,64 @@ public class PodHttpChaosPatchActions implements Editable<PodHttpChaosPatchActio
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodHttpChaosPatchActions)) {
+            return false;
+        }
+        PodHttpChaosPatchActions other = (PodHttpChaosPatchActions) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$body = this.getBody();
+        Object other$body = other.getBody();
+        if (this$body == null ? other$body != null : !this$body.equals(other$body)) {
+            return false;
+        }
+        Object this$headers = this.getHeaders();
+        Object other$headers = other.getHeaders();
+        if (this$headers == null ? other$headers != null : !this$headers.equals(other$headers)) {
+            return false;
+        }
+        Object this$queries = this.getQueries();
+        Object other$queries = other.getQueries();
+        if (this$queries == null ? other$queries != null : !this$queries.equals(other$queries)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodHttpChaosPatchActions;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $body = this.getBody();
+        result = result * prime + ($body == null ? 43 : $body.hashCode());
+        Object $headers = this.getHeaders();
+        result = result * prime + ($headers == null ? 43 : $headers.hashCode());
+        Object $queries = this.getQueries();
+        result = result * prime + ($queries == null ? 43 : $queries.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodHttpChaosPatchActions(" + "body=" + this.getBody() + ", headers=" + this.getHeaders() + ", queries=" + this.getQueries() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

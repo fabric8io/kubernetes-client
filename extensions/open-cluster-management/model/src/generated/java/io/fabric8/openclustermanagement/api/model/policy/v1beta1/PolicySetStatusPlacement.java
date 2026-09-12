@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PolicySetStatusPlacement reports how and what managed cluster placement resources are attached to the policy set.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "placement",
     "placementBinding",
     "placementRule"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class PolicySetStatusPlacement implements Editable<PolicySetStatusPlaceme
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PolicySetStatusPlacement)) {
+            return false;
+        }
+        PolicySetStatusPlacement other = (PolicySetStatusPlacement) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$placement = this.getPlacement();
+        Object other$placement = other.getPlacement();
+        if (this$placement == null ? other$placement != null : !this$placement.equals(other$placement)) {
+            return false;
+        }
+        Object this$placementBinding = this.getPlacementBinding();
+        Object other$placementBinding = other.getPlacementBinding();
+        if (this$placementBinding == null ? other$placementBinding != null : !this$placementBinding.equals(other$placementBinding)) {
+            return false;
+        }
+        Object this$placementRule = this.getPlacementRule();
+        Object other$placementRule = other.getPlacementRule();
+        if (this$placementRule == null ? other$placementRule != null : !this$placementRule.equals(other$placementRule)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PolicySetStatusPlacement;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $placement = this.getPlacement();
+        result = result * prime + ($placement == null ? 43 : $placement.hashCode());
+        Object $placementBinding = this.getPlacementBinding();
+        result = result * prime + ($placementBinding == null ? 43 : $placementBinding.hashCode());
+        Object $placementRule = this.getPlacementRule();
+        result = result * prime + ($placementRule == null ? 43 : $placementRule.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PolicySetStatusPlacement(" + "placement=" + this.getPlacement() + ", placementBinding=" + this.getPlacementBinding() + ", placementRule=" + this.getPlacementRule() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

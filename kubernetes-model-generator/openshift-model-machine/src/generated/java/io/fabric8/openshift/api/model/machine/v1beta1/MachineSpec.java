@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MachineSpec defines the desired state of Machine
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "providerID",
     "providerSpec",
     "taints"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -224,6 +215,85 @@ public class MachineSpec implements Editable<MachineSpecBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachineSpec)) {
+            return false;
+        }
+        MachineSpec other = (MachineSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$authoritativeAPI = this.getAuthoritativeAPI();
+        Object other$authoritativeAPI = other.getAuthoritativeAPI();
+        if (this$authoritativeAPI == null ? other$authoritativeAPI != null : !this$authoritativeAPI.equals(other$authoritativeAPI)) {
+            return false;
+        }
+        Object this$lifecycleHooks = this.getLifecycleHooks();
+        Object other$lifecycleHooks = other.getLifecycleHooks();
+        if (this$lifecycleHooks == null ? other$lifecycleHooks != null : !this$lifecycleHooks.equals(other$lifecycleHooks)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$providerID = this.getProviderID();
+        Object other$providerID = other.getProviderID();
+        if (this$providerID == null ? other$providerID != null : !this$providerID.equals(other$providerID)) {
+            return false;
+        }
+        Object this$providerSpec = this.getProviderSpec();
+        Object other$providerSpec = other.getProviderSpec();
+        if (this$providerSpec == null ? other$providerSpec != null : !this$providerSpec.equals(other$providerSpec)) {
+            return false;
+        }
+        Object this$taints = this.getTaints();
+        Object other$taints = other.getTaints();
+        if (this$taints == null ? other$taints != null : !this$taints.equals(other$taints)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachineSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $authoritativeAPI = this.getAuthoritativeAPI();
+        result = result * prime + ($authoritativeAPI == null ? 43 : $authoritativeAPI.hashCode());
+        Object $lifecycleHooks = this.getLifecycleHooks();
+        result = result * prime + ($lifecycleHooks == null ? 43 : $lifecycleHooks.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $providerID = this.getProviderID();
+        result = result * prime + ($providerID == null ? 43 : $providerID.hashCode());
+        Object $providerSpec = this.getProviderSpec();
+        result = result * prime + ($providerSpec == null ? 43 : $providerSpec.hashCode());
+        Object $taints = this.getTaints();
+        result = result * prime + ($taints == null ? 43 : $taints.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachineSpec(" + "authoritativeAPI=" + this.getAuthoritativeAPI() + ", lifecycleHooks=" + this.getLifecycleHooks() + ", metadata=" + this.getMetadata() + ", providerID=" + this.getProviderID() + ", providerSpec=" + this.getProviderSpec() + ", taints=" + this.getTaints() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * IngressRule represents the rules mapping the paths under a specified host to the related backend services. Incoming requests are first evaluated for a host match, then routed to the backend associated with the matching IngressRuleValue.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "hosts",
     "http",
     "visibility"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -164,6 +155,64 @@ public class IngressRule implements Editable<IngressRuleBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof IngressRule)) {
+            return false;
+        }
+        IngressRule other = (IngressRule) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$hosts = this.getHosts();
+        Object other$hosts = other.getHosts();
+        if (this$hosts == null ? other$hosts != null : !this$hosts.equals(other$hosts)) {
+            return false;
+        }
+        Object this$http = this.getHttp();
+        Object other$http = other.getHttp();
+        if (this$http == null ? other$http != null : !this$http.equals(other$http)) {
+            return false;
+        }
+        Object this$visibility = this.getVisibility();
+        Object other$visibility = other.getVisibility();
+        if (this$visibility == null ? other$visibility != null : !this$visibility.equals(other$visibility)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof IngressRule;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $hosts = this.getHosts();
+        result = result * prime + ($hosts == null ? 43 : $hosts.hashCode());
+        Object $http = this.getHttp();
+        result = result * prime + ($http == null ? 43 : $http.hashCode());
+        Object $visibility = this.getVisibility();
+        result = result * prime + ($visibility == null ? 43 : $visibility.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IngressRule(" + "hosts=" + this.getHosts() + ", http=" + this.getHttp() + ", visibility=" + this.getVisibility() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

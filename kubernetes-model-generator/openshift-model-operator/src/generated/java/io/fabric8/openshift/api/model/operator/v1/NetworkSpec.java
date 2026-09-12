@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NetworkSpec is the top-level network configuration object.
@@ -57,12 +54,6 @@ import lombok.experimental.Accessors;
     "serviceNetwork",
     "unsupportedConfigOverrides",
     "useMultiNetworkPolicy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -452,6 +443,162 @@ public class NetworkSpec implements Editable<NetworkSpecBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkSpec)) {
+            return false;
+        }
+        NetworkSpec other = (NetworkSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$additionalNetworks = this.getAdditionalNetworks();
+        Object other$additionalNetworks = other.getAdditionalNetworks();
+        if (this$additionalNetworks == null ? other$additionalNetworks != null : !this$additionalNetworks.equals(other$additionalNetworks)) {
+            return false;
+        }
+        Object this$additionalRoutingCapabilities = this.getAdditionalRoutingCapabilities();
+        Object other$additionalRoutingCapabilities = other.getAdditionalRoutingCapabilities();
+        if (this$additionalRoutingCapabilities == null ? other$additionalRoutingCapabilities != null : !this$additionalRoutingCapabilities.equals(other$additionalRoutingCapabilities)) {
+            return false;
+        }
+        Object this$clusterNetwork = this.getClusterNetwork();
+        Object other$clusterNetwork = other.getClusterNetwork();
+        if (this$clusterNetwork == null ? other$clusterNetwork != null : !this$clusterNetwork.equals(other$clusterNetwork)) {
+            return false;
+        }
+        Object this$defaultNetwork = this.getDefaultNetwork();
+        Object other$defaultNetwork = other.getDefaultNetwork();
+        if (this$defaultNetwork == null ? other$defaultNetwork != null : !this$defaultNetwork.equals(other$defaultNetwork)) {
+            return false;
+        }
+        Object this$deployKubeProxy = this.getDeployKubeProxy();
+        Object other$deployKubeProxy = other.getDeployKubeProxy();
+        if (this$deployKubeProxy == null ? other$deployKubeProxy != null : !this$deployKubeProxy.equals(other$deployKubeProxy)) {
+            return false;
+        }
+        Object this$disableMultiNetwork = this.getDisableMultiNetwork();
+        Object other$disableMultiNetwork = other.getDisableMultiNetwork();
+        if (this$disableMultiNetwork == null ? other$disableMultiNetwork != null : !this$disableMultiNetwork.equals(other$disableMultiNetwork)) {
+            return false;
+        }
+        Object this$disableNetworkDiagnostics = this.getDisableNetworkDiagnostics();
+        Object other$disableNetworkDiagnostics = other.getDisableNetworkDiagnostics();
+        if (this$disableNetworkDiagnostics == null ? other$disableNetworkDiagnostics != null : !this$disableNetworkDiagnostics.equals(other$disableNetworkDiagnostics)) {
+            return false;
+        }
+        Object this$exportNetworkFlows = this.getExportNetworkFlows();
+        Object other$exportNetworkFlows = other.getExportNetworkFlows();
+        if (this$exportNetworkFlows == null ? other$exportNetworkFlows != null : !this$exportNetworkFlows.equals(other$exportNetworkFlows)) {
+            return false;
+        }
+        Object this$kubeProxyConfig = this.getKubeProxyConfig();
+        Object other$kubeProxyConfig = other.getKubeProxyConfig();
+        if (this$kubeProxyConfig == null ? other$kubeProxyConfig != null : !this$kubeProxyConfig.equals(other$kubeProxyConfig)) {
+            return false;
+        }
+        Object this$logLevel = this.getLogLevel();
+        Object other$logLevel = other.getLogLevel();
+        if (this$logLevel == null ? other$logLevel != null : !this$logLevel.equals(other$logLevel)) {
+            return false;
+        }
+        Object this$managementState = this.getManagementState();
+        Object other$managementState = other.getManagementState();
+        if (this$managementState == null ? other$managementState != null : !this$managementState.equals(other$managementState)) {
+            return false;
+        }
+        Object this$migration = this.getMigration();
+        Object other$migration = other.getMigration();
+        if (this$migration == null ? other$migration != null : !this$migration.equals(other$migration)) {
+            return false;
+        }
+        Object this$observedConfig = this.getObservedConfig();
+        Object other$observedConfig = other.getObservedConfig();
+        if (this$observedConfig == null ? other$observedConfig != null : !this$observedConfig.equals(other$observedConfig)) {
+            return false;
+        }
+        Object this$operatorLogLevel = this.getOperatorLogLevel();
+        Object other$operatorLogLevel = other.getOperatorLogLevel();
+        if (this$operatorLogLevel == null ? other$operatorLogLevel != null : !this$operatorLogLevel.equals(other$operatorLogLevel)) {
+            return false;
+        }
+        Object this$serviceNetwork = this.getServiceNetwork();
+        Object other$serviceNetwork = other.getServiceNetwork();
+        if (this$serviceNetwork == null ? other$serviceNetwork != null : !this$serviceNetwork.equals(other$serviceNetwork)) {
+            return false;
+        }
+        Object this$unsupportedConfigOverrides = this.getUnsupportedConfigOverrides();
+        Object other$unsupportedConfigOverrides = other.getUnsupportedConfigOverrides();
+        if (this$unsupportedConfigOverrides == null ? other$unsupportedConfigOverrides != null : !this$unsupportedConfigOverrides.equals(other$unsupportedConfigOverrides)) {
+            return false;
+        }
+        Object this$useMultiNetworkPolicy = this.getUseMultiNetworkPolicy();
+        Object other$useMultiNetworkPolicy = other.getUseMultiNetworkPolicy();
+        if (this$useMultiNetworkPolicy == null ? other$useMultiNetworkPolicy != null : !this$useMultiNetworkPolicy.equals(other$useMultiNetworkPolicy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $additionalNetworks = this.getAdditionalNetworks();
+        result = result * prime + ($additionalNetworks == null ? 43 : $additionalNetworks.hashCode());
+        Object $additionalRoutingCapabilities = this.getAdditionalRoutingCapabilities();
+        result = result * prime + ($additionalRoutingCapabilities == null ? 43 : $additionalRoutingCapabilities.hashCode());
+        Object $clusterNetwork = this.getClusterNetwork();
+        result = result * prime + ($clusterNetwork == null ? 43 : $clusterNetwork.hashCode());
+        Object $defaultNetwork = this.getDefaultNetwork();
+        result = result * prime + ($defaultNetwork == null ? 43 : $defaultNetwork.hashCode());
+        Object $deployKubeProxy = this.getDeployKubeProxy();
+        result = result * prime + ($deployKubeProxy == null ? 43 : $deployKubeProxy.hashCode());
+        Object $disableMultiNetwork = this.getDisableMultiNetwork();
+        result = result * prime + ($disableMultiNetwork == null ? 43 : $disableMultiNetwork.hashCode());
+        Object $disableNetworkDiagnostics = this.getDisableNetworkDiagnostics();
+        result = result * prime + ($disableNetworkDiagnostics == null ? 43 : $disableNetworkDiagnostics.hashCode());
+        Object $exportNetworkFlows = this.getExportNetworkFlows();
+        result = result * prime + ($exportNetworkFlows == null ? 43 : $exportNetworkFlows.hashCode());
+        Object $kubeProxyConfig = this.getKubeProxyConfig();
+        result = result * prime + ($kubeProxyConfig == null ? 43 : $kubeProxyConfig.hashCode());
+        Object $logLevel = this.getLogLevel();
+        result = result * prime + ($logLevel == null ? 43 : $logLevel.hashCode());
+        Object $managementState = this.getManagementState();
+        result = result * prime + ($managementState == null ? 43 : $managementState.hashCode());
+        Object $migration = this.getMigration();
+        result = result * prime + ($migration == null ? 43 : $migration.hashCode());
+        Object $observedConfig = this.getObservedConfig();
+        result = result * prime + ($observedConfig == null ? 43 : $observedConfig.hashCode());
+        Object $operatorLogLevel = this.getOperatorLogLevel();
+        result = result * prime + ($operatorLogLevel == null ? 43 : $operatorLogLevel.hashCode());
+        Object $serviceNetwork = this.getServiceNetwork();
+        result = result * prime + ($serviceNetwork == null ? 43 : $serviceNetwork.hashCode());
+        Object $unsupportedConfigOverrides = this.getUnsupportedConfigOverrides();
+        result = result * prime + ($unsupportedConfigOverrides == null ? 43 : $unsupportedConfigOverrides.hashCode());
+        Object $useMultiNetworkPolicy = this.getUseMultiNetworkPolicy();
+        result = result * prime + ($useMultiNetworkPolicy == null ? 43 : $useMultiNetworkPolicy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkSpec(" + "additionalNetworks=" + this.getAdditionalNetworks() + ", additionalRoutingCapabilities=" + this.getAdditionalRoutingCapabilities() + ", clusterNetwork=" + this.getClusterNetwork() + ", defaultNetwork=" + this.getDefaultNetwork() + ", deployKubeProxy=" + this.getDeployKubeProxy() + ", disableMultiNetwork=" + this.getDisableMultiNetwork() + ", disableNetworkDiagnostics=" + this.getDisableNetworkDiagnostics() + ", exportNetworkFlows=" + this.getExportNetworkFlows() + ", kubeProxyConfig=" + this.getKubeProxyConfig() + ", logLevel=" + this.getLogLevel() + ", managementState=" + this.getManagementState() + ", migration=" + this.getMigration() + ", observedConfig=" + this.getObservedConfig() + ", operatorLogLevel=" + this.getOperatorLogLevel() + ", serviceNetwork=" + this.getServiceNetwork() + ", unsupportedConfigOverrides=" + this.getUnsupportedConfigOverrides() + ", useMultiNetworkPolicy=" + this.getUseMultiNetworkPolicy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

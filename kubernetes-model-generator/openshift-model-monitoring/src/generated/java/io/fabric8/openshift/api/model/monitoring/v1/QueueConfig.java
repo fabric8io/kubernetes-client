@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * QueueConfig allows the tuning of remote write's queue_config parameters. This object is referenced in the RemoteWriteSpec object.
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "minShards",
     "retryOnRateLimit",
     "sampleAgeLimit"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -299,6 +290,113 @@ public class QueueConfig implements Editable<QueueConfigBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof QueueConfig)) {
+            return false;
+        }
+        QueueConfig other = (QueueConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$batchSendDeadline = this.getBatchSendDeadline();
+        Object other$batchSendDeadline = other.getBatchSendDeadline();
+        if (this$batchSendDeadline == null ? other$batchSendDeadline != null : !this$batchSendDeadline.equals(other$batchSendDeadline)) {
+            return false;
+        }
+        Object this$capacity = this.getCapacity();
+        Object other$capacity = other.getCapacity();
+        if (this$capacity == null ? other$capacity != null : !this$capacity.equals(other$capacity)) {
+            return false;
+        }
+        Object this$maxBackoff = this.getMaxBackoff();
+        Object other$maxBackoff = other.getMaxBackoff();
+        if (this$maxBackoff == null ? other$maxBackoff != null : !this$maxBackoff.equals(other$maxBackoff)) {
+            return false;
+        }
+        Object this$maxRetries = this.getMaxRetries();
+        Object other$maxRetries = other.getMaxRetries();
+        if (this$maxRetries == null ? other$maxRetries != null : !this$maxRetries.equals(other$maxRetries)) {
+            return false;
+        }
+        Object this$maxSamplesPerSend = this.getMaxSamplesPerSend();
+        Object other$maxSamplesPerSend = other.getMaxSamplesPerSend();
+        if (this$maxSamplesPerSend == null ? other$maxSamplesPerSend != null : !this$maxSamplesPerSend.equals(other$maxSamplesPerSend)) {
+            return false;
+        }
+        Object this$maxShards = this.getMaxShards();
+        Object other$maxShards = other.getMaxShards();
+        if (this$maxShards == null ? other$maxShards != null : !this$maxShards.equals(other$maxShards)) {
+            return false;
+        }
+        Object this$minBackoff = this.getMinBackoff();
+        Object other$minBackoff = other.getMinBackoff();
+        if (this$minBackoff == null ? other$minBackoff != null : !this$minBackoff.equals(other$minBackoff)) {
+            return false;
+        }
+        Object this$minShards = this.getMinShards();
+        Object other$minShards = other.getMinShards();
+        if (this$minShards == null ? other$minShards != null : !this$minShards.equals(other$minShards)) {
+            return false;
+        }
+        Object this$retryOnRateLimit = this.getRetryOnRateLimit();
+        Object other$retryOnRateLimit = other.getRetryOnRateLimit();
+        if (this$retryOnRateLimit == null ? other$retryOnRateLimit != null : !this$retryOnRateLimit.equals(other$retryOnRateLimit)) {
+            return false;
+        }
+        Object this$sampleAgeLimit = this.getSampleAgeLimit();
+        Object other$sampleAgeLimit = other.getSampleAgeLimit();
+        if (this$sampleAgeLimit == null ? other$sampleAgeLimit != null : !this$sampleAgeLimit.equals(other$sampleAgeLimit)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof QueueConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $batchSendDeadline = this.getBatchSendDeadline();
+        result = result * prime + ($batchSendDeadline == null ? 43 : $batchSendDeadline.hashCode());
+        Object $capacity = this.getCapacity();
+        result = result * prime + ($capacity == null ? 43 : $capacity.hashCode());
+        Object $maxBackoff = this.getMaxBackoff();
+        result = result * prime + ($maxBackoff == null ? 43 : $maxBackoff.hashCode());
+        Object $maxRetries = this.getMaxRetries();
+        result = result * prime + ($maxRetries == null ? 43 : $maxRetries.hashCode());
+        Object $maxSamplesPerSend = this.getMaxSamplesPerSend();
+        result = result * prime + ($maxSamplesPerSend == null ? 43 : $maxSamplesPerSend.hashCode());
+        Object $maxShards = this.getMaxShards();
+        result = result * prime + ($maxShards == null ? 43 : $maxShards.hashCode());
+        Object $minBackoff = this.getMinBackoff();
+        result = result * prime + ($minBackoff == null ? 43 : $minBackoff.hashCode());
+        Object $minShards = this.getMinShards();
+        result = result * prime + ($minShards == null ? 43 : $minShards.hashCode());
+        Object $retryOnRateLimit = this.getRetryOnRateLimit();
+        result = result * prime + ($retryOnRateLimit == null ? 43 : $retryOnRateLimit.hashCode());
+        Object $sampleAgeLimit = this.getSampleAgeLimit();
+        result = result * prime + ($sampleAgeLimit == null ? 43 : $sampleAgeLimit.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "QueueConfig(" + "batchSendDeadline=" + this.getBatchSendDeadline() + ", capacity=" + this.getCapacity() + ", maxBackoff=" + this.getMaxBackoff() + ", maxRetries=" + this.getMaxRetries() + ", maxSamplesPerSend=" + this.getMaxSamplesPerSend() + ", maxShards=" + this.getMaxShards() + ", minBackoff=" + this.getMinBackoff() + ", minShards=" + this.getMinShards() + ", retryOnRateLimit=" + this.getRetryOnRateLimit() + ", sampleAgeLimit=" + this.getSampleAgeLimit() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

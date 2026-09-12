@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CPU describes one processor on the host.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "count",
     "flags",
     "model"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -203,6 +194,78 @@ public class CPU implements Editable<CPUBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CPU)) {
+            return false;
+        }
+        CPU other = (CPU) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$arch = this.getArch();
+        Object other$arch = other.getArch();
+        if (this$arch == null ? other$arch != null : !this$arch.equals(other$arch)) {
+            return false;
+        }
+        Object this$clockMegahertz = this.getClockMegahertz();
+        Object other$clockMegahertz = other.getClockMegahertz();
+        if (this$clockMegahertz == null ? other$clockMegahertz != null : !this$clockMegahertz.equals(other$clockMegahertz)) {
+            return false;
+        }
+        Object this$count = this.getCount();
+        Object other$count = other.getCount();
+        if (this$count == null ? other$count != null : !this$count.equals(other$count)) {
+            return false;
+        }
+        Object this$flags = this.getFlags();
+        Object other$flags = other.getFlags();
+        if (this$flags == null ? other$flags != null : !this$flags.equals(other$flags)) {
+            return false;
+        }
+        Object this$model = this.getModel();
+        Object other$model = other.getModel();
+        if (this$model == null ? other$model != null : !this$model.equals(other$model)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CPU;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $arch = this.getArch();
+        result = result * prime + ($arch == null ? 43 : $arch.hashCode());
+        Object $clockMegahertz = this.getClockMegahertz();
+        result = result * prime + ($clockMegahertz == null ? 43 : $clockMegahertz.hashCode());
+        Object $count = this.getCount();
+        result = result * prime + ($count == null ? 43 : $count.hashCode());
+        Object $flags = this.getFlags();
+        result = result * prime + ($flags == null ? 43 : $flags.hashCode());
+        Object $model = this.getModel();
+        result = result * prime + ($model == null ? 43 : $model.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CPU(" + "arch=" + this.getArch() + ", clockMegahertz=" + this.getClockMegahertz() + ", count=" + this.getCount() + ", flags=" + this.getFlags() + ", model=" + this.getModel() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * QueueSpec represents the template of Queue.
@@ -51,12 +48,6 @@ import lombok.experimental.Accessors;
     "reclaimable",
     "type",
     "weight"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -309,6 +300,113 @@ public class QueueSpec implements Editable<QueueSpecBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof QueueSpec)) {
+            return false;
+        }
+        QueueSpec other = (QueueSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$affinity = this.getAffinity();
+        Object other$affinity = other.getAffinity();
+        if (this$affinity == null ? other$affinity != null : !this$affinity.equals(other$affinity)) {
+            return false;
+        }
+        Object this$capability = this.getCapability();
+        Object other$capability = other.getCapability();
+        if (this$capability == null ? other$capability != null : !this$capability.equals(other$capability)) {
+            return false;
+        }
+        Object this$deserved = this.getDeserved();
+        Object other$deserved = other.getDeserved();
+        if (this$deserved == null ? other$deserved != null : !this$deserved.equals(other$deserved)) {
+            return false;
+        }
+        Object this$extendClusters = this.getExtendClusters();
+        Object other$extendClusters = other.getExtendClusters();
+        if (this$extendClusters == null ? other$extendClusters != null : !this$extendClusters.equals(other$extendClusters)) {
+            return false;
+        }
+        Object this$guarantee = this.getGuarantee();
+        Object other$guarantee = other.getGuarantee();
+        if (this$guarantee == null ? other$guarantee != null : !this$guarantee.equals(other$guarantee)) {
+            return false;
+        }
+        Object this$parent = this.getParent();
+        Object other$parent = other.getParent();
+        if (this$parent == null ? other$parent != null : !this$parent.equals(other$parent)) {
+            return false;
+        }
+        Object this$priority = this.getPriority();
+        Object other$priority = other.getPriority();
+        if (this$priority == null ? other$priority != null : !this$priority.equals(other$priority)) {
+            return false;
+        }
+        Object this$reclaimable = this.getReclaimable();
+        Object other$reclaimable = other.getReclaimable();
+        if (this$reclaimable == null ? other$reclaimable != null : !this$reclaimable.equals(other$reclaimable)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$weight = this.getWeight();
+        Object other$weight = other.getWeight();
+        if (this$weight == null ? other$weight != null : !this$weight.equals(other$weight)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof QueueSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $affinity = this.getAffinity();
+        result = result * prime + ($affinity == null ? 43 : $affinity.hashCode());
+        Object $capability = this.getCapability();
+        result = result * prime + ($capability == null ? 43 : $capability.hashCode());
+        Object $deserved = this.getDeserved();
+        result = result * prime + ($deserved == null ? 43 : $deserved.hashCode());
+        Object $extendClusters = this.getExtendClusters();
+        result = result * prime + ($extendClusters == null ? 43 : $extendClusters.hashCode());
+        Object $guarantee = this.getGuarantee();
+        result = result * prime + ($guarantee == null ? 43 : $guarantee.hashCode());
+        Object $parent = this.getParent();
+        result = result * prime + ($parent == null ? 43 : $parent.hashCode());
+        Object $priority = this.getPriority();
+        result = result * prime + ($priority == null ? 43 : $priority.hashCode());
+        Object $reclaimable = this.getReclaimable();
+        result = result * prime + ($reclaimable == null ? 43 : $reclaimable.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $weight = this.getWeight();
+        result = result * prime + ($weight == null ? 43 : $weight.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "QueueSpec(" + "affinity=" + this.getAffinity() + ", capability=" + this.getCapability() + ", deserved=" + this.getDeserved() + ", extendClusters=" + this.getExtendClusters() + ", guarantee=" + this.getGuarantee() + ", parent=" + this.getParent() + ", priority=" + this.getPriority() + ", reclaimable=" + this.getReclaimable() + ", type=" + this.getType() + ", weight=" + this.getWeight() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

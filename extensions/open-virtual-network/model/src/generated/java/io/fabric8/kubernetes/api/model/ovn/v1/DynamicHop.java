@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DynamicHop defines the configuration for a dynamic external gateway interface. These interfaces are wrapped around a pod object that resides inside the cluster. The field NetworkAttachmentName captures the name of the multus network name to use when retrieving the gateway IP to use. The PodSelector and the NamespaceSelector are mandatory fields.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "namespaceSelector",
     "networkAttachmentName",
     "podSelector"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class DynamicHop implements Editable<DynamicHopBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DynamicHop)) {
+            return false;
+        }
+        DynamicHop other = (DynamicHop) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bfdEnabled = this.getBfdEnabled();
+        Object other$bfdEnabled = other.getBfdEnabled();
+        if (this$bfdEnabled == null ? other$bfdEnabled != null : !this$bfdEnabled.equals(other$bfdEnabled)) {
+            return false;
+        }
+        Object this$namespaceSelector = this.getNamespaceSelector();
+        Object other$namespaceSelector = other.getNamespaceSelector();
+        if (this$namespaceSelector == null ? other$namespaceSelector != null : !this$namespaceSelector.equals(other$namespaceSelector)) {
+            return false;
+        }
+        Object this$networkAttachmentName = this.getNetworkAttachmentName();
+        Object other$networkAttachmentName = other.getNetworkAttachmentName();
+        if (this$networkAttachmentName == null ? other$networkAttachmentName != null : !this$networkAttachmentName.equals(other$networkAttachmentName)) {
+            return false;
+        }
+        Object this$podSelector = this.getPodSelector();
+        Object other$podSelector = other.getPodSelector();
+        if (this$podSelector == null ? other$podSelector != null : !this$podSelector.equals(other$podSelector)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DynamicHop;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bfdEnabled = this.getBfdEnabled();
+        result = result * prime + ($bfdEnabled == null ? 43 : $bfdEnabled.hashCode());
+        Object $namespaceSelector = this.getNamespaceSelector();
+        result = result * prime + ($namespaceSelector == null ? 43 : $namespaceSelector.hashCode());
+        Object $networkAttachmentName = this.getNetworkAttachmentName();
+        result = result * prime + ($networkAttachmentName == null ? 43 : $networkAttachmentName.hashCode());
+        Object $podSelector = this.getPodSelector();
+        result = result * prime + ($podSelector == null ? 43 : $podSelector.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DynamicHop(" + "bfdEnabled=" + this.getBfdEnabled() + ", namespaceSelector=" + this.getNamespaceSelector() + ", networkAttachmentName=" + this.getNetworkAttachmentName() + ", podSelector=" + this.getPodSelector() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

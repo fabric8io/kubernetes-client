@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * FailureDomain represents the different configurations required to spread Machines across failure domains on different platforms.
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "openstack",
     "platform",
     "vsphere"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -254,6 +245,92 @@ public class FailureDomains implements Editable<FailureDomainsBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof FailureDomains)) {
+            return false;
+        }
+        FailureDomains other = (FailureDomains) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$aws = this.getAws();
+        Object other$aws = other.getAws();
+        if (this$aws == null ? other$aws != null : !this$aws.equals(other$aws)) {
+            return false;
+        }
+        Object this$azure = this.getAzure();
+        Object other$azure = other.getAzure();
+        if (this$azure == null ? other$azure != null : !this$azure.equals(other$azure)) {
+            return false;
+        }
+        Object this$gcp = this.getGcp();
+        Object other$gcp = other.getGcp();
+        if (this$gcp == null ? other$gcp != null : !this$gcp.equals(other$gcp)) {
+            return false;
+        }
+        Object this$nutanix = this.getNutanix();
+        Object other$nutanix = other.getNutanix();
+        if (this$nutanix == null ? other$nutanix != null : !this$nutanix.equals(other$nutanix)) {
+            return false;
+        }
+        Object this$openstack = this.getOpenstack();
+        Object other$openstack = other.getOpenstack();
+        if (this$openstack == null ? other$openstack != null : !this$openstack.equals(other$openstack)) {
+            return false;
+        }
+        Object this$platform = this.getPlatform();
+        Object other$platform = other.getPlatform();
+        if (this$platform == null ? other$platform != null : !this$platform.equals(other$platform)) {
+            return false;
+        }
+        Object this$vsphere = this.getVsphere();
+        Object other$vsphere = other.getVsphere();
+        if (this$vsphere == null ? other$vsphere != null : !this$vsphere.equals(other$vsphere)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof FailureDomains;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $aws = this.getAws();
+        result = result * prime + ($aws == null ? 43 : $aws.hashCode());
+        Object $azure = this.getAzure();
+        result = result * prime + ($azure == null ? 43 : $azure.hashCode());
+        Object $gcp = this.getGcp();
+        result = result * prime + ($gcp == null ? 43 : $gcp.hashCode());
+        Object $nutanix = this.getNutanix();
+        result = result * prime + ($nutanix == null ? 43 : $nutanix.hashCode());
+        Object $openstack = this.getOpenstack();
+        result = result * prime + ($openstack == null ? 43 : $openstack.hashCode());
+        Object $platform = this.getPlatform();
+        result = result * prime + ($platform == null ? 43 : $platform.hashCode());
+        Object $vsphere = this.getVsphere();
+        result = result * prime + ($vsphere == null ? 43 : $vsphere.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "FailureDomains(" + "aws=" + this.getAws() + ", azure=" + this.getAzure() + ", gcp=" + this.getGcp() + ", nutanix=" + this.getNutanix() + ", openstack=" + this.getOpenstack() + ", platform=" + this.getPlatform() + ", vsphere=" + this.getVsphere() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

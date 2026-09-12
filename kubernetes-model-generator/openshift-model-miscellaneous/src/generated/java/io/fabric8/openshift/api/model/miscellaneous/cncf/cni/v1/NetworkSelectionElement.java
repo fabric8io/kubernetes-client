@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NetworkSelectionElement represents one element of the JSON format Network Attachment Selection Annotation as described in section 4.1.2 of the CRD specification.
@@ -51,12 +48,6 @@ import lombok.experimental.Accessors;
     "name",
     "namespace",
     "portMappings"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -332,6 +323,120 @@ public class NetworkSelectionElement implements Editable<NetworkSelectionElement
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkSelectionElement)) {
+            return false;
+        }
+        NetworkSelectionElement other = (NetworkSelectionElement) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bandwidth = this.getBandwidth();
+        Object other$bandwidth = other.getBandwidth();
+        if (this$bandwidth == null ? other$bandwidth != null : !this$bandwidth.equals(other$bandwidth)) {
+            return false;
+        }
+        Object this$cniArgs = this.getCniArgs();
+        Object other$cniArgs = other.getCniArgs();
+        if (this$cniArgs == null ? other$cniArgs != null : !this$cniArgs.equals(other$cniArgs)) {
+            return false;
+        }
+        Object this$defaultRoute = this.getDefaultRoute();
+        Object other$defaultRoute = other.getDefaultRoute();
+        if (this$defaultRoute == null ? other$defaultRoute != null : !this$defaultRoute.equals(other$defaultRoute)) {
+            return false;
+        }
+        Object this$infinibandGuid = this.getInfinibandGuid();
+        Object other$infinibandGuid = other.getInfinibandGuid();
+        if (this$infinibandGuid == null ? other$infinibandGuid != null : !this$infinibandGuid.equals(other$infinibandGuid)) {
+            return false;
+        }
+        Object this$_interface = this.getInterface();
+        Object other$_interface = other.getInterface();
+        if (this$_interface == null ? other$_interface != null : !this$_interface.equals(other$_interface)) {
+            return false;
+        }
+        Object this$ipamClaimReference = this.getIpamClaimReference();
+        Object other$ipamClaimReference = other.getIpamClaimReference();
+        if (this$ipamClaimReference == null ? other$ipamClaimReference != null : !this$ipamClaimReference.equals(other$ipamClaimReference)) {
+            return false;
+        }
+        Object this$ips = this.getIps();
+        Object other$ips = other.getIps();
+        if (this$ips == null ? other$ips != null : !this$ips.equals(other$ips)) {
+            return false;
+        }
+        Object this$mac = this.getMac();
+        Object other$mac = other.getMac();
+        if (this$mac == null ? other$mac != null : !this$mac.equals(other$mac)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$namespace = this.getNamespace();
+        Object other$namespace = other.getNamespace();
+        if (this$namespace == null ? other$namespace != null : !this$namespace.equals(other$namespace)) {
+            return false;
+        }
+        Object this$portMappings = this.getPortMappings();
+        Object other$portMappings = other.getPortMappings();
+        if (this$portMappings == null ? other$portMappings != null : !this$portMappings.equals(other$portMappings)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkSelectionElement;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bandwidth = this.getBandwidth();
+        result = result * prime + ($bandwidth == null ? 43 : $bandwidth.hashCode());
+        Object $cniArgs = this.getCniArgs();
+        result = result * prime + ($cniArgs == null ? 43 : $cniArgs.hashCode());
+        Object $defaultRoute = this.getDefaultRoute();
+        result = result * prime + ($defaultRoute == null ? 43 : $defaultRoute.hashCode());
+        Object $infinibandGuid = this.getInfinibandGuid();
+        result = result * prime + ($infinibandGuid == null ? 43 : $infinibandGuid.hashCode());
+        Object $_interface = this.getInterface();
+        result = result * prime + ($_interface == null ? 43 : $_interface.hashCode());
+        Object $ipamClaimReference = this.getIpamClaimReference();
+        result = result * prime + ($ipamClaimReference == null ? 43 : $ipamClaimReference.hashCode());
+        Object $ips = this.getIps();
+        result = result * prime + ($ips == null ? 43 : $ips.hashCode());
+        Object $mac = this.getMac();
+        result = result * prime + ($mac == null ? 43 : $mac.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $namespace = this.getNamespace();
+        result = result * prime + ($namespace == null ? 43 : $namespace.hashCode());
+        Object $portMappings = this.getPortMappings();
+        result = result * prime + ($portMappings == null ? 43 : $portMappings.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkSelectionElement(" + "bandwidth=" + this.getBandwidth() + ", cniArgs=" + this.getCniArgs() + ", defaultRoute=" + this.getDefaultRoute() + ", infinibandGuid=" + this.getInfinibandGuid() + ", _interface=" + this.getInterface() + ", ipamClaimReference=" + this.getIpamClaimReference() + ", ips=" + this.getIps() + ", mac=" + this.getMac() + ", name=" + this.getName() + ", namespace=" + this.getNamespace() + ", portMappings=" + this.getPortMappings() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

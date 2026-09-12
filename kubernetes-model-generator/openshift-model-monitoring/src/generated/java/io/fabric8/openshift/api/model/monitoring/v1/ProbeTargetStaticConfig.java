@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ProbeTargetStaticConfig defines the set of static targets considered for probing.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "labels",
     "relabelingConfigs",
     "static"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -167,6 +158,64 @@ public class ProbeTargetStaticConfig implements Editable<ProbeTargetStaticConfig
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ProbeTargetStaticConfig)) {
+            return false;
+        }
+        ProbeTargetStaticConfig other = (ProbeTargetStaticConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$labels = this.getLabels();
+        Object other$labels = other.getLabels();
+        if (this$labels == null ? other$labels != null : !this$labels.equals(other$labels)) {
+            return false;
+        }
+        Object this$relabelingConfigs = this.getRelabelingConfigs();
+        Object other$relabelingConfigs = other.getRelabelingConfigs();
+        if (this$relabelingConfigs == null ? other$relabelingConfigs != null : !this$relabelingConfigs.equals(other$relabelingConfigs)) {
+            return false;
+        }
+        Object this$_static = this.getStatic();
+        Object other$_static = other.getStatic();
+        if (this$_static == null ? other$_static != null : !this$_static.equals(other$_static)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ProbeTargetStaticConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $labels = this.getLabels();
+        result = result * prime + ($labels == null ? 43 : $labels.hashCode());
+        Object $relabelingConfigs = this.getRelabelingConfigs();
+        result = result * prime + ($relabelingConfigs == null ? 43 : $relabelingConfigs.hashCode());
+        Object $_static = this.getStatic();
+        result = result * prime + ($_static == null ? 43 : $_static.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ProbeTargetStaticConfig(" + "labels=" + this.getLabels() + ", relabelingConfigs=" + this.getRelabelingConfigs() + ", _static=" + this.getStatic() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

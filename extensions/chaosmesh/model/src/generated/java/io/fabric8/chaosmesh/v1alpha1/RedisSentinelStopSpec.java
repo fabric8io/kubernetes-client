@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "flushConfig",
     "password",
     "redisPath"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -197,6 +188,78 @@ public class RedisSentinelStopSpec implements Editable<RedisSentinelStopSpecBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RedisSentinelStopSpec)) {
+            return false;
+        }
+        RedisSentinelStopSpec other = (RedisSentinelStopSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$addr = this.getAddr();
+        Object other$addr = other.getAddr();
+        if (this$addr == null ? other$addr != null : !this$addr.equals(other$addr)) {
+            return false;
+        }
+        Object this$conf = this.getConf();
+        Object other$conf = other.getConf();
+        if (this$conf == null ? other$conf != null : !this$conf.equals(other$conf)) {
+            return false;
+        }
+        Object this$flushConfig = this.getFlushConfig();
+        Object other$flushConfig = other.getFlushConfig();
+        if (this$flushConfig == null ? other$flushConfig != null : !this$flushConfig.equals(other$flushConfig)) {
+            return false;
+        }
+        Object this$password = this.getPassword();
+        Object other$password = other.getPassword();
+        if (this$password == null ? other$password != null : !this$password.equals(other$password)) {
+            return false;
+        }
+        Object this$redisPath = this.getRedisPath();
+        Object other$redisPath = other.getRedisPath();
+        if (this$redisPath == null ? other$redisPath != null : !this$redisPath.equals(other$redisPath)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RedisSentinelStopSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $addr = this.getAddr();
+        result = result * prime + ($addr == null ? 43 : $addr.hashCode());
+        Object $conf = this.getConf();
+        result = result * prime + ($conf == null ? 43 : $conf.hashCode());
+        Object $flushConfig = this.getFlushConfig();
+        result = result * prime + ($flushConfig == null ? 43 : $flushConfig.hashCode());
+        Object $password = this.getPassword();
+        result = result * prime + ($password == null ? 43 : $password.hashCode());
+        Object $redisPath = this.getRedisPath();
+        result = result * prime + ($redisPath == null ? 43 : $redisPath.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RedisSentinelStopSpec(" + "addr=" + this.getAddr() + ", conf=" + this.getConf() + ", flushConfig=" + this.getFlushConfig() + ", password=" + this.getPassword() + ", redisPath=" + this.getRedisPath() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Configuration of scale down operation
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "enabled",
     "unneededTime",
     "utilizationThreshold"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -220,6 +211,85 @@ public class ClusterAutoscalerSpecScaleDown implements Editable<ClusterAutoscale
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterAutoscalerSpecScaleDown)) {
+            return false;
+        }
+        ClusterAutoscalerSpecScaleDown other = (ClusterAutoscalerSpecScaleDown) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$delayAfterAdd = this.getDelayAfterAdd();
+        Object other$delayAfterAdd = other.getDelayAfterAdd();
+        if (this$delayAfterAdd == null ? other$delayAfterAdd != null : !this$delayAfterAdd.equals(other$delayAfterAdd)) {
+            return false;
+        }
+        Object this$delayAfterDelete = this.getDelayAfterDelete();
+        Object other$delayAfterDelete = other.getDelayAfterDelete();
+        if (this$delayAfterDelete == null ? other$delayAfterDelete != null : !this$delayAfterDelete.equals(other$delayAfterDelete)) {
+            return false;
+        }
+        Object this$delayAfterFailure = this.getDelayAfterFailure();
+        Object other$delayAfterFailure = other.getDelayAfterFailure();
+        if (this$delayAfterFailure == null ? other$delayAfterFailure != null : !this$delayAfterFailure.equals(other$delayAfterFailure)) {
+            return false;
+        }
+        Object this$enabled = this.getEnabled();
+        Object other$enabled = other.getEnabled();
+        if (this$enabled == null ? other$enabled != null : !this$enabled.equals(other$enabled)) {
+            return false;
+        }
+        Object this$unneededTime = this.getUnneededTime();
+        Object other$unneededTime = other.getUnneededTime();
+        if (this$unneededTime == null ? other$unneededTime != null : !this$unneededTime.equals(other$unneededTime)) {
+            return false;
+        }
+        Object this$utilizationThreshold = this.getUtilizationThreshold();
+        Object other$utilizationThreshold = other.getUtilizationThreshold();
+        if (this$utilizationThreshold == null ? other$utilizationThreshold != null : !this$utilizationThreshold.equals(other$utilizationThreshold)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterAutoscalerSpecScaleDown;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $delayAfterAdd = this.getDelayAfterAdd();
+        result = result * prime + ($delayAfterAdd == null ? 43 : $delayAfterAdd.hashCode());
+        Object $delayAfterDelete = this.getDelayAfterDelete();
+        result = result * prime + ($delayAfterDelete == null ? 43 : $delayAfterDelete.hashCode());
+        Object $delayAfterFailure = this.getDelayAfterFailure();
+        result = result * prime + ($delayAfterFailure == null ? 43 : $delayAfterFailure.hashCode());
+        Object $enabled = this.getEnabled();
+        result = result * prime + ($enabled == null ? 43 : $enabled.hashCode());
+        Object $unneededTime = this.getUnneededTime();
+        result = result * prime + ($unneededTime == null ? 43 : $unneededTime.hashCode());
+        Object $utilizationThreshold = this.getUtilizationThreshold();
+        result = result * prime + ($utilizationThreshold == null ? 43 : $utilizationThreshold.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterAutoscalerSpecScaleDown(" + "delayAfterAdd=" + this.getDelayAfterAdd() + ", delayAfterDelete=" + this.getDelayAfterDelete() + ", delayAfterFailure=" + this.getDelayAfterFailure() + ", enabled=" + this.getEnabled() + ", unneededTime=" + this.getUnneededTime() + ", utilizationThreshold=" + this.getUtilizationThreshold() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

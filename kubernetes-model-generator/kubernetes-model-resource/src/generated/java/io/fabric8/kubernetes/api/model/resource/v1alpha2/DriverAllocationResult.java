@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DriverAllocationResult contains vendor parameters and the allocation result for one request.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "namedResources",
     "vendorRequestParameters"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -142,6 +133,57 @@ public class DriverAllocationResult implements Editable<DriverAllocationResultBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DriverAllocationResult)) {
+            return false;
+        }
+        DriverAllocationResult other = (DriverAllocationResult) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$namedResources = this.getNamedResources();
+        Object other$namedResources = other.getNamedResources();
+        if (this$namedResources == null ? other$namedResources != null : !this$namedResources.equals(other$namedResources)) {
+            return false;
+        }
+        Object this$vendorRequestParameters = this.getVendorRequestParameters();
+        Object other$vendorRequestParameters = other.getVendorRequestParameters();
+        if (this$vendorRequestParameters == null ? other$vendorRequestParameters != null : !this$vendorRequestParameters.equals(other$vendorRequestParameters)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DriverAllocationResult;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $namedResources = this.getNamedResources();
+        result = result * prime + ($namedResources == null ? 43 : $namedResources.hashCode());
+        Object $vendorRequestParameters = this.getVendorRequestParameters();
+        result = result * prime + ($vendorRequestParameters == null ? 43 : $vendorRequestParameters.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DriverAllocationResult(" + "namedResources=" + this.getNamedResources() + ", vendorRequestParameters=" + this.getVendorRequestParameters() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

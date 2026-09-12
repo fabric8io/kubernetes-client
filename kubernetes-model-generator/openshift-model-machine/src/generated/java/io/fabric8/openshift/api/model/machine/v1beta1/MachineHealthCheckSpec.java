@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MachineHealthCheckSpec defines the desired state of MachineHealthCheck
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "remediationTemplate",
     "selector",
     "unhealthyConditions"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -203,6 +194,78 @@ public class MachineHealthCheckSpec implements Editable<MachineHealthCheckSpecBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachineHealthCheckSpec)) {
+            return false;
+        }
+        MachineHealthCheckSpec other = (MachineHealthCheckSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$maxUnhealthy = this.getMaxUnhealthy();
+        Object other$maxUnhealthy = other.getMaxUnhealthy();
+        if (this$maxUnhealthy == null ? other$maxUnhealthy != null : !this$maxUnhealthy.equals(other$maxUnhealthy)) {
+            return false;
+        }
+        Object this$nodeStartupTimeout = this.getNodeStartupTimeout();
+        Object other$nodeStartupTimeout = other.getNodeStartupTimeout();
+        if (this$nodeStartupTimeout == null ? other$nodeStartupTimeout != null : !this$nodeStartupTimeout.equals(other$nodeStartupTimeout)) {
+            return false;
+        }
+        Object this$remediationTemplate = this.getRemediationTemplate();
+        Object other$remediationTemplate = other.getRemediationTemplate();
+        if (this$remediationTemplate == null ? other$remediationTemplate != null : !this$remediationTemplate.equals(other$remediationTemplate)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$unhealthyConditions = this.getUnhealthyConditions();
+        Object other$unhealthyConditions = other.getUnhealthyConditions();
+        if (this$unhealthyConditions == null ? other$unhealthyConditions != null : !this$unhealthyConditions.equals(other$unhealthyConditions)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachineHealthCheckSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $maxUnhealthy = this.getMaxUnhealthy();
+        result = result * prime + ($maxUnhealthy == null ? 43 : $maxUnhealthy.hashCode());
+        Object $nodeStartupTimeout = this.getNodeStartupTimeout();
+        result = result * prime + ($nodeStartupTimeout == null ? 43 : $nodeStartupTimeout.hashCode());
+        Object $remediationTemplate = this.getRemediationTemplate();
+        result = result * prime + ($remediationTemplate == null ? 43 : $remediationTemplate.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $unhealthyConditions = this.getUnhealthyConditions();
+        result = result * prime + ($unhealthyConditions == null ? 43 : $unhealthyConditions.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachineHealthCheckSpec(" + "maxUnhealthy=" + this.getMaxUnhealthy() + ", nodeStartupTimeout=" + this.getNodeStartupTimeout() + ", remediationTemplate=" + this.getRemediationTemplate() + ", selector=" + this.getSelector() + ", unhealthyConditions=" + this.getUnhealthyConditions() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

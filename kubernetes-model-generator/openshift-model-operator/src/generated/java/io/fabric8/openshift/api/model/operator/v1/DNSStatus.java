@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DNSStatus defines the observed status of the DNS.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "clusterDomain",
     "clusterIP",
     "conditions"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -164,6 +155,64 @@ public class DNSStatus implements Editable<DNSStatusBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DNSStatus)) {
+            return false;
+        }
+        DNSStatus other = (DNSStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterDomain = this.getClusterDomain();
+        Object other$clusterDomain = other.getClusterDomain();
+        if (this$clusterDomain == null ? other$clusterDomain != null : !this$clusterDomain.equals(other$clusterDomain)) {
+            return false;
+        }
+        Object this$clusterIP = this.getClusterIP();
+        Object other$clusterIP = other.getClusterIP();
+        if (this$clusterIP == null ? other$clusterIP != null : !this$clusterIP.equals(other$clusterIP)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DNSStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterDomain = this.getClusterDomain();
+        result = result * prime + ($clusterDomain == null ? 43 : $clusterDomain.hashCode());
+        Object $clusterIP = this.getClusterIP();
+        result = result * prime + ($clusterIP == null ? 43 : $clusterIP.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DNSStatus(" + "clusterDomain=" + this.getClusterDomain() + ", clusterIP=" + this.getClusterIP() + ", conditions=" + this.getConditions() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

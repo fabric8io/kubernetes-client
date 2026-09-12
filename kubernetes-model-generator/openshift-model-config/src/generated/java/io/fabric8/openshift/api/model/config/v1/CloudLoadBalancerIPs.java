@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CloudLoadBalancerIPs contains the Load Balancer IPs for the cloud's API, API-Int and Ingress Load balancers. They will be populated as soon as the respective Load Balancers have been configured. These values are utilized to configure the DNS solution hosted within the cluster.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "apiIntLoadBalancerIPs",
     "apiLoadBalancerIPs",
     "ingressLoadBalancerIPs"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -167,6 +158,64 @@ public class CloudLoadBalancerIPs implements Editable<CloudLoadBalancerIPsBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CloudLoadBalancerIPs)) {
+            return false;
+        }
+        CloudLoadBalancerIPs other = (CloudLoadBalancerIPs) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiIntLoadBalancerIPs = this.getApiIntLoadBalancerIPs();
+        Object other$apiIntLoadBalancerIPs = other.getApiIntLoadBalancerIPs();
+        if (this$apiIntLoadBalancerIPs == null ? other$apiIntLoadBalancerIPs != null : !this$apiIntLoadBalancerIPs.equals(other$apiIntLoadBalancerIPs)) {
+            return false;
+        }
+        Object this$apiLoadBalancerIPs = this.getApiLoadBalancerIPs();
+        Object other$apiLoadBalancerIPs = other.getApiLoadBalancerIPs();
+        if (this$apiLoadBalancerIPs == null ? other$apiLoadBalancerIPs != null : !this$apiLoadBalancerIPs.equals(other$apiLoadBalancerIPs)) {
+            return false;
+        }
+        Object this$ingressLoadBalancerIPs = this.getIngressLoadBalancerIPs();
+        Object other$ingressLoadBalancerIPs = other.getIngressLoadBalancerIPs();
+        if (this$ingressLoadBalancerIPs == null ? other$ingressLoadBalancerIPs != null : !this$ingressLoadBalancerIPs.equals(other$ingressLoadBalancerIPs)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CloudLoadBalancerIPs;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiIntLoadBalancerIPs = this.getApiIntLoadBalancerIPs();
+        result = result * prime + ($apiIntLoadBalancerIPs == null ? 43 : $apiIntLoadBalancerIPs.hashCode());
+        Object $apiLoadBalancerIPs = this.getApiLoadBalancerIPs();
+        result = result * prime + ($apiLoadBalancerIPs == null ? 43 : $apiLoadBalancerIPs.hashCode());
+        Object $ingressLoadBalancerIPs = this.getIngressLoadBalancerIPs();
+        result = result * prime + ($ingressLoadBalancerIPs == null ? 43 : $ingressLoadBalancerIPs.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CloudLoadBalancerIPs(" + "apiIntLoadBalancerIPs=" + this.getApiIntLoadBalancerIPs() + ", apiLoadBalancerIPs=" + this.getApiLoadBalancerIPs() + ", ingressLoadBalancerIPs=" + this.getIngressLoadBalancerIPs() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

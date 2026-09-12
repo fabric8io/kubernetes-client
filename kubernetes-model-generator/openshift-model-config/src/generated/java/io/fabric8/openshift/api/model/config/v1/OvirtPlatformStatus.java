@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OvirtPlatformStatus holds the current status of the  oVirt infrastructure provider.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "ingressIPs",
     "loadBalancer",
     "nodeDNSIP"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -225,6 +216,85 @@ public class OvirtPlatformStatus implements Editable<OvirtPlatformStatusBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OvirtPlatformStatus)) {
+            return false;
+        }
+        OvirtPlatformStatus other = (OvirtPlatformStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiServerInternalIP = this.getApiServerInternalIP();
+        Object other$apiServerInternalIP = other.getApiServerInternalIP();
+        if (this$apiServerInternalIP == null ? other$apiServerInternalIP != null : !this$apiServerInternalIP.equals(other$apiServerInternalIP)) {
+            return false;
+        }
+        Object this$apiServerInternalIPs = this.getApiServerInternalIPs();
+        Object other$apiServerInternalIPs = other.getApiServerInternalIPs();
+        if (this$apiServerInternalIPs == null ? other$apiServerInternalIPs != null : !this$apiServerInternalIPs.equals(other$apiServerInternalIPs)) {
+            return false;
+        }
+        Object this$ingressIP = this.getIngressIP();
+        Object other$ingressIP = other.getIngressIP();
+        if (this$ingressIP == null ? other$ingressIP != null : !this$ingressIP.equals(other$ingressIP)) {
+            return false;
+        }
+        Object this$ingressIPs = this.getIngressIPs();
+        Object other$ingressIPs = other.getIngressIPs();
+        if (this$ingressIPs == null ? other$ingressIPs != null : !this$ingressIPs.equals(other$ingressIPs)) {
+            return false;
+        }
+        Object this$loadBalancer = this.getLoadBalancer();
+        Object other$loadBalancer = other.getLoadBalancer();
+        if (this$loadBalancer == null ? other$loadBalancer != null : !this$loadBalancer.equals(other$loadBalancer)) {
+            return false;
+        }
+        Object this$nodeDNSIP = this.getNodeDNSIP();
+        Object other$nodeDNSIP = other.getNodeDNSIP();
+        if (this$nodeDNSIP == null ? other$nodeDNSIP != null : !this$nodeDNSIP.equals(other$nodeDNSIP)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OvirtPlatformStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiServerInternalIP = this.getApiServerInternalIP();
+        result = result * prime + ($apiServerInternalIP == null ? 43 : $apiServerInternalIP.hashCode());
+        Object $apiServerInternalIPs = this.getApiServerInternalIPs();
+        result = result * prime + ($apiServerInternalIPs == null ? 43 : $apiServerInternalIPs.hashCode());
+        Object $ingressIP = this.getIngressIP();
+        result = result * prime + ($ingressIP == null ? 43 : $ingressIP.hashCode());
+        Object $ingressIPs = this.getIngressIPs();
+        result = result * prime + ($ingressIPs == null ? 43 : $ingressIPs.hashCode());
+        Object $loadBalancer = this.getLoadBalancer();
+        result = result * prime + ($loadBalancer == null ? 43 : $loadBalancer.hashCode());
+        Object $nodeDNSIP = this.getNodeDNSIP();
+        result = result * prime + ($nodeDNSIP == null ? 43 : $nodeDNSIP.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OvirtPlatformStatus(" + "apiServerInternalIP=" + this.getApiServerInternalIP() + ", apiServerInternalIPs=" + this.getApiServerInternalIPs() + ", ingressIP=" + this.getIngressIP() + ", ingressIPs=" + this.getIngressIPs() + ", loadBalancer=" + this.getLoadBalancer() + ", nodeDNSIP=" + this.getNodeDNSIP() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

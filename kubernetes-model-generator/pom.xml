@@ -118,11 +118,6 @@
 
     <!-- CompileOnly (provided) dependencies -->
     <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>io.sundr</groupId>
       <artifactId>builder-annotations</artifactId>
       <scope>provided</scope>
@@ -370,9 +365,8 @@
              (add-source src/generated/java, add-resource src/generated/resources, attach-artifact with
              skipAttach), in every descendant rather than only the converted modules. They are no-ops
              where those directories are absent, which is everywhere outside the model modules.
-           - a child pom that declares its own <annotationProcessorPaths> would win over this one by
-             inheritance and silently restore a lombok-only path under -Pgenerate. No module under this
-             parent declares maven-compiler-plugin today; keep it that way. -->
+           - annotation processing is disabled by default. The two build-time helpers that still use
+             Lombok opt in locally; published model modules must remain processor-free. -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
@@ -395,19 +389,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <!-- Run Lombok only (it keeps equals/hashCode/toString on the POJOs) and leave sundrio APT
-               off, so the committed Builders compile as plain source. Restricting the processor path
-               to the lombok artifact is enough on its own: javac auto-discovers Lombok through its
-               META-INF/services, and sundrio (builder-annotations) is simply not on the path, so it
-               never runs. This deliberately avoids naming Lombok's internal processor classes, which
-               are coupled to ${lombok.version}. The 'generate' profile below re-enables sundrio. -->
-          <annotationProcessorPaths>
-            <path>
-              <groupId>org.projectlombok</groupId>
-              <artifactId>lombok</artifactId>
-              <version>${lombok.version}</version>
-            </path>
-          </annotationProcessorPaths>
+          <proc>none</proc>
         </configuration>
       </plugin>
     </plugins>
@@ -415,14 +397,12 @@
 
   <profiles>
     <!-- #5622 — regeneration half of the mechanism (activated by `mvn -Pgenerate`, e.g. via
-         `make generate-model`); the default-build half is unconditional, in <build> above.
+         `make generate-model`); annotation processing is disabled in the default build.
 
          The empty <annotationProcessorPaths> override is what re-enables sundrio: with no processor
-         path, javac discovers BOTH Lombok and sundrio from the compile classpath, so sundrio resolves
-         its referenced Builders from the dependency jars (no shadow copies). It must stay an override
-         of the lombok-only path in <build>; profiles are injected into this pom's own model before
-         inheritance is assembled, so descendants inherit an already-empty value and cannot reorder or
-         lose it. If it ever stopped winning, sundrio would SILENTLY stop regenerating and
+         path and proc=full, javac discovers sundrio from the compile classpath, so it resolves its
+         referenced Builders from the dependency jars (no shadow copies). If this stopped winning,
+         sundrio would SILENTLY stop regenerating and
          `make generate-model` would just recompile the stale committed Builders — the
          generate-model.yml drift guard is the safety net that would catch that.
 
@@ -443,6 +423,7 @@
                    the dedicated src/generated-builders/java (NOT src/generated/java) means the wipe
                    only clears the Builders, never the POJOs that are sundrio's input. -->
               <generatedSourcesDirectory>${sundrio.generatedBuildersDirectory}</generatedSourcesDirectory>
+              <proc>full</proc>
               <annotationProcessorPaths combine.self="override"/>
             </configuration>
           </plugin>

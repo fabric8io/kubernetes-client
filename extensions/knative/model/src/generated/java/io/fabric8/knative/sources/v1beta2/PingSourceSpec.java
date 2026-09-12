@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PingSourceSpec defines the desired state of the PingSource.
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "schedule",
     "sink",
     "timezone"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -242,6 +233,92 @@ public class PingSourceSpec implements Editable<PingSourceSpecBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PingSourceSpec)) {
+            return false;
+        }
+        PingSourceSpec other = (PingSourceSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ceOverrides = this.getCeOverrides();
+        Object other$ceOverrides = other.getCeOverrides();
+        if (this$ceOverrides == null ? other$ceOverrides != null : !this$ceOverrides.equals(other$ceOverrides)) {
+            return false;
+        }
+        Object this$contentType = this.getContentType();
+        Object other$contentType = other.getContentType();
+        if (this$contentType == null ? other$contentType != null : !this$contentType.equals(other$contentType)) {
+            return false;
+        }
+        Object this$data = this.getData();
+        Object other$data = other.getData();
+        if (this$data == null ? other$data != null : !this$data.equals(other$data)) {
+            return false;
+        }
+        Object this$dataBase64 = this.getDataBase64();
+        Object other$dataBase64 = other.getDataBase64();
+        if (this$dataBase64 == null ? other$dataBase64 != null : !this$dataBase64.equals(other$dataBase64)) {
+            return false;
+        }
+        Object this$schedule = this.getSchedule();
+        Object other$schedule = other.getSchedule();
+        if (this$schedule == null ? other$schedule != null : !this$schedule.equals(other$schedule)) {
+            return false;
+        }
+        Object this$sink = this.getSink();
+        Object other$sink = other.getSink();
+        if (this$sink == null ? other$sink != null : !this$sink.equals(other$sink)) {
+            return false;
+        }
+        Object this$timezone = this.getTimezone();
+        Object other$timezone = other.getTimezone();
+        if (this$timezone == null ? other$timezone != null : !this$timezone.equals(other$timezone)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PingSourceSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ceOverrides = this.getCeOverrides();
+        result = result * prime + ($ceOverrides == null ? 43 : $ceOverrides.hashCode());
+        Object $contentType = this.getContentType();
+        result = result * prime + ($contentType == null ? 43 : $contentType.hashCode());
+        Object $data = this.getData();
+        result = result * prime + ($data == null ? 43 : $data.hashCode());
+        Object $dataBase64 = this.getDataBase64();
+        result = result * prime + ($dataBase64 == null ? 43 : $dataBase64.hashCode());
+        Object $schedule = this.getSchedule();
+        result = result * prime + ($schedule == null ? 43 : $schedule.hashCode());
+        Object $sink = this.getSink();
+        result = result * prime + ($sink == null ? 43 : $sink.hashCode());
+        Object $timezone = this.getTimezone();
+        result = result * prime + ($timezone == null ? 43 : $timezone.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PingSourceSpec(" + "ceOverrides=" + this.getCeOverrides() + ", contentType=" + this.getContentType() + ", data=" + this.getData() + ", dataBase64=" + this.getDataBase64() + ", schedule=" + this.getSchedule() + ", sink=" + this.getSink() + ", timezone=" + this.getTimezone() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PlacementRuleSpec defines the desired state of PlacementRule
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "policies",
     "resourceHint",
     "schedulerName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -248,6 +239,92 @@ public class PlacementRuleSpec implements Editable<PlacementRuleSpecBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PlacementRuleSpec)) {
+            return false;
+        }
+        PlacementRuleSpec other = (PlacementRuleSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterConditions = this.getClusterConditions();
+        Object other$clusterConditions = other.getClusterConditions();
+        if (this$clusterConditions == null ? other$clusterConditions != null : !this$clusterConditions.equals(other$clusterConditions)) {
+            return false;
+        }
+        Object this$clusterReplicas = this.getClusterReplicas();
+        Object other$clusterReplicas = other.getClusterReplicas();
+        if (this$clusterReplicas == null ? other$clusterReplicas != null : !this$clusterReplicas.equals(other$clusterReplicas)) {
+            return false;
+        }
+        Object this$clusterSelector = this.getClusterSelector();
+        Object other$clusterSelector = other.getClusterSelector();
+        if (this$clusterSelector == null ? other$clusterSelector != null : !this$clusterSelector.equals(other$clusterSelector)) {
+            return false;
+        }
+        Object this$clusters = this.getClusters();
+        Object other$clusters = other.getClusters();
+        if (this$clusters == null ? other$clusters != null : !this$clusters.equals(other$clusters)) {
+            return false;
+        }
+        Object this$policies = this.getPolicies();
+        Object other$policies = other.getPolicies();
+        if (this$policies == null ? other$policies != null : !this$policies.equals(other$policies)) {
+            return false;
+        }
+        Object this$resourceHint = this.getResourceHint();
+        Object other$resourceHint = other.getResourceHint();
+        if (this$resourceHint == null ? other$resourceHint != null : !this$resourceHint.equals(other$resourceHint)) {
+            return false;
+        }
+        Object this$schedulerName = this.getSchedulerName();
+        Object other$schedulerName = other.getSchedulerName();
+        if (this$schedulerName == null ? other$schedulerName != null : !this$schedulerName.equals(other$schedulerName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PlacementRuleSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterConditions = this.getClusterConditions();
+        result = result * prime + ($clusterConditions == null ? 43 : $clusterConditions.hashCode());
+        Object $clusterReplicas = this.getClusterReplicas();
+        result = result * prime + ($clusterReplicas == null ? 43 : $clusterReplicas.hashCode());
+        Object $clusterSelector = this.getClusterSelector();
+        result = result * prime + ($clusterSelector == null ? 43 : $clusterSelector.hashCode());
+        Object $clusters = this.getClusters();
+        result = result * prime + ($clusters == null ? 43 : $clusters.hashCode());
+        Object $policies = this.getPolicies();
+        result = result * prime + ($policies == null ? 43 : $policies.hashCode());
+        Object $resourceHint = this.getResourceHint();
+        result = result * prime + ($resourceHint == null ? 43 : $resourceHint.hashCode());
+        Object $schedulerName = this.getSchedulerName();
+        result = result * prime + ($schedulerName == null ? 43 : $schedulerName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PlacementRuleSpec(" + "clusterConditions=" + this.getClusterConditions() + ", clusterReplicas=" + this.getClusterReplicas() + ", clusterSelector=" + this.getClusterSelector() + ", clusters=" + this.getClusters() + ", policies=" + this.getPolicies() + ", resourceHint=" + this.getResourceHint() + ", schedulerName=" + this.getSchedulerName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

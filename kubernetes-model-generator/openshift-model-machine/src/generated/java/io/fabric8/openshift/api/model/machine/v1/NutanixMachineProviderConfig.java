@@ -34,9 +34,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NutanixMachineProviderConfig is the Schema for the nutanixmachineproviderconfigs API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
@@ -62,12 +59,6 @@ import lombok.experimental.Accessors;
     "userDataSecret",
     "vcpuSockets",
     "vcpusPerSocket"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -476,6 +467,169 @@ public class NutanixMachineProviderConfig implements Editable<NutanixMachineProv
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NutanixMachineProviderConfig)) {
+            return false;
+        }
+        NutanixMachineProviderConfig other = (NutanixMachineProviderConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$bootType = this.getBootType();
+        Object other$bootType = other.getBootType();
+        if (this$bootType == null ? other$bootType != null : !this$bootType.equals(other$bootType)) {
+            return false;
+        }
+        Object this$categories = this.getCategories();
+        Object other$categories = other.getCategories();
+        if (this$categories == null ? other$categories != null : !this$categories.equals(other$categories)) {
+            return false;
+        }
+        Object this$cluster = this.getCluster();
+        Object other$cluster = other.getCluster();
+        if (this$cluster == null ? other$cluster != null : !this$cluster.equals(other$cluster)) {
+            return false;
+        }
+        Object this$credentialsSecret = this.getCredentialsSecret();
+        Object other$credentialsSecret = other.getCredentialsSecret();
+        if (this$credentialsSecret == null ? other$credentialsSecret != null : !this$credentialsSecret.equals(other$credentialsSecret)) {
+            return false;
+        }
+        Object this$dataDisks = this.getDataDisks();
+        Object other$dataDisks = other.getDataDisks();
+        if (this$dataDisks == null ? other$dataDisks != null : !this$dataDisks.equals(other$dataDisks)) {
+            return false;
+        }
+        Object this$failureDomain = this.getFailureDomain();
+        Object other$failureDomain = other.getFailureDomain();
+        if (this$failureDomain == null ? other$failureDomain != null : !this$failureDomain.equals(other$failureDomain)) {
+            return false;
+        }
+        Object this$gpus = this.getGpus();
+        Object other$gpus = other.getGpus();
+        if (this$gpus == null ? other$gpus != null : !this$gpus.equals(other$gpus)) {
+            return false;
+        }
+        Object this$image = this.getImage();
+        Object other$image = other.getImage();
+        if (this$image == null ? other$image != null : !this$image.equals(other$image)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$memorySize = this.getMemorySize();
+        Object other$memorySize = other.getMemorySize();
+        if (this$memorySize == null ? other$memorySize != null : !this$memorySize.equals(other$memorySize)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$project = this.getProject();
+        Object other$project = other.getProject();
+        if (this$project == null ? other$project != null : !this$project.equals(other$project)) {
+            return false;
+        }
+        Object this$subnets = this.getSubnets();
+        Object other$subnets = other.getSubnets();
+        if (this$subnets == null ? other$subnets != null : !this$subnets.equals(other$subnets)) {
+            return false;
+        }
+        Object this$systemDiskSize = this.getSystemDiskSize();
+        Object other$systemDiskSize = other.getSystemDiskSize();
+        if (this$systemDiskSize == null ? other$systemDiskSize != null : !this$systemDiskSize.equals(other$systemDiskSize)) {
+            return false;
+        }
+        Object this$userDataSecret = this.getUserDataSecret();
+        Object other$userDataSecret = other.getUserDataSecret();
+        if (this$userDataSecret == null ? other$userDataSecret != null : !this$userDataSecret.equals(other$userDataSecret)) {
+            return false;
+        }
+        Object this$vcpuSockets = this.getVcpuSockets();
+        Object other$vcpuSockets = other.getVcpuSockets();
+        if (this$vcpuSockets == null ? other$vcpuSockets != null : !this$vcpuSockets.equals(other$vcpuSockets)) {
+            return false;
+        }
+        Object this$vcpusPerSocket = this.getVcpusPerSocket();
+        Object other$vcpusPerSocket = other.getVcpusPerSocket();
+        if (this$vcpusPerSocket == null ? other$vcpusPerSocket != null : !this$vcpusPerSocket.equals(other$vcpusPerSocket)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NutanixMachineProviderConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $bootType = this.getBootType();
+        result = result * prime + ($bootType == null ? 43 : $bootType.hashCode());
+        Object $categories = this.getCategories();
+        result = result * prime + ($categories == null ? 43 : $categories.hashCode());
+        Object $cluster = this.getCluster();
+        result = result * prime + ($cluster == null ? 43 : $cluster.hashCode());
+        Object $credentialsSecret = this.getCredentialsSecret();
+        result = result * prime + ($credentialsSecret == null ? 43 : $credentialsSecret.hashCode());
+        Object $dataDisks = this.getDataDisks();
+        result = result * prime + ($dataDisks == null ? 43 : $dataDisks.hashCode());
+        Object $failureDomain = this.getFailureDomain();
+        result = result * prime + ($failureDomain == null ? 43 : $failureDomain.hashCode());
+        Object $gpus = this.getGpus();
+        result = result * prime + ($gpus == null ? 43 : $gpus.hashCode());
+        Object $image = this.getImage();
+        result = result * prime + ($image == null ? 43 : $image.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $memorySize = this.getMemorySize();
+        result = result * prime + ($memorySize == null ? 43 : $memorySize.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $project = this.getProject();
+        result = result * prime + ($project == null ? 43 : $project.hashCode());
+        Object $subnets = this.getSubnets();
+        result = result * prime + ($subnets == null ? 43 : $subnets.hashCode());
+        Object $systemDiskSize = this.getSystemDiskSize();
+        result = result * prime + ($systemDiskSize == null ? 43 : $systemDiskSize.hashCode());
+        Object $userDataSecret = this.getUserDataSecret();
+        result = result * prime + ($userDataSecret == null ? 43 : $userDataSecret.hashCode());
+        Object $vcpuSockets = this.getVcpuSockets();
+        result = result * prime + ($vcpuSockets == null ? 43 : $vcpuSockets.hashCode());
+        Object $vcpusPerSocket = this.getVcpusPerSocket();
+        result = result * prime + ($vcpusPerSocket == null ? 43 : $vcpusPerSocket.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NutanixMachineProviderConfig(" + "apiVersion=" + this.getApiVersion() + ", bootType=" + this.getBootType() + ", categories=" + this.getCategories() + ", cluster=" + this.getCluster() + ", credentialsSecret=" + this.getCredentialsSecret() + ", dataDisks=" + this.getDataDisks() + ", failureDomain=" + this.getFailureDomain() + ", gpus=" + this.getGpus() + ", image=" + this.getImage() + ", kind=" + this.getKind() + ", memorySize=" + this.getMemorySize() + ", metadata=" + this.getMetadata() + ", project=" + this.getProject() + ", subnets=" + this.getSubnets() + ", systemDiskSize=" + this.getSystemDiskSize() + ", userDataSecret=" + this.getUserDataSecret() + ", vcpuSockets=" + this.getVcpuSockets() + ", vcpusPerSocket=" + this.getVcpusPerSocket() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

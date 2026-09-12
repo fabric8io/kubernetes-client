@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DNSRecordSpec contains the details of a DNS record.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "recordTTL",
     "recordType",
     "targets"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -204,6 +195,78 @@ public class DNSRecordSpec implements Editable<DNSRecordSpecBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DNSRecordSpec)) {
+            return false;
+        }
+        DNSRecordSpec other = (DNSRecordSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$dnsManagementPolicy = this.getDnsManagementPolicy();
+        Object other$dnsManagementPolicy = other.getDnsManagementPolicy();
+        if (this$dnsManagementPolicy == null ? other$dnsManagementPolicy != null : !this$dnsManagementPolicy.equals(other$dnsManagementPolicy)) {
+            return false;
+        }
+        Object this$dnsName = this.getDnsName();
+        Object other$dnsName = other.getDnsName();
+        if (this$dnsName == null ? other$dnsName != null : !this$dnsName.equals(other$dnsName)) {
+            return false;
+        }
+        Object this$recordTTL = this.getRecordTTL();
+        Object other$recordTTL = other.getRecordTTL();
+        if (this$recordTTL == null ? other$recordTTL != null : !this$recordTTL.equals(other$recordTTL)) {
+            return false;
+        }
+        Object this$recordType = this.getRecordType();
+        Object other$recordType = other.getRecordType();
+        if (this$recordType == null ? other$recordType != null : !this$recordType.equals(other$recordType)) {
+            return false;
+        }
+        Object this$targets = this.getTargets();
+        Object other$targets = other.getTargets();
+        if (this$targets == null ? other$targets != null : !this$targets.equals(other$targets)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DNSRecordSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $dnsManagementPolicy = this.getDnsManagementPolicy();
+        result = result * prime + ($dnsManagementPolicy == null ? 43 : $dnsManagementPolicy.hashCode());
+        Object $dnsName = this.getDnsName();
+        result = result * prime + ($dnsName == null ? 43 : $dnsName.hashCode());
+        Object $recordTTL = this.getRecordTTL();
+        result = result * prime + ($recordTTL == null ? 43 : $recordTTL.hashCode());
+        Object $recordType = this.getRecordType();
+        result = result * prime + ($recordType == null ? 43 : $recordType.hashCode());
+        Object $targets = this.getTargets();
+        result = result * prime + ($targets == null ? 43 : $targets.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DNSRecordSpec(" + "dnsManagementPolicy=" + this.getDnsManagementPolicy() + ", dnsName=" + this.getDnsName() + ", recordTTL=" + this.getRecordTTL() + ", recordType=" + this.getRecordType() + ", targets=" + this.getTargets() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

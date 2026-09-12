@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Additional data describing the firmware setting.
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "read_only",
     "unique",
     "upper_bound"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -263,6 +254,99 @@ public class SettingSchema implements Editable<SettingSchemaBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SettingSchema)) {
+            return false;
+        }
+        SettingSchema other = (SettingSchema) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allowableValues = this.getAllowableValues();
+        Object other$allowableValues = other.getAllowableValues();
+        if (this$allowableValues == null ? other$allowableValues != null : !this$allowableValues.equals(other$allowableValues)) {
+            return false;
+        }
+        Object this$attributeType = this.getAttributeType();
+        Object other$attributeType = other.getAttributeType();
+        if (this$attributeType == null ? other$attributeType != null : !this$attributeType.equals(other$attributeType)) {
+            return false;
+        }
+        Object this$lowerBound = this.getLowerBound();
+        Object other$lowerBound = other.getLowerBound();
+        if (this$lowerBound == null ? other$lowerBound != null : !this$lowerBound.equals(other$lowerBound)) {
+            return false;
+        }
+        Object this$maxLength = this.getMaxLength();
+        Object other$maxLength = other.getMaxLength();
+        if (this$maxLength == null ? other$maxLength != null : !this$maxLength.equals(other$maxLength)) {
+            return false;
+        }
+        Object this$minLength = this.getMinLength();
+        Object other$minLength = other.getMinLength();
+        if (this$minLength == null ? other$minLength != null : !this$minLength.equals(other$minLength)) {
+            return false;
+        }
+        Object this$readOnly = this.getReadOnly();
+        Object other$readOnly = other.getReadOnly();
+        if (this$readOnly == null ? other$readOnly != null : !this$readOnly.equals(other$readOnly)) {
+            return false;
+        }
+        Object this$unique = this.getUnique();
+        Object other$unique = other.getUnique();
+        if (this$unique == null ? other$unique != null : !this$unique.equals(other$unique)) {
+            return false;
+        }
+        Object this$upperBound = this.getUpperBound();
+        Object other$upperBound = other.getUpperBound();
+        if (this$upperBound == null ? other$upperBound != null : !this$upperBound.equals(other$upperBound)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SettingSchema;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allowableValues = this.getAllowableValues();
+        result = result * prime + ($allowableValues == null ? 43 : $allowableValues.hashCode());
+        Object $attributeType = this.getAttributeType();
+        result = result * prime + ($attributeType == null ? 43 : $attributeType.hashCode());
+        Object $lowerBound = this.getLowerBound();
+        result = result * prime + ($lowerBound == null ? 43 : $lowerBound.hashCode());
+        Object $maxLength = this.getMaxLength();
+        result = result * prime + ($maxLength == null ? 43 : $maxLength.hashCode());
+        Object $minLength = this.getMinLength();
+        result = result * prime + ($minLength == null ? 43 : $minLength.hashCode());
+        Object $readOnly = this.getReadOnly();
+        result = result * prime + ($readOnly == null ? 43 : $readOnly.hashCode());
+        Object $unique = this.getUnique();
+        result = result * prime + ($unique == null ? 43 : $unique.hashCode());
+        Object $upperBound = this.getUpperBound();
+        result = result * prime + ($upperBound == null ? 43 : $upperBound.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SettingSchema(" + "allowableValues=" + this.getAllowableValues() + ", attributeType=" + this.getAttributeType() + ", lowerBound=" + this.getLowerBound() + ", maxLength=" + this.getMaxLength() + ", minLength=" + this.getMinLength() + ", readOnly=" + this.getReadOnly() + ", unique=" + this.getUnique() + ", upperBound=" + this.getUpperBound() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

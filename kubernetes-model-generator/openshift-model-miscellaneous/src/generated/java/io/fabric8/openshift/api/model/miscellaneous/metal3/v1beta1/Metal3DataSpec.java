@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Metal3DataSpec defines the desired state of Metal3Data.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "networkData",
     "template",
     "templateReference"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -221,6 +212,85 @@ public class Metal3DataSpec implements Editable<Metal3DataSpecBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Metal3DataSpec)) {
+            return false;
+        }
+        Metal3DataSpec other = (Metal3DataSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$claim = this.getClaim();
+        Object other$claim = other.getClaim();
+        if (this$claim == null ? other$claim != null : !this$claim.equals(other$claim)) {
+            return false;
+        }
+        Object this$index = this.getIndex();
+        Object other$index = other.getIndex();
+        if (this$index == null ? other$index != null : !this$index.equals(other$index)) {
+            return false;
+        }
+        Object this$metaData = this.getMetaData();
+        Object other$metaData = other.getMetaData();
+        if (this$metaData == null ? other$metaData != null : !this$metaData.equals(other$metaData)) {
+            return false;
+        }
+        Object this$networkData = this.getNetworkData();
+        Object other$networkData = other.getNetworkData();
+        if (this$networkData == null ? other$networkData != null : !this$networkData.equals(other$networkData)) {
+            return false;
+        }
+        Object this$template = this.getTemplate();
+        Object other$template = other.getTemplate();
+        if (this$template == null ? other$template != null : !this$template.equals(other$template)) {
+            return false;
+        }
+        Object this$templateReference = this.getTemplateReference();
+        Object other$templateReference = other.getTemplateReference();
+        if (this$templateReference == null ? other$templateReference != null : !this$templateReference.equals(other$templateReference)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Metal3DataSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $claim = this.getClaim();
+        result = result * prime + ($claim == null ? 43 : $claim.hashCode());
+        Object $index = this.getIndex();
+        result = result * prime + ($index == null ? 43 : $index.hashCode());
+        Object $metaData = this.getMetaData();
+        result = result * prime + ($metaData == null ? 43 : $metaData.hashCode());
+        Object $networkData = this.getNetworkData();
+        result = result * prime + ($networkData == null ? 43 : $networkData.hashCode());
+        Object $template = this.getTemplate();
+        result = result * prime + ($template == null ? 43 : $template.hashCode());
+        Object $templateReference = this.getTemplateReference();
+        result = result * prime + ($templateReference == null ? 43 : $templateReference.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Metal3DataSpec(" + "claim=" + this.getClaim() + ", index=" + this.getIndex() + ", metaData=" + this.getMetaData() + ", networkData=" + this.getNetworkData() + ", template=" + this.getTemplate() + ", templateReference=" + this.getTemplateReference() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

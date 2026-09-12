@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ConsoleNotificationSpec is the desired console notification configuration.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "link",
     "location",
     "text"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,78 @@ public class ConsoleNotificationSpec implements Editable<ConsoleNotificationSpec
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConsoleNotificationSpec)) {
+            return false;
+        }
+        ConsoleNotificationSpec other = (ConsoleNotificationSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$backgroundColor = this.getBackgroundColor();
+        Object other$backgroundColor = other.getBackgroundColor();
+        if (this$backgroundColor == null ? other$backgroundColor != null : !this$backgroundColor.equals(other$backgroundColor)) {
+            return false;
+        }
+        Object this$color = this.getColor();
+        Object other$color = other.getColor();
+        if (this$color == null ? other$color != null : !this$color.equals(other$color)) {
+            return false;
+        }
+        Object this$link = this.getLink();
+        Object other$link = other.getLink();
+        if (this$link == null ? other$link != null : !this$link.equals(other$link)) {
+            return false;
+        }
+        Object this$location = this.getLocation();
+        Object other$location = other.getLocation();
+        if (this$location == null ? other$location != null : !this$location.equals(other$location)) {
+            return false;
+        }
+        Object this$text = this.getText();
+        Object other$text = other.getText();
+        if (this$text == null ? other$text != null : !this$text.equals(other$text)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConsoleNotificationSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $backgroundColor = this.getBackgroundColor();
+        result = result * prime + ($backgroundColor == null ? 43 : $backgroundColor.hashCode());
+        Object $color = this.getColor();
+        result = result * prime + ($color == null ? 43 : $color.hashCode());
+        Object $link = this.getLink();
+        result = result * prime + ($link == null ? 43 : $link.hashCode());
+        Object $location = this.getLocation();
+        result = result * prime + ($location == null ? 43 : $location.hashCode());
+        Object $text = this.getText();
+        result = result * prime + ($text == null ? 43 : $text.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConsoleNotificationSpec(" + "backgroundColor=" + this.getBackgroundColor() + ", color=" + this.getColor() + ", link=" + this.getLink() + ", location=" + this.getLocation() + ", text=" + this.getText() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

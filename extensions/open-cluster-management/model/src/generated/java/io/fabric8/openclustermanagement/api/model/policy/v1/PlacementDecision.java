@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PlacementDecision is the cluster name returned by the placement resource.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "clusterName",
     "clusterNamespace"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class PlacementDecision implements Editable<PlacementDecisionBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PlacementDecision)) {
+            return false;
+        }
+        PlacementDecision other = (PlacementDecision) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterName = this.getClusterName();
+        Object other$clusterName = other.getClusterName();
+        if (this$clusterName == null ? other$clusterName != null : !this$clusterName.equals(other$clusterName)) {
+            return false;
+        }
+        Object this$clusterNamespace = this.getClusterNamespace();
+        Object other$clusterNamespace = other.getClusterNamespace();
+        if (this$clusterNamespace == null ? other$clusterNamespace != null : !this$clusterNamespace.equals(other$clusterNamespace)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PlacementDecision;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterName = this.getClusterName();
+        result = result * prime + ($clusterName == null ? 43 : $clusterName.hashCode());
+        Object $clusterNamespace = this.getClusterNamespace();
+        result = result * prime + ($clusterNamespace == null ? 43 : $clusterNamespace.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PlacementDecision(" + "clusterName=" + this.getClusterName() + ", clusterNamespace=" + this.getClusterNamespace() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

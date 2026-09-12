@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MetaDataFromLabel contains the information to fetch a label content, if the label does not exist, it is rendered as empty string.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "key",
     "label",
     "object"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class MetaDataFromLabel implements Editable<MetaDataFromLabelBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MetaDataFromLabel)) {
+            return false;
+        }
+        MetaDataFromLabel other = (MetaDataFromLabel) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$key = this.getKey();
+        Object other$key = other.getKey();
+        if (this$key == null ? other$key != null : !this$key.equals(other$key)) {
+            return false;
+        }
+        Object this$label = this.getLabel();
+        Object other$label = other.getLabel();
+        if (this$label == null ? other$label != null : !this$label.equals(other$label)) {
+            return false;
+        }
+        Object this$object = this.getObject();
+        Object other$object = other.getObject();
+        if (this$object == null ? other$object != null : !this$object.equals(other$object)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MetaDataFromLabel;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $key = this.getKey();
+        result = result * prime + ($key == null ? 43 : $key.hashCode());
+        Object $label = this.getLabel();
+        result = result * prime + ($label == null ? 43 : $label.hashCode());
+        Object $object = this.getObject();
+        result = result * prime + ($object == null ? 43 : $object.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MetaDataFromLabel(" + "key=" + this.getKey() + ", label=" + this.getLabel() + ", object=" + this.getObject() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

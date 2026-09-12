@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "port",
     "sqlType",
     "table"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -257,6 +248,99 @@ public class PMJVMMySQLSpec implements Editable<PMJVMMySQLSpecBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PMJVMMySQLSpec)) {
+            return false;
+        }
+        PMJVMMySQLSpec other = (PMJVMMySQLSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$database = this.getDatabase();
+        Object other$database = other.getDatabase();
+        if (this$database == null ? other$database != null : !this$database.equals(other$database)) {
+            return false;
+        }
+        Object this$exception = this.getException();
+        Object other$exception = other.getException();
+        if (this$exception == null ? other$exception != null : !this$exception.equals(other$exception)) {
+            return false;
+        }
+        Object this$latency = this.getLatency();
+        Object other$latency = other.getLatency();
+        if (this$latency == null ? other$latency != null : !this$latency.equals(other$latency)) {
+            return false;
+        }
+        Object this$mysqlConnectorVersion = this.getMysqlConnectorVersion();
+        Object other$mysqlConnectorVersion = other.getMysqlConnectorVersion();
+        if (this$mysqlConnectorVersion == null ? other$mysqlConnectorVersion != null : !this$mysqlConnectorVersion.equals(other$mysqlConnectorVersion)) {
+            return false;
+        }
+        Object this$pid = this.getPid();
+        Object other$pid = other.getPid();
+        if (this$pid == null ? other$pid != null : !this$pid.equals(other$pid)) {
+            return false;
+        }
+        Object this$port = this.getPort();
+        Object other$port = other.getPort();
+        if (this$port == null ? other$port != null : !this$port.equals(other$port)) {
+            return false;
+        }
+        Object this$sqlType = this.getSqlType();
+        Object other$sqlType = other.getSqlType();
+        if (this$sqlType == null ? other$sqlType != null : !this$sqlType.equals(other$sqlType)) {
+            return false;
+        }
+        Object this$table = this.getTable();
+        Object other$table = other.getTable();
+        if (this$table == null ? other$table != null : !this$table.equals(other$table)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PMJVMMySQLSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $database = this.getDatabase();
+        result = result * prime + ($database == null ? 43 : $database.hashCode());
+        Object $exception = this.getException();
+        result = result * prime + ($exception == null ? 43 : $exception.hashCode());
+        Object $latency = this.getLatency();
+        result = result * prime + ($latency == null ? 43 : $latency.hashCode());
+        Object $mysqlConnectorVersion = this.getMysqlConnectorVersion();
+        result = result * prime + ($mysqlConnectorVersion == null ? 43 : $mysqlConnectorVersion.hashCode());
+        Object $pid = this.getPid();
+        result = result * prime + ($pid == null ? 43 : $pid.hashCode());
+        Object $port = this.getPort();
+        result = result * prime + ($port == null ? 43 : $port.hashCode());
+        Object $sqlType = this.getSqlType();
+        result = result * prime + ($sqlType == null ? 43 : $sqlType.hashCode());
+        Object $table = this.getTable();
+        result = result * prime + ($table == null ? 43 : $table.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PMJVMMySQLSpec(" + "database=" + this.getDatabase() + ", exception=" + this.getException() + ", latency=" + this.getLatency() + ", mysqlConnectorVersion=" + this.getMysqlConnectorVersion() + ", pid=" + this.getPid() + ", port=" + this.getPort() + ", sqlType=" + this.getSqlType() + ", table=" + this.getTable() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

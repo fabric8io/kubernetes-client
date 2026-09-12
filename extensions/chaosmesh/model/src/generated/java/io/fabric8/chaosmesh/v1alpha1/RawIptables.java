@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RawIptables represents the iptables rules on specific pod
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "ipsets",
     "name",
     "source"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -204,6 +195,78 @@ public class RawIptables implements Editable<RawIptablesBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RawIptables)) {
+            return false;
+        }
+        RawIptables other = (RawIptables) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$device = this.getDevice();
+        Object other$device = other.getDevice();
+        if (this$device == null ? other$device != null : !this$device.equals(other$device)) {
+            return false;
+        }
+        Object this$direction = this.getDirection();
+        Object other$direction = other.getDirection();
+        if (this$direction == null ? other$direction != null : !this$direction.equals(other$direction)) {
+            return false;
+        }
+        Object this$ipsets = this.getIpsets();
+        Object other$ipsets = other.getIpsets();
+        if (this$ipsets == null ? other$ipsets != null : !this$ipsets.equals(other$ipsets)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$source = this.getSource();
+        Object other$source = other.getSource();
+        if (this$source == null ? other$source != null : !this$source.equals(other$source)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RawIptables;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $device = this.getDevice();
+        result = result * prime + ($device == null ? 43 : $device.hashCode());
+        Object $direction = this.getDirection();
+        result = result * prime + ($direction == null ? 43 : $direction.hashCode());
+        Object $ipsets = this.getIpsets();
+        result = result * prime + ($ipsets == null ? 43 : $ipsets.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $source = this.getSource();
+        result = result * prime + ($source == null ? 43 : $source.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RawIptables(" + "device=" + this.getDevice() + ", direction=" + this.getDirection() + ", ipsets=" + this.getIpsets() + ", name=" + this.getName() + ", source=" + this.getSource() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

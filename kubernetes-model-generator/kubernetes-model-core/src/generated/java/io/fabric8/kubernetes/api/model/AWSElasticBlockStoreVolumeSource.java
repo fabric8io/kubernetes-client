@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Represents a Persistent Disk resource in AWS.<br><p> <br><p> An AWS EBS disk must exist before mounting to a container. The disk must also be in the same AWS zone as the kubelet. An AWS EBS disk can only be mounted as read/write once. AWS EBS volumes support ownership management and SELinux relabeling.
@@ -27,12 +24,6 @@ import lombok.experimental.Accessors;
     "partition",
     "readOnly",
     "volumeID"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -151,6 +142,71 @@ public class AWSElasticBlockStoreVolumeSource implements Editable<AWSElasticBloc
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AWSElasticBlockStoreVolumeSource)) {
+            return false;
+        }
+        AWSElasticBlockStoreVolumeSource other = (AWSElasticBlockStoreVolumeSource) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$fsType = this.getFsType();
+        Object other$fsType = other.getFsType();
+        if (this$fsType == null ? other$fsType != null : !this$fsType.equals(other$fsType)) {
+            return false;
+        }
+        Object this$partition = this.getPartition();
+        Object other$partition = other.getPartition();
+        if (this$partition == null ? other$partition != null : !this$partition.equals(other$partition)) {
+            return false;
+        }
+        Object this$readOnly = this.getReadOnly();
+        Object other$readOnly = other.getReadOnly();
+        if (this$readOnly == null ? other$readOnly != null : !this$readOnly.equals(other$readOnly)) {
+            return false;
+        }
+        Object this$volumeID = this.getVolumeID();
+        Object other$volumeID = other.getVolumeID();
+        if (this$volumeID == null ? other$volumeID != null : !this$volumeID.equals(other$volumeID)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AWSElasticBlockStoreVolumeSource;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $fsType = this.getFsType();
+        result = result * prime + ($fsType == null ? 43 : $fsType.hashCode());
+        Object $partition = this.getPartition();
+        result = result * prime + ($partition == null ? 43 : $partition.hashCode());
+        Object $readOnly = this.getReadOnly();
+        result = result * prime + ($readOnly == null ? 43 : $readOnly.hashCode());
+        Object $volumeID = this.getVolumeID();
+        result = result * prime + ($volumeID == null ? 43 : $volumeID.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AWSElasticBlockStoreVolumeSource(" + "fsType=" + this.getFsType() + ", partition=" + this.getPartition() + ", readOnly=" + this.getReadOnly() + ", volumeID=" + this.getVolumeID() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

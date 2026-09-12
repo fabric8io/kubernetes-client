@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Helm chart repository exposed within the cluster
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "description",
     "disabled",
     "name"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class HelmChartRepositorySpec implements Editable<HelmChartRepositorySpec
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HelmChartRepositorySpec)) {
+            return false;
+        }
+        HelmChartRepositorySpec other = (HelmChartRepositorySpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$connectionConfig = this.getConnectionConfig();
+        Object other$connectionConfig = other.getConnectionConfig();
+        if (this$connectionConfig == null ? other$connectionConfig != null : !this$connectionConfig.equals(other$connectionConfig)) {
+            return false;
+        }
+        Object this$description = this.getDescription();
+        Object other$description = other.getDescription();
+        if (this$description == null ? other$description != null : !this$description.equals(other$description)) {
+            return false;
+        }
+        Object this$disabled = this.getDisabled();
+        Object other$disabled = other.getDisabled();
+        if (this$disabled == null ? other$disabled != null : !this$disabled.equals(other$disabled)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HelmChartRepositorySpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $connectionConfig = this.getConnectionConfig();
+        result = result * prime + ($connectionConfig == null ? 43 : $connectionConfig.hashCode());
+        Object $description = this.getDescription();
+        result = result * prime + ($description == null ? 43 : $description.hashCode());
+        Object $disabled = this.getDisabled();
+        result = result * prime + ($disabled == null ? 43 : $disabled.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HelmChartRepositorySpec(" + "connectionConfig=" + this.getConnectionConfig() + ", description=" + this.getDescription() + ", disabled=" + this.getDisabled() + ", name=" + this.getName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

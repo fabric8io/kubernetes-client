@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -38,12 +35,6 @@ import lombok.experimental.Accessors;
     "dns-domain-name",
     "dns-ip",
     "dns-server"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -157,6 +148,64 @@ public class NetworkDNSSpec implements Editable<NetworkDNSSpecBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkDNSSpec)) {
+            return false;
+        }
+        NetworkDNSSpec other = (NetworkDNSSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$dnsDomainName = this.getDnsDomainName();
+        Object other$dnsDomainName = other.getDnsDomainName();
+        if (this$dnsDomainName == null ? other$dnsDomainName != null : !this$dnsDomainName.equals(other$dnsDomainName)) {
+            return false;
+        }
+        Object this$dnsIp = this.getDnsIp();
+        Object other$dnsIp = other.getDnsIp();
+        if (this$dnsIp == null ? other$dnsIp != null : !this$dnsIp.equals(other$dnsIp)) {
+            return false;
+        }
+        Object this$dnsServer = this.getDnsServer();
+        Object other$dnsServer = other.getDnsServer();
+        if (this$dnsServer == null ? other$dnsServer != null : !this$dnsServer.equals(other$dnsServer)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkDNSSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $dnsDomainName = this.getDnsDomainName();
+        result = result * prime + ($dnsDomainName == null ? 43 : $dnsDomainName.hashCode());
+        Object $dnsIp = this.getDnsIp();
+        result = result * prime + ($dnsIp == null ? 43 : $dnsIp.hashCode());
+        Object $dnsServer = this.getDnsServer();
+        result = result * prime + ($dnsServer == null ? 43 : $dnsServer.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkDNSSpec(" + "dnsDomainName=" + this.getDnsDomainName() + ", dnsIp=" + this.getDnsIp() + ", dnsServer=" + this.getDnsServer() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

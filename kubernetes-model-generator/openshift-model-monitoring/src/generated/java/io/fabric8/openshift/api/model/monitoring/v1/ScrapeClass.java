@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "name",
     "relabelings",
     "tlsConfig"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -244,6 +235,99 @@ public class ScrapeClass implements Editable<ScrapeClassBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ScrapeClass)) {
+            return false;
+        }
+        ScrapeClass other = (ScrapeClass) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$attachMetadata = this.getAttachMetadata();
+        Object other$attachMetadata = other.getAttachMetadata();
+        if (this$attachMetadata == null ? other$attachMetadata != null : !this$attachMetadata.equals(other$attachMetadata)) {
+            return false;
+        }
+        Object this$authorization = this.getAuthorization();
+        Object other$authorization = other.getAuthorization();
+        if (this$authorization == null ? other$authorization != null : !this$authorization.equals(other$authorization)) {
+            return false;
+        }
+        Object this$_default = this.getDefault();
+        Object other$_default = other.getDefault();
+        if (this$_default == null ? other$_default != null : !this$_default.equals(other$_default)) {
+            return false;
+        }
+        Object this$fallbackScrapeProtocol = this.getFallbackScrapeProtocol();
+        Object other$fallbackScrapeProtocol = other.getFallbackScrapeProtocol();
+        if (this$fallbackScrapeProtocol == null ? other$fallbackScrapeProtocol != null : !this$fallbackScrapeProtocol.equals(other$fallbackScrapeProtocol)) {
+            return false;
+        }
+        Object this$metricRelabelings = this.getMetricRelabelings();
+        Object other$metricRelabelings = other.getMetricRelabelings();
+        if (this$metricRelabelings == null ? other$metricRelabelings != null : !this$metricRelabelings.equals(other$metricRelabelings)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$relabelings = this.getRelabelings();
+        Object other$relabelings = other.getRelabelings();
+        if (this$relabelings == null ? other$relabelings != null : !this$relabelings.equals(other$relabelings)) {
+            return false;
+        }
+        Object this$tlsConfig = this.getTlsConfig();
+        Object other$tlsConfig = other.getTlsConfig();
+        if (this$tlsConfig == null ? other$tlsConfig != null : !this$tlsConfig.equals(other$tlsConfig)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ScrapeClass;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $attachMetadata = this.getAttachMetadata();
+        result = result * prime + ($attachMetadata == null ? 43 : $attachMetadata.hashCode());
+        Object $authorization = this.getAuthorization();
+        result = result * prime + ($authorization == null ? 43 : $authorization.hashCode());
+        Object $_default = this.getDefault();
+        result = result * prime + ($_default == null ? 43 : $_default.hashCode());
+        Object $fallbackScrapeProtocol = this.getFallbackScrapeProtocol();
+        result = result * prime + ($fallbackScrapeProtocol == null ? 43 : $fallbackScrapeProtocol.hashCode());
+        Object $metricRelabelings = this.getMetricRelabelings();
+        result = result * prime + ($metricRelabelings == null ? 43 : $metricRelabelings.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $relabelings = this.getRelabelings();
+        result = result * prime + ($relabelings == null ? 43 : $relabelings.hashCode());
+        Object $tlsConfig = this.getTlsConfig();
+        result = result * prime + ($tlsConfig == null ? 43 : $tlsConfig.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ScrapeClass(" + "attachMetadata=" + this.getAttachMetadata() + ", authorization=" + this.getAuthorization() + ", _default=" + this.getDefault() + ", fallbackScrapeProtocol=" + this.getFallbackScrapeProtocol() + ", metricRelabelings=" + this.getMetricRelabelings() + ", name=" + this.getName() + ", relabelings=" + this.getRelabelings() + ", tlsConfig=" + this.getTlsConfig() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

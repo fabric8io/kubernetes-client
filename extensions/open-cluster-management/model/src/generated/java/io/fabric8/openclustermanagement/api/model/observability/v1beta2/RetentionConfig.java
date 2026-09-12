@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RetentionConfig is the spec of retention configurations.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "retentionResolution1h",
     "retentionResolution5m",
     "retentionResolutionRaw"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -220,6 +211,85 @@ public class RetentionConfig implements Editable<RetentionConfigBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RetentionConfig)) {
+            return false;
+        }
+        RetentionConfig other = (RetentionConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$blockDuration = this.getBlockDuration();
+        Object other$blockDuration = other.getBlockDuration();
+        if (this$blockDuration == null ? other$blockDuration != null : !this$blockDuration.equals(other$blockDuration)) {
+            return false;
+        }
+        Object this$deleteDelay = this.getDeleteDelay();
+        Object other$deleteDelay = other.getDeleteDelay();
+        if (this$deleteDelay == null ? other$deleteDelay != null : !this$deleteDelay.equals(other$deleteDelay)) {
+            return false;
+        }
+        Object this$retentionInLocal = this.getRetentionInLocal();
+        Object other$retentionInLocal = other.getRetentionInLocal();
+        if (this$retentionInLocal == null ? other$retentionInLocal != null : !this$retentionInLocal.equals(other$retentionInLocal)) {
+            return false;
+        }
+        Object this$retentionResolution1h = this.getRetentionResolution1h();
+        Object other$retentionResolution1h = other.getRetentionResolution1h();
+        if (this$retentionResolution1h == null ? other$retentionResolution1h != null : !this$retentionResolution1h.equals(other$retentionResolution1h)) {
+            return false;
+        }
+        Object this$retentionResolution5m = this.getRetentionResolution5m();
+        Object other$retentionResolution5m = other.getRetentionResolution5m();
+        if (this$retentionResolution5m == null ? other$retentionResolution5m != null : !this$retentionResolution5m.equals(other$retentionResolution5m)) {
+            return false;
+        }
+        Object this$retentionResolutionRaw = this.getRetentionResolutionRaw();
+        Object other$retentionResolutionRaw = other.getRetentionResolutionRaw();
+        if (this$retentionResolutionRaw == null ? other$retentionResolutionRaw != null : !this$retentionResolutionRaw.equals(other$retentionResolutionRaw)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RetentionConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $blockDuration = this.getBlockDuration();
+        result = result * prime + ($blockDuration == null ? 43 : $blockDuration.hashCode());
+        Object $deleteDelay = this.getDeleteDelay();
+        result = result * prime + ($deleteDelay == null ? 43 : $deleteDelay.hashCode());
+        Object $retentionInLocal = this.getRetentionInLocal();
+        result = result * prime + ($retentionInLocal == null ? 43 : $retentionInLocal.hashCode());
+        Object $retentionResolution1h = this.getRetentionResolution1h();
+        result = result * prime + ($retentionResolution1h == null ? 43 : $retentionResolution1h.hashCode());
+        Object $retentionResolution5m = this.getRetentionResolution5m();
+        result = result * prime + ($retentionResolution5m == null ? 43 : $retentionResolution5m.hashCode());
+        Object $retentionResolutionRaw = this.getRetentionResolutionRaw();
+        result = result * prime + ($retentionResolutionRaw == null ? 43 : $retentionResolutionRaw.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RetentionConfig(" + "blockDuration=" + this.getBlockDuration() + ", deleteDelay=" + this.getDeleteDelay() + ", retentionInLocal=" + this.getRetentionInLocal() + ", retentionResolution1h=" + this.getRetentionResolution1h() + ", retentionResolution5m=" + this.getRetentionResolution5m() + ", retentionResolutionRaw=" + this.getRetentionResolutionRaw() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

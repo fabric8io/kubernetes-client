@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ACMEIssuerDNS01ProviderRFC2136 is a structure containing the configuration for RFC2136 DNS
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "tsigAlgorithm",
     "tsigKeyName",
     "tsigSecretSecretRef"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -201,6 +192,78 @@ public class ACMEIssuerDNS01ProviderRFC2136 implements Editable<ACMEIssuerDNS01P
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ACMEIssuerDNS01ProviderRFC2136)) {
+            return false;
+        }
+        ACMEIssuerDNS01ProviderRFC2136 other = (ACMEIssuerDNS01ProviderRFC2136) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$nameserver = this.getNameserver();
+        Object other$nameserver = other.getNameserver();
+        if (this$nameserver == null ? other$nameserver != null : !this$nameserver.equals(other$nameserver)) {
+            return false;
+        }
+        Object this$protocol = this.getProtocol();
+        Object other$protocol = other.getProtocol();
+        if (this$protocol == null ? other$protocol != null : !this$protocol.equals(other$protocol)) {
+            return false;
+        }
+        Object this$tsigAlgorithm = this.getTsigAlgorithm();
+        Object other$tsigAlgorithm = other.getTsigAlgorithm();
+        if (this$tsigAlgorithm == null ? other$tsigAlgorithm != null : !this$tsigAlgorithm.equals(other$tsigAlgorithm)) {
+            return false;
+        }
+        Object this$tsigKeyName = this.getTsigKeyName();
+        Object other$tsigKeyName = other.getTsigKeyName();
+        if (this$tsigKeyName == null ? other$tsigKeyName != null : !this$tsigKeyName.equals(other$tsigKeyName)) {
+            return false;
+        }
+        Object this$tsigSecretSecretRef = this.getTsigSecretSecretRef();
+        Object other$tsigSecretSecretRef = other.getTsigSecretSecretRef();
+        if (this$tsigSecretSecretRef == null ? other$tsigSecretSecretRef != null : !this$tsigSecretSecretRef.equals(other$tsigSecretSecretRef)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ACMEIssuerDNS01ProviderRFC2136;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $nameserver = this.getNameserver();
+        result = result * prime + ($nameserver == null ? 43 : $nameserver.hashCode());
+        Object $protocol = this.getProtocol();
+        result = result * prime + ($protocol == null ? 43 : $protocol.hashCode());
+        Object $tsigAlgorithm = this.getTsigAlgorithm();
+        result = result * prime + ($tsigAlgorithm == null ? 43 : $tsigAlgorithm.hashCode());
+        Object $tsigKeyName = this.getTsigKeyName();
+        result = result * prime + ($tsigKeyName == null ? 43 : $tsigKeyName.hashCode());
+        Object $tsigSecretSecretRef = this.getTsigSecretSecretRef();
+        result = result * prime + ($tsigSecretSecretRef == null ? 43 : $tsigSecretSecretRef.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ACMEIssuerDNS01ProviderRFC2136(" + "nameserver=" + this.getNameserver() + ", protocol=" + this.getProtocol() + ", tsigAlgorithm=" + this.getTsigAlgorithm() + ", tsigKeyName=" + this.getTsigKeyName() + ", tsigSecretSecretRef=" + this.getTsigSecretSecretRef() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

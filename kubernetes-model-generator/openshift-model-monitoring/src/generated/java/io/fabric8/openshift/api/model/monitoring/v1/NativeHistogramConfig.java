@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NativeHistogramConfig extends the native histogram configuration settings.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "nativeHistogramMinBucketFactor",
     "scrapeClassicHistograms",
     "scrapeNativeHistograms"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,78 @@ public class NativeHistogramConfig implements Editable<NativeHistogramConfigBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NativeHistogramConfig)) {
+            return false;
+        }
+        NativeHistogramConfig other = (NativeHistogramConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$convertClassicHistogramsToNHCB = this.getConvertClassicHistogramsToNHCB();
+        Object other$convertClassicHistogramsToNHCB = other.getConvertClassicHistogramsToNHCB();
+        if (this$convertClassicHistogramsToNHCB == null ? other$convertClassicHistogramsToNHCB != null : !this$convertClassicHistogramsToNHCB.equals(other$convertClassicHistogramsToNHCB)) {
+            return false;
+        }
+        Object this$nativeHistogramBucketLimit = this.getNativeHistogramBucketLimit();
+        Object other$nativeHistogramBucketLimit = other.getNativeHistogramBucketLimit();
+        if (this$nativeHistogramBucketLimit == null ? other$nativeHistogramBucketLimit != null : !this$nativeHistogramBucketLimit.equals(other$nativeHistogramBucketLimit)) {
+            return false;
+        }
+        Object this$nativeHistogramMinBucketFactor = this.getNativeHistogramMinBucketFactor();
+        Object other$nativeHistogramMinBucketFactor = other.getNativeHistogramMinBucketFactor();
+        if (this$nativeHistogramMinBucketFactor == null ? other$nativeHistogramMinBucketFactor != null : !this$nativeHistogramMinBucketFactor.equals(other$nativeHistogramMinBucketFactor)) {
+            return false;
+        }
+        Object this$scrapeClassicHistograms = this.getScrapeClassicHistograms();
+        Object other$scrapeClassicHistograms = other.getScrapeClassicHistograms();
+        if (this$scrapeClassicHistograms == null ? other$scrapeClassicHistograms != null : !this$scrapeClassicHistograms.equals(other$scrapeClassicHistograms)) {
+            return false;
+        }
+        Object this$scrapeNativeHistograms = this.getScrapeNativeHistograms();
+        Object other$scrapeNativeHistograms = other.getScrapeNativeHistograms();
+        if (this$scrapeNativeHistograms == null ? other$scrapeNativeHistograms != null : !this$scrapeNativeHistograms.equals(other$scrapeNativeHistograms)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NativeHistogramConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $convertClassicHistogramsToNHCB = this.getConvertClassicHistogramsToNHCB();
+        result = result * prime + ($convertClassicHistogramsToNHCB == null ? 43 : $convertClassicHistogramsToNHCB.hashCode());
+        Object $nativeHistogramBucketLimit = this.getNativeHistogramBucketLimit();
+        result = result * prime + ($nativeHistogramBucketLimit == null ? 43 : $nativeHistogramBucketLimit.hashCode());
+        Object $nativeHistogramMinBucketFactor = this.getNativeHistogramMinBucketFactor();
+        result = result * prime + ($nativeHistogramMinBucketFactor == null ? 43 : $nativeHistogramMinBucketFactor.hashCode());
+        Object $scrapeClassicHistograms = this.getScrapeClassicHistograms();
+        result = result * prime + ($scrapeClassicHistograms == null ? 43 : $scrapeClassicHistograms.hashCode());
+        Object $scrapeNativeHistograms = this.getScrapeNativeHistograms();
+        result = result * prime + ($scrapeNativeHistograms == null ? 43 : $scrapeNativeHistograms.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NativeHistogramConfig(" + "convertClassicHistogramsToNHCB=" + this.getConvertClassicHistogramsToNHCB() + ", nativeHistogramBucketLimit=" + this.getNativeHistogramBucketLimit() + ", nativeHistogramMinBucketFactor=" + this.getNativeHistogramMinBucketFactor() + ", scrapeClassicHistograms=" + this.getScrapeClassicHistograms() + ", scrapeNativeHistograms=" + this.getScrapeNativeHistograms() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

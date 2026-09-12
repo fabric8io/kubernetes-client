@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ProxySpec contains cluster proxy creation configuration.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "noProxy",
     "readinessEndpoints",
     "trustedCA"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -203,6 +194,78 @@ public class ProxySpec implements Editable<ProxySpecBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ProxySpec)) {
+            return false;
+        }
+        ProxySpec other = (ProxySpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$httpProxy = this.getHttpProxy();
+        Object other$httpProxy = other.getHttpProxy();
+        if (this$httpProxy == null ? other$httpProxy != null : !this$httpProxy.equals(other$httpProxy)) {
+            return false;
+        }
+        Object this$httpsProxy = this.getHttpsProxy();
+        Object other$httpsProxy = other.getHttpsProxy();
+        if (this$httpsProxy == null ? other$httpsProxy != null : !this$httpsProxy.equals(other$httpsProxy)) {
+            return false;
+        }
+        Object this$noProxy = this.getNoProxy();
+        Object other$noProxy = other.getNoProxy();
+        if (this$noProxy == null ? other$noProxy != null : !this$noProxy.equals(other$noProxy)) {
+            return false;
+        }
+        Object this$readinessEndpoints = this.getReadinessEndpoints();
+        Object other$readinessEndpoints = other.getReadinessEndpoints();
+        if (this$readinessEndpoints == null ? other$readinessEndpoints != null : !this$readinessEndpoints.equals(other$readinessEndpoints)) {
+            return false;
+        }
+        Object this$trustedCA = this.getTrustedCA();
+        Object other$trustedCA = other.getTrustedCA();
+        if (this$trustedCA == null ? other$trustedCA != null : !this$trustedCA.equals(other$trustedCA)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ProxySpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $httpProxy = this.getHttpProxy();
+        result = result * prime + ($httpProxy == null ? 43 : $httpProxy.hashCode());
+        Object $httpsProxy = this.getHttpsProxy();
+        result = result * prime + ($httpsProxy == null ? 43 : $httpsProxy.hashCode());
+        Object $noProxy = this.getNoProxy();
+        result = result * prime + ($noProxy == null ? 43 : $noProxy.hashCode());
+        Object $readinessEndpoints = this.getReadinessEndpoints();
+        result = result * prime + ($readinessEndpoints == null ? 43 : $readinessEndpoints.hashCode());
+        Object $trustedCA = this.getTrustedCA();
+        result = result * prime + ($trustedCA == null ? 43 : $trustedCA.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ProxySpec(" + "httpProxy=" + this.getHttpProxy() + ", httpsProxy=" + this.getHttpsProxy() + ", noProxy=" + this.getNoProxy() + ", readinessEndpoints=" + this.getReadinessEndpoints() + ", trustedCA=" + this.getTrustedCA() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

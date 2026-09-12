@@ -34,9 +34,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * WorkspaceBinding maps a Task's declared workspace to a Volume.
@@ -53,12 +50,6 @@ import lombok.experimental.Accessors;
     "secret",
     "subPath",
     "volumeClaimTemplate"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -286,6 +277,106 @@ public class WorkspaceBinding implements Editable<WorkspaceBindingBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof WorkspaceBinding)) {
+            return false;
+        }
+        WorkspaceBinding other = (WorkspaceBinding) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$configMap = this.getConfigMap();
+        Object other$configMap = other.getConfigMap();
+        if (this$configMap == null ? other$configMap != null : !this$configMap.equals(other$configMap)) {
+            return false;
+        }
+        Object this$csi = this.getCsi();
+        Object other$csi = other.getCsi();
+        if (this$csi == null ? other$csi != null : !this$csi.equals(other$csi)) {
+            return false;
+        }
+        Object this$emptyDir = this.getEmptyDir();
+        Object other$emptyDir = other.getEmptyDir();
+        if (this$emptyDir == null ? other$emptyDir != null : !this$emptyDir.equals(other$emptyDir)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$persistentVolumeClaim = this.getPersistentVolumeClaim();
+        Object other$persistentVolumeClaim = other.getPersistentVolumeClaim();
+        if (this$persistentVolumeClaim == null ? other$persistentVolumeClaim != null : !this$persistentVolumeClaim.equals(other$persistentVolumeClaim)) {
+            return false;
+        }
+        Object this$projected = this.getProjected();
+        Object other$projected = other.getProjected();
+        if (this$projected == null ? other$projected != null : !this$projected.equals(other$projected)) {
+            return false;
+        }
+        Object this$secret = this.getSecret();
+        Object other$secret = other.getSecret();
+        if (this$secret == null ? other$secret != null : !this$secret.equals(other$secret)) {
+            return false;
+        }
+        Object this$subPath = this.getSubPath();
+        Object other$subPath = other.getSubPath();
+        if (this$subPath == null ? other$subPath != null : !this$subPath.equals(other$subPath)) {
+            return false;
+        }
+        Object this$volumeClaimTemplate = this.getVolumeClaimTemplate();
+        Object other$volumeClaimTemplate = other.getVolumeClaimTemplate();
+        if (this$volumeClaimTemplate == null ? other$volumeClaimTemplate != null : !this$volumeClaimTemplate.equals(other$volumeClaimTemplate)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof WorkspaceBinding;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $configMap = this.getConfigMap();
+        result = result * prime + ($configMap == null ? 43 : $configMap.hashCode());
+        Object $csi = this.getCsi();
+        result = result * prime + ($csi == null ? 43 : $csi.hashCode());
+        Object $emptyDir = this.getEmptyDir();
+        result = result * prime + ($emptyDir == null ? 43 : $emptyDir.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $persistentVolumeClaim = this.getPersistentVolumeClaim();
+        result = result * prime + ($persistentVolumeClaim == null ? 43 : $persistentVolumeClaim.hashCode());
+        Object $projected = this.getProjected();
+        result = result * prime + ($projected == null ? 43 : $projected.hashCode());
+        Object $secret = this.getSecret();
+        result = result * prime + ($secret == null ? 43 : $secret.hashCode());
+        Object $subPath = this.getSubPath();
+        result = result * prime + ($subPath == null ? 43 : $subPath.hashCode());
+        Object $volumeClaimTemplate = this.getVolumeClaimTemplate();
+        result = result * prime + ($volumeClaimTemplate == null ? 43 : $volumeClaimTemplate.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WorkspaceBinding(" + "configMap=" + this.getConfigMap() + ", csi=" + this.getCsi() + ", emptyDir=" + this.getEmptyDir() + ", name=" + this.getName() + ", persistentVolumeClaim=" + this.getPersistentVolumeClaim() + ", projected=" + this.getProjected() + ", secret=" + this.getSecret() + ", subPath=" + this.getSubPath() + ", volumeClaimTemplate=" + this.getVolumeClaimTemplate() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

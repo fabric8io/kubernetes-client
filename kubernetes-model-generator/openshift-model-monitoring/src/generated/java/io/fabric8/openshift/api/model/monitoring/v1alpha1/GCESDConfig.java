@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * GCESDConfig configures scrape targets from GCP GCE instances. The private IP address is used by default, but may be changed to the public IP address with relabeling. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#gce_sd_config<br><p> <br><p> The GCE service discovery will load the Google Cloud credentials from the file specified by the GOOGLE_APPLICATION_CREDENTIALS environment variable. See https://cloud.google.com/kubernetes-engine/docs/tutorials/authenticating-to-cloud-platform<br><p> <br><p> A pre-requisite for using GCESDConfig is that a Secret containing valid Google Cloud credentials is mounted into the Prometheus or PrometheusAgent pod via the `.spec.secrets` field and that the GOOGLE_APPLICATION_CREDENTIALS environment variable is set to /etc/prometheus/secrets/&lt;secret-name&gt;/&lt;credentials-filename.json&gt;.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "refreshInterval",
     "tagSeparator",
     "zone"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -220,6 +211,85 @@ public class GCESDConfig implements Editable<GCESDConfigBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GCESDConfig)) {
+            return false;
+        }
+        GCESDConfig other = (GCESDConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$filter = this.getFilter();
+        Object other$filter = other.getFilter();
+        if (this$filter == null ? other$filter != null : !this$filter.equals(other$filter)) {
+            return false;
+        }
+        Object this$port = this.getPort();
+        Object other$port = other.getPort();
+        if (this$port == null ? other$port != null : !this$port.equals(other$port)) {
+            return false;
+        }
+        Object this$project = this.getProject();
+        Object other$project = other.getProject();
+        if (this$project == null ? other$project != null : !this$project.equals(other$project)) {
+            return false;
+        }
+        Object this$refreshInterval = this.getRefreshInterval();
+        Object other$refreshInterval = other.getRefreshInterval();
+        if (this$refreshInterval == null ? other$refreshInterval != null : !this$refreshInterval.equals(other$refreshInterval)) {
+            return false;
+        }
+        Object this$tagSeparator = this.getTagSeparator();
+        Object other$tagSeparator = other.getTagSeparator();
+        if (this$tagSeparator == null ? other$tagSeparator != null : !this$tagSeparator.equals(other$tagSeparator)) {
+            return false;
+        }
+        Object this$zone = this.getZone();
+        Object other$zone = other.getZone();
+        if (this$zone == null ? other$zone != null : !this$zone.equals(other$zone)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GCESDConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $filter = this.getFilter();
+        result = result * prime + ($filter == null ? 43 : $filter.hashCode());
+        Object $port = this.getPort();
+        result = result * prime + ($port == null ? 43 : $port.hashCode());
+        Object $project = this.getProject();
+        result = result * prime + ($project == null ? 43 : $project.hashCode());
+        Object $refreshInterval = this.getRefreshInterval();
+        result = result * prime + ($refreshInterval == null ? 43 : $refreshInterval.hashCode());
+        Object $tagSeparator = this.getTagSeparator();
+        result = result * prime + ($tagSeparator == null ? 43 : $tagSeparator.hashCode());
+        Object $zone = this.getZone();
+        result = result * prime + ($zone == null ? 43 : $zone.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GCESDConfig(" + "filter=" + this.getFilter() + ", port=" + this.getPort() + ", project=" + this.getProject() + ", refreshInterval=" + this.getRefreshInterval() + ", tagSeparator=" + this.getTagSeparator() + ", zone=" + this.getZone() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "delivery",
     "ref",
     "uri"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -181,6 +172,78 @@ public class SequenceStep implements Editable<SequenceStepBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SequenceStep)) {
+            return false;
+        }
+        SequenceStep other = (SequenceStep) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cACerts = this.getCACerts();
+        Object other$cACerts = other.getCACerts();
+        if (this$cACerts == null ? other$cACerts != null : !this$cACerts.equals(other$cACerts)) {
+            return false;
+        }
+        Object this$audience = this.getAudience();
+        Object other$audience = other.getAudience();
+        if (this$audience == null ? other$audience != null : !this$audience.equals(other$audience)) {
+            return false;
+        }
+        Object this$delivery = this.getDelivery();
+        Object other$delivery = other.getDelivery();
+        if (this$delivery == null ? other$delivery != null : !this$delivery.equals(other$delivery)) {
+            return false;
+        }
+        Object this$ref = this.getRef();
+        Object other$ref = other.getRef();
+        if (this$ref == null ? other$ref != null : !this$ref.equals(other$ref)) {
+            return false;
+        }
+        Object this$uri = this.getUri();
+        Object other$uri = other.getUri();
+        if (this$uri == null ? other$uri != null : !this$uri.equals(other$uri)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SequenceStep;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cACerts = this.getCACerts();
+        result = result * prime + ($cACerts == null ? 43 : $cACerts.hashCode());
+        Object $audience = this.getAudience();
+        result = result * prime + ($audience == null ? 43 : $audience.hashCode());
+        Object $delivery = this.getDelivery();
+        result = result * prime + ($delivery == null ? 43 : $delivery.hashCode());
+        Object $ref = this.getRef();
+        result = result * prime + ($ref == null ? 43 : $ref.hashCode());
+        Object $uri = this.getUri();
+        result = result * prime + ($uri == null ? 43 : $uri.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SequenceStep(" + "cACerts=" + this.getCACerts() + ", audience=" + this.getAudience() + ", delivery=" + this.getDelivery() + ", ref=" + this.getRef() + ", uri=" + this.getUri() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

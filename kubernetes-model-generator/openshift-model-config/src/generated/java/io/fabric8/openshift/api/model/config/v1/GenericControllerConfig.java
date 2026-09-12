@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * GenericControllerConfig provides information to configure a controller
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "authorization",
     "leaderElection",
     "servingInfo"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -179,6 +170,71 @@ public class GenericControllerConfig implements Editable<GenericControllerConfig
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GenericControllerConfig)) {
+            return false;
+        }
+        GenericControllerConfig other = (GenericControllerConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$authentication = this.getAuthentication();
+        Object other$authentication = other.getAuthentication();
+        if (this$authentication == null ? other$authentication != null : !this$authentication.equals(other$authentication)) {
+            return false;
+        }
+        Object this$authorization = this.getAuthorization();
+        Object other$authorization = other.getAuthorization();
+        if (this$authorization == null ? other$authorization != null : !this$authorization.equals(other$authorization)) {
+            return false;
+        }
+        Object this$leaderElection = this.getLeaderElection();
+        Object other$leaderElection = other.getLeaderElection();
+        if (this$leaderElection == null ? other$leaderElection != null : !this$leaderElection.equals(other$leaderElection)) {
+            return false;
+        }
+        Object this$servingInfo = this.getServingInfo();
+        Object other$servingInfo = other.getServingInfo();
+        if (this$servingInfo == null ? other$servingInfo != null : !this$servingInfo.equals(other$servingInfo)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GenericControllerConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $authentication = this.getAuthentication();
+        result = result * prime + ($authentication == null ? 43 : $authentication.hashCode());
+        Object $authorization = this.getAuthorization();
+        result = result * prime + ($authorization == null ? 43 : $authorization.hashCode());
+        Object $leaderElection = this.getLeaderElection();
+        result = result * prime + ($leaderElection == null ? 43 : $leaderElection.hashCode());
+        Object $servingInfo = this.getServingInfo();
+        result = result * prime + ($servingInfo == null ? 43 : $servingInfo.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GenericControllerConfig(" + "authentication=" + this.getAuthentication() + ", authorization=" + this.getAuthorization() + ", leaderElection=" + this.getLeaderElection() + ", servingInfo=" + this.getServingInfo() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

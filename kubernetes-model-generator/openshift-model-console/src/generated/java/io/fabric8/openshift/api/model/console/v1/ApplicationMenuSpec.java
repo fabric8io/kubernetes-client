@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ApplicationMenuSpec is the specification of the desired section and icon used for the link in the application menu.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "imageURL",
     "section"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class ApplicationMenuSpec implements Editable<ApplicationMenuSpecBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ApplicationMenuSpec)) {
+            return false;
+        }
+        ApplicationMenuSpec other = (ApplicationMenuSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$imageURL = this.getImageURL();
+        Object other$imageURL = other.getImageURL();
+        if (this$imageURL == null ? other$imageURL != null : !this$imageURL.equals(other$imageURL)) {
+            return false;
+        }
+        Object this$section = this.getSection();
+        Object other$section = other.getSection();
+        if (this$section == null ? other$section != null : !this$section.equals(other$section)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ApplicationMenuSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $imageURL = this.getImageURL();
+        result = result * prime + ($imageURL == null ? 43 : $imageURL.hashCode());
+        Object $section = this.getSection();
+        result = result * prime + ($section == null ? 43 : $section.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ApplicationMenuSpec(" + "imageURL=" + this.getImageURL() + ", section=" + this.getSection() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

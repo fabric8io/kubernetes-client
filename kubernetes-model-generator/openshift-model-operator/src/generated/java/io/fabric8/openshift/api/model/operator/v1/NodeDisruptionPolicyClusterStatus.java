@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NodeDisruptionPolicyClusterStatus is the type for the status object, rendered by the controller as a merge of cluster defaults and user provided policies
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "files",
     "sshkey",
     "units"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -166,6 +157,64 @@ public class NodeDisruptionPolicyClusterStatus implements Editable<NodeDisruptio
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NodeDisruptionPolicyClusterStatus)) {
+            return false;
+        }
+        NodeDisruptionPolicyClusterStatus other = (NodeDisruptionPolicyClusterStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$files = this.getFiles();
+        Object other$files = other.getFiles();
+        if (this$files == null ? other$files != null : !this$files.equals(other$files)) {
+            return false;
+        }
+        Object this$sshkey = this.getSshkey();
+        Object other$sshkey = other.getSshkey();
+        if (this$sshkey == null ? other$sshkey != null : !this$sshkey.equals(other$sshkey)) {
+            return false;
+        }
+        Object this$units = this.getUnits();
+        Object other$units = other.getUnits();
+        if (this$units == null ? other$units != null : !this$units.equals(other$units)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NodeDisruptionPolicyClusterStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $files = this.getFiles();
+        result = result * prime + ($files == null ? 43 : $files.hashCode());
+        Object $sshkey = this.getSshkey();
+        result = result * prime + ($sshkey == null ? 43 : $sshkey.hashCode());
+        Object $units = this.getUnits();
+        result = result * prime + ($units == null ? 43 : $units.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NodeDisruptionPolicyClusterStatus(" + "files=" + this.getFiles() + ", sshkey=" + this.getSshkey() + ", units=" + this.getUnits() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

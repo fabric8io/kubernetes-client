@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -38,12 +35,6 @@ import lombok.experimental.Accessors;
     "dscp",
     "dstCIDR",
     "podSelector"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -151,6 +142,64 @@ public class EgressQoSRule implements Editable<EgressQoSRuleBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EgressQoSRule)) {
+            return false;
+        }
+        EgressQoSRule other = (EgressQoSRule) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$dscp = this.getDscp();
+        Object other$dscp = other.getDscp();
+        if (this$dscp == null ? other$dscp != null : !this$dscp.equals(other$dscp)) {
+            return false;
+        }
+        Object this$dstCIDR = this.getDstCIDR();
+        Object other$dstCIDR = other.getDstCIDR();
+        if (this$dstCIDR == null ? other$dstCIDR != null : !this$dstCIDR.equals(other$dstCIDR)) {
+            return false;
+        }
+        Object this$podSelector = this.getPodSelector();
+        Object other$podSelector = other.getPodSelector();
+        if (this$podSelector == null ? other$podSelector != null : !this$podSelector.equals(other$podSelector)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EgressQoSRule;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $dscp = this.getDscp();
+        result = result * prime + ($dscp == null ? 43 : $dscp.hashCode());
+        Object $dstCIDR = this.getDstCIDR();
+        result = result * prime + ($dstCIDR == null ? 43 : $dstCIDR.hashCode());
+        Object $podSelector = this.getPodSelector();
+        result = result * prime + ($podSelector == null ? 43 : $podSelector.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EgressQoSRule(" + "dscp=" + this.getDscp() + ", dstCIDR=" + this.getDstCIDR() + ", podSelector=" + this.getPodSelector() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

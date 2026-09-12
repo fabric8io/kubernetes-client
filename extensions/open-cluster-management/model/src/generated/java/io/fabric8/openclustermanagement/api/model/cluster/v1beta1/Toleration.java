@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Toleration represents the toleration object that can be attached to a placement. The placement this Toleration is attached to tolerates any taint that matches the triple &lt;key,value,effect&gt; using the matching operator &lt;operator&gt;.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "operator",
     "tolerationSeconds",
     "value"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,78 @@ public class Toleration implements Editable<TolerationBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Toleration)) {
+            return false;
+        }
+        Toleration other = (Toleration) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$effect = this.getEffect();
+        Object other$effect = other.getEffect();
+        if (this$effect == null ? other$effect != null : !this$effect.equals(other$effect)) {
+            return false;
+        }
+        Object this$key = this.getKey();
+        Object other$key = other.getKey();
+        if (this$key == null ? other$key != null : !this$key.equals(other$key)) {
+            return false;
+        }
+        Object this$operator = this.getOperator();
+        Object other$operator = other.getOperator();
+        if (this$operator == null ? other$operator != null : !this$operator.equals(other$operator)) {
+            return false;
+        }
+        Object this$tolerationSeconds = this.getTolerationSeconds();
+        Object other$tolerationSeconds = other.getTolerationSeconds();
+        if (this$tolerationSeconds == null ? other$tolerationSeconds != null : !this$tolerationSeconds.equals(other$tolerationSeconds)) {
+            return false;
+        }
+        Object this$value = this.getValue();
+        Object other$value = other.getValue();
+        if (this$value == null ? other$value != null : !this$value.equals(other$value)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Toleration;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $effect = this.getEffect();
+        result = result * prime + ($effect == null ? 43 : $effect.hashCode());
+        Object $key = this.getKey();
+        result = result * prime + ($key == null ? 43 : $key.hashCode());
+        Object $operator = this.getOperator();
+        result = result * prime + ($operator == null ? 43 : $operator.hashCode());
+        Object $tolerationSeconds = this.getTolerationSeconds();
+        result = result * prime + ($tolerationSeconds == null ? 43 : $tolerationSeconds.hashCode());
+        Object $value = this.getValue();
+        result = result * prime + ($value == null ? 43 : $value.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Toleration(" + "effect=" + this.getEffect() + ", key=" + this.getKey() + ", operator=" + this.getOperator() + ", tolerationSeconds=" + this.getTolerationSeconds() + ", value=" + this.getValue() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

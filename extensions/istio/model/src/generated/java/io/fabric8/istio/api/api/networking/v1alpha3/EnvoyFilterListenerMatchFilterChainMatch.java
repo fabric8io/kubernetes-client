@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * For listeners with multiple filter chains (e.g., inbound listeners on sidecars with permissive mTLS, gateway listeners with multiple SNI matches), the filter chain match can be used to select a specific filter chain to patch.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "name",
     "sni",
     "transportProtocol"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -220,6 +211,85 @@ public class EnvoyFilterListenerMatchFilterChainMatch implements Editable<EnvoyF
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EnvoyFilterListenerMatchFilterChainMatch)) {
+            return false;
+        }
+        EnvoyFilterListenerMatchFilterChainMatch other = (EnvoyFilterListenerMatchFilterChainMatch) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$applicationProtocols = this.getApplicationProtocols();
+        Object other$applicationProtocols = other.getApplicationProtocols();
+        if (this$applicationProtocols == null ? other$applicationProtocols != null : !this$applicationProtocols.equals(other$applicationProtocols)) {
+            return false;
+        }
+        Object this$destinationPort = this.getDestinationPort();
+        Object other$destinationPort = other.getDestinationPort();
+        if (this$destinationPort == null ? other$destinationPort != null : !this$destinationPort.equals(other$destinationPort)) {
+            return false;
+        }
+        Object this$filter = this.getFilter();
+        Object other$filter = other.getFilter();
+        if (this$filter == null ? other$filter != null : !this$filter.equals(other$filter)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$sni = this.getSni();
+        Object other$sni = other.getSni();
+        if (this$sni == null ? other$sni != null : !this$sni.equals(other$sni)) {
+            return false;
+        }
+        Object this$transportProtocol = this.getTransportProtocol();
+        Object other$transportProtocol = other.getTransportProtocol();
+        if (this$transportProtocol == null ? other$transportProtocol != null : !this$transportProtocol.equals(other$transportProtocol)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EnvoyFilterListenerMatchFilterChainMatch;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $applicationProtocols = this.getApplicationProtocols();
+        result = result * prime + ($applicationProtocols == null ? 43 : $applicationProtocols.hashCode());
+        Object $destinationPort = this.getDestinationPort();
+        result = result * prime + ($destinationPort == null ? 43 : $destinationPort.hashCode());
+        Object $filter = this.getFilter();
+        result = result * prime + ($filter == null ? 43 : $filter.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $sni = this.getSni();
+        result = result * prime + ($sni == null ? 43 : $sni.hashCode());
+        Object $transportProtocol = this.getTransportProtocol();
+        result = result * prime + ($transportProtocol == null ? 43 : $transportProtocol.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EnvoyFilterListenerMatchFilterChainMatch(" + "applicationProtocols=" + this.getApplicationProtocols() + ", destinationPort=" + this.getDestinationPort() + ", filter=" + this.getFilter() + ", name=" + this.getName() + ", sni=" + this.getSni() + ", transportProtocol=" + this.getTransportProtocol() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

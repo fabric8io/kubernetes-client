@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageRegistryConfigStorageIBMCOS holds the information to configure the registry to use IBM Cloud Object Storage for backend storage.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "resourceGroupName",
     "resourceKeyCRN",
     "serviceInstanceCRN"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,78 @@ public class ImageRegistryConfigStorageIBMCOS implements Editable<ImageRegistryC
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageRegistryConfigStorageIBMCOS)) {
+            return false;
+        }
+        ImageRegistryConfigStorageIBMCOS other = (ImageRegistryConfigStorageIBMCOS) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bucket = this.getBucket();
+        Object other$bucket = other.getBucket();
+        if (this$bucket == null ? other$bucket != null : !this$bucket.equals(other$bucket)) {
+            return false;
+        }
+        Object this$location = this.getLocation();
+        Object other$location = other.getLocation();
+        if (this$location == null ? other$location != null : !this$location.equals(other$location)) {
+            return false;
+        }
+        Object this$resourceGroupName = this.getResourceGroupName();
+        Object other$resourceGroupName = other.getResourceGroupName();
+        if (this$resourceGroupName == null ? other$resourceGroupName != null : !this$resourceGroupName.equals(other$resourceGroupName)) {
+            return false;
+        }
+        Object this$resourceKeyCRN = this.getResourceKeyCRN();
+        Object other$resourceKeyCRN = other.getResourceKeyCRN();
+        if (this$resourceKeyCRN == null ? other$resourceKeyCRN != null : !this$resourceKeyCRN.equals(other$resourceKeyCRN)) {
+            return false;
+        }
+        Object this$serviceInstanceCRN = this.getServiceInstanceCRN();
+        Object other$serviceInstanceCRN = other.getServiceInstanceCRN();
+        if (this$serviceInstanceCRN == null ? other$serviceInstanceCRN != null : !this$serviceInstanceCRN.equals(other$serviceInstanceCRN)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageRegistryConfigStorageIBMCOS;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bucket = this.getBucket();
+        result = result * prime + ($bucket == null ? 43 : $bucket.hashCode());
+        Object $location = this.getLocation();
+        result = result * prime + ($location == null ? 43 : $location.hashCode());
+        Object $resourceGroupName = this.getResourceGroupName();
+        result = result * prime + ($resourceGroupName == null ? 43 : $resourceGroupName.hashCode());
+        Object $resourceKeyCRN = this.getResourceKeyCRN();
+        result = result * prime + ($resourceKeyCRN == null ? 43 : $resourceKeyCRN.hashCode());
+        Object $serviceInstanceCRN = this.getServiceInstanceCRN();
+        result = result * prime + ($serviceInstanceCRN == null ? 43 : $serviceInstanceCRN.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageRegistryConfigStorageIBMCOS(" + "bucket=" + this.getBucket() + ", location=" + this.getLocation() + ", resourceGroupName=" + this.getResourceGroupName() + ", resourceKeyCRN=" + this.getResourceKeyCRN() + ", serviceInstanceCRN=" + this.getServiceInstanceCRN() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

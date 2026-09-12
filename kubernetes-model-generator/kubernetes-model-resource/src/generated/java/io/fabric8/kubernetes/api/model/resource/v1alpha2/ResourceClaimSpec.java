@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ResourceClaimSpec defines how a resource is to be allocated.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "allocationMode",
     "parametersRef",
     "resourceClassName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class ResourceClaimSpec implements Editable<ResourceClaimSpecBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ResourceClaimSpec)) {
+            return false;
+        }
+        ResourceClaimSpec other = (ResourceClaimSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allocationMode = this.getAllocationMode();
+        Object other$allocationMode = other.getAllocationMode();
+        if (this$allocationMode == null ? other$allocationMode != null : !this$allocationMode.equals(other$allocationMode)) {
+            return false;
+        }
+        Object this$parametersRef = this.getParametersRef();
+        Object other$parametersRef = other.getParametersRef();
+        if (this$parametersRef == null ? other$parametersRef != null : !this$parametersRef.equals(other$parametersRef)) {
+            return false;
+        }
+        Object this$resourceClassName = this.getResourceClassName();
+        Object other$resourceClassName = other.getResourceClassName();
+        if (this$resourceClassName == null ? other$resourceClassName != null : !this$resourceClassName.equals(other$resourceClassName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ResourceClaimSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allocationMode = this.getAllocationMode();
+        result = result * prime + ($allocationMode == null ? 43 : $allocationMode.hashCode());
+        Object $parametersRef = this.getParametersRef();
+        result = result * prime + ($parametersRef == null ? 43 : $parametersRef.hashCode());
+        Object $resourceClassName = this.getResourceClassName();
+        result = result * prime + ($resourceClassName == null ? 43 : $resourceClassName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ResourceClaimSpec(" + "allocationMode=" + this.getAllocationMode() + ", parametersRef=" + this.getParametersRef() + ", resourceClassName=" + this.getResourceClassName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DNSCache defines the fields for configuring DNS caching.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "negativeTTL",
     "positiveTTL"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class DNSCache implements Editable<DNSCacheBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DNSCache)) {
+            return false;
+        }
+        DNSCache other = (DNSCache) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$negativeTTL = this.getNegativeTTL();
+        Object other$negativeTTL = other.getNegativeTTL();
+        if (this$negativeTTL == null ? other$negativeTTL != null : !this$negativeTTL.equals(other$negativeTTL)) {
+            return false;
+        }
+        Object this$positiveTTL = this.getPositiveTTL();
+        Object other$positiveTTL = other.getPositiveTTL();
+        if (this$positiveTTL == null ? other$positiveTTL != null : !this$positiveTTL.equals(other$positiveTTL)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DNSCache;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $negativeTTL = this.getNegativeTTL();
+        result = result * prime + ($negativeTTL == null ? 43 : $negativeTTL.hashCode());
+        Object $positiveTTL = this.getPositiveTTL();
+        result = result * prime + ($positiveTTL == null ? 43 : $positiveTTL.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DNSCache(" + "negativeTTL=" + this.getNegativeTTL() + ", positiveTTL=" + this.getPositiveTTL() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

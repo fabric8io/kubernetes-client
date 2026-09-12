@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Match a specific virtual host inside a route configuration.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "domainName",
     "name",
     "route"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class EnvoyFilterRouteConfigurationMatchVirtualHostMatch implements Edita
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EnvoyFilterRouteConfigurationMatchVirtualHostMatch)) {
+            return false;
+        }
+        EnvoyFilterRouteConfigurationMatchVirtualHostMatch other = (EnvoyFilterRouteConfigurationMatchVirtualHostMatch) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$domainName = this.getDomainName();
+        Object other$domainName = other.getDomainName();
+        if (this$domainName == null ? other$domainName != null : !this$domainName.equals(other$domainName)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$route = this.getRoute();
+        Object other$route = other.getRoute();
+        if (this$route == null ? other$route != null : !this$route.equals(other$route)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EnvoyFilterRouteConfigurationMatchVirtualHostMatch;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $domainName = this.getDomainName();
+        result = result * prime + ($domainName == null ? 43 : $domainName.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $route = this.getRoute();
+        result = result * prime + ($route == null ? 43 : $route.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EnvoyFilterRouteConfigurationMatchVirtualHostMatch(" + "domainName=" + this.getDomainName() + ", name=" + this.getName() + ", route=" + this.getRoute() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

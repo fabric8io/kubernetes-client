@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CustomResourceDefinitionNames indicates the names to serve this CustomResourceDefinition
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "plural",
     "shortNames",
     "singular"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -226,6 +217,85 @@ public class CustomResourceDefinitionNames implements Editable<CustomResourceDef
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CustomResourceDefinitionNames)) {
+            return false;
+        }
+        CustomResourceDefinitionNames other = (CustomResourceDefinitionNames) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$categories = this.getCategories();
+        Object other$categories = other.getCategories();
+        if (this$categories == null ? other$categories != null : !this$categories.equals(other$categories)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$listKind = this.getListKind();
+        Object other$listKind = other.getListKind();
+        if (this$listKind == null ? other$listKind != null : !this$listKind.equals(other$listKind)) {
+            return false;
+        }
+        Object this$plural = this.getPlural();
+        Object other$plural = other.getPlural();
+        if (this$plural == null ? other$plural != null : !this$plural.equals(other$plural)) {
+            return false;
+        }
+        Object this$shortNames = this.getShortNames();
+        Object other$shortNames = other.getShortNames();
+        if (this$shortNames == null ? other$shortNames != null : !this$shortNames.equals(other$shortNames)) {
+            return false;
+        }
+        Object this$singular = this.getSingular();
+        Object other$singular = other.getSingular();
+        if (this$singular == null ? other$singular != null : !this$singular.equals(other$singular)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CustomResourceDefinitionNames;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $categories = this.getCategories();
+        result = result * prime + ($categories == null ? 43 : $categories.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $listKind = this.getListKind();
+        result = result * prime + ($listKind == null ? 43 : $listKind.hashCode());
+        Object $plural = this.getPlural();
+        result = result * prime + ($plural == null ? 43 : $plural.hashCode());
+        Object $shortNames = this.getShortNames();
+        result = result * prime + ($shortNames == null ? 43 : $shortNames.hashCode());
+        Object $singular = this.getSingular();
+        result = result * prime + ($singular == null ? 43 : $singular.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CustomResourceDefinitionNames(" + "categories=" + this.getCategories() + ", kind=" + this.getKind() + ", listKind=" + this.getListKind() + ", plural=" + this.getPlural() + ", shortNames=" + this.getShortNames() + ", singular=" + this.getSingular() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

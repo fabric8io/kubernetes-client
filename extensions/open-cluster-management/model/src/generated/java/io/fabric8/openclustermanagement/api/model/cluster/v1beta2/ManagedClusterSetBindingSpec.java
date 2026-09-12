@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ManagedClusterSetBindingSpec defines the attributes of ManagedClusterSetBinding.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "clusterSet"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -120,6 +111,50 @@ public class ManagedClusterSetBindingSpec implements Editable<ManagedClusterSetB
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ManagedClusterSetBindingSpec)) {
+            return false;
+        }
+        ManagedClusterSetBindingSpec other = (ManagedClusterSetBindingSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterSet = this.getClusterSet();
+        Object other$clusterSet = other.getClusterSet();
+        if (this$clusterSet == null ? other$clusterSet != null : !this$clusterSet.equals(other$clusterSet)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ManagedClusterSetBindingSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterSet = this.getClusterSet();
+        result = result * prime + ($clusterSet == null ? 43 : $clusterSet.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ManagedClusterSetBindingSpec(" + "clusterSet=" + this.getClusterSet() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Conditions specified in RouteConfigurationMatch must be met for the patch to be applied to a route configuration object or a specific virtual host within the route configuration.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "portName",
     "portNumber",
     "vhost"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,78 @@ public class EnvoyFilterRouteConfigurationMatch implements Editable<EnvoyFilterR
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EnvoyFilterRouteConfigurationMatch)) {
+            return false;
+        }
+        EnvoyFilterRouteConfigurationMatch other = (EnvoyFilterRouteConfigurationMatch) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$gateway = this.getGateway();
+        Object other$gateway = other.getGateway();
+        if (this$gateway == null ? other$gateway != null : !this$gateway.equals(other$gateway)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$portName = this.getPortName();
+        Object other$portName = other.getPortName();
+        if (this$portName == null ? other$portName != null : !this$portName.equals(other$portName)) {
+            return false;
+        }
+        Object this$portNumber = this.getPortNumber();
+        Object other$portNumber = other.getPortNumber();
+        if (this$portNumber == null ? other$portNumber != null : !this$portNumber.equals(other$portNumber)) {
+            return false;
+        }
+        Object this$vhost = this.getVhost();
+        Object other$vhost = other.getVhost();
+        if (this$vhost == null ? other$vhost != null : !this$vhost.equals(other$vhost)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EnvoyFilterRouteConfigurationMatch;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $gateway = this.getGateway();
+        result = result * prime + ($gateway == null ? 43 : $gateway.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $portName = this.getPortName();
+        result = result * prime + ($portName == null ? 43 : $portName.hashCode());
+        Object $portNumber = this.getPortNumber();
+        result = result * prime + ($portNumber == null ? 43 : $portNumber.hashCode());
+        Object $vhost = this.getVhost();
+        result = result * prime + ($vhost == null ? 43 : $vhost.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EnvoyFilterRouteConfigurationMatch(" + "gateway=" + this.getGateway() + ", name=" + this.getName() + ", portName=" + this.getPortName() + ", portNumber=" + this.getPortNumber() + ", vhost=" + this.getVhost() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

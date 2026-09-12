@@ -26,9 +26,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HTTPRequestMirrorFilter defines configuration for the RequestMirror filter.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
     "backendRef",
     "fraction",
     "percent"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -158,6 +149,64 @@ public class HTTPRequestMirrorFilter implements Editable<HTTPRequestMirrorFilter
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HTTPRequestMirrorFilter)) {
+            return false;
+        }
+        HTTPRequestMirrorFilter other = (HTTPRequestMirrorFilter) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$backendRef = this.getBackendRef();
+        Object other$backendRef = other.getBackendRef();
+        if (this$backendRef == null ? other$backendRef != null : !this$backendRef.equals(other$backendRef)) {
+            return false;
+        }
+        Object this$fraction = this.getFraction();
+        Object other$fraction = other.getFraction();
+        if (this$fraction == null ? other$fraction != null : !this$fraction.equals(other$fraction)) {
+            return false;
+        }
+        Object this$percent = this.getPercent();
+        Object other$percent = other.getPercent();
+        if (this$percent == null ? other$percent != null : !this$percent.equals(other$percent)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HTTPRequestMirrorFilter;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $backendRef = this.getBackendRef();
+        result = result * prime + ($backendRef == null ? 43 : $backendRef.hashCode());
+        Object $fraction = this.getFraction();
+        result = result * prime + ($fraction == null ? 43 : $fraction.hashCode());
+        Object $percent = this.getPercent();
+        result = result * prime + ($percent == null ? 43 : $percent.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HTTPRequestMirrorFilter(" + "backendRef=" + this.getBackendRef() + ", fraction=" + this.getFraction() + ", percent=" + this.getPercent() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

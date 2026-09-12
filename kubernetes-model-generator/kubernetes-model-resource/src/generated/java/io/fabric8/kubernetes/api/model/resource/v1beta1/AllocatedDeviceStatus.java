@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AllocatedDeviceStatus contains the status of an allocated device, if the driver chooses to report it. This may include driver-specific information.<br><p> <br><p> The combination of Driver, Pool, Device, and ShareID must match the corresponding key in Status.Allocation.Devices.
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "networkData",
     "pool",
     "shareID"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -247,6 +238,92 @@ public class AllocatedDeviceStatus implements Editable<AllocatedDeviceStatusBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AllocatedDeviceStatus)) {
+            return false;
+        }
+        AllocatedDeviceStatus other = (AllocatedDeviceStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$data = this.getData();
+        Object other$data = other.getData();
+        if (this$data == null ? other$data != null : !this$data.equals(other$data)) {
+            return false;
+        }
+        Object this$device = this.getDevice();
+        Object other$device = other.getDevice();
+        if (this$device == null ? other$device != null : !this$device.equals(other$device)) {
+            return false;
+        }
+        Object this$driver = this.getDriver();
+        Object other$driver = other.getDriver();
+        if (this$driver == null ? other$driver != null : !this$driver.equals(other$driver)) {
+            return false;
+        }
+        Object this$networkData = this.getNetworkData();
+        Object other$networkData = other.getNetworkData();
+        if (this$networkData == null ? other$networkData != null : !this$networkData.equals(other$networkData)) {
+            return false;
+        }
+        Object this$pool = this.getPool();
+        Object other$pool = other.getPool();
+        if (this$pool == null ? other$pool != null : !this$pool.equals(other$pool)) {
+            return false;
+        }
+        Object this$shareID = this.getShareID();
+        Object other$shareID = other.getShareID();
+        if (this$shareID == null ? other$shareID != null : !this$shareID.equals(other$shareID)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AllocatedDeviceStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $data = this.getData();
+        result = result * prime + ($data == null ? 43 : $data.hashCode());
+        Object $device = this.getDevice();
+        result = result * prime + ($device == null ? 43 : $device.hashCode());
+        Object $driver = this.getDriver();
+        result = result * prime + ($driver == null ? 43 : $driver.hashCode());
+        Object $networkData = this.getNetworkData();
+        result = result * prime + ($networkData == null ? 43 : $networkData.hashCode());
+        Object $pool = this.getPool();
+        result = result * prime + ($pool == null ? 43 : $pool.hashCode());
+        Object $shareID = this.getShareID();
+        result = result * prime + ($shareID == null ? 43 : $shareID.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AllocatedDeviceStatus(" + "conditions=" + this.getConditions() + ", data=" + this.getData() + ", device=" + this.getDevice() + ", driver=" + this.getDriver() + ", networkData=" + this.getNetworkData() + ", pool=" + this.getPool() + ", shareID=" + this.getShareID() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

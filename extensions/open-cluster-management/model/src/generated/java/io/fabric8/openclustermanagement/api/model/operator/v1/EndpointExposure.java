@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
     "https",
     "protocol",
     "usage"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -165,6 +156,71 @@ public class EndpointExposure implements Editable<EndpointExposureBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EndpointExposure)) {
+            return false;
+        }
+        EndpointExposure other = (EndpointExposure) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$grpc = this.getGrpc();
+        Object other$grpc = other.getGrpc();
+        if (this$grpc == null ? other$grpc != null : !this$grpc.equals(other$grpc)) {
+            return false;
+        }
+        Object this$https = this.getHttps();
+        Object other$https = other.getHttps();
+        if (this$https == null ? other$https != null : !this$https.equals(other$https)) {
+            return false;
+        }
+        Object this$protocol = this.getProtocol();
+        Object other$protocol = other.getProtocol();
+        if (this$protocol == null ? other$protocol != null : !this$protocol.equals(other$protocol)) {
+            return false;
+        }
+        Object this$usage = this.getUsage();
+        Object other$usage = other.getUsage();
+        if (this$usage == null ? other$usage != null : !this$usage.equals(other$usage)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EndpointExposure;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $grpc = this.getGrpc();
+        result = result * prime + ($grpc == null ? 43 : $grpc.hashCode());
+        Object $https = this.getHttps();
+        result = result * prime + ($https == null ? 43 : $https.hashCode());
+        Object $protocol = this.getProtocol();
+        result = result * prime + ($protocol == null ? 43 : $protocol.hashCode());
+        Object $usage = this.getUsage();
+        result = result * prime + ($usage == null ? 43 : $usage.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EndpointExposure(" + "grpc=" + this.getGrpc() + ", https=" + this.getHttps() + ", protocol=" + this.getProtocol() + ", usage=" + this.getUsage() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

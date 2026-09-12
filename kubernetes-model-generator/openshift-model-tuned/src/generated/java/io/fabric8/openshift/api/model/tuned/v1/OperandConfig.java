@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -38,12 +35,6 @@ import lombok.experimental.Accessors;
     "debug",
     "tunedConfig",
     "verbosity"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -151,6 +142,64 @@ public class OperandConfig implements Editable<OperandConfigBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OperandConfig)) {
+            return false;
+        }
+        OperandConfig other = (OperandConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$debug = this.getDebug();
+        Object other$debug = other.getDebug();
+        if (this$debug == null ? other$debug != null : !this$debug.equals(other$debug)) {
+            return false;
+        }
+        Object this$tunedConfig = this.getTunedConfig();
+        Object other$tunedConfig = other.getTunedConfig();
+        if (this$tunedConfig == null ? other$tunedConfig != null : !this$tunedConfig.equals(other$tunedConfig)) {
+            return false;
+        }
+        Object this$verbosity = this.getVerbosity();
+        Object other$verbosity = other.getVerbosity();
+        if (this$verbosity == null ? other$verbosity != null : !this$verbosity.equals(other$verbosity)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OperandConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $debug = this.getDebug();
+        result = result * prime + ($debug == null ? 43 : $debug.hashCode());
+        Object $tunedConfig = this.getTunedConfig();
+        result = result * prime + ($tunedConfig == null ? 43 : $tunedConfig.hashCode());
+        Object $verbosity = this.getVerbosity();
+        result = result * prime + ($verbosity == null ? 43 : $verbosity.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OperandConfig(" + "debug=" + this.getDebug() + ", tunedConfig=" + this.getTunedConfig() + ", verbosity=" + this.getVerbosity() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

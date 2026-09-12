@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * WebHookTrigger is a trigger that gets invoked using a webhook type of post
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "allowEnv",
     "secret",
     "secretReference"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -159,6 +150,64 @@ public class WebHookTrigger implements Editable<WebHookTriggerBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof WebHookTrigger)) {
+            return false;
+        }
+        WebHookTrigger other = (WebHookTrigger) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allowEnv = this.getAllowEnv();
+        Object other$allowEnv = other.getAllowEnv();
+        if (this$allowEnv == null ? other$allowEnv != null : !this$allowEnv.equals(other$allowEnv)) {
+            return false;
+        }
+        Object this$secret = this.getSecret();
+        Object other$secret = other.getSecret();
+        if (this$secret == null ? other$secret != null : !this$secret.equals(other$secret)) {
+            return false;
+        }
+        Object this$secretReference = this.getSecretReference();
+        Object other$secretReference = other.getSecretReference();
+        if (this$secretReference == null ? other$secretReference != null : !this$secretReference.equals(other$secretReference)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof WebHookTrigger;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allowEnv = this.getAllowEnv();
+        result = result * prime + ($allowEnv == null ? 43 : $allowEnv.hashCode());
+        Object $secret = this.getSecret();
+        result = result * prime + ($secret == null ? 43 : $secret.hashCode());
+        Object $secretReference = this.getSecretReference();
+        result = result * prime + ($secretReference == null ? 43 : $secretReference.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WebHookTrigger(" + "allowEnv=" + this.getAllowEnv() + ", secret=" + this.getSecret() + ", secretReference=" + this.getSecretReference() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

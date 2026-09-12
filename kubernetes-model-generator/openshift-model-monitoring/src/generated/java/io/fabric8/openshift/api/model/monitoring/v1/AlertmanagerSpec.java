@@ -34,9 +34,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetPersistentVolumeClaimRetentionPolicy;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AlertmanagerSpec is a specification of the desired behavior of the Alertmanager cluster. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
@@ -107,12 +104,6 @@ import lombok.experimental.Accessors;
     "volumeMounts",
     "volumes",
     "web"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -1394,6 +1385,484 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AlertmanagerSpec)) {
+            return false;
+        }
+        AlertmanagerSpec other = (AlertmanagerSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$additionalArgs = this.getAdditionalArgs();
+        Object other$additionalArgs = other.getAdditionalArgs();
+        if (this$additionalArgs == null ? other$additionalArgs != null : !this$additionalArgs.equals(other$additionalArgs)) {
+            return false;
+        }
+        Object this$additionalPeers = this.getAdditionalPeers();
+        Object other$additionalPeers = other.getAdditionalPeers();
+        if (this$additionalPeers == null ? other$additionalPeers != null : !this$additionalPeers.equals(other$additionalPeers)) {
+            return false;
+        }
+        Object this$affinity = this.getAffinity();
+        Object other$affinity = other.getAffinity();
+        if (this$affinity == null ? other$affinity != null : !this$affinity.equals(other$affinity)) {
+            return false;
+        }
+        Object this$alertmanagerConfigMatcherStrategy = this.getAlertmanagerConfigMatcherStrategy();
+        Object other$alertmanagerConfigMatcherStrategy = other.getAlertmanagerConfigMatcherStrategy();
+        if (this$alertmanagerConfigMatcherStrategy == null ? other$alertmanagerConfigMatcherStrategy != null : !this$alertmanagerConfigMatcherStrategy.equals(other$alertmanagerConfigMatcherStrategy)) {
+            return false;
+        }
+        Object this$alertmanagerConfigNamespaceSelector = this.getAlertmanagerConfigNamespaceSelector();
+        Object other$alertmanagerConfigNamespaceSelector = other.getAlertmanagerConfigNamespaceSelector();
+        if (this$alertmanagerConfigNamespaceSelector == null ? other$alertmanagerConfigNamespaceSelector != null : !this$alertmanagerConfigNamespaceSelector.equals(other$alertmanagerConfigNamespaceSelector)) {
+            return false;
+        }
+        Object this$alertmanagerConfigSelector = this.getAlertmanagerConfigSelector();
+        Object other$alertmanagerConfigSelector = other.getAlertmanagerConfigSelector();
+        if (this$alertmanagerConfigSelector == null ? other$alertmanagerConfigSelector != null : !this$alertmanagerConfigSelector.equals(other$alertmanagerConfigSelector)) {
+            return false;
+        }
+        Object this$alertmanagerConfiguration = this.getAlertmanagerConfiguration();
+        Object other$alertmanagerConfiguration = other.getAlertmanagerConfiguration();
+        if (this$alertmanagerConfiguration == null ? other$alertmanagerConfiguration != null : !this$alertmanagerConfiguration.equals(other$alertmanagerConfiguration)) {
+            return false;
+        }
+        Object this$automountServiceAccountToken = this.getAutomountServiceAccountToken();
+        Object other$automountServiceAccountToken = other.getAutomountServiceAccountToken();
+        if (this$automountServiceAccountToken == null ? other$automountServiceAccountToken != null : !this$automountServiceAccountToken.equals(other$automountServiceAccountToken)) {
+            return false;
+        }
+        Object this$baseImage = this.getBaseImage();
+        Object other$baseImage = other.getBaseImage();
+        if (this$baseImage == null ? other$baseImage != null : !this$baseImage.equals(other$baseImage)) {
+            return false;
+        }
+        Object this$clusterAdvertiseAddress = this.getClusterAdvertiseAddress();
+        Object other$clusterAdvertiseAddress = other.getClusterAdvertiseAddress();
+        if (this$clusterAdvertiseAddress == null ? other$clusterAdvertiseAddress != null : !this$clusterAdvertiseAddress.equals(other$clusterAdvertiseAddress)) {
+            return false;
+        }
+        Object this$clusterGossipInterval = this.getClusterGossipInterval();
+        Object other$clusterGossipInterval = other.getClusterGossipInterval();
+        if (this$clusterGossipInterval == null ? other$clusterGossipInterval != null : !this$clusterGossipInterval.equals(other$clusterGossipInterval)) {
+            return false;
+        }
+        Object this$clusterLabel = this.getClusterLabel();
+        Object other$clusterLabel = other.getClusterLabel();
+        if (this$clusterLabel == null ? other$clusterLabel != null : !this$clusterLabel.equals(other$clusterLabel)) {
+            return false;
+        }
+        Object this$clusterPeerTimeout = this.getClusterPeerTimeout();
+        Object other$clusterPeerTimeout = other.getClusterPeerTimeout();
+        if (this$clusterPeerTimeout == null ? other$clusterPeerTimeout != null : !this$clusterPeerTimeout.equals(other$clusterPeerTimeout)) {
+            return false;
+        }
+        Object this$clusterPushpullInterval = this.getClusterPushpullInterval();
+        Object other$clusterPushpullInterval = other.getClusterPushpullInterval();
+        if (this$clusterPushpullInterval == null ? other$clusterPushpullInterval != null : !this$clusterPushpullInterval.equals(other$clusterPushpullInterval)) {
+            return false;
+        }
+        Object this$clusterTLS = this.getClusterTLS();
+        Object other$clusterTLS = other.getClusterTLS();
+        if (this$clusterTLS == null ? other$clusterTLS != null : !this$clusterTLS.equals(other$clusterTLS)) {
+            return false;
+        }
+        Object this$configMaps = this.getConfigMaps();
+        Object other$configMaps = other.getConfigMaps();
+        if (this$configMaps == null ? other$configMaps != null : !this$configMaps.equals(other$configMaps)) {
+            return false;
+        }
+        Object this$configSecret = this.getConfigSecret();
+        Object other$configSecret = other.getConfigSecret();
+        if (this$configSecret == null ? other$configSecret != null : !this$configSecret.equals(other$configSecret)) {
+            return false;
+        }
+        Object this$containers = this.getContainers();
+        Object other$containers = other.getContainers();
+        if (this$containers == null ? other$containers != null : !this$containers.equals(other$containers)) {
+            return false;
+        }
+        Object this$dnsConfig = this.getDnsConfig();
+        Object other$dnsConfig = other.getDnsConfig();
+        if (this$dnsConfig == null ? other$dnsConfig != null : !this$dnsConfig.equals(other$dnsConfig)) {
+            return false;
+        }
+        Object this$dnsPolicy = this.getDnsPolicy();
+        Object other$dnsPolicy = other.getDnsPolicy();
+        if (this$dnsPolicy == null ? other$dnsPolicy != null : !this$dnsPolicy.equals(other$dnsPolicy)) {
+            return false;
+        }
+        Object this$enableFeatures = this.getEnableFeatures();
+        Object other$enableFeatures = other.getEnableFeatures();
+        if (this$enableFeatures == null ? other$enableFeatures != null : !this$enableFeatures.equals(other$enableFeatures)) {
+            return false;
+        }
+        Object this$enableServiceLinks = this.getEnableServiceLinks();
+        Object other$enableServiceLinks = other.getEnableServiceLinks();
+        if (this$enableServiceLinks == null ? other$enableServiceLinks != null : !this$enableServiceLinks.equals(other$enableServiceLinks)) {
+            return false;
+        }
+        Object this$externalUrl = this.getExternalUrl();
+        Object other$externalUrl = other.getExternalUrl();
+        if (this$externalUrl == null ? other$externalUrl != null : !this$externalUrl.equals(other$externalUrl)) {
+            return false;
+        }
+        Object this$forceEnableClusterMode = this.getForceEnableClusterMode();
+        Object other$forceEnableClusterMode = other.getForceEnableClusterMode();
+        if (this$forceEnableClusterMode == null ? other$forceEnableClusterMode != null : !this$forceEnableClusterMode.equals(other$forceEnableClusterMode)) {
+            return false;
+        }
+        Object this$hostAliases = this.getHostAliases();
+        Object other$hostAliases = other.getHostAliases();
+        if (this$hostAliases == null ? other$hostAliases != null : !this$hostAliases.equals(other$hostAliases)) {
+            return false;
+        }
+        Object this$hostNetwork = this.getHostNetwork();
+        Object other$hostNetwork = other.getHostNetwork();
+        if (this$hostNetwork == null ? other$hostNetwork != null : !this$hostNetwork.equals(other$hostNetwork)) {
+            return false;
+        }
+        Object this$hostUsers = this.getHostUsers();
+        Object other$hostUsers = other.getHostUsers();
+        if (this$hostUsers == null ? other$hostUsers != null : !this$hostUsers.equals(other$hostUsers)) {
+            return false;
+        }
+        Object this$image = this.getImage();
+        Object other$image = other.getImage();
+        if (this$image == null ? other$image != null : !this$image.equals(other$image)) {
+            return false;
+        }
+        Object this$imagePullPolicy = this.getImagePullPolicy();
+        Object other$imagePullPolicy = other.getImagePullPolicy();
+        if (this$imagePullPolicy == null ? other$imagePullPolicy != null : !this$imagePullPolicy.equals(other$imagePullPolicy)) {
+            return false;
+        }
+        Object this$imagePullSecrets = this.getImagePullSecrets();
+        Object other$imagePullSecrets = other.getImagePullSecrets();
+        if (this$imagePullSecrets == null ? other$imagePullSecrets != null : !this$imagePullSecrets.equals(other$imagePullSecrets)) {
+            return false;
+        }
+        Object this$initContainers = this.getInitContainers();
+        Object other$initContainers = other.getInitContainers();
+        if (this$initContainers == null ? other$initContainers != null : !this$initContainers.equals(other$initContainers)) {
+            return false;
+        }
+        Object this$limits = this.getLimits();
+        Object other$limits = other.getLimits();
+        if (this$limits == null ? other$limits != null : !this$limits.equals(other$limits)) {
+            return false;
+        }
+        Object this$listenLocal = this.getListenLocal();
+        Object other$listenLocal = other.getListenLocal();
+        if (this$listenLocal == null ? other$listenLocal != null : !this$listenLocal.equals(other$listenLocal)) {
+            return false;
+        }
+        Object this$logFormat = this.getLogFormat();
+        Object other$logFormat = other.getLogFormat();
+        if (this$logFormat == null ? other$logFormat != null : !this$logFormat.equals(other$logFormat)) {
+            return false;
+        }
+        Object this$logLevel = this.getLogLevel();
+        Object other$logLevel = other.getLogLevel();
+        if (this$logLevel == null ? other$logLevel != null : !this$logLevel.equals(other$logLevel)) {
+            return false;
+        }
+        Object this$minReadySeconds = this.getMinReadySeconds();
+        Object other$minReadySeconds = other.getMinReadySeconds();
+        if (this$minReadySeconds == null ? other$minReadySeconds != null : !this$minReadySeconds.equals(other$minReadySeconds)) {
+            return false;
+        }
+        Object this$nodeSelector = this.getNodeSelector();
+        Object other$nodeSelector = other.getNodeSelector();
+        if (this$nodeSelector == null ? other$nodeSelector != null : !this$nodeSelector.equals(other$nodeSelector)) {
+            return false;
+        }
+        Object this$paused = this.getPaused();
+        Object other$paused = other.getPaused();
+        if (this$paused == null ? other$paused != null : !this$paused.equals(other$paused)) {
+            return false;
+        }
+        Object this$persistentVolumeClaimRetentionPolicy = this.getPersistentVolumeClaimRetentionPolicy();
+        Object other$persistentVolumeClaimRetentionPolicy = other.getPersistentVolumeClaimRetentionPolicy();
+        if (this$persistentVolumeClaimRetentionPolicy == null ? other$persistentVolumeClaimRetentionPolicy != null : !this$persistentVolumeClaimRetentionPolicy.equals(other$persistentVolumeClaimRetentionPolicy)) {
+            return false;
+        }
+        Object this$podManagementPolicy = this.getPodManagementPolicy();
+        Object other$podManagementPolicy = other.getPodManagementPolicy();
+        if (this$podManagementPolicy == null ? other$podManagementPolicy != null : !this$podManagementPolicy.equals(other$podManagementPolicy)) {
+            return false;
+        }
+        Object this$podMetadata = this.getPodMetadata();
+        Object other$podMetadata = other.getPodMetadata();
+        if (this$podMetadata == null ? other$podMetadata != null : !this$podMetadata.equals(other$podMetadata)) {
+            return false;
+        }
+        Object this$portName = this.getPortName();
+        Object other$portName = other.getPortName();
+        if (this$portName == null ? other$portName != null : !this$portName.equals(other$portName)) {
+            return false;
+        }
+        Object this$priorityClassName = this.getPriorityClassName();
+        Object other$priorityClassName = other.getPriorityClassName();
+        if (this$priorityClassName == null ? other$priorityClassName != null : !this$priorityClassName.equals(other$priorityClassName)) {
+            return false;
+        }
+        Object this$replicas = this.getReplicas();
+        Object other$replicas = other.getReplicas();
+        if (this$replicas == null ? other$replicas != null : !this$replicas.equals(other$replicas)) {
+            return false;
+        }
+        Object this$resources = this.getResources();
+        Object other$resources = other.getResources();
+        if (this$resources == null ? other$resources != null : !this$resources.equals(other$resources)) {
+            return false;
+        }
+        Object this$retention = this.getRetention();
+        Object other$retention = other.getRetention();
+        if (this$retention == null ? other$retention != null : !this$retention.equals(other$retention)) {
+            return false;
+        }
+        Object this$routePrefix = this.getRoutePrefix();
+        Object other$routePrefix = other.getRoutePrefix();
+        if (this$routePrefix == null ? other$routePrefix != null : !this$routePrefix.equals(other$routePrefix)) {
+            return false;
+        }
+        Object this$schedulerName = this.getSchedulerName();
+        Object other$schedulerName = other.getSchedulerName();
+        if (this$schedulerName == null ? other$schedulerName != null : !this$schedulerName.equals(other$schedulerName)) {
+            return false;
+        }
+        Object this$secrets = this.getSecrets();
+        Object other$secrets = other.getSecrets();
+        if (this$secrets == null ? other$secrets != null : !this$secrets.equals(other$secrets)) {
+            return false;
+        }
+        Object this$securityContext = this.getSecurityContext();
+        Object other$securityContext = other.getSecurityContext();
+        if (this$securityContext == null ? other$securityContext != null : !this$securityContext.equals(other$securityContext)) {
+            return false;
+        }
+        Object this$serviceAccountName = this.getServiceAccountName();
+        Object other$serviceAccountName = other.getServiceAccountName();
+        if (this$serviceAccountName == null ? other$serviceAccountName != null : !this$serviceAccountName.equals(other$serviceAccountName)) {
+            return false;
+        }
+        Object this$serviceName = this.getServiceName();
+        Object other$serviceName = other.getServiceName();
+        if (this$serviceName == null ? other$serviceName != null : !this$serviceName.equals(other$serviceName)) {
+            return false;
+        }
+        Object this$sha = this.getSha();
+        Object other$sha = other.getSha();
+        if (this$sha == null ? other$sha != null : !this$sha.equals(other$sha)) {
+            return false;
+        }
+        Object this$storage = this.getStorage();
+        Object other$storage = other.getStorage();
+        if (this$storage == null ? other$storage != null : !this$storage.equals(other$storage)) {
+            return false;
+        }
+        Object this$tag = this.getTag();
+        Object other$tag = other.getTag();
+        if (this$tag == null ? other$tag != null : !this$tag.equals(other$tag)) {
+            return false;
+        }
+        Object this$terminationGracePeriodSeconds = this.getTerminationGracePeriodSeconds();
+        Object other$terminationGracePeriodSeconds = other.getTerminationGracePeriodSeconds();
+        if (this$terminationGracePeriodSeconds == null ? other$terminationGracePeriodSeconds != null : !this$terminationGracePeriodSeconds.equals(other$terminationGracePeriodSeconds)) {
+            return false;
+        }
+        Object this$tolerations = this.getTolerations();
+        Object other$tolerations = other.getTolerations();
+        if (this$tolerations == null ? other$tolerations != null : !this$tolerations.equals(other$tolerations)) {
+            return false;
+        }
+        Object this$topologySpreadConstraints = this.getTopologySpreadConstraints();
+        Object other$topologySpreadConstraints = other.getTopologySpreadConstraints();
+        if (this$topologySpreadConstraints == null ? other$topologySpreadConstraints != null : !this$topologySpreadConstraints.equals(other$topologySpreadConstraints)) {
+            return false;
+        }
+        Object this$updateStrategy = this.getUpdateStrategy();
+        Object other$updateStrategy = other.getUpdateStrategy();
+        if (this$updateStrategy == null ? other$updateStrategy != null : !this$updateStrategy.equals(other$updateStrategy)) {
+            return false;
+        }
+        Object this$version = this.getVersion();
+        Object other$version = other.getVersion();
+        if (this$version == null ? other$version != null : !this$version.equals(other$version)) {
+            return false;
+        }
+        Object this$volumeMounts = this.getVolumeMounts();
+        Object other$volumeMounts = other.getVolumeMounts();
+        if (this$volumeMounts == null ? other$volumeMounts != null : !this$volumeMounts.equals(other$volumeMounts)) {
+            return false;
+        }
+        Object this$volumes = this.getVolumes();
+        Object other$volumes = other.getVolumes();
+        if (this$volumes == null ? other$volumes != null : !this$volumes.equals(other$volumes)) {
+            return false;
+        }
+        Object this$web = this.getWeb();
+        Object other$web = other.getWeb();
+        if (this$web == null ? other$web != null : !this$web.equals(other$web)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AlertmanagerSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $additionalArgs = this.getAdditionalArgs();
+        result = result * prime + ($additionalArgs == null ? 43 : $additionalArgs.hashCode());
+        Object $additionalPeers = this.getAdditionalPeers();
+        result = result * prime + ($additionalPeers == null ? 43 : $additionalPeers.hashCode());
+        Object $affinity = this.getAffinity();
+        result = result * prime + ($affinity == null ? 43 : $affinity.hashCode());
+        Object $alertmanagerConfigMatcherStrategy = this.getAlertmanagerConfigMatcherStrategy();
+        result = result * prime + ($alertmanagerConfigMatcherStrategy == null ? 43 : $alertmanagerConfigMatcherStrategy.hashCode());
+        Object $alertmanagerConfigNamespaceSelector = this.getAlertmanagerConfigNamespaceSelector();
+        result = result * prime + ($alertmanagerConfigNamespaceSelector == null ? 43 : $alertmanagerConfigNamespaceSelector.hashCode());
+        Object $alertmanagerConfigSelector = this.getAlertmanagerConfigSelector();
+        result = result * prime + ($alertmanagerConfigSelector == null ? 43 : $alertmanagerConfigSelector.hashCode());
+        Object $alertmanagerConfiguration = this.getAlertmanagerConfiguration();
+        result = result * prime + ($alertmanagerConfiguration == null ? 43 : $alertmanagerConfiguration.hashCode());
+        Object $automountServiceAccountToken = this.getAutomountServiceAccountToken();
+        result = result * prime + ($automountServiceAccountToken == null ? 43 : $automountServiceAccountToken.hashCode());
+        Object $baseImage = this.getBaseImage();
+        result = result * prime + ($baseImage == null ? 43 : $baseImage.hashCode());
+        Object $clusterAdvertiseAddress = this.getClusterAdvertiseAddress();
+        result = result * prime + ($clusterAdvertiseAddress == null ? 43 : $clusterAdvertiseAddress.hashCode());
+        Object $clusterGossipInterval = this.getClusterGossipInterval();
+        result = result * prime + ($clusterGossipInterval == null ? 43 : $clusterGossipInterval.hashCode());
+        Object $clusterLabel = this.getClusterLabel();
+        result = result * prime + ($clusterLabel == null ? 43 : $clusterLabel.hashCode());
+        Object $clusterPeerTimeout = this.getClusterPeerTimeout();
+        result = result * prime + ($clusterPeerTimeout == null ? 43 : $clusterPeerTimeout.hashCode());
+        Object $clusterPushpullInterval = this.getClusterPushpullInterval();
+        result = result * prime + ($clusterPushpullInterval == null ? 43 : $clusterPushpullInterval.hashCode());
+        Object $clusterTLS = this.getClusterTLS();
+        result = result * prime + ($clusterTLS == null ? 43 : $clusterTLS.hashCode());
+        Object $configMaps = this.getConfigMaps();
+        result = result * prime + ($configMaps == null ? 43 : $configMaps.hashCode());
+        Object $configSecret = this.getConfigSecret();
+        result = result * prime + ($configSecret == null ? 43 : $configSecret.hashCode());
+        Object $containers = this.getContainers();
+        result = result * prime + ($containers == null ? 43 : $containers.hashCode());
+        Object $dnsConfig = this.getDnsConfig();
+        result = result * prime + ($dnsConfig == null ? 43 : $dnsConfig.hashCode());
+        Object $dnsPolicy = this.getDnsPolicy();
+        result = result * prime + ($dnsPolicy == null ? 43 : $dnsPolicy.hashCode());
+        Object $enableFeatures = this.getEnableFeatures();
+        result = result * prime + ($enableFeatures == null ? 43 : $enableFeatures.hashCode());
+        Object $enableServiceLinks = this.getEnableServiceLinks();
+        result = result * prime + ($enableServiceLinks == null ? 43 : $enableServiceLinks.hashCode());
+        Object $externalUrl = this.getExternalUrl();
+        result = result * prime + ($externalUrl == null ? 43 : $externalUrl.hashCode());
+        Object $forceEnableClusterMode = this.getForceEnableClusterMode();
+        result = result * prime + ($forceEnableClusterMode == null ? 43 : $forceEnableClusterMode.hashCode());
+        Object $hostAliases = this.getHostAliases();
+        result = result * prime + ($hostAliases == null ? 43 : $hostAliases.hashCode());
+        Object $hostNetwork = this.getHostNetwork();
+        result = result * prime + ($hostNetwork == null ? 43 : $hostNetwork.hashCode());
+        Object $hostUsers = this.getHostUsers();
+        result = result * prime + ($hostUsers == null ? 43 : $hostUsers.hashCode());
+        Object $image = this.getImage();
+        result = result * prime + ($image == null ? 43 : $image.hashCode());
+        Object $imagePullPolicy = this.getImagePullPolicy();
+        result = result * prime + ($imagePullPolicy == null ? 43 : $imagePullPolicy.hashCode());
+        Object $imagePullSecrets = this.getImagePullSecrets();
+        result = result * prime + ($imagePullSecrets == null ? 43 : $imagePullSecrets.hashCode());
+        Object $initContainers = this.getInitContainers();
+        result = result * prime + ($initContainers == null ? 43 : $initContainers.hashCode());
+        Object $limits = this.getLimits();
+        result = result * prime + ($limits == null ? 43 : $limits.hashCode());
+        Object $listenLocal = this.getListenLocal();
+        result = result * prime + ($listenLocal == null ? 43 : $listenLocal.hashCode());
+        Object $logFormat = this.getLogFormat();
+        result = result * prime + ($logFormat == null ? 43 : $logFormat.hashCode());
+        Object $logLevel = this.getLogLevel();
+        result = result * prime + ($logLevel == null ? 43 : $logLevel.hashCode());
+        Object $minReadySeconds = this.getMinReadySeconds();
+        result = result * prime + ($minReadySeconds == null ? 43 : $minReadySeconds.hashCode());
+        Object $nodeSelector = this.getNodeSelector();
+        result = result * prime + ($nodeSelector == null ? 43 : $nodeSelector.hashCode());
+        Object $paused = this.getPaused();
+        result = result * prime + ($paused == null ? 43 : $paused.hashCode());
+        Object $persistentVolumeClaimRetentionPolicy = this.getPersistentVolumeClaimRetentionPolicy();
+        result = result * prime + ($persistentVolumeClaimRetentionPolicy == null ? 43 : $persistentVolumeClaimRetentionPolicy.hashCode());
+        Object $podManagementPolicy = this.getPodManagementPolicy();
+        result = result * prime + ($podManagementPolicy == null ? 43 : $podManagementPolicy.hashCode());
+        Object $podMetadata = this.getPodMetadata();
+        result = result * prime + ($podMetadata == null ? 43 : $podMetadata.hashCode());
+        Object $portName = this.getPortName();
+        result = result * prime + ($portName == null ? 43 : $portName.hashCode());
+        Object $priorityClassName = this.getPriorityClassName();
+        result = result * prime + ($priorityClassName == null ? 43 : $priorityClassName.hashCode());
+        Object $replicas = this.getReplicas();
+        result = result * prime + ($replicas == null ? 43 : $replicas.hashCode());
+        Object $resources = this.getResources();
+        result = result * prime + ($resources == null ? 43 : $resources.hashCode());
+        Object $retention = this.getRetention();
+        result = result * prime + ($retention == null ? 43 : $retention.hashCode());
+        Object $routePrefix = this.getRoutePrefix();
+        result = result * prime + ($routePrefix == null ? 43 : $routePrefix.hashCode());
+        Object $schedulerName = this.getSchedulerName();
+        result = result * prime + ($schedulerName == null ? 43 : $schedulerName.hashCode());
+        Object $secrets = this.getSecrets();
+        result = result * prime + ($secrets == null ? 43 : $secrets.hashCode());
+        Object $securityContext = this.getSecurityContext();
+        result = result * prime + ($securityContext == null ? 43 : $securityContext.hashCode());
+        Object $serviceAccountName = this.getServiceAccountName();
+        result = result * prime + ($serviceAccountName == null ? 43 : $serviceAccountName.hashCode());
+        Object $serviceName = this.getServiceName();
+        result = result * prime + ($serviceName == null ? 43 : $serviceName.hashCode());
+        Object $sha = this.getSha();
+        result = result * prime + ($sha == null ? 43 : $sha.hashCode());
+        Object $storage = this.getStorage();
+        result = result * prime + ($storage == null ? 43 : $storage.hashCode());
+        Object $tag = this.getTag();
+        result = result * prime + ($tag == null ? 43 : $tag.hashCode());
+        Object $terminationGracePeriodSeconds = this.getTerminationGracePeriodSeconds();
+        result = result * prime + ($terminationGracePeriodSeconds == null ? 43 : $terminationGracePeriodSeconds.hashCode());
+        Object $tolerations = this.getTolerations();
+        result = result * prime + ($tolerations == null ? 43 : $tolerations.hashCode());
+        Object $topologySpreadConstraints = this.getTopologySpreadConstraints();
+        result = result * prime + ($topologySpreadConstraints == null ? 43 : $topologySpreadConstraints.hashCode());
+        Object $updateStrategy = this.getUpdateStrategy();
+        result = result * prime + ($updateStrategy == null ? 43 : $updateStrategy.hashCode());
+        Object $version = this.getVersion();
+        result = result * prime + ($version == null ? 43 : $version.hashCode());
+        Object $volumeMounts = this.getVolumeMounts();
+        result = result * prime + ($volumeMounts == null ? 43 : $volumeMounts.hashCode());
+        Object $volumes = this.getVolumes();
+        result = result * prime + ($volumes == null ? 43 : $volumes.hashCode());
+        Object $web = this.getWeb();
+        result = result * prime + ($web == null ? 43 : $web.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AlertmanagerSpec(" + "additionalArgs=" + this.getAdditionalArgs() + ", additionalPeers=" + this.getAdditionalPeers() + ", affinity=" + this.getAffinity() + ", alertmanagerConfigMatcherStrategy=" + this.getAlertmanagerConfigMatcherStrategy() + ", alertmanagerConfigNamespaceSelector=" + this.getAlertmanagerConfigNamespaceSelector() + ", alertmanagerConfigSelector=" + this.getAlertmanagerConfigSelector() + ", alertmanagerConfiguration=" + this.getAlertmanagerConfiguration() + ", automountServiceAccountToken=" + this.getAutomountServiceAccountToken() + ", baseImage=" + this.getBaseImage() + ", clusterAdvertiseAddress=" + this.getClusterAdvertiseAddress() + ", clusterGossipInterval=" + this.getClusterGossipInterval() + ", clusterLabel=" + this.getClusterLabel() + ", clusterPeerTimeout=" + this.getClusterPeerTimeout() + ", clusterPushpullInterval=" + this.getClusterPushpullInterval() + ", clusterTLS=" + this.getClusterTLS() + ", configMaps=" + this.getConfigMaps() + ", configSecret=" + this.getConfigSecret() + ", containers=" + this.getContainers() + ", dnsConfig=" + this.getDnsConfig() + ", dnsPolicy=" + this.getDnsPolicy() + ", enableFeatures=" + this.getEnableFeatures() + ", enableServiceLinks=" + this.getEnableServiceLinks() + ", externalUrl=" + this.getExternalUrl() + ", forceEnableClusterMode=" + this.getForceEnableClusterMode() + ", hostAliases=" + this.getHostAliases() + ", hostNetwork=" + this.getHostNetwork() + ", hostUsers=" + this.getHostUsers() + ", image=" + this.getImage() + ", imagePullPolicy=" + this.getImagePullPolicy() + ", imagePullSecrets=" + this.getImagePullSecrets() + ", initContainers=" + this.getInitContainers() + ", limits=" + this.getLimits() + ", listenLocal=" + this.getListenLocal() + ", logFormat=" + this.getLogFormat() + ", logLevel=" + this.getLogLevel() + ", minReadySeconds=" + this.getMinReadySeconds() + ", nodeSelector=" + this.getNodeSelector() + ", paused=" + this.getPaused() + ", persistentVolumeClaimRetentionPolicy=" + this.getPersistentVolumeClaimRetentionPolicy() + ", podManagementPolicy=" + this.getPodManagementPolicy() + ", podMetadata=" + this.getPodMetadata() + ", portName=" + this.getPortName() + ", priorityClassName=" + this.getPriorityClassName() + ", replicas=" + this.getReplicas() + ", resources=" + this.getResources() + ", retention=" + this.getRetention() + ", routePrefix=" + this.getRoutePrefix() + ", schedulerName=" + this.getSchedulerName() + ", secrets=" + this.getSecrets() + ", securityContext=" + this.getSecurityContext() + ", serviceAccountName=" + this.getServiceAccountName() + ", serviceName=" + this.getServiceName() + ", sha=" + this.getSha() + ", storage=" + this.getStorage() + ", tag=" + this.getTag() + ", terminationGracePeriodSeconds=" + this.getTerminationGracePeriodSeconds() + ", tolerations=" + this.getTolerations() + ", topologySpreadConstraints=" + this.getTopologySpreadConstraints() + ", updateStrategy=" + this.getUpdateStrategy() + ", version=" + this.getVersion() + ", volumeMounts=" + this.getVolumeMounts() + ", volumes=" + this.getVolumes() + ", web=" + this.getWeb() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MemoryStressor defines how to stress memory out
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "options",
     "size",
     "workers"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class MemoryStressor implements Editable<MemoryStressorBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MemoryStressor)) {
+            return false;
+        }
+        MemoryStressor other = (MemoryStressor) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$oomScoreAdj = this.getOomScoreAdj();
+        Object other$oomScoreAdj = other.getOomScoreAdj();
+        if (this$oomScoreAdj == null ? other$oomScoreAdj != null : !this$oomScoreAdj.equals(other$oomScoreAdj)) {
+            return false;
+        }
+        Object this$options = this.getOptions();
+        Object other$options = other.getOptions();
+        if (this$options == null ? other$options != null : !this$options.equals(other$options)) {
+            return false;
+        }
+        Object this$size = this.getSize();
+        Object other$size = other.getSize();
+        if (this$size == null ? other$size != null : !this$size.equals(other$size)) {
+            return false;
+        }
+        Object this$workers = this.getWorkers();
+        Object other$workers = other.getWorkers();
+        if (this$workers == null ? other$workers != null : !this$workers.equals(other$workers)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MemoryStressor;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $oomScoreAdj = this.getOomScoreAdj();
+        result = result * prime + ($oomScoreAdj == null ? 43 : $oomScoreAdj.hashCode());
+        Object $options = this.getOptions();
+        result = result * prime + ($options == null ? 43 : $options.hashCode());
+        Object $size = this.getSize();
+        result = result * prime + ($size == null ? 43 : $size.hashCode());
+        Object $workers = this.getWorkers();
+        result = result * prime + ($workers == null ? 43 : $workers.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MemoryStressor(" + "oomScoreAdj=" + this.getOomScoreAdj() + ", options=" + this.getOptions() + ", size=" + this.getSize() + ", workers=" + this.getWorkers() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * LeaseCandidateSpec is a specification of a Lease.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "pingTime",
     "renewTime",
     "strategy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -221,6 +212,85 @@ public class LeaseCandidateSpec implements Editable<LeaseCandidateSpecBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof LeaseCandidateSpec)) {
+            return false;
+        }
+        LeaseCandidateSpec other = (LeaseCandidateSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$binaryVersion = this.getBinaryVersion();
+        Object other$binaryVersion = other.getBinaryVersion();
+        if (this$binaryVersion == null ? other$binaryVersion != null : !this$binaryVersion.equals(other$binaryVersion)) {
+            return false;
+        }
+        Object this$emulationVersion = this.getEmulationVersion();
+        Object other$emulationVersion = other.getEmulationVersion();
+        if (this$emulationVersion == null ? other$emulationVersion != null : !this$emulationVersion.equals(other$emulationVersion)) {
+            return false;
+        }
+        Object this$leaseName = this.getLeaseName();
+        Object other$leaseName = other.getLeaseName();
+        if (this$leaseName == null ? other$leaseName != null : !this$leaseName.equals(other$leaseName)) {
+            return false;
+        }
+        Object this$pingTime = this.getPingTime();
+        Object other$pingTime = other.getPingTime();
+        if (this$pingTime == null ? other$pingTime != null : !this$pingTime.equals(other$pingTime)) {
+            return false;
+        }
+        Object this$renewTime = this.getRenewTime();
+        Object other$renewTime = other.getRenewTime();
+        if (this$renewTime == null ? other$renewTime != null : !this$renewTime.equals(other$renewTime)) {
+            return false;
+        }
+        Object this$strategy = this.getStrategy();
+        Object other$strategy = other.getStrategy();
+        if (this$strategy == null ? other$strategy != null : !this$strategy.equals(other$strategy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof LeaseCandidateSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $binaryVersion = this.getBinaryVersion();
+        result = result * prime + ($binaryVersion == null ? 43 : $binaryVersion.hashCode());
+        Object $emulationVersion = this.getEmulationVersion();
+        result = result * prime + ($emulationVersion == null ? 43 : $emulationVersion.hashCode());
+        Object $leaseName = this.getLeaseName();
+        result = result * prime + ($leaseName == null ? 43 : $leaseName.hashCode());
+        Object $pingTime = this.getPingTime();
+        result = result * prime + ($pingTime == null ? 43 : $pingTime.hashCode());
+        Object $renewTime = this.getRenewTime();
+        result = result * prime + ($renewTime == null ? 43 : $renewTime.hashCode());
+        Object $strategy = this.getStrategy();
+        result = result * prime + ($strategy == null ? 43 : $strategy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "LeaseCandidateSpec(" + "binaryVersion=" + this.getBinaryVersion() + ", emulationVersion=" + this.getEmulationVersion() + ", leaseName=" + this.getLeaseName() + ", pingTime=" + this.getPingTime() + ", renewTime=" + this.getRenewTime() + ", strategy=" + this.getStrategy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

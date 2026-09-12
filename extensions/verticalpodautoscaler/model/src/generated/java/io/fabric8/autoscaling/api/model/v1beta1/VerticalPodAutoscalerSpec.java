@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VerticalPodAutoscalerSpec is the specification of the behavior of the autoscaler.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "resourcePolicy",
     "selector",
     "updatePolicy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class VerticalPodAutoscalerSpec implements Editable<VerticalPodAutoscaler
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VerticalPodAutoscalerSpec)) {
+            return false;
+        }
+        VerticalPodAutoscalerSpec other = (VerticalPodAutoscalerSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$resourcePolicy = this.getResourcePolicy();
+        Object other$resourcePolicy = other.getResourcePolicy();
+        if (this$resourcePolicy == null ? other$resourcePolicy != null : !this$resourcePolicy.equals(other$resourcePolicy)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$updatePolicy = this.getUpdatePolicy();
+        Object other$updatePolicy = other.getUpdatePolicy();
+        if (this$updatePolicy == null ? other$updatePolicy != null : !this$updatePolicy.equals(other$updatePolicy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VerticalPodAutoscalerSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $resourcePolicy = this.getResourcePolicy();
+        result = result * prime + ($resourcePolicy == null ? 43 : $resourcePolicy.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $updatePolicy = this.getUpdatePolicy();
+        result = result * prime + ($updatePolicy == null ? 43 : $updatePolicy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VerticalPodAutoscalerSpec(" + "resourcePolicy=" + this.getResourcePolicy() + ", selector=" + this.getSelector() + ", updatePolicy=" + this.getUpdatePolicy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

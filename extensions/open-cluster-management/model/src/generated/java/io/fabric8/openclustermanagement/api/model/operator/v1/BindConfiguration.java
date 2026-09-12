@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * BindConfiguration represents customization of server bindings
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "hostNetwork",
     "metricsPort",
     "port"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class BindConfiguration implements Editable<BindConfigurationBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BindConfiguration)) {
+            return false;
+        }
+        BindConfiguration other = (BindConfiguration) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$healthProbePort = this.getHealthProbePort();
+        Object other$healthProbePort = other.getHealthProbePort();
+        if (this$healthProbePort == null ? other$healthProbePort != null : !this$healthProbePort.equals(other$healthProbePort)) {
+            return false;
+        }
+        Object this$hostNetwork = this.getHostNetwork();
+        Object other$hostNetwork = other.getHostNetwork();
+        if (this$hostNetwork == null ? other$hostNetwork != null : !this$hostNetwork.equals(other$hostNetwork)) {
+            return false;
+        }
+        Object this$metricsPort = this.getMetricsPort();
+        Object other$metricsPort = other.getMetricsPort();
+        if (this$metricsPort == null ? other$metricsPort != null : !this$metricsPort.equals(other$metricsPort)) {
+            return false;
+        }
+        Object this$port = this.getPort();
+        Object other$port = other.getPort();
+        if (this$port == null ? other$port != null : !this$port.equals(other$port)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BindConfiguration;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $healthProbePort = this.getHealthProbePort();
+        result = result * prime + ($healthProbePort == null ? 43 : $healthProbePort.hashCode());
+        Object $hostNetwork = this.getHostNetwork();
+        result = result * prime + ($hostNetwork == null ? 43 : $hostNetwork.hashCode());
+        Object $metricsPort = this.getMetricsPort();
+        result = result * prime + ($metricsPort == null ? 43 : $metricsPort.hashCode());
+        Object $port = this.getPort();
+        result = result * prime + ($port == null ? 43 : $port.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BindConfiguration(" + "healthProbePort=" + this.getHealthProbePort() + ", hostNetwork=" + this.getHostNetwork() + ", metricsPort=" + this.getMetricsPort() + ", port=" + this.getPort() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

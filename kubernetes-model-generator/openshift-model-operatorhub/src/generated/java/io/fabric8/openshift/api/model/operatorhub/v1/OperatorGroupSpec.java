@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OperatorGroupSpec is the spec for an OperatorGroup resource.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "staticProvidedAPIs",
     "targetNamespaces",
     "upgradeStrategy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -204,6 +195,78 @@ public class OperatorGroupSpec implements Editable<OperatorGroupSpecBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OperatorGroupSpec)) {
+            return false;
+        }
+        OperatorGroupSpec other = (OperatorGroupSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$serviceAccountName = this.getServiceAccountName();
+        Object other$serviceAccountName = other.getServiceAccountName();
+        if (this$serviceAccountName == null ? other$serviceAccountName != null : !this$serviceAccountName.equals(other$serviceAccountName)) {
+            return false;
+        }
+        Object this$staticProvidedAPIs = this.getStaticProvidedAPIs();
+        Object other$staticProvidedAPIs = other.getStaticProvidedAPIs();
+        if (this$staticProvidedAPIs == null ? other$staticProvidedAPIs != null : !this$staticProvidedAPIs.equals(other$staticProvidedAPIs)) {
+            return false;
+        }
+        Object this$targetNamespaces = this.getTargetNamespaces();
+        Object other$targetNamespaces = other.getTargetNamespaces();
+        if (this$targetNamespaces == null ? other$targetNamespaces != null : !this$targetNamespaces.equals(other$targetNamespaces)) {
+            return false;
+        }
+        Object this$upgradeStrategy = this.getUpgradeStrategy();
+        Object other$upgradeStrategy = other.getUpgradeStrategy();
+        if (this$upgradeStrategy == null ? other$upgradeStrategy != null : !this$upgradeStrategy.equals(other$upgradeStrategy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OperatorGroupSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $serviceAccountName = this.getServiceAccountName();
+        result = result * prime + ($serviceAccountName == null ? 43 : $serviceAccountName.hashCode());
+        Object $staticProvidedAPIs = this.getStaticProvidedAPIs();
+        result = result * prime + ($staticProvidedAPIs == null ? 43 : $staticProvidedAPIs.hashCode());
+        Object $targetNamespaces = this.getTargetNamespaces();
+        result = result * prime + ($targetNamespaces == null ? 43 : $targetNamespaces.hashCode());
+        Object $upgradeStrategy = this.getUpgradeStrategy();
+        result = result * prime + ($upgradeStrategy == null ? 43 : $upgradeStrategy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OperatorGroupSpec(" + "selector=" + this.getSelector() + ", serviceAccountName=" + this.getServiceAccountName() + ", staticProvidedAPIs=" + this.getStaticProvidedAPIs() + ", targetNamespaces=" + this.getTargetNamespaces() + ", upgradeStrategy=" + this.getUpgradeStrategy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

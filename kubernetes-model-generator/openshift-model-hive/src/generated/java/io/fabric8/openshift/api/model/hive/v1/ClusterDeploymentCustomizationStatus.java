@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.customresourcestatus.conditions.v1.Condition;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClusterDeploymentCustomizationStatus defines the observed state of ClusterDeploymentCustomization.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "clusterPoolRef",
     "conditions",
     "lastAppliedConfiguration"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -185,6 +176,71 @@ public class ClusterDeploymentCustomizationStatus implements Editable<ClusterDep
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterDeploymentCustomizationStatus)) {
+            return false;
+        }
+        ClusterDeploymentCustomizationStatus other = (ClusterDeploymentCustomizationStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterDeploymentRef = this.getClusterDeploymentRef();
+        Object other$clusterDeploymentRef = other.getClusterDeploymentRef();
+        if (this$clusterDeploymentRef == null ? other$clusterDeploymentRef != null : !this$clusterDeploymentRef.equals(other$clusterDeploymentRef)) {
+            return false;
+        }
+        Object this$clusterPoolRef = this.getClusterPoolRef();
+        Object other$clusterPoolRef = other.getClusterPoolRef();
+        if (this$clusterPoolRef == null ? other$clusterPoolRef != null : !this$clusterPoolRef.equals(other$clusterPoolRef)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$lastAppliedConfiguration = this.getLastAppliedConfiguration();
+        Object other$lastAppliedConfiguration = other.getLastAppliedConfiguration();
+        if (this$lastAppliedConfiguration == null ? other$lastAppliedConfiguration != null : !this$lastAppliedConfiguration.equals(other$lastAppliedConfiguration)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterDeploymentCustomizationStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterDeploymentRef = this.getClusterDeploymentRef();
+        result = result * prime + ($clusterDeploymentRef == null ? 43 : $clusterDeploymentRef.hashCode());
+        Object $clusterPoolRef = this.getClusterPoolRef();
+        result = result * prime + ($clusterPoolRef == null ? 43 : $clusterPoolRef.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $lastAppliedConfiguration = this.getLastAppliedConfiguration();
+        result = result * prime + ($lastAppliedConfiguration == null ? 43 : $lastAppliedConfiguration.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterDeploymentCustomizationStatus(" + "clusterDeploymentRef=" + this.getClusterDeploymentRef() + ", clusterPoolRef=" + this.getClusterPoolRef() + ", conditions=" + this.getConditions() + ", lastAppliedConfiguration=" + this.getLastAppliedConfiguration() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

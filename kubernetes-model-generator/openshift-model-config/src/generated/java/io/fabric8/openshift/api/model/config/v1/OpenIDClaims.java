@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OpenIDClaims contains a list of OpenID claims to use when authenticating with an OpenID identity provider
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "groups",
     "name",
     "preferredUsername"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -189,6 +180,71 @@ public class OpenIDClaims implements Editable<OpenIDClaimsBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OpenIDClaims)) {
+            return false;
+        }
+        OpenIDClaims other = (OpenIDClaims) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$email = this.getEmail();
+        Object other$email = other.getEmail();
+        if (this$email == null ? other$email != null : !this$email.equals(other$email)) {
+            return false;
+        }
+        Object this$groups = this.getGroups();
+        Object other$groups = other.getGroups();
+        if (this$groups == null ? other$groups != null : !this$groups.equals(other$groups)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$preferredUsername = this.getPreferredUsername();
+        Object other$preferredUsername = other.getPreferredUsername();
+        if (this$preferredUsername == null ? other$preferredUsername != null : !this$preferredUsername.equals(other$preferredUsername)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OpenIDClaims;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $email = this.getEmail();
+        result = result * prime + ($email == null ? 43 : $email.hashCode());
+        Object $groups = this.getGroups();
+        result = result * prime + ($groups == null ? 43 : $groups.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $preferredUsername = this.getPreferredUsername();
+        result = result * prime + ($preferredUsername == null ? 43 : $preferredUsername.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OpenIDClaims(" + "email=" + this.getEmail() + ", groups=" + this.getGroups() + ", name=" + this.getName() + ", preferredUsername=" + this.getPreferredUsername() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * `Server` describes the properties of the proxy on a given load balancer port. For example,<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: Gateway metadata:<br><p> <br><p> 	name: my-ingress<br><p> <br><p> spec:<br><p> <br><p> 	selector:<br><p> 	  app: my-ingressgateway<br><p> 	servers:<br><p> 	- port:<br><p> 	    number: 80<br><p> 	    name: http2<br><p> 	    protocol: HTTP2<br><p> 	  hosts:<br><p> 	  - "&#42;"<br><p> <br><p> ```<br><p> <br><p> # Another example<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: Gateway metadata:<br><p> <br><p> 	name: my-tcp-ingress<br><p> <br><p> spec:<br><p> <br><p> 	selector:<br><p> 	  app: my-tcp-ingressgateway<br><p> 	servers:<br><p> 	- port:<br><p> 	    number: 27018<br><p> 	    name: mongo<br><p> 	    protocol: MONGO<br><p> 	  hosts:<br><p> 	  - "&#42;"<br><p> <br><p> ```<br><p> <br><p> # The following is an example of TLS configuration for port 443<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: Gateway metadata:<br><p> <br><p> 	name: my-tls-ingress<br><p> <br><p> spec:<br><p> <br><p> 	selector:<br><p> 	  app: my-tls-ingressgateway<br><p> 	servers:<br><p> 	- port:<br><p> 	    number: 443<br><p> 	    name: https<br><p> 	    protocol: HTTPS<br><p> 	  hosts:<br><p> 	  - "&#42;"<br><p> 	  tls:<br><p> 	    mode: SIMPLE<br><p> 	    credentialName: tls-cert<br><p> <br><p> ```
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "name",
     "port",
     "tls"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -224,6 +215,85 @@ public class Server implements Editable<ServerBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Server)) {
+            return false;
+        }
+        Server other = (Server) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bind = this.getBind();
+        Object other$bind = other.getBind();
+        if (this$bind == null ? other$bind != null : !this$bind.equals(other$bind)) {
+            return false;
+        }
+        Object this$defaultEndpoint = this.getDefaultEndpoint();
+        Object other$defaultEndpoint = other.getDefaultEndpoint();
+        if (this$defaultEndpoint == null ? other$defaultEndpoint != null : !this$defaultEndpoint.equals(other$defaultEndpoint)) {
+            return false;
+        }
+        Object this$hosts = this.getHosts();
+        Object other$hosts = other.getHosts();
+        if (this$hosts == null ? other$hosts != null : !this$hosts.equals(other$hosts)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$port = this.getPort();
+        Object other$port = other.getPort();
+        if (this$port == null ? other$port != null : !this$port.equals(other$port)) {
+            return false;
+        }
+        Object this$tls = this.getTls();
+        Object other$tls = other.getTls();
+        if (this$tls == null ? other$tls != null : !this$tls.equals(other$tls)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Server;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bind = this.getBind();
+        result = result * prime + ($bind == null ? 43 : $bind.hashCode());
+        Object $defaultEndpoint = this.getDefaultEndpoint();
+        result = result * prime + ($defaultEndpoint == null ? 43 : $defaultEndpoint.hashCode());
+        Object $hosts = this.getHosts();
+        result = result * prime + ($hosts == null ? 43 : $hosts.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $port = this.getPort();
+        result = result * prime + ($port == null ? 43 : $port.hashCode());
+        Object $tls = this.getTls();
+        result = result * prime + ($tls == null ? 43 : $tls.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Server(" + "bind=" + this.getBind() + ", defaultEndpoint=" + this.getDefaultEndpoint() + ", hosts=" + this.getHosts() + ", name=" + this.getName() + ", port=" + this.getPort() + ", tls=" + this.getTls() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

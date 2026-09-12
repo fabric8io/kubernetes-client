@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PackageManifestStatus represents the current status of the PackageManifest
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "deprecation",
     "packageName",
     "provider"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -284,6 +275,106 @@ public class PackageManifestStatus implements Editable<PackageManifestStatusBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PackageManifestStatus)) {
+            return false;
+        }
+        PackageManifestStatus other = (PackageManifestStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$catalogSource = this.getCatalogSource();
+        Object other$catalogSource = other.getCatalogSource();
+        if (this$catalogSource == null ? other$catalogSource != null : !this$catalogSource.equals(other$catalogSource)) {
+            return false;
+        }
+        Object this$catalogSourceDisplayName = this.getCatalogSourceDisplayName();
+        Object other$catalogSourceDisplayName = other.getCatalogSourceDisplayName();
+        if (this$catalogSourceDisplayName == null ? other$catalogSourceDisplayName != null : !this$catalogSourceDisplayName.equals(other$catalogSourceDisplayName)) {
+            return false;
+        }
+        Object this$catalogSourceNamespace = this.getCatalogSourceNamespace();
+        Object other$catalogSourceNamespace = other.getCatalogSourceNamespace();
+        if (this$catalogSourceNamespace == null ? other$catalogSourceNamespace != null : !this$catalogSourceNamespace.equals(other$catalogSourceNamespace)) {
+            return false;
+        }
+        Object this$catalogSourcePublisher = this.getCatalogSourcePublisher();
+        Object other$catalogSourcePublisher = other.getCatalogSourcePublisher();
+        if (this$catalogSourcePublisher == null ? other$catalogSourcePublisher != null : !this$catalogSourcePublisher.equals(other$catalogSourcePublisher)) {
+            return false;
+        }
+        Object this$channels = this.getChannels();
+        Object other$channels = other.getChannels();
+        if (this$channels == null ? other$channels != null : !this$channels.equals(other$channels)) {
+            return false;
+        }
+        Object this$defaultChannel = this.getDefaultChannel();
+        Object other$defaultChannel = other.getDefaultChannel();
+        if (this$defaultChannel == null ? other$defaultChannel != null : !this$defaultChannel.equals(other$defaultChannel)) {
+            return false;
+        }
+        Object this$deprecation = this.getDeprecation();
+        Object other$deprecation = other.getDeprecation();
+        if (this$deprecation == null ? other$deprecation != null : !this$deprecation.equals(other$deprecation)) {
+            return false;
+        }
+        Object this$packageName = this.getPackageName();
+        Object other$packageName = other.getPackageName();
+        if (this$packageName == null ? other$packageName != null : !this$packageName.equals(other$packageName)) {
+            return false;
+        }
+        Object this$provider = this.getProvider();
+        Object other$provider = other.getProvider();
+        if (this$provider == null ? other$provider != null : !this$provider.equals(other$provider)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PackageManifestStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $catalogSource = this.getCatalogSource();
+        result = result * prime + ($catalogSource == null ? 43 : $catalogSource.hashCode());
+        Object $catalogSourceDisplayName = this.getCatalogSourceDisplayName();
+        result = result * prime + ($catalogSourceDisplayName == null ? 43 : $catalogSourceDisplayName.hashCode());
+        Object $catalogSourceNamespace = this.getCatalogSourceNamespace();
+        result = result * prime + ($catalogSourceNamespace == null ? 43 : $catalogSourceNamespace.hashCode());
+        Object $catalogSourcePublisher = this.getCatalogSourcePublisher();
+        result = result * prime + ($catalogSourcePublisher == null ? 43 : $catalogSourcePublisher.hashCode());
+        Object $channels = this.getChannels();
+        result = result * prime + ($channels == null ? 43 : $channels.hashCode());
+        Object $defaultChannel = this.getDefaultChannel();
+        result = result * prime + ($defaultChannel == null ? 43 : $defaultChannel.hashCode());
+        Object $deprecation = this.getDeprecation();
+        result = result * prime + ($deprecation == null ? 43 : $deprecation.hashCode());
+        Object $packageName = this.getPackageName();
+        result = result * prime + ($packageName == null ? 43 : $packageName.hashCode());
+        Object $provider = this.getProvider();
+        result = result * prime + ($provider == null ? 43 : $provider.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PackageManifestStatus(" + "catalogSource=" + this.getCatalogSource() + ", catalogSourceDisplayName=" + this.getCatalogSourceDisplayName() + ", catalogSourceNamespace=" + this.getCatalogSourceNamespace() + ", catalogSourcePublisher=" + this.getCatalogSourcePublisher() + ", channels=" + this.getChannels() + ", defaultChannel=" + this.getDefaultChannel() + ", deprecation=" + this.getDeprecation() + ", packageName=" + this.getPackageName() + ", provider=" + this.getProvider() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

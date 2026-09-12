@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "uriEndpointOverride",
     "visibilityTimeout",
     "waitTimeSeconds"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -377,6 +368,141 @@ public class AWSSQS implements Editable<AWSSQSBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AWSSQS)) {
+            return false;
+        }
+        AWSSQS other = (AWSSQS) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$arn = this.getArn();
+        Object other$arn = other.getArn();
+        if (this$arn == null ? other$arn != null : !this$arn.equals(other$arn)) {
+            return false;
+        }
+        Object this$autoCreateQueue = this.getAutoCreateQueue();
+        Object other$autoCreateQueue = other.getAutoCreateQueue();
+        if (this$autoCreateQueue == null ? other$autoCreateQueue != null : !this$autoCreateQueue.equals(other$autoCreateQueue)) {
+            return false;
+        }
+        Object this$delay = this.getDelay();
+        Object other$delay = other.getDelay();
+        if (this$delay == null ? other$delay != null : !this$delay.equals(other$delay)) {
+            return false;
+        }
+        Object this$deleteAfterRead = this.getDeleteAfterRead();
+        Object other$deleteAfterRead = other.getDeleteAfterRead();
+        if (this$deleteAfterRead == null ? other$deleteAfterRead != null : !this$deleteAfterRead.equals(other$deleteAfterRead)) {
+            return false;
+        }
+        Object this$greedy = this.getGreedy();
+        Object other$greedy = other.getGreedy();
+        if (this$greedy == null ? other$greedy != null : !this$greedy.equals(other$greedy)) {
+            return false;
+        }
+        Object this$host = this.getHost();
+        Object other$host = other.getHost();
+        if (this$host == null ? other$host != null : !this$host.equals(other$host)) {
+            return false;
+        }
+        Object this$maxMessagesPerPoll = this.getMaxMessagesPerPoll();
+        Object other$maxMessagesPerPoll = other.getMaxMessagesPerPoll();
+        if (this$maxMessagesPerPoll == null ? other$maxMessagesPerPoll != null : !this$maxMessagesPerPoll.equals(other$maxMessagesPerPoll)) {
+            return false;
+        }
+        Object this$overrideEndpoint = this.getOverrideEndpoint();
+        Object other$overrideEndpoint = other.getOverrideEndpoint();
+        if (this$overrideEndpoint == null ? other$overrideEndpoint != null : !this$overrideEndpoint.equals(other$overrideEndpoint)) {
+            return false;
+        }
+        Object this$protocol = this.getProtocol();
+        Object other$protocol = other.getProtocol();
+        if (this$protocol == null ? other$protocol != null : !this$protocol.equals(other$protocol)) {
+            return false;
+        }
+        Object this$queueURL = this.getQueueURL();
+        Object other$queueURL = other.getQueueURL();
+        if (this$queueURL == null ? other$queueURL != null : !this$queueURL.equals(other$queueURL)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$uriEndpointOverride = this.getUriEndpointOverride();
+        Object other$uriEndpointOverride = other.getUriEndpointOverride();
+        if (this$uriEndpointOverride == null ? other$uriEndpointOverride != null : !this$uriEndpointOverride.equals(other$uriEndpointOverride)) {
+            return false;
+        }
+        Object this$visibilityTimeout = this.getVisibilityTimeout();
+        Object other$visibilityTimeout = other.getVisibilityTimeout();
+        if (this$visibilityTimeout == null ? other$visibilityTimeout != null : !this$visibilityTimeout.equals(other$visibilityTimeout)) {
+            return false;
+        }
+        Object this$waitTimeSeconds = this.getWaitTimeSeconds();
+        Object other$waitTimeSeconds = other.getWaitTimeSeconds();
+        if (this$waitTimeSeconds == null ? other$waitTimeSeconds != null : !this$waitTimeSeconds.equals(other$waitTimeSeconds)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AWSSQS;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $arn = this.getArn();
+        result = result * prime + ($arn == null ? 43 : $arn.hashCode());
+        Object $autoCreateQueue = this.getAutoCreateQueue();
+        result = result * prime + ($autoCreateQueue == null ? 43 : $autoCreateQueue.hashCode());
+        Object $delay = this.getDelay();
+        result = result * prime + ($delay == null ? 43 : $delay.hashCode());
+        Object $deleteAfterRead = this.getDeleteAfterRead();
+        result = result * prime + ($deleteAfterRead == null ? 43 : $deleteAfterRead.hashCode());
+        Object $greedy = this.getGreedy();
+        result = result * prime + ($greedy == null ? 43 : $greedy.hashCode());
+        Object $host = this.getHost();
+        result = result * prime + ($host == null ? 43 : $host.hashCode());
+        Object $maxMessagesPerPoll = this.getMaxMessagesPerPoll();
+        result = result * prime + ($maxMessagesPerPoll == null ? 43 : $maxMessagesPerPoll.hashCode());
+        Object $overrideEndpoint = this.getOverrideEndpoint();
+        result = result * prime + ($overrideEndpoint == null ? 43 : $overrideEndpoint.hashCode());
+        Object $protocol = this.getProtocol();
+        result = result * prime + ($protocol == null ? 43 : $protocol.hashCode());
+        Object $queueURL = this.getQueueURL();
+        result = result * prime + ($queueURL == null ? 43 : $queueURL.hashCode());
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $uriEndpointOverride = this.getUriEndpointOverride();
+        result = result * prime + ($uriEndpointOverride == null ? 43 : $uriEndpointOverride.hashCode());
+        Object $visibilityTimeout = this.getVisibilityTimeout();
+        result = result * prime + ($visibilityTimeout == null ? 43 : $visibilityTimeout.hashCode());
+        Object $waitTimeSeconds = this.getWaitTimeSeconds();
+        result = result * prime + ($waitTimeSeconds == null ? 43 : $waitTimeSeconds.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AWSSQS(" + "arn=" + this.getArn() + ", autoCreateQueue=" + this.getAutoCreateQueue() + ", delay=" + this.getDelay() + ", deleteAfterRead=" + this.getDeleteAfterRead() + ", greedy=" + this.getGreedy() + ", host=" + this.getHost() + ", maxMessagesPerPoll=" + this.getMaxMessagesPerPoll() + ", overrideEndpoint=" + this.getOverrideEndpoint() + ", protocol=" + this.getProtocol() + ", queueURL=" + this.getQueueURL() + ", region=" + this.getRegion() + ", uriEndpointOverride=" + this.getUriEndpointOverride() + ", visibilityTimeout=" + this.getVisibilityTimeout() + ", waitTimeSeconds=" + this.getWaitTimeSeconds() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

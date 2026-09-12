@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * gatherStatus provides information about the last known gather event.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "gatherers",
     "lastGatherDuration",
     "lastGatherTime"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -164,6 +155,64 @@ public class GatherStatus implements Editable<GatherStatusBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GatherStatus)) {
+            return false;
+        }
+        GatherStatus other = (GatherStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$gatherers = this.getGatherers();
+        Object other$gatherers = other.getGatherers();
+        if (this$gatherers == null ? other$gatherers != null : !this$gatherers.equals(other$gatherers)) {
+            return false;
+        }
+        Object this$lastGatherDuration = this.getLastGatherDuration();
+        Object other$lastGatherDuration = other.getLastGatherDuration();
+        if (this$lastGatherDuration == null ? other$lastGatherDuration != null : !this$lastGatherDuration.equals(other$lastGatherDuration)) {
+            return false;
+        }
+        Object this$lastGatherTime = this.getLastGatherTime();
+        Object other$lastGatherTime = other.getLastGatherTime();
+        if (this$lastGatherTime == null ? other$lastGatherTime != null : !this$lastGatherTime.equals(other$lastGatherTime)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GatherStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $gatherers = this.getGatherers();
+        result = result * prime + ($gatherers == null ? 43 : $gatherers.hashCode());
+        Object $lastGatherDuration = this.getLastGatherDuration();
+        result = result * prime + ($lastGatherDuration == null ? 43 : $lastGatherDuration.hashCode());
+        Object $lastGatherTime = this.getLastGatherTime();
+        result = result * prime + ($lastGatherTime == null ? 43 : $lastGatherTime.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GatherStatus(" + "gatherers=" + this.getGatherers() + ", lastGatherDuration=" + this.getLastGatherDuration() + ", lastGatherTime=" + this.getLastGatherTime() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

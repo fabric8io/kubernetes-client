@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CertificatePrivateKey contains configuration options for private keys used by the Certificate controller. These include the key algorithm and size, the used encoding and the rotation policy.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "encoding",
     "rotationPolicy",
     "size"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class CertificatePrivateKey implements Editable<CertificatePrivateKeyBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CertificatePrivateKey)) {
+            return false;
+        }
+        CertificatePrivateKey other = (CertificatePrivateKey) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$algorithm = this.getAlgorithm();
+        Object other$algorithm = other.getAlgorithm();
+        if (this$algorithm == null ? other$algorithm != null : !this$algorithm.equals(other$algorithm)) {
+            return false;
+        }
+        Object this$encoding = this.getEncoding();
+        Object other$encoding = other.getEncoding();
+        if (this$encoding == null ? other$encoding != null : !this$encoding.equals(other$encoding)) {
+            return false;
+        }
+        Object this$rotationPolicy = this.getRotationPolicy();
+        Object other$rotationPolicy = other.getRotationPolicy();
+        if (this$rotationPolicy == null ? other$rotationPolicy != null : !this$rotationPolicy.equals(other$rotationPolicy)) {
+            return false;
+        }
+        Object this$size = this.getSize();
+        Object other$size = other.getSize();
+        if (this$size == null ? other$size != null : !this$size.equals(other$size)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CertificatePrivateKey;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $algorithm = this.getAlgorithm();
+        result = result * prime + ($algorithm == null ? 43 : $algorithm.hashCode());
+        Object $encoding = this.getEncoding();
+        result = result * prime + ($encoding == null ? 43 : $encoding.hashCode());
+        Object $rotationPolicy = this.getRotationPolicy();
+        result = result * prime + ($rotationPolicy == null ? 43 : $rotationPolicy.hashCode());
+        Object $size = this.getSize();
+        result = result * prime + ($size == null ? 43 : $size.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CertificatePrivateKey(" + "algorithm=" + this.getAlgorithm() + ", encoding=" + this.getEncoding() + ", rotationPolicy=" + this.getRotationPolicy() + ", size=" + this.getSize() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

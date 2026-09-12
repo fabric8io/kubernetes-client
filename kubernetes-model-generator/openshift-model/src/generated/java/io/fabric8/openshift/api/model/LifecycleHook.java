@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * LifecycleHook defines a specific deployment lifecycle action. Only one type of action may be specified at any time.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "execNewPod",
     "failurePolicy",
     "tagImages"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -163,6 +154,64 @@ public class LifecycleHook implements Editable<LifecycleHookBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof LifecycleHook)) {
+            return false;
+        }
+        LifecycleHook other = (LifecycleHook) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$execNewPod = this.getExecNewPod();
+        Object other$execNewPod = other.getExecNewPod();
+        if (this$execNewPod == null ? other$execNewPod != null : !this$execNewPod.equals(other$execNewPod)) {
+            return false;
+        }
+        Object this$failurePolicy = this.getFailurePolicy();
+        Object other$failurePolicy = other.getFailurePolicy();
+        if (this$failurePolicy == null ? other$failurePolicy != null : !this$failurePolicy.equals(other$failurePolicy)) {
+            return false;
+        }
+        Object this$tagImages = this.getTagImages();
+        Object other$tagImages = other.getTagImages();
+        if (this$tagImages == null ? other$tagImages != null : !this$tagImages.equals(other$tagImages)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof LifecycleHook;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $execNewPod = this.getExecNewPod();
+        result = result * prime + ($execNewPod == null ? 43 : $execNewPod.hashCode());
+        Object $failurePolicy = this.getFailurePolicy();
+        result = result * prime + ($failurePolicy == null ? 43 : $failurePolicy.hashCode());
+        Object $tagImages = this.getTagImages();
+        result = result * prime + ($tagImages == null ? 43 : $tagImages.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "LifecycleHook(" + "execNewPod=" + this.getExecNewPod() + ", failurePolicy=" + this.getFailurePolicy() + ", tagImages=" + this.getTagImages() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PublicKey defines the root of trust based on a sigstore public key.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "keyData",
     "rekorKeyData"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -139,6 +130,57 @@ public class PublicKey implements Editable<PublicKeyBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PublicKey)) {
+            return false;
+        }
+        PublicKey other = (PublicKey) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$keyData = this.getKeyData();
+        Object other$keyData = other.getKeyData();
+        if (this$keyData == null ? other$keyData != null : !this$keyData.equals(other$keyData)) {
+            return false;
+        }
+        Object this$rekorKeyData = this.getRekorKeyData();
+        Object other$rekorKeyData = other.getRekorKeyData();
+        if (this$rekorKeyData == null ? other$rekorKeyData != null : !this$rekorKeyData.equals(other$rekorKeyData)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PublicKey;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $keyData = this.getKeyData();
+        result = result * prime + ($keyData == null ? 43 : $keyData.hashCode());
+        Object $rekorKeyData = this.getRekorKeyData();
+        result = result * prime + ($rekorKeyData == null ? 43 : $rekorKeyData.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PublicKey(" + "keyData=" + this.getKeyData() + ", rekorKeyData=" + this.getRekorKeyData() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

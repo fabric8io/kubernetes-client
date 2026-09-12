@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RawIPSet represents an ipset on specific pod
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "name",
     "setNames",
     "source"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -228,6 +219,85 @@ public class RawIPSet implements Editable<RawIPSetBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RawIPSet)) {
+            return false;
+        }
+        RawIPSet other = (RawIPSet) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cidrAndPorts = this.getCidrAndPorts();
+        Object other$cidrAndPorts = other.getCidrAndPorts();
+        if (this$cidrAndPorts == null ? other$cidrAndPorts != null : !this$cidrAndPorts.equals(other$cidrAndPorts)) {
+            return false;
+        }
+        Object this$cidrs = this.getCidrs();
+        Object other$cidrs = other.getCidrs();
+        if (this$cidrs == null ? other$cidrs != null : !this$cidrs.equals(other$cidrs)) {
+            return false;
+        }
+        Object this$ipsetType = this.getIpsetType();
+        Object other$ipsetType = other.getIpsetType();
+        if (this$ipsetType == null ? other$ipsetType != null : !this$ipsetType.equals(other$ipsetType)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$setNames = this.getSetNames();
+        Object other$setNames = other.getSetNames();
+        if (this$setNames == null ? other$setNames != null : !this$setNames.equals(other$setNames)) {
+            return false;
+        }
+        Object this$source = this.getSource();
+        Object other$source = other.getSource();
+        if (this$source == null ? other$source != null : !this$source.equals(other$source)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RawIPSet;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cidrAndPorts = this.getCidrAndPorts();
+        result = result * prime + ($cidrAndPorts == null ? 43 : $cidrAndPorts.hashCode());
+        Object $cidrs = this.getCidrs();
+        result = result * prime + ($cidrs == null ? 43 : $cidrs.hashCode());
+        Object $ipsetType = this.getIpsetType();
+        result = result * prime + ($ipsetType == null ? 43 : $ipsetType.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $setNames = this.getSetNames();
+        result = result * prime + ($setNames == null ? 43 : $setNames.hashCode());
+        Object $source = this.getSource();
+        result = result * prime + ($source == null ? 43 : $source.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RawIPSet(" + "cidrAndPorts=" + this.getCidrAndPorts() + ", cidrs=" + this.getCidrs() + ", ipsetType=" + this.getIpsetType() + ", name=" + this.getName() + ", setNames=" + this.getSetNames() + ", source=" + this.getSource() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

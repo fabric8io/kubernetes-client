@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
     "hasLabels",
     "nameMatches",
     "names"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -162,6 +153,64 @@ public class HostClaimNamespaces implements Editable<HostClaimNamespacesBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HostClaimNamespaces)) {
+            return false;
+        }
+        HostClaimNamespaces other = (HostClaimNamespaces) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$hasLabels = this.getHasLabels();
+        Object other$hasLabels = other.getHasLabels();
+        if (this$hasLabels == null ? other$hasLabels != null : !this$hasLabels.equals(other$hasLabels)) {
+            return false;
+        }
+        Object this$nameMatches = this.getNameMatches();
+        Object other$nameMatches = other.getNameMatches();
+        if (this$nameMatches == null ? other$nameMatches != null : !this$nameMatches.equals(other$nameMatches)) {
+            return false;
+        }
+        Object this$names = this.getNames();
+        Object other$names = other.getNames();
+        if (this$names == null ? other$names != null : !this$names.equals(other$names)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HostClaimNamespaces;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $hasLabels = this.getHasLabels();
+        result = result * prime + ($hasLabels == null ? 43 : $hasLabels.hashCode());
+        Object $nameMatches = this.getNameMatches();
+        result = result * prime + ($nameMatches == null ? 43 : $nameMatches.hashCode());
+        Object $names = this.getNames();
+        result = result * prime + ($names == null ? 43 : $names.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HostClaimNamespaces(" + "hasLabels=" + this.getHasLabels() + ", nameMatches=" + this.getNameMatches() + ", names=" + this.getNames() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

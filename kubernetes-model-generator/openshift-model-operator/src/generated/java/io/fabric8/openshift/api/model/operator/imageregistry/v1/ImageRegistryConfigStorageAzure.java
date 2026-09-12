@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageRegistryConfigStorageAzure holds the information to configure the registry to use Azure Blob Storage for backend storage.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "cloudName",
     "container",
     "networkAccess"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class ImageRegistryConfigStorageAzure implements Editable<ImageRegistryCo
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageRegistryConfigStorageAzure)) {
+            return false;
+        }
+        ImageRegistryConfigStorageAzure other = (ImageRegistryConfigStorageAzure) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$accountName = this.getAccountName();
+        Object other$accountName = other.getAccountName();
+        if (this$accountName == null ? other$accountName != null : !this$accountName.equals(other$accountName)) {
+            return false;
+        }
+        Object this$cloudName = this.getCloudName();
+        Object other$cloudName = other.getCloudName();
+        if (this$cloudName == null ? other$cloudName != null : !this$cloudName.equals(other$cloudName)) {
+            return false;
+        }
+        Object this$container = this.getContainer();
+        Object other$container = other.getContainer();
+        if (this$container == null ? other$container != null : !this$container.equals(other$container)) {
+            return false;
+        }
+        Object this$networkAccess = this.getNetworkAccess();
+        Object other$networkAccess = other.getNetworkAccess();
+        if (this$networkAccess == null ? other$networkAccess != null : !this$networkAccess.equals(other$networkAccess)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageRegistryConfigStorageAzure;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $accountName = this.getAccountName();
+        result = result * prime + ($accountName == null ? 43 : $accountName.hashCode());
+        Object $cloudName = this.getCloudName();
+        result = result * prime + ($cloudName == null ? 43 : $cloudName.hashCode());
+        Object $container = this.getContainer();
+        result = result * prime + ($container == null ? 43 : $container.hashCode());
+        Object $networkAccess = this.getNetworkAccess();
+        result = result * prime + ($networkAccess == null ? 43 : $networkAccess.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageRegistryConfigStorageAzure(" + "accountName=" + this.getAccountName() + ", cloudName=" + this.getCloudName() + ", container=" + this.getContainer() + ", networkAccess=" + this.getNetworkAccess() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

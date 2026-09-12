@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Metal3DataClaimStatus defines the observed state of Metal3DataClaim.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "errorMessage",
     "renderedData"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class Metal3DataClaimStatus implements Editable<Metal3DataClaimStatusBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Metal3DataClaimStatus)) {
+            return false;
+        }
+        Metal3DataClaimStatus other = (Metal3DataClaimStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$errorMessage = this.getErrorMessage();
+        Object other$errorMessage = other.getErrorMessage();
+        if (this$errorMessage == null ? other$errorMessage != null : !this$errorMessage.equals(other$errorMessage)) {
+            return false;
+        }
+        Object this$renderedData = this.getRenderedData();
+        Object other$renderedData = other.getRenderedData();
+        if (this$renderedData == null ? other$renderedData != null : !this$renderedData.equals(other$renderedData)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Metal3DataClaimStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $errorMessage = this.getErrorMessage();
+        result = result * prime + ($errorMessage == null ? 43 : $errorMessage.hashCode());
+        Object $renderedData = this.getRenderedData();
+        result = result * prime + ($renderedData == null ? 43 : $renderedData.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Metal3DataClaimStatus(" + "errorMessage=" + this.getErrorMessage() + ", renderedData=" + this.getRenderedData() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "secrets",
     "sourceType",
     "updateStrategy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -311,6 +302,127 @@ public class CatalogSourceSpec implements Editable<CatalogSourceSpecBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CatalogSourceSpec)) {
+            return false;
+        }
+        CatalogSourceSpec other = (CatalogSourceSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$address = this.getAddress();
+        Object other$address = other.getAddress();
+        if (this$address == null ? other$address != null : !this$address.equals(other$address)) {
+            return false;
+        }
+        Object this$configMap = this.getConfigMap();
+        Object other$configMap = other.getConfigMap();
+        if (this$configMap == null ? other$configMap != null : !this$configMap.equals(other$configMap)) {
+            return false;
+        }
+        Object this$description = this.getDescription();
+        Object other$description = other.getDescription();
+        if (this$description == null ? other$description != null : !this$description.equals(other$description)) {
+            return false;
+        }
+        Object this$displayName = this.getDisplayName();
+        Object other$displayName = other.getDisplayName();
+        if (this$displayName == null ? other$displayName != null : !this$displayName.equals(other$displayName)) {
+            return false;
+        }
+        Object this$grpcPodConfig = this.getGrpcPodConfig();
+        Object other$grpcPodConfig = other.getGrpcPodConfig();
+        if (this$grpcPodConfig == null ? other$grpcPodConfig != null : !this$grpcPodConfig.equals(other$grpcPodConfig)) {
+            return false;
+        }
+        Object this$icon = this.getIcon();
+        Object other$icon = other.getIcon();
+        if (this$icon == null ? other$icon != null : !this$icon.equals(other$icon)) {
+            return false;
+        }
+        Object this$image = this.getImage();
+        Object other$image = other.getImage();
+        if (this$image == null ? other$image != null : !this$image.equals(other$image)) {
+            return false;
+        }
+        Object this$priority = this.getPriority();
+        Object other$priority = other.getPriority();
+        if (this$priority == null ? other$priority != null : !this$priority.equals(other$priority)) {
+            return false;
+        }
+        Object this$publisher = this.getPublisher();
+        Object other$publisher = other.getPublisher();
+        if (this$publisher == null ? other$publisher != null : !this$publisher.equals(other$publisher)) {
+            return false;
+        }
+        Object this$secrets = this.getSecrets();
+        Object other$secrets = other.getSecrets();
+        if (this$secrets == null ? other$secrets != null : !this$secrets.equals(other$secrets)) {
+            return false;
+        }
+        Object this$sourceType = this.getSourceType();
+        Object other$sourceType = other.getSourceType();
+        if (this$sourceType == null ? other$sourceType != null : !this$sourceType.equals(other$sourceType)) {
+            return false;
+        }
+        Object this$updateStrategy = this.getUpdateStrategy();
+        Object other$updateStrategy = other.getUpdateStrategy();
+        if (this$updateStrategy == null ? other$updateStrategy != null : !this$updateStrategy.equals(other$updateStrategy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CatalogSourceSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $address = this.getAddress();
+        result = result * prime + ($address == null ? 43 : $address.hashCode());
+        Object $configMap = this.getConfigMap();
+        result = result * prime + ($configMap == null ? 43 : $configMap.hashCode());
+        Object $description = this.getDescription();
+        result = result * prime + ($description == null ? 43 : $description.hashCode());
+        Object $displayName = this.getDisplayName();
+        result = result * prime + ($displayName == null ? 43 : $displayName.hashCode());
+        Object $grpcPodConfig = this.getGrpcPodConfig();
+        result = result * prime + ($grpcPodConfig == null ? 43 : $grpcPodConfig.hashCode());
+        Object $icon = this.getIcon();
+        result = result * prime + ($icon == null ? 43 : $icon.hashCode());
+        Object $image = this.getImage();
+        result = result * prime + ($image == null ? 43 : $image.hashCode());
+        Object $priority = this.getPriority();
+        result = result * prime + ($priority == null ? 43 : $priority.hashCode());
+        Object $publisher = this.getPublisher();
+        result = result * prime + ($publisher == null ? 43 : $publisher.hashCode());
+        Object $secrets = this.getSecrets();
+        result = result * prime + ($secrets == null ? 43 : $secrets.hashCode());
+        Object $sourceType = this.getSourceType();
+        result = result * prime + ($sourceType == null ? 43 : $sourceType.hashCode());
+        Object $updateStrategy = this.getUpdateStrategy();
+        result = result * prime + ($updateStrategy == null ? 43 : $updateStrategy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CatalogSourceSpec(" + "address=" + this.getAddress() + ", configMap=" + this.getConfigMap() + ", description=" + this.getDescription() + ", displayName=" + this.getDisplayName() + ", grpcPodConfig=" + this.getGrpcPodConfig() + ", icon=" + this.getIcon() + ", image=" + this.getImage() + ", priority=" + this.getPriority() + ", publisher=" + this.getPublisher() + ", secrets=" + this.getSecrets() + ", sourceType=" + this.getSourceType() + ", updateStrategy=" + this.getUpdateStrategy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

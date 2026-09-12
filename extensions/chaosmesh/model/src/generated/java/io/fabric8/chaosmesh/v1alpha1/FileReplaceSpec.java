@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
     "file-name",
     "line",
     "origin-string"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -177,6 +168,71 @@ public class FileReplaceSpec implements Editable<FileReplaceSpecBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof FileReplaceSpec)) {
+            return false;
+        }
+        FileReplaceSpec other = (FileReplaceSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$destString = this.getDestString();
+        Object other$destString = other.getDestString();
+        if (this$destString == null ? other$destString != null : !this$destString.equals(other$destString)) {
+            return false;
+        }
+        Object this$fileName = this.getFileName();
+        Object other$fileName = other.getFileName();
+        if (this$fileName == null ? other$fileName != null : !this$fileName.equals(other$fileName)) {
+            return false;
+        }
+        Object this$line = this.getLine();
+        Object other$line = other.getLine();
+        if (this$line == null ? other$line != null : !this$line.equals(other$line)) {
+            return false;
+        }
+        Object this$originString = this.getOriginString();
+        Object other$originString = other.getOriginString();
+        if (this$originString == null ? other$originString != null : !this$originString.equals(other$originString)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof FileReplaceSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $destString = this.getDestString();
+        result = result * prime + ($destString == null ? 43 : $destString.hashCode());
+        Object $fileName = this.getFileName();
+        result = result * prime + ($fileName == null ? 43 : $fileName.hashCode());
+        Object $line = this.getLine();
+        result = result * prime + ($line == null ? 43 : $line.hashCode());
+        Object $originString = this.getOriginString();
+        result = result * prime + ($originString == null ? 43 : $originString.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "FileReplaceSpec(" + "destString=" + this.getDestString() + ", fileName=" + this.getFileName() + ", line=" + this.getLine() + ", originString=" + this.getOriginString() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VolumeMount describes a mounting of a Volume within a container.
@@ -33,12 +30,6 @@ import lombok.experimental.Accessors;
     "recursiveReadOnly",
     "subPath",
     "subPathExpr"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -235,6 +226,99 @@ public class VolumeMount implements Editable<VolumeMountBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VolumeMount)) {
+            return false;
+        }
+        VolumeMount other = (VolumeMount) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bindMountOptions = this.getBindMountOptions();
+        Object other$bindMountOptions = other.getBindMountOptions();
+        if (this$bindMountOptions == null ? other$bindMountOptions != null : !this$bindMountOptions.equals(other$bindMountOptions)) {
+            return false;
+        }
+        Object this$mountPath = this.getMountPath();
+        Object other$mountPath = other.getMountPath();
+        if (this$mountPath == null ? other$mountPath != null : !this$mountPath.equals(other$mountPath)) {
+            return false;
+        }
+        Object this$mountPropagation = this.getMountPropagation();
+        Object other$mountPropagation = other.getMountPropagation();
+        if (this$mountPropagation == null ? other$mountPropagation != null : !this$mountPropagation.equals(other$mountPropagation)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$readOnly = this.getReadOnly();
+        Object other$readOnly = other.getReadOnly();
+        if (this$readOnly == null ? other$readOnly != null : !this$readOnly.equals(other$readOnly)) {
+            return false;
+        }
+        Object this$recursiveReadOnly = this.getRecursiveReadOnly();
+        Object other$recursiveReadOnly = other.getRecursiveReadOnly();
+        if (this$recursiveReadOnly == null ? other$recursiveReadOnly != null : !this$recursiveReadOnly.equals(other$recursiveReadOnly)) {
+            return false;
+        }
+        Object this$subPath = this.getSubPath();
+        Object other$subPath = other.getSubPath();
+        if (this$subPath == null ? other$subPath != null : !this$subPath.equals(other$subPath)) {
+            return false;
+        }
+        Object this$subPathExpr = this.getSubPathExpr();
+        Object other$subPathExpr = other.getSubPathExpr();
+        if (this$subPathExpr == null ? other$subPathExpr != null : !this$subPathExpr.equals(other$subPathExpr)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VolumeMount;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bindMountOptions = this.getBindMountOptions();
+        result = result * prime + ($bindMountOptions == null ? 43 : $bindMountOptions.hashCode());
+        Object $mountPath = this.getMountPath();
+        result = result * prime + ($mountPath == null ? 43 : $mountPath.hashCode());
+        Object $mountPropagation = this.getMountPropagation();
+        result = result * prime + ($mountPropagation == null ? 43 : $mountPropagation.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $readOnly = this.getReadOnly();
+        result = result * prime + ($readOnly == null ? 43 : $readOnly.hashCode());
+        Object $recursiveReadOnly = this.getRecursiveReadOnly();
+        result = result * prime + ($recursiveReadOnly == null ? 43 : $recursiveReadOnly.hashCode());
+        Object $subPath = this.getSubPath();
+        result = result * prime + ($subPath == null ? 43 : $subPath.hashCode());
+        Object $subPathExpr = this.getSubPathExpr();
+        result = result * prime + ($subPathExpr == null ? 43 : $subPathExpr.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VolumeMount(" + "bindMountOptions=" + this.getBindMountOptions() + ", mountPath=" + this.getMountPath() + ", mountPropagation=" + this.getMountPropagation() + ", name=" + this.getName() + ", readOnly=" + this.getReadOnly() + ", recursiveReadOnly=" + this.getRecursiveReadOnly() + ", subPath=" + this.getSubPath() + ", subPathExpr=" + this.getSubPathExpr() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

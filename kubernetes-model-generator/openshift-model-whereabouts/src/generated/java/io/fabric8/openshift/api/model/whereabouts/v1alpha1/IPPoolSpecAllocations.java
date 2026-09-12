@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * IPAllocation represents metadata about the pod/container owner of a specific IP
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "id",
     "ifname",
     "podref"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class IPPoolSpecAllocations implements Editable<IPPoolSpecAllocationsBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof IPPoolSpecAllocations)) {
+            return false;
+        }
+        IPPoolSpecAllocations other = (IPPoolSpecAllocations) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {
+            return false;
+        }
+        Object this$ifname = this.getIfname();
+        Object other$ifname = other.getIfname();
+        if (this$ifname == null ? other$ifname != null : !this$ifname.equals(other$ifname)) {
+            return false;
+        }
+        Object this$podref = this.getPodref();
+        Object other$podref = other.getPodref();
+        if (this$podref == null ? other$podref != null : !this$podref.equals(other$podref)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof IPPoolSpecAllocations;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $id = this.getId();
+        result = result * prime + ($id == null ? 43 : $id.hashCode());
+        Object $ifname = this.getIfname();
+        result = result * prime + ($ifname == null ? 43 : $ifname.hashCode());
+        Object $podref = this.getPodref();
+        result = result * prime + ($podref == null ? 43 : $podref.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IPPoolSpecAllocations(" + "id=" + this.getId() + ", ifname=" + this.getIfname() + ", podref=" + this.getPodref() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

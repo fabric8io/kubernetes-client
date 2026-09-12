@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
     "diskSizeGB",
     "managedDisk",
     "osType"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -184,6 +175,78 @@ public class OSDisk implements Editable<OSDiskBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OSDisk)) {
+            return false;
+        }
+        OSDisk other = (OSDisk) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cachingType = this.getCachingType();
+        Object other$cachingType = other.getCachingType();
+        if (this$cachingType == null ? other$cachingType != null : !this$cachingType.equals(other$cachingType)) {
+            return false;
+        }
+        Object this$diskSettings = this.getDiskSettings();
+        Object other$diskSettings = other.getDiskSettings();
+        if (this$diskSettings == null ? other$diskSettings != null : !this$diskSettings.equals(other$diskSettings)) {
+            return false;
+        }
+        Object this$diskSizeGB = this.getDiskSizeGB();
+        Object other$diskSizeGB = other.getDiskSizeGB();
+        if (this$diskSizeGB == null ? other$diskSizeGB != null : !this$diskSizeGB.equals(other$diskSizeGB)) {
+            return false;
+        }
+        Object this$managedDisk = this.getManagedDisk();
+        Object other$managedDisk = other.getManagedDisk();
+        if (this$managedDisk == null ? other$managedDisk != null : !this$managedDisk.equals(other$managedDisk)) {
+            return false;
+        }
+        Object this$osType = this.getOsType();
+        Object other$osType = other.getOsType();
+        if (this$osType == null ? other$osType != null : !this$osType.equals(other$osType)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OSDisk;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cachingType = this.getCachingType();
+        result = result * prime + ($cachingType == null ? 43 : $cachingType.hashCode());
+        Object $diskSettings = this.getDiskSettings();
+        result = result * prime + ($diskSettings == null ? 43 : $diskSettings.hashCode());
+        Object $diskSizeGB = this.getDiskSizeGB();
+        result = result * prime + ($diskSizeGB == null ? 43 : $diskSizeGB.hashCode());
+        Object $managedDisk = this.getManagedDisk();
+        result = result * prime + ($managedDisk == null ? 43 : $managedDisk.hashCode());
+        Object $osType = this.getOsType();
+        result = result * prime + ($osType == null ? 43 : $osType.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OSDisk(" + "cachingType=" + this.getCachingType() + ", diskSettings=" + this.getDiskSettings() + ", diskSizeGB=" + this.getDiskSizeGB() + ", managedDisk=" + this.getManagedDisk() + ", osType=" + this.getOsType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

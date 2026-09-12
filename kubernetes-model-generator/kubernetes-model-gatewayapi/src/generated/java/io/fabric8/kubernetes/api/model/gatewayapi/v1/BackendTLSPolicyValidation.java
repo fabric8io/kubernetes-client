@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * BackendTLSPolicyValidation contains backend TLS validation configuration.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "hostname",
     "subjectAltNames",
     "wellKnownCACertificates"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class BackendTLSPolicyValidation implements Editable<BackendTLSPolicyVali
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BackendTLSPolicyValidation)) {
+            return false;
+        }
+        BackendTLSPolicyValidation other = (BackendTLSPolicyValidation) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$caCertificateRefs = this.getCaCertificateRefs();
+        Object other$caCertificateRefs = other.getCaCertificateRefs();
+        if (this$caCertificateRefs == null ? other$caCertificateRefs != null : !this$caCertificateRefs.equals(other$caCertificateRefs)) {
+            return false;
+        }
+        Object this$hostname = this.getHostname();
+        Object other$hostname = other.getHostname();
+        if (this$hostname == null ? other$hostname != null : !this$hostname.equals(other$hostname)) {
+            return false;
+        }
+        Object this$subjectAltNames = this.getSubjectAltNames();
+        Object other$subjectAltNames = other.getSubjectAltNames();
+        if (this$subjectAltNames == null ? other$subjectAltNames != null : !this$subjectAltNames.equals(other$subjectAltNames)) {
+            return false;
+        }
+        Object this$wellKnownCACertificates = this.getWellKnownCACertificates();
+        Object other$wellKnownCACertificates = other.getWellKnownCACertificates();
+        if (this$wellKnownCACertificates == null ? other$wellKnownCACertificates != null : !this$wellKnownCACertificates.equals(other$wellKnownCACertificates)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BackendTLSPolicyValidation;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $caCertificateRefs = this.getCaCertificateRefs();
+        result = result * prime + ($caCertificateRefs == null ? 43 : $caCertificateRefs.hashCode());
+        Object $hostname = this.getHostname();
+        result = result * prime + ($hostname == null ? 43 : $hostname.hashCode());
+        Object $subjectAltNames = this.getSubjectAltNames();
+        result = result * prime + ($subjectAltNames == null ? 43 : $subjectAltNames.hashCode());
+        Object $wellKnownCACertificates = this.getWellKnownCACertificates();
+        result = result * prime + ($wellKnownCACertificates == null ? 43 : $wellKnownCACertificates.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BackendTLSPolicyValidation(" + "caCertificateRefs=" + this.getCaCertificateRefs() + ", hostname=" + this.getHostname() + ", subjectAltNames=" + this.getSubjectAltNames() + ", wellKnownCACertificates=" + this.getWellKnownCACertificates() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

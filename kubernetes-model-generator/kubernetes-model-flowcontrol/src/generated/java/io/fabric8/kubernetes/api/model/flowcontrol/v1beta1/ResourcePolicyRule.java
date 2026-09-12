@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ResourcePolicyRule is a predicate that matches some resource requests, testing the request's verb and the target resource. A ResourcePolicyRule matches a resource request if and only if: (a) at least one member of verbs matches the request, (b) at least one member of apiGroups matches the request, (c) at least one member of resources matches the request, and (d) least one member of namespaces matches the request.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "namespaces",
     "resources",
     "verbs"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -210,6 +201,78 @@ public class ResourcePolicyRule implements Editable<ResourcePolicyRuleBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ResourcePolicyRule)) {
+            return false;
+        }
+        ResourcePolicyRule other = (ResourcePolicyRule) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiGroups = this.getApiGroups();
+        Object other$apiGroups = other.getApiGroups();
+        if (this$apiGroups == null ? other$apiGroups != null : !this$apiGroups.equals(other$apiGroups)) {
+            return false;
+        }
+        Object this$clusterScope = this.getClusterScope();
+        Object other$clusterScope = other.getClusterScope();
+        if (this$clusterScope == null ? other$clusterScope != null : !this$clusterScope.equals(other$clusterScope)) {
+            return false;
+        }
+        Object this$namespaces = this.getNamespaces();
+        Object other$namespaces = other.getNamespaces();
+        if (this$namespaces == null ? other$namespaces != null : !this$namespaces.equals(other$namespaces)) {
+            return false;
+        }
+        Object this$resources = this.getResources();
+        Object other$resources = other.getResources();
+        if (this$resources == null ? other$resources != null : !this$resources.equals(other$resources)) {
+            return false;
+        }
+        Object this$verbs = this.getVerbs();
+        Object other$verbs = other.getVerbs();
+        if (this$verbs == null ? other$verbs != null : !this$verbs.equals(other$verbs)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ResourcePolicyRule;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiGroups = this.getApiGroups();
+        result = result * prime + ($apiGroups == null ? 43 : $apiGroups.hashCode());
+        Object $clusterScope = this.getClusterScope();
+        result = result * prime + ($clusterScope == null ? 43 : $clusterScope.hashCode());
+        Object $namespaces = this.getNamespaces();
+        result = result * prime + ($namespaces == null ? 43 : $namespaces.hashCode());
+        Object $resources = this.getResources();
+        result = result * prime + ($resources == null ? 43 : $resources.hashCode());
+        Object $verbs = this.getVerbs();
+        result = result * prime + ($verbs == null ? 43 : $verbs.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ResourcePolicyRule(" + "apiGroups=" + this.getApiGroups() + ", clusterScope=" + this.getClusterScope() + ", namespaces=" + this.getNamespaces() + ", resources=" + this.getResources() + ", verbs=" + this.getVerbs() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

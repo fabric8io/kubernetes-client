@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MSTeamsConfig configures notifications via Microsoft Teams. It requires Alertmanager &gt;= 0.26.0.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "text",
     "title",
     "webhookUrl"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -221,6 +212,85 @@ public class MSTeamsConfig implements Editable<MSTeamsConfigBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MSTeamsConfig)) {
+            return false;
+        }
+        MSTeamsConfig other = (MSTeamsConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$httpConfig = this.getHttpConfig();
+        Object other$httpConfig = other.getHttpConfig();
+        if (this$httpConfig == null ? other$httpConfig != null : !this$httpConfig.equals(other$httpConfig)) {
+            return false;
+        }
+        Object this$sendResolved = this.getSendResolved();
+        Object other$sendResolved = other.getSendResolved();
+        if (this$sendResolved == null ? other$sendResolved != null : !this$sendResolved.equals(other$sendResolved)) {
+            return false;
+        }
+        Object this$summary = this.getSummary();
+        Object other$summary = other.getSummary();
+        if (this$summary == null ? other$summary != null : !this$summary.equals(other$summary)) {
+            return false;
+        }
+        Object this$text = this.getText();
+        Object other$text = other.getText();
+        if (this$text == null ? other$text != null : !this$text.equals(other$text)) {
+            return false;
+        }
+        Object this$title = this.getTitle();
+        Object other$title = other.getTitle();
+        if (this$title == null ? other$title != null : !this$title.equals(other$title)) {
+            return false;
+        }
+        Object this$webhookUrl = this.getWebhookUrl();
+        Object other$webhookUrl = other.getWebhookUrl();
+        if (this$webhookUrl == null ? other$webhookUrl != null : !this$webhookUrl.equals(other$webhookUrl)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MSTeamsConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $httpConfig = this.getHttpConfig();
+        result = result * prime + ($httpConfig == null ? 43 : $httpConfig.hashCode());
+        Object $sendResolved = this.getSendResolved();
+        result = result * prime + ($sendResolved == null ? 43 : $sendResolved.hashCode());
+        Object $summary = this.getSummary();
+        result = result * prime + ($summary == null ? 43 : $summary.hashCode());
+        Object $text = this.getText();
+        result = result * prime + ($text == null ? 43 : $text.hashCode());
+        Object $title = this.getTitle();
+        result = result * prime + ($title == null ? 43 : $title.hashCode());
+        Object $webhookUrl = this.getWebhookUrl();
+        result = result * prime + ($webhookUrl == null ? 43 : $webhookUrl.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MSTeamsConfig(" + "httpConfig=" + this.getHttpConfig() + ", sendResolved=" + this.getSendResolved() + ", summary=" + this.getSummary() + ", text=" + this.getText() + ", title=" + this.getTitle() + ", webhookUrl=" + this.getWebhookUrl() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

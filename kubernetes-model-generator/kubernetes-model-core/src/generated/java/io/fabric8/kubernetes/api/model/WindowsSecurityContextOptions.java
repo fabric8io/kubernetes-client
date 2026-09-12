@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * WindowsSecurityContextOptions contain Windows-specific options and credentials.
@@ -27,12 +24,6 @@ import lombok.experimental.Accessors;
     "gmsaCredentialSpecName",
     "hostProcess",
     "runAsUserName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -151,6 +142,71 @@ public class WindowsSecurityContextOptions implements Editable<WindowsSecurityCo
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof WindowsSecurityContextOptions)) {
+            return false;
+        }
+        WindowsSecurityContextOptions other = (WindowsSecurityContextOptions) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$gmsaCredentialSpec = this.getGmsaCredentialSpec();
+        Object other$gmsaCredentialSpec = other.getGmsaCredentialSpec();
+        if (this$gmsaCredentialSpec == null ? other$gmsaCredentialSpec != null : !this$gmsaCredentialSpec.equals(other$gmsaCredentialSpec)) {
+            return false;
+        }
+        Object this$gmsaCredentialSpecName = this.getGmsaCredentialSpecName();
+        Object other$gmsaCredentialSpecName = other.getGmsaCredentialSpecName();
+        if (this$gmsaCredentialSpecName == null ? other$gmsaCredentialSpecName != null : !this$gmsaCredentialSpecName.equals(other$gmsaCredentialSpecName)) {
+            return false;
+        }
+        Object this$hostProcess = this.getHostProcess();
+        Object other$hostProcess = other.getHostProcess();
+        if (this$hostProcess == null ? other$hostProcess != null : !this$hostProcess.equals(other$hostProcess)) {
+            return false;
+        }
+        Object this$runAsUserName = this.getRunAsUserName();
+        Object other$runAsUserName = other.getRunAsUserName();
+        if (this$runAsUserName == null ? other$runAsUserName != null : !this$runAsUserName.equals(other$runAsUserName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof WindowsSecurityContextOptions;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $gmsaCredentialSpec = this.getGmsaCredentialSpec();
+        result = result * prime + ($gmsaCredentialSpec == null ? 43 : $gmsaCredentialSpec.hashCode());
+        Object $gmsaCredentialSpecName = this.getGmsaCredentialSpecName();
+        result = result * prime + ($gmsaCredentialSpecName == null ? 43 : $gmsaCredentialSpecName.hashCode());
+        Object $hostProcess = this.getHostProcess();
+        result = result * prime + ($hostProcess == null ? 43 : $hostProcess.hashCode());
+        Object $runAsUserName = this.getRunAsUserName();
+        result = result * prime + ($runAsUserName == null ? 43 : $runAsUserName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WindowsSecurityContextOptions(" + "gmsaCredentialSpec=" + this.getGmsaCredentialSpec() + ", gmsaCredentialSpecName=" + this.getGmsaCredentialSpecName() + ", hostProcess=" + this.getHostProcess() + ", runAsUserName=" + this.getRunAsUserName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
     "policy",
     "profile",
     "profileCustomizations"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,78 @@ public class SchedulerSpec implements Editable<SchedulerSpecBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SchedulerSpec)) {
+            return false;
+        }
+        SchedulerSpec other = (SchedulerSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$defaultNodeSelector = this.getDefaultNodeSelector();
+        Object other$defaultNodeSelector = other.getDefaultNodeSelector();
+        if (this$defaultNodeSelector == null ? other$defaultNodeSelector != null : !this$defaultNodeSelector.equals(other$defaultNodeSelector)) {
+            return false;
+        }
+        Object this$mastersSchedulable = this.getMastersSchedulable();
+        Object other$mastersSchedulable = other.getMastersSchedulable();
+        if (this$mastersSchedulable == null ? other$mastersSchedulable != null : !this$mastersSchedulable.equals(other$mastersSchedulable)) {
+            return false;
+        }
+        Object this$policy = this.getPolicy();
+        Object other$policy = other.getPolicy();
+        if (this$policy == null ? other$policy != null : !this$policy.equals(other$policy)) {
+            return false;
+        }
+        Object this$profile = this.getProfile();
+        Object other$profile = other.getProfile();
+        if (this$profile == null ? other$profile != null : !this$profile.equals(other$profile)) {
+            return false;
+        }
+        Object this$profileCustomizations = this.getProfileCustomizations();
+        Object other$profileCustomizations = other.getProfileCustomizations();
+        if (this$profileCustomizations == null ? other$profileCustomizations != null : !this$profileCustomizations.equals(other$profileCustomizations)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SchedulerSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $defaultNodeSelector = this.getDefaultNodeSelector();
+        result = result * prime + ($defaultNodeSelector == null ? 43 : $defaultNodeSelector.hashCode());
+        Object $mastersSchedulable = this.getMastersSchedulable();
+        result = result * prime + ($mastersSchedulable == null ? 43 : $mastersSchedulable.hashCode());
+        Object $policy = this.getPolicy();
+        result = result * prime + ($policy == null ? 43 : $policy.hashCode());
+        Object $profile = this.getProfile();
+        result = result * prime + ($profile == null ? 43 : $profile.hashCode());
+        Object $profileCustomizations = this.getProfileCustomizations();
+        result = result * prime + ($profileCustomizations == null ? 43 : $profileCustomizations.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SchedulerSpec(" + "defaultNodeSelector=" + this.getDefaultNodeSelector() + ", mastersSchedulable=" + this.getMastersSchedulable() + ", policy=" + this.getPolicy() + ", profile=" + this.getProfile() + ", profileCustomizations=" + this.getProfileCustomizations() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

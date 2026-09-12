@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.config.v1.TLSProfileSpec;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * IngressControllerStatus defines the observed status of the IngressController.
@@ -50,12 +47,6 @@ import lombok.experimental.Accessors;
     "routeSelector",
     "selector",
     "tlsProfile"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -285,6 +276,106 @@ public class IngressControllerStatus implements Editable<IngressControllerStatus
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof IngressControllerStatus)) {
+            return false;
+        }
+        IngressControllerStatus other = (IngressControllerStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$availableReplicas = this.getAvailableReplicas();
+        Object other$availableReplicas = other.getAvailableReplicas();
+        if (this$availableReplicas == null ? other$availableReplicas != null : !this$availableReplicas.equals(other$availableReplicas)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$domain = this.getDomain();
+        Object other$domain = other.getDomain();
+        if (this$domain == null ? other$domain != null : !this$domain.equals(other$domain)) {
+            return false;
+        }
+        Object this$endpointPublishingStrategy = this.getEndpointPublishingStrategy();
+        Object other$endpointPublishingStrategy = other.getEndpointPublishingStrategy();
+        if (this$endpointPublishingStrategy == null ? other$endpointPublishingStrategy != null : !this$endpointPublishingStrategy.equals(other$endpointPublishingStrategy)) {
+            return false;
+        }
+        Object this$namespaceSelector = this.getNamespaceSelector();
+        Object other$namespaceSelector = other.getNamespaceSelector();
+        if (this$namespaceSelector == null ? other$namespaceSelector != null : !this$namespaceSelector.equals(other$namespaceSelector)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$routeSelector = this.getRouteSelector();
+        Object other$routeSelector = other.getRouteSelector();
+        if (this$routeSelector == null ? other$routeSelector != null : !this$routeSelector.equals(other$routeSelector)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$tlsProfile = this.getTlsProfile();
+        Object other$tlsProfile = other.getTlsProfile();
+        if (this$tlsProfile == null ? other$tlsProfile != null : !this$tlsProfile.equals(other$tlsProfile)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof IngressControllerStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $availableReplicas = this.getAvailableReplicas();
+        result = result * prime + ($availableReplicas == null ? 43 : $availableReplicas.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $domain = this.getDomain();
+        result = result * prime + ($domain == null ? 43 : $domain.hashCode());
+        Object $endpointPublishingStrategy = this.getEndpointPublishingStrategy();
+        result = result * prime + ($endpointPublishingStrategy == null ? 43 : $endpointPublishingStrategy.hashCode());
+        Object $namespaceSelector = this.getNamespaceSelector();
+        result = result * prime + ($namespaceSelector == null ? 43 : $namespaceSelector.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $routeSelector = this.getRouteSelector();
+        result = result * prime + ($routeSelector == null ? 43 : $routeSelector.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $tlsProfile = this.getTlsProfile();
+        result = result * prime + ($tlsProfile == null ? 43 : $tlsProfile.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IngressControllerStatus(" + "availableReplicas=" + this.getAvailableReplicas() + ", conditions=" + this.getConditions() + ", domain=" + this.getDomain() + ", endpointPublishingStrategy=" + this.getEndpointPublishingStrategy() + ", namespaceSelector=" + this.getNamespaceSelector() + ", observedGeneration=" + this.getObservedGeneration() + ", routeSelector=" + this.getRouteSelector() + ", selector=" + this.getSelector() + ", tlsProfile=" + this.getTlsProfile() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

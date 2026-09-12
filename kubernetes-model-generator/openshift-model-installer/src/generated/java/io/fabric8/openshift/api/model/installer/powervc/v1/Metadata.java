@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Metadata contains PowerVC and OpenStack metadata (e.g. for uninstalling the cluster).
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "cloud",
     "identifier"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -142,6 +133,57 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Metadata)) {
+            return false;
+        }
+        Metadata other = (Metadata) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cloud = this.getCloud();
+        Object other$cloud = other.getCloud();
+        if (this$cloud == null ? other$cloud != null : !this$cloud.equals(other$cloud)) {
+            return false;
+        }
+        Object this$identifier = this.getIdentifier();
+        Object other$identifier = other.getIdentifier();
+        if (this$identifier == null ? other$identifier != null : !this$identifier.equals(other$identifier)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Metadata;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cloud = this.getCloud();
+        result = result * prime + ($cloud == null ? 43 : $cloud.hashCode());
+        Object $identifier = this.getIdentifier();
+        result = result * prime + ($identifier == null ? 43 : $identifier.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Metadata(" + "cloud=" + this.getCloud() + ", identifier=" + this.getIdentifier() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

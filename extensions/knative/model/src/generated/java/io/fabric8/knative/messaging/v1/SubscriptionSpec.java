@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SubscriptionSpec specifies the Channel for incoming events, a Subscriber target for processing those events and where to put the result of the processing. Only From (where the events are coming from) is always required. You can optionally only Process the events (results in no output events) by leaving out the Reply. You can also perform an identity transformation on the incoming events by leaving out the Subscriber and only specifying Reply.<br><p> <br><p> The following are all valid specifications: channel --[subscriber]--&gt; reply Sink, no outgoing events: channel -- subscriber no-op function (identity transformation): channel --&gt; reply
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "delivery",
     "reply",
     "subscriber"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -183,6 +174,71 @@ public class SubscriptionSpec implements Editable<SubscriptionSpecBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SubscriptionSpec)) {
+            return false;
+        }
+        SubscriptionSpec other = (SubscriptionSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$channel = this.getChannel();
+        Object other$channel = other.getChannel();
+        if (this$channel == null ? other$channel != null : !this$channel.equals(other$channel)) {
+            return false;
+        }
+        Object this$delivery = this.getDelivery();
+        Object other$delivery = other.getDelivery();
+        if (this$delivery == null ? other$delivery != null : !this$delivery.equals(other$delivery)) {
+            return false;
+        }
+        Object this$reply = this.getReply();
+        Object other$reply = other.getReply();
+        if (this$reply == null ? other$reply != null : !this$reply.equals(other$reply)) {
+            return false;
+        }
+        Object this$subscriber = this.getSubscriber();
+        Object other$subscriber = other.getSubscriber();
+        if (this$subscriber == null ? other$subscriber != null : !this$subscriber.equals(other$subscriber)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SubscriptionSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $channel = this.getChannel();
+        result = result * prime + ($channel == null ? 43 : $channel.hashCode());
+        Object $delivery = this.getDelivery();
+        result = result * prime + ($delivery == null ? 43 : $delivery.hashCode());
+        Object $reply = this.getReply();
+        result = result * prime + ($reply == null ? 43 : $reply.hashCode());
+        Object $subscriber = this.getSubscriber();
+        result = result * prime + ($subscriber == null ? 43 : $subscriber.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SubscriptionSpec(" + "channel=" + this.getChannel() + ", delivery=" + this.getDelivery() + ", reply=" + this.getReply() + ", subscriber=" + this.getSubscriber() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

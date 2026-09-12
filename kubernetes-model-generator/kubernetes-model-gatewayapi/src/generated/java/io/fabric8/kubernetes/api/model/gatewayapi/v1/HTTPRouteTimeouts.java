@@ -26,9 +26,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HTTPRouteTimeouts defines timeouts that can be configured for an HTTPRoute. Timeout values are represented with Gateway API Duration formatting.
@@ -38,12 +35,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "backendRequest",
     "request"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -138,6 +129,57 @@ public class HTTPRouteTimeouts implements Editable<HTTPRouteTimeoutsBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HTTPRouteTimeouts)) {
+            return false;
+        }
+        HTTPRouteTimeouts other = (HTTPRouteTimeouts) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$backendRequest = this.getBackendRequest();
+        Object other$backendRequest = other.getBackendRequest();
+        if (this$backendRequest == null ? other$backendRequest != null : !this$backendRequest.equals(other$backendRequest)) {
+            return false;
+        }
+        Object this$request = this.getRequest();
+        Object other$request = other.getRequest();
+        if (this$request == null ? other$request != null : !this$request.equals(other$request)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HTTPRouteTimeouts;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $backendRequest = this.getBackendRequest();
+        result = result * prime + ($backendRequest == null ? 43 : $backendRequest.hashCode());
+        Object $request = this.getRequest();
+        result = result * prime + ($request == null ? 43 : $request.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HTTPRouteTimeouts(" + "backendRequest=" + this.getBackendRequest() + ", request=" + this.getRequest() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

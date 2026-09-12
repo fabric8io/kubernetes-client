@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "options",
     "reject",
     "select"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -159,6 +150,71 @@ public class TargetSelector implements Editable<TargetSelectorBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TargetSelector)) {
+            return false;
+        }
+        TargetSelector other = (TargetSelector) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$fieldPaths = this.getFieldPaths();
+        Object other$fieldPaths = other.getFieldPaths();
+        if (this$fieldPaths == null ? other$fieldPaths != null : !this$fieldPaths.equals(other$fieldPaths)) {
+            return false;
+        }
+        Object this$options = this.getOptions();
+        Object other$options = other.getOptions();
+        if (this$options == null ? other$options != null : !this$options.equals(other$options)) {
+            return false;
+        }
+        Object this$reject = this.getReject();
+        Object other$reject = other.getReject();
+        if (this$reject == null ? other$reject != null : !this$reject.equals(other$reject)) {
+            return false;
+        }
+        Object this$select = this.getSelect();
+        Object other$select = other.getSelect();
+        if (this$select == null ? other$select != null : !this$select.equals(other$select)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TargetSelector;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $fieldPaths = this.getFieldPaths();
+        result = result * prime + ($fieldPaths == null ? 43 : $fieldPaths.hashCode());
+        Object $options = this.getOptions();
+        result = result * prime + ($options == null ? 43 : $options.hashCode());
+        Object $reject = this.getReject();
+        result = result * prime + ($reject == null ? 43 : $reject.hashCode());
+        Object $select = this.getSelect();
+        result = result * prime + ($select == null ? 43 : $select.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TargetSelector(" + "fieldPaths=" + this.getFieldPaths() + ", options=" + this.getOptions() + ", reject=" + this.getReject() + ", select=" + this.getSelect() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

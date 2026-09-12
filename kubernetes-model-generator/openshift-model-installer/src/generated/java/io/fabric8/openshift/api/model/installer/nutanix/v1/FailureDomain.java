@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * FailureDomain configures failure domain information for the Nutanix platform.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "prismElement",
     "storageContainers",
     "subnetUUIDs"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -208,6 +199,78 @@ public class FailureDomain implements Editable<FailureDomainBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof FailureDomain)) {
+            return false;
+        }
+        FailureDomain other = (FailureDomain) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$dataSourceImages = this.getDataSourceImages();
+        Object other$dataSourceImages = other.getDataSourceImages();
+        if (this$dataSourceImages == null ? other$dataSourceImages != null : !this$dataSourceImages.equals(other$dataSourceImages)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$prismElement = this.getPrismElement();
+        Object other$prismElement = other.getPrismElement();
+        if (this$prismElement == null ? other$prismElement != null : !this$prismElement.equals(other$prismElement)) {
+            return false;
+        }
+        Object this$storageContainers = this.getStorageContainers();
+        Object other$storageContainers = other.getStorageContainers();
+        if (this$storageContainers == null ? other$storageContainers != null : !this$storageContainers.equals(other$storageContainers)) {
+            return false;
+        }
+        Object this$subnetUUIDs = this.getSubnetUUIDs();
+        Object other$subnetUUIDs = other.getSubnetUUIDs();
+        if (this$subnetUUIDs == null ? other$subnetUUIDs != null : !this$subnetUUIDs.equals(other$subnetUUIDs)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof FailureDomain;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $dataSourceImages = this.getDataSourceImages();
+        result = result * prime + ($dataSourceImages == null ? 43 : $dataSourceImages.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $prismElement = this.getPrismElement();
+        result = result * prime + ($prismElement == null ? 43 : $prismElement.hashCode());
+        Object $storageContainers = this.getStorageContainers();
+        result = result * prime + ($storageContainers == null ? 43 : $storageContainers.hashCode());
+        Object $subnetUUIDs = this.getSubnetUUIDs();
+        result = result * prime + ($subnetUUIDs == null ? 43 : $subnetUUIDs.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "FailureDomain(" + "dataSourceImages=" + this.getDataSourceImages() + ", name=" + this.getName() + ", prismElement=" + this.getPrismElement() + ", storageContainers=" + this.getStorageContainers() + ", subnetUUIDs=" + this.getSubnetUUIDs() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

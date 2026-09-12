@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Route defines a node in the routing tree.
@@ -51,12 +48,6 @@ import lombok.experimental.Accessors;
     "receiver",
     "repeatInterval",
     "routes"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -313,6 +304,113 @@ public class Route implements Editable<RouteBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Route)) {
+            return false;
+        }
+        Route other = (Route) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$activeTimeIntervals = this.getActiveTimeIntervals();
+        Object other$activeTimeIntervals = other.getActiveTimeIntervals();
+        if (this$activeTimeIntervals == null ? other$activeTimeIntervals != null : !this$activeTimeIntervals.equals(other$activeTimeIntervals)) {
+            return false;
+        }
+        Object this$_continue = this.getContinue();
+        Object other$_continue = other.getContinue();
+        if (this$_continue == null ? other$_continue != null : !this$_continue.equals(other$_continue)) {
+            return false;
+        }
+        Object this$groupBy = this.getGroupBy();
+        Object other$groupBy = other.getGroupBy();
+        if (this$groupBy == null ? other$groupBy != null : !this$groupBy.equals(other$groupBy)) {
+            return false;
+        }
+        Object this$groupInterval = this.getGroupInterval();
+        Object other$groupInterval = other.getGroupInterval();
+        if (this$groupInterval == null ? other$groupInterval != null : !this$groupInterval.equals(other$groupInterval)) {
+            return false;
+        }
+        Object this$groupWait = this.getGroupWait();
+        Object other$groupWait = other.getGroupWait();
+        if (this$groupWait == null ? other$groupWait != null : !this$groupWait.equals(other$groupWait)) {
+            return false;
+        }
+        Object this$matchers = this.getMatchers();
+        Object other$matchers = other.getMatchers();
+        if (this$matchers == null ? other$matchers != null : !this$matchers.equals(other$matchers)) {
+            return false;
+        }
+        Object this$muteTimeIntervals = this.getMuteTimeIntervals();
+        Object other$muteTimeIntervals = other.getMuteTimeIntervals();
+        if (this$muteTimeIntervals == null ? other$muteTimeIntervals != null : !this$muteTimeIntervals.equals(other$muteTimeIntervals)) {
+            return false;
+        }
+        Object this$receiver = this.getReceiver();
+        Object other$receiver = other.getReceiver();
+        if (this$receiver == null ? other$receiver != null : !this$receiver.equals(other$receiver)) {
+            return false;
+        }
+        Object this$repeatInterval = this.getRepeatInterval();
+        Object other$repeatInterval = other.getRepeatInterval();
+        if (this$repeatInterval == null ? other$repeatInterval != null : !this$repeatInterval.equals(other$repeatInterval)) {
+            return false;
+        }
+        Object this$routes = this.getRoutes();
+        Object other$routes = other.getRoutes();
+        if (this$routes == null ? other$routes != null : !this$routes.equals(other$routes)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Route;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $activeTimeIntervals = this.getActiveTimeIntervals();
+        result = result * prime + ($activeTimeIntervals == null ? 43 : $activeTimeIntervals.hashCode());
+        Object $_continue = this.getContinue();
+        result = result * prime + ($_continue == null ? 43 : $_continue.hashCode());
+        Object $groupBy = this.getGroupBy();
+        result = result * prime + ($groupBy == null ? 43 : $groupBy.hashCode());
+        Object $groupInterval = this.getGroupInterval();
+        result = result * prime + ($groupInterval == null ? 43 : $groupInterval.hashCode());
+        Object $groupWait = this.getGroupWait();
+        result = result * prime + ($groupWait == null ? 43 : $groupWait.hashCode());
+        Object $matchers = this.getMatchers();
+        result = result * prime + ($matchers == null ? 43 : $matchers.hashCode());
+        Object $muteTimeIntervals = this.getMuteTimeIntervals();
+        result = result * prime + ($muteTimeIntervals == null ? 43 : $muteTimeIntervals.hashCode());
+        Object $receiver = this.getReceiver();
+        result = result * prime + ($receiver == null ? 43 : $receiver.hashCode());
+        Object $repeatInterval = this.getRepeatInterval();
+        result = result * prime + ($repeatInterval == null ? 43 : $repeatInterval.hashCode());
+        Object $routes = this.getRoutes();
+        result = result * prime + ($routes == null ? 43 : $routes.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Route(" + "activeTimeIntervals=" + this.getActiveTimeIntervals() + ", _continue=" + this.getContinue() + ", groupBy=" + this.getGroupBy() + ", groupInterval=" + this.getGroupInterval() + ", groupWait=" + this.getGroupWait() + ", matchers=" + this.getMatchers() + ", muteTimeIntervals=" + this.getMuteTimeIntervals() + ", receiver=" + this.getReceiver() + ", repeatInterval=" + this.getRepeatInterval() + ", routes=" + this.getRoutes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

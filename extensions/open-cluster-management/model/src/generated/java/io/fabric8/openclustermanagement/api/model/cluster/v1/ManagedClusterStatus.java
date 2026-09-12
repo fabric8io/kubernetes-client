@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ManagedClusterStatus represents the current status of joined managed cluster.
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "conditions",
     "managedNamespaces",
     "version"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -234,6 +225,85 @@ public class ManagedClusterStatus implements Editable<ManagedClusterStatusBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ManagedClusterStatus)) {
+            return false;
+        }
+        ManagedClusterStatus other = (ManagedClusterStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allocatable = this.getAllocatable();
+        Object other$allocatable = other.getAllocatable();
+        if (this$allocatable == null ? other$allocatable != null : !this$allocatable.equals(other$allocatable)) {
+            return false;
+        }
+        Object this$capacity = this.getCapacity();
+        Object other$capacity = other.getCapacity();
+        if (this$capacity == null ? other$capacity != null : !this$capacity.equals(other$capacity)) {
+            return false;
+        }
+        Object this$clusterClaims = this.getClusterClaims();
+        Object other$clusterClaims = other.getClusterClaims();
+        if (this$clusterClaims == null ? other$clusterClaims != null : !this$clusterClaims.equals(other$clusterClaims)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$managedNamespaces = this.getManagedNamespaces();
+        Object other$managedNamespaces = other.getManagedNamespaces();
+        if (this$managedNamespaces == null ? other$managedNamespaces != null : !this$managedNamespaces.equals(other$managedNamespaces)) {
+            return false;
+        }
+        Object this$version = this.getVersion();
+        Object other$version = other.getVersion();
+        if (this$version == null ? other$version != null : !this$version.equals(other$version)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ManagedClusterStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allocatable = this.getAllocatable();
+        result = result * prime + ($allocatable == null ? 43 : $allocatable.hashCode());
+        Object $capacity = this.getCapacity();
+        result = result * prime + ($capacity == null ? 43 : $capacity.hashCode());
+        Object $clusterClaims = this.getClusterClaims();
+        result = result * prime + ($clusterClaims == null ? 43 : $clusterClaims.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $managedNamespaces = this.getManagedNamespaces();
+        result = result * prime + ($managedNamespaces == null ? 43 : $managedNamespaces.hashCode());
+        Object $version = this.getVersion();
+        result = result * prime + ($version == null ? 43 : $version.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ManagedClusterStatus(" + "allocatable=" + this.getAllocatable() + ", capacity=" + this.getCapacity() + ", clusterClaims=" + this.getClusterClaims() + ", conditions=" + this.getConditions() + ", managedNamespaces=" + this.getManagedNamespaces() + ", version=" + this.getVersion() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

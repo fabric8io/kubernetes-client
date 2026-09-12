@@ -33,9 +33,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Event is a report of an event somewhere in the cluster. It generally denotes some state change in the system. Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
@@ -60,12 +57,6 @@ import lombok.experimental.Accessors;
     "reportingInstance",
     "series",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -447,6 +438,162 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Event)) {
+            return false;
+        }
+        Event other = (Event) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$action = this.getAction();
+        Object other$action = other.getAction();
+        if (this$action == null ? other$action != null : !this$action.equals(other$action)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$deprecatedCount = this.getDeprecatedCount();
+        Object other$deprecatedCount = other.getDeprecatedCount();
+        if (this$deprecatedCount == null ? other$deprecatedCount != null : !this$deprecatedCount.equals(other$deprecatedCount)) {
+            return false;
+        }
+        Object this$deprecatedFirstTimestamp = this.getDeprecatedFirstTimestamp();
+        Object other$deprecatedFirstTimestamp = other.getDeprecatedFirstTimestamp();
+        if (this$deprecatedFirstTimestamp == null ? other$deprecatedFirstTimestamp != null : !this$deprecatedFirstTimestamp.equals(other$deprecatedFirstTimestamp)) {
+            return false;
+        }
+        Object this$deprecatedLastTimestamp = this.getDeprecatedLastTimestamp();
+        Object other$deprecatedLastTimestamp = other.getDeprecatedLastTimestamp();
+        if (this$deprecatedLastTimestamp == null ? other$deprecatedLastTimestamp != null : !this$deprecatedLastTimestamp.equals(other$deprecatedLastTimestamp)) {
+            return false;
+        }
+        Object this$deprecatedSource = this.getDeprecatedSource();
+        Object other$deprecatedSource = other.getDeprecatedSource();
+        if (this$deprecatedSource == null ? other$deprecatedSource != null : !this$deprecatedSource.equals(other$deprecatedSource)) {
+            return false;
+        }
+        Object this$eventTime = this.getEventTime();
+        Object other$eventTime = other.getEventTime();
+        if (this$eventTime == null ? other$eventTime != null : !this$eventTime.equals(other$eventTime)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$note = this.getNote();
+        Object other$note = other.getNote();
+        if (this$note == null ? other$note != null : !this$note.equals(other$note)) {
+            return false;
+        }
+        Object this$reason = this.getReason();
+        Object other$reason = other.getReason();
+        if (this$reason == null ? other$reason != null : !this$reason.equals(other$reason)) {
+            return false;
+        }
+        Object this$regarding = this.getRegarding();
+        Object other$regarding = other.getRegarding();
+        if (this$regarding == null ? other$regarding != null : !this$regarding.equals(other$regarding)) {
+            return false;
+        }
+        Object this$related = this.getRelated();
+        Object other$related = other.getRelated();
+        if (this$related == null ? other$related != null : !this$related.equals(other$related)) {
+            return false;
+        }
+        Object this$reportingController = this.getReportingController();
+        Object other$reportingController = other.getReportingController();
+        if (this$reportingController == null ? other$reportingController != null : !this$reportingController.equals(other$reportingController)) {
+            return false;
+        }
+        Object this$reportingInstance = this.getReportingInstance();
+        Object other$reportingInstance = other.getReportingInstance();
+        if (this$reportingInstance == null ? other$reportingInstance != null : !this$reportingInstance.equals(other$reportingInstance)) {
+            return false;
+        }
+        Object this$series = this.getSeries();
+        Object other$series = other.getSeries();
+        if (this$series == null ? other$series != null : !this$series.equals(other$series)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Event;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $action = this.getAction();
+        result = result * prime + ($action == null ? 43 : $action.hashCode());
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $deprecatedCount = this.getDeprecatedCount();
+        result = result * prime + ($deprecatedCount == null ? 43 : $deprecatedCount.hashCode());
+        Object $deprecatedFirstTimestamp = this.getDeprecatedFirstTimestamp();
+        result = result * prime + ($deprecatedFirstTimestamp == null ? 43 : $deprecatedFirstTimestamp.hashCode());
+        Object $deprecatedLastTimestamp = this.getDeprecatedLastTimestamp();
+        result = result * prime + ($deprecatedLastTimestamp == null ? 43 : $deprecatedLastTimestamp.hashCode());
+        Object $deprecatedSource = this.getDeprecatedSource();
+        result = result * prime + ($deprecatedSource == null ? 43 : $deprecatedSource.hashCode());
+        Object $eventTime = this.getEventTime();
+        result = result * prime + ($eventTime == null ? 43 : $eventTime.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $note = this.getNote();
+        result = result * prime + ($note == null ? 43 : $note.hashCode());
+        Object $reason = this.getReason();
+        result = result * prime + ($reason == null ? 43 : $reason.hashCode());
+        Object $regarding = this.getRegarding();
+        result = result * prime + ($regarding == null ? 43 : $regarding.hashCode());
+        Object $related = this.getRelated();
+        result = result * prime + ($related == null ? 43 : $related.hashCode());
+        Object $reportingController = this.getReportingController();
+        result = result * prime + ($reportingController == null ? 43 : $reportingController.hashCode());
+        Object $reportingInstance = this.getReportingInstance();
+        result = result * prime + ($reportingInstance == null ? 43 : $reportingInstance.hashCode());
+        Object $series = this.getSeries();
+        result = result * prime + ($series == null ? 43 : $series.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Event(" + "action=" + this.getAction() + ", apiVersion=" + this.getApiVersion() + ", deprecatedCount=" + this.getDeprecatedCount() + ", deprecatedFirstTimestamp=" + this.getDeprecatedFirstTimestamp() + ", deprecatedLastTimestamp=" + this.getDeprecatedLastTimestamp() + ", deprecatedSource=" + this.getDeprecatedSource() + ", eventTime=" + this.getEventTime() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata() + ", note=" + this.getNote() + ", reason=" + this.getReason() + ", regarding=" + this.getRegarding() + ", related=" + this.getRelated() + ", reportingController=" + this.getReportingController() + ", reportingInstance=" + this.getReportingInstance() + ", series=" + this.getSeries() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

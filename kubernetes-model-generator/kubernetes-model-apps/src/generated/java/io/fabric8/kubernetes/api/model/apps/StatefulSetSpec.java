@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * A StatefulSetSpec is the specification of a StatefulSet.
@@ -51,12 +48,6 @@ import lombok.experimental.Accessors;
     "template",
     "updateStrategy",
     "volumeClaimTemplates"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -324,6 +315,120 @@ public class StatefulSetSpec implements Editable<StatefulSetSpecBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof StatefulSetSpec)) {
+            return false;
+        }
+        StatefulSetSpec other = (StatefulSetSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$minReadySeconds = this.getMinReadySeconds();
+        Object other$minReadySeconds = other.getMinReadySeconds();
+        if (this$minReadySeconds == null ? other$minReadySeconds != null : !this$minReadySeconds.equals(other$minReadySeconds)) {
+            return false;
+        }
+        Object this$ordinals = this.getOrdinals();
+        Object other$ordinals = other.getOrdinals();
+        if (this$ordinals == null ? other$ordinals != null : !this$ordinals.equals(other$ordinals)) {
+            return false;
+        }
+        Object this$persistentVolumeClaimRetentionPolicy = this.getPersistentVolumeClaimRetentionPolicy();
+        Object other$persistentVolumeClaimRetentionPolicy = other.getPersistentVolumeClaimRetentionPolicy();
+        if (this$persistentVolumeClaimRetentionPolicy == null ? other$persistentVolumeClaimRetentionPolicy != null : !this$persistentVolumeClaimRetentionPolicy.equals(other$persistentVolumeClaimRetentionPolicy)) {
+            return false;
+        }
+        Object this$podManagementPolicy = this.getPodManagementPolicy();
+        Object other$podManagementPolicy = other.getPodManagementPolicy();
+        if (this$podManagementPolicy == null ? other$podManagementPolicy != null : !this$podManagementPolicy.equals(other$podManagementPolicy)) {
+            return false;
+        }
+        Object this$replicas = this.getReplicas();
+        Object other$replicas = other.getReplicas();
+        if (this$replicas == null ? other$replicas != null : !this$replicas.equals(other$replicas)) {
+            return false;
+        }
+        Object this$revisionHistoryLimit = this.getRevisionHistoryLimit();
+        Object other$revisionHistoryLimit = other.getRevisionHistoryLimit();
+        if (this$revisionHistoryLimit == null ? other$revisionHistoryLimit != null : !this$revisionHistoryLimit.equals(other$revisionHistoryLimit)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$serviceName = this.getServiceName();
+        Object other$serviceName = other.getServiceName();
+        if (this$serviceName == null ? other$serviceName != null : !this$serviceName.equals(other$serviceName)) {
+            return false;
+        }
+        Object this$template = this.getTemplate();
+        Object other$template = other.getTemplate();
+        if (this$template == null ? other$template != null : !this$template.equals(other$template)) {
+            return false;
+        }
+        Object this$updateStrategy = this.getUpdateStrategy();
+        Object other$updateStrategy = other.getUpdateStrategy();
+        if (this$updateStrategy == null ? other$updateStrategy != null : !this$updateStrategy.equals(other$updateStrategy)) {
+            return false;
+        }
+        Object this$volumeClaimTemplates = this.getVolumeClaimTemplates();
+        Object other$volumeClaimTemplates = other.getVolumeClaimTemplates();
+        if (this$volumeClaimTemplates == null ? other$volumeClaimTemplates != null : !this$volumeClaimTemplates.equals(other$volumeClaimTemplates)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof StatefulSetSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $minReadySeconds = this.getMinReadySeconds();
+        result = result * prime + ($minReadySeconds == null ? 43 : $minReadySeconds.hashCode());
+        Object $ordinals = this.getOrdinals();
+        result = result * prime + ($ordinals == null ? 43 : $ordinals.hashCode());
+        Object $persistentVolumeClaimRetentionPolicy = this.getPersistentVolumeClaimRetentionPolicy();
+        result = result * prime + ($persistentVolumeClaimRetentionPolicy == null ? 43 : $persistentVolumeClaimRetentionPolicy.hashCode());
+        Object $podManagementPolicy = this.getPodManagementPolicy();
+        result = result * prime + ($podManagementPolicy == null ? 43 : $podManagementPolicy.hashCode());
+        Object $replicas = this.getReplicas();
+        result = result * prime + ($replicas == null ? 43 : $replicas.hashCode());
+        Object $revisionHistoryLimit = this.getRevisionHistoryLimit();
+        result = result * prime + ($revisionHistoryLimit == null ? 43 : $revisionHistoryLimit.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $serviceName = this.getServiceName();
+        result = result * prime + ($serviceName == null ? 43 : $serviceName.hashCode());
+        Object $template = this.getTemplate();
+        result = result * prime + ($template == null ? 43 : $template.hashCode());
+        Object $updateStrategy = this.getUpdateStrategy();
+        result = result * prime + ($updateStrategy == null ? 43 : $updateStrategy.hashCode());
+        Object $volumeClaimTemplates = this.getVolumeClaimTemplates();
+        result = result * prime + ($volumeClaimTemplates == null ? 43 : $volumeClaimTemplates.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "StatefulSetSpec(" + "minReadySeconds=" + this.getMinReadySeconds() + ", ordinals=" + this.getOrdinals() + ", persistentVolumeClaimRetentionPolicy=" + this.getPersistentVolumeClaimRetentionPolicy() + ", podManagementPolicy=" + this.getPodManagementPolicy() + ", replicas=" + this.getReplicas() + ", revisionHistoryLimit=" + this.getRevisionHistoryLimit() + ", selector=" + this.getSelector() + ", serviceName=" + this.getServiceName() + ", template=" + this.getTemplate() + ", updateStrategy=" + this.getUpdateStrategy() + ", volumeClaimTemplates=" + this.getVolumeClaimTemplates() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * QuerySpec defines the query command line flags when starting Prometheus.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "maxConcurrency",
     "maxSamples",
     "timeout"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -179,6 +170,71 @@ public class QuerySpec implements Editable<QuerySpecBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof QuerySpec)) {
+            return false;
+        }
+        QuerySpec other = (QuerySpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$lookbackDelta = this.getLookbackDelta();
+        Object other$lookbackDelta = other.getLookbackDelta();
+        if (this$lookbackDelta == null ? other$lookbackDelta != null : !this$lookbackDelta.equals(other$lookbackDelta)) {
+            return false;
+        }
+        Object this$maxConcurrency = this.getMaxConcurrency();
+        Object other$maxConcurrency = other.getMaxConcurrency();
+        if (this$maxConcurrency == null ? other$maxConcurrency != null : !this$maxConcurrency.equals(other$maxConcurrency)) {
+            return false;
+        }
+        Object this$maxSamples = this.getMaxSamples();
+        Object other$maxSamples = other.getMaxSamples();
+        if (this$maxSamples == null ? other$maxSamples != null : !this$maxSamples.equals(other$maxSamples)) {
+            return false;
+        }
+        Object this$timeout = this.getTimeout();
+        Object other$timeout = other.getTimeout();
+        if (this$timeout == null ? other$timeout != null : !this$timeout.equals(other$timeout)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof QuerySpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $lookbackDelta = this.getLookbackDelta();
+        result = result * prime + ($lookbackDelta == null ? 43 : $lookbackDelta.hashCode());
+        Object $maxConcurrency = this.getMaxConcurrency();
+        result = result * prime + ($maxConcurrency == null ? 43 : $maxConcurrency.hashCode());
+        Object $maxSamples = this.getMaxSamples();
+        result = result * prime + ($maxSamples == null ? 43 : $maxSamples.hashCode());
+        Object $timeout = this.getTimeout();
+        result = result * prime + ($timeout == null ? 43 : $timeout.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "QuerySpec(" + "lookbackDelta=" + this.getLookbackDelta() + ", maxConcurrency=" + this.getMaxConcurrency() + ", maxSamples=" + this.getMaxSamples() + ", timeout=" + this.getTimeout() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

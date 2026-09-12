@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openclustermanagement.api.model.shared.PreConfiguredStorage;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * StorageConfig is the spec of object storage.
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "storageClass",
     "storeStorageSize",
     "writeStorage"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -265,6 +256,99 @@ public class StorageConfig implements Editable<StorageConfigBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof StorageConfig)) {
+            return false;
+        }
+        StorageConfig other = (StorageConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$alertmanagerStorageSize = this.getAlertmanagerStorageSize();
+        Object other$alertmanagerStorageSize = other.getAlertmanagerStorageSize();
+        if (this$alertmanagerStorageSize == null ? other$alertmanagerStorageSize != null : !this$alertmanagerStorageSize.equals(other$alertmanagerStorageSize)) {
+            return false;
+        }
+        Object this$compactStorageSize = this.getCompactStorageSize();
+        Object other$compactStorageSize = other.getCompactStorageSize();
+        if (this$compactStorageSize == null ? other$compactStorageSize != null : !this$compactStorageSize.equals(other$compactStorageSize)) {
+            return false;
+        }
+        Object this$metricObjectStorage = this.getMetricObjectStorage();
+        Object other$metricObjectStorage = other.getMetricObjectStorage();
+        if (this$metricObjectStorage == null ? other$metricObjectStorage != null : !this$metricObjectStorage.equals(other$metricObjectStorage)) {
+            return false;
+        }
+        Object this$receiveStorageSize = this.getReceiveStorageSize();
+        Object other$receiveStorageSize = other.getReceiveStorageSize();
+        if (this$receiveStorageSize == null ? other$receiveStorageSize != null : !this$receiveStorageSize.equals(other$receiveStorageSize)) {
+            return false;
+        }
+        Object this$ruleStorageSize = this.getRuleStorageSize();
+        Object other$ruleStorageSize = other.getRuleStorageSize();
+        if (this$ruleStorageSize == null ? other$ruleStorageSize != null : !this$ruleStorageSize.equals(other$ruleStorageSize)) {
+            return false;
+        }
+        Object this$storageClass = this.getStorageClass();
+        Object other$storageClass = other.getStorageClass();
+        if (this$storageClass == null ? other$storageClass != null : !this$storageClass.equals(other$storageClass)) {
+            return false;
+        }
+        Object this$storeStorageSize = this.getStoreStorageSize();
+        Object other$storeStorageSize = other.getStoreStorageSize();
+        if (this$storeStorageSize == null ? other$storeStorageSize != null : !this$storeStorageSize.equals(other$storeStorageSize)) {
+            return false;
+        }
+        Object this$writeStorage = this.getWriteStorage();
+        Object other$writeStorage = other.getWriteStorage();
+        if (this$writeStorage == null ? other$writeStorage != null : !this$writeStorage.equals(other$writeStorage)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof StorageConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $alertmanagerStorageSize = this.getAlertmanagerStorageSize();
+        result = result * prime + ($alertmanagerStorageSize == null ? 43 : $alertmanagerStorageSize.hashCode());
+        Object $compactStorageSize = this.getCompactStorageSize();
+        result = result * prime + ($compactStorageSize == null ? 43 : $compactStorageSize.hashCode());
+        Object $metricObjectStorage = this.getMetricObjectStorage();
+        result = result * prime + ($metricObjectStorage == null ? 43 : $metricObjectStorage.hashCode());
+        Object $receiveStorageSize = this.getReceiveStorageSize();
+        result = result * prime + ($receiveStorageSize == null ? 43 : $receiveStorageSize.hashCode());
+        Object $ruleStorageSize = this.getRuleStorageSize();
+        result = result * prime + ($ruleStorageSize == null ? 43 : $ruleStorageSize.hashCode());
+        Object $storageClass = this.getStorageClass();
+        result = result * prime + ($storageClass == null ? 43 : $storageClass.hashCode());
+        Object $storeStorageSize = this.getStoreStorageSize();
+        result = result * prime + ($storeStorageSize == null ? 43 : $storeStorageSize.hashCode());
+        Object $writeStorage = this.getWriteStorage();
+        result = result * prime + ($writeStorage == null ? 43 : $writeStorage.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "StorageConfig(" + "alertmanagerStorageSize=" + this.getAlertmanagerStorageSize() + ", compactStorageSize=" + this.getCompactStorageSize() + ", metricObjectStorage=" + this.getMetricObjectStorage() + ", receiveStorageSize=" + this.getReceiveStorageSize() + ", ruleStorageSize=" + this.getRuleStorageSize() + ", storageClass=" + this.getStorageClass() + ", storeStorageSize=" + this.getStoreStorageSize() + ", writeStorage=" + this.getWriteStorage() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

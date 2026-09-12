@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AWSEFSVolumeMetricsRecursiveWalkConfig defines options for volume metrics in the EFS CSI Driver.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "fsRateLimit",
     "refreshPeriodMinutes"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class AWSEFSVolumeMetricsRecursiveWalkConfig implements Editable<AWSEFSVo
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AWSEFSVolumeMetricsRecursiveWalkConfig)) {
+            return false;
+        }
+        AWSEFSVolumeMetricsRecursiveWalkConfig other = (AWSEFSVolumeMetricsRecursiveWalkConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$fsRateLimit = this.getFsRateLimit();
+        Object other$fsRateLimit = other.getFsRateLimit();
+        if (this$fsRateLimit == null ? other$fsRateLimit != null : !this$fsRateLimit.equals(other$fsRateLimit)) {
+            return false;
+        }
+        Object this$refreshPeriodMinutes = this.getRefreshPeriodMinutes();
+        Object other$refreshPeriodMinutes = other.getRefreshPeriodMinutes();
+        if (this$refreshPeriodMinutes == null ? other$refreshPeriodMinutes != null : !this$refreshPeriodMinutes.equals(other$refreshPeriodMinutes)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AWSEFSVolumeMetricsRecursiveWalkConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $fsRateLimit = this.getFsRateLimit();
+        result = result * prime + ($fsRateLimit == null ? 43 : $fsRateLimit.hashCode());
+        Object $refreshPeriodMinutes = this.getRefreshPeriodMinutes();
+        result = result * prime + ($refreshPeriodMinutes == null ? 43 : $refreshPeriodMinutes.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AWSEFSVolumeMetricsRecursiveWalkConfig(" + "fsRateLimit=" + this.getFsRateLimit() + ", refreshPeriodMinutes=" + this.getRefreshPeriodMinutes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

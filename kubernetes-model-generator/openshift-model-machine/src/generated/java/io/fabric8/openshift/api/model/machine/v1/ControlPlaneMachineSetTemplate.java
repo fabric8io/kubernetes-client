@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ControlPlaneMachineSetTemplate is a template used by the ControlPlaneMachineSet to create the Machines that it will manage in the future.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "machineType",
     "machines_v1beta1_machine_openshift_io"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class ControlPlaneMachineSetTemplate implements Editable<ControlPlaneMach
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ControlPlaneMachineSetTemplate)) {
+            return false;
+        }
+        ControlPlaneMachineSetTemplate other = (ControlPlaneMachineSetTemplate) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$machineType = this.getMachineType();
+        Object other$machineType = other.getMachineType();
+        if (this$machineType == null ? other$machineType != null : !this$machineType.equals(other$machineType)) {
+            return false;
+        }
+        Object this$machinesV1beta1MachineOpenshiftIo = this.getMachinesV1beta1MachineOpenshiftIo();
+        Object other$machinesV1beta1MachineOpenshiftIo = other.getMachinesV1beta1MachineOpenshiftIo();
+        if (this$machinesV1beta1MachineOpenshiftIo == null ? other$machinesV1beta1MachineOpenshiftIo != null : !this$machinesV1beta1MachineOpenshiftIo.equals(other$machinesV1beta1MachineOpenshiftIo)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ControlPlaneMachineSetTemplate;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $machineType = this.getMachineType();
+        result = result * prime + ($machineType == null ? 43 : $machineType.hashCode());
+        Object $machinesV1beta1MachineOpenshiftIo = this.getMachinesV1beta1MachineOpenshiftIo();
+        result = result * prime + ($machinesV1beta1MachineOpenshiftIo == null ? 43 : $machinesV1beta1MachineOpenshiftIo.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ControlPlaneMachineSetTemplate(" + "machineType=" + this.getMachineType() + ", machinesV1beta1MachineOpenshiftIo=" + this.getMachinesV1beta1MachineOpenshiftIo() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

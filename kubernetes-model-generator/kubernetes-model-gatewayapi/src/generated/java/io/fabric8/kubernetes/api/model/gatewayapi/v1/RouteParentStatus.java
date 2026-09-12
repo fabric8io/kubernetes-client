@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RouteParentStatus describes the status of a route with respect to an associated Parent.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "conditions",
     "controllerName",
     "parentRef"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -163,6 +154,64 @@ public class RouteParentStatus implements Editable<RouteParentStatusBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RouteParentStatus)) {
+            return false;
+        }
+        RouteParentStatus other = (RouteParentStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$controllerName = this.getControllerName();
+        Object other$controllerName = other.getControllerName();
+        if (this$controllerName == null ? other$controllerName != null : !this$controllerName.equals(other$controllerName)) {
+            return false;
+        }
+        Object this$parentRef = this.getParentRef();
+        Object other$parentRef = other.getParentRef();
+        if (this$parentRef == null ? other$parentRef != null : !this$parentRef.equals(other$parentRef)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RouteParentStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $controllerName = this.getControllerName();
+        result = result * prime + ($controllerName == null ? 43 : $controllerName.hashCode());
+        Object $parentRef = this.getParentRef();
+        result = result * prime + ($parentRef == null ? 43 : $parentRef.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RouteParentStatus(" + "conditions=" + this.getConditions() + ", controllerName=" + this.getControllerName() + ", parentRef=" + this.getParentRef() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

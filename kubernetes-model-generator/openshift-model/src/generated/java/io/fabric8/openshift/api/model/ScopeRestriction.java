@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ScopeRestriction describe one restriction on scopes.  Exactly one option must be non-nil.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "clusterRole",
     "literals"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -143,6 +134,57 @@ public class ScopeRestriction implements Editable<ScopeRestrictionBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ScopeRestriction)) {
+            return false;
+        }
+        ScopeRestriction other = (ScopeRestriction) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterRole = this.getClusterRole();
+        Object other$clusterRole = other.getClusterRole();
+        if (this$clusterRole == null ? other$clusterRole != null : !this$clusterRole.equals(other$clusterRole)) {
+            return false;
+        }
+        Object this$literals = this.getLiterals();
+        Object other$literals = other.getLiterals();
+        if (this$literals == null ? other$literals != null : !this$literals.equals(other$literals)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ScopeRestriction;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterRole = this.getClusterRole();
+        result = result * prime + ($clusterRole == null ? 43 : $clusterRole.hashCode());
+        Object $literals = this.getLiterals();
+        result = result * prime + ($literals == null ? 43 : $literals.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ScopeRestriction(" + "clusterRole=" + this.getClusterRole() + ", literals=" + this.getLiterals() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

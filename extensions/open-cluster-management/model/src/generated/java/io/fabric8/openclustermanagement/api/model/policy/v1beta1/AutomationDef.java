@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AutomationDef defines the automation to invoke.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "policyViolationsLimit",
     "secret",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -222,6 +213,85 @@ public class AutomationDef implements Editable<AutomationDefBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AutomationDef)) {
+            return false;
+        }
+        AutomationDef other = (AutomationDef) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$extraVars = this.getExtraVars();
+        Object other$extraVars = other.getExtraVars();
+        if (this$extraVars == null ? other$extraVars != null : !this$extraVars.equals(other$extraVars)) {
+            return false;
+        }
+        Object this$jobTtl = this.getJobTtl();
+        Object other$jobTtl = other.getJobTtl();
+        if (this$jobTtl == null ? other$jobTtl != null : !this$jobTtl.equals(other$jobTtl)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$policyViolationsLimit = this.getPolicyViolationsLimit();
+        Object other$policyViolationsLimit = other.getPolicyViolationsLimit();
+        if (this$policyViolationsLimit == null ? other$policyViolationsLimit != null : !this$policyViolationsLimit.equals(other$policyViolationsLimit)) {
+            return false;
+        }
+        Object this$secret = this.getSecret();
+        Object other$secret = other.getSecret();
+        if (this$secret == null ? other$secret != null : !this$secret.equals(other$secret)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AutomationDef;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $extraVars = this.getExtraVars();
+        result = result * prime + ($extraVars == null ? 43 : $extraVars.hashCode());
+        Object $jobTtl = this.getJobTtl();
+        result = result * prime + ($jobTtl == null ? 43 : $jobTtl.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $policyViolationsLimit = this.getPolicyViolationsLimit();
+        result = result * prime + ($policyViolationsLimit == null ? 43 : $policyViolationsLimit.hashCode());
+        Object $secret = this.getSecret();
+        result = result * prime + ($secret == null ? 43 : $secret.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AutomationDef(" + "extraVars=" + this.getExtraVars() + ", jobTtl=" + this.getJobTtl() + ", name=" + this.getName() + ", policyViolationsLimit=" + this.getPolicyViolationsLimit() + ", secret=" + this.getSecret() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

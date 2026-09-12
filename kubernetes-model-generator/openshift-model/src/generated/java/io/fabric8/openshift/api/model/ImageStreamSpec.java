@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageStreamSpec represents options for ImageStreams.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "dockerImageRepository",
     "lookupPolicy",
     "tags"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -163,6 +154,64 @@ public class ImageStreamSpec implements Editable<ImageStreamSpecBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageStreamSpec)) {
+            return false;
+        }
+        ImageStreamSpec other = (ImageStreamSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$dockerImageRepository = this.getDockerImageRepository();
+        Object other$dockerImageRepository = other.getDockerImageRepository();
+        if (this$dockerImageRepository == null ? other$dockerImageRepository != null : !this$dockerImageRepository.equals(other$dockerImageRepository)) {
+            return false;
+        }
+        Object this$lookupPolicy = this.getLookupPolicy();
+        Object other$lookupPolicy = other.getLookupPolicy();
+        if (this$lookupPolicy == null ? other$lookupPolicy != null : !this$lookupPolicy.equals(other$lookupPolicy)) {
+            return false;
+        }
+        Object this$tags = this.getTags();
+        Object other$tags = other.getTags();
+        if (this$tags == null ? other$tags != null : !this$tags.equals(other$tags)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageStreamSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $dockerImageRepository = this.getDockerImageRepository();
+        result = result * prime + ($dockerImageRepository == null ? 43 : $dockerImageRepository.hashCode());
+        Object $lookupPolicy = this.getLookupPolicy();
+        result = result * prime + ($lookupPolicy == null ? 43 : $lookupPolicy.hashCode());
+        Object $tags = this.getTags();
+        result = result * prime + ($tags == null ? 43 : $tags.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageStreamSpec(" + "dockerImageRepository=" + this.getDockerImageRepository() + ", lookupPolicy=" + this.getLookupPolicy() + ", tags=" + this.getTags() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

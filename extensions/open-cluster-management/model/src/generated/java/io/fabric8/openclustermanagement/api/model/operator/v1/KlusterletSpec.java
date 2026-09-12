@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * KlusterletSpec represents the desired deployment configuration of Klusterlet agent.
@@ -53,12 +50,6 @@ import lombok.experimental.Accessors;
     "resourceRequirement",
     "workConfiguration",
     "workImagePullSpec"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -364,6 +355,134 @@ public class KlusterletSpec implements Editable<KlusterletSpecBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof KlusterletSpec)) {
+            return false;
+        }
+        KlusterletSpec other = (KlusterletSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterName = this.getClusterName();
+        Object other$clusterName = other.getClusterName();
+        if (this$clusterName == null ? other$clusterName != null : !this$clusterName.equals(other$clusterName)) {
+            return false;
+        }
+        Object this$deployOption = this.getDeployOption();
+        Object other$deployOption = other.getDeployOption();
+        if (this$deployOption == null ? other$deployOption != null : !this$deployOption.equals(other$deployOption)) {
+            return false;
+        }
+        Object this$externalServerURLs = this.getExternalServerURLs();
+        Object other$externalServerURLs = other.getExternalServerURLs();
+        if (this$externalServerURLs == null ? other$externalServerURLs != null : !this$externalServerURLs.equals(other$externalServerURLs)) {
+            return false;
+        }
+        Object this$hubApiServerHostAlias = this.getHubApiServerHostAlias();
+        Object other$hubApiServerHostAlias = other.getHubApiServerHostAlias();
+        if (this$hubApiServerHostAlias == null ? other$hubApiServerHostAlias != null : !this$hubApiServerHostAlias.equals(other$hubApiServerHostAlias)) {
+            return false;
+        }
+        Object this$imagePullSpec = this.getImagePullSpec();
+        Object other$imagePullSpec = other.getImagePullSpec();
+        if (this$imagePullSpec == null ? other$imagePullSpec != null : !this$imagePullSpec.equals(other$imagePullSpec)) {
+            return false;
+        }
+        Object this$namespace = this.getNamespace();
+        Object other$namespace = other.getNamespace();
+        if (this$namespace == null ? other$namespace != null : !this$namespace.equals(other$namespace)) {
+            return false;
+        }
+        Object this$nodePlacement = this.getNodePlacement();
+        Object other$nodePlacement = other.getNodePlacement();
+        if (this$nodePlacement == null ? other$nodePlacement != null : !this$nodePlacement.equals(other$nodePlacement)) {
+            return false;
+        }
+        Object this$priorityClassName = this.getPriorityClassName();
+        Object other$priorityClassName = other.getPriorityClassName();
+        if (this$priorityClassName == null ? other$priorityClassName != null : !this$priorityClassName.equals(other$priorityClassName)) {
+            return false;
+        }
+        Object this$registrationConfiguration = this.getRegistrationConfiguration();
+        Object other$registrationConfiguration = other.getRegistrationConfiguration();
+        if (this$registrationConfiguration == null ? other$registrationConfiguration != null : !this$registrationConfiguration.equals(other$registrationConfiguration)) {
+            return false;
+        }
+        Object this$registrationImagePullSpec = this.getRegistrationImagePullSpec();
+        Object other$registrationImagePullSpec = other.getRegistrationImagePullSpec();
+        if (this$registrationImagePullSpec == null ? other$registrationImagePullSpec != null : !this$registrationImagePullSpec.equals(other$registrationImagePullSpec)) {
+            return false;
+        }
+        Object this$resourceRequirement = this.getResourceRequirement();
+        Object other$resourceRequirement = other.getResourceRequirement();
+        if (this$resourceRequirement == null ? other$resourceRequirement != null : !this$resourceRequirement.equals(other$resourceRequirement)) {
+            return false;
+        }
+        Object this$workConfiguration = this.getWorkConfiguration();
+        Object other$workConfiguration = other.getWorkConfiguration();
+        if (this$workConfiguration == null ? other$workConfiguration != null : !this$workConfiguration.equals(other$workConfiguration)) {
+            return false;
+        }
+        Object this$workImagePullSpec = this.getWorkImagePullSpec();
+        Object other$workImagePullSpec = other.getWorkImagePullSpec();
+        if (this$workImagePullSpec == null ? other$workImagePullSpec != null : !this$workImagePullSpec.equals(other$workImagePullSpec)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof KlusterletSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterName = this.getClusterName();
+        result = result * prime + ($clusterName == null ? 43 : $clusterName.hashCode());
+        Object $deployOption = this.getDeployOption();
+        result = result * prime + ($deployOption == null ? 43 : $deployOption.hashCode());
+        Object $externalServerURLs = this.getExternalServerURLs();
+        result = result * prime + ($externalServerURLs == null ? 43 : $externalServerURLs.hashCode());
+        Object $hubApiServerHostAlias = this.getHubApiServerHostAlias();
+        result = result * prime + ($hubApiServerHostAlias == null ? 43 : $hubApiServerHostAlias.hashCode());
+        Object $imagePullSpec = this.getImagePullSpec();
+        result = result * prime + ($imagePullSpec == null ? 43 : $imagePullSpec.hashCode());
+        Object $namespace = this.getNamespace();
+        result = result * prime + ($namespace == null ? 43 : $namespace.hashCode());
+        Object $nodePlacement = this.getNodePlacement();
+        result = result * prime + ($nodePlacement == null ? 43 : $nodePlacement.hashCode());
+        Object $priorityClassName = this.getPriorityClassName();
+        result = result * prime + ($priorityClassName == null ? 43 : $priorityClassName.hashCode());
+        Object $registrationConfiguration = this.getRegistrationConfiguration();
+        result = result * prime + ($registrationConfiguration == null ? 43 : $registrationConfiguration.hashCode());
+        Object $registrationImagePullSpec = this.getRegistrationImagePullSpec();
+        result = result * prime + ($registrationImagePullSpec == null ? 43 : $registrationImagePullSpec.hashCode());
+        Object $resourceRequirement = this.getResourceRequirement();
+        result = result * prime + ($resourceRequirement == null ? 43 : $resourceRequirement.hashCode());
+        Object $workConfiguration = this.getWorkConfiguration();
+        result = result * prime + ($workConfiguration == null ? 43 : $workConfiguration.hashCode());
+        Object $workImagePullSpec = this.getWorkImagePullSpec();
+        result = result * prime + ($workImagePullSpec == null ? 43 : $workImagePullSpec.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "KlusterletSpec(" + "clusterName=" + this.getClusterName() + ", deployOption=" + this.getDeployOption() + ", externalServerURLs=" + this.getExternalServerURLs() + ", hubApiServerHostAlias=" + this.getHubApiServerHostAlias() + ", imagePullSpec=" + this.getImagePullSpec() + ", namespace=" + this.getNamespace() + ", nodePlacement=" + this.getNodePlacement() + ", priorityClassName=" + this.getPriorityClassName() + ", registrationConfiguration=" + this.getRegistrationConfiguration() + ", registrationImagePullSpec=" + this.getRegistrationImagePullSpec() + ", resourceRequirement=" + this.getResourceRequirement() + ", workConfiguration=" + this.getWorkConfiguration() + ", workImagePullSpec=" + this.getWorkImagePullSpec() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

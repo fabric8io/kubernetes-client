@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NamespaceSelector is a selector for selecting either all namespaces or a list of namespaces. If `any` is true, it takes precedence over `matchNames`. If `matchNames` is empty and `any` is false, it means that the objects are selected from the current namespace.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "any",
     "matchNames"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -143,6 +134,57 @@ public class NamespaceSelector implements Editable<NamespaceSelectorBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NamespaceSelector)) {
+            return false;
+        }
+        NamespaceSelector other = (NamespaceSelector) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$any = this.getAny();
+        Object other$any = other.getAny();
+        if (this$any == null ? other$any != null : !this$any.equals(other$any)) {
+            return false;
+        }
+        Object this$matchNames = this.getMatchNames();
+        Object other$matchNames = other.getMatchNames();
+        if (this$matchNames == null ? other$matchNames != null : !this$matchNames.equals(other$matchNames)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NamespaceSelector;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $any = this.getAny();
+        result = result * prime + ($any == null ? 43 : $any.hashCode());
+        Object $matchNames = this.getMatchNames();
+        result = result * prime + ($matchNames == null ? 43 : $matchNames.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NamespaceSelector(" + "any=" + this.getAny() + ", matchNames=" + this.getMatchNames() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

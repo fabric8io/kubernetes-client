@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MultiClusterHubStatus defines the observed state of MultiClusterHub
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "currentVersion",
     "desiredVersion",
     "phase"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -206,6 +197,78 @@ public class MultiClusterHubStatus implements Editable<MultiClusterHubStatusBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MultiClusterHubStatus)) {
+            return false;
+        }
+        MultiClusterHubStatus other = (MultiClusterHubStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$components = this.getComponents();
+        Object other$components = other.getComponents();
+        if (this$components == null ? other$components != null : !this$components.equals(other$components)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$currentVersion = this.getCurrentVersion();
+        Object other$currentVersion = other.getCurrentVersion();
+        if (this$currentVersion == null ? other$currentVersion != null : !this$currentVersion.equals(other$currentVersion)) {
+            return false;
+        }
+        Object this$desiredVersion = this.getDesiredVersion();
+        Object other$desiredVersion = other.getDesiredVersion();
+        if (this$desiredVersion == null ? other$desiredVersion != null : !this$desiredVersion.equals(other$desiredVersion)) {
+            return false;
+        }
+        Object this$phase = this.getPhase();
+        Object other$phase = other.getPhase();
+        if (this$phase == null ? other$phase != null : !this$phase.equals(other$phase)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MultiClusterHubStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $components = this.getComponents();
+        result = result * prime + ($components == null ? 43 : $components.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $currentVersion = this.getCurrentVersion();
+        result = result * prime + ($currentVersion == null ? 43 : $currentVersion.hashCode());
+        Object $desiredVersion = this.getDesiredVersion();
+        result = result * prime + ($desiredVersion == null ? 43 : $desiredVersion.hashCode());
+        Object $phase = this.getPhase();
+        result = result * prime + ($phase == null ? 43 : $phase.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MultiClusterHubStatus(" + "components=" + this.getComponents() + ", conditions=" + this.getConditions() + ", currentVersion=" + this.getCurrentVersion() + ", desiredVersion=" + this.getDesiredVersion() + ", phase=" + this.getPhase() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

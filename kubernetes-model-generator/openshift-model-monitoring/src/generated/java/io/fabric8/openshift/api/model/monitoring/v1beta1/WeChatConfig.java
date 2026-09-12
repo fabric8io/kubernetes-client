@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "toParty",
     "toTag",
     "toUser"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -320,6 +311,120 @@ public class WeChatConfig implements Editable<WeChatConfigBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof WeChatConfig)) {
+            return false;
+        }
+        WeChatConfig other = (WeChatConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$agentID = this.getAgentID();
+        Object other$agentID = other.getAgentID();
+        if (this$agentID == null ? other$agentID != null : !this$agentID.equals(other$agentID)) {
+            return false;
+        }
+        Object this$apiSecret = this.getApiSecret();
+        Object other$apiSecret = other.getApiSecret();
+        if (this$apiSecret == null ? other$apiSecret != null : !this$apiSecret.equals(other$apiSecret)) {
+            return false;
+        }
+        Object this$apiURL = this.getApiURL();
+        Object other$apiURL = other.getApiURL();
+        if (this$apiURL == null ? other$apiURL != null : !this$apiURL.equals(other$apiURL)) {
+            return false;
+        }
+        Object this$corpID = this.getCorpID();
+        Object other$corpID = other.getCorpID();
+        if (this$corpID == null ? other$corpID != null : !this$corpID.equals(other$corpID)) {
+            return false;
+        }
+        Object this$httpConfig = this.getHttpConfig();
+        Object other$httpConfig = other.getHttpConfig();
+        if (this$httpConfig == null ? other$httpConfig != null : !this$httpConfig.equals(other$httpConfig)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$messageType = this.getMessageType();
+        Object other$messageType = other.getMessageType();
+        if (this$messageType == null ? other$messageType != null : !this$messageType.equals(other$messageType)) {
+            return false;
+        }
+        Object this$sendResolved = this.getSendResolved();
+        Object other$sendResolved = other.getSendResolved();
+        if (this$sendResolved == null ? other$sendResolved != null : !this$sendResolved.equals(other$sendResolved)) {
+            return false;
+        }
+        Object this$toParty = this.getToParty();
+        Object other$toParty = other.getToParty();
+        if (this$toParty == null ? other$toParty != null : !this$toParty.equals(other$toParty)) {
+            return false;
+        }
+        Object this$toTag = this.getToTag();
+        Object other$toTag = other.getToTag();
+        if (this$toTag == null ? other$toTag != null : !this$toTag.equals(other$toTag)) {
+            return false;
+        }
+        Object this$toUser = this.getToUser();
+        Object other$toUser = other.getToUser();
+        if (this$toUser == null ? other$toUser != null : !this$toUser.equals(other$toUser)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof WeChatConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $agentID = this.getAgentID();
+        result = result * prime + ($agentID == null ? 43 : $agentID.hashCode());
+        Object $apiSecret = this.getApiSecret();
+        result = result * prime + ($apiSecret == null ? 43 : $apiSecret.hashCode());
+        Object $apiURL = this.getApiURL();
+        result = result * prime + ($apiURL == null ? 43 : $apiURL.hashCode());
+        Object $corpID = this.getCorpID();
+        result = result * prime + ($corpID == null ? 43 : $corpID.hashCode());
+        Object $httpConfig = this.getHttpConfig();
+        result = result * prime + ($httpConfig == null ? 43 : $httpConfig.hashCode());
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $messageType = this.getMessageType();
+        result = result * prime + ($messageType == null ? 43 : $messageType.hashCode());
+        Object $sendResolved = this.getSendResolved();
+        result = result * prime + ($sendResolved == null ? 43 : $sendResolved.hashCode());
+        Object $toParty = this.getToParty();
+        result = result * prime + ($toParty == null ? 43 : $toParty.hashCode());
+        Object $toTag = this.getToTag();
+        result = result * prime + ($toTag == null ? 43 : $toTag.hashCode());
+        Object $toUser = this.getToUser();
+        result = result * prime + ($toUser == null ? 43 : $toUser.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WeChatConfig(" + "agentID=" + this.getAgentID() + ", apiSecret=" + this.getApiSecret() + ", apiURL=" + this.getApiURL() + ", corpID=" + this.getCorpID() + ", httpConfig=" + this.getHttpConfig() + ", message=" + this.getMessage() + ", messageType=" + this.getMessageType() + ", sendResolved=" + this.getSendResolved() + ", toParty=" + this.getToParty() + ", toTag=" + this.getToTag() + ", toUser=" + this.getToUser() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * APIServiceSpec contains information for locating and communicating with a server. Only https is supported, though you are able to disable certificate verification.
@@ -30,12 +27,6 @@ import lombok.experimental.Accessors;
     "service",
     "version",
     "versionPriority"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -211,6 +202,92 @@ public class APIServiceSpec implements Editable<APIServiceSpecBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof APIServiceSpec)) {
+            return false;
+        }
+        APIServiceSpec other = (APIServiceSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$caBundle = this.getCaBundle();
+        Object other$caBundle = other.getCaBundle();
+        if (this$caBundle == null ? other$caBundle != null : !this$caBundle.equals(other$caBundle)) {
+            return false;
+        }
+        Object this$group = this.getGroup();
+        Object other$group = other.getGroup();
+        if (this$group == null ? other$group != null : !this$group.equals(other$group)) {
+            return false;
+        }
+        Object this$groupPriorityMinimum = this.getGroupPriorityMinimum();
+        Object other$groupPriorityMinimum = other.getGroupPriorityMinimum();
+        if (this$groupPriorityMinimum == null ? other$groupPriorityMinimum != null : !this$groupPriorityMinimum.equals(other$groupPriorityMinimum)) {
+            return false;
+        }
+        Object this$insecureSkipTLSVerify = this.getInsecureSkipTLSVerify();
+        Object other$insecureSkipTLSVerify = other.getInsecureSkipTLSVerify();
+        if (this$insecureSkipTLSVerify == null ? other$insecureSkipTLSVerify != null : !this$insecureSkipTLSVerify.equals(other$insecureSkipTLSVerify)) {
+            return false;
+        }
+        Object this$service = this.getService();
+        Object other$service = other.getService();
+        if (this$service == null ? other$service != null : !this$service.equals(other$service)) {
+            return false;
+        }
+        Object this$version = this.getVersion();
+        Object other$version = other.getVersion();
+        if (this$version == null ? other$version != null : !this$version.equals(other$version)) {
+            return false;
+        }
+        Object this$versionPriority = this.getVersionPriority();
+        Object other$versionPriority = other.getVersionPriority();
+        if (this$versionPriority == null ? other$versionPriority != null : !this$versionPriority.equals(other$versionPriority)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof APIServiceSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $caBundle = this.getCaBundle();
+        result = result * prime + ($caBundle == null ? 43 : $caBundle.hashCode());
+        Object $group = this.getGroup();
+        result = result * prime + ($group == null ? 43 : $group.hashCode());
+        Object $groupPriorityMinimum = this.getGroupPriorityMinimum();
+        result = result * prime + ($groupPriorityMinimum == null ? 43 : $groupPriorityMinimum.hashCode());
+        Object $insecureSkipTLSVerify = this.getInsecureSkipTLSVerify();
+        result = result * prime + ($insecureSkipTLSVerify == null ? 43 : $insecureSkipTLSVerify.hashCode());
+        Object $service = this.getService();
+        result = result * prime + ($service == null ? 43 : $service.hashCode());
+        Object $version = this.getVersion();
+        result = result * prime + ($version == null ? 43 : $version.hashCode());
+        Object $versionPriority = this.getVersionPriority();
+        result = result * prime + ($versionPriority == null ? 43 : $versionPriority.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "APIServiceSpec(" + "caBundle=" + this.getCaBundle() + ", group=" + this.getGroup() + ", groupPriorityMinimum=" + this.getGroupPriorityMinimum() + ", insecureSkipTLSVerify=" + this.getInsecureSkipTLSVerify() + ", service=" + this.getService() + ", version=" + this.getVersion() + ", versionPriority=" + this.getVersionPriority() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

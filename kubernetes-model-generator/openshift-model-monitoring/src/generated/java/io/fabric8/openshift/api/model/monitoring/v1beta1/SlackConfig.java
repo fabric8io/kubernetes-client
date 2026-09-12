@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
@@ -64,12 +61,6 @@ import lombok.experimental.Accessors;
     "title",
     "titleLink",
     "username"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -588,6 +579,211 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SlackConfig)) {
+            return false;
+        }
+        SlackConfig other = (SlackConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$actions = this.getActions();
+        Object other$actions = other.getActions();
+        if (this$actions == null ? other$actions != null : !this$actions.equals(other$actions)) {
+            return false;
+        }
+        Object this$apiURL = this.getApiURL();
+        Object other$apiURL = other.getApiURL();
+        if (this$apiURL == null ? other$apiURL != null : !this$apiURL.equals(other$apiURL)) {
+            return false;
+        }
+        Object this$callbackId = this.getCallbackId();
+        Object other$callbackId = other.getCallbackId();
+        if (this$callbackId == null ? other$callbackId != null : !this$callbackId.equals(other$callbackId)) {
+            return false;
+        }
+        Object this$channel = this.getChannel();
+        Object other$channel = other.getChannel();
+        if (this$channel == null ? other$channel != null : !this$channel.equals(other$channel)) {
+            return false;
+        }
+        Object this$color = this.getColor();
+        Object other$color = other.getColor();
+        if (this$color == null ? other$color != null : !this$color.equals(other$color)) {
+            return false;
+        }
+        Object this$fallback = this.getFallback();
+        Object other$fallback = other.getFallback();
+        if (this$fallback == null ? other$fallback != null : !this$fallback.equals(other$fallback)) {
+            return false;
+        }
+        Object this$fields = this.getFields();
+        Object other$fields = other.getFields();
+        if (this$fields == null ? other$fields != null : !this$fields.equals(other$fields)) {
+            return false;
+        }
+        Object this$footer = this.getFooter();
+        Object other$footer = other.getFooter();
+        if (this$footer == null ? other$footer != null : !this$footer.equals(other$footer)) {
+            return false;
+        }
+        Object this$httpConfig = this.getHttpConfig();
+        Object other$httpConfig = other.getHttpConfig();
+        if (this$httpConfig == null ? other$httpConfig != null : !this$httpConfig.equals(other$httpConfig)) {
+            return false;
+        }
+        Object this$iconEmoji = this.getIconEmoji();
+        Object other$iconEmoji = other.getIconEmoji();
+        if (this$iconEmoji == null ? other$iconEmoji != null : !this$iconEmoji.equals(other$iconEmoji)) {
+            return false;
+        }
+        Object this$iconURL = this.getIconURL();
+        Object other$iconURL = other.getIconURL();
+        if (this$iconURL == null ? other$iconURL != null : !this$iconURL.equals(other$iconURL)) {
+            return false;
+        }
+        Object this$imageURL = this.getImageURL();
+        Object other$imageURL = other.getImageURL();
+        if (this$imageURL == null ? other$imageURL != null : !this$imageURL.equals(other$imageURL)) {
+            return false;
+        }
+        Object this$linkNames = this.getLinkNames();
+        Object other$linkNames = other.getLinkNames();
+        if (this$linkNames == null ? other$linkNames != null : !this$linkNames.equals(other$linkNames)) {
+            return false;
+        }
+        Object this$messageText = this.getMessageText();
+        Object other$messageText = other.getMessageText();
+        if (this$messageText == null ? other$messageText != null : !this$messageText.equals(other$messageText)) {
+            return false;
+        }
+        Object this$mrkdwnIn = this.getMrkdwnIn();
+        Object other$mrkdwnIn = other.getMrkdwnIn();
+        if (this$mrkdwnIn == null ? other$mrkdwnIn != null : !this$mrkdwnIn.equals(other$mrkdwnIn)) {
+            return false;
+        }
+        Object this$pretext = this.getPretext();
+        Object other$pretext = other.getPretext();
+        if (this$pretext == null ? other$pretext != null : !this$pretext.equals(other$pretext)) {
+            return false;
+        }
+        Object this$sendResolved = this.getSendResolved();
+        Object other$sendResolved = other.getSendResolved();
+        if (this$sendResolved == null ? other$sendResolved != null : !this$sendResolved.equals(other$sendResolved)) {
+            return false;
+        }
+        Object this$shortFields = this.getShortFields();
+        Object other$shortFields = other.getShortFields();
+        if (this$shortFields == null ? other$shortFields != null : !this$shortFields.equals(other$shortFields)) {
+            return false;
+        }
+        Object this$text = this.getText();
+        Object other$text = other.getText();
+        if (this$text == null ? other$text != null : !this$text.equals(other$text)) {
+            return false;
+        }
+        Object this$thumbURL = this.getThumbURL();
+        Object other$thumbURL = other.getThumbURL();
+        if (this$thumbURL == null ? other$thumbURL != null : !this$thumbURL.equals(other$thumbURL)) {
+            return false;
+        }
+        Object this$timeout = this.getTimeout();
+        Object other$timeout = other.getTimeout();
+        if (this$timeout == null ? other$timeout != null : !this$timeout.equals(other$timeout)) {
+            return false;
+        }
+        Object this$title = this.getTitle();
+        Object other$title = other.getTitle();
+        if (this$title == null ? other$title != null : !this$title.equals(other$title)) {
+            return false;
+        }
+        Object this$titleLink = this.getTitleLink();
+        Object other$titleLink = other.getTitleLink();
+        if (this$titleLink == null ? other$titleLink != null : !this$titleLink.equals(other$titleLink)) {
+            return false;
+        }
+        Object this$username = this.getUsername();
+        Object other$username = other.getUsername();
+        if (this$username == null ? other$username != null : !this$username.equals(other$username)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SlackConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $actions = this.getActions();
+        result = result * prime + ($actions == null ? 43 : $actions.hashCode());
+        Object $apiURL = this.getApiURL();
+        result = result * prime + ($apiURL == null ? 43 : $apiURL.hashCode());
+        Object $callbackId = this.getCallbackId();
+        result = result * prime + ($callbackId == null ? 43 : $callbackId.hashCode());
+        Object $channel = this.getChannel();
+        result = result * prime + ($channel == null ? 43 : $channel.hashCode());
+        Object $color = this.getColor();
+        result = result * prime + ($color == null ? 43 : $color.hashCode());
+        Object $fallback = this.getFallback();
+        result = result * prime + ($fallback == null ? 43 : $fallback.hashCode());
+        Object $fields = this.getFields();
+        result = result * prime + ($fields == null ? 43 : $fields.hashCode());
+        Object $footer = this.getFooter();
+        result = result * prime + ($footer == null ? 43 : $footer.hashCode());
+        Object $httpConfig = this.getHttpConfig();
+        result = result * prime + ($httpConfig == null ? 43 : $httpConfig.hashCode());
+        Object $iconEmoji = this.getIconEmoji();
+        result = result * prime + ($iconEmoji == null ? 43 : $iconEmoji.hashCode());
+        Object $iconURL = this.getIconURL();
+        result = result * prime + ($iconURL == null ? 43 : $iconURL.hashCode());
+        Object $imageURL = this.getImageURL();
+        result = result * prime + ($imageURL == null ? 43 : $imageURL.hashCode());
+        Object $linkNames = this.getLinkNames();
+        result = result * prime + ($linkNames == null ? 43 : $linkNames.hashCode());
+        Object $messageText = this.getMessageText();
+        result = result * prime + ($messageText == null ? 43 : $messageText.hashCode());
+        Object $mrkdwnIn = this.getMrkdwnIn();
+        result = result * prime + ($mrkdwnIn == null ? 43 : $mrkdwnIn.hashCode());
+        Object $pretext = this.getPretext();
+        result = result * prime + ($pretext == null ? 43 : $pretext.hashCode());
+        Object $sendResolved = this.getSendResolved();
+        result = result * prime + ($sendResolved == null ? 43 : $sendResolved.hashCode());
+        Object $shortFields = this.getShortFields();
+        result = result * prime + ($shortFields == null ? 43 : $shortFields.hashCode());
+        Object $text = this.getText();
+        result = result * prime + ($text == null ? 43 : $text.hashCode());
+        Object $thumbURL = this.getThumbURL();
+        result = result * prime + ($thumbURL == null ? 43 : $thumbURL.hashCode());
+        Object $timeout = this.getTimeout();
+        result = result * prime + ($timeout == null ? 43 : $timeout.hashCode());
+        Object $title = this.getTitle();
+        result = result * prime + ($title == null ? 43 : $title.hashCode());
+        Object $titleLink = this.getTitleLink();
+        result = result * prime + ($titleLink == null ? 43 : $titleLink.hashCode());
+        Object $username = this.getUsername();
+        result = result * prime + ($username == null ? 43 : $username.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SlackConfig(" + "actions=" + this.getActions() + ", apiURL=" + this.getApiURL() + ", callbackId=" + this.getCallbackId() + ", channel=" + this.getChannel() + ", color=" + this.getColor() + ", fallback=" + this.getFallback() + ", fields=" + this.getFields() + ", footer=" + this.getFooter() + ", httpConfig=" + this.getHttpConfig() + ", iconEmoji=" + this.getIconEmoji() + ", iconURL=" + this.getIconURL() + ", imageURL=" + this.getImageURL() + ", linkNames=" + this.getLinkNames() + ", messageText=" + this.getMessageText() + ", mrkdwnIn=" + this.getMrkdwnIn() + ", pretext=" + this.getPretext() + ", sendResolved=" + this.getSendResolved() + ", shortFields=" + this.getShortFields() + ", text=" + this.getText() + ", thumbURL=" + this.getThumbURL() + ", timeout=" + this.getTimeout() + ", title=" + this.getTitle() + ", titleLink=" + this.getTitleLink() + ", username=" + this.getUsername() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

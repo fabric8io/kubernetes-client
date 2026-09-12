@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "optionalOldSelf",
     "reason",
     "rule"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -181,6 +172,85 @@ public class ValidationRule implements Editable<ValidationRuleBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ValidationRule)) {
+            return false;
+        }
+        ValidationRule other = (ValidationRule) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$fieldPath = this.getFieldPath();
+        Object other$fieldPath = other.getFieldPath();
+        if (this$fieldPath == null ? other$fieldPath != null : !this$fieldPath.equals(other$fieldPath)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$messageExpression = this.getMessageExpression();
+        Object other$messageExpression = other.getMessageExpression();
+        if (this$messageExpression == null ? other$messageExpression != null : !this$messageExpression.equals(other$messageExpression)) {
+            return false;
+        }
+        Object this$optionalOldSelf = this.getOptionalOldSelf();
+        Object other$optionalOldSelf = other.getOptionalOldSelf();
+        if (this$optionalOldSelf == null ? other$optionalOldSelf != null : !this$optionalOldSelf.equals(other$optionalOldSelf)) {
+            return false;
+        }
+        Object this$reason = this.getReason();
+        Object other$reason = other.getReason();
+        if (this$reason == null ? other$reason != null : !this$reason.equals(other$reason)) {
+            return false;
+        }
+        Object this$rule = this.getRule();
+        Object other$rule = other.getRule();
+        if (this$rule == null ? other$rule != null : !this$rule.equals(other$rule)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ValidationRule;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $fieldPath = this.getFieldPath();
+        result = result * prime + ($fieldPath == null ? 43 : $fieldPath.hashCode());
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $messageExpression = this.getMessageExpression();
+        result = result * prime + ($messageExpression == null ? 43 : $messageExpression.hashCode());
+        Object $optionalOldSelf = this.getOptionalOldSelf();
+        result = result * prime + ($optionalOldSelf == null ? 43 : $optionalOldSelf.hashCode());
+        Object $reason = this.getReason();
+        result = result * prime + ($reason == null ? 43 : $reason.hashCode());
+        Object $rule = this.getRule();
+        result = result * prime + ($rule == null ? 43 : $rule.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ValidationRule(" + "fieldPath=" + this.getFieldPath() + ", message=" + this.getMessage() + ", messageExpression=" + this.getMessageExpression() + ", optionalOldSelf=" + this.getOptionalOldSelf() + ", reason=" + this.getReason() + ", rule=" + this.getRule() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

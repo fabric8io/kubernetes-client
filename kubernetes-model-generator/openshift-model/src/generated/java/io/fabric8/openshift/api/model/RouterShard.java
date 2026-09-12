@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RouterShard has information of a routing shard and is used to generate host names and routing table entries when a routing shard is allocated for a specific route. Caveat: This is WIP and will likely undergo modifications when sharding support is added.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "dnsSuffix",
     "shardName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -139,6 +130,57 @@ public class RouterShard implements Editable<RouterShardBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RouterShard)) {
+            return false;
+        }
+        RouterShard other = (RouterShard) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$dnsSuffix = this.getDnsSuffix();
+        Object other$dnsSuffix = other.getDnsSuffix();
+        if (this$dnsSuffix == null ? other$dnsSuffix != null : !this$dnsSuffix.equals(other$dnsSuffix)) {
+            return false;
+        }
+        Object this$shardName = this.getShardName();
+        Object other$shardName = other.getShardName();
+        if (this$shardName == null ? other$shardName != null : !this$shardName.equals(other$shardName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RouterShard;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $dnsSuffix = this.getDnsSuffix();
+        result = result * prime + ($dnsSuffix == null ? 43 : $dnsSuffix.hashCode());
+        Object $shardName = this.getShardName();
+        result = result * prime + ($shardName == null ? 43 : $shardName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RouterShard(" + "dnsSuffix=" + this.getDnsSuffix() + ", shardName=" + this.getShardName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

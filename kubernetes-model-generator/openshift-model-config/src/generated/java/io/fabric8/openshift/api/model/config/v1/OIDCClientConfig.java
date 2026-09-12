@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OIDCClientConfig configures how platform clients interact with identity providers as an authentication method
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "componentName",
     "componentNamespace",
     "extraScopes"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -203,6 +194,78 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OIDCClientConfig)) {
+            return false;
+        }
+        OIDCClientConfig other = (OIDCClientConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clientID = this.getClientID();
+        Object other$clientID = other.getClientID();
+        if (this$clientID == null ? other$clientID != null : !this$clientID.equals(other$clientID)) {
+            return false;
+        }
+        Object this$clientSecret = this.getClientSecret();
+        Object other$clientSecret = other.getClientSecret();
+        if (this$clientSecret == null ? other$clientSecret != null : !this$clientSecret.equals(other$clientSecret)) {
+            return false;
+        }
+        Object this$componentName = this.getComponentName();
+        Object other$componentName = other.getComponentName();
+        if (this$componentName == null ? other$componentName != null : !this$componentName.equals(other$componentName)) {
+            return false;
+        }
+        Object this$componentNamespace = this.getComponentNamespace();
+        Object other$componentNamespace = other.getComponentNamespace();
+        if (this$componentNamespace == null ? other$componentNamespace != null : !this$componentNamespace.equals(other$componentNamespace)) {
+            return false;
+        }
+        Object this$extraScopes = this.getExtraScopes();
+        Object other$extraScopes = other.getExtraScopes();
+        if (this$extraScopes == null ? other$extraScopes != null : !this$extraScopes.equals(other$extraScopes)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OIDCClientConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clientID = this.getClientID();
+        result = result * prime + ($clientID == null ? 43 : $clientID.hashCode());
+        Object $clientSecret = this.getClientSecret();
+        result = result * prime + ($clientSecret == null ? 43 : $clientSecret.hashCode());
+        Object $componentName = this.getComponentName();
+        result = result * prime + ($componentName == null ? 43 : $componentName.hashCode());
+        Object $componentNamespace = this.getComponentNamespace();
+        result = result * prime + ($componentNamespace == null ? 43 : $componentNamespace.hashCode());
+        Object $extraScopes = this.getExtraScopes();
+        result = result * prime + ($extraScopes == null ? 43 : $extraScopes.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OIDCClientConfig(" + "clientID=" + this.getClientID() + ", clientSecret=" + this.getClientSecret() + ", componentName=" + this.getComponentName() + ", componentNamespace=" + this.getComponentNamespace() + ", extraScopes=" + this.getExtraScopes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

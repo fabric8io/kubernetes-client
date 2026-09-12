@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * IBMCloudPlatformStatus holds the current status of the IBMCloud infrastructure provider.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "providerType",
     "resourceGroupName",
     "serviceEndpoints"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -223,6 +214,85 @@ public class IBMCloudPlatformStatus implements Editable<IBMCloudPlatformStatusBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof IBMCloudPlatformStatus)) {
+            return false;
+        }
+        IBMCloudPlatformStatus other = (IBMCloudPlatformStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cisInstanceCRN = this.getCisInstanceCRN();
+        Object other$cisInstanceCRN = other.getCisInstanceCRN();
+        if (this$cisInstanceCRN == null ? other$cisInstanceCRN != null : !this$cisInstanceCRN.equals(other$cisInstanceCRN)) {
+            return false;
+        }
+        Object this$dnsInstanceCRN = this.getDnsInstanceCRN();
+        Object other$dnsInstanceCRN = other.getDnsInstanceCRN();
+        if (this$dnsInstanceCRN == null ? other$dnsInstanceCRN != null : !this$dnsInstanceCRN.equals(other$dnsInstanceCRN)) {
+            return false;
+        }
+        Object this$location = this.getLocation();
+        Object other$location = other.getLocation();
+        if (this$location == null ? other$location != null : !this$location.equals(other$location)) {
+            return false;
+        }
+        Object this$providerType = this.getProviderType();
+        Object other$providerType = other.getProviderType();
+        if (this$providerType == null ? other$providerType != null : !this$providerType.equals(other$providerType)) {
+            return false;
+        }
+        Object this$resourceGroupName = this.getResourceGroupName();
+        Object other$resourceGroupName = other.getResourceGroupName();
+        if (this$resourceGroupName == null ? other$resourceGroupName != null : !this$resourceGroupName.equals(other$resourceGroupName)) {
+            return false;
+        }
+        Object this$serviceEndpoints = this.getServiceEndpoints();
+        Object other$serviceEndpoints = other.getServiceEndpoints();
+        if (this$serviceEndpoints == null ? other$serviceEndpoints != null : !this$serviceEndpoints.equals(other$serviceEndpoints)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof IBMCloudPlatformStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cisInstanceCRN = this.getCisInstanceCRN();
+        result = result * prime + ($cisInstanceCRN == null ? 43 : $cisInstanceCRN.hashCode());
+        Object $dnsInstanceCRN = this.getDnsInstanceCRN();
+        result = result * prime + ($dnsInstanceCRN == null ? 43 : $dnsInstanceCRN.hashCode());
+        Object $location = this.getLocation();
+        result = result * prime + ($location == null ? 43 : $location.hashCode());
+        Object $providerType = this.getProviderType();
+        result = result * prime + ($providerType == null ? 43 : $providerType.hashCode());
+        Object $resourceGroupName = this.getResourceGroupName();
+        result = result * prime + ($resourceGroupName == null ? 43 : $resourceGroupName.hashCode());
+        Object $serviceEndpoints = this.getServiceEndpoints();
+        result = result * prime + ($serviceEndpoints == null ? 43 : $serviceEndpoints.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IBMCloudPlatformStatus(" + "cisInstanceCRN=" + this.getCisInstanceCRN() + ", dnsInstanceCRN=" + this.getDnsInstanceCRN() + ", location=" + this.getLocation() + ", providerType=" + this.getProviderType() + ", resourceGroupName=" + this.getResourceGroupName() + ", serviceEndpoints=" + this.getServiceEndpoints() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "instance",
     "project",
     "zone"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -181,6 +172,71 @@ public class GCPSelector implements Editable<GCPSelectorBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GCPSelector)) {
+            return false;
+        }
+        GCPSelector other = (GCPSelector) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$deviceNames = this.getDeviceNames();
+        Object other$deviceNames = other.getDeviceNames();
+        if (this$deviceNames == null ? other$deviceNames != null : !this$deviceNames.equals(other$deviceNames)) {
+            return false;
+        }
+        Object this$instance = this.getInstance();
+        Object other$instance = other.getInstance();
+        if (this$instance == null ? other$instance != null : !this$instance.equals(other$instance)) {
+            return false;
+        }
+        Object this$project = this.getProject();
+        Object other$project = other.getProject();
+        if (this$project == null ? other$project != null : !this$project.equals(other$project)) {
+            return false;
+        }
+        Object this$zone = this.getZone();
+        Object other$zone = other.getZone();
+        if (this$zone == null ? other$zone != null : !this$zone.equals(other$zone)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GCPSelector;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $deviceNames = this.getDeviceNames();
+        result = result * prime + ($deviceNames == null ? 43 : $deviceNames.hashCode());
+        Object $instance = this.getInstance();
+        result = result * prime + ($instance == null ? 43 : $instance.hashCode());
+        Object $project = this.getProject();
+        result = result * prime + ($project == null ? 43 : $project.hashCode());
+        Object $zone = this.getZone();
+        result = result * prime + ($zone == null ? 43 : $zone.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GCPSelector(" + "deviceNames=" + this.getDeviceNames() + ", instance=" + this.getInstance() + ", project=" + this.getProject() + ", zone=" + this.getZone() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

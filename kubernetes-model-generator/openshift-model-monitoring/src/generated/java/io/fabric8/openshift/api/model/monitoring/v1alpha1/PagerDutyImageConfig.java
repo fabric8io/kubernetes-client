@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PagerDutyImageConfig attaches images to an incident
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "alt",
     "href",
     "src"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class PagerDutyImageConfig implements Editable<PagerDutyImageConfigBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PagerDutyImageConfig)) {
+            return false;
+        }
+        PagerDutyImageConfig other = (PagerDutyImageConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$alt = this.getAlt();
+        Object other$alt = other.getAlt();
+        if (this$alt == null ? other$alt != null : !this$alt.equals(other$alt)) {
+            return false;
+        }
+        Object this$href = this.getHref();
+        Object other$href = other.getHref();
+        if (this$href == null ? other$href != null : !this$href.equals(other$href)) {
+            return false;
+        }
+        Object this$src = this.getSrc();
+        Object other$src = other.getSrc();
+        if (this$src == null ? other$src != null : !this$src.equals(other$src)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PagerDutyImageConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $alt = this.getAlt();
+        result = result * prime + ($alt == null ? 43 : $alt.hashCode());
+        Object $href = this.getHref();
+        result = result * prime + ($href == null ? 43 : $href.hashCode());
+        Object $src = this.getSrc();
+        result = result * prime + ($src == null ? 43 : $src.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PagerDutyImageConfig(" + "alt=" + this.getAlt() + ", href=" + this.getHref() + ", src=" + this.getSrc() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

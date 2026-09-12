@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "subnets",
     "uuid",
     "vnicType"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -279,6 +270,106 @@ public class NetworkParam implements Editable<NetworkParamBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkParam)) {
+            return false;
+        }
+        NetworkParam other = (NetworkParam) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$filter = this.getFilter();
+        Object other$filter = other.getFilter();
+        if (this$filter == null ? other$filter != null : !this$filter.equals(other$filter)) {
+            return false;
+        }
+        Object this$fixedIp = this.getFixedIp();
+        Object other$fixedIp = other.getFixedIp();
+        if (this$fixedIp == null ? other$fixedIp != null : !this$fixedIp.equals(other$fixedIp)) {
+            return false;
+        }
+        Object this$noAllowedAddressPairs = this.getNoAllowedAddressPairs();
+        Object other$noAllowedAddressPairs = other.getNoAllowedAddressPairs();
+        if (this$noAllowedAddressPairs == null ? other$noAllowedAddressPairs != null : !this$noAllowedAddressPairs.equals(other$noAllowedAddressPairs)) {
+            return false;
+        }
+        Object this$portSecurity = this.getPortSecurity();
+        Object other$portSecurity = other.getPortSecurity();
+        if (this$portSecurity == null ? other$portSecurity != null : !this$portSecurity.equals(other$portSecurity)) {
+            return false;
+        }
+        Object this$portTags = this.getPortTags();
+        Object other$portTags = other.getPortTags();
+        if (this$portTags == null ? other$portTags != null : !this$portTags.equals(other$portTags)) {
+            return false;
+        }
+        Object this$profile = this.getProfile();
+        Object other$profile = other.getProfile();
+        if (this$profile == null ? other$profile != null : !this$profile.equals(other$profile)) {
+            return false;
+        }
+        Object this$subnets = this.getSubnets();
+        Object other$subnets = other.getSubnets();
+        if (this$subnets == null ? other$subnets != null : !this$subnets.equals(other$subnets)) {
+            return false;
+        }
+        Object this$uuid = this.getUuid();
+        Object other$uuid = other.getUuid();
+        if (this$uuid == null ? other$uuid != null : !this$uuid.equals(other$uuid)) {
+            return false;
+        }
+        Object this$vnicType = this.getVnicType();
+        Object other$vnicType = other.getVnicType();
+        if (this$vnicType == null ? other$vnicType != null : !this$vnicType.equals(other$vnicType)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkParam;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $filter = this.getFilter();
+        result = result * prime + ($filter == null ? 43 : $filter.hashCode());
+        Object $fixedIp = this.getFixedIp();
+        result = result * prime + ($fixedIp == null ? 43 : $fixedIp.hashCode());
+        Object $noAllowedAddressPairs = this.getNoAllowedAddressPairs();
+        result = result * prime + ($noAllowedAddressPairs == null ? 43 : $noAllowedAddressPairs.hashCode());
+        Object $portSecurity = this.getPortSecurity();
+        result = result * prime + ($portSecurity == null ? 43 : $portSecurity.hashCode());
+        Object $portTags = this.getPortTags();
+        result = result * prime + ($portTags == null ? 43 : $portTags.hashCode());
+        Object $profile = this.getProfile();
+        result = result * prime + ($profile == null ? 43 : $profile.hashCode());
+        Object $subnets = this.getSubnets();
+        result = result * prime + ($subnets == null ? 43 : $subnets.hashCode());
+        Object $uuid = this.getUuid();
+        result = result * prime + ($uuid == null ? 43 : $uuid.hashCode());
+        Object $vnicType = this.getVnicType();
+        result = result * prime + ($vnicType == null ? 43 : $vnicType.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkParam(" + "filter=" + this.getFilter() + ", fixedIp=" + this.getFixedIp() + ", noAllowedAddressPairs=" + this.getNoAllowedAddressPairs() + ", portSecurity=" + this.getPortSecurity() + ", portTags=" + this.getPortTags() + ", profile=" + this.getProfile() + ", subnets=" + this.getSubnets() + ", uuid=" + this.getUuid() + ", vnicType=" + this.getVnicType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VSpherePlatformFailureDomainSpec holds the region and zone failure domain and the vCenter topology of that failure domain.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "topology",
     "zone",
     "zoneAffinity"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -239,6 +230,92 @@ public class VSpherePlatformFailureDomainSpec implements Editable<VSpherePlatfor
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VSpherePlatformFailureDomainSpec)) {
+            return false;
+        }
+        VSpherePlatformFailureDomainSpec other = (VSpherePlatformFailureDomainSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$regionAffinity = this.getRegionAffinity();
+        Object other$regionAffinity = other.getRegionAffinity();
+        if (this$regionAffinity == null ? other$regionAffinity != null : !this$regionAffinity.equals(other$regionAffinity)) {
+            return false;
+        }
+        Object this$server = this.getServer();
+        Object other$server = other.getServer();
+        if (this$server == null ? other$server != null : !this$server.equals(other$server)) {
+            return false;
+        }
+        Object this$topology = this.getTopology();
+        Object other$topology = other.getTopology();
+        if (this$topology == null ? other$topology != null : !this$topology.equals(other$topology)) {
+            return false;
+        }
+        Object this$zone = this.getZone();
+        Object other$zone = other.getZone();
+        if (this$zone == null ? other$zone != null : !this$zone.equals(other$zone)) {
+            return false;
+        }
+        Object this$zoneAffinity = this.getZoneAffinity();
+        Object other$zoneAffinity = other.getZoneAffinity();
+        if (this$zoneAffinity == null ? other$zoneAffinity != null : !this$zoneAffinity.equals(other$zoneAffinity)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VSpherePlatformFailureDomainSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $regionAffinity = this.getRegionAffinity();
+        result = result * prime + ($regionAffinity == null ? 43 : $regionAffinity.hashCode());
+        Object $server = this.getServer();
+        result = result * prime + ($server == null ? 43 : $server.hashCode());
+        Object $topology = this.getTopology();
+        result = result * prime + ($topology == null ? 43 : $topology.hashCode());
+        Object $zone = this.getZone();
+        result = result * prime + ($zone == null ? 43 : $zone.hashCode());
+        Object $zoneAffinity = this.getZoneAffinity();
+        result = result * prime + ($zoneAffinity == null ? 43 : $zoneAffinity.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VSpherePlatformFailureDomainSpec(" + "name=" + this.getName() + ", region=" + this.getRegion() + ", regionAffinity=" + this.getRegionAffinity() + ", server=" + this.getServer() + ", topology=" + this.getTopology() + ", zone=" + this.getZone() + ", zoneAffinity=" + this.getZoneAffinity() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

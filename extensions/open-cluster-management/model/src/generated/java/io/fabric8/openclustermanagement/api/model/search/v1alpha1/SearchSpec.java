@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SearchSpec defines the desired state of Search.
@@ -50,12 +47,6 @@ import lombok.experimental.Accessors;
     "imagePullSecret",
     "nodeSelector",
     "tolerations"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -287,6 +278,106 @@ public class SearchSpec implements Editable<SearchSpecBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SearchSpec)) {
+            return false;
+        }
+        SearchSpec other = (SearchSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$availabilityConfig = this.getAvailabilityConfig();
+        Object other$availabilityConfig = other.getAvailabilityConfig();
+        if (this$availabilityConfig == null ? other$availabilityConfig != null : !this$availabilityConfig.equals(other$availabilityConfig)) {
+            return false;
+        }
+        Object this$dbConfig = this.getDbConfig();
+        Object other$dbConfig = other.getDbConfig();
+        if (this$dbConfig == null ? other$dbConfig != null : !this$dbConfig.equals(other$dbConfig)) {
+            return false;
+        }
+        Object this$dbStorage = this.getDbStorage();
+        Object other$dbStorage = other.getDbStorage();
+        if (this$dbStorage == null ? other$dbStorage != null : !this$dbStorage.equals(other$dbStorage)) {
+            return false;
+        }
+        Object this$deployments = this.getDeployments();
+        Object other$deployments = other.getDeployments();
+        if (this$deployments == null ? other$deployments != null : !this$deployments.equals(other$deployments)) {
+            return false;
+        }
+        Object this$externalDBInstance = this.getExternalDBInstance();
+        Object other$externalDBInstance = other.getExternalDBInstance();
+        if (this$externalDBInstance == null ? other$externalDBInstance != null : !this$externalDBInstance.equals(other$externalDBInstance)) {
+            return false;
+        }
+        Object this$imagePullPolicy = this.getImagePullPolicy();
+        Object other$imagePullPolicy = other.getImagePullPolicy();
+        if (this$imagePullPolicy == null ? other$imagePullPolicy != null : !this$imagePullPolicy.equals(other$imagePullPolicy)) {
+            return false;
+        }
+        Object this$imagePullSecret = this.getImagePullSecret();
+        Object other$imagePullSecret = other.getImagePullSecret();
+        if (this$imagePullSecret == null ? other$imagePullSecret != null : !this$imagePullSecret.equals(other$imagePullSecret)) {
+            return false;
+        }
+        Object this$nodeSelector = this.getNodeSelector();
+        Object other$nodeSelector = other.getNodeSelector();
+        if (this$nodeSelector == null ? other$nodeSelector != null : !this$nodeSelector.equals(other$nodeSelector)) {
+            return false;
+        }
+        Object this$tolerations = this.getTolerations();
+        Object other$tolerations = other.getTolerations();
+        if (this$tolerations == null ? other$tolerations != null : !this$tolerations.equals(other$tolerations)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SearchSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $availabilityConfig = this.getAvailabilityConfig();
+        result = result * prime + ($availabilityConfig == null ? 43 : $availabilityConfig.hashCode());
+        Object $dbConfig = this.getDbConfig();
+        result = result * prime + ($dbConfig == null ? 43 : $dbConfig.hashCode());
+        Object $dbStorage = this.getDbStorage();
+        result = result * prime + ($dbStorage == null ? 43 : $dbStorage.hashCode());
+        Object $deployments = this.getDeployments();
+        result = result * prime + ($deployments == null ? 43 : $deployments.hashCode());
+        Object $externalDBInstance = this.getExternalDBInstance();
+        result = result * prime + ($externalDBInstance == null ? 43 : $externalDBInstance.hashCode());
+        Object $imagePullPolicy = this.getImagePullPolicy();
+        result = result * prime + ($imagePullPolicy == null ? 43 : $imagePullPolicy.hashCode());
+        Object $imagePullSecret = this.getImagePullSecret();
+        result = result * prime + ($imagePullSecret == null ? 43 : $imagePullSecret.hashCode());
+        Object $nodeSelector = this.getNodeSelector();
+        result = result * prime + ($nodeSelector == null ? 43 : $nodeSelector.hashCode());
+        Object $tolerations = this.getTolerations();
+        result = result * prime + ($tolerations == null ? 43 : $tolerations.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SearchSpec(" + "availabilityConfig=" + this.getAvailabilityConfig() + ", dbConfig=" + this.getDbConfig() + ", dbStorage=" + this.getDbStorage() + ", deployments=" + this.getDeployments() + ", externalDBInstance=" + this.getExternalDBInstance() + ", imagePullPolicy=" + this.getImagePullPolicy() + ", imagePullSecret=" + this.getImagePullSecret() + ", nodeSelector=" + this.getNodeSelector() + ", tolerations=" + this.getTolerations() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ServiceSpec describes the attributes that a user creates on a service.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "sessionAffinityConfig",
     "trafficDistribution",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -485,6 +476,183 @@ public class ServiceSpec implements Editable<ServiceSpecBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ServiceSpec)) {
+            return false;
+        }
+        ServiceSpec other = (ServiceSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allocateLoadBalancerNodePorts = this.getAllocateLoadBalancerNodePorts();
+        Object other$allocateLoadBalancerNodePorts = other.getAllocateLoadBalancerNodePorts();
+        if (this$allocateLoadBalancerNodePorts == null ? other$allocateLoadBalancerNodePorts != null : !this$allocateLoadBalancerNodePorts.equals(other$allocateLoadBalancerNodePorts)) {
+            return false;
+        }
+        Object this$clusterIP = this.getClusterIP();
+        Object other$clusterIP = other.getClusterIP();
+        if (this$clusterIP == null ? other$clusterIP != null : !this$clusterIP.equals(other$clusterIP)) {
+            return false;
+        }
+        Object this$clusterIPs = this.getClusterIPs();
+        Object other$clusterIPs = other.getClusterIPs();
+        if (this$clusterIPs == null ? other$clusterIPs != null : !this$clusterIPs.equals(other$clusterIPs)) {
+            return false;
+        }
+        Object this$externalIPs = this.getExternalIPs();
+        Object other$externalIPs = other.getExternalIPs();
+        if (this$externalIPs == null ? other$externalIPs != null : !this$externalIPs.equals(other$externalIPs)) {
+            return false;
+        }
+        Object this$externalName = this.getExternalName();
+        Object other$externalName = other.getExternalName();
+        if (this$externalName == null ? other$externalName != null : !this$externalName.equals(other$externalName)) {
+            return false;
+        }
+        Object this$externalTrafficPolicy = this.getExternalTrafficPolicy();
+        Object other$externalTrafficPolicy = other.getExternalTrafficPolicy();
+        if (this$externalTrafficPolicy == null ? other$externalTrafficPolicy != null : !this$externalTrafficPolicy.equals(other$externalTrafficPolicy)) {
+            return false;
+        }
+        Object this$healthCheckNodePort = this.getHealthCheckNodePort();
+        Object other$healthCheckNodePort = other.getHealthCheckNodePort();
+        if (this$healthCheckNodePort == null ? other$healthCheckNodePort != null : !this$healthCheckNodePort.equals(other$healthCheckNodePort)) {
+            return false;
+        }
+        Object this$internalTrafficPolicy = this.getInternalTrafficPolicy();
+        Object other$internalTrafficPolicy = other.getInternalTrafficPolicy();
+        if (this$internalTrafficPolicy == null ? other$internalTrafficPolicy != null : !this$internalTrafficPolicy.equals(other$internalTrafficPolicy)) {
+            return false;
+        }
+        Object this$ipFamilies = this.getIpFamilies();
+        Object other$ipFamilies = other.getIpFamilies();
+        if (this$ipFamilies == null ? other$ipFamilies != null : !this$ipFamilies.equals(other$ipFamilies)) {
+            return false;
+        }
+        Object this$ipFamilyPolicy = this.getIpFamilyPolicy();
+        Object other$ipFamilyPolicy = other.getIpFamilyPolicy();
+        if (this$ipFamilyPolicy == null ? other$ipFamilyPolicy != null : !this$ipFamilyPolicy.equals(other$ipFamilyPolicy)) {
+            return false;
+        }
+        Object this$loadBalancerClass = this.getLoadBalancerClass();
+        Object other$loadBalancerClass = other.getLoadBalancerClass();
+        if (this$loadBalancerClass == null ? other$loadBalancerClass != null : !this$loadBalancerClass.equals(other$loadBalancerClass)) {
+            return false;
+        }
+        Object this$loadBalancerIP = this.getLoadBalancerIP();
+        Object other$loadBalancerIP = other.getLoadBalancerIP();
+        if (this$loadBalancerIP == null ? other$loadBalancerIP != null : !this$loadBalancerIP.equals(other$loadBalancerIP)) {
+            return false;
+        }
+        Object this$loadBalancerSourceRanges = this.getLoadBalancerSourceRanges();
+        Object other$loadBalancerSourceRanges = other.getLoadBalancerSourceRanges();
+        if (this$loadBalancerSourceRanges == null ? other$loadBalancerSourceRanges != null : !this$loadBalancerSourceRanges.equals(other$loadBalancerSourceRanges)) {
+            return false;
+        }
+        Object this$ports = this.getPorts();
+        Object other$ports = other.getPorts();
+        if (this$ports == null ? other$ports != null : !this$ports.equals(other$ports)) {
+            return false;
+        }
+        Object this$publishNotReadyAddresses = this.getPublishNotReadyAddresses();
+        Object other$publishNotReadyAddresses = other.getPublishNotReadyAddresses();
+        if (this$publishNotReadyAddresses == null ? other$publishNotReadyAddresses != null : !this$publishNotReadyAddresses.equals(other$publishNotReadyAddresses)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$sessionAffinity = this.getSessionAffinity();
+        Object other$sessionAffinity = other.getSessionAffinity();
+        if (this$sessionAffinity == null ? other$sessionAffinity != null : !this$sessionAffinity.equals(other$sessionAffinity)) {
+            return false;
+        }
+        Object this$sessionAffinityConfig = this.getSessionAffinityConfig();
+        Object other$sessionAffinityConfig = other.getSessionAffinityConfig();
+        if (this$sessionAffinityConfig == null ? other$sessionAffinityConfig != null : !this$sessionAffinityConfig.equals(other$sessionAffinityConfig)) {
+            return false;
+        }
+        Object this$trafficDistribution = this.getTrafficDistribution();
+        Object other$trafficDistribution = other.getTrafficDistribution();
+        if (this$trafficDistribution == null ? other$trafficDistribution != null : !this$trafficDistribution.equals(other$trafficDistribution)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ServiceSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allocateLoadBalancerNodePorts = this.getAllocateLoadBalancerNodePorts();
+        result = result * prime + ($allocateLoadBalancerNodePorts == null ? 43 : $allocateLoadBalancerNodePorts.hashCode());
+        Object $clusterIP = this.getClusterIP();
+        result = result * prime + ($clusterIP == null ? 43 : $clusterIP.hashCode());
+        Object $clusterIPs = this.getClusterIPs();
+        result = result * prime + ($clusterIPs == null ? 43 : $clusterIPs.hashCode());
+        Object $externalIPs = this.getExternalIPs();
+        result = result * prime + ($externalIPs == null ? 43 : $externalIPs.hashCode());
+        Object $externalName = this.getExternalName();
+        result = result * prime + ($externalName == null ? 43 : $externalName.hashCode());
+        Object $externalTrafficPolicy = this.getExternalTrafficPolicy();
+        result = result * prime + ($externalTrafficPolicy == null ? 43 : $externalTrafficPolicy.hashCode());
+        Object $healthCheckNodePort = this.getHealthCheckNodePort();
+        result = result * prime + ($healthCheckNodePort == null ? 43 : $healthCheckNodePort.hashCode());
+        Object $internalTrafficPolicy = this.getInternalTrafficPolicy();
+        result = result * prime + ($internalTrafficPolicy == null ? 43 : $internalTrafficPolicy.hashCode());
+        Object $ipFamilies = this.getIpFamilies();
+        result = result * prime + ($ipFamilies == null ? 43 : $ipFamilies.hashCode());
+        Object $ipFamilyPolicy = this.getIpFamilyPolicy();
+        result = result * prime + ($ipFamilyPolicy == null ? 43 : $ipFamilyPolicy.hashCode());
+        Object $loadBalancerClass = this.getLoadBalancerClass();
+        result = result * prime + ($loadBalancerClass == null ? 43 : $loadBalancerClass.hashCode());
+        Object $loadBalancerIP = this.getLoadBalancerIP();
+        result = result * prime + ($loadBalancerIP == null ? 43 : $loadBalancerIP.hashCode());
+        Object $loadBalancerSourceRanges = this.getLoadBalancerSourceRanges();
+        result = result * prime + ($loadBalancerSourceRanges == null ? 43 : $loadBalancerSourceRanges.hashCode());
+        Object $ports = this.getPorts();
+        result = result * prime + ($ports == null ? 43 : $ports.hashCode());
+        Object $publishNotReadyAddresses = this.getPublishNotReadyAddresses();
+        result = result * prime + ($publishNotReadyAddresses == null ? 43 : $publishNotReadyAddresses.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $sessionAffinity = this.getSessionAffinity();
+        result = result * prime + ($sessionAffinity == null ? 43 : $sessionAffinity.hashCode());
+        Object $sessionAffinityConfig = this.getSessionAffinityConfig();
+        result = result * prime + ($sessionAffinityConfig == null ? 43 : $sessionAffinityConfig.hashCode());
+        Object $trafficDistribution = this.getTrafficDistribution();
+        result = result * prime + ($trafficDistribution == null ? 43 : $trafficDistribution.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ServiceSpec(" + "allocateLoadBalancerNodePorts=" + this.getAllocateLoadBalancerNodePorts() + ", clusterIP=" + this.getClusterIP() + ", clusterIPs=" + this.getClusterIPs() + ", externalIPs=" + this.getExternalIPs() + ", externalName=" + this.getExternalName() + ", externalTrafficPolicy=" + this.getExternalTrafficPolicy() + ", healthCheckNodePort=" + this.getHealthCheckNodePort() + ", internalTrafficPolicy=" + this.getInternalTrafficPolicy() + ", ipFamilies=" + this.getIpFamilies() + ", ipFamilyPolicy=" + this.getIpFamilyPolicy() + ", loadBalancerClass=" + this.getLoadBalancerClass() + ", loadBalancerIP=" + this.getLoadBalancerIP() + ", loadBalancerSourceRanges=" + this.getLoadBalancerSourceRanges() + ", ports=" + this.getPorts() + ", publishNotReadyAddresses=" + this.getPublishNotReadyAddresses() + ", selector=" + this.getSelector() + ", sessionAffinity=" + this.getSessionAffinity() + ", sessionAffinityConfig=" + this.getSessionAffinityConfig() + ", trafficDistribution=" + this.getTrafficDistribution() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

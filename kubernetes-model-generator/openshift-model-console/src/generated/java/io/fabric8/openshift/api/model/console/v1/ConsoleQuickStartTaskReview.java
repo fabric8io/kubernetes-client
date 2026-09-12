@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ConsoleQuickStartTaskReview contains instructions that validate a task was completed successfully.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "failedTaskHelp",
     "instructions"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class ConsoleQuickStartTaskReview implements Editable<ConsoleQuickStartTa
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConsoleQuickStartTaskReview)) {
+            return false;
+        }
+        ConsoleQuickStartTaskReview other = (ConsoleQuickStartTaskReview) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$failedTaskHelp = this.getFailedTaskHelp();
+        Object other$failedTaskHelp = other.getFailedTaskHelp();
+        if (this$failedTaskHelp == null ? other$failedTaskHelp != null : !this$failedTaskHelp.equals(other$failedTaskHelp)) {
+            return false;
+        }
+        Object this$instructions = this.getInstructions();
+        Object other$instructions = other.getInstructions();
+        if (this$instructions == null ? other$instructions != null : !this$instructions.equals(other$instructions)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConsoleQuickStartTaskReview;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $failedTaskHelp = this.getFailedTaskHelp();
+        result = result * prime + ($failedTaskHelp == null ? 43 : $failedTaskHelp.hashCode());
+        Object $instructions = this.getInstructions();
+        result = result * prime + ($instructions == null ? 43 : $instructions.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConsoleQuickStartTaskReview(" + "failedTaskHelp=" + this.getFailedTaskHelp() + ", instructions=" + this.getInstructions() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

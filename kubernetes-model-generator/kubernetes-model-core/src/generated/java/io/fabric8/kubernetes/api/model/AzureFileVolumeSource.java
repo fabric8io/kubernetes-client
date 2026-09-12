@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AzureFile represents an Azure File Service mount on the host and bind mount to the pod.
@@ -26,12 +23,6 @@ import lombok.experimental.Accessors;
     "readOnly",
     "secretName",
     "shareName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -131,6 +122,64 @@ public class AzureFileVolumeSource implements Editable<AzureFileVolumeSourceBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AzureFileVolumeSource)) {
+            return false;
+        }
+        AzureFileVolumeSource other = (AzureFileVolumeSource) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$readOnly = this.getReadOnly();
+        Object other$readOnly = other.getReadOnly();
+        if (this$readOnly == null ? other$readOnly != null : !this$readOnly.equals(other$readOnly)) {
+            return false;
+        }
+        Object this$secretName = this.getSecretName();
+        Object other$secretName = other.getSecretName();
+        if (this$secretName == null ? other$secretName != null : !this$secretName.equals(other$secretName)) {
+            return false;
+        }
+        Object this$shareName = this.getShareName();
+        Object other$shareName = other.getShareName();
+        if (this$shareName == null ? other$shareName != null : !this$shareName.equals(other$shareName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AzureFileVolumeSource;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $readOnly = this.getReadOnly();
+        result = result * prime + ($readOnly == null ? 43 : $readOnly.hashCode());
+        Object $secretName = this.getSecretName();
+        result = result * prime + ($secretName == null ? 43 : $secretName.hashCode());
+        Object $shareName = this.getShareName();
+        result = result * prime + ($shareName == null ? 43 : $shareName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AzureFileVolumeSource(" + "readOnly=" + this.getReadOnly() + ", secretName=" + this.getSecretName() + ", shareName=" + this.getShareName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

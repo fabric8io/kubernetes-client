@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DecisionGroup define a subset of clusters that will be added to placementDecisions with groupName label.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "groupClusterSelector",
     "groupName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class DecisionGroup implements Editable<DecisionGroupBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DecisionGroup)) {
+            return false;
+        }
+        DecisionGroup other = (DecisionGroup) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$groupClusterSelector = this.getGroupClusterSelector();
+        Object other$groupClusterSelector = other.getGroupClusterSelector();
+        if (this$groupClusterSelector == null ? other$groupClusterSelector != null : !this$groupClusterSelector.equals(other$groupClusterSelector)) {
+            return false;
+        }
+        Object this$groupName = this.getGroupName();
+        Object other$groupName = other.getGroupName();
+        if (this$groupName == null ? other$groupName != null : !this$groupName.equals(other$groupName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DecisionGroup;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $groupClusterSelector = this.getGroupClusterSelector();
+        result = result * prime + ($groupClusterSelector == null ? 43 : $groupClusterSelector.hashCode());
+        Object $groupName = this.getGroupName();
+        result = result * prime + ($groupName == null ? 43 : $groupName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DecisionGroup(" + "groupClusterSelector=" + this.getGroupClusterSelector() + ", groupName=" + this.getGroupName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

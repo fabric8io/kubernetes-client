@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * BackupConfig contains settings for the Velero backup integration.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "minBackupPeriodSeconds",
     "velero"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class BackupConfig implements Editable<BackupConfigBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BackupConfig)) {
+            return false;
+        }
+        BackupConfig other = (BackupConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$minBackupPeriodSeconds = this.getMinBackupPeriodSeconds();
+        Object other$minBackupPeriodSeconds = other.getMinBackupPeriodSeconds();
+        if (this$minBackupPeriodSeconds == null ? other$minBackupPeriodSeconds != null : !this$minBackupPeriodSeconds.equals(other$minBackupPeriodSeconds)) {
+            return false;
+        }
+        Object this$velero = this.getVelero();
+        Object other$velero = other.getVelero();
+        if (this$velero == null ? other$velero != null : !this$velero.equals(other$velero)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BackupConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $minBackupPeriodSeconds = this.getMinBackupPeriodSeconds();
+        result = result * prime + ($minBackupPeriodSeconds == null ? 43 : $minBackupPeriodSeconds.hashCode());
+        Object $velero = this.getVelero();
+        result = result * prime + ($velero == null ? 43 : $velero.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BackupConfig(" + "minBackupPeriodSeconds=" + this.getMinBackupPeriodSeconds() + ", velero=" + this.getVelero() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

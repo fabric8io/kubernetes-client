@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Describes the Cross-Origin Resource Sharing (CORS) policy, for a given service. Refer to [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) for further details about cross origin resource sharing. For example, the following rule restricts cross origin requests to those originating from example.com domain using HTTP POST/GET, and sets the `Access-Control-Allow-Credentials` header to false. In addition, it only exposes `X-Foo-bar` header and sets an expiry period of 1 day.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- route:<br><p> 	  - destination:<br><p> 	      host: ratings.prod.svc.cluster.local<br><p> 	      subset: v1<br><p> 	  corsPolicy:<br><p> 	    allowOrigins:<br><p> 	    - exact: https://example.com<br><p> 	    allowMethods:<br><p> 	    - POST<br><p> 	    - GET<br><p> 	    allowCredentials: false<br><p> 	    allowHeaders:<br><p> 	    - X-Foo-Bar<br><p> 	    maxAge: "24h"<br><p> <br><p> ```
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "exposeHeaders",
     "maxAge",
     "unmatchedPreflights"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -272,6 +263,99 @@ public class CorsPolicy implements Editable<CorsPolicyBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CorsPolicy)) {
+            return false;
+        }
+        CorsPolicy other = (CorsPolicy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allowCredentials = this.getAllowCredentials();
+        Object other$allowCredentials = other.getAllowCredentials();
+        if (this$allowCredentials == null ? other$allowCredentials != null : !this$allowCredentials.equals(other$allowCredentials)) {
+            return false;
+        }
+        Object this$allowHeaders = this.getAllowHeaders();
+        Object other$allowHeaders = other.getAllowHeaders();
+        if (this$allowHeaders == null ? other$allowHeaders != null : !this$allowHeaders.equals(other$allowHeaders)) {
+            return false;
+        }
+        Object this$allowMethods = this.getAllowMethods();
+        Object other$allowMethods = other.getAllowMethods();
+        if (this$allowMethods == null ? other$allowMethods != null : !this$allowMethods.equals(other$allowMethods)) {
+            return false;
+        }
+        Object this$deprecatedAllowOrigin = this.getAllowOrigin();
+        Object other$deprecatedAllowOrigin = other.getAllowOrigin();
+        if (this$deprecatedAllowOrigin == null ? other$deprecatedAllowOrigin != null : !this$deprecatedAllowOrigin.equals(other$deprecatedAllowOrigin)) {
+            return false;
+        }
+        Object this$allowOrigins = this.getAllowOrigins();
+        Object other$allowOrigins = other.getAllowOrigins();
+        if (this$allowOrigins == null ? other$allowOrigins != null : !this$allowOrigins.equals(other$allowOrigins)) {
+            return false;
+        }
+        Object this$exposeHeaders = this.getExposeHeaders();
+        Object other$exposeHeaders = other.getExposeHeaders();
+        if (this$exposeHeaders == null ? other$exposeHeaders != null : !this$exposeHeaders.equals(other$exposeHeaders)) {
+            return false;
+        }
+        Object this$maxAge = this.getMaxAge();
+        Object other$maxAge = other.getMaxAge();
+        if (this$maxAge == null ? other$maxAge != null : !this$maxAge.equals(other$maxAge)) {
+            return false;
+        }
+        Object this$unmatchedPreflights = this.getUnmatchedPreflights();
+        Object other$unmatchedPreflights = other.getUnmatchedPreflights();
+        if (this$unmatchedPreflights == null ? other$unmatchedPreflights != null : !this$unmatchedPreflights.equals(other$unmatchedPreflights)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CorsPolicy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allowCredentials = this.getAllowCredentials();
+        result = result * prime + ($allowCredentials == null ? 43 : $allowCredentials.hashCode());
+        Object $allowHeaders = this.getAllowHeaders();
+        result = result * prime + ($allowHeaders == null ? 43 : $allowHeaders.hashCode());
+        Object $allowMethods = this.getAllowMethods();
+        result = result * prime + ($allowMethods == null ? 43 : $allowMethods.hashCode());
+        Object $deprecatedAllowOrigin = this.getAllowOrigin();
+        result = result * prime + ($deprecatedAllowOrigin == null ? 43 : $deprecatedAllowOrigin.hashCode());
+        Object $allowOrigins = this.getAllowOrigins();
+        result = result * prime + ($allowOrigins == null ? 43 : $allowOrigins.hashCode());
+        Object $exposeHeaders = this.getExposeHeaders();
+        result = result * prime + ($exposeHeaders == null ? 43 : $exposeHeaders.hashCode());
+        Object $maxAge = this.getMaxAge();
+        result = result * prime + ($maxAge == null ? 43 : $maxAge.hashCode());
+        Object $unmatchedPreflights = this.getUnmatchedPreflights();
+        result = result * prime + ($unmatchedPreflights == null ? 43 : $unmatchedPreflights.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CorsPolicy(" + "allowCredentials=" + this.getAllowCredentials() + ", allowHeaders=" + this.getAllowHeaders() + ", allowMethods=" + this.getAllowMethods() + ", deprecatedAllowOrigin=" + this.getAllowOrigin() + ", allowOrigins=" + this.getAllowOrigins() + ", exposeHeaders=" + this.getExposeHeaders() + ", maxAge=" + this.getMaxAge() + ", unmatchedPreflights=" + this.getUnmatchedPreflights() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

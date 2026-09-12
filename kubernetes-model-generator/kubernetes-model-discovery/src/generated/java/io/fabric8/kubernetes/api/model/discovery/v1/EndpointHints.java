@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * EndpointHints provides hints describing how an endpoint should be consumed.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "forNodes",
     "forZones"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -146,6 +137,57 @@ public class EndpointHints implements Editable<EndpointHintsBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EndpointHints)) {
+            return false;
+        }
+        EndpointHints other = (EndpointHints) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$forNodes = this.getForNodes();
+        Object other$forNodes = other.getForNodes();
+        if (this$forNodes == null ? other$forNodes != null : !this$forNodes.equals(other$forNodes)) {
+            return false;
+        }
+        Object this$forZones = this.getForZones();
+        Object other$forZones = other.getForZones();
+        if (this$forZones == null ? other$forZones != null : !this$forZones.equals(other$forZones)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EndpointHints;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $forNodes = this.getForNodes();
+        result = result * prime + ($forNodes == null ? 43 : $forNodes.hashCode());
+        Object $forZones = this.getForZones();
+        result = result * prime + ($forZones == null ? 43 : $forZones.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EndpointHints(" + "forNodes=" + this.getForNodes() + ", forZones=" + this.getForZones() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

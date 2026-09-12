@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AWSClassicLoadBalancerParameters holds configuration parameters for an AWS Classic load balancer.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "connectionIdleTimeout",
     "subnets"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class AWSClassicLoadBalancerParameters implements Editable<AWSClassicLoad
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AWSClassicLoadBalancerParameters)) {
+            return false;
+        }
+        AWSClassicLoadBalancerParameters other = (AWSClassicLoadBalancerParameters) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$connectionIdleTimeout = this.getConnectionIdleTimeout();
+        Object other$connectionIdleTimeout = other.getConnectionIdleTimeout();
+        if (this$connectionIdleTimeout == null ? other$connectionIdleTimeout != null : !this$connectionIdleTimeout.equals(other$connectionIdleTimeout)) {
+            return false;
+        }
+        Object this$subnets = this.getSubnets();
+        Object other$subnets = other.getSubnets();
+        if (this$subnets == null ? other$subnets != null : !this$subnets.equals(other$subnets)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AWSClassicLoadBalancerParameters;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $connectionIdleTimeout = this.getConnectionIdleTimeout();
+        result = result * prime + ($connectionIdleTimeout == null ? 43 : $connectionIdleTimeout.hashCode());
+        Object $subnets = this.getSubnets();
+        result = result * prime + ($subnets == null ? 43 : $subnets.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AWSClassicLoadBalancerParameters(" + "connectionIdleTimeout=" + this.getConnectionIdleTimeout() + ", subnets=" + this.getSubnets() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

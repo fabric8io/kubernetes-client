@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PrivateServiceConnectStatus contains the observed state for PrivateServiceConnect resources.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "serviceAttachment",
     "serviceAttachmentFirewall",
     "serviceAttachmentSubnet"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,78 @@ public class PrivateServiceConnectStatus implements Editable<PrivateServiceConne
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PrivateServiceConnectStatus)) {
+            return false;
+        }
+        PrivateServiceConnectStatus other = (PrivateServiceConnectStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$endpoint = this.getEndpoint();
+        Object other$endpoint = other.getEndpoint();
+        if (this$endpoint == null ? other$endpoint != null : !this$endpoint.equals(other$endpoint)) {
+            return false;
+        }
+        Object this$endpointAddress = this.getEndpointAddress();
+        Object other$endpointAddress = other.getEndpointAddress();
+        if (this$endpointAddress == null ? other$endpointAddress != null : !this$endpointAddress.equals(other$endpointAddress)) {
+            return false;
+        }
+        Object this$serviceAttachment = this.getServiceAttachment();
+        Object other$serviceAttachment = other.getServiceAttachment();
+        if (this$serviceAttachment == null ? other$serviceAttachment != null : !this$serviceAttachment.equals(other$serviceAttachment)) {
+            return false;
+        }
+        Object this$serviceAttachmentFirewall = this.getServiceAttachmentFirewall();
+        Object other$serviceAttachmentFirewall = other.getServiceAttachmentFirewall();
+        if (this$serviceAttachmentFirewall == null ? other$serviceAttachmentFirewall != null : !this$serviceAttachmentFirewall.equals(other$serviceAttachmentFirewall)) {
+            return false;
+        }
+        Object this$serviceAttachmentSubnet = this.getServiceAttachmentSubnet();
+        Object other$serviceAttachmentSubnet = other.getServiceAttachmentSubnet();
+        if (this$serviceAttachmentSubnet == null ? other$serviceAttachmentSubnet != null : !this$serviceAttachmentSubnet.equals(other$serviceAttachmentSubnet)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PrivateServiceConnectStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $endpoint = this.getEndpoint();
+        result = result * prime + ($endpoint == null ? 43 : $endpoint.hashCode());
+        Object $endpointAddress = this.getEndpointAddress();
+        result = result * prime + ($endpointAddress == null ? 43 : $endpointAddress.hashCode());
+        Object $serviceAttachment = this.getServiceAttachment();
+        result = result * prime + ($serviceAttachment == null ? 43 : $serviceAttachment.hashCode());
+        Object $serviceAttachmentFirewall = this.getServiceAttachmentFirewall();
+        result = result * prime + ($serviceAttachmentFirewall == null ? 43 : $serviceAttachmentFirewall.hashCode());
+        Object $serviceAttachmentSubnet = this.getServiceAttachmentSubnet();
+        result = result * prime + ($serviceAttachmentSubnet == null ? 43 : $serviceAttachmentSubnet.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PrivateServiceConnectStatus(" + "endpoint=" + this.getEndpoint() + ", endpointAddress=" + this.getEndpointAddress() + ", serviceAttachment=" + this.getServiceAttachment() + ", serviceAttachmentFirewall=" + this.getServiceAttachmentFirewall() + ", serviceAttachmentSubnet=" + this.getServiceAttachmentSubnet() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

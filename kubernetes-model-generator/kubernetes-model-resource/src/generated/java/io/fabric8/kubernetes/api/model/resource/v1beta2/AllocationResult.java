@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AllocationResult contains attributes of an allocated resource.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "allocationTimestamp",
     "devices",
     "nodeSelector"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -161,6 +152,64 @@ public class AllocationResult implements Editable<AllocationResultBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AllocationResult)) {
+            return false;
+        }
+        AllocationResult other = (AllocationResult) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allocationTimestamp = this.getAllocationTimestamp();
+        Object other$allocationTimestamp = other.getAllocationTimestamp();
+        if (this$allocationTimestamp == null ? other$allocationTimestamp != null : !this$allocationTimestamp.equals(other$allocationTimestamp)) {
+            return false;
+        }
+        Object this$devices = this.getDevices();
+        Object other$devices = other.getDevices();
+        if (this$devices == null ? other$devices != null : !this$devices.equals(other$devices)) {
+            return false;
+        }
+        Object this$nodeSelector = this.getNodeSelector();
+        Object other$nodeSelector = other.getNodeSelector();
+        if (this$nodeSelector == null ? other$nodeSelector != null : !this$nodeSelector.equals(other$nodeSelector)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AllocationResult;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allocationTimestamp = this.getAllocationTimestamp();
+        result = result * prime + ($allocationTimestamp == null ? 43 : $allocationTimestamp.hashCode());
+        Object $devices = this.getDevices();
+        result = result * prime + ($devices == null ? 43 : $devices.hashCode());
+        Object $nodeSelector = this.getNodeSelector();
+        result = result * prime + ($nodeSelector == null ? 43 : $nodeSelector.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AllocationResult(" + "allocationTimestamp=" + this.getAllocationTimestamp() + ", devices=" + this.getDevices() + ", nodeSelector=" + this.getNodeSelector() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

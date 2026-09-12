@@ -26,10 +26,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -37,21 +33,10 @@ import java.util.Map;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "apiVersion",
-    "kind",
-    "metadata",
-    "items",
-})
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
+@JsonPropertyOrder({ "apiVersion", "kind", "metadata", "items" })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 public class GenericKubernetesResource implements Editable<GenericKubernetesResourceBuilder>, HasMetadata {
-
   private static final ObjectMapper MAPPER = new ObjectMapper();
-
   @JsonProperty("apiVersion")
   private String apiVersion;
   @JsonProperty("kind")
@@ -95,6 +80,7 @@ public class GenericKubernetesResource implements Editable<GenericKubernetesReso
   }
 
   // spotless:off
+  // spotless:on
   /**
    * Allows the retrieval of field values from this Resource for the provided path segments.
    *
@@ -114,13 +100,13 @@ public class GenericKubernetesResource implements Editable<GenericKubernetesReso
    *
    * <pre>{@code
    * {
-   *   "field": {
-   *     "value": 42
-   *     "list": [
-   *       {entry: 1}, {entry: 2}, {entry: 3}
-   *     ],
-   *     "1": "one"
-   *   }
+   * "field": {
+   * "value": 42
+   * "list": [
+   * {entry: 1}, {entry: 2}, {entry: 3}
+   * ],
+   * "1": "one"
+   * }
    * }
    * }</pre>
    *
@@ -140,7 +126,6 @@ public class GenericKubernetesResource implements Editable<GenericKubernetesReso
    * @param <T> type of the returned object.
    * @return the value of the traversed path or null if the field does not exist.
    */
-  // spotless:on
   public <T> T get(Object... path) {
     return get(getAdditionalProperties(), path);
   }
@@ -166,5 +151,83 @@ public class GenericKubernetesResource implements Editable<GenericKubernetesReso
       }
     }
     return (T) current;
+  }
+
+  public String getApiVersion() {
+    return this.apiVersion;
+  }
+
+  public String getKind() {
+    return this.kind;
+  }
+
+  public ObjectMeta getMetadata() {
+    return this.metadata;
+  }
+
+  public void setApiVersion(final String apiVersion) {
+    this.apiVersion = apiVersion;
+  }
+
+  public void setKind(final String kind) {
+    this.kind = kind;
+  }
+
+  public void setMetadata(final ObjectMeta metadata) {
+    this.metadata = metadata;
+  }
+
+  @java.lang.Override
+  public java.lang.String toString() {
+    return "GenericKubernetesResource(apiVersion=" + this.getApiVersion() + ", kind=" + this.getKind() + ", metadata="
+        + this.getMetadata() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
+  }
+
+  @java.lang.Override
+  public boolean equals(final java.lang.Object o) {
+    if (o == this)
+      return true;
+    if (!(o instanceof GenericKubernetesResource))
+      return false;
+    final GenericKubernetesResource other = (GenericKubernetesResource) o;
+    if (!other.canEqual((java.lang.Object) this))
+      return false;
+    final java.lang.Object this$apiVersion = this.getApiVersion();
+    final java.lang.Object other$apiVersion = other.getApiVersion();
+    if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion))
+      return false;
+    final java.lang.Object this$kind = this.getKind();
+    final java.lang.Object other$kind = other.getKind();
+    if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind))
+      return false;
+    final java.lang.Object this$metadata = this.getMetadata();
+    final java.lang.Object other$metadata = other.getMetadata();
+    if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata))
+      return false;
+    final java.lang.Object this$additionalProperties = this.getAdditionalProperties();
+    final java.lang.Object other$additionalProperties = other.getAdditionalProperties();
+    if (this$additionalProperties == null ? other$additionalProperties != null
+        : !this$additionalProperties.equals(other$additionalProperties))
+      return false;
+    return true;
+  }
+
+  protected boolean canEqual(final java.lang.Object other) {
+    return other instanceof GenericKubernetesResource;
+  }
+
+  @java.lang.Override
+  public int hashCode() {
+    final int PRIME = 59;
+    int result = 1;
+    final java.lang.Object $apiVersion = this.getApiVersion();
+    result = result * PRIME + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+    final java.lang.Object $kind = this.getKind();
+    result = result * PRIME + ($kind == null ? 43 : $kind.hashCode());
+    final java.lang.Object $metadata = this.getMetadata();
+    result = result * PRIME + ($metadata == null ? 43 : $metadata.hashCode());
+    final java.lang.Object $additionalProperties = this.getAdditionalProperties();
+    result = result * PRIME + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+    return result;
   }
 }

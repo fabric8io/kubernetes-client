@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DockerImageReference points to a container image.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "namespace",
     "registry",
     "tag"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -199,6 +190,78 @@ public class DockerImageReference implements Editable<DockerImageReferenceBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DockerImageReference)) {
+            return false;
+        }
+        DockerImageReference other = (DockerImageReference) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$iD = this.getID();
+        Object other$iD = other.getID();
+        if (this$iD == null ? other$iD != null : !this$iD.equals(other$iD)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$namespace = this.getNamespace();
+        Object other$namespace = other.getNamespace();
+        if (this$namespace == null ? other$namespace != null : !this$namespace.equals(other$namespace)) {
+            return false;
+        }
+        Object this$registry = this.getRegistry();
+        Object other$registry = other.getRegistry();
+        if (this$registry == null ? other$registry != null : !this$registry.equals(other$registry)) {
+            return false;
+        }
+        Object this$tag = this.getTag();
+        Object other$tag = other.getTag();
+        if (this$tag == null ? other$tag != null : !this$tag.equals(other$tag)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DockerImageReference;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $iD = this.getID();
+        result = result * prime + ($iD == null ? 43 : $iD.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $namespace = this.getNamespace();
+        result = result * prime + ($namespace == null ? 43 : $namespace.hashCode());
+        Object $registry = this.getRegistry();
+        result = result * prime + ($registry == null ? 43 : $registry.hashCode());
+        Object $tag = this.getTag();
+        result = result * prime + ($tag == null ? 43 : $tag.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DockerImageReference(" + "iD=" + this.getID() + ", name=" + this.getName() + ", namespace=" + this.getNamespace() + ", registry=" + this.getRegistry() + ", tag=" + this.getTag() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

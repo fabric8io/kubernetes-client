@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * GitHubSourceSpec defines the desired state of GitHubSource
@@ -51,12 +48,6 @@ import lombok.experimental.Accessors;
     "secure",
     "serviceAccountName",
     "sink"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -286,6 +277,106 @@ public class GitHubSourceSpec implements Editable<GitHubSourceSpecBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GitHubSourceSpec)) {
+            return false;
+        }
+        GitHubSourceSpec other = (GitHubSourceSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$accessToken = this.getAccessToken();
+        Object other$accessToken = other.getAccessToken();
+        if (this$accessToken == null ? other$accessToken != null : !this$accessToken.equals(other$accessToken)) {
+            return false;
+        }
+        Object this$ceOverrides = this.getCeOverrides();
+        Object other$ceOverrides = other.getCeOverrides();
+        if (this$ceOverrides == null ? other$ceOverrides != null : !this$ceOverrides.equals(other$ceOverrides)) {
+            return false;
+        }
+        Object this$eventTypes = this.getEventTypes();
+        Object other$eventTypes = other.getEventTypes();
+        if (this$eventTypes == null ? other$eventTypes != null : !this$eventTypes.equals(other$eventTypes)) {
+            return false;
+        }
+        Object this$githubAPIURL = this.getGithubAPIURL();
+        Object other$githubAPIURL = other.getGithubAPIURL();
+        if (this$githubAPIURL == null ? other$githubAPIURL != null : !this$githubAPIURL.equals(other$githubAPIURL)) {
+            return false;
+        }
+        Object this$ownerAndRepository = this.getOwnerAndRepository();
+        Object other$ownerAndRepository = other.getOwnerAndRepository();
+        if (this$ownerAndRepository == null ? other$ownerAndRepository != null : !this$ownerAndRepository.equals(other$ownerAndRepository)) {
+            return false;
+        }
+        Object this$secretToken = this.getSecretToken();
+        Object other$secretToken = other.getSecretToken();
+        if (this$secretToken == null ? other$secretToken != null : !this$secretToken.equals(other$secretToken)) {
+            return false;
+        }
+        Object this$secure = this.getSecure();
+        Object other$secure = other.getSecure();
+        if (this$secure == null ? other$secure != null : !this$secure.equals(other$secure)) {
+            return false;
+        }
+        Object this$serviceAccountName = this.getServiceAccountName();
+        Object other$serviceAccountName = other.getServiceAccountName();
+        if (this$serviceAccountName == null ? other$serviceAccountName != null : !this$serviceAccountName.equals(other$serviceAccountName)) {
+            return false;
+        }
+        Object this$sink = this.getSink();
+        Object other$sink = other.getSink();
+        if (this$sink == null ? other$sink != null : !this$sink.equals(other$sink)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GitHubSourceSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $accessToken = this.getAccessToken();
+        result = result * prime + ($accessToken == null ? 43 : $accessToken.hashCode());
+        Object $ceOverrides = this.getCeOverrides();
+        result = result * prime + ($ceOverrides == null ? 43 : $ceOverrides.hashCode());
+        Object $eventTypes = this.getEventTypes();
+        result = result * prime + ($eventTypes == null ? 43 : $eventTypes.hashCode());
+        Object $githubAPIURL = this.getGithubAPIURL();
+        result = result * prime + ($githubAPIURL == null ? 43 : $githubAPIURL.hashCode());
+        Object $ownerAndRepository = this.getOwnerAndRepository();
+        result = result * prime + ($ownerAndRepository == null ? 43 : $ownerAndRepository.hashCode());
+        Object $secretToken = this.getSecretToken();
+        result = result * prime + ($secretToken == null ? 43 : $secretToken.hashCode());
+        Object $secure = this.getSecure();
+        result = result * prime + ($secure == null ? 43 : $secure.hashCode());
+        Object $serviceAccountName = this.getServiceAccountName();
+        result = result * prime + ($serviceAccountName == null ? 43 : $serviceAccountName.hashCode());
+        Object $sink = this.getSink();
+        result = result * prime + ($sink == null ? 43 : $sink.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GitHubSourceSpec(" + "accessToken=" + this.getAccessToken() + ", ceOverrides=" + this.getCeOverrides() + ", eventTypes=" + this.getEventTypes() + ", githubAPIURL=" + this.getGithubAPIURL() + ", ownerAndRepository=" + this.getOwnerAndRepository() + ", secretToken=" + this.getSecretToken() + ", secure=" + this.getSecure() + ", serviceAccountName=" + this.getServiceAccountName() + ", sink=" + this.getSink() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

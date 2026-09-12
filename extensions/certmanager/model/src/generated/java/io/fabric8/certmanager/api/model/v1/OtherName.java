@@ -28,21 +28,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "oid",
     "utf8Value"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -137,6 +128,57 @@ public class OtherName implements Editable<OtherNameBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OtherName)) {
+            return false;
+        }
+        OtherName other = (OtherName) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$oid = this.getOid();
+        Object other$oid = other.getOid();
+        if (this$oid == null ? other$oid != null : !this$oid.equals(other$oid)) {
+            return false;
+        }
+        Object this$utf8Value = this.getUtf8Value();
+        Object other$utf8Value = other.getUtf8Value();
+        if (this$utf8Value == null ? other$utf8Value != null : !this$utf8Value.equals(other$utf8Value)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OtherName;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $oid = this.getOid();
+        result = result * prime + ($oid == null ? 43 : $oid.hashCode());
+        Object $utf8Value = this.getUtf8Value();
+        result = result * prime + ($utf8Value == null ? 43 : $utf8Value.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OtherName(" + "oid=" + this.getOid() + ", utf8Value=" + this.getUtf8Value() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

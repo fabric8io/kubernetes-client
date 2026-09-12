@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DataDisk specifies the parameters that are used to add one or more data disks to the machine. A Data Disk is a managed disk that's attached to a virtual machine to store application data. It differs from an OS Disk as it doesn't come with a pre-installed OS, and it cannot contain the boot volume. It is registered as SCSI drive and labeled with the chosen `lun`. e.g. for `lun: 0` the raw disk device will be available at `/dev/disk/azure/scsi1/lun0`.<br><p> <br><p> As the Data Disk disk device is attached raw to the virtual machine, it will need to be partitioned, formatted with a filesystem and mounted, in order for it to be usable. This can be done by creating a custom userdata Secret with custom Ignition configuration to achieve the desired initialization. At this stage the previously defined `lun` is to be used as the "device" key for referencing the raw disk device to be initialized. Once the custom userdata Secret has been created, it can be referenced in the Machine's `.providerSpec.userDataSecret`. For further guidance and examples, please refer to the official OpenShift docs.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "lun",
     "managedDisk",
     "nameSuffix"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -219,6 +210,85 @@ public class DataDisk implements Editable<DataDiskBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DataDisk)) {
+            return false;
+        }
+        DataDisk other = (DataDisk) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cachingType = this.getCachingType();
+        Object other$cachingType = other.getCachingType();
+        if (this$cachingType == null ? other$cachingType != null : !this$cachingType.equals(other$cachingType)) {
+            return false;
+        }
+        Object this$deletionPolicy = this.getDeletionPolicy();
+        Object other$deletionPolicy = other.getDeletionPolicy();
+        if (this$deletionPolicy == null ? other$deletionPolicy != null : !this$deletionPolicy.equals(other$deletionPolicy)) {
+            return false;
+        }
+        Object this$diskSizeGB = this.getDiskSizeGB();
+        Object other$diskSizeGB = other.getDiskSizeGB();
+        if (this$diskSizeGB == null ? other$diskSizeGB != null : !this$diskSizeGB.equals(other$diskSizeGB)) {
+            return false;
+        }
+        Object this$lun = this.getLun();
+        Object other$lun = other.getLun();
+        if (this$lun == null ? other$lun != null : !this$lun.equals(other$lun)) {
+            return false;
+        }
+        Object this$managedDisk = this.getManagedDisk();
+        Object other$managedDisk = other.getManagedDisk();
+        if (this$managedDisk == null ? other$managedDisk != null : !this$managedDisk.equals(other$managedDisk)) {
+            return false;
+        }
+        Object this$nameSuffix = this.getNameSuffix();
+        Object other$nameSuffix = other.getNameSuffix();
+        if (this$nameSuffix == null ? other$nameSuffix != null : !this$nameSuffix.equals(other$nameSuffix)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DataDisk;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cachingType = this.getCachingType();
+        result = result * prime + ($cachingType == null ? 43 : $cachingType.hashCode());
+        Object $deletionPolicy = this.getDeletionPolicy();
+        result = result * prime + ($deletionPolicy == null ? 43 : $deletionPolicy.hashCode());
+        Object $diskSizeGB = this.getDiskSizeGB();
+        result = result * prime + ($diskSizeGB == null ? 43 : $diskSizeGB.hashCode());
+        Object $lun = this.getLun();
+        result = result * prime + ($lun == null ? 43 : $lun.hashCode());
+        Object $managedDisk = this.getManagedDisk();
+        result = result * prime + ($managedDisk == null ? 43 : $managedDisk.hashCode());
+        Object $nameSuffix = this.getNameSuffix();
+        result = result * prime + ($nameSuffix == null ? 43 : $nameSuffix.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DataDisk(" + "cachingType=" + this.getCachingType() + ", deletionPolicy=" + this.getDeletionPolicy() + ", diskSizeGB=" + this.getDiskSizeGB() + ", lun=" + this.getLun() + ", managedDisk=" + this.getManagedDisk() + ", nameSuffix=" + this.getNameSuffix() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.config.v1.IBMCloudServiceEndpoint;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Platform stores all the global configuration that all machinesets use.
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "resourceGroupName",
     "serviceEndpoints",
     "vpcName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -269,6 +260,99 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Platform)) {
+            return false;
+        }
+        Platform other = (Platform) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$computeSubnets = this.getComputeSubnets();
+        Object other$computeSubnets = other.getComputeSubnets();
+        if (this$computeSubnets == null ? other$computeSubnets != null : !this$computeSubnets.equals(other$computeSubnets)) {
+            return false;
+        }
+        Object this$controlPlaneSubnets = this.getControlPlaneSubnets();
+        Object other$controlPlaneSubnets = other.getControlPlaneSubnets();
+        if (this$controlPlaneSubnets == null ? other$controlPlaneSubnets != null : !this$controlPlaneSubnets.equals(other$controlPlaneSubnets)) {
+            return false;
+        }
+        Object this$defaultMachinePlatform = this.getDefaultMachinePlatform();
+        Object other$defaultMachinePlatform = other.getDefaultMachinePlatform();
+        if (this$defaultMachinePlatform == null ? other$defaultMachinePlatform != null : !this$defaultMachinePlatform.equals(other$defaultMachinePlatform)) {
+            return false;
+        }
+        Object this$networkResourceGroupName = this.getNetworkResourceGroupName();
+        Object other$networkResourceGroupName = other.getNetworkResourceGroupName();
+        if (this$networkResourceGroupName == null ? other$networkResourceGroupName != null : !this$networkResourceGroupName.equals(other$networkResourceGroupName)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$resourceGroupName = this.getResourceGroupName();
+        Object other$resourceGroupName = other.getResourceGroupName();
+        if (this$resourceGroupName == null ? other$resourceGroupName != null : !this$resourceGroupName.equals(other$resourceGroupName)) {
+            return false;
+        }
+        Object this$serviceEndpoints = this.getServiceEndpoints();
+        Object other$serviceEndpoints = other.getServiceEndpoints();
+        if (this$serviceEndpoints == null ? other$serviceEndpoints != null : !this$serviceEndpoints.equals(other$serviceEndpoints)) {
+            return false;
+        }
+        Object this$vpcName = this.getVpcName();
+        Object other$vpcName = other.getVpcName();
+        if (this$vpcName == null ? other$vpcName != null : !this$vpcName.equals(other$vpcName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Platform;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $computeSubnets = this.getComputeSubnets();
+        result = result * prime + ($computeSubnets == null ? 43 : $computeSubnets.hashCode());
+        Object $controlPlaneSubnets = this.getControlPlaneSubnets();
+        result = result * prime + ($controlPlaneSubnets == null ? 43 : $controlPlaneSubnets.hashCode());
+        Object $defaultMachinePlatform = this.getDefaultMachinePlatform();
+        result = result * prime + ($defaultMachinePlatform == null ? 43 : $defaultMachinePlatform.hashCode());
+        Object $networkResourceGroupName = this.getNetworkResourceGroupName();
+        result = result * prime + ($networkResourceGroupName == null ? 43 : $networkResourceGroupName.hashCode());
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $resourceGroupName = this.getResourceGroupName();
+        result = result * prime + ($resourceGroupName == null ? 43 : $resourceGroupName.hashCode());
+        Object $serviceEndpoints = this.getServiceEndpoints();
+        result = result * prime + ($serviceEndpoints == null ? 43 : $serviceEndpoints.hashCode());
+        Object $vpcName = this.getVpcName();
+        result = result * prime + ($vpcName == null ? 43 : $vpcName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Platform(" + "computeSubnets=" + this.getComputeSubnets() + ", controlPlaneSubnets=" + this.getControlPlaneSubnets() + ", defaultMachinePlatform=" + this.getDefaultMachinePlatform() + ", networkResourceGroupName=" + this.getNetworkResourceGroupName() + ", region=" + this.getRegion() + ", resourceGroupName=" + this.getResourceGroupName() + ", serviceEndpoints=" + this.getServiceEndpoints() + ", vpcName=" + this.getVpcName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

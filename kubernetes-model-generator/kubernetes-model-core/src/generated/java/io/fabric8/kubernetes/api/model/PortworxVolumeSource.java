@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PortworxVolumeSource represents a Portworx volume resource.
@@ -26,12 +23,6 @@ import lombok.experimental.Accessors;
     "fsType",
     "readOnly",
     "volumeID"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -131,6 +122,64 @@ public class PortworxVolumeSource implements Editable<PortworxVolumeSourceBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PortworxVolumeSource)) {
+            return false;
+        }
+        PortworxVolumeSource other = (PortworxVolumeSource) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$fsType = this.getFsType();
+        Object other$fsType = other.getFsType();
+        if (this$fsType == null ? other$fsType != null : !this$fsType.equals(other$fsType)) {
+            return false;
+        }
+        Object this$readOnly = this.getReadOnly();
+        Object other$readOnly = other.getReadOnly();
+        if (this$readOnly == null ? other$readOnly != null : !this$readOnly.equals(other$readOnly)) {
+            return false;
+        }
+        Object this$volumeID = this.getVolumeID();
+        Object other$volumeID = other.getVolumeID();
+        if (this$volumeID == null ? other$volumeID != null : !this$volumeID.equals(other$volumeID)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PortworxVolumeSource;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $fsType = this.getFsType();
+        result = result * prime + ($fsType == null ? 43 : $fsType.hashCode());
+        Object $readOnly = this.getReadOnly();
+        result = result * prime + ($readOnly == null ? 43 : $readOnly.hashCode());
+        Object $volumeID = this.getVolumeID();
+        result = result * prime + ($volumeID == null ? 43 : $volumeID.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PortworxVolumeSource(" + "fsType=" + this.getFsType() + ", readOnly=" + this.getReadOnly() + ", volumeID=" + this.getVolumeID() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

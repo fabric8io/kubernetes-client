@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.config.v1.BareMetalPlatformLoadBalancer;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Platform stores all the global configuration that all machinesets use.
@@ -68,12 +65,6 @@ import lombok.experimental.Accessors;
     "provisioningNetwork",
     "provisioningNetworkCIDR",
     "provisioningNetworkInterface"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -651,6 +642,232 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Platform)) {
+            return false;
+        }
+        Platform other = (Platform) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$additionalNTPServers = this.getAdditionalNTPServers();
+        Object other$additionalNTPServers = other.getAdditionalNTPServers();
+        if (this$additionalNTPServers == null ? other$additionalNTPServers != null : !this$additionalNTPServers.equals(other$additionalNTPServers)) {
+            return false;
+        }
+        Object this$apiVIP = this.getApiVIP();
+        Object other$apiVIP = other.getApiVIP();
+        if (this$apiVIP == null ? other$apiVIP != null : !this$apiVIP.equals(other$apiVIP)) {
+            return false;
+        }
+        Object this$apiVIPs = this.getApiVIPs();
+        Object other$apiVIPs = other.getApiVIPs();
+        if (this$apiVIPs == null ? other$apiVIPs != null : !this$apiVIPs.equals(other$apiVIPs)) {
+            return false;
+        }
+        Object this$bmcVerifyCA = this.getBmcVerifyCA();
+        Object other$bmcVerifyCA = other.getBmcVerifyCA();
+        if (this$bmcVerifyCA == null ? other$bmcVerifyCA != null : !this$bmcVerifyCA.equals(other$bmcVerifyCA)) {
+            return false;
+        }
+        Object this$bootstrapExternalStaticDNS = this.getBootstrapExternalStaticDNS();
+        Object other$bootstrapExternalStaticDNS = other.getBootstrapExternalStaticDNS();
+        if (this$bootstrapExternalStaticDNS == null ? other$bootstrapExternalStaticDNS != null : !this$bootstrapExternalStaticDNS.equals(other$bootstrapExternalStaticDNS)) {
+            return false;
+        }
+        Object this$bootstrapExternalStaticGateway = this.getBootstrapExternalStaticGateway();
+        Object other$bootstrapExternalStaticGateway = other.getBootstrapExternalStaticGateway();
+        if (this$bootstrapExternalStaticGateway == null ? other$bootstrapExternalStaticGateway != null : !this$bootstrapExternalStaticGateway.equals(other$bootstrapExternalStaticGateway)) {
+            return false;
+        }
+        Object this$bootstrapExternalStaticIP = this.getBootstrapExternalStaticIP();
+        Object other$bootstrapExternalStaticIP = other.getBootstrapExternalStaticIP();
+        if (this$bootstrapExternalStaticIP == null ? other$bootstrapExternalStaticIP != null : !this$bootstrapExternalStaticIP.equals(other$bootstrapExternalStaticIP)) {
+            return false;
+        }
+        Object this$bootstrapOSImage = this.getBootstrapOSImage();
+        Object other$bootstrapOSImage = other.getBootstrapOSImage();
+        if (this$bootstrapOSImage == null ? other$bootstrapOSImage != null : !this$bootstrapOSImage.equals(other$bootstrapOSImage)) {
+            return false;
+        }
+        Object this$bootstrapProvisioningIP = this.getBootstrapProvisioningIP();
+        Object other$bootstrapProvisioningIP = other.getBootstrapProvisioningIP();
+        if (this$bootstrapProvisioningIP == null ? other$bootstrapProvisioningIP != null : !this$bootstrapProvisioningIP.equals(other$bootstrapProvisioningIP)) {
+            return false;
+        }
+        Object this$clusterOSImage = this.getClusterOSImage();
+        Object other$clusterOSImage = other.getClusterOSImage();
+        if (this$clusterOSImage == null ? other$clusterOSImage != null : !this$clusterOSImage.equals(other$clusterOSImage)) {
+            return false;
+        }
+        Object this$clusterProvisioningIP = this.getClusterProvisioningIP();
+        Object other$clusterProvisioningIP = other.getClusterProvisioningIP();
+        if (this$clusterProvisioningIP == null ? other$clusterProvisioningIP != null : !this$clusterProvisioningIP.equals(other$clusterProvisioningIP)) {
+            return false;
+        }
+        Object this$defaultMachinePlatform = this.getDefaultMachinePlatform();
+        Object other$defaultMachinePlatform = other.getDefaultMachinePlatform();
+        if (this$defaultMachinePlatform == null ? other$defaultMachinePlatform != null : !this$defaultMachinePlatform.equals(other$defaultMachinePlatform)) {
+            return false;
+        }
+        Object this$externalBridge = this.getExternalBridge();
+        Object other$externalBridge = other.getExternalBridge();
+        if (this$externalBridge == null ? other$externalBridge != null : !this$externalBridge.equals(other$externalBridge)) {
+            return false;
+        }
+        Object this$externalMACAddress = this.getExternalMACAddress();
+        Object other$externalMACAddress = other.getExternalMACAddress();
+        if (this$externalMACAddress == null ? other$externalMACAddress != null : !this$externalMACAddress.equals(other$externalMACAddress)) {
+            return false;
+        }
+        Object this$hosts = this.getHosts();
+        Object other$hosts = other.getHosts();
+        if (this$hosts == null ? other$hosts != null : !this$hosts.equals(other$hosts)) {
+            return false;
+        }
+        Object this$ingressVIP = this.getIngressVIP();
+        Object other$ingressVIP = other.getIngressVIP();
+        if (this$ingressVIP == null ? other$ingressVIP != null : !this$ingressVIP.equals(other$ingressVIP)) {
+            return false;
+        }
+        Object this$ingressVIPs = this.getIngressVIPs();
+        Object other$ingressVIPs = other.getIngressVIPs();
+        if (this$ingressVIPs == null ? other$ingressVIPs != null : !this$ingressVIPs.equals(other$ingressVIPs)) {
+            return false;
+        }
+        Object this$libvirtURI = this.getLibvirtURI();
+        Object other$libvirtURI = other.getLibvirtURI();
+        if (this$libvirtURI == null ? other$libvirtURI != null : !this$libvirtURI.equals(other$libvirtURI)) {
+            return false;
+        }
+        Object this$loadBalancer = this.getLoadBalancer();
+        Object other$loadBalancer = other.getLoadBalancer();
+        if (this$loadBalancer == null ? other$loadBalancer != null : !this$loadBalancer.equals(other$loadBalancer)) {
+            return false;
+        }
+        Object this$provisioningBridge = this.getProvisioningBridge();
+        Object other$provisioningBridge = other.getProvisioningBridge();
+        if (this$provisioningBridge == null ? other$provisioningBridge != null : !this$provisioningBridge.equals(other$provisioningBridge)) {
+            return false;
+        }
+        Object this$provisioningDHCPExternal = this.getProvisioningDHCPExternal();
+        Object other$provisioningDHCPExternal = other.getProvisioningDHCPExternal();
+        if (this$provisioningDHCPExternal == null ? other$provisioningDHCPExternal != null : !this$provisioningDHCPExternal.equals(other$provisioningDHCPExternal)) {
+            return false;
+        }
+        Object this$provisioningDHCPRange = this.getProvisioningDHCPRange();
+        Object other$provisioningDHCPRange = other.getProvisioningDHCPRange();
+        if (this$provisioningDHCPRange == null ? other$provisioningDHCPRange != null : !this$provisioningDHCPRange.equals(other$provisioningDHCPRange)) {
+            return false;
+        }
+        Object this$provisioningHostIP = this.getProvisioningHostIP();
+        Object other$provisioningHostIP = other.getProvisioningHostIP();
+        if (this$provisioningHostIP == null ? other$provisioningHostIP != null : !this$provisioningHostIP.equals(other$provisioningHostIP)) {
+            return false;
+        }
+        Object this$provisioningMACAddress = this.getProvisioningMACAddress();
+        Object other$provisioningMACAddress = other.getProvisioningMACAddress();
+        if (this$provisioningMACAddress == null ? other$provisioningMACAddress != null : !this$provisioningMACAddress.equals(other$provisioningMACAddress)) {
+            return false;
+        }
+        Object this$provisioningNetwork = this.getProvisioningNetwork();
+        Object other$provisioningNetwork = other.getProvisioningNetwork();
+        if (this$provisioningNetwork == null ? other$provisioningNetwork != null : !this$provisioningNetwork.equals(other$provisioningNetwork)) {
+            return false;
+        }
+        Object this$provisioningNetworkCIDR = this.getProvisioningNetworkCIDR();
+        Object other$provisioningNetworkCIDR = other.getProvisioningNetworkCIDR();
+        if (this$provisioningNetworkCIDR == null ? other$provisioningNetworkCIDR != null : !this$provisioningNetworkCIDR.equals(other$provisioningNetworkCIDR)) {
+            return false;
+        }
+        Object this$provisioningNetworkInterface = this.getProvisioningNetworkInterface();
+        Object other$provisioningNetworkInterface = other.getProvisioningNetworkInterface();
+        if (this$provisioningNetworkInterface == null ? other$provisioningNetworkInterface != null : !this$provisioningNetworkInterface.equals(other$provisioningNetworkInterface)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Platform;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $additionalNTPServers = this.getAdditionalNTPServers();
+        result = result * prime + ($additionalNTPServers == null ? 43 : $additionalNTPServers.hashCode());
+        Object $apiVIP = this.getApiVIP();
+        result = result * prime + ($apiVIP == null ? 43 : $apiVIP.hashCode());
+        Object $apiVIPs = this.getApiVIPs();
+        result = result * prime + ($apiVIPs == null ? 43 : $apiVIPs.hashCode());
+        Object $bmcVerifyCA = this.getBmcVerifyCA();
+        result = result * prime + ($bmcVerifyCA == null ? 43 : $bmcVerifyCA.hashCode());
+        Object $bootstrapExternalStaticDNS = this.getBootstrapExternalStaticDNS();
+        result = result * prime + ($bootstrapExternalStaticDNS == null ? 43 : $bootstrapExternalStaticDNS.hashCode());
+        Object $bootstrapExternalStaticGateway = this.getBootstrapExternalStaticGateway();
+        result = result * prime + ($bootstrapExternalStaticGateway == null ? 43 : $bootstrapExternalStaticGateway.hashCode());
+        Object $bootstrapExternalStaticIP = this.getBootstrapExternalStaticIP();
+        result = result * prime + ($bootstrapExternalStaticIP == null ? 43 : $bootstrapExternalStaticIP.hashCode());
+        Object $bootstrapOSImage = this.getBootstrapOSImage();
+        result = result * prime + ($bootstrapOSImage == null ? 43 : $bootstrapOSImage.hashCode());
+        Object $bootstrapProvisioningIP = this.getBootstrapProvisioningIP();
+        result = result * prime + ($bootstrapProvisioningIP == null ? 43 : $bootstrapProvisioningIP.hashCode());
+        Object $clusterOSImage = this.getClusterOSImage();
+        result = result * prime + ($clusterOSImage == null ? 43 : $clusterOSImage.hashCode());
+        Object $clusterProvisioningIP = this.getClusterProvisioningIP();
+        result = result * prime + ($clusterProvisioningIP == null ? 43 : $clusterProvisioningIP.hashCode());
+        Object $defaultMachinePlatform = this.getDefaultMachinePlatform();
+        result = result * prime + ($defaultMachinePlatform == null ? 43 : $defaultMachinePlatform.hashCode());
+        Object $externalBridge = this.getExternalBridge();
+        result = result * prime + ($externalBridge == null ? 43 : $externalBridge.hashCode());
+        Object $externalMACAddress = this.getExternalMACAddress();
+        result = result * prime + ($externalMACAddress == null ? 43 : $externalMACAddress.hashCode());
+        Object $hosts = this.getHosts();
+        result = result * prime + ($hosts == null ? 43 : $hosts.hashCode());
+        Object $ingressVIP = this.getIngressVIP();
+        result = result * prime + ($ingressVIP == null ? 43 : $ingressVIP.hashCode());
+        Object $ingressVIPs = this.getIngressVIPs();
+        result = result * prime + ($ingressVIPs == null ? 43 : $ingressVIPs.hashCode());
+        Object $libvirtURI = this.getLibvirtURI();
+        result = result * prime + ($libvirtURI == null ? 43 : $libvirtURI.hashCode());
+        Object $loadBalancer = this.getLoadBalancer();
+        result = result * prime + ($loadBalancer == null ? 43 : $loadBalancer.hashCode());
+        Object $provisioningBridge = this.getProvisioningBridge();
+        result = result * prime + ($provisioningBridge == null ? 43 : $provisioningBridge.hashCode());
+        Object $provisioningDHCPExternal = this.getProvisioningDHCPExternal();
+        result = result * prime + ($provisioningDHCPExternal == null ? 43 : $provisioningDHCPExternal.hashCode());
+        Object $provisioningDHCPRange = this.getProvisioningDHCPRange();
+        result = result * prime + ($provisioningDHCPRange == null ? 43 : $provisioningDHCPRange.hashCode());
+        Object $provisioningHostIP = this.getProvisioningHostIP();
+        result = result * prime + ($provisioningHostIP == null ? 43 : $provisioningHostIP.hashCode());
+        Object $provisioningMACAddress = this.getProvisioningMACAddress();
+        result = result * prime + ($provisioningMACAddress == null ? 43 : $provisioningMACAddress.hashCode());
+        Object $provisioningNetwork = this.getProvisioningNetwork();
+        result = result * prime + ($provisioningNetwork == null ? 43 : $provisioningNetwork.hashCode());
+        Object $provisioningNetworkCIDR = this.getProvisioningNetworkCIDR();
+        result = result * prime + ($provisioningNetworkCIDR == null ? 43 : $provisioningNetworkCIDR.hashCode());
+        Object $provisioningNetworkInterface = this.getProvisioningNetworkInterface();
+        result = result * prime + ($provisioningNetworkInterface == null ? 43 : $provisioningNetworkInterface.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Platform(" + "additionalNTPServers=" + this.getAdditionalNTPServers() + ", apiVIP=" + this.getApiVIP() + ", apiVIPs=" + this.getApiVIPs() + ", bmcVerifyCA=" + this.getBmcVerifyCA() + ", bootstrapExternalStaticDNS=" + this.getBootstrapExternalStaticDNS() + ", bootstrapExternalStaticGateway=" + this.getBootstrapExternalStaticGateway() + ", bootstrapExternalStaticIP=" + this.getBootstrapExternalStaticIP() + ", bootstrapOSImage=" + this.getBootstrapOSImage() + ", bootstrapProvisioningIP=" + this.getBootstrapProvisioningIP() + ", clusterOSImage=" + this.getClusterOSImage() + ", clusterProvisioningIP=" + this.getClusterProvisioningIP() + ", defaultMachinePlatform=" + this.getDefaultMachinePlatform() + ", externalBridge=" + this.getExternalBridge() + ", externalMACAddress=" + this.getExternalMACAddress() + ", hosts=" + this.getHosts() + ", ingressVIP=" + this.getIngressVIP() + ", ingressVIPs=" + this.getIngressVIPs() + ", libvirtURI=" + this.getLibvirtURI() + ", loadBalancer=" + this.getLoadBalancer() + ", provisioningBridge=" + this.getProvisioningBridge() + ", provisioningDHCPExternal=" + this.getProvisioningDHCPExternal() + ", provisioningDHCPRange=" + this.getProvisioningDHCPRange() + ", provisioningHostIP=" + this.getProvisioningHostIP() + ", provisioningMACAddress=" + this.getProvisioningMACAddress() + ", provisioningNetwork=" + this.getProvisioningNetwork() + ", provisioningNetworkCIDR=" + this.getProvisioningNetworkCIDR() + ", provisioningNetworkInterface=" + this.getProvisioningNetworkInterface() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

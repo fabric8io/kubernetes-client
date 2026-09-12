@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * BuildTriggerPolicy describes a policy for a single trigger that results in a new Build.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "gitlab",
     "imageChange",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -219,6 +210,85 @@ public class BuildTriggerPolicy implements Editable<BuildTriggerPolicyBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BuildTriggerPolicy)) {
+            return false;
+        }
+        BuildTriggerPolicy other = (BuildTriggerPolicy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bitbucket = this.getBitbucket();
+        Object other$bitbucket = other.getBitbucket();
+        if (this$bitbucket == null ? other$bitbucket != null : !this$bitbucket.equals(other$bitbucket)) {
+            return false;
+        }
+        Object this$generic = this.getGeneric();
+        Object other$generic = other.getGeneric();
+        if (this$generic == null ? other$generic != null : !this$generic.equals(other$generic)) {
+            return false;
+        }
+        Object this$github = this.getGithub();
+        Object other$github = other.getGithub();
+        if (this$github == null ? other$github != null : !this$github.equals(other$github)) {
+            return false;
+        }
+        Object this$gitlab = this.getGitlab();
+        Object other$gitlab = other.getGitlab();
+        if (this$gitlab == null ? other$gitlab != null : !this$gitlab.equals(other$gitlab)) {
+            return false;
+        }
+        Object this$imageChange = this.getImageChange();
+        Object other$imageChange = other.getImageChange();
+        if (this$imageChange == null ? other$imageChange != null : !this$imageChange.equals(other$imageChange)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BuildTriggerPolicy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bitbucket = this.getBitbucket();
+        result = result * prime + ($bitbucket == null ? 43 : $bitbucket.hashCode());
+        Object $generic = this.getGeneric();
+        result = result * prime + ($generic == null ? 43 : $generic.hashCode());
+        Object $github = this.getGithub();
+        result = result * prime + ($github == null ? 43 : $github.hashCode());
+        Object $gitlab = this.getGitlab();
+        result = result * prime + ($gitlab == null ? 43 : $gitlab.hashCode());
+        Object $imageChange = this.getImageChange();
+        result = result * prime + ($imageChange == null ? 43 : $imageChange.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BuildTriggerPolicy(" + "bitbucket=" + this.getBitbucket() + ", generic=" + this.getGeneric() + ", github=" + this.getGithub() + ", gitlab=" + this.getGitlab() + ", imageChange=" + this.getImageChange() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

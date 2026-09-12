@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * JobStatus represents the current status of a Job.
@@ -55,12 +52,6 @@ import lombok.experimental.Accessors;
     "terminating",
     "unknown",
     "version"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -389,6 +380,141 @@ public class JobStatus implements Editable<JobStatusBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof JobStatus)) {
+            return false;
+        }
+        JobStatus other = (JobStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$controlledResources = this.getControlledResources();
+        Object other$controlledResources = other.getControlledResources();
+        if (this$controlledResources == null ? other$controlledResources != null : !this$controlledResources.equals(other$controlledResources)) {
+            return false;
+        }
+        Object this$failed = this.getFailed();
+        Object other$failed = other.getFailed();
+        if (this$failed == null ? other$failed != null : !this$failed.equals(other$failed)) {
+            return false;
+        }
+        Object this$minAvailable = this.getMinAvailable();
+        Object other$minAvailable = other.getMinAvailable();
+        if (this$minAvailable == null ? other$minAvailable != null : !this$minAvailable.equals(other$minAvailable)) {
+            return false;
+        }
+        Object this$pending = this.getPending();
+        Object other$pending = other.getPending();
+        if (this$pending == null ? other$pending != null : !this$pending.equals(other$pending)) {
+            return false;
+        }
+        Object this$retryCount = this.getRetryCount();
+        Object other$retryCount = other.getRetryCount();
+        if (this$retryCount == null ? other$retryCount != null : !this$retryCount.equals(other$retryCount)) {
+            return false;
+        }
+        Object this$running = this.getRunning();
+        Object other$running = other.getRunning();
+        if (this$running == null ? other$running != null : !this$running.equals(other$running)) {
+            return false;
+        }
+        Object this$runningDuration = this.getRunningDuration();
+        Object other$runningDuration = other.getRunningDuration();
+        if (this$runningDuration == null ? other$runningDuration != null : !this$runningDuration.equals(other$runningDuration)) {
+            return false;
+        }
+        Object this$state = this.getState();
+        Object other$state = other.getState();
+        if (this$state == null ? other$state != null : !this$state.equals(other$state)) {
+            return false;
+        }
+        Object this$succeeded = this.getSucceeded();
+        Object other$succeeded = other.getSucceeded();
+        if (this$succeeded == null ? other$succeeded != null : !this$succeeded.equals(other$succeeded)) {
+            return false;
+        }
+        Object this$taskStatusCount = this.getTaskStatusCount();
+        Object other$taskStatusCount = other.getTaskStatusCount();
+        if (this$taskStatusCount == null ? other$taskStatusCount != null : !this$taskStatusCount.equals(other$taskStatusCount)) {
+            return false;
+        }
+        Object this$terminating = this.getTerminating();
+        Object other$terminating = other.getTerminating();
+        if (this$terminating == null ? other$terminating != null : !this$terminating.equals(other$terminating)) {
+            return false;
+        }
+        Object this$unknown = this.getUnknown();
+        Object other$unknown = other.getUnknown();
+        if (this$unknown == null ? other$unknown != null : !this$unknown.equals(other$unknown)) {
+            return false;
+        }
+        Object this$version = this.getVersion();
+        Object other$version = other.getVersion();
+        if (this$version == null ? other$version != null : !this$version.equals(other$version)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof JobStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $controlledResources = this.getControlledResources();
+        result = result * prime + ($controlledResources == null ? 43 : $controlledResources.hashCode());
+        Object $failed = this.getFailed();
+        result = result * prime + ($failed == null ? 43 : $failed.hashCode());
+        Object $minAvailable = this.getMinAvailable();
+        result = result * prime + ($minAvailable == null ? 43 : $minAvailable.hashCode());
+        Object $pending = this.getPending();
+        result = result * prime + ($pending == null ? 43 : $pending.hashCode());
+        Object $retryCount = this.getRetryCount();
+        result = result * prime + ($retryCount == null ? 43 : $retryCount.hashCode());
+        Object $running = this.getRunning();
+        result = result * prime + ($running == null ? 43 : $running.hashCode());
+        Object $runningDuration = this.getRunningDuration();
+        result = result * prime + ($runningDuration == null ? 43 : $runningDuration.hashCode());
+        Object $state = this.getState();
+        result = result * prime + ($state == null ? 43 : $state.hashCode());
+        Object $succeeded = this.getSucceeded();
+        result = result * prime + ($succeeded == null ? 43 : $succeeded.hashCode());
+        Object $taskStatusCount = this.getTaskStatusCount();
+        result = result * prime + ($taskStatusCount == null ? 43 : $taskStatusCount.hashCode());
+        Object $terminating = this.getTerminating();
+        result = result * prime + ($terminating == null ? 43 : $terminating.hashCode());
+        Object $unknown = this.getUnknown();
+        result = result * prime + ($unknown == null ? 43 : $unknown.hashCode());
+        Object $version = this.getVersion();
+        result = result * prime + ($version == null ? 43 : $version.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "JobStatus(" + "conditions=" + this.getConditions() + ", controlledResources=" + this.getControlledResources() + ", failed=" + this.getFailed() + ", minAvailable=" + this.getMinAvailable() + ", pending=" + this.getPending() + ", retryCount=" + this.getRetryCount() + ", running=" + this.getRunning() + ", runningDuration=" + this.getRunningDuration() + ", state=" + this.getState() + ", succeeded=" + this.getSucceeded() + ", taskStatusCount=" + this.getTaskStatusCount() + ", terminating=" + this.getTerminating() + ", unknown=" + this.getUnknown() + ", version=" + this.getVersion() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

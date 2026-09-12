@@ -29,21 +29,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "componentRoutes",
     "defaultPlacement"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class IngressStatus implements Editable<IngressStatusBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof IngressStatus)) {
+            return false;
+        }
+        IngressStatus other = (IngressStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$componentRoutes = this.getComponentRoutes();
+        Object other$componentRoutes = other.getComponentRoutes();
+        if (this$componentRoutes == null ? other$componentRoutes != null : !this$componentRoutes.equals(other$componentRoutes)) {
+            return false;
+        }
+        Object this$defaultPlacement = this.getDefaultPlacement();
+        Object other$defaultPlacement = other.getDefaultPlacement();
+        if (this$defaultPlacement == null ? other$defaultPlacement != null : !this$defaultPlacement.equals(other$defaultPlacement)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof IngressStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $componentRoutes = this.getComponentRoutes();
+        result = result * prime + ($componentRoutes == null ? 43 : $componentRoutes.hashCode());
+        Object $defaultPlacement = this.getDefaultPlacement();
+        result = result * prime + ($defaultPlacement == null ? 43 : $defaultPlacement.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IngressStatus(" + "componentRoutes=" + this.getComponentRoutes() + ", defaultPlacement=" + this.getDefaultPlacement() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

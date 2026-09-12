@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageChangeTrigger allows builds to be triggered when an ImageStream changes
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "from",
     "lastTriggeredImageID",
     "paused"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -159,6 +150,64 @@ public class ImageChangeTrigger implements Editable<ImageChangeTriggerBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageChangeTrigger)) {
+            return false;
+        }
+        ImageChangeTrigger other = (ImageChangeTrigger) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$from = this.getFrom();
+        Object other$from = other.getFrom();
+        if (this$from == null ? other$from != null : !this$from.equals(other$from)) {
+            return false;
+        }
+        Object this$lastTriggeredImageID = this.getLastTriggeredImageID();
+        Object other$lastTriggeredImageID = other.getLastTriggeredImageID();
+        if (this$lastTriggeredImageID == null ? other$lastTriggeredImageID != null : !this$lastTriggeredImageID.equals(other$lastTriggeredImageID)) {
+            return false;
+        }
+        Object this$paused = this.getPaused();
+        Object other$paused = other.getPaused();
+        if (this$paused == null ? other$paused != null : !this$paused.equals(other$paused)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageChangeTrigger;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $from = this.getFrom();
+        result = result * prime + ($from == null ? 43 : $from.hashCode());
+        Object $lastTriggeredImageID = this.getLastTriggeredImageID();
+        result = result * prime + ($lastTriggeredImageID == null ? 43 : $lastTriggeredImageID.hashCode());
+        Object $paused = this.getPaused();
+        result = result * prime + ($paused == null ? 43 : $paused.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageChangeTrigger(" + "from=" + this.getFrom() + ", lastTriggeredImageID=" + this.getLastTriggeredImageID() + ", paused=" + this.getPaused() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

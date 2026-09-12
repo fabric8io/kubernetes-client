@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PolicySetStatus reports the observed status of the policy set resulting from its policies.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "compliant",
     "placement",
     "statusMessage"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -164,6 +155,64 @@ public class PolicySetStatus implements Editable<PolicySetStatusBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PolicySetStatus)) {
+            return false;
+        }
+        PolicySetStatus other = (PolicySetStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$compliant = this.getCompliant();
+        Object other$compliant = other.getCompliant();
+        if (this$compliant == null ? other$compliant != null : !this$compliant.equals(other$compliant)) {
+            return false;
+        }
+        Object this$placement = this.getPlacement();
+        Object other$placement = other.getPlacement();
+        if (this$placement == null ? other$placement != null : !this$placement.equals(other$placement)) {
+            return false;
+        }
+        Object this$statusMessage = this.getStatusMessage();
+        Object other$statusMessage = other.getStatusMessage();
+        if (this$statusMessage == null ? other$statusMessage != null : !this$statusMessage.equals(other$statusMessage)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PolicySetStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $compliant = this.getCompliant();
+        result = result * prime + ($compliant == null ? 43 : $compliant.hashCode());
+        Object $placement = this.getPlacement();
+        result = result * prime + ($placement == null ? 43 : $placement.hashCode());
+        Object $statusMessage = this.getStatusMessage();
+        result = result * prime + ($statusMessage == null ? 43 : $statusMessage.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PolicySetStatus(" + "compliant=" + this.getCompliant() + ", placement=" + this.getPlacement() + ", statusMessage=" + this.getStatusMessage() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

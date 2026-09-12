@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TopologyShardingStrategy defines the configuration for topology-aware sharding.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "externalLabelName",
     "values"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -143,6 +134,57 @@ public class TopologyShardingStrategy implements Editable<TopologyShardingStrate
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TopologyShardingStrategy)) {
+            return false;
+        }
+        TopologyShardingStrategy other = (TopologyShardingStrategy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$externalLabelName = this.getExternalLabelName();
+        Object other$externalLabelName = other.getExternalLabelName();
+        if (this$externalLabelName == null ? other$externalLabelName != null : !this$externalLabelName.equals(other$externalLabelName)) {
+            return false;
+        }
+        Object this$values = this.getValues();
+        Object other$values = other.getValues();
+        if (this$values == null ? other$values != null : !this$values.equals(other$values)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TopologyShardingStrategy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $externalLabelName = this.getExternalLabelName();
+        result = result * prime + ($externalLabelName == null ? 43 : $externalLabelName.hashCode());
+        Object $values = this.getValues();
+        result = result * prime + ($values == null ? 43 : $values.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TopologyShardingStrategy(" + "externalLabelName=" + this.getExternalLabelName() + ", values=" + this.getValues() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

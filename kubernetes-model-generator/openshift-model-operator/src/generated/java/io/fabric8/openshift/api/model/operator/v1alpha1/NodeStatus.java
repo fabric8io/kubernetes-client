@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NodeStatus provides information about the current state of a particular node managed by this operator. Deprecated: Use v1.NodeStatus instead
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "lastFailedDeploymentGeneration",
     "nodeName",
     "targetDeploymentGeneration"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -204,6 +195,78 @@ public class NodeStatus implements Editable<NodeStatusBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NodeStatus)) {
+            return false;
+        }
+        NodeStatus other = (NodeStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$currentDeploymentGeneration = this.getCurrentDeploymentGeneration();
+        Object other$currentDeploymentGeneration = other.getCurrentDeploymentGeneration();
+        if (this$currentDeploymentGeneration == null ? other$currentDeploymentGeneration != null : !this$currentDeploymentGeneration.equals(other$currentDeploymentGeneration)) {
+            return false;
+        }
+        Object this$lastFailedDeploymentErrors = this.getLastFailedDeploymentErrors();
+        Object other$lastFailedDeploymentErrors = other.getLastFailedDeploymentErrors();
+        if (this$lastFailedDeploymentErrors == null ? other$lastFailedDeploymentErrors != null : !this$lastFailedDeploymentErrors.equals(other$lastFailedDeploymentErrors)) {
+            return false;
+        }
+        Object this$lastFailedDeploymentGeneration = this.getLastFailedDeploymentGeneration();
+        Object other$lastFailedDeploymentGeneration = other.getLastFailedDeploymentGeneration();
+        if (this$lastFailedDeploymentGeneration == null ? other$lastFailedDeploymentGeneration != null : !this$lastFailedDeploymentGeneration.equals(other$lastFailedDeploymentGeneration)) {
+            return false;
+        }
+        Object this$nodeName = this.getNodeName();
+        Object other$nodeName = other.getNodeName();
+        if (this$nodeName == null ? other$nodeName != null : !this$nodeName.equals(other$nodeName)) {
+            return false;
+        }
+        Object this$targetDeploymentGeneration = this.getTargetDeploymentGeneration();
+        Object other$targetDeploymentGeneration = other.getTargetDeploymentGeneration();
+        if (this$targetDeploymentGeneration == null ? other$targetDeploymentGeneration != null : !this$targetDeploymentGeneration.equals(other$targetDeploymentGeneration)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NodeStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $currentDeploymentGeneration = this.getCurrentDeploymentGeneration();
+        result = result * prime + ($currentDeploymentGeneration == null ? 43 : $currentDeploymentGeneration.hashCode());
+        Object $lastFailedDeploymentErrors = this.getLastFailedDeploymentErrors();
+        result = result * prime + ($lastFailedDeploymentErrors == null ? 43 : $lastFailedDeploymentErrors.hashCode());
+        Object $lastFailedDeploymentGeneration = this.getLastFailedDeploymentGeneration();
+        result = result * prime + ($lastFailedDeploymentGeneration == null ? 43 : $lastFailedDeploymentGeneration.hashCode());
+        Object $nodeName = this.getNodeName();
+        result = result * prime + ($nodeName == null ? 43 : $nodeName.hashCode());
+        Object $targetDeploymentGeneration = this.getTargetDeploymentGeneration();
+        result = result * prime + ($targetDeploymentGeneration == null ? 43 : $targetDeploymentGeneration.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NodeStatus(" + "currentDeploymentGeneration=" + this.getCurrentDeploymentGeneration() + ", lastFailedDeploymentErrors=" + this.getLastFailedDeploymentErrors() + ", lastFailedDeploymentGeneration=" + this.getLastFailedDeploymentGeneration() + ", nodeName=" + this.getNodeName() + ", targetDeploymentGeneration=" + this.getTargetDeploymentGeneration() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

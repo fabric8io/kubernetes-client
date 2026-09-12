@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RAIDConfig contains the configuration that are required to config RAID in Bare Metal server.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "hardwareRAIDVolumes",
     "softwareRAIDVolumes"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -145,6 +136,57 @@ public class RAIDConfig implements Editable<RAIDConfigBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RAIDConfig)) {
+            return false;
+        }
+        RAIDConfig other = (RAIDConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$hardwareRAIDVolumes = this.getHardwareRAIDVolumes();
+        Object other$hardwareRAIDVolumes = other.getHardwareRAIDVolumes();
+        if (this$hardwareRAIDVolumes == null ? other$hardwareRAIDVolumes != null : !this$hardwareRAIDVolumes.equals(other$hardwareRAIDVolumes)) {
+            return false;
+        }
+        Object this$softwareRAIDVolumes = this.getSoftwareRAIDVolumes();
+        Object other$softwareRAIDVolumes = other.getSoftwareRAIDVolumes();
+        if (this$softwareRAIDVolumes == null ? other$softwareRAIDVolumes != null : !this$softwareRAIDVolumes.equals(other$softwareRAIDVolumes)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RAIDConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $hardwareRAIDVolumes = this.getHardwareRAIDVolumes();
+        result = result * prime + ($hardwareRAIDVolumes == null ? 43 : $hardwareRAIDVolumes.hashCode());
+        Object $softwareRAIDVolumes = this.getSoftwareRAIDVolumes();
+        result = result * prime + ($softwareRAIDVolumes == null ? 43 : $softwareRAIDVolumes.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RAIDConfig(" + "hardwareRAIDVolumes=" + this.getHardwareRAIDVolumes() + ", softwareRAIDVolumes=" + this.getSoftwareRAIDVolumes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

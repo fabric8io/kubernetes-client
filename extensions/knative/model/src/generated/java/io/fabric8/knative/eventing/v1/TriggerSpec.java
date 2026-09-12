@@ -33,9 +33,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "filter",
     "filters",
     "subscriber"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,85 @@ public class TriggerSpec implements Editable<TriggerSpecBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TriggerSpec)) {
+            return false;
+        }
+        TriggerSpec other = (TriggerSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$broker = this.getBroker();
+        Object other$broker = other.getBroker();
+        if (this$broker == null ? other$broker != null : !this$broker.equals(other$broker)) {
+            return false;
+        }
+        Object this$brokerRef = this.getBrokerRef();
+        Object other$brokerRef = other.getBrokerRef();
+        if (this$brokerRef == null ? other$brokerRef != null : !this$brokerRef.equals(other$brokerRef)) {
+            return false;
+        }
+        Object this$delivery = this.getDelivery();
+        Object other$delivery = other.getDelivery();
+        if (this$delivery == null ? other$delivery != null : !this$delivery.equals(other$delivery)) {
+            return false;
+        }
+        Object this$filter = this.getFilter();
+        Object other$filter = other.getFilter();
+        if (this$filter == null ? other$filter != null : !this$filter.equals(other$filter)) {
+            return false;
+        }
+        Object this$filters = this.getFilters();
+        Object other$filters = other.getFilters();
+        if (this$filters == null ? other$filters != null : !this$filters.equals(other$filters)) {
+            return false;
+        }
+        Object this$subscriber = this.getSubscriber();
+        Object other$subscriber = other.getSubscriber();
+        if (this$subscriber == null ? other$subscriber != null : !this$subscriber.equals(other$subscriber)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TriggerSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $broker = this.getBroker();
+        result = result * prime + ($broker == null ? 43 : $broker.hashCode());
+        Object $brokerRef = this.getBrokerRef();
+        result = result * prime + ($brokerRef == null ? 43 : $brokerRef.hashCode());
+        Object $delivery = this.getDelivery();
+        result = result * prime + ($delivery == null ? 43 : $delivery.hashCode());
+        Object $filter = this.getFilter();
+        result = result * prime + ($filter == null ? 43 : $filter.hashCode());
+        Object $filters = this.getFilters();
+        result = result * prime + ($filters == null ? 43 : $filters.hashCode());
+        Object $subscriber = this.getSubscriber();
+        result = result * prime + ($subscriber == null ? 43 : $subscriber.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TriggerSpec(" + "broker=" + this.getBroker() + ", brokerRef=" + this.getBrokerRef() + ", delivery=" + this.getDelivery() + ", filter=" + this.getFilter() + ", filters=" + this.getFilters() + ", subscriber=" + this.getSubscriber() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

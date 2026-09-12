@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageRegistryConfigStorage describes how the storage should be configured for the image registry.
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "pvc",
     "s3",
     "swift"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -280,6 +271,106 @@ public class ImageRegistryConfigStorage implements Editable<ImageRegistryConfigS
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageRegistryConfigStorage)) {
+            return false;
+        }
+        ImageRegistryConfigStorage other = (ImageRegistryConfigStorage) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$azure = this.getAzure();
+        Object other$azure = other.getAzure();
+        if (this$azure == null ? other$azure != null : !this$azure.equals(other$azure)) {
+            return false;
+        }
+        Object this$emptyDir = this.getEmptyDir();
+        Object other$emptyDir = other.getEmptyDir();
+        if (this$emptyDir == null ? other$emptyDir != null : !this$emptyDir.equals(other$emptyDir)) {
+            return false;
+        }
+        Object this$gcs = this.getGcs();
+        Object other$gcs = other.getGcs();
+        if (this$gcs == null ? other$gcs != null : !this$gcs.equals(other$gcs)) {
+            return false;
+        }
+        Object this$ibmcos = this.getIbmcos();
+        Object other$ibmcos = other.getIbmcos();
+        if (this$ibmcos == null ? other$ibmcos != null : !this$ibmcos.equals(other$ibmcos)) {
+            return false;
+        }
+        Object this$managementState = this.getManagementState();
+        Object other$managementState = other.getManagementState();
+        if (this$managementState == null ? other$managementState != null : !this$managementState.equals(other$managementState)) {
+            return false;
+        }
+        Object this$oss = this.getOss();
+        Object other$oss = other.getOss();
+        if (this$oss == null ? other$oss != null : !this$oss.equals(other$oss)) {
+            return false;
+        }
+        Object this$pvc = this.getPvc();
+        Object other$pvc = other.getPvc();
+        if (this$pvc == null ? other$pvc != null : !this$pvc.equals(other$pvc)) {
+            return false;
+        }
+        Object this$s3 = this.getS3();
+        Object other$s3 = other.getS3();
+        if (this$s3 == null ? other$s3 != null : !this$s3.equals(other$s3)) {
+            return false;
+        }
+        Object this$swift = this.getSwift();
+        Object other$swift = other.getSwift();
+        if (this$swift == null ? other$swift != null : !this$swift.equals(other$swift)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageRegistryConfigStorage;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $azure = this.getAzure();
+        result = result * prime + ($azure == null ? 43 : $azure.hashCode());
+        Object $emptyDir = this.getEmptyDir();
+        result = result * prime + ($emptyDir == null ? 43 : $emptyDir.hashCode());
+        Object $gcs = this.getGcs();
+        result = result * prime + ($gcs == null ? 43 : $gcs.hashCode());
+        Object $ibmcos = this.getIbmcos();
+        result = result * prime + ($ibmcos == null ? 43 : $ibmcos.hashCode());
+        Object $managementState = this.getManagementState();
+        result = result * prime + ($managementState == null ? 43 : $managementState.hashCode());
+        Object $oss = this.getOss();
+        result = result * prime + ($oss == null ? 43 : $oss.hashCode());
+        Object $pvc = this.getPvc();
+        result = result * prime + ($pvc == null ? 43 : $pvc.hashCode());
+        Object $s3 = this.getS3();
+        result = result * prime + ($s3 == null ? 43 : $s3.hashCode());
+        Object $swift = this.getSwift();
+        result = result * prime + ($swift == null ? 43 : $swift.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageRegistryConfigStorage(" + "azure=" + this.getAzure() + ", emptyDir=" + this.getEmptyDir() + ", gcs=" + this.getGcs() + ", ibmcos=" + this.getIbmcos() + ", managementState=" + this.getManagementState() + ", oss=" + this.getOss() + ", pvc=" + this.getPvc() + ", s3=" + this.getS3() + ", swift=" + this.getSwift() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ConsoleSampleGitImportSourceRepository let the user import code from a public git repository.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "contextDir",
     "revision",
     "url"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class ConsoleSampleGitImportSourceRepository implements Editable<ConsoleS
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConsoleSampleGitImportSourceRepository)) {
+            return false;
+        }
+        ConsoleSampleGitImportSourceRepository other = (ConsoleSampleGitImportSourceRepository) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$contextDir = this.getContextDir();
+        Object other$contextDir = other.getContextDir();
+        if (this$contextDir == null ? other$contextDir != null : !this$contextDir.equals(other$contextDir)) {
+            return false;
+        }
+        Object this$revision = this.getRevision();
+        Object other$revision = other.getRevision();
+        if (this$revision == null ? other$revision != null : !this$revision.equals(other$revision)) {
+            return false;
+        }
+        Object this$url = this.getUrl();
+        Object other$url = other.getUrl();
+        if (this$url == null ? other$url != null : !this$url.equals(other$url)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConsoleSampleGitImportSourceRepository;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $contextDir = this.getContextDir();
+        result = result * prime + ($contextDir == null ? 43 : $contextDir.hashCode());
+        Object $revision = this.getRevision();
+        result = result * prime + ($revision == null ? 43 : $revision.hashCode());
+        Object $url = this.getUrl();
+        result = result * prime + ($url == null ? 43 : $url.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConsoleSampleGitImportSourceRepository(" + "contextDir=" + this.getContextDir() + ", revision=" + this.getRevision() + ", url=" + this.getUrl() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

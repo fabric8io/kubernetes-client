@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Projection that may be projected along with other supported volume types. Exactly one of these fields must be set.
@@ -29,12 +26,6 @@ import lombok.experimental.Accessors;
     "podCertificate",
     "secret",
     "serviceAccountToken"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -191,6 +182,85 @@ public class VolumeProjection implements Editable<VolumeProjectionBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VolumeProjection)) {
+            return false;
+        }
+        VolumeProjection other = (VolumeProjection) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterTrustBundle = this.getClusterTrustBundle();
+        Object other$clusterTrustBundle = other.getClusterTrustBundle();
+        if (this$clusterTrustBundle == null ? other$clusterTrustBundle != null : !this$clusterTrustBundle.equals(other$clusterTrustBundle)) {
+            return false;
+        }
+        Object this$configMap = this.getConfigMap();
+        Object other$configMap = other.getConfigMap();
+        if (this$configMap == null ? other$configMap != null : !this$configMap.equals(other$configMap)) {
+            return false;
+        }
+        Object this$downwardAPI = this.getDownwardAPI();
+        Object other$downwardAPI = other.getDownwardAPI();
+        if (this$downwardAPI == null ? other$downwardAPI != null : !this$downwardAPI.equals(other$downwardAPI)) {
+            return false;
+        }
+        Object this$podCertificate = this.getPodCertificate();
+        Object other$podCertificate = other.getPodCertificate();
+        if (this$podCertificate == null ? other$podCertificate != null : !this$podCertificate.equals(other$podCertificate)) {
+            return false;
+        }
+        Object this$secret = this.getSecret();
+        Object other$secret = other.getSecret();
+        if (this$secret == null ? other$secret != null : !this$secret.equals(other$secret)) {
+            return false;
+        }
+        Object this$serviceAccountToken = this.getServiceAccountToken();
+        Object other$serviceAccountToken = other.getServiceAccountToken();
+        if (this$serviceAccountToken == null ? other$serviceAccountToken != null : !this$serviceAccountToken.equals(other$serviceAccountToken)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VolumeProjection;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterTrustBundle = this.getClusterTrustBundle();
+        result = result * prime + ($clusterTrustBundle == null ? 43 : $clusterTrustBundle.hashCode());
+        Object $configMap = this.getConfigMap();
+        result = result * prime + ($configMap == null ? 43 : $configMap.hashCode());
+        Object $downwardAPI = this.getDownwardAPI();
+        result = result * prime + ($downwardAPI == null ? 43 : $downwardAPI.hashCode());
+        Object $podCertificate = this.getPodCertificate();
+        result = result * prime + ($podCertificate == null ? 43 : $podCertificate.hashCode());
+        Object $secret = this.getSecret();
+        result = result * prime + ($secret == null ? 43 : $secret.hashCode());
+        Object $serviceAccountToken = this.getServiceAccountToken();
+        result = result * prime + ($serviceAccountToken == null ? 43 : $serviceAccountToken.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VolumeProjection(" + "clusterTrustBundle=" + this.getClusterTrustBundle() + ", configMap=" + this.getConfigMap() + ", downwardAPI=" + this.getDownwardAPI() + ", podCertificate=" + this.getPodCertificate() + ", secret=" + this.getSecret() + ", serviceAccountToken=" + this.getServiceAccountToken() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

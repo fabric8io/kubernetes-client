@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MetricValueStatus holds the current value for a metric
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "averageUtilization",
     "averageValue",
     "value"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -161,6 +152,64 @@ public class MetricValueStatus implements Editable<MetricValueStatusBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MetricValueStatus)) {
+            return false;
+        }
+        MetricValueStatus other = (MetricValueStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$averageUtilization = this.getAverageUtilization();
+        Object other$averageUtilization = other.getAverageUtilization();
+        if (this$averageUtilization == null ? other$averageUtilization != null : !this$averageUtilization.equals(other$averageUtilization)) {
+            return false;
+        }
+        Object this$averageValue = this.getAverageValue();
+        Object other$averageValue = other.getAverageValue();
+        if (this$averageValue == null ? other$averageValue != null : !this$averageValue.equals(other$averageValue)) {
+            return false;
+        }
+        Object this$value = this.getValue();
+        Object other$value = other.getValue();
+        if (this$value == null ? other$value != null : !this$value.equals(other$value)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MetricValueStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $averageUtilization = this.getAverageUtilization();
+        result = result * prime + ($averageUtilization == null ? 43 : $averageUtilization.hashCode());
+        Object $averageValue = this.getAverageValue();
+        result = result * prime + ($averageValue == null ? 43 : $averageValue.hashCode());
+        Object $value = this.getValue();
+        result = result * prime + ($value == null ? 43 : $value.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MetricValueStatus(" + "averageUtilization=" + this.getAverageUtilization() + ", averageValue=" + this.getAverageValue() + ", value=" + this.getValue() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

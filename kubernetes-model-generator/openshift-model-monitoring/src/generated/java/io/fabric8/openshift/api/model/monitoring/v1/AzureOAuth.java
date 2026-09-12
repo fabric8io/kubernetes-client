@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AzureOAuth defines the Azure OAuth settings.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "clientId",
     "clientSecret",
     "tenantId"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class AzureOAuth implements Editable<AzureOAuthBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AzureOAuth)) {
+            return false;
+        }
+        AzureOAuth other = (AzureOAuth) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clientId = this.getClientId();
+        Object other$clientId = other.getClientId();
+        if (this$clientId == null ? other$clientId != null : !this$clientId.equals(other$clientId)) {
+            return false;
+        }
+        Object this$clientSecret = this.getClientSecret();
+        Object other$clientSecret = other.getClientSecret();
+        if (this$clientSecret == null ? other$clientSecret != null : !this$clientSecret.equals(other$clientSecret)) {
+            return false;
+        }
+        Object this$tenantId = this.getTenantId();
+        Object other$tenantId = other.getTenantId();
+        if (this$tenantId == null ? other$tenantId != null : !this$tenantId.equals(other$tenantId)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AzureOAuth;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clientId = this.getClientId();
+        result = result * prime + ($clientId == null ? 43 : $clientId.hashCode());
+        Object $clientSecret = this.getClientSecret();
+        result = result * prime + ($clientSecret == null ? 43 : $clientSecret.hashCode());
+        Object $tenantId = this.getTenantId();
+        result = result * prime + ($tenantId == null ? 43 : $tenantId.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AzureOAuth(" + "clientId=" + this.getClientId() + ", clientSecret=" + this.getClientSecret() + ", tenantId=" + this.getTenantId() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

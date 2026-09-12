@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "serviceAccountProjection",
     "tlsSecretMountPath",
     "tlsSecretName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -197,6 +188,78 @@ public class PreConfiguredStorage implements Editable<PreConfiguredStorageBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PreConfiguredStorage)) {
+            return false;
+        }
+        PreConfiguredStorage other = (PreConfiguredStorage) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$key = this.getKey();
+        Object other$key = other.getKey();
+        if (this$key == null ? other$key != null : !this$key.equals(other$key)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$serviceAccountProjection = this.getServiceAccountProjection();
+        Object other$serviceAccountProjection = other.getServiceAccountProjection();
+        if (this$serviceAccountProjection == null ? other$serviceAccountProjection != null : !this$serviceAccountProjection.equals(other$serviceAccountProjection)) {
+            return false;
+        }
+        Object this$tlsSecretMountPath = this.getTlsSecretMountPath();
+        Object other$tlsSecretMountPath = other.getTlsSecretMountPath();
+        if (this$tlsSecretMountPath == null ? other$tlsSecretMountPath != null : !this$tlsSecretMountPath.equals(other$tlsSecretMountPath)) {
+            return false;
+        }
+        Object this$tlsSecretName = this.getTlsSecretName();
+        Object other$tlsSecretName = other.getTlsSecretName();
+        if (this$tlsSecretName == null ? other$tlsSecretName != null : !this$tlsSecretName.equals(other$tlsSecretName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PreConfiguredStorage;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $key = this.getKey();
+        result = result * prime + ($key == null ? 43 : $key.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $serviceAccountProjection = this.getServiceAccountProjection();
+        result = result * prime + ($serviceAccountProjection == null ? 43 : $serviceAccountProjection.hashCode());
+        Object $tlsSecretMountPath = this.getTlsSecretMountPath();
+        result = result * prime + ($tlsSecretMountPath == null ? 43 : $tlsSecretMountPath.hashCode());
+        Object $tlsSecretName = this.getTlsSecretName();
+        result = result * prime + ($tlsSecretName == null ? 43 : $tlsSecretName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PreConfiguredStorage(" + "key=" + this.getKey() + ", name=" + this.getName() + ", serviceAccountProjection=" + this.getServiceAccountProjection() + ", tlsSecretMountPath=" + this.getTlsSecretMountPath() + ", tlsSecretName=" + this.getTlsSecretName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

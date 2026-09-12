@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SubscriptionSpec defines an Application that can be installed
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "source",
     "sourceNamespace",
     "startingCSV"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -240,6 +231,92 @@ public class SubscriptionSpec implements Editable<SubscriptionSpecBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SubscriptionSpec)) {
+            return false;
+        }
+        SubscriptionSpec other = (SubscriptionSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$channel = this.getChannel();
+        Object other$channel = other.getChannel();
+        if (this$channel == null ? other$channel != null : !this$channel.equals(other$channel)) {
+            return false;
+        }
+        Object this$config = this.getConfig();
+        Object other$config = other.getConfig();
+        if (this$config == null ? other$config != null : !this$config.equals(other$config)) {
+            return false;
+        }
+        Object this$installPlanApproval = this.getInstallPlanApproval();
+        Object other$installPlanApproval = other.getInstallPlanApproval();
+        if (this$installPlanApproval == null ? other$installPlanApproval != null : !this$installPlanApproval.equals(other$installPlanApproval)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$source = this.getSource();
+        Object other$source = other.getSource();
+        if (this$source == null ? other$source != null : !this$source.equals(other$source)) {
+            return false;
+        }
+        Object this$sourceNamespace = this.getSourceNamespace();
+        Object other$sourceNamespace = other.getSourceNamespace();
+        if (this$sourceNamespace == null ? other$sourceNamespace != null : !this$sourceNamespace.equals(other$sourceNamespace)) {
+            return false;
+        }
+        Object this$startingCSV = this.getStartingCSV();
+        Object other$startingCSV = other.getStartingCSV();
+        if (this$startingCSV == null ? other$startingCSV != null : !this$startingCSV.equals(other$startingCSV)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SubscriptionSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $channel = this.getChannel();
+        result = result * prime + ($channel == null ? 43 : $channel.hashCode());
+        Object $config = this.getConfig();
+        result = result * prime + ($config == null ? 43 : $config.hashCode());
+        Object $installPlanApproval = this.getInstallPlanApproval();
+        result = result * prime + ($installPlanApproval == null ? 43 : $installPlanApproval.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $source = this.getSource();
+        result = result * prime + ($source == null ? 43 : $source.hashCode());
+        Object $sourceNamespace = this.getSourceNamespace();
+        result = result * prime + ($sourceNamespace == null ? 43 : $sourceNamespace.hashCode());
+        Object $startingCSV = this.getStartingCSV();
+        result = result * prime + ($startingCSV == null ? 43 : $startingCSV.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SubscriptionSpec(" + "channel=" + this.getChannel() + ", config=" + this.getConfig() + ", installPlanApproval=" + this.getInstallPlanApproval() + ", name=" + this.getName() + ", source=" + this.getSource() + ", sourceNamespace=" + this.getSourceNamespace() + ", startingCSV=" + this.getStartingCSV() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

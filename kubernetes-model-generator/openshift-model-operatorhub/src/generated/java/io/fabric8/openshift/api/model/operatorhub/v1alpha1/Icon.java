@@ -28,21 +28,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "base64data",
     "mediatype"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -125,6 +116,57 @@ public class Icon implements Editable<IconBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Icon)) {
+            return false;
+        }
+        Icon other = (Icon) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$base64data = this.getBase64data();
+        Object other$base64data = other.getBase64data();
+        if (this$base64data == null ? other$base64data != null : !this$base64data.equals(other$base64data)) {
+            return false;
+        }
+        Object this$mediatype = this.getMediatype();
+        Object other$mediatype = other.getMediatype();
+        if (this$mediatype == null ? other$mediatype != null : !this$mediatype.equals(other$mediatype)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Icon;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $base64data = this.getBase64data();
+        result = result * prime + ($base64data == null ? 43 : $base64data.hashCode());
+        Object $mediatype = this.getMediatype();
+        result = result * prime + ($mediatype == null ? 43 : $mediatype.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Icon(" + "base64data=" + this.getBase64data() + ", mediatype=" + this.getMediatype() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

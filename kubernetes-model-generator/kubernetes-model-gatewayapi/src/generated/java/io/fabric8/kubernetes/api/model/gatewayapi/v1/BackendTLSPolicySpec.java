@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * BackendTLSPolicySpec defines the desired state of BackendTLSPolicy.<br><p> <br><p> Support: Extended
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "options",
     "targetRefs",
     "validation"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -164,6 +155,64 @@ public class BackendTLSPolicySpec implements Editable<BackendTLSPolicySpecBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BackendTLSPolicySpec)) {
+            return false;
+        }
+        BackendTLSPolicySpec other = (BackendTLSPolicySpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$options = this.getOptions();
+        Object other$options = other.getOptions();
+        if (this$options == null ? other$options != null : !this$options.equals(other$options)) {
+            return false;
+        }
+        Object this$targetRefs = this.getTargetRefs();
+        Object other$targetRefs = other.getTargetRefs();
+        if (this$targetRefs == null ? other$targetRefs != null : !this$targetRefs.equals(other$targetRefs)) {
+            return false;
+        }
+        Object this$validation = this.getValidation();
+        Object other$validation = other.getValidation();
+        if (this$validation == null ? other$validation != null : !this$validation.equals(other$validation)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BackendTLSPolicySpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $options = this.getOptions();
+        result = result * prime + ($options == null ? 43 : $options.hashCode());
+        Object $targetRefs = this.getTargetRefs();
+        result = result * prime + ($targetRefs == null ? 43 : $targetRefs.hashCode());
+        Object $validation = this.getValidation();
+        result = result * prime + ($validation == null ? 43 : $validation.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BackendTLSPolicySpec(" + "options=" + this.getOptions() + ", targetRefs=" + this.getTargetRefs() + ", validation=" + this.getValidation() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

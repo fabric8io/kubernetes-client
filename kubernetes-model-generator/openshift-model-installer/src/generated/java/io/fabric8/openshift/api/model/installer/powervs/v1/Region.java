@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Region describes resources associated with a region in Power VS. We're using a few items from the IBM Cloud VPC offering. The region names for VPC are different so another function of this is to correlate those.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "VPCRegion",
     "VPCZones",
     "Zones"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -206,6 +197,78 @@ public class Region implements Editable<RegionBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Region)) {
+            return false;
+        }
+        Region other = (Region) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cOSRegion = this.getCOSRegion();
+        Object other$cOSRegion = other.getCOSRegion();
+        if (this$cOSRegion == null ? other$cOSRegion != null : !this$cOSRegion.equals(other$cOSRegion)) {
+            return false;
+        }
+        Object this$description = this.getDescription();
+        Object other$description = other.getDescription();
+        if (this$description == null ? other$description != null : !this$description.equals(other$description)) {
+            return false;
+        }
+        Object this$vPCRegion = this.getVPCRegion();
+        Object other$vPCRegion = other.getVPCRegion();
+        if (this$vPCRegion == null ? other$vPCRegion != null : !this$vPCRegion.equals(other$vPCRegion)) {
+            return false;
+        }
+        Object this$vPCZones = this.getVPCZones();
+        Object other$vPCZones = other.getVPCZones();
+        if (this$vPCZones == null ? other$vPCZones != null : !this$vPCZones.equals(other$vPCZones)) {
+            return false;
+        }
+        Object this$zones = this.getZones();
+        Object other$zones = other.getZones();
+        if (this$zones == null ? other$zones != null : !this$zones.equals(other$zones)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Region;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cOSRegion = this.getCOSRegion();
+        result = result * prime + ($cOSRegion == null ? 43 : $cOSRegion.hashCode());
+        Object $description = this.getDescription();
+        result = result * prime + ($description == null ? 43 : $description.hashCode());
+        Object $vPCRegion = this.getVPCRegion();
+        result = result * prime + ($vPCRegion == null ? 43 : $vPCRegion.hashCode());
+        Object $vPCZones = this.getVPCZones();
+        result = result * prime + ($vPCZones == null ? 43 : $vPCZones.hashCode());
+        Object $zones = this.getZones();
+        result = result * prime + ($zones == null ? 43 : $zones.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Region(" + "cOSRegion=" + this.getCOSRegion() + ", description=" + this.getDescription() + ", vPCRegion=" + this.getVPCRegion() + ", vPCZones=" + this.getVPCZones() + ", zones=" + this.getZones() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

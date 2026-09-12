@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * QueuingConfiguration holds the configuration parameters for queuing
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "handSize",
     "queueLengthLimit",
     "queues"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class QueuingConfiguration implements Editable<QueuingConfigurationBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof QueuingConfiguration)) {
+            return false;
+        }
+        QueuingConfiguration other = (QueuingConfiguration) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$handSize = this.getHandSize();
+        Object other$handSize = other.getHandSize();
+        if (this$handSize == null ? other$handSize != null : !this$handSize.equals(other$handSize)) {
+            return false;
+        }
+        Object this$queueLengthLimit = this.getQueueLengthLimit();
+        Object other$queueLengthLimit = other.getQueueLengthLimit();
+        if (this$queueLengthLimit == null ? other$queueLengthLimit != null : !this$queueLengthLimit.equals(other$queueLengthLimit)) {
+            return false;
+        }
+        Object this$queues = this.getQueues();
+        Object other$queues = other.getQueues();
+        if (this$queues == null ? other$queues != null : !this$queues.equals(other$queues)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof QueuingConfiguration;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $handSize = this.getHandSize();
+        result = result * prime + ($handSize == null ? 43 : $handSize.hashCode());
+        Object $queueLengthLimit = this.getQueueLengthLimit();
+        result = result * prime + ($queueLengthLimit == null ? 43 : $queueLengthLimit.hashCode());
+        Object $queues = this.getQueues();
+        result = result * prime + ($queues == null ? 43 : $queues.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "QueuingConfiguration(" + "handSize=" + this.getHandSize() + ", queueLengthLimit=" + this.getQueueLengthLimit() + ", queues=" + this.getQueues() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DeliverySpec contains the delivery options for event senders, such as channelable and source.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "retry",
     "retryAfterMax",
     "timeout"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -240,6 +231,92 @@ public class DeliverySpec implements Editable<DeliverySpecBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DeliverySpec)) {
+            return false;
+        }
+        DeliverySpec other = (DeliverySpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$backoffDelay = this.getBackoffDelay();
+        Object other$backoffDelay = other.getBackoffDelay();
+        if (this$backoffDelay == null ? other$backoffDelay != null : !this$backoffDelay.equals(other$backoffDelay)) {
+            return false;
+        }
+        Object this$backoffPolicy = this.getBackoffPolicy();
+        Object other$backoffPolicy = other.getBackoffPolicy();
+        if (this$backoffPolicy == null ? other$backoffPolicy != null : !this$backoffPolicy.equals(other$backoffPolicy)) {
+            return false;
+        }
+        Object this$deadLetterSink = this.getDeadLetterSink();
+        Object other$deadLetterSink = other.getDeadLetterSink();
+        if (this$deadLetterSink == null ? other$deadLetterSink != null : !this$deadLetterSink.equals(other$deadLetterSink)) {
+            return false;
+        }
+        Object this$format = this.getFormat();
+        Object other$format = other.getFormat();
+        if (this$format == null ? other$format != null : !this$format.equals(other$format)) {
+            return false;
+        }
+        Object this$retry = this.getRetry();
+        Object other$retry = other.getRetry();
+        if (this$retry == null ? other$retry != null : !this$retry.equals(other$retry)) {
+            return false;
+        }
+        Object this$retryAfterMax = this.getRetryAfterMax();
+        Object other$retryAfterMax = other.getRetryAfterMax();
+        if (this$retryAfterMax == null ? other$retryAfterMax != null : !this$retryAfterMax.equals(other$retryAfterMax)) {
+            return false;
+        }
+        Object this$timeout = this.getTimeout();
+        Object other$timeout = other.getTimeout();
+        if (this$timeout == null ? other$timeout != null : !this$timeout.equals(other$timeout)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DeliverySpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $backoffDelay = this.getBackoffDelay();
+        result = result * prime + ($backoffDelay == null ? 43 : $backoffDelay.hashCode());
+        Object $backoffPolicy = this.getBackoffPolicy();
+        result = result * prime + ($backoffPolicy == null ? 43 : $backoffPolicy.hashCode());
+        Object $deadLetterSink = this.getDeadLetterSink();
+        result = result * prime + ($deadLetterSink == null ? 43 : $deadLetterSink.hashCode());
+        Object $format = this.getFormat();
+        result = result * prime + ($format == null ? 43 : $format.hashCode());
+        Object $retry = this.getRetry();
+        result = result * prime + ($retry == null ? 43 : $retry.hashCode());
+        Object $retryAfterMax = this.getRetryAfterMax();
+        result = result * prime + ($retryAfterMax == null ? 43 : $retryAfterMax.hashCode());
+        Object $timeout = this.getTimeout();
+        result = result * prime + ($timeout == null ? 43 : $timeout.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DeliverySpec(" + "backoffDelay=" + this.getBackoffDelay() + ", backoffPolicy=" + this.getBackoffPolicy() + ", deadLetterSink=" + this.getDeadLetterSink() + ", format=" + this.getFormat() + ", retry=" + this.getRetry() + ", retryAfterMax=" + this.getRetryAfterMax() + ", timeout=" + this.getTimeout() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

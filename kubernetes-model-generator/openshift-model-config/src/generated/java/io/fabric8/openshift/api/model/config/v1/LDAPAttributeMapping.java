@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * LDAPAttributeMapping maps LDAP attributes to OpenShift identity fields
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "id",
     "name",
     "preferredUsername"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -189,6 +180,71 @@ public class LDAPAttributeMapping implements Editable<LDAPAttributeMappingBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof LDAPAttributeMapping)) {
+            return false;
+        }
+        LDAPAttributeMapping other = (LDAPAttributeMapping) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$email = this.getEmail();
+        Object other$email = other.getEmail();
+        if (this$email == null ? other$email != null : !this$email.equals(other$email)) {
+            return false;
+        }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$preferredUsername = this.getPreferredUsername();
+        Object other$preferredUsername = other.getPreferredUsername();
+        if (this$preferredUsername == null ? other$preferredUsername != null : !this$preferredUsername.equals(other$preferredUsername)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof LDAPAttributeMapping;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $email = this.getEmail();
+        result = result * prime + ($email == null ? 43 : $email.hashCode());
+        Object $id = this.getId();
+        result = result * prime + ($id == null ? 43 : $id.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $preferredUsername = this.getPreferredUsername();
+        result = result * prime + ($preferredUsername == null ? 43 : $preferredUsername.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "LDAPAttributeMapping(" + "email=" + this.getEmail() + ", id=" + this.getId() + ", name=" + this.getName() + ", preferredUsername=" + this.getPreferredUsername() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

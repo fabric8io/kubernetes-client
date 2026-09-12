@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * BrokerTemplateInstanceSpec describes the state of a BrokerTemplateInstance.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "bindingIDs",
     "secret",
     "templateInstance"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -163,6 +154,64 @@ public class BrokerTemplateInstanceSpec implements Editable<BrokerTemplateInstan
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BrokerTemplateInstanceSpec)) {
+            return false;
+        }
+        BrokerTemplateInstanceSpec other = (BrokerTemplateInstanceSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bindingIDs = this.getBindingIDs();
+        Object other$bindingIDs = other.getBindingIDs();
+        if (this$bindingIDs == null ? other$bindingIDs != null : !this$bindingIDs.equals(other$bindingIDs)) {
+            return false;
+        }
+        Object this$secret = this.getSecret();
+        Object other$secret = other.getSecret();
+        if (this$secret == null ? other$secret != null : !this$secret.equals(other$secret)) {
+            return false;
+        }
+        Object this$templateInstance = this.getTemplateInstance();
+        Object other$templateInstance = other.getTemplateInstance();
+        if (this$templateInstance == null ? other$templateInstance != null : !this$templateInstance.equals(other$templateInstance)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BrokerTemplateInstanceSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bindingIDs = this.getBindingIDs();
+        result = result * prime + ($bindingIDs == null ? 43 : $bindingIDs.hashCode());
+        Object $secret = this.getSecret();
+        result = result * prime + ($secret == null ? 43 : $secret.hashCode());
+        Object $templateInstance = this.getTemplateInstance();
+        result = result * prime + ($templateInstance == null ? 43 : $templateInstance.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BrokerTemplateInstanceSpec(" + "bindingIDs=" + this.getBindingIDs() + ", secret=" + this.getSecret() + ", templateInstance=" + this.getTemplateInstance() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

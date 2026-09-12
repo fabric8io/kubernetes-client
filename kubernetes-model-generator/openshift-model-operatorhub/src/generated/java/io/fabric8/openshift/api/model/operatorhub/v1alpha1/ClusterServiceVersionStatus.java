@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClusterServiceVersionStatus represents information about the status of a CSV. Status may trail the actual state of a system.
@@ -50,12 +47,6 @@ import lombok.experimental.Accessors;
     "phase",
     "reason",
     "requirementStatus"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -306,6 +297,113 @@ public class ClusterServiceVersionStatus implements Editable<ClusterServiceVersi
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterServiceVersionStatus)) {
+            return false;
+        }
+        ClusterServiceVersionStatus other = (ClusterServiceVersionStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$certsLastUpdated = this.getCertsLastUpdated();
+        Object other$certsLastUpdated = other.getCertsLastUpdated();
+        if (this$certsLastUpdated == null ? other$certsLastUpdated != null : !this$certsLastUpdated.equals(other$certsLastUpdated)) {
+            return false;
+        }
+        Object this$certsRotateAt = this.getCertsRotateAt();
+        Object other$certsRotateAt = other.getCertsRotateAt();
+        if (this$certsRotateAt == null ? other$certsRotateAt != null : !this$certsRotateAt.equals(other$certsRotateAt)) {
+            return false;
+        }
+        Object this$cleanup = this.getCleanup();
+        Object other$cleanup = other.getCleanup();
+        if (this$cleanup == null ? other$cleanup != null : !this$cleanup.equals(other$cleanup)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$lastTransitionTime = this.getLastTransitionTime();
+        Object other$lastTransitionTime = other.getLastTransitionTime();
+        if (this$lastTransitionTime == null ? other$lastTransitionTime != null : !this$lastTransitionTime.equals(other$lastTransitionTime)) {
+            return false;
+        }
+        Object this$lastUpdateTime = this.getLastUpdateTime();
+        Object other$lastUpdateTime = other.getLastUpdateTime();
+        if (this$lastUpdateTime == null ? other$lastUpdateTime != null : !this$lastUpdateTime.equals(other$lastUpdateTime)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$phase = this.getPhase();
+        Object other$phase = other.getPhase();
+        if (this$phase == null ? other$phase != null : !this$phase.equals(other$phase)) {
+            return false;
+        }
+        Object this$reason = this.getReason();
+        Object other$reason = other.getReason();
+        if (this$reason == null ? other$reason != null : !this$reason.equals(other$reason)) {
+            return false;
+        }
+        Object this$requirementStatus = this.getRequirementStatus();
+        Object other$requirementStatus = other.getRequirementStatus();
+        if (this$requirementStatus == null ? other$requirementStatus != null : !this$requirementStatus.equals(other$requirementStatus)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterServiceVersionStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $certsLastUpdated = this.getCertsLastUpdated();
+        result = result * prime + ($certsLastUpdated == null ? 43 : $certsLastUpdated.hashCode());
+        Object $certsRotateAt = this.getCertsRotateAt();
+        result = result * prime + ($certsRotateAt == null ? 43 : $certsRotateAt.hashCode());
+        Object $cleanup = this.getCleanup();
+        result = result * prime + ($cleanup == null ? 43 : $cleanup.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $lastTransitionTime = this.getLastTransitionTime();
+        result = result * prime + ($lastTransitionTime == null ? 43 : $lastTransitionTime.hashCode());
+        Object $lastUpdateTime = this.getLastUpdateTime();
+        result = result * prime + ($lastUpdateTime == null ? 43 : $lastUpdateTime.hashCode());
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $phase = this.getPhase();
+        result = result * prime + ($phase == null ? 43 : $phase.hashCode());
+        Object $reason = this.getReason();
+        result = result * prime + ($reason == null ? 43 : $reason.hashCode());
+        Object $requirementStatus = this.getRequirementStatus();
+        result = result * prime + ($requirementStatus == null ? 43 : $requirementStatus.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterServiceVersionStatus(" + "certsLastUpdated=" + this.getCertsLastUpdated() + ", certsRotateAt=" + this.getCertsRotateAt() + ", cleanup=" + this.getCleanup() + ", conditions=" + this.getConditions() + ", lastTransitionTime=" + this.getLastTransitionTime() + ", lastUpdateTime=" + this.getLastUpdateTime() + ", message=" + this.getMessage() + ", phase=" + this.getPhase() + ", reason=" + this.getReason() + ", requirementStatus=" + this.getRequirementStatus() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

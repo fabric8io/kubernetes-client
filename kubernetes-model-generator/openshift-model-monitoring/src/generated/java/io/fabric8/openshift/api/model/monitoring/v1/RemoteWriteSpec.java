@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RemoteWriteSpec defines the configuration to write samples from Prometheus to a remote endpoint.
@@ -65,12 +62,6 @@ import lombok.experimental.Accessors;
     "tlsConfig",
     "url",
     "writeRelabelConfigs"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -608,6 +599,218 @@ public class RemoteWriteSpec implements Editable<RemoteWriteSpecBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RemoteWriteSpec)) {
+            return false;
+        }
+        RemoteWriteSpec other = (RemoteWriteSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$authorization = this.getAuthorization();
+        Object other$authorization = other.getAuthorization();
+        if (this$authorization == null ? other$authorization != null : !this$authorization.equals(other$authorization)) {
+            return false;
+        }
+        Object this$azureAd = this.getAzureAd();
+        Object other$azureAd = other.getAzureAd();
+        if (this$azureAd == null ? other$azureAd != null : !this$azureAd.equals(other$azureAd)) {
+            return false;
+        }
+        Object this$basicAuth = this.getBasicAuth();
+        Object other$basicAuth = other.getBasicAuth();
+        if (this$basicAuth == null ? other$basicAuth != null : !this$basicAuth.equals(other$basicAuth)) {
+            return false;
+        }
+        Object this$bearerToken = this.getBearerToken();
+        Object other$bearerToken = other.getBearerToken();
+        if (this$bearerToken == null ? other$bearerToken != null : !this$bearerToken.equals(other$bearerToken)) {
+            return false;
+        }
+        Object this$bearerTokenFile = this.getBearerTokenFile();
+        Object other$bearerTokenFile = other.getBearerTokenFile();
+        if (this$bearerTokenFile == null ? other$bearerTokenFile != null : !this$bearerTokenFile.equals(other$bearerTokenFile)) {
+            return false;
+        }
+        Object this$enableHTTP2 = this.getEnableHTTP2();
+        Object other$enableHTTP2 = other.getEnableHTTP2();
+        if (this$enableHTTP2 == null ? other$enableHTTP2 != null : !this$enableHTTP2.equals(other$enableHTTP2)) {
+            return false;
+        }
+        Object this$followRedirects = this.getFollowRedirects();
+        Object other$followRedirects = other.getFollowRedirects();
+        if (this$followRedirects == null ? other$followRedirects != null : !this$followRedirects.equals(other$followRedirects)) {
+            return false;
+        }
+        Object this$headers = this.getHeaders();
+        Object other$headers = other.getHeaders();
+        if (this$headers == null ? other$headers != null : !this$headers.equals(other$headers)) {
+            return false;
+        }
+        Object this$messageVersion = this.getMessageVersion();
+        Object other$messageVersion = other.getMessageVersion();
+        if (this$messageVersion == null ? other$messageVersion != null : !this$messageVersion.equals(other$messageVersion)) {
+            return false;
+        }
+        Object this$metadataConfig = this.getMetadataConfig();
+        Object other$metadataConfig = other.getMetadataConfig();
+        if (this$metadataConfig == null ? other$metadataConfig != null : !this$metadataConfig.equals(other$metadataConfig)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$noProxy = this.getNoProxy();
+        Object other$noProxy = other.getNoProxy();
+        if (this$noProxy == null ? other$noProxy != null : !this$noProxy.equals(other$noProxy)) {
+            return false;
+        }
+        Object this$oauth2 = this.getOauth2();
+        Object other$oauth2 = other.getOauth2();
+        if (this$oauth2 == null ? other$oauth2 != null : !this$oauth2.equals(other$oauth2)) {
+            return false;
+        }
+        Object this$proxyConnectHeader = this.getProxyConnectHeader();
+        Object other$proxyConnectHeader = other.getProxyConnectHeader();
+        if (this$proxyConnectHeader == null ? other$proxyConnectHeader != null : !this$proxyConnectHeader.equals(other$proxyConnectHeader)) {
+            return false;
+        }
+        Object this$proxyFromEnvironment = this.getProxyFromEnvironment();
+        Object other$proxyFromEnvironment = other.getProxyFromEnvironment();
+        if (this$proxyFromEnvironment == null ? other$proxyFromEnvironment != null : !this$proxyFromEnvironment.equals(other$proxyFromEnvironment)) {
+            return false;
+        }
+        Object this$proxyUrl = this.getProxyUrl();
+        Object other$proxyUrl = other.getProxyUrl();
+        if (this$proxyUrl == null ? other$proxyUrl != null : !this$proxyUrl.equals(other$proxyUrl)) {
+            return false;
+        }
+        Object this$queueConfig = this.getQueueConfig();
+        Object other$queueConfig = other.getQueueConfig();
+        if (this$queueConfig == null ? other$queueConfig != null : !this$queueConfig.equals(other$queueConfig)) {
+            return false;
+        }
+        Object this$remoteTimeout = this.getRemoteTimeout();
+        Object other$remoteTimeout = other.getRemoteTimeout();
+        if (this$remoteTimeout == null ? other$remoteTimeout != null : !this$remoteTimeout.equals(other$remoteTimeout)) {
+            return false;
+        }
+        Object this$roundRobinDNS = this.getRoundRobinDNS();
+        Object other$roundRobinDNS = other.getRoundRobinDNS();
+        if (this$roundRobinDNS == null ? other$roundRobinDNS != null : !this$roundRobinDNS.equals(other$roundRobinDNS)) {
+            return false;
+        }
+        Object this$sendExemplars = this.getSendExemplars();
+        Object other$sendExemplars = other.getSendExemplars();
+        if (this$sendExemplars == null ? other$sendExemplars != null : !this$sendExemplars.equals(other$sendExemplars)) {
+            return false;
+        }
+        Object this$sendNativeHistograms = this.getSendNativeHistograms();
+        Object other$sendNativeHistograms = other.getSendNativeHistograms();
+        if (this$sendNativeHistograms == null ? other$sendNativeHistograms != null : !this$sendNativeHistograms.equals(other$sendNativeHistograms)) {
+            return false;
+        }
+        Object this$sigv4 = this.getSigv4();
+        Object other$sigv4 = other.getSigv4();
+        if (this$sigv4 == null ? other$sigv4 != null : !this$sigv4.equals(other$sigv4)) {
+            return false;
+        }
+        Object this$tlsConfig = this.getTlsConfig();
+        Object other$tlsConfig = other.getTlsConfig();
+        if (this$tlsConfig == null ? other$tlsConfig != null : !this$tlsConfig.equals(other$tlsConfig)) {
+            return false;
+        }
+        Object this$url = this.getUrl();
+        Object other$url = other.getUrl();
+        if (this$url == null ? other$url != null : !this$url.equals(other$url)) {
+            return false;
+        }
+        Object this$writeRelabelConfigs = this.getWriteRelabelConfigs();
+        Object other$writeRelabelConfigs = other.getWriteRelabelConfigs();
+        if (this$writeRelabelConfigs == null ? other$writeRelabelConfigs != null : !this$writeRelabelConfigs.equals(other$writeRelabelConfigs)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RemoteWriteSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $authorization = this.getAuthorization();
+        result = result * prime + ($authorization == null ? 43 : $authorization.hashCode());
+        Object $azureAd = this.getAzureAd();
+        result = result * prime + ($azureAd == null ? 43 : $azureAd.hashCode());
+        Object $basicAuth = this.getBasicAuth();
+        result = result * prime + ($basicAuth == null ? 43 : $basicAuth.hashCode());
+        Object $bearerToken = this.getBearerToken();
+        result = result * prime + ($bearerToken == null ? 43 : $bearerToken.hashCode());
+        Object $bearerTokenFile = this.getBearerTokenFile();
+        result = result * prime + ($bearerTokenFile == null ? 43 : $bearerTokenFile.hashCode());
+        Object $enableHTTP2 = this.getEnableHTTP2();
+        result = result * prime + ($enableHTTP2 == null ? 43 : $enableHTTP2.hashCode());
+        Object $followRedirects = this.getFollowRedirects();
+        result = result * prime + ($followRedirects == null ? 43 : $followRedirects.hashCode());
+        Object $headers = this.getHeaders();
+        result = result * prime + ($headers == null ? 43 : $headers.hashCode());
+        Object $messageVersion = this.getMessageVersion();
+        result = result * prime + ($messageVersion == null ? 43 : $messageVersion.hashCode());
+        Object $metadataConfig = this.getMetadataConfig();
+        result = result * prime + ($metadataConfig == null ? 43 : $metadataConfig.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $noProxy = this.getNoProxy();
+        result = result * prime + ($noProxy == null ? 43 : $noProxy.hashCode());
+        Object $oauth2 = this.getOauth2();
+        result = result * prime + ($oauth2 == null ? 43 : $oauth2.hashCode());
+        Object $proxyConnectHeader = this.getProxyConnectHeader();
+        result = result * prime + ($proxyConnectHeader == null ? 43 : $proxyConnectHeader.hashCode());
+        Object $proxyFromEnvironment = this.getProxyFromEnvironment();
+        result = result * prime + ($proxyFromEnvironment == null ? 43 : $proxyFromEnvironment.hashCode());
+        Object $proxyUrl = this.getProxyUrl();
+        result = result * prime + ($proxyUrl == null ? 43 : $proxyUrl.hashCode());
+        Object $queueConfig = this.getQueueConfig();
+        result = result * prime + ($queueConfig == null ? 43 : $queueConfig.hashCode());
+        Object $remoteTimeout = this.getRemoteTimeout();
+        result = result * prime + ($remoteTimeout == null ? 43 : $remoteTimeout.hashCode());
+        Object $roundRobinDNS = this.getRoundRobinDNS();
+        result = result * prime + ($roundRobinDNS == null ? 43 : $roundRobinDNS.hashCode());
+        Object $sendExemplars = this.getSendExemplars();
+        result = result * prime + ($sendExemplars == null ? 43 : $sendExemplars.hashCode());
+        Object $sendNativeHistograms = this.getSendNativeHistograms();
+        result = result * prime + ($sendNativeHistograms == null ? 43 : $sendNativeHistograms.hashCode());
+        Object $sigv4 = this.getSigv4();
+        result = result * prime + ($sigv4 == null ? 43 : $sigv4.hashCode());
+        Object $tlsConfig = this.getTlsConfig();
+        result = result * prime + ($tlsConfig == null ? 43 : $tlsConfig.hashCode());
+        Object $url = this.getUrl();
+        result = result * prime + ($url == null ? 43 : $url.hashCode());
+        Object $writeRelabelConfigs = this.getWriteRelabelConfigs();
+        result = result * prime + ($writeRelabelConfigs == null ? 43 : $writeRelabelConfigs.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RemoteWriteSpec(" + "authorization=" + this.getAuthorization() + ", azureAd=" + this.getAzureAd() + ", basicAuth=" + this.getBasicAuth() + ", bearerToken=" + this.getBearerToken() + ", bearerTokenFile=" + this.getBearerTokenFile() + ", enableHTTP2=" + this.getEnableHTTP2() + ", followRedirects=" + this.getFollowRedirects() + ", headers=" + this.getHeaders() + ", messageVersion=" + this.getMessageVersion() + ", metadataConfig=" + this.getMetadataConfig() + ", name=" + this.getName() + ", noProxy=" + this.getNoProxy() + ", oauth2=" + this.getOauth2() + ", proxyConnectHeader=" + this.getProxyConnectHeader() + ", proxyFromEnvironment=" + this.getProxyFromEnvironment() + ", proxyUrl=" + this.getProxyUrl() + ", queueConfig=" + this.getQueueConfig() + ", remoteTimeout=" + this.getRemoteTimeout() + ", roundRobinDNS=" + this.getRoundRobinDNS() + ", sendExemplars=" + this.getSendExemplars() + ", sendNativeHistograms=" + this.getSendNativeHistograms() + ", sigv4=" + this.getSigv4() + ", tlsConfig=" + this.getTlsConfig() + ", url=" + this.getUrl() + ", writeRelabelConfigs=" + this.getWriteRelabelConfigs() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

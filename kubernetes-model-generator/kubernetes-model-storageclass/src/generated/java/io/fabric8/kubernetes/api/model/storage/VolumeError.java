@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VolumeError captures an error encountered during a volume operation.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "errorCode",
     "message",
     "time"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class VolumeError implements Editable<VolumeErrorBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VolumeError)) {
+            return false;
+        }
+        VolumeError other = (VolumeError) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$errorCode = this.getErrorCode();
+        Object other$errorCode = other.getErrorCode();
+        if (this$errorCode == null ? other$errorCode != null : !this$errorCode.equals(other$errorCode)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$time = this.getTime();
+        Object other$time = other.getTime();
+        if (this$time == null ? other$time != null : !this$time.equals(other$time)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VolumeError;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $errorCode = this.getErrorCode();
+        result = result * prime + ($errorCode == null ? 43 : $errorCode.hashCode());
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $time = this.getTime();
+        result = result * prime + ($time == null ? 43 : $time.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VolumeError(" + "errorCode=" + this.getErrorCode() + ", message=" + this.getMessage() + ", time=" + this.getTime() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

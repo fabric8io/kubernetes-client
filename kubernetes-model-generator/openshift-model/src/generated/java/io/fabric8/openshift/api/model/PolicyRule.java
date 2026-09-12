@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PolicyRule holds information that describes a policy rule, but does not contain information about who the rule applies to or which namespace the rule applies to.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "resourceNames",
     "resources",
     "verbs"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -233,6 +224,85 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PolicyRule)) {
+            return false;
+        }
+        PolicyRule other = (PolicyRule) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiGroups = this.getApiGroups();
+        Object other$apiGroups = other.getApiGroups();
+        if (this$apiGroups == null ? other$apiGroups != null : !this$apiGroups.equals(other$apiGroups)) {
+            return false;
+        }
+        Object this$attributeRestrictions = this.getAttributeRestrictions();
+        Object other$attributeRestrictions = other.getAttributeRestrictions();
+        if (this$attributeRestrictions == null ? other$attributeRestrictions != null : !this$attributeRestrictions.equals(other$attributeRestrictions)) {
+            return false;
+        }
+        Object this$nonResourceURLs = this.getNonResourceURLs();
+        Object other$nonResourceURLs = other.getNonResourceURLs();
+        if (this$nonResourceURLs == null ? other$nonResourceURLs != null : !this$nonResourceURLs.equals(other$nonResourceURLs)) {
+            return false;
+        }
+        Object this$resourceNames = this.getResourceNames();
+        Object other$resourceNames = other.getResourceNames();
+        if (this$resourceNames == null ? other$resourceNames != null : !this$resourceNames.equals(other$resourceNames)) {
+            return false;
+        }
+        Object this$resources = this.getResources();
+        Object other$resources = other.getResources();
+        if (this$resources == null ? other$resources != null : !this$resources.equals(other$resources)) {
+            return false;
+        }
+        Object this$verbs = this.getVerbs();
+        Object other$verbs = other.getVerbs();
+        if (this$verbs == null ? other$verbs != null : !this$verbs.equals(other$verbs)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PolicyRule;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiGroups = this.getApiGroups();
+        result = result * prime + ($apiGroups == null ? 43 : $apiGroups.hashCode());
+        Object $attributeRestrictions = this.getAttributeRestrictions();
+        result = result * prime + ($attributeRestrictions == null ? 43 : $attributeRestrictions.hashCode());
+        Object $nonResourceURLs = this.getNonResourceURLs();
+        result = result * prime + ($nonResourceURLs == null ? 43 : $nonResourceURLs.hashCode());
+        Object $resourceNames = this.getResourceNames();
+        result = result * prime + ($resourceNames == null ? 43 : $resourceNames.hashCode());
+        Object $resources = this.getResources();
+        result = result * prime + ($resources == null ? 43 : $resources.hashCode());
+        Object $verbs = this.getVerbs();
+        result = result * prime + ($verbs == null ? 43 : $verbs.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PolicyRule(" + "apiGroups=" + this.getApiGroups() + ", attributeRestrictions=" + this.getAttributeRestrictions() + ", nonResourceURLs=" + this.getNonResourceURLs() + ", resourceNames=" + this.getResourceNames() + ", resources=" + this.getResources() + ", verbs=" + this.getVerbs() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

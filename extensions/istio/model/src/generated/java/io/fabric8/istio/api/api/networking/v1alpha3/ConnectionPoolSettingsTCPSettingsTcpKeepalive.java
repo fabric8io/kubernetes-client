@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TCP keepalive.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "interval",
     "probes",
     "time"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class ConnectionPoolSettingsTCPSettingsTcpKeepalive implements Editable<C
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConnectionPoolSettingsTCPSettingsTcpKeepalive)) {
+            return false;
+        }
+        ConnectionPoolSettingsTCPSettingsTcpKeepalive other = (ConnectionPoolSettingsTCPSettingsTcpKeepalive) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$interval = this.getInterval();
+        Object other$interval = other.getInterval();
+        if (this$interval == null ? other$interval != null : !this$interval.equals(other$interval)) {
+            return false;
+        }
+        Object this$probes = this.getProbes();
+        Object other$probes = other.getProbes();
+        if (this$probes == null ? other$probes != null : !this$probes.equals(other$probes)) {
+            return false;
+        }
+        Object this$time = this.getTime();
+        Object other$time = other.getTime();
+        if (this$time == null ? other$time != null : !this$time.equals(other$time)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConnectionPoolSettingsTCPSettingsTcpKeepalive;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $interval = this.getInterval();
+        result = result * prime + ($interval == null ? 43 : $interval.hashCode());
+        Object $probes = this.getProbes();
+        result = result * prime + ($probes == null ? 43 : $probes.hashCode());
+        Object $time = this.getTime();
+        result = result * prime + ($time == null ? 43 : $time.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConnectionPoolSettingsTCPSettingsTcpKeepalive(" + "interval=" + this.getInterval() + ", probes=" + this.getProbes() + ", time=" + this.getTime() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

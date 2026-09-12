@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PodGroupStatus represents the current state of a pod group.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "phase",
     "running",
     "succeeded"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -204,6 +195,78 @@ public class PodGroupStatus implements Editable<PodGroupStatusBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodGroupStatus)) {
+            return false;
+        }
+        PodGroupStatus other = (PodGroupStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$failed = this.getFailed();
+        Object other$failed = other.getFailed();
+        if (this$failed == null ? other$failed != null : !this$failed.equals(other$failed)) {
+            return false;
+        }
+        Object this$phase = this.getPhase();
+        Object other$phase = other.getPhase();
+        if (this$phase == null ? other$phase != null : !this$phase.equals(other$phase)) {
+            return false;
+        }
+        Object this$running = this.getRunning();
+        Object other$running = other.getRunning();
+        if (this$running == null ? other$running != null : !this$running.equals(other$running)) {
+            return false;
+        }
+        Object this$succeeded = this.getSucceeded();
+        Object other$succeeded = other.getSucceeded();
+        if (this$succeeded == null ? other$succeeded != null : !this$succeeded.equals(other$succeeded)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodGroupStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $failed = this.getFailed();
+        result = result * prime + ($failed == null ? 43 : $failed.hashCode());
+        Object $phase = this.getPhase();
+        result = result * prime + ($phase == null ? 43 : $phase.hashCode());
+        Object $running = this.getRunning();
+        result = result * prime + ($running == null ? 43 : $running.hashCode());
+        Object $succeeded = this.getSucceeded();
+        result = result * prime + ($succeeded == null ? 43 : $succeeded.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodGroupStatus(" + "conditions=" + this.getConditions() + ", failed=" + this.getFailed() + ", phase=" + this.getPhase() + ", running=" + this.getRunning() + ", succeeded=" + this.getSucceeded() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

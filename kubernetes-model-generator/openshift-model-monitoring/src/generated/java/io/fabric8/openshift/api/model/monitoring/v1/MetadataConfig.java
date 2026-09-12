@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MetadataConfig configures the sending of series metadata to the remote storage.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "maxSamplesPerSend",
     "send",
     "sendInterval"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -159,6 +150,64 @@ public class MetadataConfig implements Editable<MetadataConfigBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MetadataConfig)) {
+            return false;
+        }
+        MetadataConfig other = (MetadataConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$maxSamplesPerSend = this.getMaxSamplesPerSend();
+        Object other$maxSamplesPerSend = other.getMaxSamplesPerSend();
+        if (this$maxSamplesPerSend == null ? other$maxSamplesPerSend != null : !this$maxSamplesPerSend.equals(other$maxSamplesPerSend)) {
+            return false;
+        }
+        Object this$send = this.getSend();
+        Object other$send = other.getSend();
+        if (this$send == null ? other$send != null : !this$send.equals(other$send)) {
+            return false;
+        }
+        Object this$sendInterval = this.getSendInterval();
+        Object other$sendInterval = other.getSendInterval();
+        if (this$sendInterval == null ? other$sendInterval != null : !this$sendInterval.equals(other$sendInterval)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MetadataConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $maxSamplesPerSend = this.getMaxSamplesPerSend();
+        result = result * prime + ($maxSamplesPerSend == null ? 43 : $maxSamplesPerSend.hashCode());
+        Object $send = this.getSend();
+        result = result * prime + ($send == null ? 43 : $send.hashCode());
+        Object $sendInterval = this.getSendInterval();
+        result = result * prime + ($sendInterval == null ? 43 : $sendInterval.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MetadataConfig(" + "maxSamplesPerSend=" + this.getMaxSamplesPerSend() + ", send=" + this.getSend() + ", sendInterval=" + this.getSendInterval() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -29,12 +26,6 @@ import lombok.experimental.Accessors;
     "installHint",
     "interactiveMode",
     "provideClusterInfo"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -172,6 +163,92 @@ public class ExecConfig implements Editable<ExecConfigBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ExecConfig)) {
+            return false;
+        }
+        ExecConfig other = (ExecConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$args = this.getArgs();
+        Object other$args = other.getArgs();
+        if (this$args == null ? other$args != null : !this$args.equals(other$args)) {
+            return false;
+        }
+        Object this$command = this.getCommand();
+        Object other$command = other.getCommand();
+        if (this$command == null ? other$command != null : !this$command.equals(other$command)) {
+            return false;
+        }
+        Object this$env = this.getEnv();
+        Object other$env = other.getEnv();
+        if (this$env == null ? other$env != null : !this$env.equals(other$env)) {
+            return false;
+        }
+        Object this$installHint = this.getInstallHint();
+        Object other$installHint = other.getInstallHint();
+        if (this$installHint == null ? other$installHint != null : !this$installHint.equals(other$installHint)) {
+            return false;
+        }
+        Object this$interactiveMode = this.getInteractiveMode();
+        Object other$interactiveMode = other.getInteractiveMode();
+        if (this$interactiveMode == null ? other$interactiveMode != null : !this$interactiveMode.equals(other$interactiveMode)) {
+            return false;
+        }
+        Object this$provideClusterInfo = this.getProvideClusterInfo();
+        Object other$provideClusterInfo = other.getProvideClusterInfo();
+        if (this$provideClusterInfo == null ? other$provideClusterInfo != null : !this$provideClusterInfo.equals(other$provideClusterInfo)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ExecConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $args = this.getArgs();
+        result = result * prime + ($args == null ? 43 : $args.hashCode());
+        Object $command = this.getCommand();
+        result = result * prime + ($command == null ? 43 : $command.hashCode());
+        Object $env = this.getEnv();
+        result = result * prime + ($env == null ? 43 : $env.hashCode());
+        Object $installHint = this.getInstallHint();
+        result = result * prime + ($installHint == null ? 43 : $installHint.hashCode());
+        Object $interactiveMode = this.getInteractiveMode();
+        result = result * prime + ($interactiveMode == null ? 43 : $interactiveMode.hashCode());
+        Object $provideClusterInfo = this.getProvideClusterInfo();
+        result = result * prime + ($provideClusterInfo == null ? 43 : $provideClusterInfo.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ExecConfig(" + "apiVersion=" + this.getApiVersion() + ", args=" + this.getArgs() + ", command=" + this.getCommand() + ", env=" + this.getEnv() + ", installHint=" + this.getInstallHint() + ", interactiveMode=" + this.getInteractiveMode() + ", provideClusterInfo=" + this.getProvideClusterInfo() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

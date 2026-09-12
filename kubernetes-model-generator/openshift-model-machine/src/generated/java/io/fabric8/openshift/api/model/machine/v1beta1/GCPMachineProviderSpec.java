@@ -33,9 +33,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * GCPMachineProviderSpec is the type that will be embedded in a Machine.Spec.ProviderSpec field for an GCP virtual machine. It is used by the GCP machine actuator to create a single Machine. Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
@@ -68,12 +65,6 @@ import lombok.experimental.Accessors;
     "targetPools",
     "userDataSecret",
     "zone"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -625,6 +616,218 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GCPMachineProviderSpec)) {
+            return false;
+        }
+        GCPMachineProviderSpec other = (GCPMachineProviderSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$canIPForward = this.getCanIPForward();
+        Object other$canIPForward = other.getCanIPForward();
+        if (this$canIPForward == null ? other$canIPForward != null : !this$canIPForward.equals(other$canIPForward)) {
+            return false;
+        }
+        Object this$confidentialCompute = this.getConfidentialCompute();
+        Object other$confidentialCompute = other.getConfidentialCompute();
+        if (this$confidentialCompute == null ? other$confidentialCompute != null : !this$confidentialCompute.equals(other$confidentialCompute)) {
+            return false;
+        }
+        Object this$credentialsSecret = this.getCredentialsSecret();
+        Object other$credentialsSecret = other.getCredentialsSecret();
+        if (this$credentialsSecret == null ? other$credentialsSecret != null : !this$credentialsSecret.equals(other$credentialsSecret)) {
+            return false;
+        }
+        Object this$deletionProtection = this.getDeletionProtection();
+        Object other$deletionProtection = other.getDeletionProtection();
+        if (this$deletionProtection == null ? other$deletionProtection != null : !this$deletionProtection.equals(other$deletionProtection)) {
+            return false;
+        }
+        Object this$disks = this.getDisks();
+        Object other$disks = other.getDisks();
+        if (this$disks == null ? other$disks != null : !this$disks.equals(other$disks)) {
+            return false;
+        }
+        Object this$gcpMetadata = this.getGcpMetadata();
+        Object other$gcpMetadata = other.getGcpMetadata();
+        if (this$gcpMetadata == null ? other$gcpMetadata != null : !this$gcpMetadata.equals(other$gcpMetadata)) {
+            return false;
+        }
+        Object this$gpus = this.getGpus();
+        Object other$gpus = other.getGpus();
+        if (this$gpus == null ? other$gpus != null : !this$gpus.equals(other$gpus)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$labels = this.getLabels();
+        Object other$labels = other.getLabels();
+        if (this$labels == null ? other$labels != null : !this$labels.equals(other$labels)) {
+            return false;
+        }
+        Object this$machineType = this.getMachineType();
+        Object other$machineType = other.getMachineType();
+        if (this$machineType == null ? other$machineType != null : !this$machineType.equals(other$machineType)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$networkInterfaces = this.getNetworkInterfaces();
+        Object other$networkInterfaces = other.getNetworkInterfaces();
+        if (this$networkInterfaces == null ? other$networkInterfaces != null : !this$networkInterfaces.equals(other$networkInterfaces)) {
+            return false;
+        }
+        Object this$onHostMaintenance = this.getOnHostMaintenance();
+        Object other$onHostMaintenance = other.getOnHostMaintenance();
+        if (this$onHostMaintenance == null ? other$onHostMaintenance != null : !this$onHostMaintenance.equals(other$onHostMaintenance)) {
+            return false;
+        }
+        Object this$preemptible = this.getPreemptible();
+        Object other$preemptible = other.getPreemptible();
+        if (this$preemptible == null ? other$preemptible != null : !this$preemptible.equals(other$preemptible)) {
+            return false;
+        }
+        Object this$projectID = this.getProjectID();
+        Object other$projectID = other.getProjectID();
+        if (this$projectID == null ? other$projectID != null : !this$projectID.equals(other$projectID)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$resourceManagerTags = this.getResourceManagerTags();
+        Object other$resourceManagerTags = other.getResourceManagerTags();
+        if (this$resourceManagerTags == null ? other$resourceManagerTags != null : !this$resourceManagerTags.equals(other$resourceManagerTags)) {
+            return false;
+        }
+        Object this$restartPolicy = this.getRestartPolicy();
+        Object other$restartPolicy = other.getRestartPolicy();
+        if (this$restartPolicy == null ? other$restartPolicy != null : !this$restartPolicy.equals(other$restartPolicy)) {
+            return false;
+        }
+        Object this$serviceAccounts = this.getServiceAccounts();
+        Object other$serviceAccounts = other.getServiceAccounts();
+        if (this$serviceAccounts == null ? other$serviceAccounts != null : !this$serviceAccounts.equals(other$serviceAccounts)) {
+            return false;
+        }
+        Object this$shieldedInstanceConfig = this.getShieldedInstanceConfig();
+        Object other$shieldedInstanceConfig = other.getShieldedInstanceConfig();
+        if (this$shieldedInstanceConfig == null ? other$shieldedInstanceConfig != null : !this$shieldedInstanceConfig.equals(other$shieldedInstanceConfig)) {
+            return false;
+        }
+        Object this$tags = this.getTags();
+        Object other$tags = other.getTags();
+        if (this$tags == null ? other$tags != null : !this$tags.equals(other$tags)) {
+            return false;
+        }
+        Object this$targetPools = this.getTargetPools();
+        Object other$targetPools = other.getTargetPools();
+        if (this$targetPools == null ? other$targetPools != null : !this$targetPools.equals(other$targetPools)) {
+            return false;
+        }
+        Object this$userDataSecret = this.getUserDataSecret();
+        Object other$userDataSecret = other.getUserDataSecret();
+        if (this$userDataSecret == null ? other$userDataSecret != null : !this$userDataSecret.equals(other$userDataSecret)) {
+            return false;
+        }
+        Object this$zone = this.getZone();
+        Object other$zone = other.getZone();
+        if (this$zone == null ? other$zone != null : !this$zone.equals(other$zone)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GCPMachineProviderSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $canIPForward = this.getCanIPForward();
+        result = result * prime + ($canIPForward == null ? 43 : $canIPForward.hashCode());
+        Object $confidentialCompute = this.getConfidentialCompute();
+        result = result * prime + ($confidentialCompute == null ? 43 : $confidentialCompute.hashCode());
+        Object $credentialsSecret = this.getCredentialsSecret();
+        result = result * prime + ($credentialsSecret == null ? 43 : $credentialsSecret.hashCode());
+        Object $deletionProtection = this.getDeletionProtection();
+        result = result * prime + ($deletionProtection == null ? 43 : $deletionProtection.hashCode());
+        Object $disks = this.getDisks();
+        result = result * prime + ($disks == null ? 43 : $disks.hashCode());
+        Object $gcpMetadata = this.getGcpMetadata();
+        result = result * prime + ($gcpMetadata == null ? 43 : $gcpMetadata.hashCode());
+        Object $gpus = this.getGpus();
+        result = result * prime + ($gpus == null ? 43 : $gpus.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $labels = this.getLabels();
+        result = result * prime + ($labels == null ? 43 : $labels.hashCode());
+        Object $machineType = this.getMachineType();
+        result = result * prime + ($machineType == null ? 43 : $machineType.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $networkInterfaces = this.getNetworkInterfaces();
+        result = result * prime + ($networkInterfaces == null ? 43 : $networkInterfaces.hashCode());
+        Object $onHostMaintenance = this.getOnHostMaintenance();
+        result = result * prime + ($onHostMaintenance == null ? 43 : $onHostMaintenance.hashCode());
+        Object $preemptible = this.getPreemptible();
+        result = result * prime + ($preemptible == null ? 43 : $preemptible.hashCode());
+        Object $projectID = this.getProjectID();
+        result = result * prime + ($projectID == null ? 43 : $projectID.hashCode());
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $resourceManagerTags = this.getResourceManagerTags();
+        result = result * prime + ($resourceManagerTags == null ? 43 : $resourceManagerTags.hashCode());
+        Object $restartPolicy = this.getRestartPolicy();
+        result = result * prime + ($restartPolicy == null ? 43 : $restartPolicy.hashCode());
+        Object $serviceAccounts = this.getServiceAccounts();
+        result = result * prime + ($serviceAccounts == null ? 43 : $serviceAccounts.hashCode());
+        Object $shieldedInstanceConfig = this.getShieldedInstanceConfig();
+        result = result * prime + ($shieldedInstanceConfig == null ? 43 : $shieldedInstanceConfig.hashCode());
+        Object $tags = this.getTags();
+        result = result * prime + ($tags == null ? 43 : $tags.hashCode());
+        Object $targetPools = this.getTargetPools();
+        result = result * prime + ($targetPools == null ? 43 : $targetPools.hashCode());
+        Object $userDataSecret = this.getUserDataSecret();
+        result = result * prime + ($userDataSecret == null ? 43 : $userDataSecret.hashCode());
+        Object $zone = this.getZone();
+        result = result * prime + ($zone == null ? 43 : $zone.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GCPMachineProviderSpec(" + "apiVersion=" + this.getApiVersion() + ", canIPForward=" + this.getCanIPForward() + ", confidentialCompute=" + this.getConfidentialCompute() + ", credentialsSecret=" + this.getCredentialsSecret() + ", deletionProtection=" + this.getDeletionProtection() + ", disks=" + this.getDisks() + ", gcpMetadata=" + this.getGcpMetadata() + ", gpus=" + this.getGpus() + ", kind=" + this.getKind() + ", labels=" + this.getLabels() + ", machineType=" + this.getMachineType() + ", metadata=" + this.getMetadata() + ", networkInterfaces=" + this.getNetworkInterfaces() + ", onHostMaintenance=" + this.getOnHostMaintenance() + ", preemptible=" + this.getPreemptible() + ", projectID=" + this.getProjectID() + ", region=" + this.getRegion() + ", resourceManagerTags=" + this.getResourceManagerTags() + ", restartPolicy=" + this.getRestartPolicy() + ", serviceAccounts=" + this.getServiceAccounts() + ", shieldedInstanceConfig=" + this.getShieldedInstanceConfig() + ", tags=" + this.getTags() + ", targetPools=" + this.getTargetPools() + ", userDataSecret=" + this.getUserDataSecret() + ", zone=" + this.getZone() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

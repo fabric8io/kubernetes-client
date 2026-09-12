@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * LimitedPriorityLevelConfiguration specifies how to handle requests that are subject to limits. It addresses two issues:<br><p>   - How are requests for this priority level limited?<br><p>   - What should be done with requests that exceed the limit?
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "lendablePercent",
     "limitResponse",
     "nominalConcurrencyShares"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class LimitedPriorityLevelConfiguration implements Editable<LimitedPriori
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof LimitedPriorityLevelConfiguration)) {
+            return false;
+        }
+        LimitedPriorityLevelConfiguration other = (LimitedPriorityLevelConfiguration) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$borrowingLimitPercent = this.getBorrowingLimitPercent();
+        Object other$borrowingLimitPercent = other.getBorrowingLimitPercent();
+        if (this$borrowingLimitPercent == null ? other$borrowingLimitPercent != null : !this$borrowingLimitPercent.equals(other$borrowingLimitPercent)) {
+            return false;
+        }
+        Object this$lendablePercent = this.getLendablePercent();
+        Object other$lendablePercent = other.getLendablePercent();
+        if (this$lendablePercent == null ? other$lendablePercent != null : !this$lendablePercent.equals(other$lendablePercent)) {
+            return false;
+        }
+        Object this$limitResponse = this.getLimitResponse();
+        Object other$limitResponse = other.getLimitResponse();
+        if (this$limitResponse == null ? other$limitResponse != null : !this$limitResponse.equals(other$limitResponse)) {
+            return false;
+        }
+        Object this$nominalConcurrencyShares = this.getNominalConcurrencyShares();
+        Object other$nominalConcurrencyShares = other.getNominalConcurrencyShares();
+        if (this$nominalConcurrencyShares == null ? other$nominalConcurrencyShares != null : !this$nominalConcurrencyShares.equals(other$nominalConcurrencyShares)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof LimitedPriorityLevelConfiguration;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $borrowingLimitPercent = this.getBorrowingLimitPercent();
+        result = result * prime + ($borrowingLimitPercent == null ? 43 : $borrowingLimitPercent.hashCode());
+        Object $lendablePercent = this.getLendablePercent();
+        result = result * prime + ($lendablePercent == null ? 43 : $lendablePercent.hashCode());
+        Object $limitResponse = this.getLimitResponse();
+        result = result * prime + ($limitResponse == null ? 43 : $limitResponse.hashCode());
+        Object $nominalConcurrencyShares = this.getNominalConcurrencyShares();
+        result = result * prime + ($nominalConcurrencyShares == null ? 43 : $nominalConcurrencyShares.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "LimitedPriorityLevelConfiguration(" + "borrowingLimitPercent=" + this.getBorrowingLimitPercent() + ", lendablePercent=" + this.getLendablePercent() + ", limitResponse=" + this.getLimitResponse() + ", nominalConcurrencyShares=" + this.getNominalConcurrencyShares() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

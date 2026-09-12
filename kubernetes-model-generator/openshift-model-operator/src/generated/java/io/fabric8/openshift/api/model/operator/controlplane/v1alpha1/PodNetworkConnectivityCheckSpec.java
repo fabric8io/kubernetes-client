@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.config.v1.SecretNameReference;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
     "sourcePod",
     "targetEndpoint",
     "tlsClientCert"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -152,6 +143,64 @@ public class PodNetworkConnectivityCheckSpec implements Editable<PodNetworkConne
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodNetworkConnectivityCheckSpec)) {
+            return false;
+        }
+        PodNetworkConnectivityCheckSpec other = (PodNetworkConnectivityCheckSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$sourcePod = this.getSourcePod();
+        Object other$sourcePod = other.getSourcePod();
+        if (this$sourcePod == null ? other$sourcePod != null : !this$sourcePod.equals(other$sourcePod)) {
+            return false;
+        }
+        Object this$targetEndpoint = this.getTargetEndpoint();
+        Object other$targetEndpoint = other.getTargetEndpoint();
+        if (this$targetEndpoint == null ? other$targetEndpoint != null : !this$targetEndpoint.equals(other$targetEndpoint)) {
+            return false;
+        }
+        Object this$tlsClientCert = this.getTlsClientCert();
+        Object other$tlsClientCert = other.getTlsClientCert();
+        if (this$tlsClientCert == null ? other$tlsClientCert != null : !this$tlsClientCert.equals(other$tlsClientCert)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodNetworkConnectivityCheckSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $sourcePod = this.getSourcePod();
+        result = result * prime + ($sourcePod == null ? 43 : $sourcePod.hashCode());
+        Object $targetEndpoint = this.getTargetEndpoint();
+        result = result * prime + ($targetEndpoint == null ? 43 : $targetEndpoint.hashCode());
+        Object $tlsClientCert = this.getTlsClientCert();
+        result = result * prime + ($tlsClientCert == null ? 43 : $tlsClientCert.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodNetworkConnectivityCheckSpec(" + "sourcePod=" + this.getSourcePod() + ", targetEndpoint=" + this.getTargetEndpoint() + ", tlsClientCert=" + this.getTlsClientCert() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

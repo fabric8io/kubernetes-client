@@ -17,9 +17,6 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * APIVersions lists the versions that are available, to allow clients to discover the API at /api, which is the root path of the legacy v1 API.
@@ -31,12 +28,6 @@ import lombok.experimental.Accessors;
     "kind",
     "serverAddressByClientCIDRs",
     "versions"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Version("v1")
@@ -161,6 +152,71 @@ public class APIVersions implements Editable<APIVersionsBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof APIVersions)) {
+            return false;
+        }
+        APIVersions other = (APIVersions) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$serverAddressByClientCIDRs = this.getServerAddressByClientCIDRs();
+        Object other$serverAddressByClientCIDRs = other.getServerAddressByClientCIDRs();
+        if (this$serverAddressByClientCIDRs == null ? other$serverAddressByClientCIDRs != null : !this$serverAddressByClientCIDRs.equals(other$serverAddressByClientCIDRs)) {
+            return false;
+        }
+        Object this$versions = this.getVersions();
+        Object other$versions = other.getVersions();
+        if (this$versions == null ? other$versions != null : !this$versions.equals(other$versions)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof APIVersions;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $serverAddressByClientCIDRs = this.getServerAddressByClientCIDRs();
+        result = result * prime + ($serverAddressByClientCIDRs == null ? 43 : $serverAddressByClientCIDRs.hashCode());
+        Object $versions = this.getVersions();
+        result = result * prime + ($versions == null ? 43 : $versions.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "APIVersions(" + "apiVersion=" + this.getApiVersion() + ", kind=" + this.getKind() + ", serverAddressByClientCIDRs=" + this.getServerAddressByClientCIDRs() + ", versions=" + this.getVersions() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClusterOperatorStatus provides information about the status of the operator.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "extension",
     "relatedObjects",
     "versions"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -189,6 +180,71 @@ public class ClusterOperatorStatus implements Editable<ClusterOperatorStatusBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterOperatorStatus)) {
+            return false;
+        }
+        ClusterOperatorStatus other = (ClusterOperatorStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$extension = this.getExtension();
+        Object other$extension = other.getExtension();
+        if (this$extension == null ? other$extension != null : !this$extension.equals(other$extension)) {
+            return false;
+        }
+        Object this$relatedObjects = this.getRelatedObjects();
+        Object other$relatedObjects = other.getRelatedObjects();
+        if (this$relatedObjects == null ? other$relatedObjects != null : !this$relatedObjects.equals(other$relatedObjects)) {
+            return false;
+        }
+        Object this$versions = this.getVersions();
+        Object other$versions = other.getVersions();
+        if (this$versions == null ? other$versions != null : !this$versions.equals(other$versions)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterOperatorStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $extension = this.getExtension();
+        result = result * prime + ($extension == null ? 43 : $extension.hashCode());
+        Object $relatedObjects = this.getRelatedObjects();
+        result = result * prime + ($relatedObjects == null ? 43 : $relatedObjects.hashCode());
+        Object $versions = this.getVersions();
+        result = result * prime + ($versions == null ? 43 : $versions.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterOperatorStatus(" + "conditions=" + this.getConditions() + ", extension=" + this.getExtension() + ", relatedObjects=" + this.getRelatedObjects() + ", versions=" + this.getVersions() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

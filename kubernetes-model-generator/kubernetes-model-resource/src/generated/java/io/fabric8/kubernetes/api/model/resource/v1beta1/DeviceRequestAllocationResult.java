@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DeviceRequestAllocationResult contains the allocation result for one request.
@@ -52,12 +49,6 @@ import lombok.experimental.Accessors;
     "shareID",
     "skipNodeOperations",
     "tolerations"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -333,6 +324,120 @@ public class DeviceRequestAllocationResult implements Editable<DeviceRequestAllo
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DeviceRequestAllocationResult)) {
+            return false;
+        }
+        DeviceRequestAllocationResult other = (DeviceRequestAllocationResult) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$adminAccess = this.getAdminAccess();
+        Object other$adminAccess = other.getAdminAccess();
+        if (this$adminAccess == null ? other$adminAccess != null : !this$adminAccess.equals(other$adminAccess)) {
+            return false;
+        }
+        Object this$bindingConditions = this.getBindingConditions();
+        Object other$bindingConditions = other.getBindingConditions();
+        if (this$bindingConditions == null ? other$bindingConditions != null : !this$bindingConditions.equals(other$bindingConditions)) {
+            return false;
+        }
+        Object this$bindingFailureConditions = this.getBindingFailureConditions();
+        Object other$bindingFailureConditions = other.getBindingFailureConditions();
+        if (this$bindingFailureConditions == null ? other$bindingFailureConditions != null : !this$bindingFailureConditions.equals(other$bindingFailureConditions)) {
+            return false;
+        }
+        Object this$consumedCapacity = this.getConsumedCapacity();
+        Object other$consumedCapacity = other.getConsumedCapacity();
+        if (this$consumedCapacity == null ? other$consumedCapacity != null : !this$consumedCapacity.equals(other$consumedCapacity)) {
+            return false;
+        }
+        Object this$device = this.getDevice();
+        Object other$device = other.getDevice();
+        if (this$device == null ? other$device != null : !this$device.equals(other$device)) {
+            return false;
+        }
+        Object this$driver = this.getDriver();
+        Object other$driver = other.getDriver();
+        if (this$driver == null ? other$driver != null : !this$driver.equals(other$driver)) {
+            return false;
+        }
+        Object this$pool = this.getPool();
+        Object other$pool = other.getPool();
+        if (this$pool == null ? other$pool != null : !this$pool.equals(other$pool)) {
+            return false;
+        }
+        Object this$request = this.getRequest();
+        Object other$request = other.getRequest();
+        if (this$request == null ? other$request != null : !this$request.equals(other$request)) {
+            return false;
+        }
+        Object this$shareID = this.getShareID();
+        Object other$shareID = other.getShareID();
+        if (this$shareID == null ? other$shareID != null : !this$shareID.equals(other$shareID)) {
+            return false;
+        }
+        Object this$skipNodeOperations = this.getSkipNodeOperations();
+        Object other$skipNodeOperations = other.getSkipNodeOperations();
+        if (this$skipNodeOperations == null ? other$skipNodeOperations != null : !this$skipNodeOperations.equals(other$skipNodeOperations)) {
+            return false;
+        }
+        Object this$tolerations = this.getTolerations();
+        Object other$tolerations = other.getTolerations();
+        if (this$tolerations == null ? other$tolerations != null : !this$tolerations.equals(other$tolerations)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DeviceRequestAllocationResult;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $adminAccess = this.getAdminAccess();
+        result = result * prime + ($adminAccess == null ? 43 : $adminAccess.hashCode());
+        Object $bindingConditions = this.getBindingConditions();
+        result = result * prime + ($bindingConditions == null ? 43 : $bindingConditions.hashCode());
+        Object $bindingFailureConditions = this.getBindingFailureConditions();
+        result = result * prime + ($bindingFailureConditions == null ? 43 : $bindingFailureConditions.hashCode());
+        Object $consumedCapacity = this.getConsumedCapacity();
+        result = result * prime + ($consumedCapacity == null ? 43 : $consumedCapacity.hashCode());
+        Object $device = this.getDevice();
+        result = result * prime + ($device == null ? 43 : $device.hashCode());
+        Object $driver = this.getDriver();
+        result = result * prime + ($driver == null ? 43 : $driver.hashCode());
+        Object $pool = this.getPool();
+        result = result * prime + ($pool == null ? 43 : $pool.hashCode());
+        Object $request = this.getRequest();
+        result = result * prime + ($request == null ? 43 : $request.hashCode());
+        Object $shareID = this.getShareID();
+        result = result * prime + ($shareID == null ? 43 : $shareID.hashCode());
+        Object $skipNodeOperations = this.getSkipNodeOperations();
+        result = result * prime + ($skipNodeOperations == null ? 43 : $skipNodeOperations.hashCode());
+        Object $tolerations = this.getTolerations();
+        result = result * prime + ($tolerations == null ? 43 : $tolerations.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DeviceRequestAllocationResult(" + "adminAccess=" + this.getAdminAccess() + ", bindingConditions=" + this.getBindingConditions() + ", bindingFailureConditions=" + this.getBindingFailureConditions() + ", consumedCapacity=" + this.getConsumedCapacity() + ", device=" + this.getDevice() + ", driver=" + this.getDriver() + ", pool=" + this.getPool() + ", request=" + this.getRequest() + ", shareID=" + this.getShareID() + ", skipNodeOperations=" + this.getSkipNodeOperations() + ", tolerations=" + this.getTolerations() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

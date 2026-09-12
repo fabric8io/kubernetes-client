@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CronJobStatus represents the current state of a cron job.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "active",
     "lastScheduleTime",
     "lastSuccessfulTime"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -164,6 +155,64 @@ public class CronJobStatus implements Editable<CronJobStatusBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CronJobStatus)) {
+            return false;
+        }
+        CronJobStatus other = (CronJobStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$active = this.getActive();
+        Object other$active = other.getActive();
+        if (this$active == null ? other$active != null : !this$active.equals(other$active)) {
+            return false;
+        }
+        Object this$lastScheduleTime = this.getLastScheduleTime();
+        Object other$lastScheduleTime = other.getLastScheduleTime();
+        if (this$lastScheduleTime == null ? other$lastScheduleTime != null : !this$lastScheduleTime.equals(other$lastScheduleTime)) {
+            return false;
+        }
+        Object this$lastSuccessfulTime = this.getLastSuccessfulTime();
+        Object other$lastSuccessfulTime = other.getLastSuccessfulTime();
+        if (this$lastSuccessfulTime == null ? other$lastSuccessfulTime != null : !this$lastSuccessfulTime.equals(other$lastSuccessfulTime)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CronJobStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $active = this.getActive();
+        result = result * prime + ($active == null ? 43 : $active.hashCode());
+        Object $lastScheduleTime = this.getLastScheduleTime();
+        result = result * prime + ($lastScheduleTime == null ? 43 : $lastScheduleTime.hashCode());
+        Object $lastSuccessfulTime = this.getLastSuccessfulTime();
+        result = result * prime + ($lastSuccessfulTime == null ? 43 : $lastSuccessfulTime.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CronJobStatus(" + "active=" + this.getActive() + ", lastScheduleTime=" + this.getLastScheduleTime() + ", lastSuccessfulTime=" + this.getLastSuccessfulTime() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MachineConfigPoolStatus is the status for MachineConfigPool resource.
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "readyMachineCount",
     "unavailableMachineCount",
     "updatedMachineCount"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -307,6 +298,113 @@ public class MachineConfigPoolStatus implements Editable<MachineConfigPoolStatus
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachineConfigPoolStatus)) {
+            return false;
+        }
+        MachineConfigPoolStatus other = (MachineConfigPoolStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$certExpirys = this.getCertExpirys();
+        Object other$certExpirys = other.getCertExpirys();
+        if (this$certExpirys == null ? other$certExpirys != null : !this$certExpirys.equals(other$certExpirys)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$configuration = this.getConfiguration();
+        Object other$configuration = other.getConfiguration();
+        if (this$configuration == null ? other$configuration != null : !this$configuration.equals(other$configuration)) {
+            return false;
+        }
+        Object this$degradedMachineCount = this.getDegradedMachineCount();
+        Object other$degradedMachineCount = other.getDegradedMachineCount();
+        if (this$degradedMachineCount == null ? other$degradedMachineCount != null : !this$degradedMachineCount.equals(other$degradedMachineCount)) {
+            return false;
+        }
+        Object this$machineCount = this.getMachineCount();
+        Object other$machineCount = other.getMachineCount();
+        if (this$machineCount == null ? other$machineCount != null : !this$machineCount.equals(other$machineCount)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$poolSynchronizersStatus = this.getPoolSynchronizersStatus();
+        Object other$poolSynchronizersStatus = other.getPoolSynchronizersStatus();
+        if (this$poolSynchronizersStatus == null ? other$poolSynchronizersStatus != null : !this$poolSynchronizersStatus.equals(other$poolSynchronizersStatus)) {
+            return false;
+        }
+        Object this$readyMachineCount = this.getReadyMachineCount();
+        Object other$readyMachineCount = other.getReadyMachineCount();
+        if (this$readyMachineCount == null ? other$readyMachineCount != null : !this$readyMachineCount.equals(other$readyMachineCount)) {
+            return false;
+        }
+        Object this$unavailableMachineCount = this.getUnavailableMachineCount();
+        Object other$unavailableMachineCount = other.getUnavailableMachineCount();
+        if (this$unavailableMachineCount == null ? other$unavailableMachineCount != null : !this$unavailableMachineCount.equals(other$unavailableMachineCount)) {
+            return false;
+        }
+        Object this$updatedMachineCount = this.getUpdatedMachineCount();
+        Object other$updatedMachineCount = other.getUpdatedMachineCount();
+        if (this$updatedMachineCount == null ? other$updatedMachineCount != null : !this$updatedMachineCount.equals(other$updatedMachineCount)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachineConfigPoolStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $certExpirys = this.getCertExpirys();
+        result = result * prime + ($certExpirys == null ? 43 : $certExpirys.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $configuration = this.getConfiguration();
+        result = result * prime + ($configuration == null ? 43 : $configuration.hashCode());
+        Object $degradedMachineCount = this.getDegradedMachineCount();
+        result = result * prime + ($degradedMachineCount == null ? 43 : $degradedMachineCount.hashCode());
+        Object $machineCount = this.getMachineCount();
+        result = result * prime + ($machineCount == null ? 43 : $machineCount.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $poolSynchronizersStatus = this.getPoolSynchronizersStatus();
+        result = result * prime + ($poolSynchronizersStatus == null ? 43 : $poolSynchronizersStatus.hashCode());
+        Object $readyMachineCount = this.getReadyMachineCount();
+        result = result * prime + ($readyMachineCount == null ? 43 : $readyMachineCount.hashCode());
+        Object $unavailableMachineCount = this.getUnavailableMachineCount();
+        result = result * prime + ($unavailableMachineCount == null ? 43 : $unavailableMachineCount.hashCode());
+        Object $updatedMachineCount = this.getUpdatedMachineCount();
+        result = result * prime + ($updatedMachineCount == null ? 43 : $updatedMachineCount.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachineConfigPoolStatus(" + "certExpirys=" + this.getCertExpirys() + ", conditions=" + this.getConditions() + ", configuration=" + this.getConfiguration() + ", degradedMachineCount=" + this.getDegradedMachineCount() + ", machineCount=" + this.getMachineCount() + ", observedGeneration=" + this.getObservedGeneration() + ", poolSynchronizersStatus=" + this.getPoolSynchronizersStatus() + ", readyMachineCount=" + this.getReadyMachineCount() + ", unavailableMachineCount=" + this.getUnavailableMachineCount() + ", updatedMachineCount=" + this.getUpdatedMachineCount() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

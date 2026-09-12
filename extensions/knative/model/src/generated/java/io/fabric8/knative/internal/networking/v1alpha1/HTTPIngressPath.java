@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HTTPIngressPath associates a path regex with a backend. Incoming URLs matching the path are forwarded to the backend.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "path",
     "rewriteHost",
     "splits"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -208,6 +199,78 @@ public class HTTPIngressPath implements Editable<HTTPIngressPathBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HTTPIngressPath)) {
+            return false;
+        }
+        HTTPIngressPath other = (HTTPIngressPath) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$appendHeaders = this.getAppendHeaders();
+        Object other$appendHeaders = other.getAppendHeaders();
+        if (this$appendHeaders == null ? other$appendHeaders != null : !this$appendHeaders.equals(other$appendHeaders)) {
+            return false;
+        }
+        Object this$headers = this.getHeaders();
+        Object other$headers = other.getHeaders();
+        if (this$headers == null ? other$headers != null : !this$headers.equals(other$headers)) {
+            return false;
+        }
+        Object this$path = this.getPath();
+        Object other$path = other.getPath();
+        if (this$path == null ? other$path != null : !this$path.equals(other$path)) {
+            return false;
+        }
+        Object this$rewriteHost = this.getRewriteHost();
+        Object other$rewriteHost = other.getRewriteHost();
+        if (this$rewriteHost == null ? other$rewriteHost != null : !this$rewriteHost.equals(other$rewriteHost)) {
+            return false;
+        }
+        Object this$splits = this.getSplits();
+        Object other$splits = other.getSplits();
+        if (this$splits == null ? other$splits != null : !this$splits.equals(other$splits)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HTTPIngressPath;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $appendHeaders = this.getAppendHeaders();
+        result = result * prime + ($appendHeaders == null ? 43 : $appendHeaders.hashCode());
+        Object $headers = this.getHeaders();
+        result = result * prime + ($headers == null ? 43 : $headers.hashCode());
+        Object $path = this.getPath();
+        result = result * prime + ($path == null ? 43 : $path.hashCode());
+        Object $rewriteHost = this.getRewriteHost();
+        result = result * prime + ($rewriteHost == null ? 43 : $rewriteHost.hashCode());
+        Object $splits = this.getSplits();
+        result = result * prime + ($splits == null ? 43 : $splits.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HTTPIngressPath(" + "appendHeaders=" + this.getAppendHeaders() + ", headers=" + this.getHeaders() + ", path=" + this.getPath() + ", rewriteHost=" + this.getRewriteHost() + ", splits=" + this.getSplits() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

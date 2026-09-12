@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Probe describes a health check to be performed against a container to determine whether it is alive or ready to receive traffic.
@@ -33,12 +30,6 @@ import lombok.experimental.Accessors;
     "tcpSocket",
     "terminationGracePeriodSeconds",
     "timeoutSeconds"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -271,6 +262,113 @@ public class Probe implements Editable<ProbeBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Probe)) {
+            return false;
+        }
+        Probe other = (Probe) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$exec = this.getExec();
+        Object other$exec = other.getExec();
+        if (this$exec == null ? other$exec != null : !this$exec.equals(other$exec)) {
+            return false;
+        }
+        Object this$failureThreshold = this.getFailureThreshold();
+        Object other$failureThreshold = other.getFailureThreshold();
+        if (this$failureThreshold == null ? other$failureThreshold != null : !this$failureThreshold.equals(other$failureThreshold)) {
+            return false;
+        }
+        Object this$grpc = this.getGrpc();
+        Object other$grpc = other.getGrpc();
+        if (this$grpc == null ? other$grpc != null : !this$grpc.equals(other$grpc)) {
+            return false;
+        }
+        Object this$httpGet = this.getHttpGet();
+        Object other$httpGet = other.getHttpGet();
+        if (this$httpGet == null ? other$httpGet != null : !this$httpGet.equals(other$httpGet)) {
+            return false;
+        }
+        Object this$initialDelaySeconds = this.getInitialDelaySeconds();
+        Object other$initialDelaySeconds = other.getInitialDelaySeconds();
+        if (this$initialDelaySeconds == null ? other$initialDelaySeconds != null : !this$initialDelaySeconds.equals(other$initialDelaySeconds)) {
+            return false;
+        }
+        Object this$periodSeconds = this.getPeriodSeconds();
+        Object other$periodSeconds = other.getPeriodSeconds();
+        if (this$periodSeconds == null ? other$periodSeconds != null : !this$periodSeconds.equals(other$periodSeconds)) {
+            return false;
+        }
+        Object this$successThreshold = this.getSuccessThreshold();
+        Object other$successThreshold = other.getSuccessThreshold();
+        if (this$successThreshold == null ? other$successThreshold != null : !this$successThreshold.equals(other$successThreshold)) {
+            return false;
+        }
+        Object this$tcpSocket = this.getTcpSocket();
+        Object other$tcpSocket = other.getTcpSocket();
+        if (this$tcpSocket == null ? other$tcpSocket != null : !this$tcpSocket.equals(other$tcpSocket)) {
+            return false;
+        }
+        Object this$terminationGracePeriodSeconds = this.getTerminationGracePeriodSeconds();
+        Object other$terminationGracePeriodSeconds = other.getTerminationGracePeriodSeconds();
+        if (this$terminationGracePeriodSeconds == null ? other$terminationGracePeriodSeconds != null : !this$terminationGracePeriodSeconds.equals(other$terminationGracePeriodSeconds)) {
+            return false;
+        }
+        Object this$timeoutSeconds = this.getTimeoutSeconds();
+        Object other$timeoutSeconds = other.getTimeoutSeconds();
+        if (this$timeoutSeconds == null ? other$timeoutSeconds != null : !this$timeoutSeconds.equals(other$timeoutSeconds)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Probe;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $exec = this.getExec();
+        result = result * prime + ($exec == null ? 43 : $exec.hashCode());
+        Object $failureThreshold = this.getFailureThreshold();
+        result = result * prime + ($failureThreshold == null ? 43 : $failureThreshold.hashCode());
+        Object $grpc = this.getGrpc();
+        result = result * prime + ($grpc == null ? 43 : $grpc.hashCode());
+        Object $httpGet = this.getHttpGet();
+        result = result * prime + ($httpGet == null ? 43 : $httpGet.hashCode());
+        Object $initialDelaySeconds = this.getInitialDelaySeconds();
+        result = result * prime + ($initialDelaySeconds == null ? 43 : $initialDelaySeconds.hashCode());
+        Object $periodSeconds = this.getPeriodSeconds();
+        result = result * prime + ($periodSeconds == null ? 43 : $periodSeconds.hashCode());
+        Object $successThreshold = this.getSuccessThreshold();
+        result = result * prime + ($successThreshold == null ? 43 : $successThreshold.hashCode());
+        Object $tcpSocket = this.getTcpSocket();
+        result = result * prime + ($tcpSocket == null ? 43 : $tcpSocket.hashCode());
+        Object $terminationGracePeriodSeconds = this.getTerminationGracePeriodSeconds();
+        result = result * prime + ($terminationGracePeriodSeconds == null ? 43 : $terminationGracePeriodSeconds.hashCode());
+        Object $timeoutSeconds = this.getTimeoutSeconds();
+        result = result * prime + ($timeoutSeconds == null ? 43 : $timeoutSeconds.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Probe(" + "exec=" + this.getExec() + ", failureThreshold=" + this.getFailureThreshold() + ", grpc=" + this.getGrpc() + ", httpGet=" + this.getHttpGet() + ", initialDelaySeconds=" + this.getInitialDelaySeconds() + ", periodSeconds=" + this.getPeriodSeconds() + ", successThreshold=" + this.getSuccessThreshold() + ", tcpSocket=" + this.getTcpSocket() + ", terminationGracePeriodSeconds=" + this.getTerminationGracePeriodSeconds() + ", timeoutSeconds=" + this.getTimeoutSeconds() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

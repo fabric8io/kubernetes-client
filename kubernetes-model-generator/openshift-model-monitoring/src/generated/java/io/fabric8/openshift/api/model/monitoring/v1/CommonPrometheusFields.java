@@ -34,9 +34,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetPersistentVolumeClaimRetentionPolicy;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CommonPrometheusFields are the options available to both the Prometheus server and agent.
@@ -147,12 +144,6 @@ import lombok.experimental.Accessors;
     "volumes",
     "walCompression",
     "web"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -2206,6 +2197,764 @@ public class CommonPrometheusFields implements Editable<CommonPrometheusFieldsBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CommonPrometheusFields)) {
+            return false;
+        }
+        CommonPrometheusFields other = (CommonPrometheusFields) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$additionalArgs = this.getAdditionalArgs();
+        Object other$additionalArgs = other.getAdditionalArgs();
+        if (this$additionalArgs == null ? other$additionalArgs != null : !this$additionalArgs.equals(other$additionalArgs)) {
+            return false;
+        }
+        Object this$additionalScrapeConfigs = this.getAdditionalScrapeConfigs();
+        Object other$additionalScrapeConfigs = other.getAdditionalScrapeConfigs();
+        if (this$additionalScrapeConfigs == null ? other$additionalScrapeConfigs != null : !this$additionalScrapeConfigs.equals(other$additionalScrapeConfigs)) {
+            return false;
+        }
+        Object this$affinity = this.getAffinity();
+        Object other$affinity = other.getAffinity();
+        if (this$affinity == null ? other$affinity != null : !this$affinity.equals(other$affinity)) {
+            return false;
+        }
+        Object this$apiserverConfig = this.getApiserverConfig();
+        Object other$apiserverConfig = other.getApiserverConfig();
+        if (this$apiserverConfig == null ? other$apiserverConfig != null : !this$apiserverConfig.equals(other$apiserverConfig)) {
+            return false;
+        }
+        Object this$arbitraryFSAccessThroughSMs = this.getArbitraryFSAccessThroughSMs();
+        Object other$arbitraryFSAccessThroughSMs = other.getArbitraryFSAccessThroughSMs();
+        if (this$arbitraryFSAccessThroughSMs == null ? other$arbitraryFSAccessThroughSMs != null : !this$arbitraryFSAccessThroughSMs.equals(other$arbitraryFSAccessThroughSMs)) {
+            return false;
+        }
+        Object this$automountServiceAccountToken = this.getAutomountServiceAccountToken();
+        Object other$automountServiceAccountToken = other.getAutomountServiceAccountToken();
+        if (this$automountServiceAccountToken == null ? other$automountServiceAccountToken != null : !this$automountServiceAccountToken.equals(other$automountServiceAccountToken)) {
+            return false;
+        }
+        Object this$bodySizeLimit = this.getBodySizeLimit();
+        Object other$bodySizeLimit = other.getBodySizeLimit();
+        if (this$bodySizeLimit == null ? other$bodySizeLimit != null : !this$bodySizeLimit.equals(other$bodySizeLimit)) {
+            return false;
+        }
+        Object this$configMaps = this.getConfigMaps();
+        Object other$configMaps = other.getConfigMaps();
+        if (this$configMaps == null ? other$configMaps != null : !this$configMaps.equals(other$configMaps)) {
+            return false;
+        }
+        Object this$containers = this.getContainers();
+        Object other$containers = other.getContainers();
+        if (this$containers == null ? other$containers != null : !this$containers.equals(other$containers)) {
+            return false;
+        }
+        Object this$convertClassicHistogramsToNHCB = this.getConvertClassicHistogramsToNHCB();
+        Object other$convertClassicHistogramsToNHCB = other.getConvertClassicHistogramsToNHCB();
+        if (this$convertClassicHistogramsToNHCB == null ? other$convertClassicHistogramsToNHCB != null : !this$convertClassicHistogramsToNHCB.equals(other$convertClassicHistogramsToNHCB)) {
+            return false;
+        }
+        Object this$dnsConfig = this.getDnsConfig();
+        Object other$dnsConfig = other.getDnsConfig();
+        if (this$dnsConfig == null ? other$dnsConfig != null : !this$dnsConfig.equals(other$dnsConfig)) {
+            return false;
+        }
+        Object this$dnsPolicy = this.getDnsPolicy();
+        Object other$dnsPolicy = other.getDnsPolicy();
+        if (this$dnsPolicy == null ? other$dnsPolicy != null : !this$dnsPolicy.equals(other$dnsPolicy)) {
+            return false;
+        }
+        Object this$enableFeatures = this.getEnableFeatures();
+        Object other$enableFeatures = other.getEnableFeatures();
+        if (this$enableFeatures == null ? other$enableFeatures != null : !this$enableFeatures.equals(other$enableFeatures)) {
+            return false;
+        }
+        Object this$enableOTLPReceiver = this.getEnableOTLPReceiver();
+        Object other$enableOTLPReceiver = other.getEnableOTLPReceiver();
+        if (this$enableOTLPReceiver == null ? other$enableOTLPReceiver != null : !this$enableOTLPReceiver.equals(other$enableOTLPReceiver)) {
+            return false;
+        }
+        Object this$enableRemoteWriteReceiver = this.getEnableRemoteWriteReceiver();
+        Object other$enableRemoteWriteReceiver = other.getEnableRemoteWriteReceiver();
+        if (this$enableRemoteWriteReceiver == null ? other$enableRemoteWriteReceiver != null : !this$enableRemoteWriteReceiver.equals(other$enableRemoteWriteReceiver)) {
+            return false;
+        }
+        Object this$enableServiceLinks = this.getEnableServiceLinks();
+        Object other$enableServiceLinks = other.getEnableServiceLinks();
+        if (this$enableServiceLinks == null ? other$enableServiceLinks != null : !this$enableServiceLinks.equals(other$enableServiceLinks)) {
+            return false;
+        }
+        Object this$enforcedBodySizeLimit = this.getEnforcedBodySizeLimit();
+        Object other$enforcedBodySizeLimit = other.getEnforcedBodySizeLimit();
+        if (this$enforcedBodySizeLimit == null ? other$enforcedBodySizeLimit != null : !this$enforcedBodySizeLimit.equals(other$enforcedBodySizeLimit)) {
+            return false;
+        }
+        Object this$enforcedKeepDroppedTargets = this.getEnforcedKeepDroppedTargets();
+        Object other$enforcedKeepDroppedTargets = other.getEnforcedKeepDroppedTargets();
+        if (this$enforcedKeepDroppedTargets == null ? other$enforcedKeepDroppedTargets != null : !this$enforcedKeepDroppedTargets.equals(other$enforcedKeepDroppedTargets)) {
+            return false;
+        }
+        Object this$enforcedLabelLimit = this.getEnforcedLabelLimit();
+        Object other$enforcedLabelLimit = other.getEnforcedLabelLimit();
+        if (this$enforcedLabelLimit == null ? other$enforcedLabelLimit != null : !this$enforcedLabelLimit.equals(other$enforcedLabelLimit)) {
+            return false;
+        }
+        Object this$enforcedLabelNameLengthLimit = this.getEnforcedLabelNameLengthLimit();
+        Object other$enforcedLabelNameLengthLimit = other.getEnforcedLabelNameLengthLimit();
+        if (this$enforcedLabelNameLengthLimit == null ? other$enforcedLabelNameLengthLimit != null : !this$enforcedLabelNameLengthLimit.equals(other$enforcedLabelNameLengthLimit)) {
+            return false;
+        }
+        Object this$enforcedLabelValueLengthLimit = this.getEnforcedLabelValueLengthLimit();
+        Object other$enforcedLabelValueLengthLimit = other.getEnforcedLabelValueLengthLimit();
+        if (this$enforcedLabelValueLengthLimit == null ? other$enforcedLabelValueLengthLimit != null : !this$enforcedLabelValueLengthLimit.equals(other$enforcedLabelValueLengthLimit)) {
+            return false;
+        }
+        Object this$enforcedNamespaceLabel = this.getEnforcedNamespaceLabel();
+        Object other$enforcedNamespaceLabel = other.getEnforcedNamespaceLabel();
+        if (this$enforcedNamespaceLabel == null ? other$enforcedNamespaceLabel != null : !this$enforcedNamespaceLabel.equals(other$enforcedNamespaceLabel)) {
+            return false;
+        }
+        Object this$enforcedSampleLimit = this.getEnforcedSampleLimit();
+        Object other$enforcedSampleLimit = other.getEnforcedSampleLimit();
+        if (this$enforcedSampleLimit == null ? other$enforcedSampleLimit != null : !this$enforcedSampleLimit.equals(other$enforcedSampleLimit)) {
+            return false;
+        }
+        Object this$enforcedTargetLimit = this.getEnforcedTargetLimit();
+        Object other$enforcedTargetLimit = other.getEnforcedTargetLimit();
+        if (this$enforcedTargetLimit == null ? other$enforcedTargetLimit != null : !this$enforcedTargetLimit.equals(other$enforcedTargetLimit)) {
+            return false;
+        }
+        Object this$excludedFromEnforcement = this.getExcludedFromEnforcement();
+        Object other$excludedFromEnforcement = other.getExcludedFromEnforcement();
+        if (this$excludedFromEnforcement == null ? other$excludedFromEnforcement != null : !this$excludedFromEnforcement.equals(other$excludedFromEnforcement)) {
+            return false;
+        }
+        Object this$externalLabels = this.getExternalLabels();
+        Object other$externalLabels = other.getExternalLabels();
+        if (this$externalLabels == null ? other$externalLabels != null : !this$externalLabels.equals(other$externalLabels)) {
+            return false;
+        }
+        Object this$externalUrl = this.getExternalUrl();
+        Object other$externalUrl = other.getExternalUrl();
+        if (this$externalUrl == null ? other$externalUrl != null : !this$externalUrl.equals(other$externalUrl)) {
+            return false;
+        }
+        Object this$hostAliases = this.getHostAliases();
+        Object other$hostAliases = other.getHostAliases();
+        if (this$hostAliases == null ? other$hostAliases != null : !this$hostAliases.equals(other$hostAliases)) {
+            return false;
+        }
+        Object this$hostNetwork = this.getHostNetwork();
+        Object other$hostNetwork = other.getHostNetwork();
+        if (this$hostNetwork == null ? other$hostNetwork != null : !this$hostNetwork.equals(other$hostNetwork)) {
+            return false;
+        }
+        Object this$hostUsers = this.getHostUsers();
+        Object other$hostUsers = other.getHostUsers();
+        if (this$hostUsers == null ? other$hostUsers != null : !this$hostUsers.equals(other$hostUsers)) {
+            return false;
+        }
+        Object this$ignoreNamespaceSelectors = this.getIgnoreNamespaceSelectors();
+        Object other$ignoreNamespaceSelectors = other.getIgnoreNamespaceSelectors();
+        if (this$ignoreNamespaceSelectors == null ? other$ignoreNamespaceSelectors != null : !this$ignoreNamespaceSelectors.equals(other$ignoreNamespaceSelectors)) {
+            return false;
+        }
+        Object this$image = this.getImage();
+        Object other$image = other.getImage();
+        if (this$image == null ? other$image != null : !this$image.equals(other$image)) {
+            return false;
+        }
+        Object this$imagePullPolicy = this.getImagePullPolicy();
+        Object other$imagePullPolicy = other.getImagePullPolicy();
+        if (this$imagePullPolicy == null ? other$imagePullPolicy != null : !this$imagePullPolicy.equals(other$imagePullPolicy)) {
+            return false;
+        }
+        Object this$imagePullSecrets = this.getImagePullSecrets();
+        Object other$imagePullSecrets = other.getImagePullSecrets();
+        if (this$imagePullSecrets == null ? other$imagePullSecrets != null : !this$imagePullSecrets.equals(other$imagePullSecrets)) {
+            return false;
+        }
+        Object this$initContainers = this.getInitContainers();
+        Object other$initContainers = other.getInitContainers();
+        if (this$initContainers == null ? other$initContainers != null : !this$initContainers.equals(other$initContainers)) {
+            return false;
+        }
+        Object this$keepDroppedTargets = this.getKeepDroppedTargets();
+        Object other$keepDroppedTargets = other.getKeepDroppedTargets();
+        if (this$keepDroppedTargets == null ? other$keepDroppedTargets != null : !this$keepDroppedTargets.equals(other$keepDroppedTargets)) {
+            return false;
+        }
+        Object this$labelLimit = this.getLabelLimit();
+        Object other$labelLimit = other.getLabelLimit();
+        if (this$labelLimit == null ? other$labelLimit != null : !this$labelLimit.equals(other$labelLimit)) {
+            return false;
+        }
+        Object this$labelNameLengthLimit = this.getLabelNameLengthLimit();
+        Object other$labelNameLengthLimit = other.getLabelNameLengthLimit();
+        if (this$labelNameLengthLimit == null ? other$labelNameLengthLimit != null : !this$labelNameLengthLimit.equals(other$labelNameLengthLimit)) {
+            return false;
+        }
+        Object this$labelValueLengthLimit = this.getLabelValueLengthLimit();
+        Object other$labelValueLengthLimit = other.getLabelValueLengthLimit();
+        if (this$labelValueLengthLimit == null ? other$labelValueLengthLimit != null : !this$labelValueLengthLimit.equals(other$labelValueLengthLimit)) {
+            return false;
+        }
+        Object this$listenLocal = this.getListenLocal();
+        Object other$listenLocal = other.getListenLocal();
+        if (this$listenLocal == null ? other$listenLocal != null : !this$listenLocal.equals(other$listenLocal)) {
+            return false;
+        }
+        Object this$logFormat = this.getLogFormat();
+        Object other$logFormat = other.getLogFormat();
+        if (this$logFormat == null ? other$logFormat != null : !this$logFormat.equals(other$logFormat)) {
+            return false;
+        }
+        Object this$logLevel = this.getLogLevel();
+        Object other$logLevel = other.getLogLevel();
+        if (this$logLevel == null ? other$logLevel != null : !this$logLevel.equals(other$logLevel)) {
+            return false;
+        }
+        Object this$maximumStartupDurationSeconds = this.getMaximumStartupDurationSeconds();
+        Object other$maximumStartupDurationSeconds = other.getMaximumStartupDurationSeconds();
+        if (this$maximumStartupDurationSeconds == null ? other$maximumStartupDurationSeconds != null : !this$maximumStartupDurationSeconds.equals(other$maximumStartupDurationSeconds)) {
+            return false;
+        }
+        Object this$minReadySeconds = this.getMinReadySeconds();
+        Object other$minReadySeconds = other.getMinReadySeconds();
+        if (this$minReadySeconds == null ? other$minReadySeconds != null : !this$minReadySeconds.equals(other$minReadySeconds)) {
+            return false;
+        }
+        Object this$nameEscapingScheme = this.getNameEscapingScheme();
+        Object other$nameEscapingScheme = other.getNameEscapingScheme();
+        if (this$nameEscapingScheme == null ? other$nameEscapingScheme != null : !this$nameEscapingScheme.equals(other$nameEscapingScheme)) {
+            return false;
+        }
+        Object this$nameValidationScheme = this.getNameValidationScheme();
+        Object other$nameValidationScheme = other.getNameValidationScheme();
+        if (this$nameValidationScheme == null ? other$nameValidationScheme != null : !this$nameValidationScheme.equals(other$nameValidationScheme)) {
+            return false;
+        }
+        Object this$nodeSelector = this.getNodeSelector();
+        Object other$nodeSelector = other.getNodeSelector();
+        if (this$nodeSelector == null ? other$nodeSelector != null : !this$nodeSelector.equals(other$nodeSelector)) {
+            return false;
+        }
+        Object this$otlp = this.getOtlp();
+        Object other$otlp = other.getOtlp();
+        if (this$otlp == null ? other$otlp != null : !this$otlp.equals(other$otlp)) {
+            return false;
+        }
+        Object this$overrideHonorLabels = this.getOverrideHonorLabels();
+        Object other$overrideHonorLabels = other.getOverrideHonorLabels();
+        if (this$overrideHonorLabels == null ? other$overrideHonorLabels != null : !this$overrideHonorLabels.equals(other$overrideHonorLabels)) {
+            return false;
+        }
+        Object this$overrideHonorTimestamps = this.getOverrideHonorTimestamps();
+        Object other$overrideHonorTimestamps = other.getOverrideHonorTimestamps();
+        if (this$overrideHonorTimestamps == null ? other$overrideHonorTimestamps != null : !this$overrideHonorTimestamps.equals(other$overrideHonorTimestamps)) {
+            return false;
+        }
+        Object this$paused = this.getPaused();
+        Object other$paused = other.getPaused();
+        if (this$paused == null ? other$paused != null : !this$paused.equals(other$paused)) {
+            return false;
+        }
+        Object this$persistentVolumeClaimRetentionPolicy = this.getPersistentVolumeClaimRetentionPolicy();
+        Object other$persistentVolumeClaimRetentionPolicy = other.getPersistentVolumeClaimRetentionPolicy();
+        if (this$persistentVolumeClaimRetentionPolicy == null ? other$persistentVolumeClaimRetentionPolicy != null : !this$persistentVolumeClaimRetentionPolicy.equals(other$persistentVolumeClaimRetentionPolicy)) {
+            return false;
+        }
+        Object this$podManagementPolicy = this.getPodManagementPolicy();
+        Object other$podManagementPolicy = other.getPodManagementPolicy();
+        if (this$podManagementPolicy == null ? other$podManagementPolicy != null : !this$podManagementPolicy.equals(other$podManagementPolicy)) {
+            return false;
+        }
+        Object this$podMetadata = this.getPodMetadata();
+        Object other$podMetadata = other.getPodMetadata();
+        if (this$podMetadata == null ? other$podMetadata != null : !this$podMetadata.equals(other$podMetadata)) {
+            return false;
+        }
+        Object this$podMonitorNamespaceSelector = this.getPodMonitorNamespaceSelector();
+        Object other$podMonitorNamespaceSelector = other.getPodMonitorNamespaceSelector();
+        if (this$podMonitorNamespaceSelector == null ? other$podMonitorNamespaceSelector != null : !this$podMonitorNamespaceSelector.equals(other$podMonitorNamespaceSelector)) {
+            return false;
+        }
+        Object this$podMonitorSelector = this.getPodMonitorSelector();
+        Object other$podMonitorSelector = other.getPodMonitorSelector();
+        if (this$podMonitorSelector == null ? other$podMonitorSelector != null : !this$podMonitorSelector.equals(other$podMonitorSelector)) {
+            return false;
+        }
+        Object this$podTargetLabels = this.getPodTargetLabels();
+        Object other$podTargetLabels = other.getPodTargetLabels();
+        if (this$podTargetLabels == null ? other$podTargetLabels != null : !this$podTargetLabels.equals(other$podTargetLabels)) {
+            return false;
+        }
+        Object this$portName = this.getPortName();
+        Object other$portName = other.getPortName();
+        if (this$portName == null ? other$portName != null : !this$portName.equals(other$portName)) {
+            return false;
+        }
+        Object this$priorityClassName = this.getPriorityClassName();
+        Object other$priorityClassName = other.getPriorityClassName();
+        if (this$priorityClassName == null ? other$priorityClassName != null : !this$priorityClassName.equals(other$priorityClassName)) {
+            return false;
+        }
+        Object this$probeNamespaceSelector = this.getProbeNamespaceSelector();
+        Object other$probeNamespaceSelector = other.getProbeNamespaceSelector();
+        if (this$probeNamespaceSelector == null ? other$probeNamespaceSelector != null : !this$probeNamespaceSelector.equals(other$probeNamespaceSelector)) {
+            return false;
+        }
+        Object this$probeSelector = this.getProbeSelector();
+        Object other$probeSelector = other.getProbeSelector();
+        if (this$probeSelector == null ? other$probeSelector != null : !this$probeSelector.equals(other$probeSelector)) {
+            return false;
+        }
+        Object this$prometheusExternalLabelName = this.getPrometheusExternalLabelName();
+        Object other$prometheusExternalLabelName = other.getPrometheusExternalLabelName();
+        if (this$prometheusExternalLabelName == null ? other$prometheusExternalLabelName != null : !this$prometheusExternalLabelName.equals(other$prometheusExternalLabelName)) {
+            return false;
+        }
+        Object this$reloadStrategy = this.getReloadStrategy();
+        Object other$reloadStrategy = other.getReloadStrategy();
+        if (this$reloadStrategy == null ? other$reloadStrategy != null : !this$reloadStrategy.equals(other$reloadStrategy)) {
+            return false;
+        }
+        Object this$remoteWrite = this.getRemoteWrite();
+        Object other$remoteWrite = other.getRemoteWrite();
+        if (this$remoteWrite == null ? other$remoteWrite != null : !this$remoteWrite.equals(other$remoteWrite)) {
+            return false;
+        }
+        Object this$remoteWriteReceiverMessageVersions = this.getRemoteWriteReceiverMessageVersions();
+        Object other$remoteWriteReceiverMessageVersions = other.getRemoteWriteReceiverMessageVersions();
+        if (this$remoteWriteReceiverMessageVersions == null ? other$remoteWriteReceiverMessageVersions != null : !this$remoteWriteReceiverMessageVersions.equals(other$remoteWriteReceiverMessageVersions)) {
+            return false;
+        }
+        Object this$replicaExternalLabelName = this.getReplicaExternalLabelName();
+        Object other$replicaExternalLabelName = other.getReplicaExternalLabelName();
+        if (this$replicaExternalLabelName == null ? other$replicaExternalLabelName != null : !this$replicaExternalLabelName.equals(other$replicaExternalLabelName)) {
+            return false;
+        }
+        Object this$replicas = this.getReplicas();
+        Object other$replicas = other.getReplicas();
+        if (this$replicas == null ? other$replicas != null : !this$replicas.equals(other$replicas)) {
+            return false;
+        }
+        Object this$resources = this.getResources();
+        Object other$resources = other.getResources();
+        if (this$resources == null ? other$resources != null : !this$resources.equals(other$resources)) {
+            return false;
+        }
+        Object this$routePrefix = this.getRoutePrefix();
+        Object other$routePrefix = other.getRoutePrefix();
+        if (this$routePrefix == null ? other$routePrefix != null : !this$routePrefix.equals(other$routePrefix)) {
+            return false;
+        }
+        Object this$runtime = this.getRuntime();
+        Object other$runtime = other.getRuntime();
+        if (this$runtime == null ? other$runtime != null : !this$runtime.equals(other$runtime)) {
+            return false;
+        }
+        Object this$sampleLimit = this.getSampleLimit();
+        Object other$sampleLimit = other.getSampleLimit();
+        if (this$sampleLimit == null ? other$sampleLimit != null : !this$sampleLimit.equals(other$sampleLimit)) {
+            return false;
+        }
+        Object this$schedulerName = this.getSchedulerName();
+        Object other$schedulerName = other.getSchedulerName();
+        if (this$schedulerName == null ? other$schedulerName != null : !this$schedulerName.equals(other$schedulerName)) {
+            return false;
+        }
+        Object this$scrapeClasses = this.getScrapeClasses();
+        Object other$scrapeClasses = other.getScrapeClasses();
+        if (this$scrapeClasses == null ? other$scrapeClasses != null : !this$scrapeClasses.equals(other$scrapeClasses)) {
+            return false;
+        }
+        Object this$scrapeClassicHistograms = this.getScrapeClassicHistograms();
+        Object other$scrapeClassicHistograms = other.getScrapeClassicHistograms();
+        if (this$scrapeClassicHistograms == null ? other$scrapeClassicHistograms != null : !this$scrapeClassicHistograms.equals(other$scrapeClassicHistograms)) {
+            return false;
+        }
+        Object this$scrapeConfigNamespaceSelector = this.getScrapeConfigNamespaceSelector();
+        Object other$scrapeConfigNamespaceSelector = other.getScrapeConfigNamespaceSelector();
+        if (this$scrapeConfigNamespaceSelector == null ? other$scrapeConfigNamespaceSelector != null : !this$scrapeConfigNamespaceSelector.equals(other$scrapeConfigNamespaceSelector)) {
+            return false;
+        }
+        Object this$scrapeConfigSelector = this.getScrapeConfigSelector();
+        Object other$scrapeConfigSelector = other.getScrapeConfigSelector();
+        if (this$scrapeConfigSelector == null ? other$scrapeConfigSelector != null : !this$scrapeConfigSelector.equals(other$scrapeConfigSelector)) {
+            return false;
+        }
+        Object this$scrapeFailureLogFile = this.getScrapeFailureLogFile();
+        Object other$scrapeFailureLogFile = other.getScrapeFailureLogFile();
+        if (this$scrapeFailureLogFile == null ? other$scrapeFailureLogFile != null : !this$scrapeFailureLogFile.equals(other$scrapeFailureLogFile)) {
+            return false;
+        }
+        Object this$scrapeInterval = this.getScrapeInterval();
+        Object other$scrapeInterval = other.getScrapeInterval();
+        if (this$scrapeInterval == null ? other$scrapeInterval != null : !this$scrapeInterval.equals(other$scrapeInterval)) {
+            return false;
+        }
+        Object this$scrapeNativeHistograms = this.getScrapeNativeHistograms();
+        Object other$scrapeNativeHistograms = other.getScrapeNativeHistograms();
+        if (this$scrapeNativeHistograms == null ? other$scrapeNativeHistograms != null : !this$scrapeNativeHistograms.equals(other$scrapeNativeHistograms)) {
+            return false;
+        }
+        Object this$scrapeProtocols = this.getScrapeProtocols();
+        Object other$scrapeProtocols = other.getScrapeProtocols();
+        if (this$scrapeProtocols == null ? other$scrapeProtocols != null : !this$scrapeProtocols.equals(other$scrapeProtocols)) {
+            return false;
+        }
+        Object this$scrapeTimeout = this.getScrapeTimeout();
+        Object other$scrapeTimeout = other.getScrapeTimeout();
+        if (this$scrapeTimeout == null ? other$scrapeTimeout != null : !this$scrapeTimeout.equals(other$scrapeTimeout)) {
+            return false;
+        }
+        Object this$secrets = this.getSecrets();
+        Object other$secrets = other.getSecrets();
+        if (this$secrets == null ? other$secrets != null : !this$secrets.equals(other$secrets)) {
+            return false;
+        }
+        Object this$securityContext = this.getSecurityContext();
+        Object other$securityContext = other.getSecurityContext();
+        if (this$securityContext == null ? other$securityContext != null : !this$securityContext.equals(other$securityContext)) {
+            return false;
+        }
+        Object this$serviceAccountName = this.getServiceAccountName();
+        Object other$serviceAccountName = other.getServiceAccountName();
+        if (this$serviceAccountName == null ? other$serviceAccountName != null : !this$serviceAccountName.equals(other$serviceAccountName)) {
+            return false;
+        }
+        Object this$serviceDiscoveryRole = this.getServiceDiscoveryRole();
+        Object other$serviceDiscoveryRole = other.getServiceDiscoveryRole();
+        if (this$serviceDiscoveryRole == null ? other$serviceDiscoveryRole != null : !this$serviceDiscoveryRole.equals(other$serviceDiscoveryRole)) {
+            return false;
+        }
+        Object this$serviceMonitorNamespaceSelector = this.getServiceMonitorNamespaceSelector();
+        Object other$serviceMonitorNamespaceSelector = other.getServiceMonitorNamespaceSelector();
+        if (this$serviceMonitorNamespaceSelector == null ? other$serviceMonitorNamespaceSelector != null : !this$serviceMonitorNamespaceSelector.equals(other$serviceMonitorNamespaceSelector)) {
+            return false;
+        }
+        Object this$serviceMonitorSelector = this.getServiceMonitorSelector();
+        Object other$serviceMonitorSelector = other.getServiceMonitorSelector();
+        if (this$serviceMonitorSelector == null ? other$serviceMonitorSelector != null : !this$serviceMonitorSelector.equals(other$serviceMonitorSelector)) {
+            return false;
+        }
+        Object this$serviceName = this.getServiceName();
+        Object other$serviceName = other.getServiceName();
+        if (this$serviceName == null ? other$serviceName != null : !this$serviceName.equals(other$serviceName)) {
+            return false;
+        }
+        Object this$shardingStrategy = this.getShardingStrategy();
+        Object other$shardingStrategy = other.getShardingStrategy();
+        if (this$shardingStrategy == null ? other$shardingStrategy != null : !this$shardingStrategy.equals(other$shardingStrategy)) {
+            return false;
+        }
+        Object this$shards = this.getShards();
+        Object other$shards = other.getShards();
+        if (this$shards == null ? other$shards != null : !this$shards.equals(other$shards)) {
+            return false;
+        }
+        Object this$storage = this.getStorage();
+        Object other$storage = other.getStorage();
+        if (this$storage == null ? other$storage != null : !this$storage.equals(other$storage)) {
+            return false;
+        }
+        Object this$targetLimit = this.getTargetLimit();
+        Object other$targetLimit = other.getTargetLimit();
+        if (this$targetLimit == null ? other$targetLimit != null : !this$targetLimit.equals(other$targetLimit)) {
+            return false;
+        }
+        Object this$terminationGracePeriodSeconds = this.getTerminationGracePeriodSeconds();
+        Object other$terminationGracePeriodSeconds = other.getTerminationGracePeriodSeconds();
+        if (this$terminationGracePeriodSeconds == null ? other$terminationGracePeriodSeconds != null : !this$terminationGracePeriodSeconds.equals(other$terminationGracePeriodSeconds)) {
+            return false;
+        }
+        Object this$tolerations = this.getTolerations();
+        Object other$tolerations = other.getTolerations();
+        if (this$tolerations == null ? other$tolerations != null : !this$tolerations.equals(other$tolerations)) {
+            return false;
+        }
+        Object this$topologySpreadConstraints = this.getTopologySpreadConstraints();
+        Object other$topologySpreadConstraints = other.getTopologySpreadConstraints();
+        if (this$topologySpreadConstraints == null ? other$topologySpreadConstraints != null : !this$topologySpreadConstraints.equals(other$topologySpreadConstraints)) {
+            return false;
+        }
+        Object this$tracingConfig = this.getTracingConfig();
+        Object other$tracingConfig = other.getTracingConfig();
+        if (this$tracingConfig == null ? other$tracingConfig != null : !this$tracingConfig.equals(other$tracingConfig)) {
+            return false;
+        }
+        Object this$tsdb = this.getTsdb();
+        Object other$tsdb = other.getTsdb();
+        if (this$tsdb == null ? other$tsdb != null : !this$tsdb.equals(other$tsdb)) {
+            return false;
+        }
+        Object this$updateStrategy = this.getUpdateStrategy();
+        Object other$updateStrategy = other.getUpdateStrategy();
+        if (this$updateStrategy == null ? other$updateStrategy != null : !this$updateStrategy.equals(other$updateStrategy)) {
+            return false;
+        }
+        Object this$version = this.getVersion();
+        Object other$version = other.getVersion();
+        if (this$version == null ? other$version != null : !this$version.equals(other$version)) {
+            return false;
+        }
+        Object this$volumeMounts = this.getVolumeMounts();
+        Object other$volumeMounts = other.getVolumeMounts();
+        if (this$volumeMounts == null ? other$volumeMounts != null : !this$volumeMounts.equals(other$volumeMounts)) {
+            return false;
+        }
+        Object this$volumes = this.getVolumes();
+        Object other$volumes = other.getVolumes();
+        if (this$volumes == null ? other$volumes != null : !this$volumes.equals(other$volumes)) {
+            return false;
+        }
+        Object this$walCompression = this.getWalCompression();
+        Object other$walCompression = other.getWalCompression();
+        if (this$walCompression == null ? other$walCompression != null : !this$walCompression.equals(other$walCompression)) {
+            return false;
+        }
+        Object this$web = this.getWeb();
+        Object other$web = other.getWeb();
+        if (this$web == null ? other$web != null : !this$web.equals(other$web)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CommonPrometheusFields;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $additionalArgs = this.getAdditionalArgs();
+        result = result * prime + ($additionalArgs == null ? 43 : $additionalArgs.hashCode());
+        Object $additionalScrapeConfigs = this.getAdditionalScrapeConfigs();
+        result = result * prime + ($additionalScrapeConfigs == null ? 43 : $additionalScrapeConfigs.hashCode());
+        Object $affinity = this.getAffinity();
+        result = result * prime + ($affinity == null ? 43 : $affinity.hashCode());
+        Object $apiserverConfig = this.getApiserverConfig();
+        result = result * prime + ($apiserverConfig == null ? 43 : $apiserverConfig.hashCode());
+        Object $arbitraryFSAccessThroughSMs = this.getArbitraryFSAccessThroughSMs();
+        result = result * prime + ($arbitraryFSAccessThroughSMs == null ? 43 : $arbitraryFSAccessThroughSMs.hashCode());
+        Object $automountServiceAccountToken = this.getAutomountServiceAccountToken();
+        result = result * prime + ($automountServiceAccountToken == null ? 43 : $automountServiceAccountToken.hashCode());
+        Object $bodySizeLimit = this.getBodySizeLimit();
+        result = result * prime + ($bodySizeLimit == null ? 43 : $bodySizeLimit.hashCode());
+        Object $configMaps = this.getConfigMaps();
+        result = result * prime + ($configMaps == null ? 43 : $configMaps.hashCode());
+        Object $containers = this.getContainers();
+        result = result * prime + ($containers == null ? 43 : $containers.hashCode());
+        Object $convertClassicHistogramsToNHCB = this.getConvertClassicHistogramsToNHCB();
+        result = result * prime + ($convertClassicHistogramsToNHCB == null ? 43 : $convertClassicHistogramsToNHCB.hashCode());
+        Object $dnsConfig = this.getDnsConfig();
+        result = result * prime + ($dnsConfig == null ? 43 : $dnsConfig.hashCode());
+        Object $dnsPolicy = this.getDnsPolicy();
+        result = result * prime + ($dnsPolicy == null ? 43 : $dnsPolicy.hashCode());
+        Object $enableFeatures = this.getEnableFeatures();
+        result = result * prime + ($enableFeatures == null ? 43 : $enableFeatures.hashCode());
+        Object $enableOTLPReceiver = this.getEnableOTLPReceiver();
+        result = result * prime + ($enableOTLPReceiver == null ? 43 : $enableOTLPReceiver.hashCode());
+        Object $enableRemoteWriteReceiver = this.getEnableRemoteWriteReceiver();
+        result = result * prime + ($enableRemoteWriteReceiver == null ? 43 : $enableRemoteWriteReceiver.hashCode());
+        Object $enableServiceLinks = this.getEnableServiceLinks();
+        result = result * prime + ($enableServiceLinks == null ? 43 : $enableServiceLinks.hashCode());
+        Object $enforcedBodySizeLimit = this.getEnforcedBodySizeLimit();
+        result = result * prime + ($enforcedBodySizeLimit == null ? 43 : $enforcedBodySizeLimit.hashCode());
+        Object $enforcedKeepDroppedTargets = this.getEnforcedKeepDroppedTargets();
+        result = result * prime + ($enforcedKeepDroppedTargets == null ? 43 : $enforcedKeepDroppedTargets.hashCode());
+        Object $enforcedLabelLimit = this.getEnforcedLabelLimit();
+        result = result * prime + ($enforcedLabelLimit == null ? 43 : $enforcedLabelLimit.hashCode());
+        Object $enforcedLabelNameLengthLimit = this.getEnforcedLabelNameLengthLimit();
+        result = result * prime + ($enforcedLabelNameLengthLimit == null ? 43 : $enforcedLabelNameLengthLimit.hashCode());
+        Object $enforcedLabelValueLengthLimit = this.getEnforcedLabelValueLengthLimit();
+        result = result * prime + ($enforcedLabelValueLengthLimit == null ? 43 : $enforcedLabelValueLengthLimit.hashCode());
+        Object $enforcedNamespaceLabel = this.getEnforcedNamespaceLabel();
+        result = result * prime + ($enforcedNamespaceLabel == null ? 43 : $enforcedNamespaceLabel.hashCode());
+        Object $enforcedSampleLimit = this.getEnforcedSampleLimit();
+        result = result * prime + ($enforcedSampleLimit == null ? 43 : $enforcedSampleLimit.hashCode());
+        Object $enforcedTargetLimit = this.getEnforcedTargetLimit();
+        result = result * prime + ($enforcedTargetLimit == null ? 43 : $enforcedTargetLimit.hashCode());
+        Object $excludedFromEnforcement = this.getExcludedFromEnforcement();
+        result = result * prime + ($excludedFromEnforcement == null ? 43 : $excludedFromEnforcement.hashCode());
+        Object $externalLabels = this.getExternalLabels();
+        result = result * prime + ($externalLabels == null ? 43 : $externalLabels.hashCode());
+        Object $externalUrl = this.getExternalUrl();
+        result = result * prime + ($externalUrl == null ? 43 : $externalUrl.hashCode());
+        Object $hostAliases = this.getHostAliases();
+        result = result * prime + ($hostAliases == null ? 43 : $hostAliases.hashCode());
+        Object $hostNetwork = this.getHostNetwork();
+        result = result * prime + ($hostNetwork == null ? 43 : $hostNetwork.hashCode());
+        Object $hostUsers = this.getHostUsers();
+        result = result * prime + ($hostUsers == null ? 43 : $hostUsers.hashCode());
+        Object $ignoreNamespaceSelectors = this.getIgnoreNamespaceSelectors();
+        result = result * prime + ($ignoreNamespaceSelectors == null ? 43 : $ignoreNamespaceSelectors.hashCode());
+        Object $image = this.getImage();
+        result = result * prime + ($image == null ? 43 : $image.hashCode());
+        Object $imagePullPolicy = this.getImagePullPolicy();
+        result = result * prime + ($imagePullPolicy == null ? 43 : $imagePullPolicy.hashCode());
+        Object $imagePullSecrets = this.getImagePullSecrets();
+        result = result * prime + ($imagePullSecrets == null ? 43 : $imagePullSecrets.hashCode());
+        Object $initContainers = this.getInitContainers();
+        result = result * prime + ($initContainers == null ? 43 : $initContainers.hashCode());
+        Object $keepDroppedTargets = this.getKeepDroppedTargets();
+        result = result * prime + ($keepDroppedTargets == null ? 43 : $keepDroppedTargets.hashCode());
+        Object $labelLimit = this.getLabelLimit();
+        result = result * prime + ($labelLimit == null ? 43 : $labelLimit.hashCode());
+        Object $labelNameLengthLimit = this.getLabelNameLengthLimit();
+        result = result * prime + ($labelNameLengthLimit == null ? 43 : $labelNameLengthLimit.hashCode());
+        Object $labelValueLengthLimit = this.getLabelValueLengthLimit();
+        result = result * prime + ($labelValueLengthLimit == null ? 43 : $labelValueLengthLimit.hashCode());
+        Object $listenLocal = this.getListenLocal();
+        result = result * prime + ($listenLocal == null ? 43 : $listenLocal.hashCode());
+        Object $logFormat = this.getLogFormat();
+        result = result * prime + ($logFormat == null ? 43 : $logFormat.hashCode());
+        Object $logLevel = this.getLogLevel();
+        result = result * prime + ($logLevel == null ? 43 : $logLevel.hashCode());
+        Object $maximumStartupDurationSeconds = this.getMaximumStartupDurationSeconds();
+        result = result * prime + ($maximumStartupDurationSeconds == null ? 43 : $maximumStartupDurationSeconds.hashCode());
+        Object $minReadySeconds = this.getMinReadySeconds();
+        result = result * prime + ($minReadySeconds == null ? 43 : $minReadySeconds.hashCode());
+        Object $nameEscapingScheme = this.getNameEscapingScheme();
+        result = result * prime + ($nameEscapingScheme == null ? 43 : $nameEscapingScheme.hashCode());
+        Object $nameValidationScheme = this.getNameValidationScheme();
+        result = result * prime + ($nameValidationScheme == null ? 43 : $nameValidationScheme.hashCode());
+        Object $nodeSelector = this.getNodeSelector();
+        result = result * prime + ($nodeSelector == null ? 43 : $nodeSelector.hashCode());
+        Object $otlp = this.getOtlp();
+        result = result * prime + ($otlp == null ? 43 : $otlp.hashCode());
+        Object $overrideHonorLabels = this.getOverrideHonorLabels();
+        result = result * prime + ($overrideHonorLabels == null ? 43 : $overrideHonorLabels.hashCode());
+        Object $overrideHonorTimestamps = this.getOverrideHonorTimestamps();
+        result = result * prime + ($overrideHonorTimestamps == null ? 43 : $overrideHonorTimestamps.hashCode());
+        Object $paused = this.getPaused();
+        result = result * prime + ($paused == null ? 43 : $paused.hashCode());
+        Object $persistentVolumeClaimRetentionPolicy = this.getPersistentVolumeClaimRetentionPolicy();
+        result = result * prime + ($persistentVolumeClaimRetentionPolicy == null ? 43 : $persistentVolumeClaimRetentionPolicy.hashCode());
+        Object $podManagementPolicy = this.getPodManagementPolicy();
+        result = result * prime + ($podManagementPolicy == null ? 43 : $podManagementPolicy.hashCode());
+        Object $podMetadata = this.getPodMetadata();
+        result = result * prime + ($podMetadata == null ? 43 : $podMetadata.hashCode());
+        Object $podMonitorNamespaceSelector = this.getPodMonitorNamespaceSelector();
+        result = result * prime + ($podMonitorNamespaceSelector == null ? 43 : $podMonitorNamespaceSelector.hashCode());
+        Object $podMonitorSelector = this.getPodMonitorSelector();
+        result = result * prime + ($podMonitorSelector == null ? 43 : $podMonitorSelector.hashCode());
+        Object $podTargetLabels = this.getPodTargetLabels();
+        result = result * prime + ($podTargetLabels == null ? 43 : $podTargetLabels.hashCode());
+        Object $portName = this.getPortName();
+        result = result * prime + ($portName == null ? 43 : $portName.hashCode());
+        Object $priorityClassName = this.getPriorityClassName();
+        result = result * prime + ($priorityClassName == null ? 43 : $priorityClassName.hashCode());
+        Object $probeNamespaceSelector = this.getProbeNamespaceSelector();
+        result = result * prime + ($probeNamespaceSelector == null ? 43 : $probeNamespaceSelector.hashCode());
+        Object $probeSelector = this.getProbeSelector();
+        result = result * prime + ($probeSelector == null ? 43 : $probeSelector.hashCode());
+        Object $prometheusExternalLabelName = this.getPrometheusExternalLabelName();
+        result = result * prime + ($prometheusExternalLabelName == null ? 43 : $prometheusExternalLabelName.hashCode());
+        Object $reloadStrategy = this.getReloadStrategy();
+        result = result * prime + ($reloadStrategy == null ? 43 : $reloadStrategy.hashCode());
+        Object $remoteWrite = this.getRemoteWrite();
+        result = result * prime + ($remoteWrite == null ? 43 : $remoteWrite.hashCode());
+        Object $remoteWriteReceiverMessageVersions = this.getRemoteWriteReceiverMessageVersions();
+        result = result * prime + ($remoteWriteReceiverMessageVersions == null ? 43 : $remoteWriteReceiverMessageVersions.hashCode());
+        Object $replicaExternalLabelName = this.getReplicaExternalLabelName();
+        result = result * prime + ($replicaExternalLabelName == null ? 43 : $replicaExternalLabelName.hashCode());
+        Object $replicas = this.getReplicas();
+        result = result * prime + ($replicas == null ? 43 : $replicas.hashCode());
+        Object $resources = this.getResources();
+        result = result * prime + ($resources == null ? 43 : $resources.hashCode());
+        Object $routePrefix = this.getRoutePrefix();
+        result = result * prime + ($routePrefix == null ? 43 : $routePrefix.hashCode());
+        Object $runtime = this.getRuntime();
+        result = result * prime + ($runtime == null ? 43 : $runtime.hashCode());
+        Object $sampleLimit = this.getSampleLimit();
+        result = result * prime + ($sampleLimit == null ? 43 : $sampleLimit.hashCode());
+        Object $schedulerName = this.getSchedulerName();
+        result = result * prime + ($schedulerName == null ? 43 : $schedulerName.hashCode());
+        Object $scrapeClasses = this.getScrapeClasses();
+        result = result * prime + ($scrapeClasses == null ? 43 : $scrapeClasses.hashCode());
+        Object $scrapeClassicHistograms = this.getScrapeClassicHistograms();
+        result = result * prime + ($scrapeClassicHistograms == null ? 43 : $scrapeClassicHistograms.hashCode());
+        Object $scrapeConfigNamespaceSelector = this.getScrapeConfigNamespaceSelector();
+        result = result * prime + ($scrapeConfigNamespaceSelector == null ? 43 : $scrapeConfigNamespaceSelector.hashCode());
+        Object $scrapeConfigSelector = this.getScrapeConfigSelector();
+        result = result * prime + ($scrapeConfigSelector == null ? 43 : $scrapeConfigSelector.hashCode());
+        Object $scrapeFailureLogFile = this.getScrapeFailureLogFile();
+        result = result * prime + ($scrapeFailureLogFile == null ? 43 : $scrapeFailureLogFile.hashCode());
+        Object $scrapeInterval = this.getScrapeInterval();
+        result = result * prime + ($scrapeInterval == null ? 43 : $scrapeInterval.hashCode());
+        Object $scrapeNativeHistograms = this.getScrapeNativeHistograms();
+        result = result * prime + ($scrapeNativeHistograms == null ? 43 : $scrapeNativeHistograms.hashCode());
+        Object $scrapeProtocols = this.getScrapeProtocols();
+        result = result * prime + ($scrapeProtocols == null ? 43 : $scrapeProtocols.hashCode());
+        Object $scrapeTimeout = this.getScrapeTimeout();
+        result = result * prime + ($scrapeTimeout == null ? 43 : $scrapeTimeout.hashCode());
+        Object $secrets = this.getSecrets();
+        result = result * prime + ($secrets == null ? 43 : $secrets.hashCode());
+        Object $securityContext = this.getSecurityContext();
+        result = result * prime + ($securityContext == null ? 43 : $securityContext.hashCode());
+        Object $serviceAccountName = this.getServiceAccountName();
+        result = result * prime + ($serviceAccountName == null ? 43 : $serviceAccountName.hashCode());
+        Object $serviceDiscoveryRole = this.getServiceDiscoveryRole();
+        result = result * prime + ($serviceDiscoveryRole == null ? 43 : $serviceDiscoveryRole.hashCode());
+        Object $serviceMonitorNamespaceSelector = this.getServiceMonitorNamespaceSelector();
+        result = result * prime + ($serviceMonitorNamespaceSelector == null ? 43 : $serviceMonitorNamespaceSelector.hashCode());
+        Object $serviceMonitorSelector = this.getServiceMonitorSelector();
+        result = result * prime + ($serviceMonitorSelector == null ? 43 : $serviceMonitorSelector.hashCode());
+        Object $serviceName = this.getServiceName();
+        result = result * prime + ($serviceName == null ? 43 : $serviceName.hashCode());
+        Object $shardingStrategy = this.getShardingStrategy();
+        result = result * prime + ($shardingStrategy == null ? 43 : $shardingStrategy.hashCode());
+        Object $shards = this.getShards();
+        result = result * prime + ($shards == null ? 43 : $shards.hashCode());
+        Object $storage = this.getStorage();
+        result = result * prime + ($storage == null ? 43 : $storage.hashCode());
+        Object $targetLimit = this.getTargetLimit();
+        result = result * prime + ($targetLimit == null ? 43 : $targetLimit.hashCode());
+        Object $terminationGracePeriodSeconds = this.getTerminationGracePeriodSeconds();
+        result = result * prime + ($terminationGracePeriodSeconds == null ? 43 : $terminationGracePeriodSeconds.hashCode());
+        Object $tolerations = this.getTolerations();
+        result = result * prime + ($tolerations == null ? 43 : $tolerations.hashCode());
+        Object $topologySpreadConstraints = this.getTopologySpreadConstraints();
+        result = result * prime + ($topologySpreadConstraints == null ? 43 : $topologySpreadConstraints.hashCode());
+        Object $tracingConfig = this.getTracingConfig();
+        result = result * prime + ($tracingConfig == null ? 43 : $tracingConfig.hashCode());
+        Object $tsdb = this.getTsdb();
+        result = result * prime + ($tsdb == null ? 43 : $tsdb.hashCode());
+        Object $updateStrategy = this.getUpdateStrategy();
+        result = result * prime + ($updateStrategy == null ? 43 : $updateStrategy.hashCode());
+        Object $version = this.getVersion();
+        result = result * prime + ($version == null ? 43 : $version.hashCode());
+        Object $volumeMounts = this.getVolumeMounts();
+        result = result * prime + ($volumeMounts == null ? 43 : $volumeMounts.hashCode());
+        Object $volumes = this.getVolumes();
+        result = result * prime + ($volumes == null ? 43 : $volumes.hashCode());
+        Object $walCompression = this.getWalCompression();
+        result = result * prime + ($walCompression == null ? 43 : $walCompression.hashCode());
+        Object $web = this.getWeb();
+        result = result * prime + ($web == null ? 43 : $web.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CommonPrometheusFields(" + "additionalArgs=" + this.getAdditionalArgs() + ", additionalScrapeConfigs=" + this.getAdditionalScrapeConfigs() + ", affinity=" + this.getAffinity() + ", apiserverConfig=" + this.getApiserverConfig() + ", arbitraryFSAccessThroughSMs=" + this.getArbitraryFSAccessThroughSMs() + ", automountServiceAccountToken=" + this.getAutomountServiceAccountToken() + ", bodySizeLimit=" + this.getBodySizeLimit() + ", configMaps=" + this.getConfigMaps() + ", containers=" + this.getContainers() + ", convertClassicHistogramsToNHCB=" + this.getConvertClassicHistogramsToNHCB() + ", dnsConfig=" + this.getDnsConfig() + ", dnsPolicy=" + this.getDnsPolicy() + ", enableFeatures=" + this.getEnableFeatures() + ", enableOTLPReceiver=" + this.getEnableOTLPReceiver() + ", enableRemoteWriteReceiver=" + this.getEnableRemoteWriteReceiver() + ", enableServiceLinks=" + this.getEnableServiceLinks() + ", enforcedBodySizeLimit=" + this.getEnforcedBodySizeLimit() + ", enforcedKeepDroppedTargets=" + this.getEnforcedKeepDroppedTargets() + ", enforcedLabelLimit=" + this.getEnforcedLabelLimit() + ", enforcedLabelNameLengthLimit=" + this.getEnforcedLabelNameLengthLimit() + ", enforcedLabelValueLengthLimit=" + this.getEnforcedLabelValueLengthLimit() + ", enforcedNamespaceLabel=" + this.getEnforcedNamespaceLabel() + ", enforcedSampleLimit=" + this.getEnforcedSampleLimit() + ", enforcedTargetLimit=" + this.getEnforcedTargetLimit() + ", excludedFromEnforcement=" + this.getExcludedFromEnforcement() + ", externalLabels=" + this.getExternalLabels() + ", externalUrl=" + this.getExternalUrl() + ", hostAliases=" + this.getHostAliases() + ", hostNetwork=" + this.getHostNetwork() + ", hostUsers=" + this.getHostUsers() + ", ignoreNamespaceSelectors=" + this.getIgnoreNamespaceSelectors() + ", image=" + this.getImage() + ", imagePullPolicy=" + this.getImagePullPolicy() + ", imagePullSecrets=" + this.getImagePullSecrets() + ", initContainers=" + this.getInitContainers() + ", keepDroppedTargets=" + this.getKeepDroppedTargets() + ", labelLimit=" + this.getLabelLimit() + ", labelNameLengthLimit=" + this.getLabelNameLengthLimit() + ", labelValueLengthLimit=" + this.getLabelValueLengthLimit() + ", listenLocal=" + this.getListenLocal() + ", logFormat=" + this.getLogFormat() + ", logLevel=" + this.getLogLevel() + ", maximumStartupDurationSeconds=" + this.getMaximumStartupDurationSeconds() + ", minReadySeconds=" + this.getMinReadySeconds() + ", nameEscapingScheme=" + this.getNameEscapingScheme() + ", nameValidationScheme=" + this.getNameValidationScheme() + ", nodeSelector=" + this.getNodeSelector() + ", otlp=" + this.getOtlp() + ", overrideHonorLabels=" + this.getOverrideHonorLabels() + ", overrideHonorTimestamps=" + this.getOverrideHonorTimestamps() + ", paused=" + this.getPaused() + ", persistentVolumeClaimRetentionPolicy=" + this.getPersistentVolumeClaimRetentionPolicy() + ", podManagementPolicy=" + this.getPodManagementPolicy() + ", podMetadata=" + this.getPodMetadata() + ", podMonitorNamespaceSelector=" + this.getPodMonitorNamespaceSelector() + ", podMonitorSelector=" + this.getPodMonitorSelector() + ", podTargetLabels=" + this.getPodTargetLabels() + ", portName=" + this.getPortName() + ", priorityClassName=" + this.getPriorityClassName() + ", probeNamespaceSelector=" + this.getProbeNamespaceSelector() + ", probeSelector=" + this.getProbeSelector() + ", prometheusExternalLabelName=" + this.getPrometheusExternalLabelName() + ", reloadStrategy=" + this.getReloadStrategy() + ", remoteWrite=" + this.getRemoteWrite() + ", remoteWriteReceiverMessageVersions=" + this.getRemoteWriteReceiverMessageVersions() + ", replicaExternalLabelName=" + this.getReplicaExternalLabelName() + ", replicas=" + this.getReplicas() + ", resources=" + this.getResources() + ", routePrefix=" + this.getRoutePrefix() + ", runtime=" + this.getRuntime() + ", sampleLimit=" + this.getSampleLimit() + ", schedulerName=" + this.getSchedulerName() + ", scrapeClasses=" + this.getScrapeClasses() + ", scrapeClassicHistograms=" + this.getScrapeClassicHistograms() + ", scrapeConfigNamespaceSelector=" + this.getScrapeConfigNamespaceSelector() + ", scrapeConfigSelector=" + this.getScrapeConfigSelector() + ", scrapeFailureLogFile=" + this.getScrapeFailureLogFile() + ", scrapeInterval=" + this.getScrapeInterval() + ", scrapeNativeHistograms=" + this.getScrapeNativeHistograms() + ", scrapeProtocols=" + this.getScrapeProtocols() + ", scrapeTimeout=" + this.getScrapeTimeout() + ", secrets=" + this.getSecrets() + ", securityContext=" + this.getSecurityContext() + ", serviceAccountName=" + this.getServiceAccountName() + ", serviceDiscoveryRole=" + this.getServiceDiscoveryRole() + ", serviceMonitorNamespaceSelector=" + this.getServiceMonitorNamespaceSelector() + ", serviceMonitorSelector=" + this.getServiceMonitorSelector() + ", serviceName=" + this.getServiceName() + ", shardingStrategy=" + this.getShardingStrategy() + ", shards=" + this.getShards() + ", storage=" + this.getStorage() + ", targetLimit=" + this.getTargetLimit() + ", terminationGracePeriodSeconds=" + this.getTerminationGracePeriodSeconds() + ", tolerations=" + this.getTolerations() + ", topologySpreadConstraints=" + this.getTopologySpreadConstraints() + ", tracingConfig=" + this.getTracingConfig() + ", tsdb=" + this.getTsdb() + ", updateStrategy=" + this.getUpdateStrategy() + ", version=" + this.getVersion() + ", volumeMounts=" + this.getVolumeMounts() + ", volumes=" + this.getVolumes() + ", walCompression=" + this.getWalCompression() + ", web=" + this.getWeb() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

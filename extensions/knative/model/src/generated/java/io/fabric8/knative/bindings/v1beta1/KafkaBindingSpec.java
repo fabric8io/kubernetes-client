@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * KafkaBindingSpec defines the desired state of the KafkaBinding.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "bootstrapServers",
     "net",
     "subject"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -165,6 +156,64 @@ public class KafkaBindingSpec implements Editable<KafkaBindingSpecBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof KafkaBindingSpec)) {
+            return false;
+        }
+        KafkaBindingSpec other = (KafkaBindingSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bootstrapServers = this.getBootstrapServers();
+        Object other$bootstrapServers = other.getBootstrapServers();
+        if (this$bootstrapServers == null ? other$bootstrapServers != null : !this$bootstrapServers.equals(other$bootstrapServers)) {
+            return false;
+        }
+        Object this$net = this.getNet();
+        Object other$net = other.getNet();
+        if (this$net == null ? other$net != null : !this$net.equals(other$net)) {
+            return false;
+        }
+        Object this$subject = this.getSubject();
+        Object other$subject = other.getSubject();
+        if (this$subject == null ? other$subject != null : !this$subject.equals(other$subject)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof KafkaBindingSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bootstrapServers = this.getBootstrapServers();
+        result = result * prime + ($bootstrapServers == null ? 43 : $bootstrapServers.hashCode());
+        Object $net = this.getNet();
+        result = result * prime + ($net == null ? 43 : $net.hashCode());
+        Object $subject = this.getSubject();
+        result = result * prime + ($subject == null ? 43 : $subject.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "KafkaBindingSpec(" + "bootstrapServers=" + this.getBootstrapServers() + ", net=" + this.getNet() + ", subject=" + this.getSubject() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

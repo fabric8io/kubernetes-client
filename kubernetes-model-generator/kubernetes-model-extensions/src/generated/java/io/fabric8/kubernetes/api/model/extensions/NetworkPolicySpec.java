@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DEPRECATED 1.9 - This group version of NetworkPolicySpec is deprecated by networking/v1/NetworkPolicySpec.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "ingress",
     "podSelector",
     "policyTypes"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -188,6 +179,71 @@ public class NetworkPolicySpec implements Editable<NetworkPolicySpecBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkPolicySpec)) {
+            return false;
+        }
+        NetworkPolicySpec other = (NetworkPolicySpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$egress = this.getEgress();
+        Object other$egress = other.getEgress();
+        if (this$egress == null ? other$egress != null : !this$egress.equals(other$egress)) {
+            return false;
+        }
+        Object this$ingress = this.getIngress();
+        Object other$ingress = other.getIngress();
+        if (this$ingress == null ? other$ingress != null : !this$ingress.equals(other$ingress)) {
+            return false;
+        }
+        Object this$podSelector = this.getPodSelector();
+        Object other$podSelector = other.getPodSelector();
+        if (this$podSelector == null ? other$podSelector != null : !this$podSelector.equals(other$podSelector)) {
+            return false;
+        }
+        Object this$policyTypes = this.getPolicyTypes();
+        Object other$policyTypes = other.getPolicyTypes();
+        if (this$policyTypes == null ? other$policyTypes != null : !this$policyTypes.equals(other$policyTypes)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkPolicySpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $egress = this.getEgress();
+        result = result * prime + ($egress == null ? 43 : $egress.hashCode());
+        Object $ingress = this.getIngress();
+        result = result * prime + ($ingress == null ? 43 : $ingress.hashCode());
+        Object $podSelector = this.getPodSelector();
+        result = result * prime + ($podSelector == null ? 43 : $podSelector.hashCode());
+        Object $policyTypes = this.getPolicyTypes();
+        result = result * prime + ($policyTypes == null ? 43 : $policyTypes.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkPolicySpec(" + "egress=" + this.getEgress() + ", ingress=" + this.getIngress() + ", podSelector=" + this.getPodSelector() + ", policyTypes=" + this.getPolicyTypes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

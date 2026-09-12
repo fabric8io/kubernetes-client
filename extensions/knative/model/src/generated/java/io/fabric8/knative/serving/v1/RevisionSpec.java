@@ -43,9 +43,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.kubernetes.api.model.WorkloadReference;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RevisionSpec holds the desired state of the Revision (from the client).
@@ -99,12 +96,6 @@ import lombok.experimental.Accessors;
     "topologySpreadConstraints",
     "volumes",
     "workloadRef"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -1061,6 +1052,365 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RevisionSpec)) {
+            return false;
+        }
+        RevisionSpec other = (RevisionSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$activeDeadlineSeconds = this.getActiveDeadlineSeconds();
+        Object other$activeDeadlineSeconds = other.getActiveDeadlineSeconds();
+        if (this$activeDeadlineSeconds == null ? other$activeDeadlineSeconds != null : !this$activeDeadlineSeconds.equals(other$activeDeadlineSeconds)) {
+            return false;
+        }
+        Object this$affinity = this.getAffinity();
+        Object other$affinity = other.getAffinity();
+        if (this$affinity == null ? other$affinity != null : !this$affinity.equals(other$affinity)) {
+            return false;
+        }
+        Object this$automountServiceAccountToken = this.getAutomountServiceAccountToken();
+        Object other$automountServiceAccountToken = other.getAutomountServiceAccountToken();
+        if (this$automountServiceAccountToken == null ? other$automountServiceAccountToken != null : !this$automountServiceAccountToken.equals(other$automountServiceAccountToken)) {
+            return false;
+        }
+        Object this$containerConcurrency = this.getContainerConcurrency();
+        Object other$containerConcurrency = other.getContainerConcurrency();
+        if (this$containerConcurrency == null ? other$containerConcurrency != null : !this$containerConcurrency.equals(other$containerConcurrency)) {
+            return false;
+        }
+        Object this$containers = this.getContainers();
+        Object other$containers = other.getContainers();
+        if (this$containers == null ? other$containers != null : !this$containers.equals(other$containers)) {
+            return false;
+        }
+        Object this$dnsConfig = this.getDnsConfig();
+        Object other$dnsConfig = other.getDnsConfig();
+        if (this$dnsConfig == null ? other$dnsConfig != null : !this$dnsConfig.equals(other$dnsConfig)) {
+            return false;
+        }
+        Object this$dnsPolicy = this.getDnsPolicy();
+        Object other$dnsPolicy = other.getDnsPolicy();
+        if (this$dnsPolicy == null ? other$dnsPolicy != null : !this$dnsPolicy.equals(other$dnsPolicy)) {
+            return false;
+        }
+        Object this$enableServiceLinks = this.getEnableServiceLinks();
+        Object other$enableServiceLinks = other.getEnableServiceLinks();
+        if (this$enableServiceLinks == null ? other$enableServiceLinks != null : !this$enableServiceLinks.equals(other$enableServiceLinks)) {
+            return false;
+        }
+        Object this$ephemeralContainers = this.getEphemeralContainers();
+        Object other$ephemeralContainers = other.getEphemeralContainers();
+        if (this$ephemeralContainers == null ? other$ephemeralContainers != null : !this$ephemeralContainers.equals(other$ephemeralContainers)) {
+            return false;
+        }
+        Object this$hostAliases = this.getHostAliases();
+        Object other$hostAliases = other.getHostAliases();
+        if (this$hostAliases == null ? other$hostAliases != null : !this$hostAliases.equals(other$hostAliases)) {
+            return false;
+        }
+        Object this$hostIPC = this.getHostIPC();
+        Object other$hostIPC = other.getHostIPC();
+        if (this$hostIPC == null ? other$hostIPC != null : !this$hostIPC.equals(other$hostIPC)) {
+            return false;
+        }
+        Object this$hostNetwork = this.getHostNetwork();
+        Object other$hostNetwork = other.getHostNetwork();
+        if (this$hostNetwork == null ? other$hostNetwork != null : !this$hostNetwork.equals(other$hostNetwork)) {
+            return false;
+        }
+        Object this$hostPID = this.getHostPID();
+        Object other$hostPID = other.getHostPID();
+        if (this$hostPID == null ? other$hostPID != null : !this$hostPID.equals(other$hostPID)) {
+            return false;
+        }
+        Object this$hostUsers = this.getHostUsers();
+        Object other$hostUsers = other.getHostUsers();
+        if (this$hostUsers == null ? other$hostUsers != null : !this$hostUsers.equals(other$hostUsers)) {
+            return false;
+        }
+        Object this$hostname = this.getHostname();
+        Object other$hostname = other.getHostname();
+        if (this$hostname == null ? other$hostname != null : !this$hostname.equals(other$hostname)) {
+            return false;
+        }
+        Object this$hostnameOverride = this.getHostnameOverride();
+        Object other$hostnameOverride = other.getHostnameOverride();
+        if (this$hostnameOverride == null ? other$hostnameOverride != null : !this$hostnameOverride.equals(other$hostnameOverride)) {
+            return false;
+        }
+        Object this$idleTimeoutSeconds = this.getIdleTimeoutSeconds();
+        Object other$idleTimeoutSeconds = other.getIdleTimeoutSeconds();
+        if (this$idleTimeoutSeconds == null ? other$idleTimeoutSeconds != null : !this$idleTimeoutSeconds.equals(other$idleTimeoutSeconds)) {
+            return false;
+        }
+        Object this$imagePullSecrets = this.getImagePullSecrets();
+        Object other$imagePullSecrets = other.getImagePullSecrets();
+        if (this$imagePullSecrets == null ? other$imagePullSecrets != null : !this$imagePullSecrets.equals(other$imagePullSecrets)) {
+            return false;
+        }
+        Object this$initContainers = this.getInitContainers();
+        Object other$initContainers = other.getInitContainers();
+        if (this$initContainers == null ? other$initContainers != null : !this$initContainers.equals(other$initContainers)) {
+            return false;
+        }
+        Object this$nodeName = this.getNodeName();
+        Object other$nodeName = other.getNodeName();
+        if (this$nodeName == null ? other$nodeName != null : !this$nodeName.equals(other$nodeName)) {
+            return false;
+        }
+        Object this$nodeSelector = this.getNodeSelector();
+        Object other$nodeSelector = other.getNodeSelector();
+        if (this$nodeSelector == null ? other$nodeSelector != null : !this$nodeSelector.equals(other$nodeSelector)) {
+            return false;
+        }
+        Object this$os = this.getOs();
+        Object other$os = other.getOs();
+        if (this$os == null ? other$os != null : !this$os.equals(other$os)) {
+            return false;
+        }
+        Object this$overhead = this.getOverhead();
+        Object other$overhead = other.getOverhead();
+        if (this$overhead == null ? other$overhead != null : !this$overhead.equals(other$overhead)) {
+            return false;
+        }
+        Object this$preemptionPolicy = this.getPreemptionPolicy();
+        Object other$preemptionPolicy = other.getPreemptionPolicy();
+        if (this$preemptionPolicy == null ? other$preemptionPolicy != null : !this$preemptionPolicy.equals(other$preemptionPolicy)) {
+            return false;
+        }
+        Object this$priority = this.getPriority();
+        Object other$priority = other.getPriority();
+        if (this$priority == null ? other$priority != null : !this$priority.equals(other$priority)) {
+            return false;
+        }
+        Object this$priorityClassName = this.getPriorityClassName();
+        Object other$priorityClassName = other.getPriorityClassName();
+        if (this$priorityClassName == null ? other$priorityClassName != null : !this$priorityClassName.equals(other$priorityClassName)) {
+            return false;
+        }
+        Object this$readinessGates = this.getReadinessGates();
+        Object other$readinessGates = other.getReadinessGates();
+        if (this$readinessGates == null ? other$readinessGates != null : !this$readinessGates.equals(other$readinessGates)) {
+            return false;
+        }
+        Object this$resourceClaims = this.getResourceClaims();
+        Object other$resourceClaims = other.getResourceClaims();
+        if (this$resourceClaims == null ? other$resourceClaims != null : !this$resourceClaims.equals(other$resourceClaims)) {
+            return false;
+        }
+        Object this$resources = this.getResources();
+        Object other$resources = other.getResources();
+        if (this$resources == null ? other$resources != null : !this$resources.equals(other$resources)) {
+            return false;
+        }
+        Object this$responseStartTimeoutSeconds = this.getResponseStartTimeoutSeconds();
+        Object other$responseStartTimeoutSeconds = other.getResponseStartTimeoutSeconds();
+        if (this$responseStartTimeoutSeconds == null ? other$responseStartTimeoutSeconds != null : !this$responseStartTimeoutSeconds.equals(other$responseStartTimeoutSeconds)) {
+            return false;
+        }
+        Object this$restartPolicy = this.getRestartPolicy();
+        Object other$restartPolicy = other.getRestartPolicy();
+        if (this$restartPolicy == null ? other$restartPolicy != null : !this$restartPolicy.equals(other$restartPolicy)) {
+            return false;
+        }
+        Object this$runtimeClassName = this.getRuntimeClassName();
+        Object other$runtimeClassName = other.getRuntimeClassName();
+        if (this$runtimeClassName == null ? other$runtimeClassName != null : !this$runtimeClassName.equals(other$runtimeClassName)) {
+            return false;
+        }
+        Object this$schedulerName = this.getSchedulerName();
+        Object other$schedulerName = other.getSchedulerName();
+        if (this$schedulerName == null ? other$schedulerName != null : !this$schedulerName.equals(other$schedulerName)) {
+            return false;
+        }
+        Object this$schedulingGates = this.getSchedulingGates();
+        Object other$schedulingGates = other.getSchedulingGates();
+        if (this$schedulingGates == null ? other$schedulingGates != null : !this$schedulingGates.equals(other$schedulingGates)) {
+            return false;
+        }
+        Object this$securityContext = this.getSecurityContext();
+        Object other$securityContext = other.getSecurityContext();
+        if (this$securityContext == null ? other$securityContext != null : !this$securityContext.equals(other$securityContext)) {
+            return false;
+        }
+        Object this$serviceAccount = this.getServiceAccount();
+        Object other$serviceAccount = other.getServiceAccount();
+        if (this$serviceAccount == null ? other$serviceAccount != null : !this$serviceAccount.equals(other$serviceAccount)) {
+            return false;
+        }
+        Object this$serviceAccountName = this.getServiceAccountName();
+        Object other$serviceAccountName = other.getServiceAccountName();
+        if (this$serviceAccountName == null ? other$serviceAccountName != null : !this$serviceAccountName.equals(other$serviceAccountName)) {
+            return false;
+        }
+        Object this$setHostnameAsFQDN = this.getSetHostnameAsFQDN();
+        Object other$setHostnameAsFQDN = other.getSetHostnameAsFQDN();
+        if (this$setHostnameAsFQDN == null ? other$setHostnameAsFQDN != null : !this$setHostnameAsFQDN.equals(other$setHostnameAsFQDN)) {
+            return false;
+        }
+        Object this$shareProcessNamespace = this.getShareProcessNamespace();
+        Object other$shareProcessNamespace = other.getShareProcessNamespace();
+        if (this$shareProcessNamespace == null ? other$shareProcessNamespace != null : !this$shareProcessNamespace.equals(other$shareProcessNamespace)) {
+            return false;
+        }
+        Object this$subdomain = this.getSubdomain();
+        Object other$subdomain = other.getSubdomain();
+        if (this$subdomain == null ? other$subdomain != null : !this$subdomain.equals(other$subdomain)) {
+            return false;
+        }
+        Object this$terminationGracePeriodSeconds = this.getTerminationGracePeriodSeconds();
+        Object other$terminationGracePeriodSeconds = other.getTerminationGracePeriodSeconds();
+        if (this$terminationGracePeriodSeconds == null ? other$terminationGracePeriodSeconds != null : !this$terminationGracePeriodSeconds.equals(other$terminationGracePeriodSeconds)) {
+            return false;
+        }
+        Object this$timeoutSeconds = this.getTimeoutSeconds();
+        Object other$timeoutSeconds = other.getTimeoutSeconds();
+        if (this$timeoutSeconds == null ? other$timeoutSeconds != null : !this$timeoutSeconds.equals(other$timeoutSeconds)) {
+            return false;
+        }
+        Object this$tolerations = this.getTolerations();
+        Object other$tolerations = other.getTolerations();
+        if (this$tolerations == null ? other$tolerations != null : !this$tolerations.equals(other$tolerations)) {
+            return false;
+        }
+        Object this$topologySpreadConstraints = this.getTopologySpreadConstraints();
+        Object other$topologySpreadConstraints = other.getTopologySpreadConstraints();
+        if (this$topologySpreadConstraints == null ? other$topologySpreadConstraints != null : !this$topologySpreadConstraints.equals(other$topologySpreadConstraints)) {
+            return false;
+        }
+        Object this$volumes = this.getVolumes();
+        Object other$volumes = other.getVolumes();
+        if (this$volumes == null ? other$volumes != null : !this$volumes.equals(other$volumes)) {
+            return false;
+        }
+        Object this$workloadRef = this.getWorkloadRef();
+        Object other$workloadRef = other.getWorkloadRef();
+        if (this$workloadRef == null ? other$workloadRef != null : !this$workloadRef.equals(other$workloadRef)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RevisionSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $activeDeadlineSeconds = this.getActiveDeadlineSeconds();
+        result = result * prime + ($activeDeadlineSeconds == null ? 43 : $activeDeadlineSeconds.hashCode());
+        Object $affinity = this.getAffinity();
+        result = result * prime + ($affinity == null ? 43 : $affinity.hashCode());
+        Object $automountServiceAccountToken = this.getAutomountServiceAccountToken();
+        result = result * prime + ($automountServiceAccountToken == null ? 43 : $automountServiceAccountToken.hashCode());
+        Object $containerConcurrency = this.getContainerConcurrency();
+        result = result * prime + ($containerConcurrency == null ? 43 : $containerConcurrency.hashCode());
+        Object $containers = this.getContainers();
+        result = result * prime + ($containers == null ? 43 : $containers.hashCode());
+        Object $dnsConfig = this.getDnsConfig();
+        result = result * prime + ($dnsConfig == null ? 43 : $dnsConfig.hashCode());
+        Object $dnsPolicy = this.getDnsPolicy();
+        result = result * prime + ($dnsPolicy == null ? 43 : $dnsPolicy.hashCode());
+        Object $enableServiceLinks = this.getEnableServiceLinks();
+        result = result * prime + ($enableServiceLinks == null ? 43 : $enableServiceLinks.hashCode());
+        Object $ephemeralContainers = this.getEphemeralContainers();
+        result = result * prime + ($ephemeralContainers == null ? 43 : $ephemeralContainers.hashCode());
+        Object $hostAliases = this.getHostAliases();
+        result = result * prime + ($hostAliases == null ? 43 : $hostAliases.hashCode());
+        Object $hostIPC = this.getHostIPC();
+        result = result * prime + ($hostIPC == null ? 43 : $hostIPC.hashCode());
+        Object $hostNetwork = this.getHostNetwork();
+        result = result * prime + ($hostNetwork == null ? 43 : $hostNetwork.hashCode());
+        Object $hostPID = this.getHostPID();
+        result = result * prime + ($hostPID == null ? 43 : $hostPID.hashCode());
+        Object $hostUsers = this.getHostUsers();
+        result = result * prime + ($hostUsers == null ? 43 : $hostUsers.hashCode());
+        Object $hostname = this.getHostname();
+        result = result * prime + ($hostname == null ? 43 : $hostname.hashCode());
+        Object $hostnameOverride = this.getHostnameOverride();
+        result = result * prime + ($hostnameOverride == null ? 43 : $hostnameOverride.hashCode());
+        Object $idleTimeoutSeconds = this.getIdleTimeoutSeconds();
+        result = result * prime + ($idleTimeoutSeconds == null ? 43 : $idleTimeoutSeconds.hashCode());
+        Object $imagePullSecrets = this.getImagePullSecrets();
+        result = result * prime + ($imagePullSecrets == null ? 43 : $imagePullSecrets.hashCode());
+        Object $initContainers = this.getInitContainers();
+        result = result * prime + ($initContainers == null ? 43 : $initContainers.hashCode());
+        Object $nodeName = this.getNodeName();
+        result = result * prime + ($nodeName == null ? 43 : $nodeName.hashCode());
+        Object $nodeSelector = this.getNodeSelector();
+        result = result * prime + ($nodeSelector == null ? 43 : $nodeSelector.hashCode());
+        Object $os = this.getOs();
+        result = result * prime + ($os == null ? 43 : $os.hashCode());
+        Object $overhead = this.getOverhead();
+        result = result * prime + ($overhead == null ? 43 : $overhead.hashCode());
+        Object $preemptionPolicy = this.getPreemptionPolicy();
+        result = result * prime + ($preemptionPolicy == null ? 43 : $preemptionPolicy.hashCode());
+        Object $priority = this.getPriority();
+        result = result * prime + ($priority == null ? 43 : $priority.hashCode());
+        Object $priorityClassName = this.getPriorityClassName();
+        result = result * prime + ($priorityClassName == null ? 43 : $priorityClassName.hashCode());
+        Object $readinessGates = this.getReadinessGates();
+        result = result * prime + ($readinessGates == null ? 43 : $readinessGates.hashCode());
+        Object $resourceClaims = this.getResourceClaims();
+        result = result * prime + ($resourceClaims == null ? 43 : $resourceClaims.hashCode());
+        Object $resources = this.getResources();
+        result = result * prime + ($resources == null ? 43 : $resources.hashCode());
+        Object $responseStartTimeoutSeconds = this.getResponseStartTimeoutSeconds();
+        result = result * prime + ($responseStartTimeoutSeconds == null ? 43 : $responseStartTimeoutSeconds.hashCode());
+        Object $restartPolicy = this.getRestartPolicy();
+        result = result * prime + ($restartPolicy == null ? 43 : $restartPolicy.hashCode());
+        Object $runtimeClassName = this.getRuntimeClassName();
+        result = result * prime + ($runtimeClassName == null ? 43 : $runtimeClassName.hashCode());
+        Object $schedulerName = this.getSchedulerName();
+        result = result * prime + ($schedulerName == null ? 43 : $schedulerName.hashCode());
+        Object $schedulingGates = this.getSchedulingGates();
+        result = result * prime + ($schedulingGates == null ? 43 : $schedulingGates.hashCode());
+        Object $securityContext = this.getSecurityContext();
+        result = result * prime + ($securityContext == null ? 43 : $securityContext.hashCode());
+        Object $serviceAccount = this.getServiceAccount();
+        result = result * prime + ($serviceAccount == null ? 43 : $serviceAccount.hashCode());
+        Object $serviceAccountName = this.getServiceAccountName();
+        result = result * prime + ($serviceAccountName == null ? 43 : $serviceAccountName.hashCode());
+        Object $setHostnameAsFQDN = this.getSetHostnameAsFQDN();
+        result = result * prime + ($setHostnameAsFQDN == null ? 43 : $setHostnameAsFQDN.hashCode());
+        Object $shareProcessNamespace = this.getShareProcessNamespace();
+        result = result * prime + ($shareProcessNamespace == null ? 43 : $shareProcessNamespace.hashCode());
+        Object $subdomain = this.getSubdomain();
+        result = result * prime + ($subdomain == null ? 43 : $subdomain.hashCode());
+        Object $terminationGracePeriodSeconds = this.getTerminationGracePeriodSeconds();
+        result = result * prime + ($terminationGracePeriodSeconds == null ? 43 : $terminationGracePeriodSeconds.hashCode());
+        Object $timeoutSeconds = this.getTimeoutSeconds();
+        result = result * prime + ($timeoutSeconds == null ? 43 : $timeoutSeconds.hashCode());
+        Object $tolerations = this.getTolerations();
+        result = result * prime + ($tolerations == null ? 43 : $tolerations.hashCode());
+        Object $topologySpreadConstraints = this.getTopologySpreadConstraints();
+        result = result * prime + ($topologySpreadConstraints == null ? 43 : $topologySpreadConstraints.hashCode());
+        Object $volumes = this.getVolumes();
+        result = result * prime + ($volumes == null ? 43 : $volumes.hashCode());
+        Object $workloadRef = this.getWorkloadRef();
+        result = result * prime + ($workloadRef == null ? 43 : $workloadRef.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RevisionSpec(" + "activeDeadlineSeconds=" + this.getActiveDeadlineSeconds() + ", affinity=" + this.getAffinity() + ", automountServiceAccountToken=" + this.getAutomountServiceAccountToken() + ", containerConcurrency=" + this.getContainerConcurrency() + ", containers=" + this.getContainers() + ", dnsConfig=" + this.getDnsConfig() + ", dnsPolicy=" + this.getDnsPolicy() + ", enableServiceLinks=" + this.getEnableServiceLinks() + ", ephemeralContainers=" + this.getEphemeralContainers() + ", hostAliases=" + this.getHostAliases() + ", hostIPC=" + this.getHostIPC() + ", hostNetwork=" + this.getHostNetwork() + ", hostPID=" + this.getHostPID() + ", hostUsers=" + this.getHostUsers() + ", hostname=" + this.getHostname() + ", hostnameOverride=" + this.getHostnameOverride() + ", idleTimeoutSeconds=" + this.getIdleTimeoutSeconds() + ", imagePullSecrets=" + this.getImagePullSecrets() + ", initContainers=" + this.getInitContainers() + ", nodeName=" + this.getNodeName() + ", nodeSelector=" + this.getNodeSelector() + ", os=" + this.getOs() + ", overhead=" + this.getOverhead() + ", preemptionPolicy=" + this.getPreemptionPolicy() + ", priority=" + this.getPriority() + ", priorityClassName=" + this.getPriorityClassName() + ", readinessGates=" + this.getReadinessGates() + ", resourceClaims=" + this.getResourceClaims() + ", resources=" + this.getResources() + ", responseStartTimeoutSeconds=" + this.getResponseStartTimeoutSeconds() + ", restartPolicy=" + this.getRestartPolicy() + ", runtimeClassName=" + this.getRuntimeClassName() + ", schedulerName=" + this.getSchedulerName() + ", schedulingGates=" + this.getSchedulingGates() + ", securityContext=" + this.getSecurityContext() + ", serviceAccount=" + this.getServiceAccount() + ", serviceAccountName=" + this.getServiceAccountName() + ", setHostnameAsFQDN=" + this.getSetHostnameAsFQDN() + ", shareProcessNamespace=" + this.getShareProcessNamespace() + ", subdomain=" + this.getSubdomain() + ", terminationGracePeriodSeconds=" + this.getTerminationGracePeriodSeconds() + ", timeoutSeconds=" + this.getTimeoutSeconds() + ", tolerations=" + this.getTolerations() + ", topologySpreadConstraints=" + this.getTopologySpreadConstraints() + ", volumes=" + this.getVolumes() + ", workloadRef=" + this.getWorkloadRef() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

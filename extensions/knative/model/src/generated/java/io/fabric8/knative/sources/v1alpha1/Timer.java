@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
     "message",
     "period",
     "repeatCount"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -171,6 +162,71 @@ public class Timer implements Editable<TimerBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Timer)) {
+            return false;
+        }
+        Timer other = (Timer) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$contentType = this.getContentType();
+        Object other$contentType = other.getContentType();
+        if (this$contentType == null ? other$contentType != null : !this$contentType.equals(other$contentType)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$period = this.getPeriod();
+        Object other$period = other.getPeriod();
+        if (this$period == null ? other$period != null : !this$period.equals(other$period)) {
+            return false;
+        }
+        Object this$repeatCount = this.getRepeatCount();
+        Object other$repeatCount = other.getRepeatCount();
+        if (this$repeatCount == null ? other$repeatCount != null : !this$repeatCount.equals(other$repeatCount)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Timer;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $contentType = this.getContentType();
+        result = result * prime + ($contentType == null ? 43 : $contentType.hashCode());
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $period = this.getPeriod();
+        result = result * prime + ($period == null ? 43 : $period.hashCode());
+        Object $repeatCount = this.getRepeatCount();
+        result = result * prime + ($repeatCount == null ? 43 : $repeatCount.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Timer(" + "contentType=" + this.getContentType() + ", message=" + this.getMessage() + ", period=" + this.getPeriod() + ", repeatCount=" + this.getRepeatCount() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

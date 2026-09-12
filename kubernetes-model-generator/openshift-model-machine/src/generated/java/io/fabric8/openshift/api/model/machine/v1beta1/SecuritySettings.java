@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SecuritySettings define the security type and the UEFI settings of the virtual machine.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "confidentialVM",
     "securityType",
     "trustedLaunch"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -159,6 +150,64 @@ public class SecuritySettings implements Editable<SecuritySettingsBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SecuritySettings)) {
+            return false;
+        }
+        SecuritySettings other = (SecuritySettings) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$confidentialVM = this.getConfidentialVM();
+        Object other$confidentialVM = other.getConfidentialVM();
+        if (this$confidentialVM == null ? other$confidentialVM != null : !this$confidentialVM.equals(other$confidentialVM)) {
+            return false;
+        }
+        Object this$securityType = this.getSecurityType();
+        Object other$securityType = other.getSecurityType();
+        if (this$securityType == null ? other$securityType != null : !this$securityType.equals(other$securityType)) {
+            return false;
+        }
+        Object this$trustedLaunch = this.getTrustedLaunch();
+        Object other$trustedLaunch = other.getTrustedLaunch();
+        if (this$trustedLaunch == null ? other$trustedLaunch != null : !this$trustedLaunch.equals(other$trustedLaunch)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SecuritySettings;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $confidentialVM = this.getConfidentialVM();
+        result = result * prime + ($confidentialVM == null ? 43 : $confidentialVM.hashCode());
+        Object $securityType = this.getSecurityType();
+        result = result * prime + ($securityType == null ? 43 : $securityType.hashCode());
+        Object $trustedLaunch = this.getTrustedLaunch();
+        result = result * prime + ($trustedLaunch == null ? 43 : $trustedLaunch.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SecuritySettings(" + "confidentialVM=" + this.getConfidentialVM() + ", securityType=" + this.getSecurityType() + ", trustedLaunch=" + this.getTrustedLaunch() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

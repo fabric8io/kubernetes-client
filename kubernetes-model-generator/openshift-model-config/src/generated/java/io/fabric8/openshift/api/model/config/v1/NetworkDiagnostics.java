@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -37,12 +34,6 @@ import lombok.experimental.Accessors;
     "mode",
     "sourcePlacement",
     "targetPlacement"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -144,6 +135,64 @@ public class NetworkDiagnostics implements Editable<NetworkDiagnosticsBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkDiagnostics)) {
+            return false;
+        }
+        NetworkDiagnostics other = (NetworkDiagnostics) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$mode = this.getMode();
+        Object other$mode = other.getMode();
+        if (this$mode == null ? other$mode != null : !this$mode.equals(other$mode)) {
+            return false;
+        }
+        Object this$sourcePlacement = this.getSourcePlacement();
+        Object other$sourcePlacement = other.getSourcePlacement();
+        if (this$sourcePlacement == null ? other$sourcePlacement != null : !this$sourcePlacement.equals(other$sourcePlacement)) {
+            return false;
+        }
+        Object this$targetPlacement = this.getTargetPlacement();
+        Object other$targetPlacement = other.getTargetPlacement();
+        if (this$targetPlacement == null ? other$targetPlacement != null : !this$targetPlacement.equals(other$targetPlacement)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkDiagnostics;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $mode = this.getMode();
+        result = result * prime + ($mode == null ? 43 : $mode.hashCode());
+        Object $sourcePlacement = this.getSourcePlacement();
+        result = result * prime + ($sourcePlacement == null ? 43 : $sourcePlacement.hashCode());
+        Object $targetPlacement = this.getTargetPlacement();
+        result = result * prime + ($targetPlacement == null ? 43 : $targetPlacement.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkDiagnostics(" + "mode=" + this.getMode() + ", sourcePlacement=" + this.getSourcePlacement() + ", targetPlacement=" + this.getTargetPlacement() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

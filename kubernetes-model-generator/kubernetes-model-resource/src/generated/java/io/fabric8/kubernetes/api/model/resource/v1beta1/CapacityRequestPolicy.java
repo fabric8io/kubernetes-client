@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CapacityRequestPolicy defines how requests consume device capacity.<br><p> <br><p> Must not set more than one ValidRequestValues.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "default",
     "validRange",
     "validValues"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -165,6 +156,64 @@ public class CapacityRequestPolicy implements Editable<CapacityRequestPolicyBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CapacityRequestPolicy)) {
+            return false;
+        }
+        CapacityRequestPolicy other = (CapacityRequestPolicy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$_default = this.getDefault();
+        Object other$_default = other.getDefault();
+        if (this$_default == null ? other$_default != null : !this$_default.equals(other$_default)) {
+            return false;
+        }
+        Object this$validRange = this.getValidRange();
+        Object other$validRange = other.getValidRange();
+        if (this$validRange == null ? other$validRange != null : !this$validRange.equals(other$validRange)) {
+            return false;
+        }
+        Object this$validValues = this.getValidValues();
+        Object other$validValues = other.getValidValues();
+        if (this$validValues == null ? other$validValues != null : !this$validValues.equals(other$validValues)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CapacityRequestPolicy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $_default = this.getDefault();
+        result = result * prime + ($_default == null ? 43 : $_default.hashCode());
+        Object $validRange = this.getValidRange();
+        result = result * prime + ($validRange == null ? 43 : $validRange.hashCode());
+        Object $validValues = this.getValidValues();
+        result = result * prime + ($validValues == null ? 43 : $validValues.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CapacityRequestPolicy(" + "_default=" + this.getDefault() + ", validRange=" + this.getValidRange() + ", validValues=" + this.getValidValues() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

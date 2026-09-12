@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DNSNameResolverResolvedName describes the details of a resolved DNS name.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "dnsName",
     "resolutionFailures",
     "resolvedAddresses"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -187,6 +178,71 @@ public class DNSNameResolverResolvedName implements Editable<DNSNameResolverReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DNSNameResolverResolvedName)) {
+            return false;
+        }
+        DNSNameResolverResolvedName other = (DNSNameResolverResolvedName) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$dnsName = this.getDnsName();
+        Object other$dnsName = other.getDnsName();
+        if (this$dnsName == null ? other$dnsName != null : !this$dnsName.equals(other$dnsName)) {
+            return false;
+        }
+        Object this$resolutionFailures = this.getResolutionFailures();
+        Object other$resolutionFailures = other.getResolutionFailures();
+        if (this$resolutionFailures == null ? other$resolutionFailures != null : !this$resolutionFailures.equals(other$resolutionFailures)) {
+            return false;
+        }
+        Object this$resolvedAddresses = this.getResolvedAddresses();
+        Object other$resolvedAddresses = other.getResolvedAddresses();
+        if (this$resolvedAddresses == null ? other$resolvedAddresses != null : !this$resolvedAddresses.equals(other$resolvedAddresses)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DNSNameResolverResolvedName;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $dnsName = this.getDnsName();
+        result = result * prime + ($dnsName == null ? 43 : $dnsName.hashCode());
+        Object $resolutionFailures = this.getResolutionFailures();
+        result = result * prime + ($resolutionFailures == null ? 43 : $resolutionFailures.hashCode());
+        Object $resolvedAddresses = this.getResolvedAddresses();
+        result = result * prime + ($resolvedAddresses == null ? 43 : $resolvedAddresses.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DNSNameResolverResolvedName(" + "conditions=" + this.getConditions() + ", dnsName=" + this.getDnsName() + ", resolutionFailures=" + this.getResolutionFailures() + ", resolvedAddresses=" + this.getResolvedAddresses() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

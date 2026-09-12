@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ContainerStatus contains details for the current status of this container.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "stopSignal",
     "user",
     "volumeMounts"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -379,6 +370,148 @@ public class ContainerStatus implements Editable<ContainerStatusBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ContainerStatus)) {
+            return false;
+        }
+        ContainerStatus other = (ContainerStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allocatedResources = this.getAllocatedResources();
+        Object other$allocatedResources = other.getAllocatedResources();
+        if (this$allocatedResources == null ? other$allocatedResources != null : !this$allocatedResources.equals(other$allocatedResources)) {
+            return false;
+        }
+        Object this$allocatedResourcesStatus = this.getAllocatedResourcesStatus();
+        Object other$allocatedResourcesStatus = other.getAllocatedResourcesStatus();
+        if (this$allocatedResourcesStatus == null ? other$allocatedResourcesStatus != null : !this$allocatedResourcesStatus.equals(other$allocatedResourcesStatus)) {
+            return false;
+        }
+        Object this$containerID = this.getContainerID();
+        Object other$containerID = other.getContainerID();
+        if (this$containerID == null ? other$containerID != null : !this$containerID.equals(other$containerID)) {
+            return false;
+        }
+        Object this$image = this.getImage();
+        Object other$image = other.getImage();
+        if (this$image == null ? other$image != null : !this$image.equals(other$image)) {
+            return false;
+        }
+        Object this$imageID = this.getImageID();
+        Object other$imageID = other.getImageID();
+        if (this$imageID == null ? other$imageID != null : !this$imageID.equals(other$imageID)) {
+            return false;
+        }
+        Object this$lastState = this.getLastState();
+        Object other$lastState = other.getLastState();
+        if (this$lastState == null ? other$lastState != null : !this$lastState.equals(other$lastState)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$ready = this.getReady();
+        Object other$ready = other.getReady();
+        if (this$ready == null ? other$ready != null : !this$ready.equals(other$ready)) {
+            return false;
+        }
+        Object this$resources = this.getResources();
+        Object other$resources = other.getResources();
+        if (this$resources == null ? other$resources != null : !this$resources.equals(other$resources)) {
+            return false;
+        }
+        Object this$restartCount = this.getRestartCount();
+        Object other$restartCount = other.getRestartCount();
+        if (this$restartCount == null ? other$restartCount != null : !this$restartCount.equals(other$restartCount)) {
+            return false;
+        }
+        Object this$started = this.getStarted();
+        Object other$started = other.getStarted();
+        if (this$started == null ? other$started != null : !this$started.equals(other$started)) {
+            return false;
+        }
+        Object this$state = this.getState();
+        Object other$state = other.getState();
+        if (this$state == null ? other$state != null : !this$state.equals(other$state)) {
+            return false;
+        }
+        Object this$stopSignal = this.getStopSignal();
+        Object other$stopSignal = other.getStopSignal();
+        if (this$stopSignal == null ? other$stopSignal != null : !this$stopSignal.equals(other$stopSignal)) {
+            return false;
+        }
+        Object this$user = this.getUser();
+        Object other$user = other.getUser();
+        if (this$user == null ? other$user != null : !this$user.equals(other$user)) {
+            return false;
+        }
+        Object this$volumeMounts = this.getVolumeMounts();
+        Object other$volumeMounts = other.getVolumeMounts();
+        if (this$volumeMounts == null ? other$volumeMounts != null : !this$volumeMounts.equals(other$volumeMounts)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ContainerStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allocatedResources = this.getAllocatedResources();
+        result = result * prime + ($allocatedResources == null ? 43 : $allocatedResources.hashCode());
+        Object $allocatedResourcesStatus = this.getAllocatedResourcesStatus();
+        result = result * prime + ($allocatedResourcesStatus == null ? 43 : $allocatedResourcesStatus.hashCode());
+        Object $containerID = this.getContainerID();
+        result = result * prime + ($containerID == null ? 43 : $containerID.hashCode());
+        Object $image = this.getImage();
+        result = result * prime + ($image == null ? 43 : $image.hashCode());
+        Object $imageID = this.getImageID();
+        result = result * prime + ($imageID == null ? 43 : $imageID.hashCode());
+        Object $lastState = this.getLastState();
+        result = result * prime + ($lastState == null ? 43 : $lastState.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $ready = this.getReady();
+        result = result * prime + ($ready == null ? 43 : $ready.hashCode());
+        Object $resources = this.getResources();
+        result = result * prime + ($resources == null ? 43 : $resources.hashCode());
+        Object $restartCount = this.getRestartCount();
+        result = result * prime + ($restartCount == null ? 43 : $restartCount.hashCode());
+        Object $started = this.getStarted();
+        result = result * prime + ($started == null ? 43 : $started.hashCode());
+        Object $state = this.getState();
+        result = result * prime + ($state == null ? 43 : $state.hashCode());
+        Object $stopSignal = this.getStopSignal();
+        result = result * prime + ($stopSignal == null ? 43 : $stopSignal.hashCode());
+        Object $user = this.getUser();
+        result = result * prime + ($user == null ? 43 : $user.hashCode());
+        Object $volumeMounts = this.getVolumeMounts();
+        result = result * prime + ($volumeMounts == null ? 43 : $volumeMounts.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ContainerStatus(" + "allocatedResources=" + this.getAllocatedResources() + ", allocatedResourcesStatus=" + this.getAllocatedResourcesStatus() + ", containerID=" + this.getContainerID() + ", image=" + this.getImage() + ", imageID=" + this.getImageID() + ", lastState=" + this.getLastState() + ", name=" + this.getName() + ", ready=" + this.getReady() + ", resources=" + this.getResources() + ", restartCount=" + this.getRestartCount() + ", started=" + this.getStarted() + ", state=" + this.getState() + ", stopSignal=" + this.getStopSignal() + ", user=" + this.getUser() + ", volumeMounts=" + this.getVolumeMounts() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

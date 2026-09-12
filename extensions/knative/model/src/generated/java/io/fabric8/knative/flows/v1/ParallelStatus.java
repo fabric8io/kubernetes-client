@@ -34,9 +34,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ParallelStatus represents the current state of a Parallel.
@@ -53,12 +50,6 @@ import lombok.experimental.Accessors;
     "ingressChannelStatus",
     "observedGeneration",
     "policies"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -296,6 +287,106 @@ public class ParallelStatus implements Editable<ParallelStatusBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ParallelStatus)) {
+            return false;
+        }
+        ParallelStatus other = (ParallelStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$address = this.getAddress();
+        Object other$address = other.getAddress();
+        if (this$address == null ? other$address != null : !this$address.equals(other$address)) {
+            return false;
+        }
+        Object this$addresses = this.getAddresses();
+        Object other$addresses = other.getAddresses();
+        if (this$addresses == null ? other$addresses != null : !this$addresses.equals(other$addresses)) {
+            return false;
+        }
+        Object this$annotations = this.getAnnotations();
+        Object other$annotations = other.getAnnotations();
+        if (this$annotations == null ? other$annotations != null : !this$annotations.equals(other$annotations)) {
+            return false;
+        }
+        Object this$auth = this.getAuth();
+        Object other$auth = other.getAuth();
+        if (this$auth == null ? other$auth != null : !this$auth.equals(other$auth)) {
+            return false;
+        }
+        Object this$branchStatuses = this.getBranchStatuses();
+        Object other$branchStatuses = other.getBranchStatuses();
+        if (this$branchStatuses == null ? other$branchStatuses != null : !this$branchStatuses.equals(other$branchStatuses)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$ingressChannelStatus = this.getIngressChannelStatus();
+        Object other$ingressChannelStatus = other.getIngressChannelStatus();
+        if (this$ingressChannelStatus == null ? other$ingressChannelStatus != null : !this$ingressChannelStatus.equals(other$ingressChannelStatus)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$policies = this.getPolicies();
+        Object other$policies = other.getPolicies();
+        if (this$policies == null ? other$policies != null : !this$policies.equals(other$policies)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ParallelStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $address = this.getAddress();
+        result = result * prime + ($address == null ? 43 : $address.hashCode());
+        Object $addresses = this.getAddresses();
+        result = result * prime + ($addresses == null ? 43 : $addresses.hashCode());
+        Object $annotations = this.getAnnotations();
+        result = result * prime + ($annotations == null ? 43 : $annotations.hashCode());
+        Object $auth = this.getAuth();
+        result = result * prime + ($auth == null ? 43 : $auth.hashCode());
+        Object $branchStatuses = this.getBranchStatuses();
+        result = result * prime + ($branchStatuses == null ? 43 : $branchStatuses.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $ingressChannelStatus = this.getIngressChannelStatus();
+        result = result * prime + ($ingressChannelStatus == null ? 43 : $ingressChannelStatus.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $policies = this.getPolicies();
+        result = result * prime + ($policies == null ? 43 : $policies.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ParallelStatus(" + "address=" + this.getAddress() + ", addresses=" + this.getAddresses() + ", annotations=" + this.getAnnotations() + ", auth=" + this.getAuth() + ", branchStatuses=" + this.getBranchStatuses() + ", conditions=" + this.getConditions() + ", ingressChannelStatus=" + this.getIngressChannelStatus() + ", observedGeneration=" + this.getObservedGeneration() + ", policies=" + this.getPolicies() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

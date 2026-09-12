@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CertificateDNSNameSelector selects certificates using a label selector, and can optionally select individual DNS names within those certificates. If both MatchLabels and DNSNames are empty, this selector will match all certificates and DNS names within them.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "dnsNames",
     "dnsZones",
     "matchLabels"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -168,6 +159,64 @@ public class CertificateDNSNameSelector implements Editable<CertificateDNSNameSe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CertificateDNSNameSelector)) {
+            return false;
+        }
+        CertificateDNSNameSelector other = (CertificateDNSNameSelector) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$dnsNames = this.getDnsNames();
+        Object other$dnsNames = other.getDnsNames();
+        if (this$dnsNames == null ? other$dnsNames != null : !this$dnsNames.equals(other$dnsNames)) {
+            return false;
+        }
+        Object this$dnsZones = this.getDnsZones();
+        Object other$dnsZones = other.getDnsZones();
+        if (this$dnsZones == null ? other$dnsZones != null : !this$dnsZones.equals(other$dnsZones)) {
+            return false;
+        }
+        Object this$matchLabels = this.getMatchLabels();
+        Object other$matchLabels = other.getMatchLabels();
+        if (this$matchLabels == null ? other$matchLabels != null : !this$matchLabels.equals(other$matchLabels)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CertificateDNSNameSelector;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $dnsNames = this.getDnsNames();
+        result = result * prime + ($dnsNames == null ? 43 : $dnsNames.hashCode());
+        Object $dnsZones = this.getDnsZones();
+        result = result * prime + ($dnsZones == null ? 43 : $dnsZones.hashCode());
+        Object $matchLabels = this.getMatchLabels();
+        result = result * prime + ($matchLabels == null ? 43 : $matchLabels.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CertificateDNSNameSelector(" + "dnsNames=" + this.getDnsNames() + ", dnsZones=" + this.getDnsZones() + ", matchLabels=" + this.getMatchLabels() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

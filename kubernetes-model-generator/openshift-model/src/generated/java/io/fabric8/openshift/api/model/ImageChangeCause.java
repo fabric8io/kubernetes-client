@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageChangeCause contains information about the image that triggered a build
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "fromRef",
     "imageID"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -139,6 +130,57 @@ public class ImageChangeCause implements Editable<ImageChangeCauseBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageChangeCause)) {
+            return false;
+        }
+        ImageChangeCause other = (ImageChangeCause) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$fromRef = this.getFromRef();
+        Object other$fromRef = other.getFromRef();
+        if (this$fromRef == null ? other$fromRef != null : !this$fromRef.equals(other$fromRef)) {
+            return false;
+        }
+        Object this$imageID = this.getImageID();
+        Object other$imageID = other.getImageID();
+        if (this$imageID == null ? other$imageID != null : !this$imageID.equals(other$imageID)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageChangeCause;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $fromRef = this.getFromRef();
+        result = result * prime + ($fromRef == null ? 43 : $fromRef.hashCode());
+        Object $imageID = this.getImageID();
+        result = result * prime + ($imageID == null ? 43 : $imageID.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageChangeCause(" + "fromRef=" + this.getFromRef() + ", imageID=" + this.getImageID() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

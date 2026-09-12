@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
     "awsirsa",
     "csr",
     "grpc"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -159,6 +150,71 @@ public class RegistrationDriverHub implements Editable<RegistrationDriverHubBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RegistrationDriverHub)) {
+            return false;
+        }
+        RegistrationDriverHub other = (RegistrationDriverHub) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$authType = this.getAuthType();
+        Object other$authType = other.getAuthType();
+        if (this$authType == null ? other$authType != null : !this$authType.equals(other$authType)) {
+            return false;
+        }
+        Object this$awsirsa = this.getAwsirsa();
+        Object other$awsirsa = other.getAwsirsa();
+        if (this$awsirsa == null ? other$awsirsa != null : !this$awsirsa.equals(other$awsirsa)) {
+            return false;
+        }
+        Object this$csr = this.getCsr();
+        Object other$csr = other.getCsr();
+        if (this$csr == null ? other$csr != null : !this$csr.equals(other$csr)) {
+            return false;
+        }
+        Object this$grpc = this.getGrpc();
+        Object other$grpc = other.getGrpc();
+        if (this$grpc == null ? other$grpc != null : !this$grpc.equals(other$grpc)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RegistrationDriverHub;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $authType = this.getAuthType();
+        result = result * prime + ($authType == null ? 43 : $authType.hashCode());
+        Object $awsirsa = this.getAwsirsa();
+        result = result * prime + ($awsirsa == null ? 43 : $awsirsa.hashCode());
+        Object $csr = this.getCsr();
+        result = result * prime + ($csr == null ? 43 : $csr.hashCode());
+        Object $grpc = this.getGrpc();
+        result = result * prime + ($grpc == null ? 43 : $grpc.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RegistrationDriverHub(" + "authType=" + this.getAuthType() + ", awsirsa=" + this.getAwsirsa() + ", csr=" + this.getCsr() + ", grpc=" + this.getGrpc() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

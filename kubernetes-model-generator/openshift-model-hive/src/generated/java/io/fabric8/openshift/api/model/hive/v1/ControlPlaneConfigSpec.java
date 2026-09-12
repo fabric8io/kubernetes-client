@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ControlPlaneConfigSpec contains additional configuration settings for a target cluster's control plane.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "apiServerIPOverride",
     "apiURLOverride",
     "servingCertificates"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class ControlPlaneConfigSpec implements Editable<ControlPlaneConfigSpecBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ControlPlaneConfigSpec)) {
+            return false;
+        }
+        ControlPlaneConfigSpec other = (ControlPlaneConfigSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiServerIPOverride = this.getApiServerIPOverride();
+        Object other$apiServerIPOverride = other.getApiServerIPOverride();
+        if (this$apiServerIPOverride == null ? other$apiServerIPOverride != null : !this$apiServerIPOverride.equals(other$apiServerIPOverride)) {
+            return false;
+        }
+        Object this$apiURLOverride = this.getApiURLOverride();
+        Object other$apiURLOverride = other.getApiURLOverride();
+        if (this$apiURLOverride == null ? other$apiURLOverride != null : !this$apiURLOverride.equals(other$apiURLOverride)) {
+            return false;
+        }
+        Object this$servingCertificates = this.getServingCertificates();
+        Object other$servingCertificates = other.getServingCertificates();
+        if (this$servingCertificates == null ? other$servingCertificates != null : !this$servingCertificates.equals(other$servingCertificates)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ControlPlaneConfigSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiServerIPOverride = this.getApiServerIPOverride();
+        result = result * prime + ($apiServerIPOverride == null ? 43 : $apiServerIPOverride.hashCode());
+        Object $apiURLOverride = this.getApiURLOverride();
+        result = result * prime + ($apiURLOverride == null ? 43 : $apiURLOverride.hashCode());
+        Object $servingCertificates = this.getServingCertificates();
+        result = result * prime + ($servingCertificates == null ? 43 : $servingCertificates.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ControlPlaneConfigSpec(" + "apiServerIPOverride=" + this.getApiServerIPOverride() + ", apiURLOverride=" + this.getApiURLOverride() + ", servingCertificates=" + this.getServingCertificates() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

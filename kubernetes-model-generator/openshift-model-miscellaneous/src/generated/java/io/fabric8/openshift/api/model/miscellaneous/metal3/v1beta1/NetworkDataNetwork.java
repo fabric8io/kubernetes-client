@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NetworkDataNetwork represents a network object.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "ipv6",
     "ipv6DHCP",
     "ipv6SLAAC"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -212,6 +203,78 @@ public class NetworkDataNetwork implements Editable<NetworkDataNetworkBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkDataNetwork)) {
+            return false;
+        }
+        NetworkDataNetwork other = (NetworkDataNetwork) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ipv4 = this.getIpv4();
+        Object other$ipv4 = other.getIpv4();
+        if (this$ipv4 == null ? other$ipv4 != null : !this$ipv4.equals(other$ipv4)) {
+            return false;
+        }
+        Object this$ipv4DHCP = this.getIpv4DHCP();
+        Object other$ipv4DHCP = other.getIpv4DHCP();
+        if (this$ipv4DHCP == null ? other$ipv4DHCP != null : !this$ipv4DHCP.equals(other$ipv4DHCP)) {
+            return false;
+        }
+        Object this$ipv6 = this.getIpv6();
+        Object other$ipv6 = other.getIpv6();
+        if (this$ipv6 == null ? other$ipv6 != null : !this$ipv6.equals(other$ipv6)) {
+            return false;
+        }
+        Object this$ipv6DHCP = this.getIpv6DHCP();
+        Object other$ipv6DHCP = other.getIpv6DHCP();
+        if (this$ipv6DHCP == null ? other$ipv6DHCP != null : !this$ipv6DHCP.equals(other$ipv6DHCP)) {
+            return false;
+        }
+        Object this$ipv6SLAAC = this.getIpv6SLAAC();
+        Object other$ipv6SLAAC = other.getIpv6SLAAC();
+        if (this$ipv6SLAAC == null ? other$ipv6SLAAC != null : !this$ipv6SLAAC.equals(other$ipv6SLAAC)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkDataNetwork;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ipv4 = this.getIpv4();
+        result = result * prime + ($ipv4 == null ? 43 : $ipv4.hashCode());
+        Object $ipv4DHCP = this.getIpv4DHCP();
+        result = result * prime + ($ipv4DHCP == null ? 43 : $ipv4DHCP.hashCode());
+        Object $ipv6 = this.getIpv6();
+        result = result * prime + ($ipv6 == null ? 43 : $ipv6.hashCode());
+        Object $ipv6DHCP = this.getIpv6DHCP();
+        result = result * prime + ($ipv6DHCP == null ? 43 : $ipv6DHCP.hashCode());
+        Object $ipv6SLAAC = this.getIpv6SLAAC();
+        result = result * prime + ($ipv6SLAAC == null ? 43 : $ipv6SLAAC.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkDataNetwork(" + "ipv4=" + this.getIpv4() + ", ipv4DHCP=" + this.getIpv4DHCP() + ", ipv6=" + this.getIpv6() + ", ipv6DHCP=" + this.getIpv6DHCP() + ", ipv6SLAAC=" + this.getIpv6SLAAC() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

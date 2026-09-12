@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * IdentityProviderConfig contains configuration for using a specific identity provider
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "openID",
     "requestHeader",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -299,6 +290,113 @@ public class IdentityProviderConfig implements Editable<IdentityProviderConfigBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof IdentityProviderConfig)) {
+            return false;
+        }
+        IdentityProviderConfig other = (IdentityProviderConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$basicAuth = this.getBasicAuth();
+        Object other$basicAuth = other.getBasicAuth();
+        if (this$basicAuth == null ? other$basicAuth != null : !this$basicAuth.equals(other$basicAuth)) {
+            return false;
+        }
+        Object this$github = this.getGithub();
+        Object other$github = other.getGithub();
+        if (this$github == null ? other$github != null : !this$github.equals(other$github)) {
+            return false;
+        }
+        Object this$gitlab = this.getGitlab();
+        Object other$gitlab = other.getGitlab();
+        if (this$gitlab == null ? other$gitlab != null : !this$gitlab.equals(other$gitlab)) {
+            return false;
+        }
+        Object this$google = this.getGoogle();
+        Object other$google = other.getGoogle();
+        if (this$google == null ? other$google != null : !this$google.equals(other$google)) {
+            return false;
+        }
+        Object this$htpasswd = this.getHtpasswd();
+        Object other$htpasswd = other.getHtpasswd();
+        if (this$htpasswd == null ? other$htpasswd != null : !this$htpasswd.equals(other$htpasswd)) {
+            return false;
+        }
+        Object this$keystone = this.getKeystone();
+        Object other$keystone = other.getKeystone();
+        if (this$keystone == null ? other$keystone != null : !this$keystone.equals(other$keystone)) {
+            return false;
+        }
+        Object this$ldap = this.getLdap();
+        Object other$ldap = other.getLdap();
+        if (this$ldap == null ? other$ldap != null : !this$ldap.equals(other$ldap)) {
+            return false;
+        }
+        Object this$openID = this.getOpenID();
+        Object other$openID = other.getOpenID();
+        if (this$openID == null ? other$openID != null : !this$openID.equals(other$openID)) {
+            return false;
+        }
+        Object this$requestHeader = this.getRequestHeader();
+        Object other$requestHeader = other.getRequestHeader();
+        if (this$requestHeader == null ? other$requestHeader != null : !this$requestHeader.equals(other$requestHeader)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof IdentityProviderConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $basicAuth = this.getBasicAuth();
+        result = result * prime + ($basicAuth == null ? 43 : $basicAuth.hashCode());
+        Object $github = this.getGithub();
+        result = result * prime + ($github == null ? 43 : $github.hashCode());
+        Object $gitlab = this.getGitlab();
+        result = result * prime + ($gitlab == null ? 43 : $gitlab.hashCode());
+        Object $google = this.getGoogle();
+        result = result * prime + ($google == null ? 43 : $google.hashCode());
+        Object $htpasswd = this.getHtpasswd();
+        result = result * prime + ($htpasswd == null ? 43 : $htpasswd.hashCode());
+        Object $keystone = this.getKeystone();
+        result = result * prime + ($keystone == null ? 43 : $keystone.hashCode());
+        Object $ldap = this.getLdap();
+        result = result * prime + ($ldap == null ? 43 : $ldap.hashCode());
+        Object $openID = this.getOpenID();
+        result = result * prime + ($openID == null ? 43 : $openID.hashCode());
+        Object $requestHeader = this.getRequestHeader();
+        result = result * prime + ($requestHeader == null ? 43 : $requestHeader.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IdentityProviderConfig(" + "basicAuth=" + this.getBasicAuth() + ", github=" + this.getGithub() + ", gitlab=" + this.getGitlab() + ", google=" + this.getGoogle() + ", htpasswd=" + this.getHtpasswd() + ", keystone=" + this.getKeystone() + ", ldap=" + this.getLdap() + ", openID=" + this.getOpenID() + ", requestHeader=" + this.getRequestHeader() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

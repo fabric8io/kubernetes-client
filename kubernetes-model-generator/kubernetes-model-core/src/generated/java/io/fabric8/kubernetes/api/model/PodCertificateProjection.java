@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PodCertificateProjection provides a private key and X.509 certificate in the pod filesystem.
@@ -31,12 +28,6 @@ import lombok.experimental.Accessors;
     "signerName",
     "user",
     "userAnnotations"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -233,6 +224,99 @@ public class PodCertificateProjection implements Editable<PodCertificateProjecti
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodCertificateProjection)) {
+            return false;
+        }
+        PodCertificateProjection other = (PodCertificateProjection) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$certificateChainPath = this.getCertificateChainPath();
+        Object other$certificateChainPath = other.getCertificateChainPath();
+        if (this$certificateChainPath == null ? other$certificateChainPath != null : !this$certificateChainPath.equals(other$certificateChainPath)) {
+            return false;
+        }
+        Object this$credentialBundlePath = this.getCredentialBundlePath();
+        Object other$credentialBundlePath = other.getCredentialBundlePath();
+        if (this$credentialBundlePath == null ? other$credentialBundlePath != null : !this$credentialBundlePath.equals(other$credentialBundlePath)) {
+            return false;
+        }
+        Object this$keyPath = this.getKeyPath();
+        Object other$keyPath = other.getKeyPath();
+        if (this$keyPath == null ? other$keyPath != null : !this$keyPath.equals(other$keyPath)) {
+            return false;
+        }
+        Object this$keyType = this.getKeyType();
+        Object other$keyType = other.getKeyType();
+        if (this$keyType == null ? other$keyType != null : !this$keyType.equals(other$keyType)) {
+            return false;
+        }
+        Object this$maxExpirationSeconds = this.getMaxExpirationSeconds();
+        Object other$maxExpirationSeconds = other.getMaxExpirationSeconds();
+        if (this$maxExpirationSeconds == null ? other$maxExpirationSeconds != null : !this$maxExpirationSeconds.equals(other$maxExpirationSeconds)) {
+            return false;
+        }
+        Object this$signerName = this.getSignerName();
+        Object other$signerName = other.getSignerName();
+        if (this$signerName == null ? other$signerName != null : !this$signerName.equals(other$signerName)) {
+            return false;
+        }
+        Object this$user = this.getUser();
+        Object other$user = other.getUser();
+        if (this$user == null ? other$user != null : !this$user.equals(other$user)) {
+            return false;
+        }
+        Object this$userAnnotations = this.getUserAnnotations();
+        Object other$userAnnotations = other.getUserAnnotations();
+        if (this$userAnnotations == null ? other$userAnnotations != null : !this$userAnnotations.equals(other$userAnnotations)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodCertificateProjection;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $certificateChainPath = this.getCertificateChainPath();
+        result = result * prime + ($certificateChainPath == null ? 43 : $certificateChainPath.hashCode());
+        Object $credentialBundlePath = this.getCredentialBundlePath();
+        result = result * prime + ($credentialBundlePath == null ? 43 : $credentialBundlePath.hashCode());
+        Object $keyPath = this.getKeyPath();
+        result = result * prime + ($keyPath == null ? 43 : $keyPath.hashCode());
+        Object $keyType = this.getKeyType();
+        result = result * prime + ($keyType == null ? 43 : $keyType.hashCode());
+        Object $maxExpirationSeconds = this.getMaxExpirationSeconds();
+        result = result * prime + ($maxExpirationSeconds == null ? 43 : $maxExpirationSeconds.hashCode());
+        Object $signerName = this.getSignerName();
+        result = result * prime + ($signerName == null ? 43 : $signerName.hashCode());
+        Object $user = this.getUser();
+        result = result * prime + ($user == null ? 43 : $user.hashCode());
+        Object $userAnnotations = this.getUserAnnotations();
+        result = result * prime + ($userAnnotations == null ? 43 : $userAnnotations.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodCertificateProjection(" + "certificateChainPath=" + this.getCertificateChainPath() + ", credentialBundlePath=" + this.getCredentialBundlePath() + ", keyPath=" + this.getKeyPath() + ", keyType=" + this.getKeyType() + ", maxExpirationSeconds=" + this.getMaxExpirationSeconds() + ", signerName=" + this.getSignerName() + ", user=" + this.getUser() + ", userAnnotations=" + this.getUserAnnotations() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

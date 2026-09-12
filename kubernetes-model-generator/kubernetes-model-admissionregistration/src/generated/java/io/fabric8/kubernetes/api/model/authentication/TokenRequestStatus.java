@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TokenRequestStatus is the result of a token request.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "expirationTimestamp",
     "token"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class TokenRequestStatus implements Editable<TokenRequestStatusBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TokenRequestStatus)) {
+            return false;
+        }
+        TokenRequestStatus other = (TokenRequestStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$expirationTimestamp = this.getExpirationTimestamp();
+        Object other$expirationTimestamp = other.getExpirationTimestamp();
+        if (this$expirationTimestamp == null ? other$expirationTimestamp != null : !this$expirationTimestamp.equals(other$expirationTimestamp)) {
+            return false;
+        }
+        Object this$token = this.getToken();
+        Object other$token = other.getToken();
+        if (this$token == null ? other$token != null : !this$token.equals(other$token)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TokenRequestStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $expirationTimestamp = this.getExpirationTimestamp();
+        result = result * prime + ($expirationTimestamp == null ? 43 : $expirationTimestamp.hashCode());
+        Object $token = this.getToken();
+        result = result * prime + ($token == null ? 43 : $token.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TokenRequestStatus(" + "expirationTimestamp=" + this.getExpirationTimestamp() + ", token=" + this.getToken() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

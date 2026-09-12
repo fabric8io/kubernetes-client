@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageManifest represents sub-manifests of a manifest list. The Digest field points to a regular Image object.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "mediaType",
     "os",
     "variant"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -219,6 +210,85 @@ public class ImageManifest implements Editable<ImageManifestBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageManifest)) {
+            return false;
+        }
+        ImageManifest other = (ImageManifest) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$architecture = this.getArchitecture();
+        Object other$architecture = other.getArchitecture();
+        if (this$architecture == null ? other$architecture != null : !this$architecture.equals(other$architecture)) {
+            return false;
+        }
+        Object this$digest = this.getDigest();
+        Object other$digest = other.getDigest();
+        if (this$digest == null ? other$digest != null : !this$digest.equals(other$digest)) {
+            return false;
+        }
+        Object this$manifestSize = this.getManifestSize();
+        Object other$manifestSize = other.getManifestSize();
+        if (this$manifestSize == null ? other$manifestSize != null : !this$manifestSize.equals(other$manifestSize)) {
+            return false;
+        }
+        Object this$mediaType = this.getMediaType();
+        Object other$mediaType = other.getMediaType();
+        if (this$mediaType == null ? other$mediaType != null : !this$mediaType.equals(other$mediaType)) {
+            return false;
+        }
+        Object this$os = this.getOs();
+        Object other$os = other.getOs();
+        if (this$os == null ? other$os != null : !this$os.equals(other$os)) {
+            return false;
+        }
+        Object this$variant = this.getVariant();
+        Object other$variant = other.getVariant();
+        if (this$variant == null ? other$variant != null : !this$variant.equals(other$variant)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageManifest;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $architecture = this.getArchitecture();
+        result = result * prime + ($architecture == null ? 43 : $architecture.hashCode());
+        Object $digest = this.getDigest();
+        result = result * prime + ($digest == null ? 43 : $digest.hashCode());
+        Object $manifestSize = this.getManifestSize();
+        result = result * prime + ($manifestSize == null ? 43 : $manifestSize.hashCode());
+        Object $mediaType = this.getMediaType();
+        result = result * prime + ($mediaType == null ? 43 : $mediaType.hashCode());
+        Object $os = this.getOs();
+        result = result * prime + ($os == null ? 43 : $os.hashCode());
+        Object $variant = this.getVariant();
+        result = result * prime + ($variant == null ? 43 : $variant.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageManifest(" + "architecture=" + this.getArchitecture() + ", digest=" + this.getDigest() + ", manifestSize=" + this.getManifestSize() + ", mediaType=" + this.getMediaType() + ", os=" + this.getOs() + ", variant=" + this.getVariant() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -33,9 +33,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AlibabaCloudMachineProviderConfig is the Schema for the alibabacloudmachineproviderconfig API Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
@@ -62,12 +59,6 @@ import lombok.experimental.Accessors;
     "vSwitch",
     "vpcId",
     "zoneId"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -493,6 +484,176 @@ public class AlibabaCloudMachineProviderConfig implements Editable<AlibabaCloudM
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AlibabaCloudMachineProviderConfig)) {
+            return false;
+        }
+        AlibabaCloudMachineProviderConfig other = (AlibabaCloudMachineProviderConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$bandwidth = this.getBandwidth();
+        Object other$bandwidth = other.getBandwidth();
+        if (this$bandwidth == null ? other$bandwidth != null : !this$bandwidth.equals(other$bandwidth)) {
+            return false;
+        }
+        Object this$credentialsSecret = this.getCredentialsSecret();
+        Object other$credentialsSecret = other.getCredentialsSecret();
+        if (this$credentialsSecret == null ? other$credentialsSecret != null : !this$credentialsSecret.equals(other$credentialsSecret)) {
+            return false;
+        }
+        Object this$dataDisk = this.getDataDisk();
+        Object other$dataDisk = other.getDataDisk();
+        if (this$dataDisk == null ? other$dataDisk != null : !this$dataDisk.equals(other$dataDisk)) {
+            return false;
+        }
+        Object this$imageId = this.getImageId();
+        Object other$imageId = other.getImageId();
+        if (this$imageId == null ? other$imageId != null : !this$imageId.equals(other$imageId)) {
+            return false;
+        }
+        Object this$instanceType = this.getInstanceType();
+        Object other$instanceType = other.getInstanceType();
+        if (this$instanceType == null ? other$instanceType != null : !this$instanceType.equals(other$instanceType)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$ramRoleName = this.getRamRoleName();
+        Object other$ramRoleName = other.getRamRoleName();
+        if (this$ramRoleName == null ? other$ramRoleName != null : !this$ramRoleName.equals(other$ramRoleName)) {
+            return false;
+        }
+        Object this$regionId = this.getRegionId();
+        Object other$regionId = other.getRegionId();
+        if (this$regionId == null ? other$regionId != null : !this$regionId.equals(other$regionId)) {
+            return false;
+        }
+        Object this$resourceGroup = this.getResourceGroup();
+        Object other$resourceGroup = other.getResourceGroup();
+        if (this$resourceGroup == null ? other$resourceGroup != null : !this$resourceGroup.equals(other$resourceGroup)) {
+            return false;
+        }
+        Object this$securityGroups = this.getSecurityGroups();
+        Object other$securityGroups = other.getSecurityGroups();
+        if (this$securityGroups == null ? other$securityGroups != null : !this$securityGroups.equals(other$securityGroups)) {
+            return false;
+        }
+        Object this$systemDisk = this.getSystemDisk();
+        Object other$systemDisk = other.getSystemDisk();
+        if (this$systemDisk == null ? other$systemDisk != null : !this$systemDisk.equals(other$systemDisk)) {
+            return false;
+        }
+        Object this$tag = this.getTag();
+        Object other$tag = other.getTag();
+        if (this$tag == null ? other$tag != null : !this$tag.equals(other$tag)) {
+            return false;
+        }
+        Object this$tenancy = this.getTenancy();
+        Object other$tenancy = other.getTenancy();
+        if (this$tenancy == null ? other$tenancy != null : !this$tenancy.equals(other$tenancy)) {
+            return false;
+        }
+        Object this$userDataSecret = this.getUserDataSecret();
+        Object other$userDataSecret = other.getUserDataSecret();
+        if (this$userDataSecret == null ? other$userDataSecret != null : !this$userDataSecret.equals(other$userDataSecret)) {
+            return false;
+        }
+        Object this$vSwitch = this.getVSwitch();
+        Object other$vSwitch = other.getVSwitch();
+        if (this$vSwitch == null ? other$vSwitch != null : !this$vSwitch.equals(other$vSwitch)) {
+            return false;
+        }
+        Object this$vpcId = this.getVpcId();
+        Object other$vpcId = other.getVpcId();
+        if (this$vpcId == null ? other$vpcId != null : !this$vpcId.equals(other$vpcId)) {
+            return false;
+        }
+        Object this$zoneId = this.getZoneId();
+        Object other$zoneId = other.getZoneId();
+        if (this$zoneId == null ? other$zoneId != null : !this$zoneId.equals(other$zoneId)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AlibabaCloudMachineProviderConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $bandwidth = this.getBandwidth();
+        result = result * prime + ($bandwidth == null ? 43 : $bandwidth.hashCode());
+        Object $credentialsSecret = this.getCredentialsSecret();
+        result = result * prime + ($credentialsSecret == null ? 43 : $credentialsSecret.hashCode());
+        Object $dataDisk = this.getDataDisk();
+        result = result * prime + ($dataDisk == null ? 43 : $dataDisk.hashCode());
+        Object $imageId = this.getImageId();
+        result = result * prime + ($imageId == null ? 43 : $imageId.hashCode());
+        Object $instanceType = this.getInstanceType();
+        result = result * prime + ($instanceType == null ? 43 : $instanceType.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $ramRoleName = this.getRamRoleName();
+        result = result * prime + ($ramRoleName == null ? 43 : $ramRoleName.hashCode());
+        Object $regionId = this.getRegionId();
+        result = result * prime + ($regionId == null ? 43 : $regionId.hashCode());
+        Object $resourceGroup = this.getResourceGroup();
+        result = result * prime + ($resourceGroup == null ? 43 : $resourceGroup.hashCode());
+        Object $securityGroups = this.getSecurityGroups();
+        result = result * prime + ($securityGroups == null ? 43 : $securityGroups.hashCode());
+        Object $systemDisk = this.getSystemDisk();
+        result = result * prime + ($systemDisk == null ? 43 : $systemDisk.hashCode());
+        Object $tag = this.getTag();
+        result = result * prime + ($tag == null ? 43 : $tag.hashCode());
+        Object $tenancy = this.getTenancy();
+        result = result * prime + ($tenancy == null ? 43 : $tenancy.hashCode());
+        Object $userDataSecret = this.getUserDataSecret();
+        result = result * prime + ($userDataSecret == null ? 43 : $userDataSecret.hashCode());
+        Object $vSwitch = this.getVSwitch();
+        result = result * prime + ($vSwitch == null ? 43 : $vSwitch.hashCode());
+        Object $vpcId = this.getVpcId();
+        result = result * prime + ($vpcId == null ? 43 : $vpcId.hashCode());
+        Object $zoneId = this.getZoneId();
+        result = result * prime + ($zoneId == null ? 43 : $zoneId.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AlibabaCloudMachineProviderConfig(" + "apiVersion=" + this.getApiVersion() + ", bandwidth=" + this.getBandwidth() + ", credentialsSecret=" + this.getCredentialsSecret() + ", dataDisk=" + this.getDataDisk() + ", imageId=" + this.getImageId() + ", instanceType=" + this.getInstanceType() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata() + ", ramRoleName=" + this.getRamRoleName() + ", regionId=" + this.getRegionId() + ", resourceGroup=" + this.getResourceGroup() + ", securityGroups=" + this.getSecurityGroups() + ", systemDisk=" + this.getSystemDisk() + ", tag=" + this.getTag() + ", tenancy=" + this.getTenancy() + ", userDataSecret=" + this.getUserDataSecret() + ", vSwitch=" + this.getVSwitch() + ", vpcId=" + this.getVpcId() + ", zoneId=" + this.getZoneId() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

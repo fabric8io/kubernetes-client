@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * JVMStressSpec is the specification for stress
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "cpuCount",
     "memType"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class JVMStressCfgSpec implements Editable<JVMStressCfgSpecBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof JVMStressCfgSpec)) {
+            return false;
+        }
+        JVMStressCfgSpec other = (JVMStressCfgSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cpuCount = this.getCpuCount();
+        Object other$cpuCount = other.getCpuCount();
+        if (this$cpuCount == null ? other$cpuCount != null : !this$cpuCount.equals(other$cpuCount)) {
+            return false;
+        }
+        Object this$memType = this.getMemType();
+        Object other$memType = other.getMemType();
+        if (this$memType == null ? other$memType != null : !this$memType.equals(other$memType)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof JVMStressCfgSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cpuCount = this.getCpuCount();
+        result = result * prime + ($cpuCount == null ? 43 : $cpuCount.hashCode());
+        Object $memType = this.getMemType();
+        result = result * prime + ($memType == null ? 43 : $memType.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "JVMStressCfgSpec(" + "cpuCount=" + this.getCpuCount() + ", memType=" + this.getMemType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

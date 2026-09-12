@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageRegistryConfigProxy defines proxy configuration to be used by registry.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "http",
     "https",
     "noProxy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class ImageRegistryConfigProxy implements Editable<ImageRegistryConfigPro
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageRegistryConfigProxy)) {
+            return false;
+        }
+        ImageRegistryConfigProxy other = (ImageRegistryConfigProxy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$http = this.getHttp();
+        Object other$http = other.getHttp();
+        if (this$http == null ? other$http != null : !this$http.equals(other$http)) {
+            return false;
+        }
+        Object this$https = this.getHttps();
+        Object other$https = other.getHttps();
+        if (this$https == null ? other$https != null : !this$https.equals(other$https)) {
+            return false;
+        }
+        Object this$noProxy = this.getNoProxy();
+        Object other$noProxy = other.getNoProxy();
+        if (this$noProxy == null ? other$noProxy != null : !this$noProxy.equals(other$noProxy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageRegistryConfigProxy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $http = this.getHttp();
+        result = result * prime + ($http == null ? 43 : $http.hashCode());
+        Object $https = this.getHttps();
+        result = result * prime + ($https == null ? 43 : $https.hashCode());
+        Object $noProxy = this.getNoProxy();
+        result = result * prime + ($noProxy == null ? 43 : $noProxy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageRegistryConfigProxy(" + "http=" + this.getHttp() + ", https=" + this.getHttps() + ", noProxy=" + this.getNoProxy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

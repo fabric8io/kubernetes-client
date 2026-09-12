@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ProvisionStatus holds the state information for a single target.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "raid",
     "rootDeviceHints",
     "state"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -259,6 +250,99 @@ public class ProvisionStatus implements Editable<ProvisionStatusBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ProvisionStatus)) {
+            return false;
+        }
+        ProvisionStatus other = (ProvisionStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$iD = this.getID();
+        Object other$iD = other.getID();
+        if (this$iD == null ? other$iD != null : !this$iD.equals(other$iD)) {
+            return false;
+        }
+        Object this$bootMode = this.getBootMode();
+        Object other$bootMode = other.getBootMode();
+        if (this$bootMode == null ? other$bootMode != null : !this$bootMode.equals(other$bootMode)) {
+            return false;
+        }
+        Object this$customDeploy = this.getCustomDeploy();
+        Object other$customDeploy = other.getCustomDeploy();
+        if (this$customDeploy == null ? other$customDeploy != null : !this$customDeploy.equals(other$customDeploy)) {
+            return false;
+        }
+        Object this$firmware = this.getFirmware();
+        Object other$firmware = other.getFirmware();
+        if (this$firmware == null ? other$firmware != null : !this$firmware.equals(other$firmware)) {
+            return false;
+        }
+        Object this$image = this.getImage();
+        Object other$image = other.getImage();
+        if (this$image == null ? other$image != null : !this$image.equals(other$image)) {
+            return false;
+        }
+        Object this$raid = this.getRaid();
+        Object other$raid = other.getRaid();
+        if (this$raid == null ? other$raid != null : !this$raid.equals(other$raid)) {
+            return false;
+        }
+        Object this$rootDeviceHints = this.getRootDeviceHints();
+        Object other$rootDeviceHints = other.getRootDeviceHints();
+        if (this$rootDeviceHints == null ? other$rootDeviceHints != null : !this$rootDeviceHints.equals(other$rootDeviceHints)) {
+            return false;
+        }
+        Object this$state = this.getState();
+        Object other$state = other.getState();
+        if (this$state == null ? other$state != null : !this$state.equals(other$state)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ProvisionStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $iD = this.getID();
+        result = result * prime + ($iD == null ? 43 : $iD.hashCode());
+        Object $bootMode = this.getBootMode();
+        result = result * prime + ($bootMode == null ? 43 : $bootMode.hashCode());
+        Object $customDeploy = this.getCustomDeploy();
+        result = result * prime + ($customDeploy == null ? 43 : $customDeploy.hashCode());
+        Object $firmware = this.getFirmware();
+        result = result * prime + ($firmware == null ? 43 : $firmware.hashCode());
+        Object $image = this.getImage();
+        result = result * prime + ($image == null ? 43 : $image.hashCode());
+        Object $raid = this.getRaid();
+        result = result * prime + ($raid == null ? 43 : $raid.hashCode());
+        Object $rootDeviceHints = this.getRootDeviceHints();
+        result = result * prime + ($rootDeviceHints == null ? 43 : $rootDeviceHints.hashCode());
+        Object $state = this.getState();
+        result = result * prime + ($state == null ? 43 : $state.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ProvisionStatus(" + "iD=" + this.getID() + ", bootMode=" + this.getBootMode() + ", customDeploy=" + this.getCustomDeploy() + ", firmware=" + this.getFirmware() + ", image=" + this.getImage() + ", raid=" + this.getRaid() + ", rootDeviceHints=" + this.getRootDeviceHints() + ", state=" + this.getState() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

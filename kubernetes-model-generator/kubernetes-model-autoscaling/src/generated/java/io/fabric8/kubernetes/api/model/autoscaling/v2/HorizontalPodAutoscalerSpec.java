@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HorizontalPodAutoscalerSpec describes the desired functionality of the HorizontalPodAutoscaler.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "metrics",
     "minReplicas",
     "scaleTargetRef"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -204,6 +195,78 @@ public class HorizontalPodAutoscalerSpec implements Editable<HorizontalPodAutosc
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HorizontalPodAutoscalerSpec)) {
+            return false;
+        }
+        HorizontalPodAutoscalerSpec other = (HorizontalPodAutoscalerSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$behavior = this.getBehavior();
+        Object other$behavior = other.getBehavior();
+        if (this$behavior == null ? other$behavior != null : !this$behavior.equals(other$behavior)) {
+            return false;
+        }
+        Object this$maxReplicas = this.getMaxReplicas();
+        Object other$maxReplicas = other.getMaxReplicas();
+        if (this$maxReplicas == null ? other$maxReplicas != null : !this$maxReplicas.equals(other$maxReplicas)) {
+            return false;
+        }
+        Object this$metrics = this.getMetrics();
+        Object other$metrics = other.getMetrics();
+        if (this$metrics == null ? other$metrics != null : !this$metrics.equals(other$metrics)) {
+            return false;
+        }
+        Object this$minReplicas = this.getMinReplicas();
+        Object other$minReplicas = other.getMinReplicas();
+        if (this$minReplicas == null ? other$minReplicas != null : !this$minReplicas.equals(other$minReplicas)) {
+            return false;
+        }
+        Object this$scaleTargetRef = this.getScaleTargetRef();
+        Object other$scaleTargetRef = other.getScaleTargetRef();
+        if (this$scaleTargetRef == null ? other$scaleTargetRef != null : !this$scaleTargetRef.equals(other$scaleTargetRef)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HorizontalPodAutoscalerSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $behavior = this.getBehavior();
+        result = result * prime + ($behavior == null ? 43 : $behavior.hashCode());
+        Object $maxReplicas = this.getMaxReplicas();
+        result = result * prime + ($maxReplicas == null ? 43 : $maxReplicas.hashCode());
+        Object $metrics = this.getMetrics();
+        result = result * prime + ($metrics == null ? 43 : $metrics.hashCode());
+        Object $minReplicas = this.getMinReplicas();
+        result = result * prime + ($minReplicas == null ? 43 : $minReplicas.hashCode());
+        Object $scaleTargetRef = this.getScaleTargetRef();
+        result = result * prime + ($scaleTargetRef == null ? 43 : $scaleTargetRef.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HorizontalPodAutoscalerSpec(" + "behavior=" + this.getBehavior() + ", maxReplicas=" + this.getMaxReplicas() + ", metrics=" + this.getMetrics() + ", minReplicas=" + this.getMinReplicas() + ", scaleTargetRef=" + this.getScaleTargetRef() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

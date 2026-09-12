@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PodDisruptionBudgetStatus represents information about the status of a PodDisruptionBudget. Status may trail the actual state of a system.
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "disruptionsAllowed",
     "expectedPods",
     "observedGeneration"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -247,6 +238,92 @@ public class PodDisruptionBudgetStatus implements Editable<PodDisruptionBudgetSt
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodDisruptionBudgetStatus)) {
+            return false;
+        }
+        PodDisruptionBudgetStatus other = (PodDisruptionBudgetStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$currentHealthy = this.getCurrentHealthy();
+        Object other$currentHealthy = other.getCurrentHealthy();
+        if (this$currentHealthy == null ? other$currentHealthy != null : !this$currentHealthy.equals(other$currentHealthy)) {
+            return false;
+        }
+        Object this$desiredHealthy = this.getDesiredHealthy();
+        Object other$desiredHealthy = other.getDesiredHealthy();
+        if (this$desiredHealthy == null ? other$desiredHealthy != null : !this$desiredHealthy.equals(other$desiredHealthy)) {
+            return false;
+        }
+        Object this$disruptedPods = this.getDisruptedPods();
+        Object other$disruptedPods = other.getDisruptedPods();
+        if (this$disruptedPods == null ? other$disruptedPods != null : !this$disruptedPods.equals(other$disruptedPods)) {
+            return false;
+        }
+        Object this$disruptionsAllowed = this.getDisruptionsAllowed();
+        Object other$disruptionsAllowed = other.getDisruptionsAllowed();
+        if (this$disruptionsAllowed == null ? other$disruptionsAllowed != null : !this$disruptionsAllowed.equals(other$disruptionsAllowed)) {
+            return false;
+        }
+        Object this$expectedPods = this.getExpectedPods();
+        Object other$expectedPods = other.getExpectedPods();
+        if (this$expectedPods == null ? other$expectedPods != null : !this$expectedPods.equals(other$expectedPods)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodDisruptionBudgetStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $currentHealthy = this.getCurrentHealthy();
+        result = result * prime + ($currentHealthy == null ? 43 : $currentHealthy.hashCode());
+        Object $desiredHealthy = this.getDesiredHealthy();
+        result = result * prime + ($desiredHealthy == null ? 43 : $desiredHealthy.hashCode());
+        Object $disruptedPods = this.getDisruptedPods();
+        result = result * prime + ($disruptedPods == null ? 43 : $disruptedPods.hashCode());
+        Object $disruptionsAllowed = this.getDisruptionsAllowed();
+        result = result * prime + ($disruptionsAllowed == null ? 43 : $disruptionsAllowed.hashCode());
+        Object $expectedPods = this.getExpectedPods();
+        result = result * prime + ($expectedPods == null ? 43 : $expectedPods.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodDisruptionBudgetStatus(" + "conditions=" + this.getConditions() + ", currentHealthy=" + this.getCurrentHealthy() + ", desiredHealthy=" + this.getDesiredHealthy() + ", disruptedPods=" + this.getDisruptedPods() + ", disruptionsAllowed=" + this.getDisruptionsAllowed() + ", expectedPods=" + this.getExpectedPods() + ", observedGeneration=" + this.getObservedGeneration() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * EBSBlockDeviceSpec describes a block device for an EBS volume. https://docs.aws.amazon.com/goto/WebAPI/ec2-2016-11-15/EbsBlockDevice
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "kmsKey",
     "volumeSize",
     "volumeType"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -219,6 +210,85 @@ public class EBSBlockDeviceSpec implements Editable<EBSBlockDeviceSpecBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EBSBlockDeviceSpec)) {
+            return false;
+        }
+        EBSBlockDeviceSpec other = (EBSBlockDeviceSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$deleteOnTermination = this.getDeleteOnTermination();
+        Object other$deleteOnTermination = other.getDeleteOnTermination();
+        if (this$deleteOnTermination == null ? other$deleteOnTermination != null : !this$deleteOnTermination.equals(other$deleteOnTermination)) {
+            return false;
+        }
+        Object this$encrypted = this.getEncrypted();
+        Object other$encrypted = other.getEncrypted();
+        if (this$encrypted == null ? other$encrypted != null : !this$encrypted.equals(other$encrypted)) {
+            return false;
+        }
+        Object this$iops = this.getIops();
+        Object other$iops = other.getIops();
+        if (this$iops == null ? other$iops != null : !this$iops.equals(other$iops)) {
+            return false;
+        }
+        Object this$kmsKey = this.getKmsKey();
+        Object other$kmsKey = other.getKmsKey();
+        if (this$kmsKey == null ? other$kmsKey != null : !this$kmsKey.equals(other$kmsKey)) {
+            return false;
+        }
+        Object this$volumeSize = this.getVolumeSize();
+        Object other$volumeSize = other.getVolumeSize();
+        if (this$volumeSize == null ? other$volumeSize != null : !this$volumeSize.equals(other$volumeSize)) {
+            return false;
+        }
+        Object this$volumeType = this.getVolumeType();
+        Object other$volumeType = other.getVolumeType();
+        if (this$volumeType == null ? other$volumeType != null : !this$volumeType.equals(other$volumeType)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EBSBlockDeviceSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $deleteOnTermination = this.getDeleteOnTermination();
+        result = result * prime + ($deleteOnTermination == null ? 43 : $deleteOnTermination.hashCode());
+        Object $encrypted = this.getEncrypted();
+        result = result * prime + ($encrypted == null ? 43 : $encrypted.hashCode());
+        Object $iops = this.getIops();
+        result = result * prime + ($iops == null ? 43 : $iops.hashCode());
+        Object $kmsKey = this.getKmsKey();
+        result = result * prime + ($kmsKey == null ? 43 : $kmsKey.hashCode());
+        Object $volumeSize = this.getVolumeSize();
+        result = result * prime + ($volumeSize == null ? 43 : $volumeSize.hashCode());
+        Object $volumeType = this.getVolumeType();
+        result = result * prime + ($volumeType == null ? 43 : $volumeType.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EBSBlockDeviceSpec(" + "deleteOnTermination=" + this.getDeleteOnTermination() + ", encrypted=" + this.getEncrypted() + ", iops=" + this.getIops() + ", kmsKey=" + this.getKmsKey() + ", volumeSize=" + this.getVolumeSize() + ", volumeType=" + this.getVolumeType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

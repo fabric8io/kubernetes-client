@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Represents a Quobyte mount that lasts the lifetime of a pod. Quobyte volumes do not support ownership management or SELinux relabeling.
@@ -29,12 +26,6 @@ import lombok.experimental.Accessors;
     "tenant",
     "user",
     "volume"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -191,6 +182,85 @@ public class QuobyteVolumeSource implements Editable<QuobyteVolumeSourceBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof QuobyteVolumeSource)) {
+            return false;
+        }
+        QuobyteVolumeSource other = (QuobyteVolumeSource) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$group = this.getGroup();
+        Object other$group = other.getGroup();
+        if (this$group == null ? other$group != null : !this$group.equals(other$group)) {
+            return false;
+        }
+        Object this$readOnly = this.getReadOnly();
+        Object other$readOnly = other.getReadOnly();
+        if (this$readOnly == null ? other$readOnly != null : !this$readOnly.equals(other$readOnly)) {
+            return false;
+        }
+        Object this$registry = this.getRegistry();
+        Object other$registry = other.getRegistry();
+        if (this$registry == null ? other$registry != null : !this$registry.equals(other$registry)) {
+            return false;
+        }
+        Object this$tenant = this.getTenant();
+        Object other$tenant = other.getTenant();
+        if (this$tenant == null ? other$tenant != null : !this$tenant.equals(other$tenant)) {
+            return false;
+        }
+        Object this$user = this.getUser();
+        Object other$user = other.getUser();
+        if (this$user == null ? other$user != null : !this$user.equals(other$user)) {
+            return false;
+        }
+        Object this$volume = this.getVolume();
+        Object other$volume = other.getVolume();
+        if (this$volume == null ? other$volume != null : !this$volume.equals(other$volume)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof QuobyteVolumeSource;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $group = this.getGroup();
+        result = result * prime + ($group == null ? 43 : $group.hashCode());
+        Object $readOnly = this.getReadOnly();
+        result = result * prime + ($readOnly == null ? 43 : $readOnly.hashCode());
+        Object $registry = this.getRegistry();
+        result = result * prime + ($registry == null ? 43 : $registry.hashCode());
+        Object $tenant = this.getTenant();
+        result = result * prime + ($tenant == null ? 43 : $tenant.hashCode());
+        Object $user = this.getUser();
+        result = result * prime + ($user == null ? 43 : $user.hashCode());
+        Object $volume = this.getVolume();
+        result = result * prime + ($volume == null ? 43 : $volume.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "QuobyteVolumeSource(" + "group=" + this.getGroup() + ", readOnly=" + this.getReadOnly() + ", registry=" + this.getRegistry() + ", tenant=" + this.getTenant() + ", user=" + this.getUser() + ", volume=" + this.getVolume() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

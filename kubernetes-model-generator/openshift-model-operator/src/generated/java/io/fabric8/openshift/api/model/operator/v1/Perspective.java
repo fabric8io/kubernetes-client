@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Perspective defines a perspective that cluster admins want to show/hide in the perspective switcher dropdown
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "id",
     "pinnedResources",
     "visibility"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -164,6 +155,64 @@ public class Perspective implements Editable<PerspectiveBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Perspective)) {
+            return false;
+        }
+        Perspective other = (Perspective) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {
+            return false;
+        }
+        Object this$pinnedResources = this.getPinnedResources();
+        Object other$pinnedResources = other.getPinnedResources();
+        if (this$pinnedResources == null ? other$pinnedResources != null : !this$pinnedResources.equals(other$pinnedResources)) {
+            return false;
+        }
+        Object this$visibility = this.getVisibility();
+        Object other$visibility = other.getVisibility();
+        if (this$visibility == null ? other$visibility != null : !this$visibility.equals(other$visibility)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Perspective;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $id = this.getId();
+        result = result * prime + ($id == null ? 43 : $id.hashCode());
+        Object $pinnedResources = this.getPinnedResources();
+        result = result * prime + ($pinnedResources == null ? 43 : $pinnedResources.hashCode());
+        Object $visibility = this.getVisibility();
+        result = result * prime + ($visibility == null ? 43 : $visibility.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Perspective(" + "id=" + this.getId() + ", pinnedResources=" + this.getPinnedResources() + ", visibility=" + this.getVisibility() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

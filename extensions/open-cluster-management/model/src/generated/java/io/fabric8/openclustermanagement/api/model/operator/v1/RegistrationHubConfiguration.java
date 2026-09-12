@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "featureGates",
     "importerConfiguration",
     "registrationDrivers"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -179,6 +170,71 @@ public class RegistrationHubConfiguration implements Editable<RegistrationHubCon
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RegistrationHubConfiguration)) {
+            return false;
+        }
+        RegistrationHubConfiguration other = (RegistrationHubConfiguration) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$autoApproveUsers = this.getAutoApproveUsers();
+        Object other$autoApproveUsers = other.getAutoApproveUsers();
+        if (this$autoApproveUsers == null ? other$autoApproveUsers != null : !this$autoApproveUsers.equals(other$autoApproveUsers)) {
+            return false;
+        }
+        Object this$featureGates = this.getFeatureGates();
+        Object other$featureGates = other.getFeatureGates();
+        if (this$featureGates == null ? other$featureGates != null : !this$featureGates.equals(other$featureGates)) {
+            return false;
+        }
+        Object this$importerConfiguration = this.getImporterConfiguration();
+        Object other$importerConfiguration = other.getImporterConfiguration();
+        if (this$importerConfiguration == null ? other$importerConfiguration != null : !this$importerConfiguration.equals(other$importerConfiguration)) {
+            return false;
+        }
+        Object this$registrationDrivers = this.getRegistrationDrivers();
+        Object other$registrationDrivers = other.getRegistrationDrivers();
+        if (this$registrationDrivers == null ? other$registrationDrivers != null : !this$registrationDrivers.equals(other$registrationDrivers)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RegistrationHubConfiguration;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $autoApproveUsers = this.getAutoApproveUsers();
+        result = result * prime + ($autoApproveUsers == null ? 43 : $autoApproveUsers.hashCode());
+        Object $featureGates = this.getFeatureGates();
+        result = result * prime + ($featureGates == null ? 43 : $featureGates.hashCode());
+        Object $importerConfiguration = this.getImporterConfiguration();
+        result = result * prime + ($importerConfiguration == null ? 43 : $importerConfiguration.hashCode());
+        Object $registrationDrivers = this.getRegistrationDrivers();
+        result = result * prime + ($registrationDrivers == null ? 43 : $registrationDrivers.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RegistrationHubConfiguration(" + "autoApproveUsers=" + this.getAutoApproveUsers() + ", featureGates=" + this.getFeatureGates() + ", importerConfiguration=" + this.getImporterConfiguration() + ", registrationDrivers=" + this.getRegistrationDrivers() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

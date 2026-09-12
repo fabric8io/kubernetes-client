@@ -35,9 +35,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * &lt;!-- crd generation tags is a timestamp representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
@@ -51,12 +48,6 @@ import lombok.experimental.Accessors;
     "targetRef",
     "targetRefs",
     "tracing"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -237,6 +228,85 @@ public class Telemetry implements Editable<TelemetryBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Telemetry)) {
+            return false;
+        }
+        Telemetry other = (Telemetry) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$accessLogging = this.getAccessLogging();
+        Object other$accessLogging = other.getAccessLogging();
+        if (this$accessLogging == null ? other$accessLogging != null : !this$accessLogging.equals(other$accessLogging)) {
+            return false;
+        }
+        Object this$metrics = this.getMetrics();
+        Object other$metrics = other.getMetrics();
+        if (this$metrics == null ? other$metrics != null : !this$metrics.equals(other$metrics)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$targetRef = this.getTargetRef();
+        Object other$targetRef = other.getTargetRef();
+        if (this$targetRef == null ? other$targetRef != null : !this$targetRef.equals(other$targetRef)) {
+            return false;
+        }
+        Object this$targetRefs = this.getTargetRefs();
+        Object other$targetRefs = other.getTargetRefs();
+        if (this$targetRefs == null ? other$targetRefs != null : !this$targetRefs.equals(other$targetRefs)) {
+            return false;
+        }
+        Object this$tracing = this.getTracing();
+        Object other$tracing = other.getTracing();
+        if (this$tracing == null ? other$tracing != null : !this$tracing.equals(other$tracing)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Telemetry;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $accessLogging = this.getAccessLogging();
+        result = result * prime + ($accessLogging == null ? 43 : $accessLogging.hashCode());
+        Object $metrics = this.getMetrics();
+        result = result * prime + ($metrics == null ? 43 : $metrics.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $targetRef = this.getTargetRef();
+        result = result * prime + ($targetRef == null ? 43 : $targetRef.hashCode());
+        Object $targetRefs = this.getTargetRefs();
+        result = result * prime + ($targetRefs == null ? 43 : $targetRefs.hashCode());
+        Object $tracing = this.getTracing();
+        result = result * prime + ($tracing == null ? 43 : $tracing.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Telemetry(" + "accessLogging=" + this.getAccessLogging() + ", metrics=" + this.getMetrics() + ", selector=" + this.getSelector() + ", targetRef=" + this.getTargetRef() + ", targetRefs=" + this.getTargetRefs() + ", tracing=" + this.getTracing() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

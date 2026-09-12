@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HTTPRedirect can be used to send a 301 redirect response to the caller, where the Authority/Host and the URI in the response can be swapped with the specified values. For example, the following rule redirects requests for /v1/getProductRatings API on the ratings service to /v1/bookRatings provided by the bookratings service.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      exact: /v1/getProductRatings<br><p> 	  redirect:<br><p> 	    uri: /v1/bookRatings<br><p> 	    authority: newratings.default.svc.cluster.local<br><p> 	...<br><p> <br><p> ```
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "redirectCode",
     "scheme",
     "uri"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -203,6 +194,78 @@ public class HTTPRedirect implements Editable<HTTPRedirectBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HTTPRedirect)) {
+            return false;
+        }
+        HTTPRedirect other = (HTTPRedirect) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$redirectPort = this.getRedirectPort();
+        Object other$redirectPort = other.getRedirectPort();
+        if (this$redirectPort == null ? other$redirectPort != null : !this$redirectPort.equals(other$redirectPort)) {
+            return false;
+        }
+        Object this$authority = this.getAuthority();
+        Object other$authority = other.getAuthority();
+        if (this$authority == null ? other$authority != null : !this$authority.equals(other$authority)) {
+            return false;
+        }
+        Object this$redirectCode = this.getRedirectCode();
+        Object other$redirectCode = other.getRedirectCode();
+        if (this$redirectCode == null ? other$redirectCode != null : !this$redirectCode.equals(other$redirectCode)) {
+            return false;
+        }
+        Object this$scheme = this.getScheme();
+        Object other$scheme = other.getScheme();
+        if (this$scheme == null ? other$scheme != null : !this$scheme.equals(other$scheme)) {
+            return false;
+        }
+        Object this$uri = this.getUri();
+        Object other$uri = other.getUri();
+        if (this$uri == null ? other$uri != null : !this$uri.equals(other$uri)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HTTPRedirect;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $redirectPort = this.getRedirectPort();
+        result = result * prime + ($redirectPort == null ? 43 : $redirectPort.hashCode());
+        Object $authority = this.getAuthority();
+        result = result * prime + ($authority == null ? 43 : $authority.hashCode());
+        Object $redirectCode = this.getRedirectCode();
+        result = result * prime + ($redirectCode == null ? 43 : $redirectCode.hashCode());
+        Object $scheme = this.getScheme();
+        result = result * prime + ($scheme == null ? 43 : $scheme.hashCode());
+        Object $uri = this.getUri();
+        result = result * prime + ($uri == null ? 43 : $uri.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HTTPRedirect(" + "redirectPort=" + this.getRedirectPort() + ", authority=" + this.getAuthority() + ", redirectCode=" + this.getRedirectCode() + ", scheme=" + this.getScheme() + ", uri=" + this.getUri() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

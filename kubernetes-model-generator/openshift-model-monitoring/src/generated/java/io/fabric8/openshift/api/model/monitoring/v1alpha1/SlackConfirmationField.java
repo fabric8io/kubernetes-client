@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SlackConfirmationField protect users from destructive actions or particularly distinguished decisions by asking them to confirm their button click one more time. See https://api.slack.com/docs/interactive-message-field-guide#confirmation_fields for more information.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "okText",
     "text",
     "title"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class SlackConfirmationField implements Editable<SlackConfirmationFieldBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SlackConfirmationField)) {
+            return false;
+        }
+        SlackConfirmationField other = (SlackConfirmationField) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$dismissText = this.getDismissText();
+        Object other$dismissText = other.getDismissText();
+        if (this$dismissText == null ? other$dismissText != null : !this$dismissText.equals(other$dismissText)) {
+            return false;
+        }
+        Object this$okText = this.getOkText();
+        Object other$okText = other.getOkText();
+        if (this$okText == null ? other$okText != null : !this$okText.equals(other$okText)) {
+            return false;
+        }
+        Object this$text = this.getText();
+        Object other$text = other.getText();
+        if (this$text == null ? other$text != null : !this$text.equals(other$text)) {
+            return false;
+        }
+        Object this$title = this.getTitle();
+        Object other$title = other.getTitle();
+        if (this$title == null ? other$title != null : !this$title.equals(other$title)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SlackConfirmationField;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $dismissText = this.getDismissText();
+        result = result * prime + ($dismissText == null ? 43 : $dismissText.hashCode());
+        Object $okText = this.getOkText();
+        result = result * prime + ($okText == null ? 43 : $okText.hashCode());
+        Object $text = this.getText();
+        result = result * prime + ($text == null ? 43 : $text.hashCode());
+        Object $title = this.getTitle();
+        result = result * prime + ($title == null ? 43 : $title.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SlackConfirmationField(" + "dismissText=" + this.getDismissText() + ", okText=" + this.getOkText() + ", text=" + this.getText() + ", title=" + this.getTitle() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

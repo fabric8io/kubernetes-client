@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SubscriberSpec defines a single subscriber to a Subscribable.<br><p> <br><p> At least one of SubscriberURI and ReplyURI must be present
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "replyUri",
     "subscriberUri",
     "uid"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,78 @@ public class SubscriberSpec implements Editable<SubscriberSpecBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SubscriberSpec)) {
+            return false;
+        }
+        SubscriberSpec other = (SubscriberSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$delivery = this.getDelivery();
+        Object other$delivery = other.getDelivery();
+        if (this$delivery == null ? other$delivery != null : !this$delivery.equals(other$delivery)) {
+            return false;
+        }
+        Object this$generation = this.getGeneration();
+        Object other$generation = other.getGeneration();
+        if (this$generation == null ? other$generation != null : !this$generation.equals(other$generation)) {
+            return false;
+        }
+        Object this$replyUri = this.getReplyUri();
+        Object other$replyUri = other.getReplyUri();
+        if (this$replyUri == null ? other$replyUri != null : !this$replyUri.equals(other$replyUri)) {
+            return false;
+        }
+        Object this$subscriberUri = this.getSubscriberUri();
+        Object other$subscriberUri = other.getSubscriberUri();
+        if (this$subscriberUri == null ? other$subscriberUri != null : !this$subscriberUri.equals(other$subscriberUri)) {
+            return false;
+        }
+        Object this$uid = this.getUid();
+        Object other$uid = other.getUid();
+        if (this$uid == null ? other$uid != null : !this$uid.equals(other$uid)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SubscriberSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $delivery = this.getDelivery();
+        result = result * prime + ($delivery == null ? 43 : $delivery.hashCode());
+        Object $generation = this.getGeneration();
+        result = result * prime + ($generation == null ? 43 : $generation.hashCode());
+        Object $replyUri = this.getReplyUri();
+        result = result * prime + ($replyUri == null ? 43 : $replyUri.hashCode());
+        Object $subscriberUri = this.getSubscriberUri();
+        result = result * prime + ($subscriberUri == null ? 43 : $subscriberUri.hashCode());
+        Object $uid = this.getUid();
+        result = result * prime + ($uid == null ? 43 : $uid.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SubscriberSpec(" + "delivery=" + this.getDelivery() + ", generation=" + this.getGeneration() + ", replyUri=" + this.getReplyUri() + ", subscriberUri=" + this.getSubscriberUri() + ", uid=" + this.getUid() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

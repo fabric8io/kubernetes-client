@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * StageInfo contains details about a build stage.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "name",
     "startTime",
     "steps"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -183,6 +174,71 @@ public class StageInfo implements Editable<StageInfoBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof StageInfo)) {
+            return false;
+        }
+        StageInfo other = (StageInfo) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$durationMilliseconds = this.getDurationMilliseconds();
+        Object other$durationMilliseconds = other.getDurationMilliseconds();
+        if (this$durationMilliseconds == null ? other$durationMilliseconds != null : !this$durationMilliseconds.equals(other$durationMilliseconds)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$startTime = this.getStartTime();
+        Object other$startTime = other.getStartTime();
+        if (this$startTime == null ? other$startTime != null : !this$startTime.equals(other$startTime)) {
+            return false;
+        }
+        Object this$steps = this.getSteps();
+        Object other$steps = other.getSteps();
+        if (this$steps == null ? other$steps != null : !this$steps.equals(other$steps)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof StageInfo;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $durationMilliseconds = this.getDurationMilliseconds();
+        result = result * prime + ($durationMilliseconds == null ? 43 : $durationMilliseconds.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $startTime = this.getStartTime();
+        result = result * prime + ($startTime == null ? 43 : $startTime.hashCode());
+        Object $steps = this.getSteps();
+        result = result * prime + ($steps == null ? 43 : $steps.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "StageInfo(" + "durationMilliseconds=" + this.getDurationMilliseconds() + ", name=" + this.getName() + ", startTime=" + this.getStartTime() + ", steps=" + this.getSteps() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

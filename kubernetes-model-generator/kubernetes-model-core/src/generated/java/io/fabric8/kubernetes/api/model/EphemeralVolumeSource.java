@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Represents an ephemeral volume that is handled by a normal storage driver.
@@ -24,12 +21,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "volumeClaimTemplate"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -91,6 +82,50 @@ public class EphemeralVolumeSource implements Editable<EphemeralVolumeSourceBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EphemeralVolumeSource)) {
+            return false;
+        }
+        EphemeralVolumeSource other = (EphemeralVolumeSource) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$volumeClaimTemplate = this.getVolumeClaimTemplate();
+        Object other$volumeClaimTemplate = other.getVolumeClaimTemplate();
+        if (this$volumeClaimTemplate == null ? other$volumeClaimTemplate != null : !this$volumeClaimTemplate.equals(other$volumeClaimTemplate)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EphemeralVolumeSource;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $volumeClaimTemplate = this.getVolumeClaimTemplate();
+        result = result * prime + ($volumeClaimTemplate == null ? 43 : $volumeClaimTemplate.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EphemeralVolumeSource(" + "volumeClaimTemplate=" + this.getVolumeClaimTemplate() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

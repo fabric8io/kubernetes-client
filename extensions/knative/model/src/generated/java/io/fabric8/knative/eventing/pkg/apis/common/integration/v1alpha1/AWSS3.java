@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -50,12 +47,6 @@ import lombok.experimental.Accessors;
     "prefix",
     "region",
     "uriEndpointOverride"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -397,6 +388,148 @@ public class AWSS3 implements Editable<AWSS3Builder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AWSS3)) {
+            return false;
+        }
+        AWSS3 other = (AWSS3) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$arn = this.getArn();
+        Object other$arn = other.getArn();
+        if (this$arn == null ? other$arn != null : !this$arn.equals(other$arn)) {
+            return false;
+        }
+        Object this$autoCreateBucket = this.getAutoCreateBucket();
+        Object other$autoCreateBucket = other.getAutoCreateBucket();
+        if (this$autoCreateBucket == null ? other$autoCreateBucket != null : !this$autoCreateBucket.equals(other$autoCreateBucket)) {
+            return false;
+        }
+        Object this$delay = this.getDelay();
+        Object other$delay = other.getDelay();
+        if (this$delay == null ? other$delay != null : !this$delay.equals(other$delay)) {
+            return false;
+        }
+        Object this$deleteAfterRead = this.getDeleteAfterRead();
+        Object other$deleteAfterRead = other.getDeleteAfterRead();
+        if (this$deleteAfterRead == null ? other$deleteAfterRead != null : !this$deleteAfterRead.equals(other$deleteAfterRead)) {
+            return false;
+        }
+        Object this$destinationBucket = this.getDestinationBucket();
+        Object other$destinationBucket = other.getDestinationBucket();
+        if (this$destinationBucket == null ? other$destinationBucket != null : !this$destinationBucket.equals(other$destinationBucket)) {
+            return false;
+        }
+        Object this$destinationBucketPrefix = this.getDestinationBucketPrefix();
+        Object other$destinationBucketPrefix = other.getDestinationBucketPrefix();
+        if (this$destinationBucketPrefix == null ? other$destinationBucketPrefix != null : !this$destinationBucketPrefix.equals(other$destinationBucketPrefix)) {
+            return false;
+        }
+        Object this$destinationBucketSuffix = this.getDestinationBucketSuffix();
+        Object other$destinationBucketSuffix = other.getDestinationBucketSuffix();
+        if (this$destinationBucketSuffix == null ? other$destinationBucketSuffix != null : !this$destinationBucketSuffix.equals(other$destinationBucketSuffix)) {
+            return false;
+        }
+        Object this$forcePathStyle = this.getForcePathStyle();
+        Object other$forcePathStyle = other.getForcePathStyle();
+        if (this$forcePathStyle == null ? other$forcePathStyle != null : !this$forcePathStyle.equals(other$forcePathStyle)) {
+            return false;
+        }
+        Object this$ignoreBody = this.getIgnoreBody();
+        Object other$ignoreBody = other.getIgnoreBody();
+        if (this$ignoreBody == null ? other$ignoreBody != null : !this$ignoreBody.equals(other$ignoreBody)) {
+            return false;
+        }
+        Object this$maxMessagesPerPoll = this.getMaxMessagesPerPoll();
+        Object other$maxMessagesPerPoll = other.getMaxMessagesPerPoll();
+        if (this$maxMessagesPerPoll == null ? other$maxMessagesPerPoll != null : !this$maxMessagesPerPoll.equals(other$maxMessagesPerPoll)) {
+            return false;
+        }
+        Object this$moveAfterRead = this.getMoveAfterRead();
+        Object other$moveAfterRead = other.getMoveAfterRead();
+        if (this$moveAfterRead == null ? other$moveAfterRead != null : !this$moveAfterRead.equals(other$moveAfterRead)) {
+            return false;
+        }
+        Object this$overrideEndpoint = this.getOverrideEndpoint();
+        Object other$overrideEndpoint = other.getOverrideEndpoint();
+        if (this$overrideEndpoint == null ? other$overrideEndpoint != null : !this$overrideEndpoint.equals(other$overrideEndpoint)) {
+            return false;
+        }
+        Object this$prefix = this.getPrefix();
+        Object other$prefix = other.getPrefix();
+        if (this$prefix == null ? other$prefix != null : !this$prefix.equals(other$prefix)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$uriEndpointOverride = this.getUriEndpointOverride();
+        Object other$uriEndpointOverride = other.getUriEndpointOverride();
+        if (this$uriEndpointOverride == null ? other$uriEndpointOverride != null : !this$uriEndpointOverride.equals(other$uriEndpointOverride)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AWSS3;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $arn = this.getArn();
+        result = result * prime + ($arn == null ? 43 : $arn.hashCode());
+        Object $autoCreateBucket = this.getAutoCreateBucket();
+        result = result * prime + ($autoCreateBucket == null ? 43 : $autoCreateBucket.hashCode());
+        Object $delay = this.getDelay();
+        result = result * prime + ($delay == null ? 43 : $delay.hashCode());
+        Object $deleteAfterRead = this.getDeleteAfterRead();
+        result = result * prime + ($deleteAfterRead == null ? 43 : $deleteAfterRead.hashCode());
+        Object $destinationBucket = this.getDestinationBucket();
+        result = result * prime + ($destinationBucket == null ? 43 : $destinationBucket.hashCode());
+        Object $destinationBucketPrefix = this.getDestinationBucketPrefix();
+        result = result * prime + ($destinationBucketPrefix == null ? 43 : $destinationBucketPrefix.hashCode());
+        Object $destinationBucketSuffix = this.getDestinationBucketSuffix();
+        result = result * prime + ($destinationBucketSuffix == null ? 43 : $destinationBucketSuffix.hashCode());
+        Object $forcePathStyle = this.getForcePathStyle();
+        result = result * prime + ($forcePathStyle == null ? 43 : $forcePathStyle.hashCode());
+        Object $ignoreBody = this.getIgnoreBody();
+        result = result * prime + ($ignoreBody == null ? 43 : $ignoreBody.hashCode());
+        Object $maxMessagesPerPoll = this.getMaxMessagesPerPoll();
+        result = result * prime + ($maxMessagesPerPoll == null ? 43 : $maxMessagesPerPoll.hashCode());
+        Object $moveAfterRead = this.getMoveAfterRead();
+        result = result * prime + ($moveAfterRead == null ? 43 : $moveAfterRead.hashCode());
+        Object $overrideEndpoint = this.getOverrideEndpoint();
+        result = result * prime + ($overrideEndpoint == null ? 43 : $overrideEndpoint.hashCode());
+        Object $prefix = this.getPrefix();
+        result = result * prime + ($prefix == null ? 43 : $prefix.hashCode());
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $uriEndpointOverride = this.getUriEndpointOverride();
+        result = result * prime + ($uriEndpointOverride == null ? 43 : $uriEndpointOverride.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AWSS3(" + "arn=" + this.getArn() + ", autoCreateBucket=" + this.getAutoCreateBucket() + ", delay=" + this.getDelay() + ", deleteAfterRead=" + this.getDeleteAfterRead() + ", destinationBucket=" + this.getDestinationBucket() + ", destinationBucketPrefix=" + this.getDestinationBucketPrefix() + ", destinationBucketSuffix=" + this.getDestinationBucketSuffix() + ", forcePathStyle=" + this.getForcePathStyle() + ", ignoreBody=" + this.getIgnoreBody() + ", maxMessagesPerPoll=" + this.getMaxMessagesPerPoll() + ", moveAfterRead=" + this.getMoveAfterRead() + ", overrideEndpoint=" + this.getOverrideEndpoint() + ", prefix=" + this.getPrefix() + ", region=" + this.getRegion() + ", uriEndpointOverride=" + this.getUriEndpointOverride() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Traffic policies to apply for a specific destination, across all destination ports. See DestinationRule for examples.
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "retryBudget",
     "tls",
     "tunnel"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -264,6 +255,99 @@ public class TrafficPolicy implements Editable<TrafficPolicyBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TrafficPolicy)) {
+            return false;
+        }
+        TrafficPolicy other = (TrafficPolicy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$connectionPool = this.getConnectionPool();
+        Object other$connectionPool = other.getConnectionPool();
+        if (this$connectionPool == null ? other$connectionPool != null : !this$connectionPool.equals(other$connectionPool)) {
+            return false;
+        }
+        Object this$loadBalancer = this.getLoadBalancer();
+        Object other$loadBalancer = other.getLoadBalancer();
+        if (this$loadBalancer == null ? other$loadBalancer != null : !this$loadBalancer.equals(other$loadBalancer)) {
+            return false;
+        }
+        Object this$outlierDetection = this.getOutlierDetection();
+        Object other$outlierDetection = other.getOutlierDetection();
+        if (this$outlierDetection == null ? other$outlierDetection != null : !this$outlierDetection.equals(other$outlierDetection)) {
+            return false;
+        }
+        Object this$portLevelSettings = this.getPortLevelSettings();
+        Object other$portLevelSettings = other.getPortLevelSettings();
+        if (this$portLevelSettings == null ? other$portLevelSettings != null : !this$portLevelSettings.equals(other$portLevelSettings)) {
+            return false;
+        }
+        Object this$proxyProtocol = this.getProxyProtocol();
+        Object other$proxyProtocol = other.getProxyProtocol();
+        if (this$proxyProtocol == null ? other$proxyProtocol != null : !this$proxyProtocol.equals(other$proxyProtocol)) {
+            return false;
+        }
+        Object this$retryBudget = this.getRetryBudget();
+        Object other$retryBudget = other.getRetryBudget();
+        if (this$retryBudget == null ? other$retryBudget != null : !this$retryBudget.equals(other$retryBudget)) {
+            return false;
+        }
+        Object this$tls = this.getTls();
+        Object other$tls = other.getTls();
+        if (this$tls == null ? other$tls != null : !this$tls.equals(other$tls)) {
+            return false;
+        }
+        Object this$tunnel = this.getTunnel();
+        Object other$tunnel = other.getTunnel();
+        if (this$tunnel == null ? other$tunnel != null : !this$tunnel.equals(other$tunnel)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TrafficPolicy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $connectionPool = this.getConnectionPool();
+        result = result * prime + ($connectionPool == null ? 43 : $connectionPool.hashCode());
+        Object $loadBalancer = this.getLoadBalancer();
+        result = result * prime + ($loadBalancer == null ? 43 : $loadBalancer.hashCode());
+        Object $outlierDetection = this.getOutlierDetection();
+        result = result * prime + ($outlierDetection == null ? 43 : $outlierDetection.hashCode());
+        Object $portLevelSettings = this.getPortLevelSettings();
+        result = result * prime + ($portLevelSettings == null ? 43 : $portLevelSettings.hashCode());
+        Object $proxyProtocol = this.getProxyProtocol();
+        result = result * prime + ($proxyProtocol == null ? 43 : $proxyProtocol.hashCode());
+        Object $retryBudget = this.getRetryBudget();
+        result = result * prime + ($retryBudget == null ? 43 : $retryBudget.hashCode());
+        Object $tls = this.getTls();
+        result = result * prime + ($tls == null ? 43 : $tls.hashCode());
+        Object $tunnel = this.getTunnel();
+        result = result * prime + ($tunnel == null ? 43 : $tunnel.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TrafficPolicy(" + "connectionPool=" + this.getConnectionPool() + ", loadBalancer=" + this.getLoadBalancer() + ", outlierDetection=" + this.getOutlierDetection() + ", portLevelSettings=" + this.getPortLevelSettings() + ", proxyProtocol=" + this.getProxyProtocol() + ", retryBudget=" + this.getRetryBudget() + ", tls=" + this.getTls() + ", tunnel=" + this.getTunnel() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

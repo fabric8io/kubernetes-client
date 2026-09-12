@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * JVMMySQLSpec is the specification of MySQL fault injection in JVM only when SQL match the Database, Table and SQLType, JVMChaos mesh will inject fault for examle:<br><p> <br><p> 	SQL is "select &#42; from test.t1",<br><p> 	only when ((Database == "test" || Database == "") &amp;&amp; (Table == "t1" || Table == "") &amp;&amp; (SQLType == "select" || SQLType == "")) is true, JVMChaos will inject fault
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "mysqlConnectorVersion",
     "sqlType",
     "table"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class JVMMySQLSpec implements Editable<JVMMySQLSpecBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof JVMMySQLSpec)) {
+            return false;
+        }
+        JVMMySQLSpec other = (JVMMySQLSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$database = this.getDatabase();
+        Object other$database = other.getDatabase();
+        if (this$database == null ? other$database != null : !this$database.equals(other$database)) {
+            return false;
+        }
+        Object this$mysqlConnectorVersion = this.getMysqlConnectorVersion();
+        Object other$mysqlConnectorVersion = other.getMysqlConnectorVersion();
+        if (this$mysqlConnectorVersion == null ? other$mysqlConnectorVersion != null : !this$mysqlConnectorVersion.equals(other$mysqlConnectorVersion)) {
+            return false;
+        }
+        Object this$sqlType = this.getSqlType();
+        Object other$sqlType = other.getSqlType();
+        if (this$sqlType == null ? other$sqlType != null : !this$sqlType.equals(other$sqlType)) {
+            return false;
+        }
+        Object this$table = this.getTable();
+        Object other$table = other.getTable();
+        if (this$table == null ? other$table != null : !this$table.equals(other$table)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof JVMMySQLSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $database = this.getDatabase();
+        result = result * prime + ($database == null ? 43 : $database.hashCode());
+        Object $mysqlConnectorVersion = this.getMysqlConnectorVersion();
+        result = result * prime + ($mysqlConnectorVersion == null ? 43 : $mysqlConnectorVersion.hashCode());
+        Object $sqlType = this.getSqlType();
+        result = result * prime + ($sqlType == null ? 43 : $sqlType.hashCode());
+        Object $table = this.getTable();
+        result = result * prime + ($table == null ? 43 : $table.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "JVMMySQLSpec(" + "database=" + this.getDatabase() + ", mysqlConnectorVersion=" + this.getMysqlConnectorVersion() + ", sqlType=" + this.getSqlType() + ", table=" + this.getTable() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OVHCloudSDConfig configurations allow retrieving scrape targets from OVHcloud's dedicated servers and VPS using their API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#ovhcloud_sd_config
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "endpoint",
     "refreshInterval",
     "service"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -221,6 +212,85 @@ public class OVHCloudSDConfig implements Editable<OVHCloudSDConfigBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OVHCloudSDConfig)) {
+            return false;
+        }
+        OVHCloudSDConfig other = (OVHCloudSDConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$applicationKey = this.getApplicationKey();
+        Object other$applicationKey = other.getApplicationKey();
+        if (this$applicationKey == null ? other$applicationKey != null : !this$applicationKey.equals(other$applicationKey)) {
+            return false;
+        }
+        Object this$applicationSecret = this.getApplicationSecret();
+        Object other$applicationSecret = other.getApplicationSecret();
+        if (this$applicationSecret == null ? other$applicationSecret != null : !this$applicationSecret.equals(other$applicationSecret)) {
+            return false;
+        }
+        Object this$consumerKey = this.getConsumerKey();
+        Object other$consumerKey = other.getConsumerKey();
+        if (this$consumerKey == null ? other$consumerKey != null : !this$consumerKey.equals(other$consumerKey)) {
+            return false;
+        }
+        Object this$endpoint = this.getEndpoint();
+        Object other$endpoint = other.getEndpoint();
+        if (this$endpoint == null ? other$endpoint != null : !this$endpoint.equals(other$endpoint)) {
+            return false;
+        }
+        Object this$refreshInterval = this.getRefreshInterval();
+        Object other$refreshInterval = other.getRefreshInterval();
+        if (this$refreshInterval == null ? other$refreshInterval != null : !this$refreshInterval.equals(other$refreshInterval)) {
+            return false;
+        }
+        Object this$service = this.getService();
+        Object other$service = other.getService();
+        if (this$service == null ? other$service != null : !this$service.equals(other$service)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OVHCloudSDConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $applicationKey = this.getApplicationKey();
+        result = result * prime + ($applicationKey == null ? 43 : $applicationKey.hashCode());
+        Object $applicationSecret = this.getApplicationSecret();
+        result = result * prime + ($applicationSecret == null ? 43 : $applicationSecret.hashCode());
+        Object $consumerKey = this.getConsumerKey();
+        result = result * prime + ($consumerKey == null ? 43 : $consumerKey.hashCode());
+        Object $endpoint = this.getEndpoint();
+        result = result * prime + ($endpoint == null ? 43 : $endpoint.hashCode());
+        Object $refreshInterval = this.getRefreshInterval();
+        result = result * prime + ($refreshInterval == null ? 43 : $refreshInterval.hashCode());
+        Object $service = this.getService();
+        result = result * prime + ($service == null ? 43 : $service.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OVHCloudSDConfig(" + "applicationKey=" + this.getApplicationKey() + ", applicationSecret=" + this.getApplicationSecret() + ", consumerKey=" + this.getConsumerKey() + ", endpoint=" + this.getEndpoint() + ", refreshInterval=" + this.getRefreshInterval() + ", service=" + this.getService() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.config.v1.IdentityProvider;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SyncIdentityProviderSpec defines the SyncIdentityProviderCommonSpec identity providers to sync along with ClusterDeploymentRefs indicating which clusters the SyncIdentityProvider applies to in the SyncIdentityProvider's namespace.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "clusterDeploymentRefs",
     "identityProviders"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -147,6 +138,57 @@ public class SyncIdentityProviderSpec implements Editable<SyncIdentityProviderSp
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SyncIdentityProviderSpec)) {
+            return false;
+        }
+        SyncIdentityProviderSpec other = (SyncIdentityProviderSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterDeploymentRefs = this.getClusterDeploymentRefs();
+        Object other$clusterDeploymentRefs = other.getClusterDeploymentRefs();
+        if (this$clusterDeploymentRefs == null ? other$clusterDeploymentRefs != null : !this$clusterDeploymentRefs.equals(other$clusterDeploymentRefs)) {
+            return false;
+        }
+        Object this$identityProviders = this.getIdentityProviders();
+        Object other$identityProviders = other.getIdentityProviders();
+        if (this$identityProviders == null ? other$identityProviders != null : !this$identityProviders.equals(other$identityProviders)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SyncIdentityProviderSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterDeploymentRefs = this.getClusterDeploymentRefs();
+        result = result * prime + ($clusterDeploymentRefs == null ? 43 : $clusterDeploymentRefs.hashCode());
+        Object $identityProviders = this.getIdentityProviders();
+        result = result * prime + ($identityProviders == null ? 43 : $identityProviders.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SyncIdentityProviderSpec(" + "clusterDeploymentRefs=" + this.getClusterDeploymentRefs() + ", identityProviders=" + this.getIdentityProviders() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

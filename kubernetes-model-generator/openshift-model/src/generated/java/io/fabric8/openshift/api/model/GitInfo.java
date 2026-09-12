@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * GitInfo is the aggregated git information for a generic webhook post
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "ref",
     "refs",
     "uri"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -303,6 +294,113 @@ public class GitInfo implements Editable<GitInfoBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GitInfo)) {
+            return false;
+        }
+        GitInfo other = (GitInfo) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$author = this.getAuthor();
+        Object other$author = other.getAuthor();
+        if (this$author == null ? other$author != null : !this$author.equals(other$author)) {
+            return false;
+        }
+        Object this$commit = this.getCommit();
+        Object other$commit = other.getCommit();
+        if (this$commit == null ? other$commit != null : !this$commit.equals(other$commit)) {
+            return false;
+        }
+        Object this$committer = this.getCommitter();
+        Object other$committer = other.getCommitter();
+        if (this$committer == null ? other$committer != null : !this$committer.equals(other$committer)) {
+            return false;
+        }
+        Object this$httpProxy = this.getHttpProxy();
+        Object other$httpProxy = other.getHttpProxy();
+        if (this$httpProxy == null ? other$httpProxy != null : !this$httpProxy.equals(other$httpProxy)) {
+            return false;
+        }
+        Object this$httpsProxy = this.getHttpsProxy();
+        Object other$httpsProxy = other.getHttpsProxy();
+        if (this$httpsProxy == null ? other$httpsProxy != null : !this$httpsProxy.equals(other$httpsProxy)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$noProxy = this.getNoProxy();
+        Object other$noProxy = other.getNoProxy();
+        if (this$noProxy == null ? other$noProxy != null : !this$noProxy.equals(other$noProxy)) {
+            return false;
+        }
+        Object this$ref = this.getRef();
+        Object other$ref = other.getRef();
+        if (this$ref == null ? other$ref != null : !this$ref.equals(other$ref)) {
+            return false;
+        }
+        Object this$refs = this.getRefs();
+        Object other$refs = other.getRefs();
+        if (this$refs == null ? other$refs != null : !this$refs.equals(other$refs)) {
+            return false;
+        }
+        Object this$uri = this.getUri();
+        Object other$uri = other.getUri();
+        if (this$uri == null ? other$uri != null : !this$uri.equals(other$uri)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GitInfo;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $author = this.getAuthor();
+        result = result * prime + ($author == null ? 43 : $author.hashCode());
+        Object $commit = this.getCommit();
+        result = result * prime + ($commit == null ? 43 : $commit.hashCode());
+        Object $committer = this.getCommitter();
+        result = result * prime + ($committer == null ? 43 : $committer.hashCode());
+        Object $httpProxy = this.getHttpProxy();
+        result = result * prime + ($httpProxy == null ? 43 : $httpProxy.hashCode());
+        Object $httpsProxy = this.getHttpsProxy();
+        result = result * prime + ($httpsProxy == null ? 43 : $httpsProxy.hashCode());
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $noProxy = this.getNoProxy();
+        result = result * prime + ($noProxy == null ? 43 : $noProxy.hashCode());
+        Object $ref = this.getRef();
+        result = result * prime + ($ref == null ? 43 : $ref.hashCode());
+        Object $refs = this.getRefs();
+        result = result * prime + ($refs == null ? 43 : $refs.hashCode());
+        Object $uri = this.getUri();
+        result = result * prime + ($uri == null ? 43 : $uri.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GitInfo(" + "author=" + this.getAuthor() + ", commit=" + this.getCommit() + ", committer=" + this.getCommitter() + ", httpProxy=" + this.getHttpProxy() + ", httpsProxy=" + this.getHttpsProxy() + ", message=" + this.getMessage() + ", noProxy=" + this.getNoProxy() + ", ref=" + this.getRef() + ", refs=" + this.getRefs() + ", uri=" + this.getUri() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

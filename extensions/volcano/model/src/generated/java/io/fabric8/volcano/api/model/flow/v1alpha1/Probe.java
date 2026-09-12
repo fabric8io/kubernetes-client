@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "httpGetList",
     "taskStatusList",
     "tcpSocketList"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -147,6 +138,64 @@ public class Probe implements Editable<ProbeBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Probe)) {
+            return false;
+        }
+        Probe other = (Probe) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$httpGetList = this.getHttpGetList();
+        Object other$httpGetList = other.getHttpGetList();
+        if (this$httpGetList == null ? other$httpGetList != null : !this$httpGetList.equals(other$httpGetList)) {
+            return false;
+        }
+        Object this$taskStatusList = this.getTaskStatusList();
+        Object other$taskStatusList = other.getTaskStatusList();
+        if (this$taskStatusList == null ? other$taskStatusList != null : !this$taskStatusList.equals(other$taskStatusList)) {
+            return false;
+        }
+        Object this$tcpSocketList = this.getTcpSocketList();
+        Object other$tcpSocketList = other.getTcpSocketList();
+        if (this$tcpSocketList == null ? other$tcpSocketList != null : !this$tcpSocketList.equals(other$tcpSocketList)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Probe;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $httpGetList = this.getHttpGetList();
+        result = result * prime + ($httpGetList == null ? 43 : $httpGetList.hashCode());
+        Object $taskStatusList = this.getTaskStatusList();
+        result = result * prime + ($taskStatusList == null ? 43 : $taskStatusList.hashCode());
+        Object $tcpSocketList = this.getTcpSocketList();
+        result = result * prime + ($tcpSocketList == null ? 43 : $tcpSocketList.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Probe(" + "httpGetList=" + this.getHttpGetList() + ", taskStatusList=" + this.getTaskStatusList() + ", tcpSocketList=" + this.getTcpSocketList() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

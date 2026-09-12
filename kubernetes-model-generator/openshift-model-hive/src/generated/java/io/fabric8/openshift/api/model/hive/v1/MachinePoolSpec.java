@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MachinePoolSpec defines the desired state of MachinePool
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "platform",
     "replicas",
     "taints"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -269,6 +260,99 @@ public class MachinePoolSpec implements Editable<MachinePoolSpecBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachinePoolSpec)) {
+            return false;
+        }
+        MachinePoolSpec other = (MachinePoolSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$autoscaling = this.getAutoscaling();
+        Object other$autoscaling = other.getAutoscaling();
+        if (this$autoscaling == null ? other$autoscaling != null : !this$autoscaling.equals(other$autoscaling)) {
+            return false;
+        }
+        Object this$clusterDeploymentRef = this.getClusterDeploymentRef();
+        Object other$clusterDeploymentRef = other.getClusterDeploymentRef();
+        if (this$clusterDeploymentRef == null ? other$clusterDeploymentRef != null : !this$clusterDeploymentRef.equals(other$clusterDeploymentRef)) {
+            return false;
+        }
+        Object this$labels = this.getLabels();
+        Object other$labels = other.getLabels();
+        if (this$labels == null ? other$labels != null : !this$labels.equals(other$labels)) {
+            return false;
+        }
+        Object this$machineLabels = this.getMachineLabels();
+        Object other$machineLabels = other.getMachineLabels();
+        if (this$machineLabels == null ? other$machineLabels != null : !this$machineLabels.equals(other$machineLabels)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$platform = this.getPlatform();
+        Object other$platform = other.getPlatform();
+        if (this$platform == null ? other$platform != null : !this$platform.equals(other$platform)) {
+            return false;
+        }
+        Object this$replicas = this.getReplicas();
+        Object other$replicas = other.getReplicas();
+        if (this$replicas == null ? other$replicas != null : !this$replicas.equals(other$replicas)) {
+            return false;
+        }
+        Object this$taints = this.getTaints();
+        Object other$taints = other.getTaints();
+        if (this$taints == null ? other$taints != null : !this$taints.equals(other$taints)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachinePoolSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $autoscaling = this.getAutoscaling();
+        result = result * prime + ($autoscaling == null ? 43 : $autoscaling.hashCode());
+        Object $clusterDeploymentRef = this.getClusterDeploymentRef();
+        result = result * prime + ($clusterDeploymentRef == null ? 43 : $clusterDeploymentRef.hashCode());
+        Object $labels = this.getLabels();
+        result = result * prime + ($labels == null ? 43 : $labels.hashCode());
+        Object $machineLabels = this.getMachineLabels();
+        result = result * prime + ($machineLabels == null ? 43 : $machineLabels.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $platform = this.getPlatform();
+        result = result * prime + ($platform == null ? 43 : $platform.hashCode());
+        Object $replicas = this.getReplicas();
+        result = result * prime + ($replicas == null ? 43 : $replicas.hashCode());
+        Object $taints = this.getTaints();
+        result = result * prime + ($taints == null ? 43 : $taints.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachinePoolSpec(" + "autoscaling=" + this.getAutoscaling() + ", clusterDeploymentRef=" + this.getClusterDeploymentRef() + ", labels=" + this.getLabels() + ", machineLabels=" + this.getMachineLabels() + ", name=" + this.getName() + ", platform=" + this.getPlatform() + ", replicas=" + this.getReplicas() + ", taints=" + this.getTaints() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

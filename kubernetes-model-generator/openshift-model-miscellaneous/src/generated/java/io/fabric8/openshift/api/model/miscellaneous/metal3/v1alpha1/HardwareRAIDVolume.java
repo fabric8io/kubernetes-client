@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HardwareRAIDVolume defines the desired configuration of volume in hardware RAID.
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "physicalDisks",
     "rotational",
     "sizeGibibytes"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -243,6 +234,92 @@ public class HardwareRAIDVolume implements Editable<HardwareRAIDVolumeBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HardwareRAIDVolume)) {
+            return false;
+        }
+        HardwareRAIDVolume other = (HardwareRAIDVolume) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$controller = this.getController();
+        Object other$controller = other.getController();
+        if (this$controller == null ? other$controller != null : !this$controller.equals(other$controller)) {
+            return false;
+        }
+        Object this$level = this.getLevel();
+        Object other$level = other.getLevel();
+        if (this$level == null ? other$level != null : !this$level.equals(other$level)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$numberOfPhysicalDisks = this.getNumberOfPhysicalDisks();
+        Object other$numberOfPhysicalDisks = other.getNumberOfPhysicalDisks();
+        if (this$numberOfPhysicalDisks == null ? other$numberOfPhysicalDisks != null : !this$numberOfPhysicalDisks.equals(other$numberOfPhysicalDisks)) {
+            return false;
+        }
+        Object this$physicalDisks = this.getPhysicalDisks();
+        Object other$physicalDisks = other.getPhysicalDisks();
+        if (this$physicalDisks == null ? other$physicalDisks != null : !this$physicalDisks.equals(other$physicalDisks)) {
+            return false;
+        }
+        Object this$rotational = this.getRotational();
+        Object other$rotational = other.getRotational();
+        if (this$rotational == null ? other$rotational != null : !this$rotational.equals(other$rotational)) {
+            return false;
+        }
+        Object this$sizeGibibytes = this.getSizeGibibytes();
+        Object other$sizeGibibytes = other.getSizeGibibytes();
+        if (this$sizeGibibytes == null ? other$sizeGibibytes != null : !this$sizeGibibytes.equals(other$sizeGibibytes)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HardwareRAIDVolume;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $controller = this.getController();
+        result = result * prime + ($controller == null ? 43 : $controller.hashCode());
+        Object $level = this.getLevel();
+        result = result * prime + ($level == null ? 43 : $level.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $numberOfPhysicalDisks = this.getNumberOfPhysicalDisks();
+        result = result * prime + ($numberOfPhysicalDisks == null ? 43 : $numberOfPhysicalDisks.hashCode());
+        Object $physicalDisks = this.getPhysicalDisks();
+        result = result * prime + ($physicalDisks == null ? 43 : $physicalDisks.hashCode());
+        Object $rotational = this.getRotational();
+        result = result * prime + ($rotational == null ? 43 : $rotational.hashCode());
+        Object $sizeGibibytes = this.getSizeGibibytes();
+        result = result * prime + ($sizeGibibytes == null ? 43 : $sizeGibibytes.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HardwareRAIDVolume(" + "controller=" + this.getController() + ", level=" + this.getLevel() + ", name=" + this.getName() + ", numberOfPhysicalDisks=" + this.getNumberOfPhysicalDisks() + ", physicalDisks=" + this.getPhysicalDisks() + ", rotational=" + this.getRotational() + ", sizeGibibytes=" + this.getSizeGibibytes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

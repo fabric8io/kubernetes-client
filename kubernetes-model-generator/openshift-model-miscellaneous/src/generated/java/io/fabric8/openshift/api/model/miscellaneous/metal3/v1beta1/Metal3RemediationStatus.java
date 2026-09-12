@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Metal3RemediationStatus defines the observed state of Metal3Remediation.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "lastRemediated",
     "phase",
     "retryCount"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class Metal3RemediationStatus implements Editable<Metal3RemediationStatus
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Metal3RemediationStatus)) {
+            return false;
+        }
+        Metal3RemediationStatus other = (Metal3RemediationStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$lastRemediated = this.getLastRemediated();
+        Object other$lastRemediated = other.getLastRemediated();
+        if (this$lastRemediated == null ? other$lastRemediated != null : !this$lastRemediated.equals(other$lastRemediated)) {
+            return false;
+        }
+        Object this$phase = this.getPhase();
+        Object other$phase = other.getPhase();
+        if (this$phase == null ? other$phase != null : !this$phase.equals(other$phase)) {
+            return false;
+        }
+        Object this$retryCount = this.getRetryCount();
+        Object other$retryCount = other.getRetryCount();
+        if (this$retryCount == null ? other$retryCount != null : !this$retryCount.equals(other$retryCount)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Metal3RemediationStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $lastRemediated = this.getLastRemediated();
+        result = result * prime + ($lastRemediated == null ? 43 : $lastRemediated.hashCode());
+        Object $phase = this.getPhase();
+        result = result * prime + ($phase == null ? 43 : $phase.hashCode());
+        Object $retryCount = this.getRetryCount();
+        result = result * prime + ($retryCount == null ? 43 : $retryCount.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Metal3RemediationStatus(" + "lastRemediated=" + this.getLastRemediated() + ", phase=" + this.getPhase() + ", retryCount=" + this.getRetryCount() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

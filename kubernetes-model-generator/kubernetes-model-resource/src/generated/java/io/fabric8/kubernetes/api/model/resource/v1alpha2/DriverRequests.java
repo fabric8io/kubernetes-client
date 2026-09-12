@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DriverRequests describes all resources that are needed from one particular driver.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "driverName",
     "requests",
     "vendorParameters"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -166,6 +157,64 @@ public class DriverRequests implements Editable<DriverRequestsBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DriverRequests)) {
+            return false;
+        }
+        DriverRequests other = (DriverRequests) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$driverName = this.getDriverName();
+        Object other$driverName = other.getDriverName();
+        if (this$driverName == null ? other$driverName != null : !this$driverName.equals(other$driverName)) {
+            return false;
+        }
+        Object this$requests = this.getRequests();
+        Object other$requests = other.getRequests();
+        if (this$requests == null ? other$requests != null : !this$requests.equals(other$requests)) {
+            return false;
+        }
+        Object this$vendorParameters = this.getVendorParameters();
+        Object other$vendorParameters = other.getVendorParameters();
+        if (this$vendorParameters == null ? other$vendorParameters != null : !this$vendorParameters.equals(other$vendorParameters)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DriverRequests;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $driverName = this.getDriverName();
+        result = result * prime + ($driverName == null ? 43 : $driverName.hashCode());
+        Object $requests = this.getRequests();
+        result = result * prime + ($requests == null ? 43 : $requests.hashCode());
+        Object $vendorParameters = this.getVendorParameters();
+        result = result * prime + ($vendorParameters == null ? 43 : $vendorParameters.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DriverRequests(" + "driverName=" + this.getDriverName() + ", requests=" + this.getRequests() + ", vendorParameters=" + this.getVendorParameters() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

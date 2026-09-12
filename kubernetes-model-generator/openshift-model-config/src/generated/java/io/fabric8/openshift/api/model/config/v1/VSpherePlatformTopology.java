@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VSpherePlatformTopology holds the required and optional vCenter objects - datacenter, computeCluster, networks, datastore and resourcePool - to provision virtual machines.
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "networks",
     "resourcePool",
     "template"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -243,6 +234,92 @@ public class VSpherePlatformTopology implements Editable<VSpherePlatformTopology
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VSpherePlatformTopology)) {
+            return false;
+        }
+        VSpherePlatformTopology other = (VSpherePlatformTopology) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$computeCluster = this.getComputeCluster();
+        Object other$computeCluster = other.getComputeCluster();
+        if (this$computeCluster == null ? other$computeCluster != null : !this$computeCluster.equals(other$computeCluster)) {
+            return false;
+        }
+        Object this$datacenter = this.getDatacenter();
+        Object other$datacenter = other.getDatacenter();
+        if (this$datacenter == null ? other$datacenter != null : !this$datacenter.equals(other$datacenter)) {
+            return false;
+        }
+        Object this$datastore = this.getDatastore();
+        Object other$datastore = other.getDatastore();
+        if (this$datastore == null ? other$datastore != null : !this$datastore.equals(other$datastore)) {
+            return false;
+        }
+        Object this$folder = this.getFolder();
+        Object other$folder = other.getFolder();
+        if (this$folder == null ? other$folder != null : !this$folder.equals(other$folder)) {
+            return false;
+        }
+        Object this$networks = this.getNetworks();
+        Object other$networks = other.getNetworks();
+        if (this$networks == null ? other$networks != null : !this$networks.equals(other$networks)) {
+            return false;
+        }
+        Object this$resourcePool = this.getResourcePool();
+        Object other$resourcePool = other.getResourcePool();
+        if (this$resourcePool == null ? other$resourcePool != null : !this$resourcePool.equals(other$resourcePool)) {
+            return false;
+        }
+        Object this$template = this.getTemplate();
+        Object other$template = other.getTemplate();
+        if (this$template == null ? other$template != null : !this$template.equals(other$template)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VSpherePlatformTopology;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $computeCluster = this.getComputeCluster();
+        result = result * prime + ($computeCluster == null ? 43 : $computeCluster.hashCode());
+        Object $datacenter = this.getDatacenter();
+        result = result * prime + ($datacenter == null ? 43 : $datacenter.hashCode());
+        Object $datastore = this.getDatastore();
+        result = result * prime + ($datastore == null ? 43 : $datastore.hashCode());
+        Object $folder = this.getFolder();
+        result = result * prime + ($folder == null ? 43 : $folder.hashCode());
+        Object $networks = this.getNetworks();
+        result = result * prime + ($networks == null ? 43 : $networks.hashCode());
+        Object $resourcePool = this.getResourcePool();
+        result = result * prime + ($resourcePool == null ? 43 : $resourcePool.hashCode());
+        Object $template = this.getTemplate();
+        result = result * prime + ($template == null ? 43 : $template.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VSpherePlatformTopology(" + "computeCluster=" + this.getComputeCluster() + ", datacenter=" + this.getDatacenter() + ", datastore=" + this.getDatastore() + ", folder=" + this.getFolder() + ", networks=" + this.getNetworks() + ", resourcePool=" + this.getResourcePool() + ", template=" + this.getTemplate() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

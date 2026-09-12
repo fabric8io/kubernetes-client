@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PolicyAutomationSpec defines how and when automation is initiated for the referenced policy.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "mode",
     "policyRef",
     "rescanAfter"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -220,6 +211,85 @@ public class PolicyAutomationSpec implements Editable<PolicyAutomationSpecBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PolicyAutomationSpec)) {
+            return false;
+        }
+        PolicyAutomationSpec other = (PolicyAutomationSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$automationDef = this.getAutomationDef();
+        Object other$automationDef = other.getAutomationDef();
+        if (this$automationDef == null ? other$automationDef != null : !this$automationDef.equals(other$automationDef)) {
+            return false;
+        }
+        Object this$delayAfterRunSeconds = this.getDelayAfterRunSeconds();
+        Object other$delayAfterRunSeconds = other.getDelayAfterRunSeconds();
+        if (this$delayAfterRunSeconds == null ? other$delayAfterRunSeconds != null : !this$delayAfterRunSeconds.equals(other$delayAfterRunSeconds)) {
+            return false;
+        }
+        Object this$eventHook = this.getEventHook();
+        Object other$eventHook = other.getEventHook();
+        if (this$eventHook == null ? other$eventHook != null : !this$eventHook.equals(other$eventHook)) {
+            return false;
+        }
+        Object this$mode = this.getMode();
+        Object other$mode = other.getMode();
+        if (this$mode == null ? other$mode != null : !this$mode.equals(other$mode)) {
+            return false;
+        }
+        Object this$policyRef = this.getPolicyRef();
+        Object other$policyRef = other.getPolicyRef();
+        if (this$policyRef == null ? other$policyRef != null : !this$policyRef.equals(other$policyRef)) {
+            return false;
+        }
+        Object this$rescanAfter = this.getRescanAfter();
+        Object other$rescanAfter = other.getRescanAfter();
+        if (this$rescanAfter == null ? other$rescanAfter != null : !this$rescanAfter.equals(other$rescanAfter)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PolicyAutomationSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $automationDef = this.getAutomationDef();
+        result = result * prime + ($automationDef == null ? 43 : $automationDef.hashCode());
+        Object $delayAfterRunSeconds = this.getDelayAfterRunSeconds();
+        result = result * prime + ($delayAfterRunSeconds == null ? 43 : $delayAfterRunSeconds.hashCode());
+        Object $eventHook = this.getEventHook();
+        result = result * prime + ($eventHook == null ? 43 : $eventHook.hashCode());
+        Object $mode = this.getMode();
+        result = result * prime + ($mode == null ? 43 : $mode.hashCode());
+        Object $policyRef = this.getPolicyRef();
+        result = result * prime + ($policyRef == null ? 43 : $policyRef.hashCode());
+        Object $rescanAfter = this.getRescanAfter();
+        result = result * prime + ($rescanAfter == null ? 43 : $rescanAfter.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PolicyAutomationSpec(" + "automationDef=" + this.getAutomationDef() + ", delayAfterRunSeconds=" + this.getDelayAfterRunSeconds() + ", eventHook=" + this.getEventHook() + ", mode=" + this.getMode() + ", policyRef=" + this.getPolicyRef() + ", rescanAfter=" + this.getRescanAfter() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

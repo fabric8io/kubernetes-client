@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * InternalErrorAnalysisMessage is a strongly-typed message representing some error in Istio code that prevented us from performing analysis at all.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "detail",
     "messageBase"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class InternalErrorAnalysisMessage implements Editable<InternalErrorAnaly
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof InternalErrorAnalysisMessage)) {
+            return false;
+        }
+        InternalErrorAnalysisMessage other = (InternalErrorAnalysisMessage) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$detail = this.getDetail();
+        Object other$detail = other.getDetail();
+        if (this$detail == null ? other$detail != null : !this$detail.equals(other$detail)) {
+            return false;
+        }
+        Object this$messageBase = this.getMessageBase();
+        Object other$messageBase = other.getMessageBase();
+        if (this$messageBase == null ? other$messageBase != null : !this$messageBase.equals(other$messageBase)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof InternalErrorAnalysisMessage;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $detail = this.getDetail();
+        result = result * prime + ($detail == null ? 43 : $detail.hashCode());
+        Object $messageBase = this.getMessageBase();
+        result = result * prime + ($messageBase == null ? 43 : $messageBase.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "InternalErrorAnalysisMessage(" + "detail=" + this.getDetail() + ", messageBase=" + this.getMessageBase() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

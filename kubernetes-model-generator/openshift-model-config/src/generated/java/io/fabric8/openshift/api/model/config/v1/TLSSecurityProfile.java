@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TLSSecurityProfile defines the schema for a TLS security profile. This object is used by operators to apply TLS security settings to operands.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "modern",
     "old",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -199,6 +190,78 @@ public class TLSSecurityProfile implements Editable<TLSSecurityProfileBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TLSSecurityProfile)) {
+            return false;
+        }
+        TLSSecurityProfile other = (TLSSecurityProfile) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$custom = this.getCustom();
+        Object other$custom = other.getCustom();
+        if (this$custom == null ? other$custom != null : !this$custom.equals(other$custom)) {
+            return false;
+        }
+        Object this$intermediate = this.getIntermediate();
+        Object other$intermediate = other.getIntermediate();
+        if (this$intermediate == null ? other$intermediate != null : !this$intermediate.equals(other$intermediate)) {
+            return false;
+        }
+        Object this$modern = this.getModern();
+        Object other$modern = other.getModern();
+        if (this$modern == null ? other$modern != null : !this$modern.equals(other$modern)) {
+            return false;
+        }
+        Object this$old = this.getOld();
+        Object other$old = other.getOld();
+        if (this$old == null ? other$old != null : !this$old.equals(other$old)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TLSSecurityProfile;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $custom = this.getCustom();
+        result = result * prime + ($custom == null ? 43 : $custom.hashCode());
+        Object $intermediate = this.getIntermediate();
+        result = result * prime + ($intermediate == null ? 43 : $intermediate.hashCode());
+        Object $modern = this.getModern();
+        result = result * prime + ($modern == null ? 43 : $modern.hashCode());
+        Object $old = this.getOld();
+        result = result * prime + ($old == null ? 43 : $old.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TLSSecurityProfile(" + "custom=" + this.getCustom() + ", intermediate=" + this.getIntermediate() + ", modern=" + this.getModern() + ", old=" + this.getOld() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TagEvent is used by ImageStreamStatus to keep a historical record of images associated with a tag.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "dockerImageReference",
     "generation",
     "image"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -179,6 +170,71 @@ public class TagEvent implements Editable<TagEventBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TagEvent)) {
+            return false;
+        }
+        TagEvent other = (TagEvent) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$created = this.getCreated();
+        Object other$created = other.getCreated();
+        if (this$created == null ? other$created != null : !this$created.equals(other$created)) {
+            return false;
+        }
+        Object this$dockerImageReference = this.getDockerImageReference();
+        Object other$dockerImageReference = other.getDockerImageReference();
+        if (this$dockerImageReference == null ? other$dockerImageReference != null : !this$dockerImageReference.equals(other$dockerImageReference)) {
+            return false;
+        }
+        Object this$generation = this.getGeneration();
+        Object other$generation = other.getGeneration();
+        if (this$generation == null ? other$generation != null : !this$generation.equals(other$generation)) {
+            return false;
+        }
+        Object this$image = this.getImage();
+        Object other$image = other.getImage();
+        if (this$image == null ? other$image != null : !this$image.equals(other$image)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TagEvent;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $created = this.getCreated();
+        result = result * prime + ($created == null ? 43 : $created.hashCode());
+        Object $dockerImageReference = this.getDockerImageReference();
+        result = result * prime + ($dockerImageReference == null ? 43 : $dockerImageReference.hashCode());
+        Object $generation = this.getGeneration();
+        result = result * prime + ($generation == null ? 43 : $generation.hashCode());
+        Object $image = this.getImage();
+        result = result * prime + ($image == null ? 43 : $image.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TagEvent(" + "created=" + this.getCreated() + ", dockerImageReference=" + this.getDockerImageReference() + ", generation=" + this.getGeneration() + ", image=" + this.getImage() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

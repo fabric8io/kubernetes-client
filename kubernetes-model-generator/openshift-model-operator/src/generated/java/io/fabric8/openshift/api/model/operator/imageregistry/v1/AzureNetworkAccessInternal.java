@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
     "privateEndpointName",
     "subnetName",
     "vnetName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -177,6 +168,71 @@ public class AzureNetworkAccessInternal implements Editable<AzureNetworkAccessIn
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AzureNetworkAccessInternal)) {
+            return false;
+        }
+        AzureNetworkAccessInternal other = (AzureNetworkAccessInternal) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$networkResourceGroupName = this.getNetworkResourceGroupName();
+        Object other$networkResourceGroupName = other.getNetworkResourceGroupName();
+        if (this$networkResourceGroupName == null ? other$networkResourceGroupName != null : !this$networkResourceGroupName.equals(other$networkResourceGroupName)) {
+            return false;
+        }
+        Object this$privateEndpointName = this.getPrivateEndpointName();
+        Object other$privateEndpointName = other.getPrivateEndpointName();
+        if (this$privateEndpointName == null ? other$privateEndpointName != null : !this$privateEndpointName.equals(other$privateEndpointName)) {
+            return false;
+        }
+        Object this$subnetName = this.getSubnetName();
+        Object other$subnetName = other.getSubnetName();
+        if (this$subnetName == null ? other$subnetName != null : !this$subnetName.equals(other$subnetName)) {
+            return false;
+        }
+        Object this$vnetName = this.getVnetName();
+        Object other$vnetName = other.getVnetName();
+        if (this$vnetName == null ? other$vnetName != null : !this$vnetName.equals(other$vnetName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AzureNetworkAccessInternal;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $networkResourceGroupName = this.getNetworkResourceGroupName();
+        result = result * prime + ($networkResourceGroupName == null ? 43 : $networkResourceGroupName.hashCode());
+        Object $privateEndpointName = this.getPrivateEndpointName();
+        result = result * prime + ($privateEndpointName == null ? 43 : $privateEndpointName.hashCode());
+        Object $subnetName = this.getSubnetName();
+        result = result * prime + ($subnetName == null ? 43 : $subnetName.hashCode());
+        Object $vnetName = this.getVnetName();
+        result = result * prime + ($vnetName == null ? 43 : $vnetName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AzureNetworkAccessInternal(" + "networkResourceGroupName=" + this.getNetworkResourceGroupName() + ", privateEndpointName=" + this.getPrivateEndpointName() + ", subnetName=" + this.getSubnetName() + ", vnetName=" + this.getVnetName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

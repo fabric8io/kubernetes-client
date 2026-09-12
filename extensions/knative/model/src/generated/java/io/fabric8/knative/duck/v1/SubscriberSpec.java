@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SubscriberSpec defines a single subscriber to a Subscribable.<br><p> <br><p> At least one of SubscriberURI and ReplyURI must be present
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "subscriberCACerts",
     "subscriberUri",
     "uid"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -320,6 +311,120 @@ public class SubscriberSpec implements Editable<SubscriberSpecBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SubscriberSpec)) {
+            return false;
+        }
+        SubscriberSpec other = (SubscriberSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$auth = this.getAuth();
+        Object other$auth = other.getAuth();
+        if (this$auth == null ? other$auth != null : !this$auth.equals(other$auth)) {
+            return false;
+        }
+        Object this$delivery = this.getDelivery();
+        Object other$delivery = other.getDelivery();
+        if (this$delivery == null ? other$delivery != null : !this$delivery.equals(other$delivery)) {
+            return false;
+        }
+        Object this$generation = this.getGeneration();
+        Object other$generation = other.getGeneration();
+        if (this$generation == null ? other$generation != null : !this$generation.equals(other$generation)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$replyAudience = this.getReplyAudience();
+        Object other$replyAudience = other.getReplyAudience();
+        if (this$replyAudience == null ? other$replyAudience != null : !this$replyAudience.equals(other$replyAudience)) {
+            return false;
+        }
+        Object this$replyCACerts = this.getReplyCACerts();
+        Object other$replyCACerts = other.getReplyCACerts();
+        if (this$replyCACerts == null ? other$replyCACerts != null : !this$replyCACerts.equals(other$replyCACerts)) {
+            return false;
+        }
+        Object this$replyUri = this.getReplyUri();
+        Object other$replyUri = other.getReplyUri();
+        if (this$replyUri == null ? other$replyUri != null : !this$replyUri.equals(other$replyUri)) {
+            return false;
+        }
+        Object this$subscriberAudience = this.getSubscriberAudience();
+        Object other$subscriberAudience = other.getSubscriberAudience();
+        if (this$subscriberAudience == null ? other$subscriberAudience != null : !this$subscriberAudience.equals(other$subscriberAudience)) {
+            return false;
+        }
+        Object this$subscriberCACerts = this.getSubscriberCACerts();
+        Object other$subscriberCACerts = other.getSubscriberCACerts();
+        if (this$subscriberCACerts == null ? other$subscriberCACerts != null : !this$subscriberCACerts.equals(other$subscriberCACerts)) {
+            return false;
+        }
+        Object this$subscriberUri = this.getSubscriberUri();
+        Object other$subscriberUri = other.getSubscriberUri();
+        if (this$subscriberUri == null ? other$subscriberUri != null : !this$subscriberUri.equals(other$subscriberUri)) {
+            return false;
+        }
+        Object this$uid = this.getUid();
+        Object other$uid = other.getUid();
+        if (this$uid == null ? other$uid != null : !this$uid.equals(other$uid)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SubscriberSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $auth = this.getAuth();
+        result = result * prime + ($auth == null ? 43 : $auth.hashCode());
+        Object $delivery = this.getDelivery();
+        result = result * prime + ($delivery == null ? 43 : $delivery.hashCode());
+        Object $generation = this.getGeneration();
+        result = result * prime + ($generation == null ? 43 : $generation.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $replyAudience = this.getReplyAudience();
+        result = result * prime + ($replyAudience == null ? 43 : $replyAudience.hashCode());
+        Object $replyCACerts = this.getReplyCACerts();
+        result = result * prime + ($replyCACerts == null ? 43 : $replyCACerts.hashCode());
+        Object $replyUri = this.getReplyUri();
+        result = result * prime + ($replyUri == null ? 43 : $replyUri.hashCode());
+        Object $subscriberAudience = this.getSubscriberAudience();
+        result = result * prime + ($subscriberAudience == null ? 43 : $subscriberAudience.hashCode());
+        Object $subscriberCACerts = this.getSubscriberCACerts();
+        result = result * prime + ($subscriberCACerts == null ? 43 : $subscriberCACerts.hashCode());
+        Object $subscriberUri = this.getSubscriberUri();
+        result = result * prime + ($subscriberUri == null ? 43 : $subscriberUri.hashCode());
+        Object $uid = this.getUid();
+        result = result * prime + ($uid == null ? 43 : $uid.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SubscriberSpec(" + "auth=" + this.getAuth() + ", delivery=" + this.getDelivery() + ", generation=" + this.getGeneration() + ", name=" + this.getName() + ", replyAudience=" + this.getReplyAudience() + ", replyCACerts=" + this.getReplyCACerts() + ", replyUri=" + this.getReplyUri() + ", subscriberAudience=" + this.getSubscriberAudience() + ", subscriberCACerts=" + this.getSubscriberCACerts() + ", subscriberUri=" + this.getSubscriberUri() + ", uid=" + this.getUid() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

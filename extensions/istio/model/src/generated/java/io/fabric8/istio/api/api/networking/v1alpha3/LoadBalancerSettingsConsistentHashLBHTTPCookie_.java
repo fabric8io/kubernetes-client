@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Describes a HTTP cookie that will be used as the hash key for the Consistent Hash load balancer.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "name",
     "path",
     "ttl"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class LoadBalancerSettingsConsistentHashLBHTTPCookie_ implements Editable
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof LoadBalancerSettingsConsistentHashLBHTTPCookie_)) {
+            return false;
+        }
+        LoadBalancerSettingsConsistentHashLBHTTPCookie_ other = (LoadBalancerSettingsConsistentHashLBHTTPCookie_) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$attributes = this.getAttributes();
+        Object other$attributes = other.getAttributes();
+        if (this$attributes == null ? other$attributes != null : !this$attributes.equals(other$attributes)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$path = this.getPath();
+        Object other$path = other.getPath();
+        if (this$path == null ? other$path != null : !this$path.equals(other$path)) {
+            return false;
+        }
+        Object this$ttl = this.getTtl();
+        Object other$ttl = other.getTtl();
+        if (this$ttl == null ? other$ttl != null : !this$ttl.equals(other$ttl)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof LoadBalancerSettingsConsistentHashLBHTTPCookie_;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $attributes = this.getAttributes();
+        result = result * prime + ($attributes == null ? 43 : $attributes.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $path = this.getPath();
+        result = result * prime + ($path == null ? 43 : $path.hashCode());
+        Object $ttl = this.getTtl();
+        result = result * prime + ($ttl == null ? 43 : $ttl.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "LoadBalancerSettingsConsistentHashLBHTTPCookie_(" + "attributes=" + this.getAttributes() + ", name=" + this.getName() + ", path=" + this.getPath() + ", ttl=" + this.getTtl() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

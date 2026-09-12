@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Desired state of ClusterAutoscaler resource
@@ -52,12 +49,6 @@ import lombok.experimental.Accessors;
     "scaleDown",
     "scaleUp",
     "skipNodesWithLocalStorage"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -346,6 +337,127 @@ public class ClusterAutoscalerSpec implements Editable<ClusterAutoscalerSpecBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterAutoscalerSpec)) {
+            return false;
+        }
+        ClusterAutoscalerSpec other = (ClusterAutoscalerSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$balanceSimilarNodeGroups = this.getBalanceSimilarNodeGroups();
+        Object other$balanceSimilarNodeGroups = other.getBalanceSimilarNodeGroups();
+        if (this$balanceSimilarNodeGroups == null ? other$balanceSimilarNodeGroups != null : !this$balanceSimilarNodeGroups.equals(other$balanceSimilarNodeGroups)) {
+            return false;
+        }
+        Object this$balancingIgnoredLabels = this.getBalancingIgnoredLabels();
+        Object other$balancingIgnoredLabels = other.getBalancingIgnoredLabels();
+        if (this$balancingIgnoredLabels == null ? other$balancingIgnoredLabels != null : !this$balancingIgnoredLabels.equals(other$balancingIgnoredLabels)) {
+            return false;
+        }
+        Object this$expanders = this.getExpanders();
+        Object other$expanders = other.getExpanders();
+        if (this$expanders == null ? other$expanders != null : !this$expanders.equals(other$expanders)) {
+            return false;
+        }
+        Object this$ignoreDaemonsetsUtilization = this.getIgnoreDaemonsetsUtilization();
+        Object other$ignoreDaemonsetsUtilization = other.getIgnoreDaemonsetsUtilization();
+        if (this$ignoreDaemonsetsUtilization == null ? other$ignoreDaemonsetsUtilization != null : !this$ignoreDaemonsetsUtilization.equals(other$ignoreDaemonsetsUtilization)) {
+            return false;
+        }
+        Object this$logVerbosity = this.getLogVerbosity();
+        Object other$logVerbosity = other.getLogVerbosity();
+        if (this$logVerbosity == null ? other$logVerbosity != null : !this$logVerbosity.equals(other$logVerbosity)) {
+            return false;
+        }
+        Object this$maxNodeProvisionTime = this.getMaxNodeProvisionTime();
+        Object other$maxNodeProvisionTime = other.getMaxNodeProvisionTime();
+        if (this$maxNodeProvisionTime == null ? other$maxNodeProvisionTime != null : !this$maxNodeProvisionTime.equals(other$maxNodeProvisionTime)) {
+            return false;
+        }
+        Object this$maxPodGracePeriod = this.getMaxPodGracePeriod();
+        Object other$maxPodGracePeriod = other.getMaxPodGracePeriod();
+        if (this$maxPodGracePeriod == null ? other$maxPodGracePeriod != null : !this$maxPodGracePeriod.equals(other$maxPodGracePeriod)) {
+            return false;
+        }
+        Object this$podPriorityThreshold = this.getPodPriorityThreshold();
+        Object other$podPriorityThreshold = other.getPodPriorityThreshold();
+        if (this$podPriorityThreshold == null ? other$podPriorityThreshold != null : !this$podPriorityThreshold.equals(other$podPriorityThreshold)) {
+            return false;
+        }
+        Object this$resourceLimits = this.getResourceLimits();
+        Object other$resourceLimits = other.getResourceLimits();
+        if (this$resourceLimits == null ? other$resourceLimits != null : !this$resourceLimits.equals(other$resourceLimits)) {
+            return false;
+        }
+        Object this$scaleDown = this.getScaleDown();
+        Object other$scaleDown = other.getScaleDown();
+        if (this$scaleDown == null ? other$scaleDown != null : !this$scaleDown.equals(other$scaleDown)) {
+            return false;
+        }
+        Object this$scaleUp = this.getScaleUp();
+        Object other$scaleUp = other.getScaleUp();
+        if (this$scaleUp == null ? other$scaleUp != null : !this$scaleUp.equals(other$scaleUp)) {
+            return false;
+        }
+        Object this$skipNodesWithLocalStorage = this.getSkipNodesWithLocalStorage();
+        Object other$skipNodesWithLocalStorage = other.getSkipNodesWithLocalStorage();
+        if (this$skipNodesWithLocalStorage == null ? other$skipNodesWithLocalStorage != null : !this$skipNodesWithLocalStorage.equals(other$skipNodesWithLocalStorage)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterAutoscalerSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $balanceSimilarNodeGroups = this.getBalanceSimilarNodeGroups();
+        result = result * prime + ($balanceSimilarNodeGroups == null ? 43 : $balanceSimilarNodeGroups.hashCode());
+        Object $balancingIgnoredLabels = this.getBalancingIgnoredLabels();
+        result = result * prime + ($balancingIgnoredLabels == null ? 43 : $balancingIgnoredLabels.hashCode());
+        Object $expanders = this.getExpanders();
+        result = result * prime + ($expanders == null ? 43 : $expanders.hashCode());
+        Object $ignoreDaemonsetsUtilization = this.getIgnoreDaemonsetsUtilization();
+        result = result * prime + ($ignoreDaemonsetsUtilization == null ? 43 : $ignoreDaemonsetsUtilization.hashCode());
+        Object $logVerbosity = this.getLogVerbosity();
+        result = result * prime + ($logVerbosity == null ? 43 : $logVerbosity.hashCode());
+        Object $maxNodeProvisionTime = this.getMaxNodeProvisionTime();
+        result = result * prime + ($maxNodeProvisionTime == null ? 43 : $maxNodeProvisionTime.hashCode());
+        Object $maxPodGracePeriod = this.getMaxPodGracePeriod();
+        result = result * prime + ($maxPodGracePeriod == null ? 43 : $maxPodGracePeriod.hashCode());
+        Object $podPriorityThreshold = this.getPodPriorityThreshold();
+        result = result * prime + ($podPriorityThreshold == null ? 43 : $podPriorityThreshold.hashCode());
+        Object $resourceLimits = this.getResourceLimits();
+        result = result * prime + ($resourceLimits == null ? 43 : $resourceLimits.hashCode());
+        Object $scaleDown = this.getScaleDown();
+        result = result * prime + ($scaleDown == null ? 43 : $scaleDown.hashCode());
+        Object $scaleUp = this.getScaleUp();
+        result = result * prime + ($scaleUp == null ? 43 : $scaleUp.hashCode());
+        Object $skipNodesWithLocalStorage = this.getSkipNodesWithLocalStorage();
+        result = result * prime + ($skipNodesWithLocalStorage == null ? 43 : $skipNodesWithLocalStorage.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterAutoscalerSpec(" + "balanceSimilarNodeGroups=" + this.getBalanceSimilarNodeGroups() + ", balancingIgnoredLabels=" + this.getBalancingIgnoredLabels() + ", expanders=" + this.getExpanders() + ", ignoreDaemonsetsUtilization=" + this.getIgnoreDaemonsetsUtilization() + ", logVerbosity=" + this.getLogVerbosity() + ", maxNodeProvisionTime=" + this.getMaxNodeProvisionTime() + ", maxPodGracePeriod=" + this.getMaxPodGracePeriod() + ", podPriorityThreshold=" + this.getPodPriorityThreshold() + ", resourceLimits=" + this.getResourceLimits() + ", scaleDown=" + this.getScaleDown() + ", scaleUp=" + this.getScaleUp() + ", skipNodesWithLocalStorage=" + this.getSkipNodesWithLocalStorage() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

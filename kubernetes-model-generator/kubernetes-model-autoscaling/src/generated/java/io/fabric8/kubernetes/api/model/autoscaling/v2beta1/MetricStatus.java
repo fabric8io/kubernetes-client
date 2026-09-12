@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MetricStatus describes the last-read state of a single metric.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "pods",
     "resource",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -220,6 +211,85 @@ public class MetricStatus implements Editable<MetricStatusBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MetricStatus)) {
+            return false;
+        }
+        MetricStatus other = (MetricStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$containerResource = this.getContainerResource();
+        Object other$containerResource = other.getContainerResource();
+        if (this$containerResource == null ? other$containerResource != null : !this$containerResource.equals(other$containerResource)) {
+            return false;
+        }
+        Object this$external = this.getExternal();
+        Object other$external = other.getExternal();
+        if (this$external == null ? other$external != null : !this$external.equals(other$external)) {
+            return false;
+        }
+        Object this$object = this.getObject();
+        Object other$object = other.getObject();
+        if (this$object == null ? other$object != null : !this$object.equals(other$object)) {
+            return false;
+        }
+        Object this$pods = this.getPods();
+        Object other$pods = other.getPods();
+        if (this$pods == null ? other$pods != null : !this$pods.equals(other$pods)) {
+            return false;
+        }
+        Object this$resource = this.getResource();
+        Object other$resource = other.getResource();
+        if (this$resource == null ? other$resource != null : !this$resource.equals(other$resource)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MetricStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $containerResource = this.getContainerResource();
+        result = result * prime + ($containerResource == null ? 43 : $containerResource.hashCode());
+        Object $external = this.getExternal();
+        result = result * prime + ($external == null ? 43 : $external.hashCode());
+        Object $object = this.getObject();
+        result = result * prime + ($object == null ? 43 : $object.hashCode());
+        Object $pods = this.getPods();
+        result = result * prime + ($pods == null ? 43 : $pods.hashCode());
+        Object $resource = this.getResource();
+        result = result * prime + ($resource == null ? 43 : $resource.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MetricStatus(" + "containerResource=" + this.getContainerResource() + ", external=" + this.getExternal() + ", object=" + this.getObject() + ", pods=" + this.getPods() + ", resource=" + this.getResource() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

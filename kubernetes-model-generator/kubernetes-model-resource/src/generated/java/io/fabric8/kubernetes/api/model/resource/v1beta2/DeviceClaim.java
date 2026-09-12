@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DeviceClaim defines how to request devices with a ResourceClaim.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "config",
     "constraints",
     "requests"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -168,6 +159,64 @@ public class DeviceClaim implements Editable<DeviceClaimBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DeviceClaim)) {
+            return false;
+        }
+        DeviceClaim other = (DeviceClaim) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$config = this.getConfig();
+        Object other$config = other.getConfig();
+        if (this$config == null ? other$config != null : !this$config.equals(other$config)) {
+            return false;
+        }
+        Object this$constraints = this.getConstraints();
+        Object other$constraints = other.getConstraints();
+        if (this$constraints == null ? other$constraints != null : !this$constraints.equals(other$constraints)) {
+            return false;
+        }
+        Object this$requests = this.getRequests();
+        Object other$requests = other.getRequests();
+        if (this$requests == null ? other$requests != null : !this$requests.equals(other$requests)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DeviceClaim;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $config = this.getConfig();
+        result = result * prime + ($config == null ? 43 : $config.hashCode());
+        Object $constraints = this.getConstraints();
+        result = result * prime + ($constraints == null ? 43 : $constraints.hashCode());
+        Object $requests = this.getRequests();
+        result = result * prime + ($requests == null ? 43 : $requests.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DeviceClaim(" + "config=" + this.getConfig() + ", constraints=" + this.getConstraints() + ", requests=" + this.getRequests() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

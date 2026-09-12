@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ResourceSliceSpec contains the information published by the driver in one ResourceSlice.
@@ -51,12 +48,6 @@ import lombok.experimental.Accessors;
     "pool",
     "sharedCounters",
     "skipNodeOperations"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -309,6 +300,113 @@ public class ResourceSliceSpec implements Editable<ResourceSliceSpecBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ResourceSliceSpec)) {
+            return false;
+        }
+        ResourceSliceSpec other = (ResourceSliceSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allNodes = this.getAllNodes();
+        Object other$allNodes = other.getAllNodes();
+        if (this$allNodes == null ? other$allNodes != null : !this$allNodes.equals(other$allNodes)) {
+            return false;
+        }
+        Object this$devices = this.getDevices();
+        Object other$devices = other.getDevices();
+        if (this$devices == null ? other$devices != null : !this$devices.equals(other$devices)) {
+            return false;
+        }
+        Object this$driver = this.getDriver();
+        Object other$driver = other.getDriver();
+        if (this$driver == null ? other$driver != null : !this$driver.equals(other$driver)) {
+            return false;
+        }
+        Object this$nodeName = this.getNodeName();
+        Object other$nodeName = other.getNodeName();
+        if (this$nodeName == null ? other$nodeName != null : !this$nodeName.equals(other$nodeName)) {
+            return false;
+        }
+        Object this$nodeSelector = this.getNodeSelector();
+        Object other$nodeSelector = other.getNodeSelector();
+        if (this$nodeSelector == null ? other$nodeSelector != null : !this$nodeSelector.equals(other$nodeSelector)) {
+            return false;
+        }
+        Object this$partitionTypeAttribute = this.getPartitionTypeAttribute();
+        Object other$partitionTypeAttribute = other.getPartitionTypeAttribute();
+        if (this$partitionTypeAttribute == null ? other$partitionTypeAttribute != null : !this$partitionTypeAttribute.equals(other$partitionTypeAttribute)) {
+            return false;
+        }
+        Object this$perDeviceNodeSelection = this.getPerDeviceNodeSelection();
+        Object other$perDeviceNodeSelection = other.getPerDeviceNodeSelection();
+        if (this$perDeviceNodeSelection == null ? other$perDeviceNodeSelection != null : !this$perDeviceNodeSelection.equals(other$perDeviceNodeSelection)) {
+            return false;
+        }
+        Object this$pool = this.getPool();
+        Object other$pool = other.getPool();
+        if (this$pool == null ? other$pool != null : !this$pool.equals(other$pool)) {
+            return false;
+        }
+        Object this$sharedCounters = this.getSharedCounters();
+        Object other$sharedCounters = other.getSharedCounters();
+        if (this$sharedCounters == null ? other$sharedCounters != null : !this$sharedCounters.equals(other$sharedCounters)) {
+            return false;
+        }
+        Object this$skipNodeOperations = this.getSkipNodeOperations();
+        Object other$skipNodeOperations = other.getSkipNodeOperations();
+        if (this$skipNodeOperations == null ? other$skipNodeOperations != null : !this$skipNodeOperations.equals(other$skipNodeOperations)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ResourceSliceSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allNodes = this.getAllNodes();
+        result = result * prime + ($allNodes == null ? 43 : $allNodes.hashCode());
+        Object $devices = this.getDevices();
+        result = result * prime + ($devices == null ? 43 : $devices.hashCode());
+        Object $driver = this.getDriver();
+        result = result * prime + ($driver == null ? 43 : $driver.hashCode());
+        Object $nodeName = this.getNodeName();
+        result = result * prime + ($nodeName == null ? 43 : $nodeName.hashCode());
+        Object $nodeSelector = this.getNodeSelector();
+        result = result * prime + ($nodeSelector == null ? 43 : $nodeSelector.hashCode());
+        Object $partitionTypeAttribute = this.getPartitionTypeAttribute();
+        result = result * prime + ($partitionTypeAttribute == null ? 43 : $partitionTypeAttribute.hashCode());
+        Object $perDeviceNodeSelection = this.getPerDeviceNodeSelection();
+        result = result * prime + ($perDeviceNodeSelection == null ? 43 : $perDeviceNodeSelection.hashCode());
+        Object $pool = this.getPool();
+        result = result * prime + ($pool == null ? 43 : $pool.hashCode());
+        Object $sharedCounters = this.getSharedCounters();
+        result = result * prime + ($sharedCounters == null ? 43 : $sharedCounters.hashCode());
+        Object $skipNodeOperations = this.getSkipNodeOperations();
+        result = result * prime + ($skipNodeOperations == null ? 43 : $skipNodeOperations.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ResourceSliceSpec(" + "allNodes=" + this.getAllNodes() + ", devices=" + this.getDevices() + ", driver=" + this.getDriver() + ", nodeName=" + this.getNodeName() + ", nodeSelector=" + this.getNodeSelector() + ", partitionTypeAttribute=" + this.getPartitionTypeAttribute() + ", perDeviceNodeSelection=" + this.getPerDeviceNodeSelection() + ", pool=" + this.getPool() + ", sharedCounters=" + this.getSharedCounters() + ", skipNodeOperations=" + this.getSkipNodeOperations() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

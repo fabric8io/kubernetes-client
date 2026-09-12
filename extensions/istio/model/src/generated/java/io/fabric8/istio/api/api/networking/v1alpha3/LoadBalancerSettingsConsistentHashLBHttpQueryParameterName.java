@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Hash based on a specific HTTP query parameter.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "httpQueryParameterName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -120,6 +111,50 @@ public class LoadBalancerSettingsConsistentHashLBHttpQueryParameterName implemen
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof LoadBalancerSettingsConsistentHashLBHttpQueryParameterName)) {
+            return false;
+        }
+        LoadBalancerSettingsConsistentHashLBHttpQueryParameterName other = (LoadBalancerSettingsConsistentHashLBHttpQueryParameterName) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$httpQueryParameterName = this.getHttpQueryParameterName();
+        Object other$httpQueryParameterName = other.getHttpQueryParameterName();
+        if (this$httpQueryParameterName == null ? other$httpQueryParameterName != null : !this$httpQueryParameterName.equals(other$httpQueryParameterName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof LoadBalancerSettingsConsistentHashLBHttpQueryParameterName;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $httpQueryParameterName = this.getHttpQueryParameterName();
+        result = result * prime + ($httpQueryParameterName == null ? 43 : $httpQueryParameterName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "LoadBalancerSettingsConsistentHashLBHttpQueryParameterName(" + "httpQueryParameterName=" + this.getHttpQueryParameterName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

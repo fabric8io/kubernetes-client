@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -37,12 +34,6 @@ import lombok.experimental.Accessors;
     "cgroupMode",
     "minimumKubeletVersion",
     "workerLatencyProfile"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -156,6 +147,64 @@ public class NodeSpec implements Editable<NodeSpecBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NodeSpec)) {
+            return false;
+        }
+        NodeSpec other = (NodeSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cgroupMode = this.getCgroupMode();
+        Object other$cgroupMode = other.getCgroupMode();
+        if (this$cgroupMode == null ? other$cgroupMode != null : !this$cgroupMode.equals(other$cgroupMode)) {
+            return false;
+        }
+        Object this$minimumKubeletVersion = this.getMinimumKubeletVersion();
+        Object other$minimumKubeletVersion = other.getMinimumKubeletVersion();
+        if (this$minimumKubeletVersion == null ? other$minimumKubeletVersion != null : !this$minimumKubeletVersion.equals(other$minimumKubeletVersion)) {
+            return false;
+        }
+        Object this$workerLatencyProfile = this.getWorkerLatencyProfile();
+        Object other$workerLatencyProfile = other.getWorkerLatencyProfile();
+        if (this$workerLatencyProfile == null ? other$workerLatencyProfile != null : !this$workerLatencyProfile.equals(other$workerLatencyProfile)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NodeSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cgroupMode = this.getCgroupMode();
+        result = result * prime + ($cgroupMode == null ? 43 : $cgroupMode.hashCode());
+        Object $minimumKubeletVersion = this.getMinimumKubeletVersion();
+        result = result * prime + ($minimumKubeletVersion == null ? 43 : $minimumKubeletVersion.hashCode());
+        Object $workerLatencyProfile = this.getWorkerLatencyProfile();
+        result = result * prime + ($workerLatencyProfile == null ? 43 : $workerLatencyProfile.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NodeSpec(" + "cgroupMode=" + this.getCgroupMode() + ", minimumKubeletVersion=" + this.getMinimumKubeletVersion() + ", workerLatencyProfile=" + this.getWorkerLatencyProfile() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

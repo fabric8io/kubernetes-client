@@ -27,6 +27,7 @@
 * Fix #8028: (openshift-model, kube-api-test) No package is shipped by two artifacts anymore, so each pair can be placed on the JPMS module path together. `openshift-model` no longer bundles the `io.fabric8.openshift.api.model.config.*` classes that `openshift-model-config` owns (its `Export-Package` wildcard inlined them from that dependency); they still reach consumers through it. `Fabric8ClientInjectionHandler` moved to `io.fabric8.kubeapitest.junit.inject`
 
 #### Improvements
+* Fix #7982: Kubernetes and extension model POJOs no longer require Lombok at compile time. Generated models now provide source-level `equals()`, `hashCode()`, and `toString()` methods with the same observable behavior, and the remaining handwritten model classes have been delomboked.
 
 #### Dependency Upgrade
 * Fix #8033: bump gateway-api from 1.5.1 to 1.6.1

@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ManagedFieldsEntry is a workflow-id, a FieldSet and the group version of the resource that the fieldset applies to.
@@ -30,12 +27,6 @@ import lombok.experimental.Accessors;
     "operation",
     "subresource",
     "time"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -211,6 +202,92 @@ public class ManagedFieldsEntry implements Editable<ManagedFieldsEntryBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ManagedFieldsEntry)) {
+            return false;
+        }
+        ManagedFieldsEntry other = (ManagedFieldsEntry) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$fieldsType = this.getFieldsType();
+        Object other$fieldsType = other.getFieldsType();
+        if (this$fieldsType == null ? other$fieldsType != null : !this$fieldsType.equals(other$fieldsType)) {
+            return false;
+        }
+        Object this$fieldsV1 = this.getFieldsV1();
+        Object other$fieldsV1 = other.getFieldsV1();
+        if (this$fieldsV1 == null ? other$fieldsV1 != null : !this$fieldsV1.equals(other$fieldsV1)) {
+            return false;
+        }
+        Object this$manager = this.getManager();
+        Object other$manager = other.getManager();
+        if (this$manager == null ? other$manager != null : !this$manager.equals(other$manager)) {
+            return false;
+        }
+        Object this$operation = this.getOperation();
+        Object other$operation = other.getOperation();
+        if (this$operation == null ? other$operation != null : !this$operation.equals(other$operation)) {
+            return false;
+        }
+        Object this$subresource = this.getSubresource();
+        Object other$subresource = other.getSubresource();
+        if (this$subresource == null ? other$subresource != null : !this$subresource.equals(other$subresource)) {
+            return false;
+        }
+        Object this$time = this.getTime();
+        Object other$time = other.getTime();
+        if (this$time == null ? other$time != null : !this$time.equals(other$time)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ManagedFieldsEntry;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $fieldsType = this.getFieldsType();
+        result = result * prime + ($fieldsType == null ? 43 : $fieldsType.hashCode());
+        Object $fieldsV1 = this.getFieldsV1();
+        result = result * prime + ($fieldsV1 == null ? 43 : $fieldsV1.hashCode());
+        Object $manager = this.getManager();
+        result = result * prime + ($manager == null ? 43 : $manager.hashCode());
+        Object $operation = this.getOperation();
+        result = result * prime + ($operation == null ? 43 : $operation.hashCode());
+        Object $subresource = this.getSubresource();
+        result = result * prime + ($subresource == null ? 43 : $subresource.hashCode());
+        Object $time = this.getTime();
+        result = result * prime + ($time == null ? 43 : $time.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ManagedFieldsEntry(" + "apiVersion=" + this.getApiVersion() + ", fieldsType=" + this.getFieldsType() + ", fieldsV1=" + this.getFieldsV1() + ", manager=" + this.getManager() + ", operation=" + this.getOperation() + ", subresource=" + this.getSubresource() + ", time=" + this.getTime() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

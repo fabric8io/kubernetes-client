@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Mutation specifies the CEL expression which is used to apply the Mutation.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "applyConfiguration",
     "jsonPatch",
     "patchType"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class Mutation implements Editable<MutationBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Mutation)) {
+            return false;
+        }
+        Mutation other = (Mutation) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$applyConfiguration = this.getApplyConfiguration();
+        Object other$applyConfiguration = other.getApplyConfiguration();
+        if (this$applyConfiguration == null ? other$applyConfiguration != null : !this$applyConfiguration.equals(other$applyConfiguration)) {
+            return false;
+        }
+        Object this$jsonPatch = this.getJsonPatch();
+        Object other$jsonPatch = other.getJsonPatch();
+        if (this$jsonPatch == null ? other$jsonPatch != null : !this$jsonPatch.equals(other$jsonPatch)) {
+            return false;
+        }
+        Object this$patchType = this.getPatchType();
+        Object other$patchType = other.getPatchType();
+        if (this$patchType == null ? other$patchType != null : !this$patchType.equals(other$patchType)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Mutation;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $applyConfiguration = this.getApplyConfiguration();
+        result = result * prime + ($applyConfiguration == null ? 43 : $applyConfiguration.hashCode());
+        Object $jsonPatch = this.getJsonPatch();
+        result = result * prime + ($jsonPatch == null ? 43 : $jsonPatch.hashCode());
+        Object $patchType = this.getPatchType();
+        result = result * prime + ($patchType == null ? 43 : $patchType.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Mutation(" + "applyConfiguration=" + this.getApplyConfiguration() + ", jsonPatch=" + this.getJsonPatch() + ", patchType=" + this.getPatchType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

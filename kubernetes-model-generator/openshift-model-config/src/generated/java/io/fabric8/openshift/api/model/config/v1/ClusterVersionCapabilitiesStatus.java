@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClusterVersionCapabilitiesStatus describes the state of optional, core cluster components.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "enabledCapabilities",
     "knownCapabilities"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -145,6 +136,57 @@ public class ClusterVersionCapabilitiesStatus implements Editable<ClusterVersion
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterVersionCapabilitiesStatus)) {
+            return false;
+        }
+        ClusterVersionCapabilitiesStatus other = (ClusterVersionCapabilitiesStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$enabledCapabilities = this.getEnabledCapabilities();
+        Object other$enabledCapabilities = other.getEnabledCapabilities();
+        if (this$enabledCapabilities == null ? other$enabledCapabilities != null : !this$enabledCapabilities.equals(other$enabledCapabilities)) {
+            return false;
+        }
+        Object this$knownCapabilities = this.getKnownCapabilities();
+        Object other$knownCapabilities = other.getKnownCapabilities();
+        if (this$knownCapabilities == null ? other$knownCapabilities != null : !this$knownCapabilities.equals(other$knownCapabilities)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterVersionCapabilitiesStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $enabledCapabilities = this.getEnabledCapabilities();
+        result = result * prime + ($enabledCapabilities == null ? 43 : $enabledCapabilities.hashCode());
+        Object $knownCapabilities = this.getKnownCapabilities();
+        result = result * prime + ($knownCapabilities == null ? 43 : $knownCapabilities.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterVersionCapabilitiesStatus(" + "enabledCapabilities=" + this.getEnabledCapabilities() + ", knownCapabilities=" + this.getKnownCapabilities() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

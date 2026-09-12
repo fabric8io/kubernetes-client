@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * WorkloadPodGroupSchedulingPolicy defines the scheduling policy for a group of pods managed by a workload controller. Exactly one policy must be set.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "basic",
     "gang"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class WorkloadPodGroupSchedulingPolicy implements Editable<WorkloadPodGro
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof WorkloadPodGroupSchedulingPolicy)) {
+            return false;
+        }
+        WorkloadPodGroupSchedulingPolicy other = (WorkloadPodGroupSchedulingPolicy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$basic = this.getBasic();
+        Object other$basic = other.getBasic();
+        if (this$basic == null ? other$basic != null : !this$basic.equals(other$basic)) {
+            return false;
+        }
+        Object this$gang = this.getGang();
+        Object other$gang = other.getGang();
+        if (this$gang == null ? other$gang != null : !this$gang.equals(other$gang)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof WorkloadPodGroupSchedulingPolicy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $basic = this.getBasic();
+        result = result * prime + ($basic == null ? 43 : $basic.hashCode());
+        Object $gang = this.getGang();
+        result = result * prime + ($gang == null ? 43 : $gang.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WorkloadPodGroupSchedulingPolicy(" + "basic=" + this.getBasic() + ", gang=" + this.getGang() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

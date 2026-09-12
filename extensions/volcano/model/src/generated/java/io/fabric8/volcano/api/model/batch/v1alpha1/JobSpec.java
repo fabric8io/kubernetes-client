@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * JobSpec describes how the job execution will look like and when it will actually run.
@@ -53,12 +50,6 @@ import lombok.experimental.Accessors;
     "tasks",
     "ttlSecondsAfterFinished",
     "volumes"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -351,6 +342,127 @@ public class JobSpec implements Editable<JobSpecBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof JobSpec)) {
+            return false;
+        }
+        JobSpec other = (JobSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$maxRetry = this.getMaxRetry();
+        Object other$maxRetry = other.getMaxRetry();
+        if (this$maxRetry == null ? other$maxRetry != null : !this$maxRetry.equals(other$maxRetry)) {
+            return false;
+        }
+        Object this$minAvailable = this.getMinAvailable();
+        Object other$minAvailable = other.getMinAvailable();
+        if (this$minAvailable == null ? other$minAvailable != null : !this$minAvailable.equals(other$minAvailable)) {
+            return false;
+        }
+        Object this$minSuccess = this.getMinSuccess();
+        Object other$minSuccess = other.getMinSuccess();
+        if (this$minSuccess == null ? other$minSuccess != null : !this$minSuccess.equals(other$minSuccess)) {
+            return false;
+        }
+        Object this$plugins = this.getPlugins();
+        Object other$plugins = other.getPlugins();
+        if (this$plugins == null ? other$plugins != null : !this$plugins.equals(other$plugins)) {
+            return false;
+        }
+        Object this$policies = this.getPolicies();
+        Object other$policies = other.getPolicies();
+        if (this$policies == null ? other$policies != null : !this$policies.equals(other$policies)) {
+            return false;
+        }
+        Object this$priorityClassName = this.getPriorityClassName();
+        Object other$priorityClassName = other.getPriorityClassName();
+        if (this$priorityClassName == null ? other$priorityClassName != null : !this$priorityClassName.equals(other$priorityClassName)) {
+            return false;
+        }
+        Object this$queue = this.getQueue();
+        Object other$queue = other.getQueue();
+        if (this$queue == null ? other$queue != null : !this$queue.equals(other$queue)) {
+            return false;
+        }
+        Object this$runningEstimate = this.getRunningEstimate();
+        Object other$runningEstimate = other.getRunningEstimate();
+        if (this$runningEstimate == null ? other$runningEstimate != null : !this$runningEstimate.equals(other$runningEstimate)) {
+            return false;
+        }
+        Object this$schedulerName = this.getSchedulerName();
+        Object other$schedulerName = other.getSchedulerName();
+        if (this$schedulerName == null ? other$schedulerName != null : !this$schedulerName.equals(other$schedulerName)) {
+            return false;
+        }
+        Object this$tasks = this.getTasks();
+        Object other$tasks = other.getTasks();
+        if (this$tasks == null ? other$tasks != null : !this$tasks.equals(other$tasks)) {
+            return false;
+        }
+        Object this$ttlSecondsAfterFinished = this.getTtlSecondsAfterFinished();
+        Object other$ttlSecondsAfterFinished = other.getTtlSecondsAfterFinished();
+        if (this$ttlSecondsAfterFinished == null ? other$ttlSecondsAfterFinished != null : !this$ttlSecondsAfterFinished.equals(other$ttlSecondsAfterFinished)) {
+            return false;
+        }
+        Object this$volumes = this.getVolumes();
+        Object other$volumes = other.getVolumes();
+        if (this$volumes == null ? other$volumes != null : !this$volumes.equals(other$volumes)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof JobSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $maxRetry = this.getMaxRetry();
+        result = result * prime + ($maxRetry == null ? 43 : $maxRetry.hashCode());
+        Object $minAvailable = this.getMinAvailable();
+        result = result * prime + ($minAvailable == null ? 43 : $minAvailable.hashCode());
+        Object $minSuccess = this.getMinSuccess();
+        result = result * prime + ($minSuccess == null ? 43 : $minSuccess.hashCode());
+        Object $plugins = this.getPlugins();
+        result = result * prime + ($plugins == null ? 43 : $plugins.hashCode());
+        Object $policies = this.getPolicies();
+        result = result * prime + ($policies == null ? 43 : $policies.hashCode());
+        Object $priorityClassName = this.getPriorityClassName();
+        result = result * prime + ($priorityClassName == null ? 43 : $priorityClassName.hashCode());
+        Object $queue = this.getQueue();
+        result = result * prime + ($queue == null ? 43 : $queue.hashCode());
+        Object $runningEstimate = this.getRunningEstimate();
+        result = result * prime + ($runningEstimate == null ? 43 : $runningEstimate.hashCode());
+        Object $schedulerName = this.getSchedulerName();
+        result = result * prime + ($schedulerName == null ? 43 : $schedulerName.hashCode());
+        Object $tasks = this.getTasks();
+        result = result * prime + ($tasks == null ? 43 : $tasks.hashCode());
+        Object $ttlSecondsAfterFinished = this.getTtlSecondsAfterFinished();
+        result = result * prime + ($ttlSecondsAfterFinished == null ? 43 : $ttlSecondsAfterFinished.hashCode());
+        Object $volumes = this.getVolumes();
+        result = result * prime + ($volumes == null ? 43 : $volumes.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "JobSpec(" + "maxRetry=" + this.getMaxRetry() + ", minAvailable=" + this.getMinAvailable() + ", minSuccess=" + this.getMinSuccess() + ", plugins=" + this.getPlugins() + ", policies=" + this.getPolicies() + ", priorityClassName=" + this.getPriorityClassName() + ", queue=" + this.getQueue() + ", runningEstimate=" + this.getRunningEstimate() + ", schedulerName=" + this.getSchedulerName() + ", tasks=" + this.getTasks() + ", ttlSecondsAfterFinished=" + this.getTtlSecondsAfterFinished() + ", volumes=" + this.getVolumes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

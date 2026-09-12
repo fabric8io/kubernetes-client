@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TagReference specifies optional annotations for images using this tag and an optional reference to an ImageStreamTag, ImageStreamImage, or DockerImage this tag should track.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "name",
     "reference",
     "referencePolicy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -241,6 +232,92 @@ public class TagReference implements Editable<TagReferenceBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TagReference)) {
+            return false;
+        }
+        TagReference other = (TagReference) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$annotations = this.getAnnotations();
+        Object other$annotations = other.getAnnotations();
+        if (this$annotations == null ? other$annotations != null : !this$annotations.equals(other$annotations)) {
+            return false;
+        }
+        Object this$from = this.getFrom();
+        Object other$from = other.getFrom();
+        if (this$from == null ? other$from != null : !this$from.equals(other$from)) {
+            return false;
+        }
+        Object this$generation = this.getGeneration();
+        Object other$generation = other.getGeneration();
+        if (this$generation == null ? other$generation != null : !this$generation.equals(other$generation)) {
+            return false;
+        }
+        Object this$importPolicy = this.getImportPolicy();
+        Object other$importPolicy = other.getImportPolicy();
+        if (this$importPolicy == null ? other$importPolicy != null : !this$importPolicy.equals(other$importPolicy)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$reference = this.getReference();
+        Object other$reference = other.getReference();
+        if (this$reference == null ? other$reference != null : !this$reference.equals(other$reference)) {
+            return false;
+        }
+        Object this$referencePolicy = this.getReferencePolicy();
+        Object other$referencePolicy = other.getReferencePolicy();
+        if (this$referencePolicy == null ? other$referencePolicy != null : !this$referencePolicy.equals(other$referencePolicy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TagReference;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $annotations = this.getAnnotations();
+        result = result * prime + ($annotations == null ? 43 : $annotations.hashCode());
+        Object $from = this.getFrom();
+        result = result * prime + ($from == null ? 43 : $from.hashCode());
+        Object $generation = this.getGeneration();
+        result = result * prime + ($generation == null ? 43 : $generation.hashCode());
+        Object $importPolicy = this.getImportPolicy();
+        result = result * prime + ($importPolicy == null ? 43 : $importPolicy.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $reference = this.getReference();
+        result = result * prime + ($reference == null ? 43 : $reference.hashCode());
+        Object $referencePolicy = this.getReferencePolicy();
+        result = result * prime + ($referencePolicy == null ? 43 : $referencePolicy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TagReference(" + "annotations=" + this.getAnnotations() + ", from=" + this.getFrom() + ", generation=" + this.getGeneration() + ", importPolicy=" + this.getImportPolicy() + ", name=" + this.getName() + ", reference=" + this.getReference() + ", referencePolicy=" + this.getReferencePolicy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

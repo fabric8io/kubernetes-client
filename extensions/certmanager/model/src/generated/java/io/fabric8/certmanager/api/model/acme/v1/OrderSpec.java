@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "issuerRef",
     "profile",
     "request"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -233,6 +224,92 @@ public class OrderSpec implements Editable<OrderSpecBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OrderSpec)) {
+            return false;
+        }
+        OrderSpec other = (OrderSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$commonName = this.getCommonName();
+        Object other$commonName = other.getCommonName();
+        if (this$commonName == null ? other$commonName != null : !this$commonName.equals(other$commonName)) {
+            return false;
+        }
+        Object this$dnsNames = this.getDnsNames();
+        Object other$dnsNames = other.getDnsNames();
+        if (this$dnsNames == null ? other$dnsNames != null : !this$dnsNames.equals(other$dnsNames)) {
+            return false;
+        }
+        Object this$duration = this.getDuration();
+        Object other$duration = other.getDuration();
+        if (this$duration == null ? other$duration != null : !this$duration.equals(other$duration)) {
+            return false;
+        }
+        Object this$ipAddresses = this.getIpAddresses();
+        Object other$ipAddresses = other.getIpAddresses();
+        if (this$ipAddresses == null ? other$ipAddresses != null : !this$ipAddresses.equals(other$ipAddresses)) {
+            return false;
+        }
+        Object this$issuerRef = this.getIssuerRef();
+        Object other$issuerRef = other.getIssuerRef();
+        if (this$issuerRef == null ? other$issuerRef != null : !this$issuerRef.equals(other$issuerRef)) {
+            return false;
+        }
+        Object this$profile = this.getProfile();
+        Object other$profile = other.getProfile();
+        if (this$profile == null ? other$profile != null : !this$profile.equals(other$profile)) {
+            return false;
+        }
+        Object this$request = this.getRequest();
+        Object other$request = other.getRequest();
+        if (this$request == null ? other$request != null : !this$request.equals(other$request)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OrderSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $commonName = this.getCommonName();
+        result = result * prime + ($commonName == null ? 43 : $commonName.hashCode());
+        Object $dnsNames = this.getDnsNames();
+        result = result * prime + ($dnsNames == null ? 43 : $dnsNames.hashCode());
+        Object $duration = this.getDuration();
+        result = result * prime + ($duration == null ? 43 : $duration.hashCode());
+        Object $ipAddresses = this.getIpAddresses();
+        result = result * prime + ($ipAddresses == null ? 43 : $ipAddresses.hashCode());
+        Object $issuerRef = this.getIssuerRef();
+        result = result * prime + ($issuerRef == null ? 43 : $issuerRef.hashCode());
+        Object $profile = this.getProfile();
+        result = result * prime + ($profile == null ? 43 : $profile.hashCode());
+        Object $request = this.getRequest();
+        result = result * prime + ($request == null ? 43 : $request.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderSpec(" + "commonName=" + this.getCommonName() + ", dnsNames=" + this.getDnsNames() + ", duration=" + this.getDuration() + ", ipAddresses=" + this.getIpAddresses() + ", issuerRef=" + this.getIssuerRef() + ", profile=" + this.getProfile() + ", request=" + this.getRequest() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

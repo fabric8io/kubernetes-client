@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "defaultAllowedPrincipal",
     "id",
     "name"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -169,6 +160,71 @@ public class VPCEndpointService implements Editable<VPCEndpointServiceBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VPCEndpointService)) {
+            return false;
+        }
+        VPCEndpointService other = (VPCEndpointService) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$additionalAllowedPrincipals = this.getAdditionalAllowedPrincipals();
+        Object other$additionalAllowedPrincipals = other.getAdditionalAllowedPrincipals();
+        if (this$additionalAllowedPrincipals == null ? other$additionalAllowedPrincipals != null : !this$additionalAllowedPrincipals.equals(other$additionalAllowedPrincipals)) {
+            return false;
+        }
+        Object this$defaultAllowedPrincipal = this.getDefaultAllowedPrincipal();
+        Object other$defaultAllowedPrincipal = other.getDefaultAllowedPrincipal();
+        if (this$defaultAllowedPrincipal == null ? other$defaultAllowedPrincipal != null : !this$defaultAllowedPrincipal.equals(other$defaultAllowedPrincipal)) {
+            return false;
+        }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VPCEndpointService;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $additionalAllowedPrincipals = this.getAdditionalAllowedPrincipals();
+        result = result * prime + ($additionalAllowedPrincipals == null ? 43 : $additionalAllowedPrincipals.hashCode());
+        Object $defaultAllowedPrincipal = this.getDefaultAllowedPrincipal();
+        result = result * prime + ($defaultAllowedPrincipal == null ? 43 : $defaultAllowedPrincipal.hashCode());
+        Object $id = this.getId();
+        result = result * prime + ($id == null ? 43 : $id.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VPCEndpointService(" + "additionalAllowedPrincipals=" + this.getAdditionalAllowedPrincipals() + ", defaultAllowedPrincipal=" + this.getDefaultAllowedPrincipal() + ", id=" + this.getId() + ", name=" + this.getName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

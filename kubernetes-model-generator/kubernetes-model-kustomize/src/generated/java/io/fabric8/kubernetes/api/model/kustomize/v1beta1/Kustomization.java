@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -71,12 +68,6 @@ import lombok.experimental.Accessors;
     "transformers",
     "validators",
     "vars"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -625,6 +616,281 @@ public class Kustomization implements Editable<KustomizationBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Kustomization)) {
+            return false;
+        }
+        Kustomization other = (Kustomization) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$bases = this.getBases();
+        Object other$bases = other.getBases();
+        if (this$bases == null ? other$bases != null : !this$bases.equals(other$bases)) {
+            return false;
+        }
+        Object this$buildMetadata = this.getBuildMetadata();
+        Object other$buildMetadata = other.getBuildMetadata();
+        if (this$buildMetadata == null ? other$buildMetadata != null : !this$buildMetadata.equals(other$buildMetadata)) {
+            return false;
+        }
+        Object this$commonAnnotations = this.getCommonAnnotations();
+        Object other$commonAnnotations = other.getCommonAnnotations();
+        if (this$commonAnnotations == null ? other$commonAnnotations != null : !this$commonAnnotations.equals(other$commonAnnotations)) {
+            return false;
+        }
+        Object this$commonLabels = this.getCommonLabels();
+        Object other$commonLabels = other.getCommonLabels();
+        if (this$commonLabels == null ? other$commonLabels != null : !this$commonLabels.equals(other$commonLabels)) {
+            return false;
+        }
+        Object this$components = this.getComponents();
+        Object other$components = other.getComponents();
+        if (this$components == null ? other$components != null : !this$components.equals(other$components)) {
+            return false;
+        }
+        Object this$configMapGenerator = this.getConfigMapGenerator();
+        Object other$configMapGenerator = other.getConfigMapGenerator();
+        if (this$configMapGenerator == null ? other$configMapGenerator != null : !this$configMapGenerator.equals(other$configMapGenerator)) {
+            return false;
+        }
+        Object this$configurations = this.getConfigurations();
+        Object other$configurations = other.getConfigurations();
+        if (this$configurations == null ? other$configurations != null : !this$configurations.equals(other$configurations)) {
+            return false;
+        }
+        Object this$crds = this.getCrds();
+        Object other$crds = other.getCrds();
+        if (this$crds == null ? other$crds != null : !this$crds.equals(other$crds)) {
+            return false;
+        }
+        Object this$generatorOptions = this.getGeneratorOptions();
+        Object other$generatorOptions = other.getGeneratorOptions();
+        if (this$generatorOptions == null ? other$generatorOptions != null : !this$generatorOptions.equals(other$generatorOptions)) {
+            return false;
+        }
+        Object this$generators = this.getGenerators();
+        Object other$generators = other.getGenerators();
+        if (this$generators == null ? other$generators != null : !this$generators.equals(other$generators)) {
+            return false;
+        }
+        Object this$helmChartInflationGenerator = this.getHelmChartInflationGenerator();
+        Object other$helmChartInflationGenerator = other.getHelmChartInflationGenerator();
+        if (this$helmChartInflationGenerator == null ? other$helmChartInflationGenerator != null : !this$helmChartInflationGenerator.equals(other$helmChartInflationGenerator)) {
+            return false;
+        }
+        Object this$helmCharts = this.getHelmCharts();
+        Object other$helmCharts = other.getHelmCharts();
+        if (this$helmCharts == null ? other$helmCharts != null : !this$helmCharts.equals(other$helmCharts)) {
+            return false;
+        }
+        Object this$helmGlobals = this.getHelmGlobals();
+        Object other$helmGlobals = other.getHelmGlobals();
+        if (this$helmGlobals == null ? other$helmGlobals != null : !this$helmGlobals.equals(other$helmGlobals)) {
+            return false;
+        }
+        Object this$imageTags = this.getImageTags();
+        Object other$imageTags = other.getImageTags();
+        if (this$imageTags == null ? other$imageTags != null : !this$imageTags.equals(other$imageTags)) {
+            return false;
+        }
+        Object this$images = this.getImages();
+        Object other$images = other.getImages();
+        if (this$images == null ? other$images != null : !this$images.equals(other$images)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$labels = this.getLabels();
+        Object other$labels = other.getLabels();
+        if (this$labels == null ? other$labels != null : !this$labels.equals(other$labels)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$namePrefix = this.getNamePrefix();
+        Object other$namePrefix = other.getNamePrefix();
+        if (this$namePrefix == null ? other$namePrefix != null : !this$namePrefix.equals(other$namePrefix)) {
+            return false;
+        }
+        Object this$nameSuffix = this.getNameSuffix();
+        Object other$nameSuffix = other.getNameSuffix();
+        if (this$nameSuffix == null ? other$nameSuffix != null : !this$nameSuffix.equals(other$nameSuffix)) {
+            return false;
+        }
+        Object this$namespace = this.getNamespace();
+        Object other$namespace = other.getNamespace();
+        if (this$namespace == null ? other$namespace != null : !this$namespace.equals(other$namespace)) {
+            return false;
+        }
+        Object this$openapi = this.getOpenapi();
+        Object other$openapi = other.getOpenapi();
+        if (this$openapi == null ? other$openapi != null : !this$openapi.equals(other$openapi)) {
+            return false;
+        }
+        Object this$patches = this.getPatches();
+        Object other$patches = other.getPatches();
+        if (this$patches == null ? other$patches != null : !this$patches.equals(other$patches)) {
+            return false;
+        }
+        Object this$patchesJson6902 = this.getPatchesJson6902();
+        Object other$patchesJson6902 = other.getPatchesJson6902();
+        if (this$patchesJson6902 == null ? other$patchesJson6902 != null : !this$patchesJson6902.equals(other$patchesJson6902)) {
+            return false;
+        }
+        Object this$patchesStrategicMerge = this.getPatchesStrategicMerge();
+        Object other$patchesStrategicMerge = other.getPatchesStrategicMerge();
+        if (this$patchesStrategicMerge == null ? other$patchesStrategicMerge != null : !this$patchesStrategicMerge.equals(other$patchesStrategicMerge)) {
+            return false;
+        }
+        Object this$replacements = this.getReplacements();
+        Object other$replacements = other.getReplacements();
+        if (this$replacements == null ? other$replacements != null : !this$replacements.equals(other$replacements)) {
+            return false;
+        }
+        Object this$replicas = this.getReplicas();
+        Object other$replicas = other.getReplicas();
+        if (this$replicas == null ? other$replicas != null : !this$replicas.equals(other$replicas)) {
+            return false;
+        }
+        Object this$resources = this.getResources();
+        Object other$resources = other.getResources();
+        if (this$resources == null ? other$resources != null : !this$resources.equals(other$resources)) {
+            return false;
+        }
+        Object this$secretGenerator = this.getSecretGenerator();
+        Object other$secretGenerator = other.getSecretGenerator();
+        if (this$secretGenerator == null ? other$secretGenerator != null : !this$secretGenerator.equals(other$secretGenerator)) {
+            return false;
+        }
+        Object this$sortOptions = this.getSortOptions();
+        Object other$sortOptions = other.getSortOptions();
+        if (this$sortOptions == null ? other$sortOptions != null : !this$sortOptions.equals(other$sortOptions)) {
+            return false;
+        }
+        Object this$transformers = this.getTransformers();
+        Object other$transformers = other.getTransformers();
+        if (this$transformers == null ? other$transformers != null : !this$transformers.equals(other$transformers)) {
+            return false;
+        }
+        Object this$validators = this.getValidators();
+        Object other$validators = other.getValidators();
+        if (this$validators == null ? other$validators != null : !this$validators.equals(other$validators)) {
+            return false;
+        }
+        Object this$vars = this.getVars();
+        Object other$vars = other.getVars();
+        if (this$vars == null ? other$vars != null : !this$vars.equals(other$vars)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Kustomization;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $bases = this.getBases();
+        result = result * prime + ($bases == null ? 43 : $bases.hashCode());
+        Object $buildMetadata = this.getBuildMetadata();
+        result = result * prime + ($buildMetadata == null ? 43 : $buildMetadata.hashCode());
+        Object $commonAnnotations = this.getCommonAnnotations();
+        result = result * prime + ($commonAnnotations == null ? 43 : $commonAnnotations.hashCode());
+        Object $commonLabels = this.getCommonLabels();
+        result = result * prime + ($commonLabels == null ? 43 : $commonLabels.hashCode());
+        Object $components = this.getComponents();
+        result = result * prime + ($components == null ? 43 : $components.hashCode());
+        Object $configMapGenerator = this.getConfigMapGenerator();
+        result = result * prime + ($configMapGenerator == null ? 43 : $configMapGenerator.hashCode());
+        Object $configurations = this.getConfigurations();
+        result = result * prime + ($configurations == null ? 43 : $configurations.hashCode());
+        Object $crds = this.getCrds();
+        result = result * prime + ($crds == null ? 43 : $crds.hashCode());
+        Object $generatorOptions = this.getGeneratorOptions();
+        result = result * prime + ($generatorOptions == null ? 43 : $generatorOptions.hashCode());
+        Object $generators = this.getGenerators();
+        result = result * prime + ($generators == null ? 43 : $generators.hashCode());
+        Object $helmChartInflationGenerator = this.getHelmChartInflationGenerator();
+        result = result * prime + ($helmChartInflationGenerator == null ? 43 : $helmChartInflationGenerator.hashCode());
+        Object $helmCharts = this.getHelmCharts();
+        result = result * prime + ($helmCharts == null ? 43 : $helmCharts.hashCode());
+        Object $helmGlobals = this.getHelmGlobals();
+        result = result * prime + ($helmGlobals == null ? 43 : $helmGlobals.hashCode());
+        Object $imageTags = this.getImageTags();
+        result = result * prime + ($imageTags == null ? 43 : $imageTags.hashCode());
+        Object $images = this.getImages();
+        result = result * prime + ($images == null ? 43 : $images.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $labels = this.getLabels();
+        result = result * prime + ($labels == null ? 43 : $labels.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $namePrefix = this.getNamePrefix();
+        result = result * prime + ($namePrefix == null ? 43 : $namePrefix.hashCode());
+        Object $nameSuffix = this.getNameSuffix();
+        result = result * prime + ($nameSuffix == null ? 43 : $nameSuffix.hashCode());
+        Object $namespace = this.getNamespace();
+        result = result * prime + ($namespace == null ? 43 : $namespace.hashCode());
+        Object $openapi = this.getOpenapi();
+        result = result * prime + ($openapi == null ? 43 : $openapi.hashCode());
+        Object $patches = this.getPatches();
+        result = result * prime + ($patches == null ? 43 : $patches.hashCode());
+        Object $patchesJson6902 = this.getPatchesJson6902();
+        result = result * prime + ($patchesJson6902 == null ? 43 : $patchesJson6902.hashCode());
+        Object $patchesStrategicMerge = this.getPatchesStrategicMerge();
+        result = result * prime + ($patchesStrategicMerge == null ? 43 : $patchesStrategicMerge.hashCode());
+        Object $replacements = this.getReplacements();
+        result = result * prime + ($replacements == null ? 43 : $replacements.hashCode());
+        Object $replicas = this.getReplicas();
+        result = result * prime + ($replicas == null ? 43 : $replicas.hashCode());
+        Object $resources = this.getResources();
+        result = result * prime + ($resources == null ? 43 : $resources.hashCode());
+        Object $secretGenerator = this.getSecretGenerator();
+        result = result * prime + ($secretGenerator == null ? 43 : $secretGenerator.hashCode());
+        Object $sortOptions = this.getSortOptions();
+        result = result * prime + ($sortOptions == null ? 43 : $sortOptions.hashCode());
+        Object $transformers = this.getTransformers();
+        result = result * prime + ($transformers == null ? 43 : $transformers.hashCode());
+        Object $validators = this.getValidators();
+        result = result * prime + ($validators == null ? 43 : $validators.hashCode());
+        Object $vars = this.getVars();
+        result = result * prime + ($vars == null ? 43 : $vars.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Kustomization(" + "apiVersion=" + this.getApiVersion() + ", bases=" + this.getBases() + ", buildMetadata=" + this.getBuildMetadata() + ", commonAnnotations=" + this.getCommonAnnotations() + ", commonLabels=" + this.getCommonLabels() + ", components=" + this.getComponents() + ", configMapGenerator=" + this.getConfigMapGenerator() + ", configurations=" + this.getConfigurations() + ", crds=" + this.getCrds() + ", generatorOptions=" + this.getGeneratorOptions() + ", generators=" + this.getGenerators() + ", helmChartInflationGenerator=" + this.getHelmChartInflationGenerator() + ", helmCharts=" + this.getHelmCharts() + ", helmGlobals=" + this.getHelmGlobals() + ", imageTags=" + this.getImageTags() + ", images=" + this.getImages() + ", kind=" + this.getKind() + ", labels=" + this.getLabels() + ", metadata=" + this.getMetadata() + ", namePrefix=" + this.getNamePrefix() + ", nameSuffix=" + this.getNameSuffix() + ", namespace=" + this.getNamespace() + ", openapi=" + this.getOpenapi() + ", patches=" + this.getPatches() + ", patchesJson6902=" + this.getPatchesJson6902() + ", patchesStrategicMerge=" + this.getPatchesStrategicMerge() + ", replacements=" + this.getReplacements() + ", replicas=" + this.getReplicas() + ", resources=" + this.getResources() + ", secretGenerator=" + this.getSecretGenerator() + ", sortOptions=" + this.getSortOptions() + ", transformers=" + this.getTransformers() + ", validators=" + this.getValidators() + ", vars=" + this.getVars() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

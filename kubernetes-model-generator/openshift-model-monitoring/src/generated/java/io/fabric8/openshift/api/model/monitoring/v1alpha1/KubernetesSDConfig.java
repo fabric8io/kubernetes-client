@@ -35,9 +35,6 @@ import io.fabric8.openshift.api.model.monitoring.v1.SafeAuthorization;
 import io.fabric8.openshift.api.model.monitoring.v1.SafeTLSConfig;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * KubernetesSDConfig allows retrieving scrape targets from Kubernetes' REST API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
@@ -60,12 +57,6 @@ import lombok.experimental.Accessors;
     "role",
     "selectors",
     "tlsConfig"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -411,6 +402,148 @@ public class KubernetesSDConfig implements Editable<KubernetesSDConfigBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof KubernetesSDConfig)) {
+            return false;
+        }
+        KubernetesSDConfig other = (KubernetesSDConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiServer = this.getApiServer();
+        Object other$apiServer = other.getApiServer();
+        if (this$apiServer == null ? other$apiServer != null : !this$apiServer.equals(other$apiServer)) {
+            return false;
+        }
+        Object this$attachMetadata = this.getAttachMetadata();
+        Object other$attachMetadata = other.getAttachMetadata();
+        if (this$attachMetadata == null ? other$attachMetadata != null : !this$attachMetadata.equals(other$attachMetadata)) {
+            return false;
+        }
+        Object this$authorization = this.getAuthorization();
+        Object other$authorization = other.getAuthorization();
+        if (this$authorization == null ? other$authorization != null : !this$authorization.equals(other$authorization)) {
+            return false;
+        }
+        Object this$basicAuth = this.getBasicAuth();
+        Object other$basicAuth = other.getBasicAuth();
+        if (this$basicAuth == null ? other$basicAuth != null : !this$basicAuth.equals(other$basicAuth)) {
+            return false;
+        }
+        Object this$enableHTTP2 = this.getEnableHTTP2();
+        Object other$enableHTTP2 = other.getEnableHTTP2();
+        if (this$enableHTTP2 == null ? other$enableHTTP2 != null : !this$enableHTTP2.equals(other$enableHTTP2)) {
+            return false;
+        }
+        Object this$followRedirects = this.getFollowRedirects();
+        Object other$followRedirects = other.getFollowRedirects();
+        if (this$followRedirects == null ? other$followRedirects != null : !this$followRedirects.equals(other$followRedirects)) {
+            return false;
+        }
+        Object this$namespaces = this.getNamespaces();
+        Object other$namespaces = other.getNamespaces();
+        if (this$namespaces == null ? other$namespaces != null : !this$namespaces.equals(other$namespaces)) {
+            return false;
+        }
+        Object this$noProxy = this.getNoProxy();
+        Object other$noProxy = other.getNoProxy();
+        if (this$noProxy == null ? other$noProxy != null : !this$noProxy.equals(other$noProxy)) {
+            return false;
+        }
+        Object this$oauth2 = this.getOauth2();
+        Object other$oauth2 = other.getOauth2();
+        if (this$oauth2 == null ? other$oauth2 != null : !this$oauth2.equals(other$oauth2)) {
+            return false;
+        }
+        Object this$proxyConnectHeader = this.getProxyConnectHeader();
+        Object other$proxyConnectHeader = other.getProxyConnectHeader();
+        if (this$proxyConnectHeader == null ? other$proxyConnectHeader != null : !this$proxyConnectHeader.equals(other$proxyConnectHeader)) {
+            return false;
+        }
+        Object this$proxyFromEnvironment = this.getProxyFromEnvironment();
+        Object other$proxyFromEnvironment = other.getProxyFromEnvironment();
+        if (this$proxyFromEnvironment == null ? other$proxyFromEnvironment != null : !this$proxyFromEnvironment.equals(other$proxyFromEnvironment)) {
+            return false;
+        }
+        Object this$proxyUrl = this.getProxyUrl();
+        Object other$proxyUrl = other.getProxyUrl();
+        if (this$proxyUrl == null ? other$proxyUrl != null : !this$proxyUrl.equals(other$proxyUrl)) {
+            return false;
+        }
+        Object this$role = this.getRole();
+        Object other$role = other.getRole();
+        if (this$role == null ? other$role != null : !this$role.equals(other$role)) {
+            return false;
+        }
+        Object this$selectors = this.getSelectors();
+        Object other$selectors = other.getSelectors();
+        if (this$selectors == null ? other$selectors != null : !this$selectors.equals(other$selectors)) {
+            return false;
+        }
+        Object this$tlsConfig = this.getTlsConfig();
+        Object other$tlsConfig = other.getTlsConfig();
+        if (this$tlsConfig == null ? other$tlsConfig != null : !this$tlsConfig.equals(other$tlsConfig)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof KubernetesSDConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiServer = this.getApiServer();
+        result = result * prime + ($apiServer == null ? 43 : $apiServer.hashCode());
+        Object $attachMetadata = this.getAttachMetadata();
+        result = result * prime + ($attachMetadata == null ? 43 : $attachMetadata.hashCode());
+        Object $authorization = this.getAuthorization();
+        result = result * prime + ($authorization == null ? 43 : $authorization.hashCode());
+        Object $basicAuth = this.getBasicAuth();
+        result = result * prime + ($basicAuth == null ? 43 : $basicAuth.hashCode());
+        Object $enableHTTP2 = this.getEnableHTTP2();
+        result = result * prime + ($enableHTTP2 == null ? 43 : $enableHTTP2.hashCode());
+        Object $followRedirects = this.getFollowRedirects();
+        result = result * prime + ($followRedirects == null ? 43 : $followRedirects.hashCode());
+        Object $namespaces = this.getNamespaces();
+        result = result * prime + ($namespaces == null ? 43 : $namespaces.hashCode());
+        Object $noProxy = this.getNoProxy();
+        result = result * prime + ($noProxy == null ? 43 : $noProxy.hashCode());
+        Object $oauth2 = this.getOauth2();
+        result = result * prime + ($oauth2 == null ? 43 : $oauth2.hashCode());
+        Object $proxyConnectHeader = this.getProxyConnectHeader();
+        result = result * prime + ($proxyConnectHeader == null ? 43 : $proxyConnectHeader.hashCode());
+        Object $proxyFromEnvironment = this.getProxyFromEnvironment();
+        result = result * prime + ($proxyFromEnvironment == null ? 43 : $proxyFromEnvironment.hashCode());
+        Object $proxyUrl = this.getProxyUrl();
+        result = result * prime + ($proxyUrl == null ? 43 : $proxyUrl.hashCode());
+        Object $role = this.getRole();
+        result = result * prime + ($role == null ? 43 : $role.hashCode());
+        Object $selectors = this.getSelectors();
+        result = result * prime + ($selectors == null ? 43 : $selectors.hashCode());
+        Object $tlsConfig = this.getTlsConfig();
+        result = result * prime + ($tlsConfig == null ? 43 : $tlsConfig.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "KubernetesSDConfig(" + "apiServer=" + this.getApiServer() + ", attachMetadata=" + this.getAttachMetadata() + ", authorization=" + this.getAuthorization() + ", basicAuth=" + this.getBasicAuth() + ", enableHTTP2=" + this.getEnableHTTP2() + ", followRedirects=" + this.getFollowRedirects() + ", namespaces=" + this.getNamespaces() + ", noProxy=" + this.getNoProxy() + ", oauth2=" + this.getOauth2() + ", proxyConnectHeader=" + this.getProxyConnectHeader() + ", proxyFromEnvironment=" + this.getProxyFromEnvironment() + ", proxyUrl=" + this.getProxyUrl() + ", role=" + this.getRole() + ", selectors=" + this.getSelectors() + ", tlsConfig=" + this.getTlsConfig() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

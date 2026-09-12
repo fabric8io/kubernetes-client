@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OIDCClientReference is a reference to a platform component client configuration.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "clientID",
     "issuerURL",
     "oidcProviderName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -159,6 +150,64 @@ public class OIDCClientReference implements Editable<OIDCClientReferenceBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OIDCClientReference)) {
+            return false;
+        }
+        OIDCClientReference other = (OIDCClientReference) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clientID = this.getClientID();
+        Object other$clientID = other.getClientID();
+        if (this$clientID == null ? other$clientID != null : !this$clientID.equals(other$clientID)) {
+            return false;
+        }
+        Object this$issuerURL = this.getIssuerURL();
+        Object other$issuerURL = other.getIssuerURL();
+        if (this$issuerURL == null ? other$issuerURL != null : !this$issuerURL.equals(other$issuerURL)) {
+            return false;
+        }
+        Object this$oidcProviderName = this.getOidcProviderName();
+        Object other$oidcProviderName = other.getOidcProviderName();
+        if (this$oidcProviderName == null ? other$oidcProviderName != null : !this$oidcProviderName.equals(other$oidcProviderName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OIDCClientReference;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clientID = this.getClientID();
+        result = result * prime + ($clientID == null ? 43 : $clientID.hashCode());
+        Object $issuerURL = this.getIssuerURL();
+        result = result * prime + ($issuerURL == null ? 43 : $issuerURL.hashCode());
+        Object $oidcProviderName = this.getOidcProviderName();
+        result = result * prime + ($oidcProviderName == null ? 43 : $oidcProviderName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OIDCClientReference(" + "clientID=" + this.getClientID() + ", issuerURL=" + this.getIssuerURL() + ", oidcProviderName=" + this.getOidcProviderName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

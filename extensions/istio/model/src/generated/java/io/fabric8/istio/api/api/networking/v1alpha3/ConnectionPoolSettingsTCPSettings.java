@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Settings common to both HTTP and TCP upstream connections.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "maxConnectionDuration",
     "maxConnections",
     "tcpKeepalive"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,78 @@ public class ConnectionPoolSettingsTCPSettings implements Editable<ConnectionPoo
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConnectionPoolSettingsTCPSettings)) {
+            return false;
+        }
+        ConnectionPoolSettingsTCPSettings other = (ConnectionPoolSettingsTCPSettings) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$connectTimeout = this.getConnectTimeout();
+        Object other$connectTimeout = other.getConnectTimeout();
+        if (this$connectTimeout == null ? other$connectTimeout != null : !this$connectTimeout.equals(other$connectTimeout)) {
+            return false;
+        }
+        Object this$idleTimeout = this.getIdleTimeout();
+        Object other$idleTimeout = other.getIdleTimeout();
+        if (this$idleTimeout == null ? other$idleTimeout != null : !this$idleTimeout.equals(other$idleTimeout)) {
+            return false;
+        }
+        Object this$maxConnectionDuration = this.getMaxConnectionDuration();
+        Object other$maxConnectionDuration = other.getMaxConnectionDuration();
+        if (this$maxConnectionDuration == null ? other$maxConnectionDuration != null : !this$maxConnectionDuration.equals(other$maxConnectionDuration)) {
+            return false;
+        }
+        Object this$maxConnections = this.getMaxConnections();
+        Object other$maxConnections = other.getMaxConnections();
+        if (this$maxConnections == null ? other$maxConnections != null : !this$maxConnections.equals(other$maxConnections)) {
+            return false;
+        }
+        Object this$tcpKeepalive = this.getTcpKeepalive();
+        Object other$tcpKeepalive = other.getTcpKeepalive();
+        if (this$tcpKeepalive == null ? other$tcpKeepalive != null : !this$tcpKeepalive.equals(other$tcpKeepalive)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConnectionPoolSettingsTCPSettings;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $connectTimeout = this.getConnectTimeout();
+        result = result * prime + ($connectTimeout == null ? 43 : $connectTimeout.hashCode());
+        Object $idleTimeout = this.getIdleTimeout();
+        result = result * prime + ($idleTimeout == null ? 43 : $idleTimeout.hashCode());
+        Object $maxConnectionDuration = this.getMaxConnectionDuration();
+        result = result * prime + ($maxConnectionDuration == null ? 43 : $maxConnectionDuration.hashCode());
+        Object $maxConnections = this.getMaxConnections();
+        result = result * prime + ($maxConnections == null ? 43 : $maxConnections.hashCode());
+        Object $tcpKeepalive = this.getTcpKeepalive();
+        result = result * prime + ($tcpKeepalive == null ? 43 : $tcpKeepalive.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConnectionPoolSettingsTCPSettings(" + "connectTimeout=" + this.getConnectTimeout() + ", idleTimeout=" + this.getIdleTimeout() + ", maxConnectionDuration=" + this.getMaxConnectionDuration() + ", maxConnections=" + this.getMaxConnections() + ", tcpKeepalive=" + this.getTcpKeepalive() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

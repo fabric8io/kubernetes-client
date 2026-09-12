@@ -26,9 +26,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * GatewayTLSConfig specifies frontend and backend tls configuration for gateway.
@@ -38,12 +35,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "backend",
     "frontend"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -138,6 +129,57 @@ public class GatewayTLSConfig implements Editable<GatewayTLSConfigBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GatewayTLSConfig)) {
+            return false;
+        }
+        GatewayTLSConfig other = (GatewayTLSConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$backend = this.getBackend();
+        Object other$backend = other.getBackend();
+        if (this$backend == null ? other$backend != null : !this$backend.equals(other$backend)) {
+            return false;
+        }
+        Object this$frontend = this.getFrontend();
+        Object other$frontend = other.getFrontend();
+        if (this$frontend == null ? other$frontend != null : !this$frontend.equals(other$frontend)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GatewayTLSConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $backend = this.getBackend();
+        result = result * prime + ($backend == null ? 43 : $backend.hashCode());
+        Object $frontend = this.getFrontend();
+        result = result * prime + ($frontend == null ? 43 : $frontend.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GatewayTLSConfig(" + "backend=" + this.getBackend() + ", frontend=" + this.getFrontend() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

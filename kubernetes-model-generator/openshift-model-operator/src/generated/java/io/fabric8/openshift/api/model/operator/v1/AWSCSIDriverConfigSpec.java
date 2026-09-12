@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AWSCSIDriverConfigSpec defines properties that can be configured for the AWS CSI driver.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "efsVolumeMetrics",
     "kmsKeyARN"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class AWSCSIDriverConfigSpec implements Editable<AWSCSIDriverConfigSpecBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AWSCSIDriverConfigSpec)) {
+            return false;
+        }
+        AWSCSIDriverConfigSpec other = (AWSCSIDriverConfigSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$efsVolumeMetrics = this.getEfsVolumeMetrics();
+        Object other$efsVolumeMetrics = other.getEfsVolumeMetrics();
+        if (this$efsVolumeMetrics == null ? other$efsVolumeMetrics != null : !this$efsVolumeMetrics.equals(other$efsVolumeMetrics)) {
+            return false;
+        }
+        Object this$kmsKeyARN = this.getKmsKeyARN();
+        Object other$kmsKeyARN = other.getKmsKeyARN();
+        if (this$kmsKeyARN == null ? other$kmsKeyARN != null : !this$kmsKeyARN.equals(other$kmsKeyARN)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AWSCSIDriverConfigSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $efsVolumeMetrics = this.getEfsVolumeMetrics();
+        result = result * prime + ($efsVolumeMetrics == null ? 43 : $efsVolumeMetrics.hashCode());
+        Object $kmsKeyARN = this.getKmsKeyARN();
+        result = result * prime + ($kmsKeyARN == null ? 43 : $kmsKeyARN.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AWSCSIDriverConfigSpec(" + "efsVolumeMetrics=" + this.getEfsVolumeMetrics() + ", kmsKeyARN=" + this.getKmsKeyARN() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

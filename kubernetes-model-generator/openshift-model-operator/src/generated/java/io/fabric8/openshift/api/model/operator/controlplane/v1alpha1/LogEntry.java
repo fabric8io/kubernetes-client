@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * LogEntry records events
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "reason",
     "success",
     "time"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,78 @@ public class LogEntry implements Editable<LogEntryBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof LogEntry)) {
+            return false;
+        }
+        LogEntry other = (LogEntry) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$latency = this.getLatency();
+        Object other$latency = other.getLatency();
+        if (this$latency == null ? other$latency != null : !this$latency.equals(other$latency)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$reason = this.getReason();
+        Object other$reason = other.getReason();
+        if (this$reason == null ? other$reason != null : !this$reason.equals(other$reason)) {
+            return false;
+        }
+        Object this$success = this.getSuccess();
+        Object other$success = other.getSuccess();
+        if (this$success == null ? other$success != null : !this$success.equals(other$success)) {
+            return false;
+        }
+        Object this$time = this.getTime();
+        Object other$time = other.getTime();
+        if (this$time == null ? other$time != null : !this$time.equals(other$time)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof LogEntry;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $latency = this.getLatency();
+        result = result * prime + ($latency == null ? 43 : $latency.hashCode());
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $reason = this.getReason();
+        result = result * prime + ($reason == null ? 43 : $reason.hashCode());
+        Object $success = this.getSuccess();
+        result = result * prime + ($success == null ? 43 : $success.hashCode());
+        Object $time = this.getTime();
+        result = result * prime + ($time == null ? 43 : $time.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "LogEntry(" + "latency=" + this.getLatency() + ", message=" + this.getMessage() + ", reason=" + this.getReason() + ", success=" + this.getSuccess() + ", time=" + this.getTime() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

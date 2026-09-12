@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MachinePool stores the configuration for a machine pool installed on GCP.
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "tags",
     "type",
     "zones"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -286,6 +277,106 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachinePool)) {
+            return false;
+        }
+        MachinePool other = (MachinePool) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$confidentialCompute = this.getConfidentialCompute();
+        Object other$confidentialCompute = other.getConfidentialCompute();
+        if (this$confidentialCompute == null ? other$confidentialCompute != null : !this$confidentialCompute.equals(other$confidentialCompute)) {
+            return false;
+        }
+        Object this$onHostMaintenance = this.getOnHostMaintenance();
+        Object other$onHostMaintenance = other.getOnHostMaintenance();
+        if (this$onHostMaintenance == null ? other$onHostMaintenance != null : !this$onHostMaintenance.equals(other$onHostMaintenance)) {
+            return false;
+        }
+        Object this$osDisk = this.getOsDisk();
+        Object other$osDisk = other.getOsDisk();
+        if (this$osDisk == null ? other$osDisk != null : !this$osDisk.equals(other$osDisk)) {
+            return false;
+        }
+        Object this$osImage = this.getOsImage();
+        Object other$osImage = other.getOsImage();
+        if (this$osImage == null ? other$osImage != null : !this$osImage.equals(other$osImage)) {
+            return false;
+        }
+        Object this$secureBoot = this.getSecureBoot();
+        Object other$secureBoot = other.getSecureBoot();
+        if (this$secureBoot == null ? other$secureBoot != null : !this$secureBoot.equals(other$secureBoot)) {
+            return false;
+        }
+        Object this$serviceAccount = this.getServiceAccount();
+        Object other$serviceAccount = other.getServiceAccount();
+        if (this$serviceAccount == null ? other$serviceAccount != null : !this$serviceAccount.equals(other$serviceAccount)) {
+            return false;
+        }
+        Object this$tags = this.getTags();
+        Object other$tags = other.getTags();
+        if (this$tags == null ? other$tags != null : !this$tags.equals(other$tags)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$zones = this.getZones();
+        Object other$zones = other.getZones();
+        if (this$zones == null ? other$zones != null : !this$zones.equals(other$zones)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachinePool;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $confidentialCompute = this.getConfidentialCompute();
+        result = result * prime + ($confidentialCompute == null ? 43 : $confidentialCompute.hashCode());
+        Object $onHostMaintenance = this.getOnHostMaintenance();
+        result = result * prime + ($onHostMaintenance == null ? 43 : $onHostMaintenance.hashCode());
+        Object $osDisk = this.getOsDisk();
+        result = result * prime + ($osDisk == null ? 43 : $osDisk.hashCode());
+        Object $osImage = this.getOsImage();
+        result = result * prime + ($osImage == null ? 43 : $osImage.hashCode());
+        Object $secureBoot = this.getSecureBoot();
+        result = result * prime + ($secureBoot == null ? 43 : $secureBoot.hashCode());
+        Object $serviceAccount = this.getServiceAccount();
+        result = result * prime + ($serviceAccount == null ? 43 : $serviceAccount.hashCode());
+        Object $tags = this.getTags();
+        result = result * prime + ($tags == null ? 43 : $tags.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $zones = this.getZones();
+        result = result * prime + ($zones == null ? 43 : $zones.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachinePool(" + "confidentialCompute=" + this.getConfidentialCompute() + ", onHostMaintenance=" + this.getOnHostMaintenance() + ", osDisk=" + this.getOsDisk() + ", osImage=" + this.getOsImage() + ", secureBoot=" + this.getSecureBoot() + ", serviceAccount=" + this.getServiceAccount() + ", tags=" + this.getTags() + ", type=" + this.getType() + ", zones=" + this.getZones() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

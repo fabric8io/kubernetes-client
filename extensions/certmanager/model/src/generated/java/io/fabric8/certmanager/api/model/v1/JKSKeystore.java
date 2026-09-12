@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * JKS configures options for storing a JKS keystore in the target secret. Either PasswordSecretRef or Password must be provided.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "create",
     "password",
     "passwordSecretRef"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -181,6 +172,71 @@ public class JKSKeystore implements Editable<JKSKeystoreBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof JKSKeystore)) {
+            return false;
+        }
+        JKSKeystore other = (JKSKeystore) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$alias = this.getAlias();
+        Object other$alias = other.getAlias();
+        if (this$alias == null ? other$alias != null : !this$alias.equals(other$alias)) {
+            return false;
+        }
+        Object this$create = this.getCreate();
+        Object other$create = other.getCreate();
+        if (this$create == null ? other$create != null : !this$create.equals(other$create)) {
+            return false;
+        }
+        Object this$password = this.getPassword();
+        Object other$password = other.getPassword();
+        if (this$password == null ? other$password != null : !this$password.equals(other$password)) {
+            return false;
+        }
+        Object this$passwordSecretRef = this.getPasswordSecretRef();
+        Object other$passwordSecretRef = other.getPasswordSecretRef();
+        if (this$passwordSecretRef == null ? other$passwordSecretRef != null : !this$passwordSecretRef.equals(other$passwordSecretRef)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof JKSKeystore;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $alias = this.getAlias();
+        result = result * prime + ($alias == null ? 43 : $alias.hashCode());
+        Object $create = this.getCreate();
+        result = result * prime + ($create == null ? 43 : $create.hashCode());
+        Object $password = this.getPassword();
+        result = result * prime + ($password == null ? 43 : $password.hashCode());
+        Object $passwordSecretRef = this.getPasswordSecretRef();
+        result = result * prime + ($passwordSecretRef == null ? 43 : $passwordSecretRef.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "JKSKeystore(" + "alias=" + this.getAlias() + ", create=" + this.getCreate() + ", password=" + this.getPassword() + ", passwordSecretRef=" + this.getPasswordSecretRef() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

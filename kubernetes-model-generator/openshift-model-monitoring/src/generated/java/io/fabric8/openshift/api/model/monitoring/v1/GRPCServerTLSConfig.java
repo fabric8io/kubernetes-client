@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * GRPCServerTLSConfig defines TLS configuration for a gRPC server.
@@ -52,12 +49,6 @@ import lombok.experimental.Accessors;
     "maxVersion",
     "minVersion",
     "serverName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -346,6 +337,127 @@ public class GRPCServerTLSConfig implements Editable<GRPCServerTLSConfigBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GRPCServerTLSConfig)) {
+            return false;
+        }
+        GRPCServerTLSConfig other = (GRPCServerTLSConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ca = this.getCa();
+        Object other$ca = other.getCa();
+        if (this$ca == null ? other$ca != null : !this$ca.equals(other$ca)) {
+            return false;
+        }
+        Object this$caFile = this.getCaFile();
+        Object other$caFile = other.getCaFile();
+        if (this$caFile == null ? other$caFile != null : !this$caFile.equals(other$caFile)) {
+            return false;
+        }
+        Object this$cert = this.getCert();
+        Object other$cert = other.getCert();
+        if (this$cert == null ? other$cert != null : !this$cert.equals(other$cert)) {
+            return false;
+        }
+        Object this$certFile = this.getCertFile();
+        Object other$certFile = other.getCertFile();
+        if (this$certFile == null ? other$certFile != null : !this$certFile.equals(other$certFile)) {
+            return false;
+        }
+        Object this$cipherSuites = this.getCipherSuites();
+        Object other$cipherSuites = other.getCipherSuites();
+        if (this$cipherSuites == null ? other$cipherSuites != null : !this$cipherSuites.equals(other$cipherSuites)) {
+            return false;
+        }
+        Object this$curves = this.getCurves();
+        Object other$curves = other.getCurves();
+        if (this$curves == null ? other$curves != null : !this$curves.equals(other$curves)) {
+            return false;
+        }
+        Object this$insecureSkipVerify = this.getInsecureSkipVerify();
+        Object other$insecureSkipVerify = other.getInsecureSkipVerify();
+        if (this$insecureSkipVerify == null ? other$insecureSkipVerify != null : !this$insecureSkipVerify.equals(other$insecureSkipVerify)) {
+            return false;
+        }
+        Object this$keyFile = this.getKeyFile();
+        Object other$keyFile = other.getKeyFile();
+        if (this$keyFile == null ? other$keyFile != null : !this$keyFile.equals(other$keyFile)) {
+            return false;
+        }
+        Object this$keySecret = this.getKeySecret();
+        Object other$keySecret = other.getKeySecret();
+        if (this$keySecret == null ? other$keySecret != null : !this$keySecret.equals(other$keySecret)) {
+            return false;
+        }
+        Object this$maxVersion = this.getMaxVersion();
+        Object other$maxVersion = other.getMaxVersion();
+        if (this$maxVersion == null ? other$maxVersion != null : !this$maxVersion.equals(other$maxVersion)) {
+            return false;
+        }
+        Object this$minVersion = this.getMinVersion();
+        Object other$minVersion = other.getMinVersion();
+        if (this$minVersion == null ? other$minVersion != null : !this$minVersion.equals(other$minVersion)) {
+            return false;
+        }
+        Object this$serverName = this.getServerName();
+        Object other$serverName = other.getServerName();
+        if (this$serverName == null ? other$serverName != null : !this$serverName.equals(other$serverName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GRPCServerTLSConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ca = this.getCa();
+        result = result * prime + ($ca == null ? 43 : $ca.hashCode());
+        Object $caFile = this.getCaFile();
+        result = result * prime + ($caFile == null ? 43 : $caFile.hashCode());
+        Object $cert = this.getCert();
+        result = result * prime + ($cert == null ? 43 : $cert.hashCode());
+        Object $certFile = this.getCertFile();
+        result = result * prime + ($certFile == null ? 43 : $certFile.hashCode());
+        Object $cipherSuites = this.getCipherSuites();
+        result = result * prime + ($cipherSuites == null ? 43 : $cipherSuites.hashCode());
+        Object $curves = this.getCurves();
+        result = result * prime + ($curves == null ? 43 : $curves.hashCode());
+        Object $insecureSkipVerify = this.getInsecureSkipVerify();
+        result = result * prime + ($insecureSkipVerify == null ? 43 : $insecureSkipVerify.hashCode());
+        Object $keyFile = this.getKeyFile();
+        result = result * prime + ($keyFile == null ? 43 : $keyFile.hashCode());
+        Object $keySecret = this.getKeySecret();
+        result = result * prime + ($keySecret == null ? 43 : $keySecret.hashCode());
+        Object $maxVersion = this.getMaxVersion();
+        result = result * prime + ($maxVersion == null ? 43 : $maxVersion.hashCode());
+        Object $minVersion = this.getMinVersion();
+        result = result * prime + ($minVersion == null ? 43 : $minVersion.hashCode());
+        Object $serverName = this.getServerName();
+        result = result * prime + ($serverName == null ? 43 : $serverName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GRPCServerTLSConfig(" + "ca=" + this.getCa() + ", caFile=" + this.getCaFile() + ", cert=" + this.getCert() + ", certFile=" + this.getCertFile() + ", cipherSuites=" + this.getCipherSuites() + ", curves=" + this.getCurves() + ", insecureSkipVerify=" + this.getInsecureSkipVerify() + ", keyFile=" + this.getKeyFile() + ", keySecret=" + this.getKeySecret() + ", maxVersion=" + this.getMaxVersion() + ", minVersion=" + this.getMinVersion() + ", serverName=" + this.getServerName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

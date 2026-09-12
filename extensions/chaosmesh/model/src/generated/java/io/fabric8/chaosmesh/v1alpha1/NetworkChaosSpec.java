@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NetworkChaosSpec defines the desired state of NetworkChaos
@@ -57,12 +54,6 @@ import lombok.experimental.Accessors;
     "target",
     "targetDevice",
     "value"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -444,6 +435,162 @@ public class NetworkChaosSpec implements Editable<NetworkChaosSpecBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkChaosSpec)) {
+            return false;
+        }
+        NetworkChaosSpec other = (NetworkChaosSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$action = this.getAction();
+        Object other$action = other.getAction();
+        if (this$action == null ? other$action != null : !this$action.equals(other$action)) {
+            return false;
+        }
+        Object this$bandwidth = this.getBandwidth();
+        Object other$bandwidth = other.getBandwidth();
+        if (this$bandwidth == null ? other$bandwidth != null : !this$bandwidth.equals(other$bandwidth)) {
+            return false;
+        }
+        Object this$corrupt = this.getCorrupt();
+        Object other$corrupt = other.getCorrupt();
+        if (this$corrupt == null ? other$corrupt != null : !this$corrupt.equals(other$corrupt)) {
+            return false;
+        }
+        Object this$delay = this.getDelay();
+        Object other$delay = other.getDelay();
+        if (this$delay == null ? other$delay != null : !this$delay.equals(other$delay)) {
+            return false;
+        }
+        Object this$device = this.getDevice();
+        Object other$device = other.getDevice();
+        if (this$device == null ? other$device != null : !this$device.equals(other$device)) {
+            return false;
+        }
+        Object this$direction = this.getDirection();
+        Object other$direction = other.getDirection();
+        if (this$direction == null ? other$direction != null : !this$direction.equals(other$direction)) {
+            return false;
+        }
+        Object this$duplicate = this.getDuplicate();
+        Object other$duplicate = other.getDuplicate();
+        if (this$duplicate == null ? other$duplicate != null : !this$duplicate.equals(other$duplicate)) {
+            return false;
+        }
+        Object this$duration = this.getDuration();
+        Object other$duration = other.getDuration();
+        if (this$duration == null ? other$duration != null : !this$duration.equals(other$duration)) {
+            return false;
+        }
+        Object this$externalTargets = this.getExternalTargets();
+        Object other$externalTargets = other.getExternalTargets();
+        if (this$externalTargets == null ? other$externalTargets != null : !this$externalTargets.equals(other$externalTargets)) {
+            return false;
+        }
+        Object this$loss = this.getLoss();
+        Object other$loss = other.getLoss();
+        if (this$loss == null ? other$loss != null : !this$loss.equals(other$loss)) {
+            return false;
+        }
+        Object this$mode = this.getMode();
+        Object other$mode = other.getMode();
+        if (this$mode == null ? other$mode != null : !this$mode.equals(other$mode)) {
+            return false;
+        }
+        Object this$rate = this.getRate();
+        Object other$rate = other.getRate();
+        if (this$rate == null ? other$rate != null : !this$rate.equals(other$rate)) {
+            return false;
+        }
+        Object this$remoteCluster = this.getRemoteCluster();
+        Object other$remoteCluster = other.getRemoteCluster();
+        if (this$remoteCluster == null ? other$remoteCluster != null : !this$remoteCluster.equals(other$remoteCluster)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$target = this.getTarget();
+        Object other$target = other.getTarget();
+        if (this$target == null ? other$target != null : !this$target.equals(other$target)) {
+            return false;
+        }
+        Object this$targetDevice = this.getTargetDevice();
+        Object other$targetDevice = other.getTargetDevice();
+        if (this$targetDevice == null ? other$targetDevice != null : !this$targetDevice.equals(other$targetDevice)) {
+            return false;
+        }
+        Object this$value = this.getValue();
+        Object other$value = other.getValue();
+        if (this$value == null ? other$value != null : !this$value.equals(other$value)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkChaosSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $action = this.getAction();
+        result = result * prime + ($action == null ? 43 : $action.hashCode());
+        Object $bandwidth = this.getBandwidth();
+        result = result * prime + ($bandwidth == null ? 43 : $bandwidth.hashCode());
+        Object $corrupt = this.getCorrupt();
+        result = result * prime + ($corrupt == null ? 43 : $corrupt.hashCode());
+        Object $delay = this.getDelay();
+        result = result * prime + ($delay == null ? 43 : $delay.hashCode());
+        Object $device = this.getDevice();
+        result = result * prime + ($device == null ? 43 : $device.hashCode());
+        Object $direction = this.getDirection();
+        result = result * prime + ($direction == null ? 43 : $direction.hashCode());
+        Object $duplicate = this.getDuplicate();
+        result = result * prime + ($duplicate == null ? 43 : $duplicate.hashCode());
+        Object $duration = this.getDuration();
+        result = result * prime + ($duration == null ? 43 : $duration.hashCode());
+        Object $externalTargets = this.getExternalTargets();
+        result = result * prime + ($externalTargets == null ? 43 : $externalTargets.hashCode());
+        Object $loss = this.getLoss();
+        result = result * prime + ($loss == null ? 43 : $loss.hashCode());
+        Object $mode = this.getMode();
+        result = result * prime + ($mode == null ? 43 : $mode.hashCode());
+        Object $rate = this.getRate();
+        result = result * prime + ($rate == null ? 43 : $rate.hashCode());
+        Object $remoteCluster = this.getRemoteCluster();
+        result = result * prime + ($remoteCluster == null ? 43 : $remoteCluster.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $target = this.getTarget();
+        result = result * prime + ($target == null ? 43 : $target.hashCode());
+        Object $targetDevice = this.getTargetDevice();
+        result = result * prime + ($targetDevice == null ? 43 : $targetDevice.hashCode());
+        Object $value = this.getValue();
+        result = result * prime + ($value == null ? 43 : $value.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkChaosSpec(" + "action=" + this.getAction() + ", bandwidth=" + this.getBandwidth() + ", corrupt=" + this.getCorrupt() + ", delay=" + this.getDelay() + ", device=" + this.getDevice() + ", direction=" + this.getDirection() + ", duplicate=" + this.getDuplicate() + ", duration=" + this.getDuration() + ", externalTargets=" + this.getExternalTargets() + ", loss=" + this.getLoss() + ", mode=" + this.getMode() + ", rate=" + this.getRate() + ", remoteCluster=" + this.getRemoteCluster() + ", selector=" + this.getSelector() + ", target=" + this.getTarget() + ", targetDevice=" + this.getTargetDevice() + ", value=" + this.getValue() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

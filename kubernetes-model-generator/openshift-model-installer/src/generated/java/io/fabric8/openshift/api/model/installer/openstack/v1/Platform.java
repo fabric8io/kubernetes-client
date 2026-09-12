@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.config.v1.OpenStackPlatformLoadBalancer;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Platform stores all the global configuration that all machinesets use.
@@ -61,12 +58,6 @@ import lombok.experimental.Accessors;
     "octaviaSupport",
     "region",
     "trunkSupport"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -511,6 +502,183 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Platform)) {
+            return false;
+        }
+        Platform other = (Platform) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiFloatingIP = this.getApiFloatingIP();
+        Object other$apiFloatingIP = other.getApiFloatingIP();
+        if (this$apiFloatingIP == null ? other$apiFloatingIP != null : !this$apiFloatingIP.equals(other$apiFloatingIP)) {
+            return false;
+        }
+        Object this$apiVIP = this.getApiVIP();
+        Object other$apiVIP = other.getApiVIP();
+        if (this$apiVIP == null ? other$apiVIP != null : !this$apiVIP.equals(other$apiVIP)) {
+            return false;
+        }
+        Object this$apiVIPs = this.getApiVIPs();
+        Object other$apiVIPs = other.getApiVIPs();
+        if (this$apiVIPs == null ? other$apiVIPs != null : !this$apiVIPs.equals(other$apiVIPs)) {
+            return false;
+        }
+        Object this$cloud = this.getCloud();
+        Object other$cloud = other.getCloud();
+        if (this$cloud == null ? other$cloud != null : !this$cloud.equals(other$cloud)) {
+            return false;
+        }
+        Object this$clusterOSImage = this.getClusterOSImage();
+        Object other$clusterOSImage = other.getClusterOSImage();
+        if (this$clusterOSImage == null ? other$clusterOSImage != null : !this$clusterOSImage.equals(other$clusterOSImage)) {
+            return false;
+        }
+        Object this$clusterOSImageProperties = this.getClusterOSImageProperties();
+        Object other$clusterOSImageProperties = other.getClusterOSImageProperties();
+        if (this$clusterOSImageProperties == null ? other$clusterOSImageProperties != null : !this$clusterOSImageProperties.equals(other$clusterOSImageProperties)) {
+            return false;
+        }
+        Object this$computeFlavor = this.getComputeFlavor();
+        Object other$computeFlavor = other.getComputeFlavor();
+        if (this$computeFlavor == null ? other$computeFlavor != null : !this$computeFlavor.equals(other$computeFlavor)) {
+            return false;
+        }
+        Object this$controlPlanePort = this.getControlPlanePort();
+        Object other$controlPlanePort = other.getControlPlanePort();
+        if (this$controlPlanePort == null ? other$controlPlanePort != null : !this$controlPlanePort.equals(other$controlPlanePort)) {
+            return false;
+        }
+        Object this$defaultMachinePlatform = this.getDefaultMachinePlatform();
+        Object other$defaultMachinePlatform = other.getDefaultMachinePlatform();
+        if (this$defaultMachinePlatform == null ? other$defaultMachinePlatform != null : !this$defaultMachinePlatform.equals(other$defaultMachinePlatform)) {
+            return false;
+        }
+        Object this$externalDNS = this.getExternalDNS();
+        Object other$externalDNS = other.getExternalDNS();
+        if (this$externalDNS == null ? other$externalDNS != null : !this$externalDNS.equals(other$externalDNS)) {
+            return false;
+        }
+        Object this$externalNetwork = this.getExternalNetwork();
+        Object other$externalNetwork = other.getExternalNetwork();
+        if (this$externalNetwork == null ? other$externalNetwork != null : !this$externalNetwork.equals(other$externalNetwork)) {
+            return false;
+        }
+        Object this$ingressFloatingIP = this.getIngressFloatingIP();
+        Object other$ingressFloatingIP = other.getIngressFloatingIP();
+        if (this$ingressFloatingIP == null ? other$ingressFloatingIP != null : !this$ingressFloatingIP.equals(other$ingressFloatingIP)) {
+            return false;
+        }
+        Object this$ingressVIP = this.getIngressVIP();
+        Object other$ingressVIP = other.getIngressVIP();
+        if (this$ingressVIP == null ? other$ingressVIP != null : !this$ingressVIP.equals(other$ingressVIP)) {
+            return false;
+        }
+        Object this$ingressVIPs = this.getIngressVIPs();
+        Object other$ingressVIPs = other.getIngressVIPs();
+        if (this$ingressVIPs == null ? other$ingressVIPs != null : !this$ingressVIPs.equals(other$ingressVIPs)) {
+            return false;
+        }
+        Object this$lbFloatingIP = this.getLbFloatingIP();
+        Object other$lbFloatingIP = other.getLbFloatingIP();
+        if (this$lbFloatingIP == null ? other$lbFloatingIP != null : !this$lbFloatingIP.equals(other$lbFloatingIP)) {
+            return false;
+        }
+        Object this$loadBalancer = this.getLoadBalancer();
+        Object other$loadBalancer = other.getLoadBalancer();
+        if (this$loadBalancer == null ? other$loadBalancer != null : !this$loadBalancer.equals(other$loadBalancer)) {
+            return false;
+        }
+        Object this$machinesSubnet = this.getMachinesSubnet();
+        Object other$machinesSubnet = other.getMachinesSubnet();
+        if (this$machinesSubnet == null ? other$machinesSubnet != null : !this$machinesSubnet.equals(other$machinesSubnet)) {
+            return false;
+        }
+        Object this$octaviaSupport = this.getOctaviaSupport();
+        Object other$octaviaSupport = other.getOctaviaSupport();
+        if (this$octaviaSupport == null ? other$octaviaSupport != null : !this$octaviaSupport.equals(other$octaviaSupport)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$trunkSupport = this.getTrunkSupport();
+        Object other$trunkSupport = other.getTrunkSupport();
+        if (this$trunkSupport == null ? other$trunkSupport != null : !this$trunkSupport.equals(other$trunkSupport)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Platform;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiFloatingIP = this.getApiFloatingIP();
+        result = result * prime + ($apiFloatingIP == null ? 43 : $apiFloatingIP.hashCode());
+        Object $apiVIP = this.getApiVIP();
+        result = result * prime + ($apiVIP == null ? 43 : $apiVIP.hashCode());
+        Object $apiVIPs = this.getApiVIPs();
+        result = result * prime + ($apiVIPs == null ? 43 : $apiVIPs.hashCode());
+        Object $cloud = this.getCloud();
+        result = result * prime + ($cloud == null ? 43 : $cloud.hashCode());
+        Object $clusterOSImage = this.getClusterOSImage();
+        result = result * prime + ($clusterOSImage == null ? 43 : $clusterOSImage.hashCode());
+        Object $clusterOSImageProperties = this.getClusterOSImageProperties();
+        result = result * prime + ($clusterOSImageProperties == null ? 43 : $clusterOSImageProperties.hashCode());
+        Object $computeFlavor = this.getComputeFlavor();
+        result = result * prime + ($computeFlavor == null ? 43 : $computeFlavor.hashCode());
+        Object $controlPlanePort = this.getControlPlanePort();
+        result = result * prime + ($controlPlanePort == null ? 43 : $controlPlanePort.hashCode());
+        Object $defaultMachinePlatform = this.getDefaultMachinePlatform();
+        result = result * prime + ($defaultMachinePlatform == null ? 43 : $defaultMachinePlatform.hashCode());
+        Object $externalDNS = this.getExternalDNS();
+        result = result * prime + ($externalDNS == null ? 43 : $externalDNS.hashCode());
+        Object $externalNetwork = this.getExternalNetwork();
+        result = result * prime + ($externalNetwork == null ? 43 : $externalNetwork.hashCode());
+        Object $ingressFloatingIP = this.getIngressFloatingIP();
+        result = result * prime + ($ingressFloatingIP == null ? 43 : $ingressFloatingIP.hashCode());
+        Object $ingressVIP = this.getIngressVIP();
+        result = result * prime + ($ingressVIP == null ? 43 : $ingressVIP.hashCode());
+        Object $ingressVIPs = this.getIngressVIPs();
+        result = result * prime + ($ingressVIPs == null ? 43 : $ingressVIPs.hashCode());
+        Object $lbFloatingIP = this.getLbFloatingIP();
+        result = result * prime + ($lbFloatingIP == null ? 43 : $lbFloatingIP.hashCode());
+        Object $loadBalancer = this.getLoadBalancer();
+        result = result * prime + ($loadBalancer == null ? 43 : $loadBalancer.hashCode());
+        Object $machinesSubnet = this.getMachinesSubnet();
+        result = result * prime + ($machinesSubnet == null ? 43 : $machinesSubnet.hashCode());
+        Object $octaviaSupport = this.getOctaviaSupport();
+        result = result * prime + ($octaviaSupport == null ? 43 : $octaviaSupport.hashCode());
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $trunkSupport = this.getTrunkSupport();
+        result = result * prime + ($trunkSupport == null ? 43 : $trunkSupport.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Platform(" + "apiFloatingIP=" + this.getApiFloatingIP() + ", apiVIP=" + this.getApiVIP() + ", apiVIPs=" + this.getApiVIPs() + ", cloud=" + this.getCloud() + ", clusterOSImage=" + this.getClusterOSImage() + ", clusterOSImageProperties=" + this.getClusterOSImageProperties() + ", computeFlavor=" + this.getComputeFlavor() + ", controlPlanePort=" + this.getControlPlanePort() + ", defaultMachinePlatform=" + this.getDefaultMachinePlatform() + ", externalDNS=" + this.getExternalDNS() + ", externalNetwork=" + this.getExternalNetwork() + ", ingressFloatingIP=" + this.getIngressFloatingIP() + ", ingressVIP=" + this.getIngressVIP() + ", ingressVIPs=" + this.getIngressVIPs() + ", lbFloatingIP=" + this.getLbFloatingIP() + ", loadBalancer=" + this.getLoadBalancer() + ", machinesSubnet=" + this.getMachinesSubnet() + ", octaviaSupport=" + this.getOctaviaSupport() + ", region=" + this.getRegion() + ", trunkSupport=" + this.getTrunkSupport() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

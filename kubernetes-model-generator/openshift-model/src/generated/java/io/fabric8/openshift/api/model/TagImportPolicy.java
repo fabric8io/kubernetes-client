@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TagImportPolicy controls how images related to this tag will be imported.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "importMode",
     "insecure",
     "scheduled"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -159,6 +150,64 @@ public class TagImportPolicy implements Editable<TagImportPolicyBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TagImportPolicy)) {
+            return false;
+        }
+        TagImportPolicy other = (TagImportPolicy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$importMode = this.getImportMode();
+        Object other$importMode = other.getImportMode();
+        if (this$importMode == null ? other$importMode != null : !this$importMode.equals(other$importMode)) {
+            return false;
+        }
+        Object this$insecure = this.getInsecure();
+        Object other$insecure = other.getInsecure();
+        if (this$insecure == null ? other$insecure != null : !this$insecure.equals(other$insecure)) {
+            return false;
+        }
+        Object this$scheduled = this.getScheduled();
+        Object other$scheduled = other.getScheduled();
+        if (this$scheduled == null ? other$scheduled != null : !this$scheduled.equals(other$scheduled)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TagImportPolicy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $importMode = this.getImportMode();
+        result = result * prime + ($importMode == null ? 43 : $importMode.hashCode());
+        Object $insecure = this.getInsecure();
+        result = result * prime + ($insecure == null ? 43 : $insecure.hashCode());
+        Object $scheduled = this.getScheduled();
+        result = result * prime + ($scheduled == null ? 43 : $scheduled.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TagImportPolicy(" + "importMode=" + this.getImportMode() + ", insecure=" + this.getInsecure() + ", scheduled=" + this.getScheduled() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

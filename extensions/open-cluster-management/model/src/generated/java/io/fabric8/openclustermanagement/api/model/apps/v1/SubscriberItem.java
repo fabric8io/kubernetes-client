@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SubscriberItem defines subscriber item to share subscribers with different channel types
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "SecondaryChannelSecret",
     "Subscription",
     "SubscriptionConfigMap"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -262,6 +253,99 @@ public class SubscriberItem implements Editable<SubscriberItemBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SubscriberItem)) {
+            return false;
+        }
+        SubscriberItem other = (SubscriberItem) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$channel = this.getChannel();
+        Object other$channel = other.getChannel();
+        if (this$channel == null ? other$channel != null : !this$channel.equals(other$channel)) {
+            return false;
+        }
+        Object this$channelConfigMap = this.getChannelConfigMap();
+        Object other$channelConfigMap = other.getChannelConfigMap();
+        if (this$channelConfigMap == null ? other$channelConfigMap != null : !this$channelConfigMap.equals(other$channelConfigMap)) {
+            return false;
+        }
+        Object this$channelSecret = this.getChannelSecret();
+        Object other$channelSecret = other.getChannelSecret();
+        if (this$channelSecret == null ? other$channelSecret != null : !this$channelSecret.equals(other$channelSecret)) {
+            return false;
+        }
+        Object this$secondaryChannel = this.getSecondaryChannel();
+        Object other$secondaryChannel = other.getSecondaryChannel();
+        if (this$secondaryChannel == null ? other$secondaryChannel != null : !this$secondaryChannel.equals(other$secondaryChannel)) {
+            return false;
+        }
+        Object this$secondaryChannelConfigMap = this.getSecondaryChannelConfigMap();
+        Object other$secondaryChannelConfigMap = other.getSecondaryChannelConfigMap();
+        if (this$secondaryChannelConfigMap == null ? other$secondaryChannelConfigMap != null : !this$secondaryChannelConfigMap.equals(other$secondaryChannelConfigMap)) {
+            return false;
+        }
+        Object this$secondaryChannelSecret = this.getSecondaryChannelSecret();
+        Object other$secondaryChannelSecret = other.getSecondaryChannelSecret();
+        if (this$secondaryChannelSecret == null ? other$secondaryChannelSecret != null : !this$secondaryChannelSecret.equals(other$secondaryChannelSecret)) {
+            return false;
+        }
+        Object this$subscription = this.getSubscription();
+        Object other$subscription = other.getSubscription();
+        if (this$subscription == null ? other$subscription != null : !this$subscription.equals(other$subscription)) {
+            return false;
+        }
+        Object this$subscriptionConfigMap = this.getSubscriptionConfigMap();
+        Object other$subscriptionConfigMap = other.getSubscriptionConfigMap();
+        if (this$subscriptionConfigMap == null ? other$subscriptionConfigMap != null : !this$subscriptionConfigMap.equals(other$subscriptionConfigMap)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SubscriberItem;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $channel = this.getChannel();
+        result = result * prime + ($channel == null ? 43 : $channel.hashCode());
+        Object $channelConfigMap = this.getChannelConfigMap();
+        result = result * prime + ($channelConfigMap == null ? 43 : $channelConfigMap.hashCode());
+        Object $channelSecret = this.getChannelSecret();
+        result = result * prime + ($channelSecret == null ? 43 : $channelSecret.hashCode());
+        Object $secondaryChannel = this.getSecondaryChannel();
+        result = result * prime + ($secondaryChannel == null ? 43 : $secondaryChannel.hashCode());
+        Object $secondaryChannelConfigMap = this.getSecondaryChannelConfigMap();
+        result = result * prime + ($secondaryChannelConfigMap == null ? 43 : $secondaryChannelConfigMap.hashCode());
+        Object $secondaryChannelSecret = this.getSecondaryChannelSecret();
+        result = result * prime + ($secondaryChannelSecret == null ? 43 : $secondaryChannelSecret.hashCode());
+        Object $subscription = this.getSubscription();
+        result = result * prime + ($subscription == null ? 43 : $subscription.hashCode());
+        Object $subscriptionConfigMap = this.getSubscriptionConfigMap();
+        result = result * prime + ($subscriptionConfigMap == null ? 43 : $subscriptionConfigMap.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SubscriberItem(" + "channel=" + this.getChannel() + ", channelConfigMap=" + this.getChannelConfigMap() + ", channelSecret=" + this.getChannelSecret() + ", secondaryChannel=" + this.getSecondaryChannel() + ", secondaryChannelConfigMap=" + this.getSecondaryChannelConfigMap() + ", secondaryChannelSecret=" + this.getSecondaryChannelSecret() + ", subscription=" + this.getSubscription() + ", subscriptionConfigMap=" + this.getSubscriptionConfigMap() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

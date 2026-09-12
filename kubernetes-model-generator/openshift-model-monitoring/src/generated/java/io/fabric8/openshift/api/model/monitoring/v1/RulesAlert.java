@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -37,12 +34,6 @@ import lombok.experimental.Accessors;
     "forGracePeriod",
     "forOutageTolerance",
     "resendDelay"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -156,6 +147,64 @@ public class RulesAlert implements Editable<RulesAlertBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RulesAlert)) {
+            return false;
+        }
+        RulesAlert other = (RulesAlert) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$forGracePeriod = this.getForGracePeriod();
+        Object other$forGracePeriod = other.getForGracePeriod();
+        if (this$forGracePeriod == null ? other$forGracePeriod != null : !this$forGracePeriod.equals(other$forGracePeriod)) {
+            return false;
+        }
+        Object this$forOutageTolerance = this.getForOutageTolerance();
+        Object other$forOutageTolerance = other.getForOutageTolerance();
+        if (this$forOutageTolerance == null ? other$forOutageTolerance != null : !this$forOutageTolerance.equals(other$forOutageTolerance)) {
+            return false;
+        }
+        Object this$resendDelay = this.getResendDelay();
+        Object other$resendDelay = other.getResendDelay();
+        if (this$resendDelay == null ? other$resendDelay != null : !this$resendDelay.equals(other$resendDelay)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RulesAlert;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $forGracePeriod = this.getForGracePeriod();
+        result = result * prime + ($forGracePeriod == null ? 43 : $forGracePeriod.hashCode());
+        Object $forOutageTolerance = this.getForOutageTolerance();
+        result = result * prime + ($forOutageTolerance == null ? 43 : $forOutageTolerance.hashCode());
+        Object $resendDelay = this.getResendDelay();
+        result = result * prime + ($resendDelay == null ? 43 : $resendDelay.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RulesAlert(" + "forGracePeriod=" + this.getForGracePeriod() + ", forOutageTolerance=" + this.getForOutageTolerance() + ", resendDelay=" + this.getResendDelay() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

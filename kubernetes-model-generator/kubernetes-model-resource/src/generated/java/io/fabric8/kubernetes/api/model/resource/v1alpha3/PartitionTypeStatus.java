@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PartitionTypeStatus reports allocatability for a single partition type, identified by the value of a grouping attribute.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "attribute",
     "total",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class PartitionTypeStatus implements Editable<PartitionTypeStatusBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PartitionTypeStatus)) {
+            return false;
+        }
+        PartitionTypeStatus other = (PartitionTypeStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allocatable = this.getAllocatable();
+        Object other$allocatable = other.getAllocatable();
+        if (this$allocatable == null ? other$allocatable != null : !this$allocatable.equals(other$allocatable)) {
+            return false;
+        }
+        Object this$attribute = this.getAttribute();
+        Object other$attribute = other.getAttribute();
+        if (this$attribute == null ? other$attribute != null : !this$attribute.equals(other$attribute)) {
+            return false;
+        }
+        Object this$total = this.getTotal();
+        Object other$total = other.getTotal();
+        if (this$total == null ? other$total != null : !this$total.equals(other$total)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PartitionTypeStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allocatable = this.getAllocatable();
+        result = result * prime + ($allocatable == null ? 43 : $allocatable.hashCode());
+        Object $attribute = this.getAttribute();
+        result = result * prime + ($attribute == null ? 43 : $attribute.hashCode());
+        Object $total = this.getTotal();
+        result = result * prime + ($total == null ? 43 : $total.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PartitionTypeStatus(" + "allocatable=" + this.getAllocatable() + ", attribute=" + this.getAttribute() + ", total=" + this.getTotal() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

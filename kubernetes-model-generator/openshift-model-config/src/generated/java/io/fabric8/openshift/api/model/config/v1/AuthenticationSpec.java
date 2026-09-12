@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "type",
     "webhookTokenAuthenticator",
     "webhookTokenAuthenticators"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -210,6 +201,85 @@ public class AuthenticationSpec implements Editable<AuthenticationSpecBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AuthenticationSpec)) {
+            return false;
+        }
+        AuthenticationSpec other = (AuthenticationSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$oauthMetadata = this.getOauthMetadata();
+        Object other$oauthMetadata = other.getOauthMetadata();
+        if (this$oauthMetadata == null ? other$oauthMetadata != null : !this$oauthMetadata.equals(other$oauthMetadata)) {
+            return false;
+        }
+        Object this$oidcProviders = this.getOidcProviders();
+        Object other$oidcProviders = other.getOidcProviders();
+        if (this$oidcProviders == null ? other$oidcProviders != null : !this$oidcProviders.equals(other$oidcProviders)) {
+            return false;
+        }
+        Object this$serviceAccountIssuer = this.getServiceAccountIssuer();
+        Object other$serviceAccountIssuer = other.getServiceAccountIssuer();
+        if (this$serviceAccountIssuer == null ? other$serviceAccountIssuer != null : !this$serviceAccountIssuer.equals(other$serviceAccountIssuer)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$webhookTokenAuthenticator = this.getWebhookTokenAuthenticator();
+        Object other$webhookTokenAuthenticator = other.getWebhookTokenAuthenticator();
+        if (this$webhookTokenAuthenticator == null ? other$webhookTokenAuthenticator != null : !this$webhookTokenAuthenticator.equals(other$webhookTokenAuthenticator)) {
+            return false;
+        }
+        Object this$webhookTokenAuthenticators = this.getWebhookTokenAuthenticators();
+        Object other$webhookTokenAuthenticators = other.getWebhookTokenAuthenticators();
+        if (this$webhookTokenAuthenticators == null ? other$webhookTokenAuthenticators != null : !this$webhookTokenAuthenticators.equals(other$webhookTokenAuthenticators)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AuthenticationSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $oauthMetadata = this.getOauthMetadata();
+        result = result * prime + ($oauthMetadata == null ? 43 : $oauthMetadata.hashCode());
+        Object $oidcProviders = this.getOidcProviders();
+        result = result * prime + ($oidcProviders == null ? 43 : $oidcProviders.hashCode());
+        Object $serviceAccountIssuer = this.getServiceAccountIssuer();
+        result = result * prime + ($serviceAccountIssuer == null ? 43 : $serviceAccountIssuer.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $webhookTokenAuthenticator = this.getWebhookTokenAuthenticator();
+        result = result * prime + ($webhookTokenAuthenticator == null ? 43 : $webhookTokenAuthenticator.hashCode());
+        Object $webhookTokenAuthenticators = this.getWebhookTokenAuthenticators();
+        result = result * prime + ($webhookTokenAuthenticators == null ? 43 : $webhookTokenAuthenticators.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AuthenticationSpec(" + "oauthMetadata=" + this.getOauthMetadata() + ", oidcProviders=" + this.getOidcProviders() + ", serviceAccountIssuer=" + this.getServiceAccountIssuer() + ", type=" + this.getType() + ", webhookTokenAuthenticator=" + this.getWebhookTokenAuthenticator() + ", webhookTokenAuthenticators=" + this.getWebhookTokenAuthenticators() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

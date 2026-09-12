@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * One or more match conditions to be met before a patch is applied to the generated configuration for a given proxy.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "ObjectTypes",
     "context",
     "proxy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -163,6 +154,64 @@ public class EnvoyFilterEnvoyConfigObjectMatch implements Editable<EnvoyFilterEn
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EnvoyFilterEnvoyConfigObjectMatch)) {
+            return false;
+        }
+        EnvoyFilterEnvoyConfigObjectMatch other = (EnvoyFilterEnvoyConfigObjectMatch) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$objectTypes = this.getObjectTypes();
+        Object other$objectTypes = other.getObjectTypes();
+        if (this$objectTypes == null ? other$objectTypes != null : !this$objectTypes.equals(other$objectTypes)) {
+            return false;
+        }
+        Object this$context = this.getContext();
+        Object other$context = other.getContext();
+        if (this$context == null ? other$context != null : !this$context.equals(other$context)) {
+            return false;
+        }
+        Object this$proxy = this.getProxy();
+        Object other$proxy = other.getProxy();
+        if (this$proxy == null ? other$proxy != null : !this$proxy.equals(other$proxy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EnvoyFilterEnvoyConfigObjectMatch;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $objectTypes = this.getObjectTypes();
+        result = result * prime + ($objectTypes == null ? 43 : $objectTypes.hashCode());
+        Object $context = this.getContext();
+        result = result * prime + ($context == null ? 43 : $context.hashCode());
+        Object $proxy = this.getProxy();
+        result = result * prime + ($proxy == null ? 43 : $proxy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EnvoyFilterEnvoyConfigObjectMatch(" + "objectTypes=" + this.getObjectTypes() + ", context=" + this.getContext() + ", proxy=" + this.getProxy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

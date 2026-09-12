@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * GitHubBindingSpec holds the desired state of the GitHubBinding (from the client).
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "accessToken",
     "subject"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -141,6 +132,57 @@ public class GitHubBindingSpec implements Editable<GitHubBindingSpecBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GitHubBindingSpec)) {
+            return false;
+        }
+        GitHubBindingSpec other = (GitHubBindingSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$accessToken = this.getAccessToken();
+        Object other$accessToken = other.getAccessToken();
+        if (this$accessToken == null ? other$accessToken != null : !this$accessToken.equals(other$accessToken)) {
+            return false;
+        }
+        Object this$subject = this.getSubject();
+        Object other$subject = other.getSubject();
+        if (this$subject == null ? other$subject != null : !this$subject.equals(other$subject)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GitHubBindingSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $accessToken = this.getAccessToken();
+        result = result * prime + ($accessToken == null ? 43 : $accessToken.hashCode());
+        Object $subject = this.getSubject();
+        result = result * prime + ($subject == null ? 43 : $subject.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GitHubBindingSpec(" + "accessToken=" + this.getAccessToken() + ", subject=" + this.getSubject() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

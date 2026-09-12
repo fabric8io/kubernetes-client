@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.monitoring.v1.SafeTLSConfig;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OpenStackSDConfig allow retrieving scrape targets from OpenStack Nova instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#openstack_sd_config
@@ -58,12 +55,6 @@ import lombok.experimental.Accessors;
     "tlsConfig",
     "userid",
     "username"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -462,6 +453,169 @@ public class OpenStackSDConfig implements Editable<OpenStackSDConfigBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OpenStackSDConfig)) {
+            return false;
+        }
+        OpenStackSDConfig other = (OpenStackSDConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allTenants = this.getAllTenants();
+        Object other$allTenants = other.getAllTenants();
+        if (this$allTenants == null ? other$allTenants != null : !this$allTenants.equals(other$allTenants)) {
+            return false;
+        }
+        Object this$applicationCredentialId = this.getApplicationCredentialId();
+        Object other$applicationCredentialId = other.getApplicationCredentialId();
+        if (this$applicationCredentialId == null ? other$applicationCredentialId != null : !this$applicationCredentialId.equals(other$applicationCredentialId)) {
+            return false;
+        }
+        Object this$applicationCredentialName = this.getApplicationCredentialName();
+        Object other$applicationCredentialName = other.getApplicationCredentialName();
+        if (this$applicationCredentialName == null ? other$applicationCredentialName != null : !this$applicationCredentialName.equals(other$applicationCredentialName)) {
+            return false;
+        }
+        Object this$applicationCredentialSecret = this.getApplicationCredentialSecret();
+        Object other$applicationCredentialSecret = other.getApplicationCredentialSecret();
+        if (this$applicationCredentialSecret == null ? other$applicationCredentialSecret != null : !this$applicationCredentialSecret.equals(other$applicationCredentialSecret)) {
+            return false;
+        }
+        Object this$availability = this.getAvailability();
+        Object other$availability = other.getAvailability();
+        if (this$availability == null ? other$availability != null : !this$availability.equals(other$availability)) {
+            return false;
+        }
+        Object this$domainID = this.getDomainID();
+        Object other$domainID = other.getDomainID();
+        if (this$domainID == null ? other$domainID != null : !this$domainID.equals(other$domainID)) {
+            return false;
+        }
+        Object this$domainName = this.getDomainName();
+        Object other$domainName = other.getDomainName();
+        if (this$domainName == null ? other$domainName != null : !this$domainName.equals(other$domainName)) {
+            return false;
+        }
+        Object this$identityEndpoint = this.getIdentityEndpoint();
+        Object other$identityEndpoint = other.getIdentityEndpoint();
+        if (this$identityEndpoint == null ? other$identityEndpoint != null : !this$identityEndpoint.equals(other$identityEndpoint)) {
+            return false;
+        }
+        Object this$password = this.getPassword();
+        Object other$password = other.getPassword();
+        if (this$password == null ? other$password != null : !this$password.equals(other$password)) {
+            return false;
+        }
+        Object this$port = this.getPort();
+        Object other$port = other.getPort();
+        if (this$port == null ? other$port != null : !this$port.equals(other$port)) {
+            return false;
+        }
+        Object this$projectID = this.getProjectID();
+        Object other$projectID = other.getProjectID();
+        if (this$projectID == null ? other$projectID != null : !this$projectID.equals(other$projectID)) {
+            return false;
+        }
+        Object this$projectName = this.getProjectName();
+        Object other$projectName = other.getProjectName();
+        if (this$projectName == null ? other$projectName != null : !this$projectName.equals(other$projectName)) {
+            return false;
+        }
+        Object this$refreshInterval = this.getRefreshInterval();
+        Object other$refreshInterval = other.getRefreshInterval();
+        if (this$refreshInterval == null ? other$refreshInterval != null : !this$refreshInterval.equals(other$refreshInterval)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$role = this.getRole();
+        Object other$role = other.getRole();
+        if (this$role == null ? other$role != null : !this$role.equals(other$role)) {
+            return false;
+        }
+        Object this$tlsConfig = this.getTlsConfig();
+        Object other$tlsConfig = other.getTlsConfig();
+        if (this$tlsConfig == null ? other$tlsConfig != null : !this$tlsConfig.equals(other$tlsConfig)) {
+            return false;
+        }
+        Object this$userid = this.getUserid();
+        Object other$userid = other.getUserid();
+        if (this$userid == null ? other$userid != null : !this$userid.equals(other$userid)) {
+            return false;
+        }
+        Object this$username = this.getUsername();
+        Object other$username = other.getUsername();
+        if (this$username == null ? other$username != null : !this$username.equals(other$username)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OpenStackSDConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allTenants = this.getAllTenants();
+        result = result * prime + ($allTenants == null ? 43 : $allTenants.hashCode());
+        Object $applicationCredentialId = this.getApplicationCredentialId();
+        result = result * prime + ($applicationCredentialId == null ? 43 : $applicationCredentialId.hashCode());
+        Object $applicationCredentialName = this.getApplicationCredentialName();
+        result = result * prime + ($applicationCredentialName == null ? 43 : $applicationCredentialName.hashCode());
+        Object $applicationCredentialSecret = this.getApplicationCredentialSecret();
+        result = result * prime + ($applicationCredentialSecret == null ? 43 : $applicationCredentialSecret.hashCode());
+        Object $availability = this.getAvailability();
+        result = result * prime + ($availability == null ? 43 : $availability.hashCode());
+        Object $domainID = this.getDomainID();
+        result = result * prime + ($domainID == null ? 43 : $domainID.hashCode());
+        Object $domainName = this.getDomainName();
+        result = result * prime + ($domainName == null ? 43 : $domainName.hashCode());
+        Object $identityEndpoint = this.getIdentityEndpoint();
+        result = result * prime + ($identityEndpoint == null ? 43 : $identityEndpoint.hashCode());
+        Object $password = this.getPassword();
+        result = result * prime + ($password == null ? 43 : $password.hashCode());
+        Object $port = this.getPort();
+        result = result * prime + ($port == null ? 43 : $port.hashCode());
+        Object $projectID = this.getProjectID();
+        result = result * prime + ($projectID == null ? 43 : $projectID.hashCode());
+        Object $projectName = this.getProjectName();
+        result = result * prime + ($projectName == null ? 43 : $projectName.hashCode());
+        Object $refreshInterval = this.getRefreshInterval();
+        result = result * prime + ($refreshInterval == null ? 43 : $refreshInterval.hashCode());
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $role = this.getRole();
+        result = result * prime + ($role == null ? 43 : $role.hashCode());
+        Object $tlsConfig = this.getTlsConfig();
+        result = result * prime + ($tlsConfig == null ? 43 : $tlsConfig.hashCode());
+        Object $userid = this.getUserid();
+        result = result * prime + ($userid == null ? 43 : $userid.hashCode());
+        Object $username = this.getUsername();
+        result = result * prime + ($username == null ? 43 : $username.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OpenStackSDConfig(" + "allTenants=" + this.getAllTenants() + ", applicationCredentialId=" + this.getApplicationCredentialId() + ", applicationCredentialName=" + this.getApplicationCredentialName() + ", applicationCredentialSecret=" + this.getApplicationCredentialSecret() + ", availability=" + this.getAvailability() + ", domainID=" + this.getDomainID() + ", domainName=" + this.getDomainName() + ", identityEndpoint=" + this.getIdentityEndpoint() + ", password=" + this.getPassword() + ", port=" + this.getPort() + ", projectID=" + this.getProjectID() + ", projectName=" + this.getProjectName() + ", refreshInterval=" + this.getRefreshInterval() + ", region=" + this.getRegion() + ", role=" + this.getRole() + ", tlsConfig=" + this.getTlsConfig() + ", userid=" + this.getUserid() + ", username=" + this.getUsername() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TokenReviewStatus is the result of the token authentication request.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "authenticated",
     "error",
     "user"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class TokenReviewStatus implements Editable<TokenReviewStatusBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TokenReviewStatus)) {
+            return false;
+        }
+        TokenReviewStatus other = (TokenReviewStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$audiences = this.getAudiences();
+        Object other$audiences = other.getAudiences();
+        if (this$audiences == null ? other$audiences != null : !this$audiences.equals(other$audiences)) {
+            return false;
+        }
+        Object this$authenticated = this.getAuthenticated();
+        Object other$authenticated = other.getAuthenticated();
+        if (this$authenticated == null ? other$authenticated != null : !this$authenticated.equals(other$authenticated)) {
+            return false;
+        }
+        Object this$error = this.getError();
+        Object other$error = other.getError();
+        if (this$error == null ? other$error != null : !this$error.equals(other$error)) {
+            return false;
+        }
+        Object this$user = this.getUser();
+        Object other$user = other.getUser();
+        if (this$user == null ? other$user != null : !this$user.equals(other$user)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TokenReviewStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $audiences = this.getAudiences();
+        result = result * prime + ($audiences == null ? 43 : $audiences.hashCode());
+        Object $authenticated = this.getAuthenticated();
+        result = result * prime + ($authenticated == null ? 43 : $authenticated.hashCode());
+        Object $error = this.getError();
+        result = result * prime + ($error == null ? 43 : $error.hashCode());
+        Object $user = this.getUser();
+        result = result * prime + ($user == null ? 43 : $user.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TokenReviewStatus(" + "audiences=" + this.getAudiences() + ", authenticated=" + this.getAuthenticated() + ", error=" + this.getError() + ", user=" + this.getUser() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

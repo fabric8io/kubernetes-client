@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MachinePool stores the configuration for a machine pool installed on vSphere.
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "memoryMB",
     "osDisk",
     "zones"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -226,6 +217,85 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachinePool)) {
+            return false;
+        }
+        MachinePool other = (MachinePool) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$coresPerSocket = this.getCoresPerSocket();
+        Object other$coresPerSocket = other.getCoresPerSocket();
+        if (this$coresPerSocket == null ? other$coresPerSocket != null : !this$coresPerSocket.equals(other$coresPerSocket)) {
+            return false;
+        }
+        Object this$cpus = this.getCpus();
+        Object other$cpus = other.getCpus();
+        if (this$cpus == null ? other$cpus != null : !this$cpus.equals(other$cpus)) {
+            return false;
+        }
+        Object this$dataDisks = this.getDataDisks();
+        Object other$dataDisks = other.getDataDisks();
+        if (this$dataDisks == null ? other$dataDisks != null : !this$dataDisks.equals(other$dataDisks)) {
+            return false;
+        }
+        Object this$memoryMB = this.getMemoryMB();
+        Object other$memoryMB = other.getMemoryMB();
+        if (this$memoryMB == null ? other$memoryMB != null : !this$memoryMB.equals(other$memoryMB)) {
+            return false;
+        }
+        Object this$osDisk = this.getOsDisk();
+        Object other$osDisk = other.getOsDisk();
+        if (this$osDisk == null ? other$osDisk != null : !this$osDisk.equals(other$osDisk)) {
+            return false;
+        }
+        Object this$zones = this.getZones();
+        Object other$zones = other.getZones();
+        if (this$zones == null ? other$zones != null : !this$zones.equals(other$zones)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachinePool;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $coresPerSocket = this.getCoresPerSocket();
+        result = result * prime + ($coresPerSocket == null ? 43 : $coresPerSocket.hashCode());
+        Object $cpus = this.getCpus();
+        result = result * prime + ($cpus == null ? 43 : $cpus.hashCode());
+        Object $dataDisks = this.getDataDisks();
+        result = result * prime + ($dataDisks == null ? 43 : $dataDisks.hashCode());
+        Object $memoryMB = this.getMemoryMB();
+        result = result * prime + ($memoryMB == null ? 43 : $memoryMB.hashCode());
+        Object $osDisk = this.getOsDisk();
+        result = result * prime + ($osDisk == null ? 43 : $osDisk.hashCode());
+        Object $zones = this.getZones();
+        result = result * prime + ($zones == null ? 43 : $zones.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachinePool(" + "coresPerSocket=" + this.getCoresPerSocket() + ", cpus=" + this.getCpus() + ", dataDisks=" + this.getDataDisks() + ", memoryMB=" + this.getMemoryMB() + ", osDisk=" + this.getOsDisk() + ", zones=" + this.getZones() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

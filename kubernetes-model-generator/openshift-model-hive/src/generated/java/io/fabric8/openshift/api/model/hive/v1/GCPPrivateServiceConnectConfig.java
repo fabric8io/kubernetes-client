@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * GCPPrivateServiceConnectConfig defines the gcp private service connect config for the private-link controller.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "credentialsSecretRef",
     "endpointVPCInventory"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -144,6 +135,57 @@ public class GCPPrivateServiceConnectConfig implements Editable<GCPPrivateServic
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GCPPrivateServiceConnectConfig)) {
+            return false;
+        }
+        GCPPrivateServiceConnectConfig other = (GCPPrivateServiceConnectConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$credentialsSecretRef = this.getCredentialsSecretRef();
+        Object other$credentialsSecretRef = other.getCredentialsSecretRef();
+        if (this$credentialsSecretRef == null ? other$credentialsSecretRef != null : !this$credentialsSecretRef.equals(other$credentialsSecretRef)) {
+            return false;
+        }
+        Object this$endpointVPCInventory = this.getEndpointVPCInventory();
+        Object other$endpointVPCInventory = other.getEndpointVPCInventory();
+        if (this$endpointVPCInventory == null ? other$endpointVPCInventory != null : !this$endpointVPCInventory.equals(other$endpointVPCInventory)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GCPPrivateServiceConnectConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $credentialsSecretRef = this.getCredentialsSecretRef();
+        result = result * prime + ($credentialsSecretRef == null ? 43 : $credentialsSecretRef.hashCode());
+        Object $endpointVPCInventory = this.getEndpointVPCInventory();
+        result = result * prime + ($endpointVPCInventory == null ? 43 : $endpointVPCInventory.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GCPPrivateServiceConnectConfig(" + "credentialsSecretRef=" + this.getCredentialsSecretRef() + ", endpointVPCInventory=" + this.getEndpointVPCInventory() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CompositeDisruptionMode defines how individual entities within a composite pod group can be disrupted. Exactly one mode must be set.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "all",
     "single"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class CompositeDisruptionMode implements Editable<CompositeDisruptionMode
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CompositeDisruptionMode)) {
+            return false;
+        }
+        CompositeDisruptionMode other = (CompositeDisruptionMode) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$all = this.getAll();
+        Object other$all = other.getAll();
+        if (this$all == null ? other$all != null : !this$all.equals(other$all)) {
+            return false;
+        }
+        Object this$single = this.getSingle();
+        Object other$single = other.getSingle();
+        if (this$single == null ? other$single != null : !this$single.equals(other$single)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CompositeDisruptionMode;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $all = this.getAll();
+        result = result * prime + ($all == null ? 43 : $all.hashCode());
+        Object $single = this.getSingle();
+        result = result * prime + ($single == null ? 43 : $single.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CompositeDisruptionMode(" + "all=" + this.getAll() + ", single=" + this.getSingle() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

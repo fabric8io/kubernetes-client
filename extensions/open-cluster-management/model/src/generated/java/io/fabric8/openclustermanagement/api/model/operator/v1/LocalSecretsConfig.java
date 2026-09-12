@@ -30,21 +30,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "hubConnectionTimeoutSeconds",
     "kubeConfigSecrets"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -141,6 +132,57 @@ public class LocalSecretsConfig implements Editable<LocalSecretsConfigBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof LocalSecretsConfig)) {
+            return false;
+        }
+        LocalSecretsConfig other = (LocalSecretsConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$hubConnectionTimeoutSeconds = this.getHubConnectionTimeoutSeconds();
+        Object other$hubConnectionTimeoutSeconds = other.getHubConnectionTimeoutSeconds();
+        if (this$hubConnectionTimeoutSeconds == null ? other$hubConnectionTimeoutSeconds != null : !this$hubConnectionTimeoutSeconds.equals(other$hubConnectionTimeoutSeconds)) {
+            return false;
+        }
+        Object this$kubeConfigSecrets = this.getKubeConfigSecrets();
+        Object other$kubeConfigSecrets = other.getKubeConfigSecrets();
+        if (this$kubeConfigSecrets == null ? other$kubeConfigSecrets != null : !this$kubeConfigSecrets.equals(other$kubeConfigSecrets)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof LocalSecretsConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $hubConnectionTimeoutSeconds = this.getHubConnectionTimeoutSeconds();
+        result = result * prime + ($hubConnectionTimeoutSeconds == null ? 43 : $hubConnectionTimeoutSeconds.hashCode());
+        Object $kubeConfigSecrets = this.getKubeConfigSecrets();
+        result = result * prime + ($kubeConfigSecrets == null ? 43 : $kubeConfigSecrets.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "LocalSecretsConfig(" + "hubConnectionTimeoutSeconds=" + this.getHubConnectionTimeoutSeconds() + ", kubeConfigSecrets=" + this.getKubeConfigSecrets() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

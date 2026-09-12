@@ -33,9 +33,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VSphereMachineProviderSpec is the type that will be embedded in a Machine.Spec.ProviderSpec field for an VSphere virtual machine. It is used by the vSphere machine actuator to create a single Machine. Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
@@ -59,12 +56,6 @@ import lombok.experimental.Accessors;
     "template",
     "userDataSecret",
     "workspace"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -431,6 +422,155 @@ public class VSphereMachineProviderSpec implements Editable<VSphereMachineProvid
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VSphereMachineProviderSpec)) {
+            return false;
+        }
+        VSphereMachineProviderSpec other = (VSphereMachineProviderSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$cloneMode = this.getCloneMode();
+        Object other$cloneMode = other.getCloneMode();
+        if (this$cloneMode == null ? other$cloneMode != null : !this$cloneMode.equals(other$cloneMode)) {
+            return false;
+        }
+        Object this$credentialsSecret = this.getCredentialsSecret();
+        Object other$credentialsSecret = other.getCredentialsSecret();
+        if (this$credentialsSecret == null ? other$credentialsSecret != null : !this$credentialsSecret.equals(other$credentialsSecret)) {
+            return false;
+        }
+        Object this$dataDisks = this.getDataDisks();
+        Object other$dataDisks = other.getDataDisks();
+        if (this$dataDisks == null ? other$dataDisks != null : !this$dataDisks.equals(other$dataDisks)) {
+            return false;
+        }
+        Object this$diskGiB = this.getDiskGiB();
+        Object other$diskGiB = other.getDiskGiB();
+        if (this$diskGiB == null ? other$diskGiB != null : !this$diskGiB.equals(other$diskGiB)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$memoryMiB = this.getMemoryMiB();
+        Object other$memoryMiB = other.getMemoryMiB();
+        if (this$memoryMiB == null ? other$memoryMiB != null : !this$memoryMiB.equals(other$memoryMiB)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$network = this.getNetwork();
+        Object other$network = other.getNetwork();
+        if (this$network == null ? other$network != null : !this$network.equals(other$network)) {
+            return false;
+        }
+        Object this$numCPUs = this.getNumCPUs();
+        Object other$numCPUs = other.getNumCPUs();
+        if (this$numCPUs == null ? other$numCPUs != null : !this$numCPUs.equals(other$numCPUs)) {
+            return false;
+        }
+        Object this$numCoresPerSocket = this.getNumCoresPerSocket();
+        Object other$numCoresPerSocket = other.getNumCoresPerSocket();
+        if (this$numCoresPerSocket == null ? other$numCoresPerSocket != null : !this$numCoresPerSocket.equals(other$numCoresPerSocket)) {
+            return false;
+        }
+        Object this$snapshot = this.getSnapshot();
+        Object other$snapshot = other.getSnapshot();
+        if (this$snapshot == null ? other$snapshot != null : !this$snapshot.equals(other$snapshot)) {
+            return false;
+        }
+        Object this$tagIDs = this.getTagIDs();
+        Object other$tagIDs = other.getTagIDs();
+        if (this$tagIDs == null ? other$tagIDs != null : !this$tagIDs.equals(other$tagIDs)) {
+            return false;
+        }
+        Object this$template = this.getTemplate();
+        Object other$template = other.getTemplate();
+        if (this$template == null ? other$template != null : !this$template.equals(other$template)) {
+            return false;
+        }
+        Object this$userDataSecret = this.getUserDataSecret();
+        Object other$userDataSecret = other.getUserDataSecret();
+        if (this$userDataSecret == null ? other$userDataSecret != null : !this$userDataSecret.equals(other$userDataSecret)) {
+            return false;
+        }
+        Object this$workspace = this.getWorkspace();
+        Object other$workspace = other.getWorkspace();
+        if (this$workspace == null ? other$workspace != null : !this$workspace.equals(other$workspace)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VSphereMachineProviderSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $cloneMode = this.getCloneMode();
+        result = result * prime + ($cloneMode == null ? 43 : $cloneMode.hashCode());
+        Object $credentialsSecret = this.getCredentialsSecret();
+        result = result * prime + ($credentialsSecret == null ? 43 : $credentialsSecret.hashCode());
+        Object $dataDisks = this.getDataDisks();
+        result = result * prime + ($dataDisks == null ? 43 : $dataDisks.hashCode());
+        Object $diskGiB = this.getDiskGiB();
+        result = result * prime + ($diskGiB == null ? 43 : $diskGiB.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $memoryMiB = this.getMemoryMiB();
+        result = result * prime + ($memoryMiB == null ? 43 : $memoryMiB.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $network = this.getNetwork();
+        result = result * prime + ($network == null ? 43 : $network.hashCode());
+        Object $numCPUs = this.getNumCPUs();
+        result = result * prime + ($numCPUs == null ? 43 : $numCPUs.hashCode());
+        Object $numCoresPerSocket = this.getNumCoresPerSocket();
+        result = result * prime + ($numCoresPerSocket == null ? 43 : $numCoresPerSocket.hashCode());
+        Object $snapshot = this.getSnapshot();
+        result = result * prime + ($snapshot == null ? 43 : $snapshot.hashCode());
+        Object $tagIDs = this.getTagIDs();
+        result = result * prime + ($tagIDs == null ? 43 : $tagIDs.hashCode());
+        Object $template = this.getTemplate();
+        result = result * prime + ($template == null ? 43 : $template.hashCode());
+        Object $userDataSecret = this.getUserDataSecret();
+        result = result * prime + ($userDataSecret == null ? 43 : $userDataSecret.hashCode());
+        Object $workspace = this.getWorkspace();
+        result = result * prime + ($workspace == null ? 43 : $workspace.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VSphereMachineProviderSpec(" + "apiVersion=" + this.getApiVersion() + ", cloneMode=" + this.getCloneMode() + ", credentialsSecret=" + this.getCredentialsSecret() + ", dataDisks=" + this.getDataDisks() + ", diskGiB=" + this.getDiskGiB() + ", kind=" + this.getKind() + ", memoryMiB=" + this.getMemoryMiB() + ", metadata=" + this.getMetadata() + ", network=" + this.getNetwork() + ", numCPUs=" + this.getNumCPUs() + ", numCoresPerSocket=" + this.getNumCoresPerSocket() + ", snapshot=" + this.getSnapshot() + ", tagIDs=" + this.getTagIDs() + ", template=" + this.getTemplate() + ", userDataSecret=" + this.getUserDataSecret() + ", workspace=" + this.getWorkspace() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

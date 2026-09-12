@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -53,12 +50,6 @@ import lombok.experimental.Accessors;
     "tenantID",
     "trunk",
     "vnicType"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -429,6 +420,155 @@ public class PortOpts implements Editable<PortOptsBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PortOpts)) {
+            return false;
+        }
+        PortOpts other = (PortOpts) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$adminStateUp = this.getAdminStateUp();
+        Object other$adminStateUp = other.getAdminStateUp();
+        if (this$adminStateUp == null ? other$adminStateUp != null : !this$adminStateUp.equals(other$adminStateUp)) {
+            return false;
+        }
+        Object this$allowedAddressPairs = this.getAllowedAddressPairs();
+        Object other$allowedAddressPairs = other.getAllowedAddressPairs();
+        if (this$allowedAddressPairs == null ? other$allowedAddressPairs != null : !this$allowedAddressPairs.equals(other$allowedAddressPairs)) {
+            return false;
+        }
+        Object this$description = this.getDescription();
+        Object other$description = other.getDescription();
+        if (this$description == null ? other$description != null : !this$description.equals(other$description)) {
+            return false;
+        }
+        Object this$fixedIPs = this.getFixedIPs();
+        Object other$fixedIPs = other.getFixedIPs();
+        if (this$fixedIPs == null ? other$fixedIPs != null : !this$fixedIPs.equals(other$fixedIPs)) {
+            return false;
+        }
+        Object this$hostID = this.getHostID();
+        Object other$hostID = other.getHostID();
+        if (this$hostID == null ? other$hostID != null : !this$hostID.equals(other$hostID)) {
+            return false;
+        }
+        Object this$macAddress = this.getMacAddress();
+        Object other$macAddress = other.getMacAddress();
+        if (this$macAddress == null ? other$macAddress != null : !this$macAddress.equals(other$macAddress)) {
+            return false;
+        }
+        Object this$nameSuffix = this.getNameSuffix();
+        Object other$nameSuffix = other.getNameSuffix();
+        if (this$nameSuffix == null ? other$nameSuffix != null : !this$nameSuffix.equals(other$nameSuffix)) {
+            return false;
+        }
+        Object this$networkID = this.getNetworkID();
+        Object other$networkID = other.getNetworkID();
+        if (this$networkID == null ? other$networkID != null : !this$networkID.equals(other$networkID)) {
+            return false;
+        }
+        Object this$portSecurity = this.getPortSecurity();
+        Object other$portSecurity = other.getPortSecurity();
+        if (this$portSecurity == null ? other$portSecurity != null : !this$portSecurity.equals(other$portSecurity)) {
+            return false;
+        }
+        Object this$profile = this.getProfile();
+        Object other$profile = other.getProfile();
+        if (this$profile == null ? other$profile != null : !this$profile.equals(other$profile)) {
+            return false;
+        }
+        Object this$projectID = this.getProjectID();
+        Object other$projectID = other.getProjectID();
+        if (this$projectID == null ? other$projectID != null : !this$projectID.equals(other$projectID)) {
+            return false;
+        }
+        Object this$securityGroups = this.getSecurityGroups();
+        Object other$securityGroups = other.getSecurityGroups();
+        if (this$securityGroups == null ? other$securityGroups != null : !this$securityGroups.equals(other$securityGroups)) {
+            return false;
+        }
+        Object this$tags = this.getTags();
+        Object other$tags = other.getTags();
+        if (this$tags == null ? other$tags != null : !this$tags.equals(other$tags)) {
+            return false;
+        }
+        Object this$tenantID = this.getTenantID();
+        Object other$tenantID = other.getTenantID();
+        if (this$tenantID == null ? other$tenantID != null : !this$tenantID.equals(other$tenantID)) {
+            return false;
+        }
+        Object this$trunk = this.getTrunk();
+        Object other$trunk = other.getTrunk();
+        if (this$trunk == null ? other$trunk != null : !this$trunk.equals(other$trunk)) {
+            return false;
+        }
+        Object this$vnicType = this.getVnicType();
+        Object other$vnicType = other.getVnicType();
+        if (this$vnicType == null ? other$vnicType != null : !this$vnicType.equals(other$vnicType)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PortOpts;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $adminStateUp = this.getAdminStateUp();
+        result = result * prime + ($adminStateUp == null ? 43 : $adminStateUp.hashCode());
+        Object $allowedAddressPairs = this.getAllowedAddressPairs();
+        result = result * prime + ($allowedAddressPairs == null ? 43 : $allowedAddressPairs.hashCode());
+        Object $description = this.getDescription();
+        result = result * prime + ($description == null ? 43 : $description.hashCode());
+        Object $fixedIPs = this.getFixedIPs();
+        result = result * prime + ($fixedIPs == null ? 43 : $fixedIPs.hashCode());
+        Object $hostID = this.getHostID();
+        result = result * prime + ($hostID == null ? 43 : $hostID.hashCode());
+        Object $macAddress = this.getMacAddress();
+        result = result * prime + ($macAddress == null ? 43 : $macAddress.hashCode());
+        Object $nameSuffix = this.getNameSuffix();
+        result = result * prime + ($nameSuffix == null ? 43 : $nameSuffix.hashCode());
+        Object $networkID = this.getNetworkID();
+        result = result * prime + ($networkID == null ? 43 : $networkID.hashCode());
+        Object $portSecurity = this.getPortSecurity();
+        result = result * prime + ($portSecurity == null ? 43 : $portSecurity.hashCode());
+        Object $profile = this.getProfile();
+        result = result * prime + ($profile == null ? 43 : $profile.hashCode());
+        Object $projectID = this.getProjectID();
+        result = result * prime + ($projectID == null ? 43 : $projectID.hashCode());
+        Object $securityGroups = this.getSecurityGroups();
+        result = result * prime + ($securityGroups == null ? 43 : $securityGroups.hashCode());
+        Object $tags = this.getTags();
+        result = result * prime + ($tags == null ? 43 : $tags.hashCode());
+        Object $tenantID = this.getTenantID();
+        result = result * prime + ($tenantID == null ? 43 : $tenantID.hashCode());
+        Object $trunk = this.getTrunk();
+        result = result * prime + ($trunk == null ? 43 : $trunk.hashCode());
+        Object $vnicType = this.getVnicType();
+        result = result * prime + ($vnicType == null ? 43 : $vnicType.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PortOpts(" + "adminStateUp=" + this.getAdminStateUp() + ", allowedAddressPairs=" + this.getAllowedAddressPairs() + ", description=" + this.getDescription() + ", fixedIPs=" + this.getFixedIPs() + ", hostID=" + this.getHostID() + ", macAddress=" + this.getMacAddress() + ", nameSuffix=" + this.getNameSuffix() + ", networkID=" + this.getNetworkID() + ", portSecurity=" + this.getPortSecurity() + ", profile=" + this.getProfile() + ", projectID=" + this.getProjectID() + ", securityGroups=" + this.getSecurityGroups() + ", tags=" + this.getTags() + ", tenantID=" + this.getTenantID() + ", trunk=" + this.getTrunk() + ", vnicType=" + this.getVnicType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

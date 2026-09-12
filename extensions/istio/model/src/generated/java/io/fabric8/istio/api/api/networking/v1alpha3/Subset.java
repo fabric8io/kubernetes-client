@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * A subset of endpoints of a service. Subsets can be used for scenarios like A/B testing, or routing to a specific version of a service. Refer to [VirtualService](https://istio.io/docs/reference/config/networking/virtual-service/#VirtualService) documentation for examples of using subsets in these scenarios. In addition, traffic policies defined at the service-level can be overridden at a subset-level. The following rule uses a round robin load balancing policy for all traffic going to a subset named testversion that is composed of endpoints (e.g., pods) with labels (version:v3).<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: bookinfo-ratings<br><p> <br><p> spec:<br><p> <br><p> 	host: ratings.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  loadBalancer:<br><p> 	    simple: LEAST_REQUEST<br><p> 	subsets:<br><p> 	- name: testversion<br><p> 	  labels:<br><p> 	    version: v3<br><p> 	  trafficPolicy:<br><p> 	    loadBalancer:<br><p> 	      simple: ROUND_ROBIN<br><p> <br><p> ```<br><p> <br><p> &#42;&#42;Note:&#42;&#42; Policies specified for subsets will not take effect until a route rule explicitly sends traffic to this subset.<br><p> <br><p> One or more labels are typically required to identify the subset destination, however, when the corresponding DestinationRule represents a host that supports multiple SNI hosts (e.g., an egress gateway), a subset without labels may be meaningful. In this case a traffic policy with [ClientTLSSettings](#ClientTLSSettings) can be used to identify a specific SNI host corresponding to the named subset.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "labels",
     "name",
     "trafficPolicy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -162,6 +153,64 @@ public class Subset implements Editable<SubsetBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Subset)) {
+            return false;
+        }
+        Subset other = (Subset) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$labels = this.getLabels();
+        Object other$labels = other.getLabels();
+        if (this$labels == null ? other$labels != null : !this$labels.equals(other$labels)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$trafficPolicy = this.getTrafficPolicy();
+        Object other$trafficPolicy = other.getTrafficPolicy();
+        if (this$trafficPolicy == null ? other$trafficPolicy != null : !this$trafficPolicy.equals(other$trafficPolicy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Subset;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $labels = this.getLabels();
+        result = result * prime + ($labels == null ? 43 : $labels.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $trafficPolicy = this.getTrafficPolicy();
+        result = result * prime + ($trafficPolicy == null ? 43 : $trafficPolicy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Subset(" + "labels=" + this.getLabels() + ", name=" + this.getName() + ", trafficPolicy=" + this.getTrafficPolicy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

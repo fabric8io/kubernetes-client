@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "ddbStreams",
     "s3",
     "sqs"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -157,6 +148,71 @@ public class Aws implements Editable<AwsBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Aws)) {
+            return false;
+        }
+        Aws other = (Aws) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$auth = this.getAuth();
+        Object other$auth = other.getAuth();
+        if (this$auth == null ? other$auth != null : !this$auth.equals(other$auth)) {
+            return false;
+        }
+        Object this$ddbStreams = this.getDdbStreams();
+        Object other$ddbStreams = other.getDdbStreams();
+        if (this$ddbStreams == null ? other$ddbStreams != null : !this$ddbStreams.equals(other$ddbStreams)) {
+            return false;
+        }
+        Object this$s3 = this.getS3();
+        Object other$s3 = other.getS3();
+        if (this$s3 == null ? other$s3 != null : !this$s3.equals(other$s3)) {
+            return false;
+        }
+        Object this$sqs = this.getSqs();
+        Object other$sqs = other.getSqs();
+        if (this$sqs == null ? other$sqs != null : !this$sqs.equals(other$sqs)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Aws;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $auth = this.getAuth();
+        result = result * prime + ($auth == null ? 43 : $auth.hashCode());
+        Object $ddbStreams = this.getDdbStreams();
+        result = result * prime + ($ddbStreams == null ? 43 : $ddbStreams.hashCode());
+        Object $s3 = this.getS3();
+        result = result * prime + ($s3 == null ? 43 : $s3.hashCode());
+        Object $sqs = this.getSqs();
+        result = result * prime + ($sqs == null ? 43 : $sqs.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Aws(" + "auth=" + this.getAuth() + ", ddbStreams=" + this.getDdbStreams() + ", s3=" + this.getS3() + ", sqs=" + this.getSqs() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

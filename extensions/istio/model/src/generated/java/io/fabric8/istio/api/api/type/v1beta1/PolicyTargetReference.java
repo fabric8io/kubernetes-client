@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PolicyTargetReference format as defined by [GEP-2648](https://gateway-api.sigs.k8s.io/geps/gep-2648/#direct-policy-design-rules).<br><p> <br><p> PolicyTargetReference specifies the targeted resource which the policy should be applied to. It must only target a single resource at a time, but it can be used to target larger resources such as Gateways that may apply to multiple child resources. The PolicyTargetReference will be used instead of a WorkloadSelector in the RequestAuthentication, AuthorizationPolicy, Telemetry, and WasmPlugin CRDs to target a Kubernetes Gateway.<br><p> <br><p> The following is an example of an AuthorizationPolicy bound to a waypoint proxy using a PolicyTargetReference. The example sets `action` to `DENY` to create a deny policy. It denies all the requests with `POST` method on port `8080` directed through the `waypoint` Gateway in the `foo` namespace.<br><p> <br><p> ```yaml apiVersion: security.istio.io/v1 kind: AuthorizationPolicy metadata:<br><p> <br><p> 	name: httpbin<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	targetRefs:<br><p> 	- name: waypoint<br><p> 	  kind: Gateway<br><p> 	  group: gateway.networking.k8s.io<br><p> 	action: DENY<br><p> 	rules:<br><p> 	- to:<br><p> 	  - operation:<br><p> 	      methods: ["POST"]<br><p> 	      ports: ["8080"]<br><p> <br><p> ```<br><p> <br><p> When binding to a GatewayClass resource using PolicyTargetReference, your policy must be in the root namespace.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "group",
     "name",
     "namespace"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class PolicyTargetReference implements Editable<PolicyTargetReferenceBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PolicyTargetReference)) {
+            return false;
+        }
+        PolicyTargetReference other = (PolicyTargetReference) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$group = this.getGroup();
+        Object other$group = other.getGroup();
+        if (this$group == null ? other$group != null : !this$group.equals(other$group)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$namespace = this.getNamespace();
+        Object other$namespace = other.getNamespace();
+        if (this$namespace == null ? other$namespace != null : !this$namespace.equals(other$namespace)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PolicyTargetReference;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $group = this.getGroup();
+        result = result * prime + ($group == null ? 43 : $group.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $namespace = this.getNamespace();
+        result = result * prime + ($namespace == null ? 43 : $namespace.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PolicyTargetReference(" + "group=" + this.getGroup() + ", kind=" + this.getKind() + ", name=" + this.getName() + ", namespace=" + this.getNamespace() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

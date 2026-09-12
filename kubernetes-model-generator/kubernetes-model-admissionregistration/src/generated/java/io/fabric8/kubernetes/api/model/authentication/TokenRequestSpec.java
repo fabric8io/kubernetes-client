@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TokenRequestSpec contains client provided parameters of a token request.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "audiences",
     "boundObjectRef",
     "expirationSeconds"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -186,6 +177,71 @@ public class TokenRequestSpec implements Editable<TokenRequestSpecBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TokenRequestSpec)) {
+            return false;
+        }
+        TokenRequestSpec other = (TokenRequestSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$attestations = this.getAttestations();
+        Object other$attestations = other.getAttestations();
+        if (this$attestations == null ? other$attestations != null : !this$attestations.equals(other$attestations)) {
+            return false;
+        }
+        Object this$audiences = this.getAudiences();
+        Object other$audiences = other.getAudiences();
+        if (this$audiences == null ? other$audiences != null : !this$audiences.equals(other$audiences)) {
+            return false;
+        }
+        Object this$boundObjectRef = this.getBoundObjectRef();
+        Object other$boundObjectRef = other.getBoundObjectRef();
+        if (this$boundObjectRef == null ? other$boundObjectRef != null : !this$boundObjectRef.equals(other$boundObjectRef)) {
+            return false;
+        }
+        Object this$expirationSeconds = this.getExpirationSeconds();
+        Object other$expirationSeconds = other.getExpirationSeconds();
+        if (this$expirationSeconds == null ? other$expirationSeconds != null : !this$expirationSeconds.equals(other$expirationSeconds)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TokenRequestSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $attestations = this.getAttestations();
+        result = result * prime + ($attestations == null ? 43 : $attestations.hashCode());
+        Object $audiences = this.getAudiences();
+        result = result * prime + ($audiences == null ? 43 : $audiences.hashCode());
+        Object $boundObjectRef = this.getBoundObjectRef();
+        result = result * prime + ($boundObjectRef == null ? 43 : $boundObjectRef.hashCode());
+        Object $expirationSeconds = this.getExpirationSeconds();
+        result = result * prime + ($expirationSeconds == null ? 43 : $expirationSeconds.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TokenRequestSpec(" + "attestations=" + this.getAttestations() + ", audiences=" + this.getAudiences() + ", boundObjectRef=" + this.getBoundObjectRef() + ", expirationSeconds=" + this.getExpirationSeconds() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

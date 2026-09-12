@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Capabilities selects the managed set of optional, core cluster components.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "additionalEnabledCapabilities",
     "baselineCapabilitySet"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -144,6 +135,57 @@ public class Capabilities implements Editable<CapabilitiesBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Capabilities)) {
+            return false;
+        }
+        Capabilities other = (Capabilities) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$additionalEnabledCapabilities = this.getAdditionalEnabledCapabilities();
+        Object other$additionalEnabledCapabilities = other.getAdditionalEnabledCapabilities();
+        if (this$additionalEnabledCapabilities == null ? other$additionalEnabledCapabilities != null : !this$additionalEnabledCapabilities.equals(other$additionalEnabledCapabilities)) {
+            return false;
+        }
+        Object this$baselineCapabilitySet = this.getBaselineCapabilitySet();
+        Object other$baselineCapabilitySet = other.getBaselineCapabilitySet();
+        if (this$baselineCapabilitySet == null ? other$baselineCapabilitySet != null : !this$baselineCapabilitySet.equals(other$baselineCapabilitySet)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Capabilities;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $additionalEnabledCapabilities = this.getAdditionalEnabledCapabilities();
+        result = result * prime + ($additionalEnabledCapabilities == null ? 43 : $additionalEnabledCapabilities.hashCode());
+        Object $baselineCapabilitySet = this.getBaselineCapabilitySet();
+        result = result * prime + ($baselineCapabilitySet == null ? 43 : $baselineCapabilitySet.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Capabilities(" + "additionalEnabledCapabilities=" + this.getAdditionalEnabledCapabilities() + ", baselineCapabilitySet=" + this.getBaselineCapabilitySet() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClusterServiceVersionSpec declarations tell OLM how to install an operator that can manage apps for a given version.
@@ -65,12 +62,6 @@ import lombok.experimental.Accessors;
     "skips",
     "version",
     "webhookdefinitions"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -605,6 +596,211 @@ public class ClusterServiceVersionSpec implements Editable<ClusterServiceVersion
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterServiceVersionSpec)) {
+            return false;
+        }
+        ClusterServiceVersionSpec other = (ClusterServiceVersionSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$annotations = this.getAnnotations();
+        Object other$annotations = other.getAnnotations();
+        if (this$annotations == null ? other$annotations != null : !this$annotations.equals(other$annotations)) {
+            return false;
+        }
+        Object this$apiservicedefinitions = this.getApiservicedefinitions();
+        Object other$apiservicedefinitions = other.getApiservicedefinitions();
+        if (this$apiservicedefinitions == null ? other$apiservicedefinitions != null : !this$apiservicedefinitions.equals(other$apiservicedefinitions)) {
+            return false;
+        }
+        Object this$cleanup = this.getCleanup();
+        Object other$cleanup = other.getCleanup();
+        if (this$cleanup == null ? other$cleanup != null : !this$cleanup.equals(other$cleanup)) {
+            return false;
+        }
+        Object this$customresourcedefinitions = this.getCustomresourcedefinitions();
+        Object other$customresourcedefinitions = other.getCustomresourcedefinitions();
+        if (this$customresourcedefinitions == null ? other$customresourcedefinitions != null : !this$customresourcedefinitions.equals(other$customresourcedefinitions)) {
+            return false;
+        }
+        Object this$description = this.getDescription();
+        Object other$description = other.getDescription();
+        if (this$description == null ? other$description != null : !this$description.equals(other$description)) {
+            return false;
+        }
+        Object this$displayName = this.getDisplayName();
+        Object other$displayName = other.getDisplayName();
+        if (this$displayName == null ? other$displayName != null : !this$displayName.equals(other$displayName)) {
+            return false;
+        }
+        Object this$icon = this.getIcon();
+        Object other$icon = other.getIcon();
+        if (this$icon == null ? other$icon != null : !this$icon.equals(other$icon)) {
+            return false;
+        }
+        Object this$install = this.getInstall();
+        Object other$install = other.getInstall();
+        if (this$install == null ? other$install != null : !this$install.equals(other$install)) {
+            return false;
+        }
+        Object this$installModes = this.getInstallModes();
+        Object other$installModes = other.getInstallModes();
+        if (this$installModes == null ? other$installModes != null : !this$installModes.equals(other$installModes)) {
+            return false;
+        }
+        Object this$keywords = this.getKeywords();
+        Object other$keywords = other.getKeywords();
+        if (this$keywords == null ? other$keywords != null : !this$keywords.equals(other$keywords)) {
+            return false;
+        }
+        Object this$labels = this.getLabels();
+        Object other$labels = other.getLabels();
+        if (this$labels == null ? other$labels != null : !this$labels.equals(other$labels)) {
+            return false;
+        }
+        Object this$links = this.getLinks();
+        Object other$links = other.getLinks();
+        if (this$links == null ? other$links != null : !this$links.equals(other$links)) {
+            return false;
+        }
+        Object this$maintainers = this.getMaintainers();
+        Object other$maintainers = other.getMaintainers();
+        if (this$maintainers == null ? other$maintainers != null : !this$maintainers.equals(other$maintainers)) {
+            return false;
+        }
+        Object this$maturity = this.getMaturity();
+        Object other$maturity = other.getMaturity();
+        if (this$maturity == null ? other$maturity != null : !this$maturity.equals(other$maturity)) {
+            return false;
+        }
+        Object this$minKubeVersion = this.getMinKubeVersion();
+        Object other$minKubeVersion = other.getMinKubeVersion();
+        if (this$minKubeVersion == null ? other$minKubeVersion != null : !this$minKubeVersion.equals(other$minKubeVersion)) {
+            return false;
+        }
+        Object this$nativeAPIs = this.getNativeAPIs();
+        Object other$nativeAPIs = other.getNativeAPIs();
+        if (this$nativeAPIs == null ? other$nativeAPIs != null : !this$nativeAPIs.equals(other$nativeAPIs)) {
+            return false;
+        }
+        Object this$provider = this.getProvider();
+        Object other$provider = other.getProvider();
+        if (this$provider == null ? other$provider != null : !this$provider.equals(other$provider)) {
+            return false;
+        }
+        Object this$relatedImages = this.getRelatedImages();
+        Object other$relatedImages = other.getRelatedImages();
+        if (this$relatedImages == null ? other$relatedImages != null : !this$relatedImages.equals(other$relatedImages)) {
+            return false;
+        }
+        Object this$release = this.getRelease();
+        Object other$release = other.getRelease();
+        if (this$release == null ? other$release != null : !this$release.equals(other$release)) {
+            return false;
+        }
+        Object this$replaces = this.getReplaces();
+        Object other$replaces = other.getReplaces();
+        if (this$replaces == null ? other$replaces != null : !this$replaces.equals(other$replaces)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$skips = this.getSkips();
+        Object other$skips = other.getSkips();
+        if (this$skips == null ? other$skips != null : !this$skips.equals(other$skips)) {
+            return false;
+        }
+        Object this$version = this.getVersion();
+        Object other$version = other.getVersion();
+        if (this$version == null ? other$version != null : !this$version.equals(other$version)) {
+            return false;
+        }
+        Object this$webhookdefinitions = this.getWebhookdefinitions();
+        Object other$webhookdefinitions = other.getWebhookdefinitions();
+        if (this$webhookdefinitions == null ? other$webhookdefinitions != null : !this$webhookdefinitions.equals(other$webhookdefinitions)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterServiceVersionSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $annotations = this.getAnnotations();
+        result = result * prime + ($annotations == null ? 43 : $annotations.hashCode());
+        Object $apiservicedefinitions = this.getApiservicedefinitions();
+        result = result * prime + ($apiservicedefinitions == null ? 43 : $apiservicedefinitions.hashCode());
+        Object $cleanup = this.getCleanup();
+        result = result * prime + ($cleanup == null ? 43 : $cleanup.hashCode());
+        Object $customresourcedefinitions = this.getCustomresourcedefinitions();
+        result = result * prime + ($customresourcedefinitions == null ? 43 : $customresourcedefinitions.hashCode());
+        Object $description = this.getDescription();
+        result = result * prime + ($description == null ? 43 : $description.hashCode());
+        Object $displayName = this.getDisplayName();
+        result = result * prime + ($displayName == null ? 43 : $displayName.hashCode());
+        Object $icon = this.getIcon();
+        result = result * prime + ($icon == null ? 43 : $icon.hashCode());
+        Object $install = this.getInstall();
+        result = result * prime + ($install == null ? 43 : $install.hashCode());
+        Object $installModes = this.getInstallModes();
+        result = result * prime + ($installModes == null ? 43 : $installModes.hashCode());
+        Object $keywords = this.getKeywords();
+        result = result * prime + ($keywords == null ? 43 : $keywords.hashCode());
+        Object $labels = this.getLabels();
+        result = result * prime + ($labels == null ? 43 : $labels.hashCode());
+        Object $links = this.getLinks();
+        result = result * prime + ($links == null ? 43 : $links.hashCode());
+        Object $maintainers = this.getMaintainers();
+        result = result * prime + ($maintainers == null ? 43 : $maintainers.hashCode());
+        Object $maturity = this.getMaturity();
+        result = result * prime + ($maturity == null ? 43 : $maturity.hashCode());
+        Object $minKubeVersion = this.getMinKubeVersion();
+        result = result * prime + ($minKubeVersion == null ? 43 : $minKubeVersion.hashCode());
+        Object $nativeAPIs = this.getNativeAPIs();
+        result = result * prime + ($nativeAPIs == null ? 43 : $nativeAPIs.hashCode());
+        Object $provider = this.getProvider();
+        result = result * prime + ($provider == null ? 43 : $provider.hashCode());
+        Object $relatedImages = this.getRelatedImages();
+        result = result * prime + ($relatedImages == null ? 43 : $relatedImages.hashCode());
+        Object $release = this.getRelease();
+        result = result * prime + ($release == null ? 43 : $release.hashCode());
+        Object $replaces = this.getReplaces();
+        result = result * prime + ($replaces == null ? 43 : $replaces.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $skips = this.getSkips();
+        result = result * prime + ($skips == null ? 43 : $skips.hashCode());
+        Object $version = this.getVersion();
+        result = result * prime + ($version == null ? 43 : $version.hashCode());
+        Object $webhookdefinitions = this.getWebhookdefinitions();
+        result = result * prime + ($webhookdefinitions == null ? 43 : $webhookdefinitions.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterServiceVersionSpec(" + "annotations=" + this.getAnnotations() + ", apiservicedefinitions=" + this.getApiservicedefinitions() + ", cleanup=" + this.getCleanup() + ", customresourcedefinitions=" + this.getCustomresourcedefinitions() + ", description=" + this.getDescription() + ", displayName=" + this.getDisplayName() + ", icon=" + this.getIcon() + ", install=" + this.getInstall() + ", installModes=" + this.getInstallModes() + ", keywords=" + this.getKeywords() + ", labels=" + this.getLabels() + ", links=" + this.getLinks() + ", maintainers=" + this.getMaintainers() + ", maturity=" + this.getMaturity() + ", minKubeVersion=" + this.getMinKubeVersion() + ", nativeAPIs=" + this.getNativeAPIs() + ", provider=" + this.getProvider() + ", relatedImages=" + this.getRelatedImages() + ", release=" + this.getRelease() + ", replaces=" + this.getReplaces() + ", selector=" + this.getSelector() + ", skips=" + this.getSkips() + ", version=" + this.getVersion() + ", webhookdefinitions=" + this.getWebhookdefinitions() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

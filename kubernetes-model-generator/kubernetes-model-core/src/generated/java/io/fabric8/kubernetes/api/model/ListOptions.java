@@ -15,9 +15,6 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -35,12 +32,6 @@ import lombok.experimental.Accessors;
     "shardSelector",
     "timeoutSeconds",
     "watch"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Version("v1")
@@ -254,6 +245,134 @@ public class ListOptions implements Editable<ListOptionsBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ListOptions)) {
+            return false;
+        }
+        ListOptions other = (ListOptions) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allowWatchBookmarks = this.getAllowWatchBookmarks();
+        Object other$allowWatchBookmarks = other.getAllowWatchBookmarks();
+        if (this$allowWatchBookmarks == null ? other$allowWatchBookmarks != null : !this$allowWatchBookmarks.equals(other$allowWatchBookmarks)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$_continue = this.getContinue();
+        Object other$_continue = other.getContinue();
+        if (this$_continue == null ? other$_continue != null : !this$_continue.equals(other$_continue)) {
+            return false;
+        }
+        Object this$fieldSelector = this.getFieldSelector();
+        Object other$fieldSelector = other.getFieldSelector();
+        if (this$fieldSelector == null ? other$fieldSelector != null : !this$fieldSelector.equals(other$fieldSelector)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$labelSelector = this.getLabelSelector();
+        Object other$labelSelector = other.getLabelSelector();
+        if (this$labelSelector == null ? other$labelSelector != null : !this$labelSelector.equals(other$labelSelector)) {
+            return false;
+        }
+        Object this$limit = this.getLimit();
+        Object other$limit = other.getLimit();
+        if (this$limit == null ? other$limit != null : !this$limit.equals(other$limit)) {
+            return false;
+        }
+        Object this$resourceVersion = this.getResourceVersion();
+        Object other$resourceVersion = other.getResourceVersion();
+        if (this$resourceVersion == null ? other$resourceVersion != null : !this$resourceVersion.equals(other$resourceVersion)) {
+            return false;
+        }
+        Object this$resourceVersionMatch = this.getResourceVersionMatch();
+        Object other$resourceVersionMatch = other.getResourceVersionMatch();
+        if (this$resourceVersionMatch == null ? other$resourceVersionMatch != null : !this$resourceVersionMatch.equals(other$resourceVersionMatch)) {
+            return false;
+        }
+        Object this$sendInitialEvents = this.getSendInitialEvents();
+        Object other$sendInitialEvents = other.getSendInitialEvents();
+        if (this$sendInitialEvents == null ? other$sendInitialEvents != null : !this$sendInitialEvents.equals(other$sendInitialEvents)) {
+            return false;
+        }
+        Object this$shardSelector = this.getShardSelector();
+        Object other$shardSelector = other.getShardSelector();
+        if (this$shardSelector == null ? other$shardSelector != null : !this$shardSelector.equals(other$shardSelector)) {
+            return false;
+        }
+        Object this$timeoutSeconds = this.getTimeoutSeconds();
+        Object other$timeoutSeconds = other.getTimeoutSeconds();
+        if (this$timeoutSeconds == null ? other$timeoutSeconds != null : !this$timeoutSeconds.equals(other$timeoutSeconds)) {
+            return false;
+        }
+        Object this$watch = this.getWatch();
+        Object other$watch = other.getWatch();
+        if (this$watch == null ? other$watch != null : !this$watch.equals(other$watch)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ListOptions;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allowWatchBookmarks = this.getAllowWatchBookmarks();
+        result = result * prime + ($allowWatchBookmarks == null ? 43 : $allowWatchBookmarks.hashCode());
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $_continue = this.getContinue();
+        result = result * prime + ($_continue == null ? 43 : $_continue.hashCode());
+        Object $fieldSelector = this.getFieldSelector();
+        result = result * prime + ($fieldSelector == null ? 43 : $fieldSelector.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $labelSelector = this.getLabelSelector();
+        result = result * prime + ($labelSelector == null ? 43 : $labelSelector.hashCode());
+        Object $limit = this.getLimit();
+        result = result * prime + ($limit == null ? 43 : $limit.hashCode());
+        Object $resourceVersion = this.getResourceVersion();
+        result = result * prime + ($resourceVersion == null ? 43 : $resourceVersion.hashCode());
+        Object $resourceVersionMatch = this.getResourceVersionMatch();
+        result = result * prime + ($resourceVersionMatch == null ? 43 : $resourceVersionMatch.hashCode());
+        Object $sendInitialEvents = this.getSendInitialEvents();
+        result = result * prime + ($sendInitialEvents == null ? 43 : $sendInitialEvents.hashCode());
+        Object $shardSelector = this.getShardSelector();
+        result = result * prime + ($shardSelector == null ? 43 : $shardSelector.hashCode());
+        Object $timeoutSeconds = this.getTimeoutSeconds();
+        result = result * prime + ($timeoutSeconds == null ? 43 : $timeoutSeconds.hashCode());
+        Object $watch = this.getWatch();
+        result = result * prime + ($watch == null ? 43 : $watch.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ListOptions(" + "allowWatchBookmarks=" + this.getAllowWatchBookmarks() + ", apiVersion=" + this.getApiVersion() + ", _continue=" + this.getContinue() + ", fieldSelector=" + this.getFieldSelector() + ", kind=" + this.getKind() + ", labelSelector=" + this.getLabelSelector() + ", limit=" + this.getLimit() + ", resourceVersion=" + this.getResourceVersion() + ", resourceVersionMatch=" + this.getResourceVersionMatch() + ", sendInitialEvents=" + this.getSendInitialEvents() + ", shardSelector=" + this.getShardSelector() + ", timeoutSeconds=" + this.getTimeoutSeconds() + ", watch=" + this.getWatch() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

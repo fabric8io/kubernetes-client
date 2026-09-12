@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * IngressControllerHTTPHeaders specifies how the IngressController handles certain HTTP headers.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "forwardedHeaderPolicy",
     "headerNameCaseAdjustments",
     "uniqueId"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class IngressControllerHTTPHeaders implements Editable<IngressControllerH
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof IngressControllerHTTPHeaders)) {
+            return false;
+        }
+        IngressControllerHTTPHeaders other = (IngressControllerHTTPHeaders) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$actions = this.getActions();
+        Object other$actions = other.getActions();
+        if (this$actions == null ? other$actions != null : !this$actions.equals(other$actions)) {
+            return false;
+        }
+        Object this$forwardedHeaderPolicy = this.getForwardedHeaderPolicy();
+        Object other$forwardedHeaderPolicy = other.getForwardedHeaderPolicy();
+        if (this$forwardedHeaderPolicy == null ? other$forwardedHeaderPolicy != null : !this$forwardedHeaderPolicy.equals(other$forwardedHeaderPolicy)) {
+            return false;
+        }
+        Object this$headerNameCaseAdjustments = this.getHeaderNameCaseAdjustments();
+        Object other$headerNameCaseAdjustments = other.getHeaderNameCaseAdjustments();
+        if (this$headerNameCaseAdjustments == null ? other$headerNameCaseAdjustments != null : !this$headerNameCaseAdjustments.equals(other$headerNameCaseAdjustments)) {
+            return false;
+        }
+        Object this$uniqueId = this.getUniqueId();
+        Object other$uniqueId = other.getUniqueId();
+        if (this$uniqueId == null ? other$uniqueId != null : !this$uniqueId.equals(other$uniqueId)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof IngressControllerHTTPHeaders;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $actions = this.getActions();
+        result = result * prime + ($actions == null ? 43 : $actions.hashCode());
+        Object $forwardedHeaderPolicy = this.getForwardedHeaderPolicy();
+        result = result * prime + ($forwardedHeaderPolicy == null ? 43 : $forwardedHeaderPolicy.hashCode());
+        Object $headerNameCaseAdjustments = this.getHeaderNameCaseAdjustments();
+        result = result * prime + ($headerNameCaseAdjustments == null ? 43 : $headerNameCaseAdjustments.hashCode());
+        Object $uniqueId = this.getUniqueId();
+        result = result * prime + ($uniqueId == null ? 43 : $uniqueId.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IngressControllerHTTPHeaders(" + "actions=" + this.getActions() + ", forwardedHeaderPolicy=" + this.getForwardedHeaderPolicy() + ", headerNameCaseAdjustments=" + this.getHeaderNameCaseAdjustments() + ", uniqueId=" + this.getUniqueId() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

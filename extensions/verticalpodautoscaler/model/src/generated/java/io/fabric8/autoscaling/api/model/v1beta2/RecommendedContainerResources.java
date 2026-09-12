@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RecommendedContainerResources is the recommendation of resources computed by autoscaler for a specific container. Respects the container resource policy if present in the spec. In particular the recommendation is not produced for containers with `ContainerScalingMode` set to 'Off'.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "target",
     "uncappedTarget",
     "upperBound"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -209,6 +200,78 @@ public class RecommendedContainerResources implements Editable<RecommendedContai
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RecommendedContainerResources)) {
+            return false;
+        }
+        RecommendedContainerResources other = (RecommendedContainerResources) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$containerName = this.getContainerName();
+        Object other$containerName = other.getContainerName();
+        if (this$containerName == null ? other$containerName != null : !this$containerName.equals(other$containerName)) {
+            return false;
+        }
+        Object this$lowerBound = this.getLowerBound();
+        Object other$lowerBound = other.getLowerBound();
+        if (this$lowerBound == null ? other$lowerBound != null : !this$lowerBound.equals(other$lowerBound)) {
+            return false;
+        }
+        Object this$target = this.getTarget();
+        Object other$target = other.getTarget();
+        if (this$target == null ? other$target != null : !this$target.equals(other$target)) {
+            return false;
+        }
+        Object this$uncappedTarget = this.getUncappedTarget();
+        Object other$uncappedTarget = other.getUncappedTarget();
+        if (this$uncappedTarget == null ? other$uncappedTarget != null : !this$uncappedTarget.equals(other$uncappedTarget)) {
+            return false;
+        }
+        Object this$upperBound = this.getUpperBound();
+        Object other$upperBound = other.getUpperBound();
+        if (this$upperBound == null ? other$upperBound != null : !this$upperBound.equals(other$upperBound)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RecommendedContainerResources;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $containerName = this.getContainerName();
+        result = result * prime + ($containerName == null ? 43 : $containerName.hashCode());
+        Object $lowerBound = this.getLowerBound();
+        result = result * prime + ($lowerBound == null ? 43 : $lowerBound.hashCode());
+        Object $target = this.getTarget();
+        result = result * prime + ($target == null ? 43 : $target.hashCode());
+        Object $uncappedTarget = this.getUncappedTarget();
+        result = result * prime + ($uncappedTarget == null ? 43 : $uncappedTarget.hashCode());
+        Object $upperBound = this.getUpperBound();
+        result = result * prime + ($upperBound == null ? 43 : $upperBound.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RecommendedContainerResources(" + "containerName=" + this.getContainerName() + ", lowerBound=" + this.getLowerBound() + ", target=" + this.getTarget() + ", uncappedTarget=" + this.getUncappedTarget() + ", upperBound=" + this.getUpperBound() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

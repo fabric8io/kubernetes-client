@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "externalRegistryHostnames",
     "imageStreamImportMode",
     "registrySources"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -190,6 +181,78 @@ public class ImageSpec implements Editable<ImageSpecBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageSpec)) {
+            return false;
+        }
+        ImageSpec other = (ImageSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$additionalTrustedCA = this.getAdditionalTrustedCA();
+        Object other$additionalTrustedCA = other.getAdditionalTrustedCA();
+        if (this$additionalTrustedCA == null ? other$additionalTrustedCA != null : !this$additionalTrustedCA.equals(other$additionalTrustedCA)) {
+            return false;
+        }
+        Object this$allowedRegistriesForImport = this.getAllowedRegistriesForImport();
+        Object other$allowedRegistriesForImport = other.getAllowedRegistriesForImport();
+        if (this$allowedRegistriesForImport == null ? other$allowedRegistriesForImport != null : !this$allowedRegistriesForImport.equals(other$allowedRegistriesForImport)) {
+            return false;
+        }
+        Object this$externalRegistryHostnames = this.getExternalRegistryHostnames();
+        Object other$externalRegistryHostnames = other.getExternalRegistryHostnames();
+        if (this$externalRegistryHostnames == null ? other$externalRegistryHostnames != null : !this$externalRegistryHostnames.equals(other$externalRegistryHostnames)) {
+            return false;
+        }
+        Object this$imageStreamImportMode = this.getImageStreamImportMode();
+        Object other$imageStreamImportMode = other.getImageStreamImportMode();
+        if (this$imageStreamImportMode == null ? other$imageStreamImportMode != null : !this$imageStreamImportMode.equals(other$imageStreamImportMode)) {
+            return false;
+        }
+        Object this$registrySources = this.getRegistrySources();
+        Object other$registrySources = other.getRegistrySources();
+        if (this$registrySources == null ? other$registrySources != null : !this$registrySources.equals(other$registrySources)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $additionalTrustedCA = this.getAdditionalTrustedCA();
+        result = result * prime + ($additionalTrustedCA == null ? 43 : $additionalTrustedCA.hashCode());
+        Object $allowedRegistriesForImport = this.getAllowedRegistriesForImport();
+        result = result * prime + ($allowedRegistriesForImport == null ? 43 : $allowedRegistriesForImport.hashCode());
+        Object $externalRegistryHostnames = this.getExternalRegistryHostnames();
+        result = result * prime + ($externalRegistryHostnames == null ? 43 : $externalRegistryHostnames.hashCode());
+        Object $imageStreamImportMode = this.getImageStreamImportMode();
+        result = result * prime + ($imageStreamImportMode == null ? 43 : $imageStreamImportMode.hashCode());
+        Object $registrySources = this.getRegistrySources();
+        result = result * prime + ($registrySources == null ? 43 : $registrySources.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageSpec(" + "additionalTrustedCA=" + this.getAdditionalTrustedCA() + ", allowedRegistriesForImport=" + this.getAllowedRegistriesForImport() + ", externalRegistryHostnames=" + this.getExternalRegistryHostnames() + ", imageStreamImportMode=" + this.getImageStreamImportMode() + ", registrySources=" + this.getRegistrySources() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

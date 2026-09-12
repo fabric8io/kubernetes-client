@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.hive.metricsconfig.v1.MetricsConfig;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HiveConfigSpec defines the desired state of Hive
@@ -65,12 +62,6 @@ import lombok.experimental.Accessors;
     "serviceProviderCredentialsConfig",
     "syncSetReapplyInterval",
     "targetNamespace"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -591,6 +582,211 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HiveConfigSpec)) {
+            return false;
+        }
+        HiveConfigSpec other = (HiveConfigSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$additionalCertificateAuthoritiesSecretRef = this.getAdditionalCertificateAuthoritiesSecretRef();
+        Object other$additionalCertificateAuthoritiesSecretRef = other.getAdditionalCertificateAuthoritiesSecretRef();
+        if (this$additionalCertificateAuthoritiesSecretRef == null ? other$additionalCertificateAuthoritiesSecretRef != null : !this$additionalCertificateAuthoritiesSecretRef.equals(other$additionalCertificateAuthoritiesSecretRef)) {
+            return false;
+        }
+        Object this$argoCDConfig = this.getArgoCDConfig();
+        Object other$argoCDConfig = other.getArgoCDConfig();
+        if (this$argoCDConfig == null ? other$argoCDConfig != null : !this$argoCDConfig.equals(other$argoCDConfig)) {
+            return false;
+        }
+        Object this$awsPrivateLink = this.getAwsPrivateLink();
+        Object other$awsPrivateLink = other.getAwsPrivateLink();
+        if (this$awsPrivateLink == null ? other$awsPrivateLink != null : !this$awsPrivateLink.equals(other$awsPrivateLink)) {
+            return false;
+        }
+        Object this$backup = this.getBackup();
+        Object other$backup = other.getBackup();
+        if (this$backup == null ? other$backup != null : !this$backup.equals(other$backup)) {
+            return false;
+        }
+        Object this$clusterVersionPollInterval = this.getClusterVersionPollInterval();
+        Object other$clusterVersionPollInterval = other.getClusterVersionPollInterval();
+        if (this$clusterVersionPollInterval == null ? other$clusterVersionPollInterval != null : !this$clusterVersionPollInterval.equals(other$clusterVersionPollInterval)) {
+            return false;
+        }
+        Object this$controllersConfig = this.getControllersConfig();
+        Object other$controllersConfig = other.getControllersConfig();
+        if (this$controllersConfig == null ? other$controllersConfig != null : !this$controllersConfig.equals(other$controllersConfig)) {
+            return false;
+        }
+        Object this$deleteProtection = this.getDeleteProtection();
+        Object other$deleteProtection = other.getDeleteProtection();
+        if (this$deleteProtection == null ? other$deleteProtection != null : !this$deleteProtection.equals(other$deleteProtection)) {
+            return false;
+        }
+        Object this$deploymentConfig = this.getDeploymentConfig();
+        Object other$deploymentConfig = other.getDeploymentConfig();
+        if (this$deploymentConfig == null ? other$deploymentConfig != null : !this$deploymentConfig.equals(other$deploymentConfig)) {
+            return false;
+        }
+        Object this$deprovisionsDisabled = this.getDeprovisionsDisabled();
+        Object other$deprovisionsDisabled = other.getDeprovisionsDisabled();
+        if (this$deprovisionsDisabled == null ? other$deprovisionsDisabled != null : !this$deprovisionsDisabled.equals(other$deprovisionsDisabled)) {
+            return false;
+        }
+        Object this$disabledControllers = this.getDisabledControllers();
+        Object other$disabledControllers = other.getDisabledControllers();
+        if (this$disabledControllers == null ? other$disabledControllers != null : !this$disabledControllers.equals(other$disabledControllers)) {
+            return false;
+        }
+        Object this$exportMetrics = this.getExportMetrics();
+        Object other$exportMetrics = other.getExportMetrics();
+        if (this$exportMetrics == null ? other$exportMetrics != null : !this$exportMetrics.equals(other$exportMetrics)) {
+            return false;
+        }
+        Object this$failedProvisionConfig = this.getFailedProvisionConfig();
+        Object other$failedProvisionConfig = other.getFailedProvisionConfig();
+        if (this$failedProvisionConfig == null ? other$failedProvisionConfig != null : !this$failedProvisionConfig.equals(other$failedProvisionConfig)) {
+            return false;
+        }
+        Object this$featureGates = this.getFeatureGates();
+        Object other$featureGates = other.getFeatureGates();
+        if (this$featureGates == null ? other$featureGates != null : !this$featureGates.equals(other$featureGates)) {
+            return false;
+        }
+        Object this$globalPullSecretRef = this.getGlobalPullSecretRef();
+        Object other$globalPullSecretRef = other.getGlobalPullSecretRef();
+        if (this$globalPullSecretRef == null ? other$globalPullSecretRef != null : !this$globalPullSecretRef.equals(other$globalPullSecretRef)) {
+            return false;
+        }
+        Object this$logLevel = this.getLogLevel();
+        Object other$logLevel = other.getLogLevel();
+        if (this$logLevel == null ? other$logLevel != null : !this$logLevel.equals(other$logLevel)) {
+            return false;
+        }
+        Object this$machinePoolPollInterval = this.getMachinePoolPollInterval();
+        Object other$machinePoolPollInterval = other.getMachinePoolPollInterval();
+        if (this$machinePoolPollInterval == null ? other$machinePoolPollInterval != null : !this$machinePoolPollInterval.equals(other$machinePoolPollInterval)) {
+            return false;
+        }
+        Object this$maintenanceMode = this.getMaintenanceMode();
+        Object other$maintenanceMode = other.getMaintenanceMode();
+        if (this$maintenanceMode == null ? other$maintenanceMode != null : !this$maintenanceMode.equals(other$maintenanceMode)) {
+            return false;
+        }
+        Object this$managedDomains = this.getManagedDomains();
+        Object other$managedDomains = other.getManagedDomains();
+        if (this$managedDomains == null ? other$managedDomains != null : !this$managedDomains.equals(other$managedDomains)) {
+            return false;
+        }
+        Object this$metricsConfig = this.getMetricsConfig();
+        Object other$metricsConfig = other.getMetricsConfig();
+        if (this$metricsConfig == null ? other$metricsConfig != null : !this$metricsConfig.equals(other$metricsConfig)) {
+            return false;
+        }
+        Object this$privateLink = this.getPrivateLink();
+        Object other$privateLink = other.getPrivateLink();
+        if (this$privateLink == null ? other$privateLink != null : !this$privateLink.equals(other$privateLink)) {
+            return false;
+        }
+        Object this$releaseImageVerificationConfigMapRef = this.getReleaseImageVerificationConfigMapRef();
+        Object other$releaseImageVerificationConfigMapRef = other.getReleaseImageVerificationConfigMapRef();
+        if (this$releaseImageVerificationConfigMapRef == null ? other$releaseImageVerificationConfigMapRef != null : !this$releaseImageVerificationConfigMapRef.equals(other$releaseImageVerificationConfigMapRef)) {
+            return false;
+        }
+        Object this$serviceProviderCredentialsConfig = this.getServiceProviderCredentialsConfig();
+        Object other$serviceProviderCredentialsConfig = other.getServiceProviderCredentialsConfig();
+        if (this$serviceProviderCredentialsConfig == null ? other$serviceProviderCredentialsConfig != null : !this$serviceProviderCredentialsConfig.equals(other$serviceProviderCredentialsConfig)) {
+            return false;
+        }
+        Object this$syncSetReapplyInterval = this.getSyncSetReapplyInterval();
+        Object other$syncSetReapplyInterval = other.getSyncSetReapplyInterval();
+        if (this$syncSetReapplyInterval == null ? other$syncSetReapplyInterval != null : !this$syncSetReapplyInterval.equals(other$syncSetReapplyInterval)) {
+            return false;
+        }
+        Object this$targetNamespace = this.getTargetNamespace();
+        Object other$targetNamespace = other.getTargetNamespace();
+        if (this$targetNamespace == null ? other$targetNamespace != null : !this$targetNamespace.equals(other$targetNamespace)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HiveConfigSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $additionalCertificateAuthoritiesSecretRef = this.getAdditionalCertificateAuthoritiesSecretRef();
+        result = result * prime + ($additionalCertificateAuthoritiesSecretRef == null ? 43 : $additionalCertificateAuthoritiesSecretRef.hashCode());
+        Object $argoCDConfig = this.getArgoCDConfig();
+        result = result * prime + ($argoCDConfig == null ? 43 : $argoCDConfig.hashCode());
+        Object $awsPrivateLink = this.getAwsPrivateLink();
+        result = result * prime + ($awsPrivateLink == null ? 43 : $awsPrivateLink.hashCode());
+        Object $backup = this.getBackup();
+        result = result * prime + ($backup == null ? 43 : $backup.hashCode());
+        Object $clusterVersionPollInterval = this.getClusterVersionPollInterval();
+        result = result * prime + ($clusterVersionPollInterval == null ? 43 : $clusterVersionPollInterval.hashCode());
+        Object $controllersConfig = this.getControllersConfig();
+        result = result * prime + ($controllersConfig == null ? 43 : $controllersConfig.hashCode());
+        Object $deleteProtection = this.getDeleteProtection();
+        result = result * prime + ($deleteProtection == null ? 43 : $deleteProtection.hashCode());
+        Object $deploymentConfig = this.getDeploymentConfig();
+        result = result * prime + ($deploymentConfig == null ? 43 : $deploymentConfig.hashCode());
+        Object $deprovisionsDisabled = this.getDeprovisionsDisabled();
+        result = result * prime + ($deprovisionsDisabled == null ? 43 : $deprovisionsDisabled.hashCode());
+        Object $disabledControllers = this.getDisabledControllers();
+        result = result * prime + ($disabledControllers == null ? 43 : $disabledControllers.hashCode());
+        Object $exportMetrics = this.getExportMetrics();
+        result = result * prime + ($exportMetrics == null ? 43 : $exportMetrics.hashCode());
+        Object $failedProvisionConfig = this.getFailedProvisionConfig();
+        result = result * prime + ($failedProvisionConfig == null ? 43 : $failedProvisionConfig.hashCode());
+        Object $featureGates = this.getFeatureGates();
+        result = result * prime + ($featureGates == null ? 43 : $featureGates.hashCode());
+        Object $globalPullSecretRef = this.getGlobalPullSecretRef();
+        result = result * prime + ($globalPullSecretRef == null ? 43 : $globalPullSecretRef.hashCode());
+        Object $logLevel = this.getLogLevel();
+        result = result * prime + ($logLevel == null ? 43 : $logLevel.hashCode());
+        Object $machinePoolPollInterval = this.getMachinePoolPollInterval();
+        result = result * prime + ($machinePoolPollInterval == null ? 43 : $machinePoolPollInterval.hashCode());
+        Object $maintenanceMode = this.getMaintenanceMode();
+        result = result * prime + ($maintenanceMode == null ? 43 : $maintenanceMode.hashCode());
+        Object $managedDomains = this.getManagedDomains();
+        result = result * prime + ($managedDomains == null ? 43 : $managedDomains.hashCode());
+        Object $metricsConfig = this.getMetricsConfig();
+        result = result * prime + ($metricsConfig == null ? 43 : $metricsConfig.hashCode());
+        Object $privateLink = this.getPrivateLink();
+        result = result * prime + ($privateLink == null ? 43 : $privateLink.hashCode());
+        Object $releaseImageVerificationConfigMapRef = this.getReleaseImageVerificationConfigMapRef();
+        result = result * prime + ($releaseImageVerificationConfigMapRef == null ? 43 : $releaseImageVerificationConfigMapRef.hashCode());
+        Object $serviceProviderCredentialsConfig = this.getServiceProviderCredentialsConfig();
+        result = result * prime + ($serviceProviderCredentialsConfig == null ? 43 : $serviceProviderCredentialsConfig.hashCode());
+        Object $syncSetReapplyInterval = this.getSyncSetReapplyInterval();
+        result = result * prime + ($syncSetReapplyInterval == null ? 43 : $syncSetReapplyInterval.hashCode());
+        Object $targetNamespace = this.getTargetNamespace();
+        result = result * prime + ($targetNamespace == null ? 43 : $targetNamespace.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HiveConfigSpec(" + "additionalCertificateAuthoritiesSecretRef=" + this.getAdditionalCertificateAuthoritiesSecretRef() + ", argoCDConfig=" + this.getArgoCDConfig() + ", awsPrivateLink=" + this.getAwsPrivateLink() + ", backup=" + this.getBackup() + ", clusterVersionPollInterval=" + this.getClusterVersionPollInterval() + ", controllersConfig=" + this.getControllersConfig() + ", deleteProtection=" + this.getDeleteProtection() + ", deploymentConfig=" + this.getDeploymentConfig() + ", deprovisionsDisabled=" + this.getDeprovisionsDisabled() + ", disabledControllers=" + this.getDisabledControllers() + ", exportMetrics=" + this.getExportMetrics() + ", failedProvisionConfig=" + this.getFailedProvisionConfig() + ", featureGates=" + this.getFeatureGates() + ", globalPullSecretRef=" + this.getGlobalPullSecretRef() + ", logLevel=" + this.getLogLevel() + ", machinePoolPollInterval=" + this.getMachinePoolPollInterval() + ", maintenanceMode=" + this.getMaintenanceMode() + ", managedDomains=" + this.getManagedDomains() + ", metricsConfig=" + this.getMetricsConfig() + ", privateLink=" + this.getPrivateLink() + ", releaseImageVerificationConfigMapRef=" + this.getReleaseImageVerificationConfigMapRef() + ", serviceProviderCredentialsConfig=" + this.getServiceProviderCredentialsConfig() + ", syncSetReapplyInterval=" + this.getSyncSetReapplyInterval() + ", targetNamespace=" + this.getTargetNamespace() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "kubeAPIBurst",
     "kubeAPIQPS",
     "registrationDriver"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -281,6 +272,113 @@ public class RegistrationConfiguration implements Editable<RegistrationConfigura
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RegistrationConfiguration)) {
+            return false;
+        }
+        RegistrationConfiguration other = (RegistrationConfiguration) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$addOnKubeClientRegistrationDriver = this.getAddOnKubeClientRegistrationDriver();
+        Object other$addOnKubeClientRegistrationDriver = other.getAddOnKubeClientRegistrationDriver();
+        if (this$addOnKubeClientRegistrationDriver == null ? other$addOnKubeClientRegistrationDriver != null : !this$addOnKubeClientRegistrationDriver.equals(other$addOnKubeClientRegistrationDriver)) {
+            return false;
+        }
+        Object this$bootstrapKubeConfigs = this.getBootstrapKubeConfigs();
+        Object other$bootstrapKubeConfigs = other.getBootstrapKubeConfigs();
+        if (this$bootstrapKubeConfigs == null ? other$bootstrapKubeConfigs != null : !this$bootstrapKubeConfigs.equals(other$bootstrapKubeConfigs)) {
+            return false;
+        }
+        Object this$clientCertExpirationSeconds = this.getClientCertExpirationSeconds();
+        Object other$clientCertExpirationSeconds = other.getClientCertExpirationSeconds();
+        if (this$clientCertExpirationSeconds == null ? other$clientCertExpirationSeconds != null : !this$clientCertExpirationSeconds.equals(other$clientCertExpirationSeconds)) {
+            return false;
+        }
+        Object this$clusterAnnotations = this.getClusterAnnotations();
+        Object other$clusterAnnotations = other.getClusterAnnotations();
+        if (this$clusterAnnotations == null ? other$clusterAnnotations != null : !this$clusterAnnotations.equals(other$clusterAnnotations)) {
+            return false;
+        }
+        Object this$clusterClaimConfiguration = this.getClusterClaimConfiguration();
+        Object other$clusterClaimConfiguration = other.getClusterClaimConfiguration();
+        if (this$clusterClaimConfiguration == null ? other$clusterClaimConfiguration != null : !this$clusterClaimConfiguration.equals(other$clusterClaimConfiguration)) {
+            return false;
+        }
+        Object this$clusterLabels = this.getClusterLabels();
+        Object other$clusterLabels = other.getClusterLabels();
+        if (this$clusterLabels == null ? other$clusterLabels != null : !this$clusterLabels.equals(other$clusterLabels)) {
+            return false;
+        }
+        Object this$featureGates = this.getFeatureGates();
+        Object other$featureGates = other.getFeatureGates();
+        if (this$featureGates == null ? other$featureGates != null : !this$featureGates.equals(other$featureGates)) {
+            return false;
+        }
+        Object this$kubeAPIBurst = this.getKubeAPIBurst();
+        Object other$kubeAPIBurst = other.getKubeAPIBurst();
+        if (this$kubeAPIBurst == null ? other$kubeAPIBurst != null : !this$kubeAPIBurst.equals(other$kubeAPIBurst)) {
+            return false;
+        }
+        Object this$kubeAPIQPS = this.getKubeAPIQPS();
+        Object other$kubeAPIQPS = other.getKubeAPIQPS();
+        if (this$kubeAPIQPS == null ? other$kubeAPIQPS != null : !this$kubeAPIQPS.equals(other$kubeAPIQPS)) {
+            return false;
+        }
+        Object this$registrationDriver = this.getRegistrationDriver();
+        Object other$registrationDriver = other.getRegistrationDriver();
+        if (this$registrationDriver == null ? other$registrationDriver != null : !this$registrationDriver.equals(other$registrationDriver)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RegistrationConfiguration;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $addOnKubeClientRegistrationDriver = this.getAddOnKubeClientRegistrationDriver();
+        result = result * prime + ($addOnKubeClientRegistrationDriver == null ? 43 : $addOnKubeClientRegistrationDriver.hashCode());
+        Object $bootstrapKubeConfigs = this.getBootstrapKubeConfigs();
+        result = result * prime + ($bootstrapKubeConfigs == null ? 43 : $bootstrapKubeConfigs.hashCode());
+        Object $clientCertExpirationSeconds = this.getClientCertExpirationSeconds();
+        result = result * prime + ($clientCertExpirationSeconds == null ? 43 : $clientCertExpirationSeconds.hashCode());
+        Object $clusterAnnotations = this.getClusterAnnotations();
+        result = result * prime + ($clusterAnnotations == null ? 43 : $clusterAnnotations.hashCode());
+        Object $clusterClaimConfiguration = this.getClusterClaimConfiguration();
+        result = result * prime + ($clusterClaimConfiguration == null ? 43 : $clusterClaimConfiguration.hashCode());
+        Object $clusterLabels = this.getClusterLabels();
+        result = result * prime + ($clusterLabels == null ? 43 : $clusterLabels.hashCode());
+        Object $featureGates = this.getFeatureGates();
+        result = result * prime + ($featureGates == null ? 43 : $featureGates.hashCode());
+        Object $kubeAPIBurst = this.getKubeAPIBurst();
+        result = result * prime + ($kubeAPIBurst == null ? 43 : $kubeAPIBurst.hashCode());
+        Object $kubeAPIQPS = this.getKubeAPIQPS();
+        result = result * prime + ($kubeAPIQPS == null ? 43 : $kubeAPIQPS.hashCode());
+        Object $registrationDriver = this.getRegistrationDriver();
+        result = result * prime + ($registrationDriver == null ? 43 : $registrationDriver.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RegistrationConfiguration(" + "addOnKubeClientRegistrationDriver=" + this.getAddOnKubeClientRegistrationDriver() + ", bootstrapKubeConfigs=" + this.getBootstrapKubeConfigs() + ", clientCertExpirationSeconds=" + this.getClientCertExpirationSeconds() + ", clusterAnnotations=" + this.getClusterAnnotations() + ", clusterClaimConfiguration=" + this.getClusterClaimConfiguration() + ", clusterLabels=" + this.getClusterLabels() + ", featureGates=" + this.getFeatureGates() + ", kubeAPIBurst=" + this.getKubeAPIBurst() + ", kubeAPIQPS=" + this.getKubeAPIQPS() + ", registrationDriver=" + this.getRegistrationDriver() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

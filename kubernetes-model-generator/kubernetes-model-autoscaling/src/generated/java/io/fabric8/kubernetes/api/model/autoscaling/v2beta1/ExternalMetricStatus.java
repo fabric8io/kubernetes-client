@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ExternalMetricStatus indicates the current value of a global metric not associated with any Kubernetes object.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "currentValue",
     "metricName",
     "metricSelector"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -181,6 +172,71 @@ public class ExternalMetricStatus implements Editable<ExternalMetricStatusBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ExternalMetricStatus)) {
+            return false;
+        }
+        ExternalMetricStatus other = (ExternalMetricStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$currentAverageValue = this.getCurrentAverageValue();
+        Object other$currentAverageValue = other.getCurrentAverageValue();
+        if (this$currentAverageValue == null ? other$currentAverageValue != null : !this$currentAverageValue.equals(other$currentAverageValue)) {
+            return false;
+        }
+        Object this$currentValue = this.getCurrentValue();
+        Object other$currentValue = other.getCurrentValue();
+        if (this$currentValue == null ? other$currentValue != null : !this$currentValue.equals(other$currentValue)) {
+            return false;
+        }
+        Object this$metricName = this.getMetricName();
+        Object other$metricName = other.getMetricName();
+        if (this$metricName == null ? other$metricName != null : !this$metricName.equals(other$metricName)) {
+            return false;
+        }
+        Object this$metricSelector = this.getMetricSelector();
+        Object other$metricSelector = other.getMetricSelector();
+        if (this$metricSelector == null ? other$metricSelector != null : !this$metricSelector.equals(other$metricSelector)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ExternalMetricStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $currentAverageValue = this.getCurrentAverageValue();
+        result = result * prime + ($currentAverageValue == null ? 43 : $currentAverageValue.hashCode());
+        Object $currentValue = this.getCurrentValue();
+        result = result * prime + ($currentValue == null ? 43 : $currentValue.hashCode());
+        Object $metricName = this.getMetricName();
+        result = result * prime + ($metricName == null ? 43 : $metricName.hashCode());
+        Object $metricSelector = this.getMetricSelector();
+        result = result * prime + ($metricSelector == null ? 43 : $metricSelector.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ExternalMetricStatus(" + "currentAverageValue=" + this.getCurrentAverageValue() + ", currentValue=" + this.getCurrentValue() + ", metricName=" + this.getMetricName() + ", metricSelector=" + this.getMetricSelector() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

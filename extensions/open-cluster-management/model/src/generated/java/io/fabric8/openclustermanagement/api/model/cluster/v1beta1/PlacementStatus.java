@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "decisionGroups",
     "lastScoreUpdateTime",
     "numberOfSelectedClusters"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -178,6 +169,71 @@ public class PlacementStatus implements Editable<PlacementStatusBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PlacementStatus)) {
+            return false;
+        }
+        PlacementStatus other = (PlacementStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$decisionGroups = this.getDecisionGroups();
+        Object other$decisionGroups = other.getDecisionGroups();
+        if (this$decisionGroups == null ? other$decisionGroups != null : !this$decisionGroups.equals(other$decisionGroups)) {
+            return false;
+        }
+        Object this$lastScoreUpdateTime = this.getLastScoreUpdateTime();
+        Object other$lastScoreUpdateTime = other.getLastScoreUpdateTime();
+        if (this$lastScoreUpdateTime == null ? other$lastScoreUpdateTime != null : !this$lastScoreUpdateTime.equals(other$lastScoreUpdateTime)) {
+            return false;
+        }
+        Object this$numberOfSelectedClusters = this.getNumberOfSelectedClusters();
+        Object other$numberOfSelectedClusters = other.getNumberOfSelectedClusters();
+        if (this$numberOfSelectedClusters == null ? other$numberOfSelectedClusters != null : !this$numberOfSelectedClusters.equals(other$numberOfSelectedClusters)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PlacementStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $decisionGroups = this.getDecisionGroups();
+        result = result * prime + ($decisionGroups == null ? 43 : $decisionGroups.hashCode());
+        Object $lastScoreUpdateTime = this.getLastScoreUpdateTime();
+        result = result * prime + ($lastScoreUpdateTime == null ? 43 : $lastScoreUpdateTime.hashCode());
+        Object $numberOfSelectedClusters = this.getNumberOfSelectedClusters();
+        result = result * prime + ($numberOfSelectedClusters == null ? 43 : $numberOfSelectedClusters.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PlacementStatus(" + "conditions=" + this.getConditions() + ", decisionGroups=" + this.getDecisionGroups() + ", lastScoreUpdateTime=" + this.getLastScoreUpdateTime() + ", numberOfSelectedClusters=" + this.getNumberOfSelectedClusters() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

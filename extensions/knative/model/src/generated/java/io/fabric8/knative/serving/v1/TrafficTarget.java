@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TrafficTarget holds a single entry of the routing table for a Route.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "revisionName",
     "tag",
     "url"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -220,6 +211,85 @@ public class TrafficTarget implements Editable<TrafficTargetBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TrafficTarget)) {
+            return false;
+        }
+        TrafficTarget other = (TrafficTarget) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$configurationName = this.getConfigurationName();
+        Object other$configurationName = other.getConfigurationName();
+        if (this$configurationName == null ? other$configurationName != null : !this$configurationName.equals(other$configurationName)) {
+            return false;
+        }
+        Object this$latestRevision = this.getLatestRevision();
+        Object other$latestRevision = other.getLatestRevision();
+        if (this$latestRevision == null ? other$latestRevision != null : !this$latestRevision.equals(other$latestRevision)) {
+            return false;
+        }
+        Object this$percent = this.getPercent();
+        Object other$percent = other.getPercent();
+        if (this$percent == null ? other$percent != null : !this$percent.equals(other$percent)) {
+            return false;
+        }
+        Object this$revisionName = this.getRevisionName();
+        Object other$revisionName = other.getRevisionName();
+        if (this$revisionName == null ? other$revisionName != null : !this$revisionName.equals(other$revisionName)) {
+            return false;
+        }
+        Object this$tag = this.getTag();
+        Object other$tag = other.getTag();
+        if (this$tag == null ? other$tag != null : !this$tag.equals(other$tag)) {
+            return false;
+        }
+        Object this$url = this.getUrl();
+        Object other$url = other.getUrl();
+        if (this$url == null ? other$url != null : !this$url.equals(other$url)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TrafficTarget;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $configurationName = this.getConfigurationName();
+        result = result * prime + ($configurationName == null ? 43 : $configurationName.hashCode());
+        Object $latestRevision = this.getLatestRevision();
+        result = result * prime + ($latestRevision == null ? 43 : $latestRevision.hashCode());
+        Object $percent = this.getPercent();
+        result = result * prime + ($percent == null ? 43 : $percent.hashCode());
+        Object $revisionName = this.getRevisionName();
+        result = result * prime + ($revisionName == null ? 43 : $revisionName.hashCode());
+        Object $tag = this.getTag();
+        result = result * prime + ($tag == null ? 43 : $tag.hashCode());
+        Object $url = this.getUrl();
+        result = result * prime + ($url == null ? 43 : $url.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TrafficTarget(" + "configurationName=" + this.getConfigurationName() + ", latestRevision=" + this.getLatestRevision() + ", percent=" + this.getPercent() + ", revisionName=" + this.getRevisionName() + ", tag=" + this.getTag() + ", url=" + this.getUrl() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

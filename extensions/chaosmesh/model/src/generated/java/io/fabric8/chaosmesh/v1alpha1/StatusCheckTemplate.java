@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * StatusCheckTemplate represents a template of status check. A statusCheckTemplate would save in the ConfigMap named `template-status-check-&lt;template-name&gt;`.
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "successThreshold",
     "timeoutSeconds",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -280,6 +271,106 @@ public class StatusCheckTemplate implements Editable<StatusCheckTemplateBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof StatusCheckTemplate)) {
+            return false;
+        }
+        StatusCheckTemplate other = (StatusCheckTemplate) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$duration = this.getDuration();
+        Object other$duration = other.getDuration();
+        if (this$duration == null ? other$duration != null : !this$duration.equals(other$duration)) {
+            return false;
+        }
+        Object this$failureThreshold = this.getFailureThreshold();
+        Object other$failureThreshold = other.getFailureThreshold();
+        if (this$failureThreshold == null ? other$failureThreshold != null : !this$failureThreshold.equals(other$failureThreshold)) {
+            return false;
+        }
+        Object this$http = this.getHttp();
+        Object other$http = other.getHttp();
+        if (this$http == null ? other$http != null : !this$http.equals(other$http)) {
+            return false;
+        }
+        Object this$intervalSeconds = this.getIntervalSeconds();
+        Object other$intervalSeconds = other.getIntervalSeconds();
+        if (this$intervalSeconds == null ? other$intervalSeconds != null : !this$intervalSeconds.equals(other$intervalSeconds)) {
+            return false;
+        }
+        Object this$mode = this.getMode();
+        Object other$mode = other.getMode();
+        if (this$mode == null ? other$mode != null : !this$mode.equals(other$mode)) {
+            return false;
+        }
+        Object this$recordsHistoryLimit = this.getRecordsHistoryLimit();
+        Object other$recordsHistoryLimit = other.getRecordsHistoryLimit();
+        if (this$recordsHistoryLimit == null ? other$recordsHistoryLimit != null : !this$recordsHistoryLimit.equals(other$recordsHistoryLimit)) {
+            return false;
+        }
+        Object this$successThreshold = this.getSuccessThreshold();
+        Object other$successThreshold = other.getSuccessThreshold();
+        if (this$successThreshold == null ? other$successThreshold != null : !this$successThreshold.equals(other$successThreshold)) {
+            return false;
+        }
+        Object this$timeoutSeconds = this.getTimeoutSeconds();
+        Object other$timeoutSeconds = other.getTimeoutSeconds();
+        if (this$timeoutSeconds == null ? other$timeoutSeconds != null : !this$timeoutSeconds.equals(other$timeoutSeconds)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof StatusCheckTemplate;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $duration = this.getDuration();
+        result = result * prime + ($duration == null ? 43 : $duration.hashCode());
+        Object $failureThreshold = this.getFailureThreshold();
+        result = result * prime + ($failureThreshold == null ? 43 : $failureThreshold.hashCode());
+        Object $http = this.getHttp();
+        result = result * prime + ($http == null ? 43 : $http.hashCode());
+        Object $intervalSeconds = this.getIntervalSeconds();
+        result = result * prime + ($intervalSeconds == null ? 43 : $intervalSeconds.hashCode());
+        Object $mode = this.getMode();
+        result = result * prime + ($mode == null ? 43 : $mode.hashCode());
+        Object $recordsHistoryLimit = this.getRecordsHistoryLimit();
+        result = result * prime + ($recordsHistoryLimit == null ? 43 : $recordsHistoryLimit.hashCode());
+        Object $successThreshold = this.getSuccessThreshold();
+        result = result * prime + ($successThreshold == null ? 43 : $successThreshold.hashCode());
+        Object $timeoutSeconds = this.getTimeoutSeconds();
+        result = result * prime + ($timeoutSeconds == null ? 43 : $timeoutSeconds.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "StatusCheckTemplate(" + "duration=" + this.getDuration() + ", failureThreshold=" + this.getFailureThreshold() + ", http=" + this.getHttp() + ", intervalSeconds=" + this.getIntervalSeconds() + ", mode=" + this.getMode() + ", recordsHistoryLimit=" + this.getRecordsHistoryLimit() + ", successThreshold=" + this.getSuccessThreshold() + ", timeoutSeconds=" + this.getTimeoutSeconds() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

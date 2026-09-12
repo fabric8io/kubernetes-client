@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Present decision groups status based on the DecisionStrategy definition.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "decisionGroupIndex",
     "decisionGroupName",
     "decisions"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class DecisionGroupStatus implements Editable<DecisionGroupStatusBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DecisionGroupStatus)) {
+            return false;
+        }
+        DecisionGroupStatus other = (DecisionGroupStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterCount = this.getClusterCount();
+        Object other$clusterCount = other.getClusterCount();
+        if (this$clusterCount == null ? other$clusterCount != null : !this$clusterCount.equals(other$clusterCount)) {
+            return false;
+        }
+        Object this$decisionGroupIndex = this.getDecisionGroupIndex();
+        Object other$decisionGroupIndex = other.getDecisionGroupIndex();
+        if (this$decisionGroupIndex == null ? other$decisionGroupIndex != null : !this$decisionGroupIndex.equals(other$decisionGroupIndex)) {
+            return false;
+        }
+        Object this$decisionGroupName = this.getDecisionGroupName();
+        Object other$decisionGroupName = other.getDecisionGroupName();
+        if (this$decisionGroupName == null ? other$decisionGroupName != null : !this$decisionGroupName.equals(other$decisionGroupName)) {
+            return false;
+        }
+        Object this$decisions = this.getDecisions();
+        Object other$decisions = other.getDecisions();
+        if (this$decisions == null ? other$decisions != null : !this$decisions.equals(other$decisions)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DecisionGroupStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterCount = this.getClusterCount();
+        result = result * prime + ($clusterCount == null ? 43 : $clusterCount.hashCode());
+        Object $decisionGroupIndex = this.getDecisionGroupIndex();
+        result = result * prime + ($decisionGroupIndex == null ? 43 : $decisionGroupIndex.hashCode());
+        Object $decisionGroupName = this.getDecisionGroupName();
+        result = result * prime + ($decisionGroupName == null ? 43 : $decisionGroupName.hashCode());
+        Object $decisions = this.getDecisions();
+        result = result * prime + ($decisions == null ? 43 : $decisions.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DecisionGroupStatus(" + "clusterCount=" + this.getClusterCount() + ", decisionGroupIndex=" + this.getDecisionGroupIndex() + ", decisionGroupName=" + this.getDecisionGroupName() + ", decisions=" + this.getDecisions() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

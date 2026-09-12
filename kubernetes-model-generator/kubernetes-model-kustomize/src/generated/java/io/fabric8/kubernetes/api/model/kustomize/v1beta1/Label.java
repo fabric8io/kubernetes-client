@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "includeSelectors",
     "includeTemplates",
     "pairs"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -159,6 +150,71 @@ public class Label implements Editable<LabelBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Label)) {
+            return false;
+        }
+        Label other = (Label) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$fields = this.getFields();
+        Object other$fields = other.getFields();
+        if (this$fields == null ? other$fields != null : !this$fields.equals(other$fields)) {
+            return false;
+        }
+        Object this$includeSelectors = this.getIncludeSelectors();
+        Object other$includeSelectors = other.getIncludeSelectors();
+        if (this$includeSelectors == null ? other$includeSelectors != null : !this$includeSelectors.equals(other$includeSelectors)) {
+            return false;
+        }
+        Object this$includeTemplates = this.getIncludeTemplates();
+        Object other$includeTemplates = other.getIncludeTemplates();
+        if (this$includeTemplates == null ? other$includeTemplates != null : !this$includeTemplates.equals(other$includeTemplates)) {
+            return false;
+        }
+        Object this$pairs = this.getPairs();
+        Object other$pairs = other.getPairs();
+        if (this$pairs == null ? other$pairs != null : !this$pairs.equals(other$pairs)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Label;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $fields = this.getFields();
+        result = result * prime + ($fields == null ? 43 : $fields.hashCode());
+        Object $includeSelectors = this.getIncludeSelectors();
+        result = result * prime + ($includeSelectors == null ? 43 : $includeSelectors.hashCode());
+        Object $includeTemplates = this.getIncludeTemplates();
+        result = result * prime + ($includeTemplates == null ? 43 : $includeTemplates.hashCode());
+        Object $pairs = this.getPairs();
+        result = result * prime + ($pairs == null ? 43 : $pairs.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Label(" + "fields=" + this.getFields() + ", includeSelectors=" + this.getIncludeSelectors() + ", includeTemplates=" + this.getIncludeTemplates() + ", pairs=" + this.getPairs() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageRegistryConfigStorageSwift holds the information to configure the registry to use the OpenStack Swift service for backend storage https://docs.docker.com/registry/storage-drivers/swift/
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "regionName",
     "tenant",
     "tenantID"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -260,6 +251,99 @@ public class ImageRegistryConfigStorageSwift implements Editable<ImageRegistryCo
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageRegistryConfigStorageSwift)) {
+            return false;
+        }
+        ImageRegistryConfigStorageSwift other = (ImageRegistryConfigStorageSwift) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$authURL = this.getAuthURL();
+        Object other$authURL = other.getAuthURL();
+        if (this$authURL == null ? other$authURL != null : !this$authURL.equals(other$authURL)) {
+            return false;
+        }
+        Object this$authVersion = this.getAuthVersion();
+        Object other$authVersion = other.getAuthVersion();
+        if (this$authVersion == null ? other$authVersion != null : !this$authVersion.equals(other$authVersion)) {
+            return false;
+        }
+        Object this$container = this.getContainer();
+        Object other$container = other.getContainer();
+        if (this$container == null ? other$container != null : !this$container.equals(other$container)) {
+            return false;
+        }
+        Object this$domain = this.getDomain();
+        Object other$domain = other.getDomain();
+        if (this$domain == null ? other$domain != null : !this$domain.equals(other$domain)) {
+            return false;
+        }
+        Object this$domainID = this.getDomainID();
+        Object other$domainID = other.getDomainID();
+        if (this$domainID == null ? other$domainID != null : !this$domainID.equals(other$domainID)) {
+            return false;
+        }
+        Object this$regionName = this.getRegionName();
+        Object other$regionName = other.getRegionName();
+        if (this$regionName == null ? other$regionName != null : !this$regionName.equals(other$regionName)) {
+            return false;
+        }
+        Object this$tenant = this.getTenant();
+        Object other$tenant = other.getTenant();
+        if (this$tenant == null ? other$tenant != null : !this$tenant.equals(other$tenant)) {
+            return false;
+        }
+        Object this$tenantID = this.getTenantID();
+        Object other$tenantID = other.getTenantID();
+        if (this$tenantID == null ? other$tenantID != null : !this$tenantID.equals(other$tenantID)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageRegistryConfigStorageSwift;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $authURL = this.getAuthURL();
+        result = result * prime + ($authURL == null ? 43 : $authURL.hashCode());
+        Object $authVersion = this.getAuthVersion();
+        result = result * prime + ($authVersion == null ? 43 : $authVersion.hashCode());
+        Object $container = this.getContainer();
+        result = result * prime + ($container == null ? 43 : $container.hashCode());
+        Object $domain = this.getDomain();
+        result = result * prime + ($domain == null ? 43 : $domain.hashCode());
+        Object $domainID = this.getDomainID();
+        result = result * prime + ($domainID == null ? 43 : $domainID.hashCode());
+        Object $regionName = this.getRegionName();
+        result = result * prime + ($regionName == null ? 43 : $regionName.hashCode());
+        Object $tenant = this.getTenant();
+        result = result * prime + ($tenant == null ? 43 : $tenant.hashCode());
+        Object $tenantID = this.getTenantID();
+        result = result * prime + ($tenantID == null ? 43 : $tenantID.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageRegistryConfigStorageSwift(" + "authURL=" + this.getAuthURL() + ", authVersion=" + this.getAuthVersion() + ", container=" + this.getContainer() + ", domain=" + this.getDomain() + ", domainID=" + this.getDomainID() + ", regionName=" + this.getRegionName() + ", tenant=" + this.getTenant() + ", tenantID=" + this.getTenantID() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.config.v1.IBMCloudServiceEndpoint;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Metadata contains IBM Cloud metadata (e.g. for uninstalling the cluster).
@@ -50,12 +47,6 @@ import lombok.experimental.Accessors;
     "serviceEndpoints",
     "subnets",
     "vpc"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -287,6 +278,106 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Metadata)) {
+            return false;
+        }
+        Metadata other = (Metadata) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$accountID = this.getAccountID();
+        Object other$accountID = other.getAccountID();
+        if (this$accountID == null ? other$accountID != null : !this$accountID.equals(other$accountID)) {
+            return false;
+        }
+        Object this$baseDomain = this.getBaseDomain();
+        Object other$baseDomain = other.getBaseDomain();
+        if (this$baseDomain == null ? other$baseDomain != null : !this$baseDomain.equals(other$baseDomain)) {
+            return false;
+        }
+        Object this$cisInstanceCRN = this.getCisInstanceCRN();
+        Object other$cisInstanceCRN = other.getCisInstanceCRN();
+        if (this$cisInstanceCRN == null ? other$cisInstanceCRN != null : !this$cisInstanceCRN.equals(other$cisInstanceCRN)) {
+            return false;
+        }
+        Object this$dnsInstanceID = this.getDnsInstanceID();
+        Object other$dnsInstanceID = other.getDnsInstanceID();
+        if (this$dnsInstanceID == null ? other$dnsInstanceID != null : !this$dnsInstanceID.equals(other$dnsInstanceID)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$resourceGroupName = this.getResourceGroupName();
+        Object other$resourceGroupName = other.getResourceGroupName();
+        if (this$resourceGroupName == null ? other$resourceGroupName != null : !this$resourceGroupName.equals(other$resourceGroupName)) {
+            return false;
+        }
+        Object this$serviceEndpoints = this.getServiceEndpoints();
+        Object other$serviceEndpoints = other.getServiceEndpoints();
+        if (this$serviceEndpoints == null ? other$serviceEndpoints != null : !this$serviceEndpoints.equals(other$serviceEndpoints)) {
+            return false;
+        }
+        Object this$subnets = this.getSubnets();
+        Object other$subnets = other.getSubnets();
+        if (this$subnets == null ? other$subnets != null : !this$subnets.equals(other$subnets)) {
+            return false;
+        }
+        Object this$vpc = this.getVpc();
+        Object other$vpc = other.getVpc();
+        if (this$vpc == null ? other$vpc != null : !this$vpc.equals(other$vpc)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Metadata;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $accountID = this.getAccountID();
+        result = result * prime + ($accountID == null ? 43 : $accountID.hashCode());
+        Object $baseDomain = this.getBaseDomain();
+        result = result * prime + ($baseDomain == null ? 43 : $baseDomain.hashCode());
+        Object $cisInstanceCRN = this.getCisInstanceCRN();
+        result = result * prime + ($cisInstanceCRN == null ? 43 : $cisInstanceCRN.hashCode());
+        Object $dnsInstanceID = this.getDnsInstanceID();
+        result = result * prime + ($dnsInstanceID == null ? 43 : $dnsInstanceID.hashCode());
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $resourceGroupName = this.getResourceGroupName();
+        result = result * prime + ($resourceGroupName == null ? 43 : $resourceGroupName.hashCode());
+        Object $serviceEndpoints = this.getServiceEndpoints();
+        result = result * prime + ($serviceEndpoints == null ? 43 : $serviceEndpoints.hashCode());
+        Object $subnets = this.getSubnets();
+        result = result * prime + ($subnets == null ? 43 : $subnets.hashCode());
+        Object $vpc = this.getVpc();
+        result = result * prime + ($vpc == null ? 43 : $vpc.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Metadata(" + "accountID=" + this.getAccountID() + ", baseDomain=" + this.getBaseDomain() + ", cisInstanceCRN=" + this.getCisInstanceCRN() + ", dnsInstanceID=" + this.getDnsInstanceID() + ", region=" + this.getRegion() + ", resourceGroupName=" + this.getResourceGroupName() + ", serviceEndpoints=" + this.getServiceEndpoints() + ", subnets=" + this.getSubnets() + ", vpc=" + this.getVpc() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

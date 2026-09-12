@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NetworkDataIPv4 represents an ipv4 static network object.
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "ipAddressFromIPPool",
     "link",
     "routes"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -225,6 +216,85 @@ public class NetworkDataIPv4 implements Editable<NetworkDataIPv4Builder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkDataIPv4)) {
+            return false;
+        }
+        NetworkDataIPv4 other = (NetworkDataIPv4) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$fromPoolAnnotation = this.getFromPoolAnnotation();
+        Object other$fromPoolAnnotation = other.getFromPoolAnnotation();
+        if (this$fromPoolAnnotation == null ? other$fromPoolAnnotation != null : !this$fromPoolAnnotation.equals(other$fromPoolAnnotation)) {
+            return false;
+        }
+        Object this$fromPoolRef = this.getFromPoolRef();
+        Object other$fromPoolRef = other.getFromPoolRef();
+        if (this$fromPoolRef == null ? other$fromPoolRef != null : !this$fromPoolRef.equals(other$fromPoolRef)) {
+            return false;
+        }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {
+            return false;
+        }
+        Object this$ipAddressFromIPPool = this.getIpAddressFromIPPool();
+        Object other$ipAddressFromIPPool = other.getIpAddressFromIPPool();
+        if (this$ipAddressFromIPPool == null ? other$ipAddressFromIPPool != null : !this$ipAddressFromIPPool.equals(other$ipAddressFromIPPool)) {
+            return false;
+        }
+        Object this$link = this.getLink();
+        Object other$link = other.getLink();
+        if (this$link == null ? other$link != null : !this$link.equals(other$link)) {
+            return false;
+        }
+        Object this$routes = this.getRoutes();
+        Object other$routes = other.getRoutes();
+        if (this$routes == null ? other$routes != null : !this$routes.equals(other$routes)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkDataIPv4;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $fromPoolAnnotation = this.getFromPoolAnnotation();
+        result = result * prime + ($fromPoolAnnotation == null ? 43 : $fromPoolAnnotation.hashCode());
+        Object $fromPoolRef = this.getFromPoolRef();
+        result = result * prime + ($fromPoolRef == null ? 43 : $fromPoolRef.hashCode());
+        Object $id = this.getId();
+        result = result * prime + ($id == null ? 43 : $id.hashCode());
+        Object $ipAddressFromIPPool = this.getIpAddressFromIPPool();
+        result = result * prime + ($ipAddressFromIPPool == null ? 43 : $ipAddressFromIPPool.hashCode());
+        Object $link = this.getLink();
+        result = result * prime + ($link == null ? 43 : $link.hashCode());
+        Object $routes = this.getRoutes();
+        result = result * prime + ($routes == null ? 43 : $routes.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkDataIPv4(" + "fromPoolAnnotation=" + this.getFromPoolAnnotation() + ", fromPoolRef=" + this.getFromPoolRef() + ", id=" + this.getId() + ", ipAddressFromIPPool=" + this.getIpAddressFromIPPool() + ", link=" + this.getLink() + ", routes=" + this.getRoutes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

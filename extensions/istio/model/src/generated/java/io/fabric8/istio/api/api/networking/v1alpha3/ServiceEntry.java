@@ -33,9 +33,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ServiceEntry enables adding additional entries into Istio's internal service registry.<br><p> <br><p> &lt;!-- crd generation tags mesh or part of the mesh (MESH_EXTERNAL or MESH_INTERNAL)" (NONE, STATIC, or DNS)" representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags istiostatus-override: ServiceEntryStatus: istio.io/api/networking/v1alpha3 --&gt;
@@ -52,12 +49,6 @@ import lombok.experimental.Accessors;
     "resolution",
     "subjectAltNames",
     "workloadSelector"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -299,6 +290,106 @@ public class ServiceEntry implements Editable<ServiceEntryBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ServiceEntry)) {
+            return false;
+        }
+        ServiceEntry other = (ServiceEntry) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$addresses = this.getAddresses();
+        Object other$addresses = other.getAddresses();
+        if (this$addresses == null ? other$addresses != null : !this$addresses.equals(other$addresses)) {
+            return false;
+        }
+        Object this$endpoints = this.getEndpoints();
+        Object other$endpoints = other.getEndpoints();
+        if (this$endpoints == null ? other$endpoints != null : !this$endpoints.equals(other$endpoints)) {
+            return false;
+        }
+        Object this$exportTo = this.getExportTo();
+        Object other$exportTo = other.getExportTo();
+        if (this$exportTo == null ? other$exportTo != null : !this$exportTo.equals(other$exportTo)) {
+            return false;
+        }
+        Object this$hosts = this.getHosts();
+        Object other$hosts = other.getHosts();
+        if (this$hosts == null ? other$hosts != null : !this$hosts.equals(other$hosts)) {
+            return false;
+        }
+        Object this$location = this.getLocation();
+        Object other$location = other.getLocation();
+        if (this$location == null ? other$location != null : !this$location.equals(other$location)) {
+            return false;
+        }
+        Object this$ports = this.getPorts();
+        Object other$ports = other.getPorts();
+        if (this$ports == null ? other$ports != null : !this$ports.equals(other$ports)) {
+            return false;
+        }
+        Object this$resolution = this.getResolution();
+        Object other$resolution = other.getResolution();
+        if (this$resolution == null ? other$resolution != null : !this$resolution.equals(other$resolution)) {
+            return false;
+        }
+        Object this$subjectAltNames = this.getSubjectAltNames();
+        Object other$subjectAltNames = other.getSubjectAltNames();
+        if (this$subjectAltNames == null ? other$subjectAltNames != null : !this$subjectAltNames.equals(other$subjectAltNames)) {
+            return false;
+        }
+        Object this$workloadSelector = this.getWorkloadSelector();
+        Object other$workloadSelector = other.getWorkloadSelector();
+        if (this$workloadSelector == null ? other$workloadSelector != null : !this$workloadSelector.equals(other$workloadSelector)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ServiceEntry;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $addresses = this.getAddresses();
+        result = result * prime + ($addresses == null ? 43 : $addresses.hashCode());
+        Object $endpoints = this.getEndpoints();
+        result = result * prime + ($endpoints == null ? 43 : $endpoints.hashCode());
+        Object $exportTo = this.getExportTo();
+        result = result * prime + ($exportTo == null ? 43 : $exportTo.hashCode());
+        Object $hosts = this.getHosts();
+        result = result * prime + ($hosts == null ? 43 : $hosts.hashCode());
+        Object $location = this.getLocation();
+        result = result * prime + ($location == null ? 43 : $location.hashCode());
+        Object $ports = this.getPorts();
+        result = result * prime + ($ports == null ? 43 : $ports.hashCode());
+        Object $resolution = this.getResolution();
+        result = result * prime + ($resolution == null ? 43 : $resolution.hashCode());
+        Object $subjectAltNames = this.getSubjectAltNames();
+        result = result * prime + ($subjectAltNames == null ? 43 : $subjectAltNames.hashCode());
+        Object $workloadSelector = this.getWorkloadSelector();
+        result = result * prime + ($workloadSelector == null ? 43 : $workloadSelector.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ServiceEntry(" + "addresses=" + this.getAddresses() + ", endpoints=" + this.getEndpoints() + ", exportTo=" + this.getExportTo() + ", hosts=" + this.getHosts() + ", location=" + this.getLocation() + ", ports=" + this.getPorts() + ", resolution=" + this.getResolution() + ", subjectAltNames=" + this.getSubjectAltNames() + ", workloadSelector=" + this.getWorkloadSelector() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * JobSpec describes how the job execution will look like.
@@ -55,12 +52,6 @@ import lombok.experimental.Accessors;
     "suspend",
     "template",
     "ttlSecondsAfterFinished"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -440,6 +431,162 @@ public class JobSpec implements Editable<JobSpecBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof JobSpec)) {
+            return false;
+        }
+        JobSpec other = (JobSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$activeDeadlineSeconds = this.getActiveDeadlineSeconds();
+        Object other$activeDeadlineSeconds = other.getActiveDeadlineSeconds();
+        if (this$activeDeadlineSeconds == null ? other$activeDeadlineSeconds != null : !this$activeDeadlineSeconds.equals(other$activeDeadlineSeconds)) {
+            return false;
+        }
+        Object this$backoffLimit = this.getBackoffLimit();
+        Object other$backoffLimit = other.getBackoffLimit();
+        if (this$backoffLimit == null ? other$backoffLimit != null : !this$backoffLimit.equals(other$backoffLimit)) {
+            return false;
+        }
+        Object this$backoffLimitPerIndex = this.getBackoffLimitPerIndex();
+        Object other$backoffLimitPerIndex = other.getBackoffLimitPerIndex();
+        if (this$backoffLimitPerIndex == null ? other$backoffLimitPerIndex != null : !this$backoffLimitPerIndex.equals(other$backoffLimitPerIndex)) {
+            return false;
+        }
+        Object this$completionMode = this.getCompletionMode();
+        Object other$completionMode = other.getCompletionMode();
+        if (this$completionMode == null ? other$completionMode != null : !this$completionMode.equals(other$completionMode)) {
+            return false;
+        }
+        Object this$completions = this.getCompletions();
+        Object other$completions = other.getCompletions();
+        if (this$completions == null ? other$completions != null : !this$completions.equals(other$completions)) {
+            return false;
+        }
+        Object this$managedBy = this.getManagedBy();
+        Object other$managedBy = other.getManagedBy();
+        if (this$managedBy == null ? other$managedBy != null : !this$managedBy.equals(other$managedBy)) {
+            return false;
+        }
+        Object this$manualSelector = this.getManualSelector();
+        Object other$manualSelector = other.getManualSelector();
+        if (this$manualSelector == null ? other$manualSelector != null : !this$manualSelector.equals(other$manualSelector)) {
+            return false;
+        }
+        Object this$maxFailedIndexes = this.getMaxFailedIndexes();
+        Object other$maxFailedIndexes = other.getMaxFailedIndexes();
+        if (this$maxFailedIndexes == null ? other$maxFailedIndexes != null : !this$maxFailedIndexes.equals(other$maxFailedIndexes)) {
+            return false;
+        }
+        Object this$parallelism = this.getParallelism();
+        Object other$parallelism = other.getParallelism();
+        if (this$parallelism == null ? other$parallelism != null : !this$parallelism.equals(other$parallelism)) {
+            return false;
+        }
+        Object this$podFailurePolicy = this.getPodFailurePolicy();
+        Object other$podFailurePolicy = other.getPodFailurePolicy();
+        if (this$podFailurePolicy == null ? other$podFailurePolicy != null : !this$podFailurePolicy.equals(other$podFailurePolicy)) {
+            return false;
+        }
+        Object this$podReplacementPolicy = this.getPodReplacementPolicy();
+        Object other$podReplacementPolicy = other.getPodReplacementPolicy();
+        if (this$podReplacementPolicy == null ? other$podReplacementPolicy != null : !this$podReplacementPolicy.equals(other$podReplacementPolicy)) {
+            return false;
+        }
+        Object this$scheduling = this.getScheduling();
+        Object other$scheduling = other.getScheduling();
+        if (this$scheduling == null ? other$scheduling != null : !this$scheduling.equals(other$scheduling)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$successPolicy = this.getSuccessPolicy();
+        Object other$successPolicy = other.getSuccessPolicy();
+        if (this$successPolicy == null ? other$successPolicy != null : !this$successPolicy.equals(other$successPolicy)) {
+            return false;
+        }
+        Object this$suspend = this.getSuspend();
+        Object other$suspend = other.getSuspend();
+        if (this$suspend == null ? other$suspend != null : !this$suspend.equals(other$suspend)) {
+            return false;
+        }
+        Object this$template = this.getTemplate();
+        Object other$template = other.getTemplate();
+        if (this$template == null ? other$template != null : !this$template.equals(other$template)) {
+            return false;
+        }
+        Object this$ttlSecondsAfterFinished = this.getTtlSecondsAfterFinished();
+        Object other$ttlSecondsAfterFinished = other.getTtlSecondsAfterFinished();
+        if (this$ttlSecondsAfterFinished == null ? other$ttlSecondsAfterFinished != null : !this$ttlSecondsAfterFinished.equals(other$ttlSecondsAfterFinished)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof JobSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $activeDeadlineSeconds = this.getActiveDeadlineSeconds();
+        result = result * prime + ($activeDeadlineSeconds == null ? 43 : $activeDeadlineSeconds.hashCode());
+        Object $backoffLimit = this.getBackoffLimit();
+        result = result * prime + ($backoffLimit == null ? 43 : $backoffLimit.hashCode());
+        Object $backoffLimitPerIndex = this.getBackoffLimitPerIndex();
+        result = result * prime + ($backoffLimitPerIndex == null ? 43 : $backoffLimitPerIndex.hashCode());
+        Object $completionMode = this.getCompletionMode();
+        result = result * prime + ($completionMode == null ? 43 : $completionMode.hashCode());
+        Object $completions = this.getCompletions();
+        result = result * prime + ($completions == null ? 43 : $completions.hashCode());
+        Object $managedBy = this.getManagedBy();
+        result = result * prime + ($managedBy == null ? 43 : $managedBy.hashCode());
+        Object $manualSelector = this.getManualSelector();
+        result = result * prime + ($manualSelector == null ? 43 : $manualSelector.hashCode());
+        Object $maxFailedIndexes = this.getMaxFailedIndexes();
+        result = result * prime + ($maxFailedIndexes == null ? 43 : $maxFailedIndexes.hashCode());
+        Object $parallelism = this.getParallelism();
+        result = result * prime + ($parallelism == null ? 43 : $parallelism.hashCode());
+        Object $podFailurePolicy = this.getPodFailurePolicy();
+        result = result * prime + ($podFailurePolicy == null ? 43 : $podFailurePolicy.hashCode());
+        Object $podReplacementPolicy = this.getPodReplacementPolicy();
+        result = result * prime + ($podReplacementPolicy == null ? 43 : $podReplacementPolicy.hashCode());
+        Object $scheduling = this.getScheduling();
+        result = result * prime + ($scheduling == null ? 43 : $scheduling.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $successPolicy = this.getSuccessPolicy();
+        result = result * prime + ($successPolicy == null ? 43 : $successPolicy.hashCode());
+        Object $suspend = this.getSuspend();
+        result = result * prime + ($suspend == null ? 43 : $suspend.hashCode());
+        Object $template = this.getTemplate();
+        result = result * prime + ($template == null ? 43 : $template.hashCode());
+        Object $ttlSecondsAfterFinished = this.getTtlSecondsAfterFinished();
+        result = result * prime + ($ttlSecondsAfterFinished == null ? 43 : $ttlSecondsAfterFinished.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "JobSpec(" + "activeDeadlineSeconds=" + this.getActiveDeadlineSeconds() + ", backoffLimit=" + this.getBackoffLimit() + ", backoffLimitPerIndex=" + this.getBackoffLimitPerIndex() + ", completionMode=" + this.getCompletionMode() + ", completions=" + this.getCompletions() + ", managedBy=" + this.getManagedBy() + ", manualSelector=" + this.getManualSelector() + ", maxFailedIndexes=" + this.getMaxFailedIndexes() + ", parallelism=" + this.getParallelism() + ", podFailurePolicy=" + this.getPodFailurePolicy() + ", podReplacementPolicy=" + this.getPodReplacementPolicy() + ", scheduling=" + this.getScheduling() + ", selector=" + this.getSelector() + ", successPolicy=" + this.getSuccessPolicy() + ", suspend=" + this.getSuspend() + ", template=" + this.getTemplate() + ", ttlSecondsAfterFinished=" + this.getTtlSecondsAfterFinished() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

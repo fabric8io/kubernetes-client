@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CertificateKeystores configures additional keystore output formats to be created in the Certificate's output Secret.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "jks",
     "pkcs12"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class CertificateKeystores implements Editable<CertificateKeystoresBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CertificateKeystores)) {
+            return false;
+        }
+        CertificateKeystores other = (CertificateKeystores) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$jks = this.getJks();
+        Object other$jks = other.getJks();
+        if (this$jks == null ? other$jks != null : !this$jks.equals(other$jks)) {
+            return false;
+        }
+        Object this$pkcs12 = this.getPkcs12();
+        Object other$pkcs12 = other.getPkcs12();
+        if (this$pkcs12 == null ? other$pkcs12 != null : !this$pkcs12.equals(other$pkcs12)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CertificateKeystores;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $jks = this.getJks();
+        result = result * prime + ($jks == null ? 43 : $jks.hashCode());
+        Object $pkcs12 = this.getPkcs12();
+        result = result * prime + ($pkcs12 == null ? 43 : $pkcs12.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CertificateKeystores(" + "jks=" + this.getJks() + ", pkcs12=" + this.getPkcs12() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * LoggingDestination describes a destination for log messages.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "container",
     "syslog",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class LoggingDestination implements Editable<LoggingDestinationBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof LoggingDestination)) {
+            return false;
+        }
+        LoggingDestination other = (LoggingDestination) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$container = this.getContainer();
+        Object other$container = other.getContainer();
+        if (this$container == null ? other$container != null : !this$container.equals(other$container)) {
+            return false;
+        }
+        Object this$syslog = this.getSyslog();
+        Object other$syslog = other.getSyslog();
+        if (this$syslog == null ? other$syslog != null : !this$syslog.equals(other$syslog)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof LoggingDestination;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $container = this.getContainer();
+        result = result * prime + ($container == null ? 43 : $container.hashCode());
+        Object $syslog = this.getSyslog();
+        result = result * prime + ($syslog == null ? 43 : $syslog.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "LoggingDestination(" + "container=" + this.getContainer() + ", syslog=" + this.getSyslog() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

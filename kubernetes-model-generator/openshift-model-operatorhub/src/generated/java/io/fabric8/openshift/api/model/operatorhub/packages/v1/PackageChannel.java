@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PackageChannel defines a single channel under a package, pointing to a version of that package.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "deprecation",
     "entries",
     "name"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -204,6 +195,78 @@ public class PackageChannel implements Editable<PackageChannelBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PackageChannel)) {
+            return false;
+        }
+        PackageChannel other = (PackageChannel) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$currentCSV = this.getCurrentCSV();
+        Object other$currentCSV = other.getCurrentCSV();
+        if (this$currentCSV == null ? other$currentCSV != null : !this$currentCSV.equals(other$currentCSV)) {
+            return false;
+        }
+        Object this$currentCSVDesc = this.getCurrentCSVDesc();
+        Object other$currentCSVDesc = other.getCurrentCSVDesc();
+        if (this$currentCSVDesc == null ? other$currentCSVDesc != null : !this$currentCSVDesc.equals(other$currentCSVDesc)) {
+            return false;
+        }
+        Object this$deprecation = this.getDeprecation();
+        Object other$deprecation = other.getDeprecation();
+        if (this$deprecation == null ? other$deprecation != null : !this$deprecation.equals(other$deprecation)) {
+            return false;
+        }
+        Object this$entries = this.getEntries();
+        Object other$entries = other.getEntries();
+        if (this$entries == null ? other$entries != null : !this$entries.equals(other$entries)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PackageChannel;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $currentCSV = this.getCurrentCSV();
+        result = result * prime + ($currentCSV == null ? 43 : $currentCSV.hashCode());
+        Object $currentCSVDesc = this.getCurrentCSVDesc();
+        result = result * prime + ($currentCSVDesc == null ? 43 : $currentCSVDesc.hashCode());
+        Object $deprecation = this.getDeprecation();
+        result = result * prime + ($deprecation == null ? 43 : $deprecation.hashCode());
+        Object $entries = this.getEntries();
+        result = result * prime + ($entries == null ? 43 : $entries.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PackageChannel(" + "currentCSV=" + this.getCurrentCSV() + ", currentCSVDesc=" + this.getCurrentCSVDesc() + ", deprecation=" + this.getDeprecation() + ", entries=" + this.getEntries() + ", name=" + this.getName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

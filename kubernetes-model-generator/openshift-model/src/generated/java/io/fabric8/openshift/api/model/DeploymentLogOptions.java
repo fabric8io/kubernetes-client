@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DeploymentLogOptions is the REST options for a deployment log<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
@@ -52,12 +49,6 @@ import lombok.experimental.Accessors;
     "tailLines",
     "timestamps",
     "version"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -344,6 +335,127 @@ public class DeploymentLogOptions implements Editable<DeploymentLogOptionsBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DeploymentLogOptions)) {
+            return false;
+        }
+        DeploymentLogOptions other = (DeploymentLogOptions) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$container = this.getContainer();
+        Object other$container = other.getContainer();
+        if (this$container == null ? other$container != null : !this$container.equals(other$container)) {
+            return false;
+        }
+        Object this$follow = this.getFollow();
+        Object other$follow = other.getFollow();
+        if (this$follow == null ? other$follow != null : !this$follow.equals(other$follow)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$limitBytes = this.getLimitBytes();
+        Object other$limitBytes = other.getLimitBytes();
+        if (this$limitBytes == null ? other$limitBytes != null : !this$limitBytes.equals(other$limitBytes)) {
+            return false;
+        }
+        Object this$nowait = this.getNowait();
+        Object other$nowait = other.getNowait();
+        if (this$nowait == null ? other$nowait != null : !this$nowait.equals(other$nowait)) {
+            return false;
+        }
+        Object this$previous = this.getPrevious();
+        Object other$previous = other.getPrevious();
+        if (this$previous == null ? other$previous != null : !this$previous.equals(other$previous)) {
+            return false;
+        }
+        Object this$sinceSeconds = this.getSinceSeconds();
+        Object other$sinceSeconds = other.getSinceSeconds();
+        if (this$sinceSeconds == null ? other$sinceSeconds != null : !this$sinceSeconds.equals(other$sinceSeconds)) {
+            return false;
+        }
+        Object this$sinceTime = this.getSinceTime();
+        Object other$sinceTime = other.getSinceTime();
+        if (this$sinceTime == null ? other$sinceTime != null : !this$sinceTime.equals(other$sinceTime)) {
+            return false;
+        }
+        Object this$tailLines = this.getTailLines();
+        Object other$tailLines = other.getTailLines();
+        if (this$tailLines == null ? other$tailLines != null : !this$tailLines.equals(other$tailLines)) {
+            return false;
+        }
+        Object this$timestamps = this.getTimestamps();
+        Object other$timestamps = other.getTimestamps();
+        if (this$timestamps == null ? other$timestamps != null : !this$timestamps.equals(other$timestamps)) {
+            return false;
+        }
+        Object this$version = this.getVersion();
+        Object other$version = other.getVersion();
+        if (this$version == null ? other$version != null : !this$version.equals(other$version)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DeploymentLogOptions;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $container = this.getContainer();
+        result = result * prime + ($container == null ? 43 : $container.hashCode());
+        Object $follow = this.getFollow();
+        result = result * prime + ($follow == null ? 43 : $follow.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $limitBytes = this.getLimitBytes();
+        result = result * prime + ($limitBytes == null ? 43 : $limitBytes.hashCode());
+        Object $nowait = this.getNowait();
+        result = result * prime + ($nowait == null ? 43 : $nowait.hashCode());
+        Object $previous = this.getPrevious();
+        result = result * prime + ($previous == null ? 43 : $previous.hashCode());
+        Object $sinceSeconds = this.getSinceSeconds();
+        result = result * prime + ($sinceSeconds == null ? 43 : $sinceSeconds.hashCode());
+        Object $sinceTime = this.getSinceTime();
+        result = result * prime + ($sinceTime == null ? 43 : $sinceTime.hashCode());
+        Object $tailLines = this.getTailLines();
+        result = result * prime + ($tailLines == null ? 43 : $tailLines.hashCode());
+        Object $timestamps = this.getTimestamps();
+        result = result * prime + ($timestamps == null ? 43 : $timestamps.hashCode());
+        Object $version = this.getVersion();
+        result = result * prime + ($version == null ? 43 : $version.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DeploymentLogOptions(" + "apiVersion=" + this.getApiVersion() + ", container=" + this.getContainer() + ", follow=" + this.getFollow() + ", kind=" + this.getKind() + ", limitBytes=" + this.getLimitBytes() + ", nowait=" + this.getNowait() + ", previous=" + this.getPrevious() + ", sinceSeconds=" + this.getSinceSeconds() + ", sinceTime=" + this.getSinceTime() + ", tailLines=" + this.getTailLines() + ", timestamps=" + this.getTimestamps() + ", version=" + this.getVersion() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DataGatherStatus contains information relating to the DataGather state.
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "insightsRequestID",
     "relatedObjects",
     "startTime"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -248,6 +239,92 @@ public class DataGatherStatus implements Editable<DataGatherStatusBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DataGatherStatus)) {
+            return false;
+        }
+        DataGatherStatus other = (DataGatherStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$finishTime = this.getFinishTime();
+        Object other$finishTime = other.getFinishTime();
+        if (this$finishTime == null ? other$finishTime != null : !this$finishTime.equals(other$finishTime)) {
+            return false;
+        }
+        Object this$gatherers = this.getGatherers();
+        Object other$gatherers = other.getGatherers();
+        if (this$gatherers == null ? other$gatherers != null : !this$gatherers.equals(other$gatherers)) {
+            return false;
+        }
+        Object this$insightsReport = this.getInsightsReport();
+        Object other$insightsReport = other.getInsightsReport();
+        if (this$insightsReport == null ? other$insightsReport != null : !this$insightsReport.equals(other$insightsReport)) {
+            return false;
+        }
+        Object this$insightsRequestID = this.getInsightsRequestID();
+        Object other$insightsRequestID = other.getInsightsRequestID();
+        if (this$insightsRequestID == null ? other$insightsRequestID != null : !this$insightsRequestID.equals(other$insightsRequestID)) {
+            return false;
+        }
+        Object this$relatedObjects = this.getRelatedObjects();
+        Object other$relatedObjects = other.getRelatedObjects();
+        if (this$relatedObjects == null ? other$relatedObjects != null : !this$relatedObjects.equals(other$relatedObjects)) {
+            return false;
+        }
+        Object this$startTime = this.getStartTime();
+        Object other$startTime = other.getStartTime();
+        if (this$startTime == null ? other$startTime != null : !this$startTime.equals(other$startTime)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DataGatherStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $finishTime = this.getFinishTime();
+        result = result * prime + ($finishTime == null ? 43 : $finishTime.hashCode());
+        Object $gatherers = this.getGatherers();
+        result = result * prime + ($gatherers == null ? 43 : $gatherers.hashCode());
+        Object $insightsReport = this.getInsightsReport();
+        result = result * prime + ($insightsReport == null ? 43 : $insightsReport.hashCode());
+        Object $insightsRequestID = this.getInsightsRequestID();
+        result = result * prime + ($insightsRequestID == null ? 43 : $insightsRequestID.hashCode());
+        Object $relatedObjects = this.getRelatedObjects();
+        result = result * prime + ($relatedObjects == null ? 43 : $relatedObjects.hashCode());
+        Object $startTime = this.getStartTime();
+        result = result * prime + ($startTime == null ? 43 : $startTime.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DataGatherStatus(" + "conditions=" + this.getConditions() + ", finishTime=" + this.getFinishTime() + ", gatherers=" + this.getGatherers() + ", insightsReport=" + this.getInsightsReport() + ", insightsRequestID=" + this.getInsightsRequestID() + ", relatedObjects=" + this.getRelatedObjects() + ", startTime=" + this.getStartTime() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

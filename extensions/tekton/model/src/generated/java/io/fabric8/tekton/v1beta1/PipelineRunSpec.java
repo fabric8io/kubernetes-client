@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.tekton.pod.Template;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PipelineRunSpec defines the desired state of PipelineRun
@@ -54,12 +51,6 @@ import lombok.experimental.Accessors;
     "timeout",
     "timeouts",
     "workspaces"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -352,6 +343,127 @@ public class PipelineRunSpec implements Editable<PipelineRunSpecBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PipelineRunSpec)) {
+            return false;
+        }
+        PipelineRunSpec other = (PipelineRunSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$managedBy = this.getManagedBy();
+        Object other$managedBy = other.getManagedBy();
+        if (this$managedBy == null ? other$managedBy != null : !this$managedBy.equals(other$managedBy)) {
+            return false;
+        }
+        Object this$params = this.getParams();
+        Object other$params = other.getParams();
+        if (this$params == null ? other$params != null : !this$params.equals(other$params)) {
+            return false;
+        }
+        Object this$pipelineRef = this.getPipelineRef();
+        Object other$pipelineRef = other.getPipelineRef();
+        if (this$pipelineRef == null ? other$pipelineRef != null : !this$pipelineRef.equals(other$pipelineRef)) {
+            return false;
+        }
+        Object this$pipelineSpec = this.getPipelineSpec();
+        Object other$pipelineSpec = other.getPipelineSpec();
+        if (this$pipelineSpec == null ? other$pipelineSpec != null : !this$pipelineSpec.equals(other$pipelineSpec)) {
+            return false;
+        }
+        Object this$podTemplate = this.getPodTemplate();
+        Object other$podTemplate = other.getPodTemplate();
+        if (this$podTemplate == null ? other$podTemplate != null : !this$podTemplate.equals(other$podTemplate)) {
+            return false;
+        }
+        Object this$resources = this.getResources();
+        Object other$resources = other.getResources();
+        if (this$resources == null ? other$resources != null : !this$resources.equals(other$resources)) {
+            return false;
+        }
+        Object this$serviceAccountName = this.getServiceAccountName();
+        Object other$serviceAccountName = other.getServiceAccountName();
+        if (this$serviceAccountName == null ? other$serviceAccountName != null : !this$serviceAccountName.equals(other$serviceAccountName)) {
+            return false;
+        }
+        Object this$status = this.getStatus();
+        Object other$status = other.getStatus();
+        if (this$status == null ? other$status != null : !this$status.equals(other$status)) {
+            return false;
+        }
+        Object this$taskRunSpecs = this.getTaskRunSpecs();
+        Object other$taskRunSpecs = other.getTaskRunSpecs();
+        if (this$taskRunSpecs == null ? other$taskRunSpecs != null : !this$taskRunSpecs.equals(other$taskRunSpecs)) {
+            return false;
+        }
+        Object this$timeout = this.getTimeout();
+        Object other$timeout = other.getTimeout();
+        if (this$timeout == null ? other$timeout != null : !this$timeout.equals(other$timeout)) {
+            return false;
+        }
+        Object this$timeouts = this.getTimeouts();
+        Object other$timeouts = other.getTimeouts();
+        if (this$timeouts == null ? other$timeouts != null : !this$timeouts.equals(other$timeouts)) {
+            return false;
+        }
+        Object this$workspaces = this.getWorkspaces();
+        Object other$workspaces = other.getWorkspaces();
+        if (this$workspaces == null ? other$workspaces != null : !this$workspaces.equals(other$workspaces)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PipelineRunSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $managedBy = this.getManagedBy();
+        result = result * prime + ($managedBy == null ? 43 : $managedBy.hashCode());
+        Object $params = this.getParams();
+        result = result * prime + ($params == null ? 43 : $params.hashCode());
+        Object $pipelineRef = this.getPipelineRef();
+        result = result * prime + ($pipelineRef == null ? 43 : $pipelineRef.hashCode());
+        Object $pipelineSpec = this.getPipelineSpec();
+        result = result * prime + ($pipelineSpec == null ? 43 : $pipelineSpec.hashCode());
+        Object $podTemplate = this.getPodTemplate();
+        result = result * prime + ($podTemplate == null ? 43 : $podTemplate.hashCode());
+        Object $resources = this.getResources();
+        result = result * prime + ($resources == null ? 43 : $resources.hashCode());
+        Object $serviceAccountName = this.getServiceAccountName();
+        result = result * prime + ($serviceAccountName == null ? 43 : $serviceAccountName.hashCode());
+        Object $status = this.getStatus();
+        result = result * prime + ($status == null ? 43 : $status.hashCode());
+        Object $taskRunSpecs = this.getTaskRunSpecs();
+        result = result * prime + ($taskRunSpecs == null ? 43 : $taskRunSpecs.hashCode());
+        Object $timeout = this.getTimeout();
+        result = result * prime + ($timeout == null ? 43 : $timeout.hashCode());
+        Object $timeouts = this.getTimeouts();
+        result = result * prime + ($timeouts == null ? 43 : $timeouts.hashCode());
+        Object $workspaces = this.getWorkspaces();
+        result = result * prime + ($workspaces == null ? 43 : $workspaces.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PipelineRunSpec(" + "managedBy=" + this.getManagedBy() + ", params=" + this.getParams() + ", pipelineRef=" + this.getPipelineRef() + ", pipelineSpec=" + this.getPipelineSpec() + ", podTemplate=" + this.getPodTemplate() + ", resources=" + this.getResources() + ", serviceAccountName=" + this.getServiceAccountName() + ", status=" + this.getStatus() + ", taskRunSpecs=" + this.getTaskRunSpecs() + ", timeout=" + this.getTimeout() + ", timeouts=" + this.getTimeouts() + ", workspaces=" + this.getWorkspaces() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

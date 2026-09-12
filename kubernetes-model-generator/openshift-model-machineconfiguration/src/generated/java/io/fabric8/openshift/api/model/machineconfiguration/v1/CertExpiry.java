@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ceryExpiry contains the bundle name and the expiry date
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "bundle",
     "expiry",
     "subject"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -159,6 +150,64 @@ public class CertExpiry implements Editable<CertExpiryBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CertExpiry)) {
+            return false;
+        }
+        CertExpiry other = (CertExpiry) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bundle = this.getBundle();
+        Object other$bundle = other.getBundle();
+        if (this$bundle == null ? other$bundle != null : !this$bundle.equals(other$bundle)) {
+            return false;
+        }
+        Object this$expiry = this.getExpiry();
+        Object other$expiry = other.getExpiry();
+        if (this$expiry == null ? other$expiry != null : !this$expiry.equals(other$expiry)) {
+            return false;
+        }
+        Object this$subject = this.getSubject();
+        Object other$subject = other.getSubject();
+        if (this$subject == null ? other$subject != null : !this$subject.equals(other$subject)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CertExpiry;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bundle = this.getBundle();
+        result = result * prime + ($bundle == null ? 43 : $bundle.hashCode());
+        Object $expiry = this.getExpiry();
+        result = result * prime + ($expiry == null ? 43 : $expiry.hashCode());
+        Object $subject = this.getSubject();
+        result = result * prime + ($subject == null ? 43 : $subject.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CertExpiry(" + "bundle=" + this.getBundle() + ", expiry=" + this.getExpiry() + ", subject=" + this.getSubject() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

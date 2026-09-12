@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.tekton.pipeline.pkg.apis.config.FeatureFlags;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Provenance contains metadata about resources used in the TaskRun/PipelineRun such as the source from where a remote build definition was fetched. This field aims to carry minimum amoumt of metadata in &#42;Run status so that Tekton Chains can capture them in the provenance.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "featureFlags",
     "refSource"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -141,6 +132,57 @@ public class Provenance implements Editable<ProvenanceBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Provenance)) {
+            return false;
+        }
+        Provenance other = (Provenance) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$featureFlags = this.getFeatureFlags();
+        Object other$featureFlags = other.getFeatureFlags();
+        if (this$featureFlags == null ? other$featureFlags != null : !this$featureFlags.equals(other$featureFlags)) {
+            return false;
+        }
+        Object this$refSource = this.getRefSource();
+        Object other$refSource = other.getRefSource();
+        if (this$refSource == null ? other$refSource != null : !this$refSource.equals(other$refSource)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Provenance;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $featureFlags = this.getFeatureFlags();
+        result = result * prime + ($featureFlags == null ? 43 : $featureFlags.hashCode());
+        Object $refSource = this.getRefSource();
+        result = result * prime + ($refSource == null ? 43 : $refSource.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Provenance(" + "featureFlags=" + this.getFeatureFlags() + ", refSource=" + this.getRefSource() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

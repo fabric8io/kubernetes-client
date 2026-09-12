@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * LifecyclePolicy specifies the lifecycle and error handling of task and job.
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "events",
     "exitCode",
     "timeout"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -205,6 +196,78 @@ public class LifecyclePolicy implements Editable<LifecyclePolicyBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof LifecyclePolicy)) {
+            return false;
+        }
+        LifecyclePolicy other = (LifecyclePolicy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$action = this.getAction();
+        Object other$action = other.getAction();
+        if (this$action == null ? other$action != null : !this$action.equals(other$action)) {
+            return false;
+        }
+        Object this$event = this.getEvent();
+        Object other$event = other.getEvent();
+        if (this$event == null ? other$event != null : !this$event.equals(other$event)) {
+            return false;
+        }
+        Object this$events = this.getEvents();
+        Object other$events = other.getEvents();
+        if (this$events == null ? other$events != null : !this$events.equals(other$events)) {
+            return false;
+        }
+        Object this$exitCode = this.getExitCode();
+        Object other$exitCode = other.getExitCode();
+        if (this$exitCode == null ? other$exitCode != null : !this$exitCode.equals(other$exitCode)) {
+            return false;
+        }
+        Object this$timeout = this.getTimeout();
+        Object other$timeout = other.getTimeout();
+        if (this$timeout == null ? other$timeout != null : !this$timeout.equals(other$timeout)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof LifecyclePolicy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $action = this.getAction();
+        result = result * prime + ($action == null ? 43 : $action.hashCode());
+        Object $event = this.getEvent();
+        result = result * prime + ($event == null ? 43 : $event.hashCode());
+        Object $events = this.getEvents();
+        result = result * prime + ($events == null ? 43 : $events.hashCode());
+        Object $exitCode = this.getExitCode();
+        result = result * prime + ($exitCode == null ? 43 : $exitCode.hashCode());
+        Object $timeout = this.getTimeout();
+        result = result * prime + ($timeout == null ? 43 : $timeout.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "LifecyclePolicy(" + "action=" + this.getAction() + ", event=" + this.getEvent() + ", events=" + this.getEvents() + ", exitCode=" + this.getExitCode() + ", timeout=" + this.getTimeout() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

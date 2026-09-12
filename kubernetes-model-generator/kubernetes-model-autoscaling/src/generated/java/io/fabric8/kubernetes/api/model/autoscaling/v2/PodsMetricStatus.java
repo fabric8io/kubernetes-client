@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PodsMetricStatus indicates the current value of a metric describing each pod in the current scale target (for example, transactions-processed-per-second).
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "current",
     "metric"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class PodsMetricStatus implements Editable<PodsMetricStatusBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodsMetricStatus)) {
+            return false;
+        }
+        PodsMetricStatus other = (PodsMetricStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$current = this.getCurrent();
+        Object other$current = other.getCurrent();
+        if (this$current == null ? other$current != null : !this$current.equals(other$current)) {
+            return false;
+        }
+        Object this$metric = this.getMetric();
+        Object other$metric = other.getMetric();
+        if (this$metric == null ? other$metric != null : !this$metric.equals(other$metric)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodsMetricStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $current = this.getCurrent();
+        result = result * prime + ($current == null ? 43 : $current.hashCode());
+        Object $metric = this.getMetric();
+        result = result * prime + ($metric == null ? 43 : $metric.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodsMetricStatus(" + "current=" + this.getCurrent() + ", metric=" + this.getMetric() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

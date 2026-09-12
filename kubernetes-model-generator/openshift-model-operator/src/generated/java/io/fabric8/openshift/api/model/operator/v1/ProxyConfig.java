@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ProxyConfig defines the configuration knobs for kubeproxy All of these are optional and have sensible defaults
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "bindAddress",
     "iptablesSyncPeriod",
     "proxyArguments"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -163,6 +154,64 @@ public class ProxyConfig implements Editable<ProxyConfigBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ProxyConfig)) {
+            return false;
+        }
+        ProxyConfig other = (ProxyConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bindAddress = this.getBindAddress();
+        Object other$bindAddress = other.getBindAddress();
+        if (this$bindAddress == null ? other$bindAddress != null : !this$bindAddress.equals(other$bindAddress)) {
+            return false;
+        }
+        Object this$iptablesSyncPeriod = this.getIptablesSyncPeriod();
+        Object other$iptablesSyncPeriod = other.getIptablesSyncPeriod();
+        if (this$iptablesSyncPeriod == null ? other$iptablesSyncPeriod != null : !this$iptablesSyncPeriod.equals(other$iptablesSyncPeriod)) {
+            return false;
+        }
+        Object this$proxyArguments = this.getProxyArguments();
+        Object other$proxyArguments = other.getProxyArguments();
+        if (this$proxyArguments == null ? other$proxyArguments != null : !this$proxyArguments.equals(other$proxyArguments)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ProxyConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bindAddress = this.getBindAddress();
+        result = result * prime + ($bindAddress == null ? 43 : $bindAddress.hashCode());
+        Object $iptablesSyncPeriod = this.getIptablesSyncPeriod();
+        result = result * prime + ($iptablesSyncPeriod == null ? 43 : $iptablesSyncPeriod.hashCode());
+        Object $proxyArguments = this.getProxyArguments();
+        result = result * prime + ($proxyArguments == null ? 43 : $proxyArguments.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ProxyConfig(" + "bindAddress=" + this.getBindAddress() + ", iptablesSyncPeriod=" + this.getIptablesSyncPeriod() + ", proxyArguments=" + this.getProxyArguments() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

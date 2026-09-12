@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DNSZoneParams is a set of parameters used to find a DNS zone.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "IsPublic",
     "Name",
     "Project"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,78 @@ public class DNSZoneParams implements Editable<DNSZoneParamsBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DNSZoneParams)) {
+            return false;
+        }
+        DNSZoneParams other = (DNSZoneParams) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$baseDomain = this.getBaseDomain();
+        Object other$baseDomain = other.getBaseDomain();
+        if (this$baseDomain == null ? other$baseDomain != null : !this$baseDomain.equals(other$baseDomain)) {
+            return false;
+        }
+        Object this$installerCreated = this.getInstallerCreated();
+        Object other$installerCreated = other.getInstallerCreated();
+        if (this$installerCreated == null ? other$installerCreated != null : !this$installerCreated.equals(other$installerCreated)) {
+            return false;
+        }
+        Object this$isPublic = this.getIsPublic();
+        Object other$isPublic = other.getIsPublic();
+        if (this$isPublic == null ? other$isPublic != null : !this$isPublic.equals(other$isPublic)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$project = this.getProject();
+        Object other$project = other.getProject();
+        if (this$project == null ? other$project != null : !this$project.equals(other$project)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DNSZoneParams;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $baseDomain = this.getBaseDomain();
+        result = result * prime + ($baseDomain == null ? 43 : $baseDomain.hashCode());
+        Object $installerCreated = this.getInstallerCreated();
+        result = result * prime + ($installerCreated == null ? 43 : $installerCreated.hashCode());
+        Object $isPublic = this.getIsPublic();
+        result = result * prime + ($isPublic == null ? 43 : $isPublic.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $project = this.getProject();
+        result = result * prime + ($project == null ? 43 : $project.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DNSZoneParams(" + "baseDomain=" + this.getBaseDomain() + ", installerCreated=" + this.getInstallerCreated() + ", isPublic=" + this.getIsPublic() + ", name=" + this.getName() + ", project=" + this.getProject() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

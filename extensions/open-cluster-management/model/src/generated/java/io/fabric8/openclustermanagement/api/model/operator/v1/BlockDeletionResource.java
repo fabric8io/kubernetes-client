@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "LabelExceptions",
     "Name",
     "NameExceptions"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -174,6 +165,78 @@ public class BlockDeletionResource implements Editable<BlockDeletionResourceBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BlockDeletionResource)) {
+            return false;
+        }
+        BlockDeletionResource other = (BlockDeletionResource) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$exceptionTotal = this.getExceptionTotal();
+        Object other$exceptionTotal = other.getExceptionTotal();
+        if (this$exceptionTotal == null ? other$exceptionTotal != null : !this$exceptionTotal.equals(other$exceptionTotal)) {
+            return false;
+        }
+        Object this$gVK = this.getGVK();
+        Object other$gVK = other.getGVK();
+        if (this$gVK == null ? other$gVK != null : !this$gVK.equals(other$gVK)) {
+            return false;
+        }
+        Object this$labelExceptions = this.getLabelExceptions();
+        Object other$labelExceptions = other.getLabelExceptions();
+        if (this$labelExceptions == null ? other$labelExceptions != null : !this$labelExceptions.equals(other$labelExceptions)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$nameExceptions = this.getNameExceptions();
+        Object other$nameExceptions = other.getNameExceptions();
+        if (this$nameExceptions == null ? other$nameExceptions != null : !this$nameExceptions.equals(other$nameExceptions)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BlockDeletionResource;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $exceptionTotal = this.getExceptionTotal();
+        result = result * prime + ($exceptionTotal == null ? 43 : $exceptionTotal.hashCode());
+        Object $gVK = this.getGVK();
+        result = result * prime + ($gVK == null ? 43 : $gVK.hashCode());
+        Object $labelExceptions = this.getLabelExceptions();
+        result = result * prime + ($labelExceptions == null ? 43 : $labelExceptions.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $nameExceptions = this.getNameExceptions();
+        result = result * prime + ($nameExceptions == null ? 43 : $nameExceptions.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BlockDeletionResource(" + "exceptionTotal=" + this.getExceptionTotal() + ", gVK=" + this.getGVK() + ", labelExceptions=" + this.getLabelExceptions() + ", name=" + this.getName() + ", nameExceptions=" + this.getNameExceptions() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

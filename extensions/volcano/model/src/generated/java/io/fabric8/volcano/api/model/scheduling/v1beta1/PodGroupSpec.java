@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PodGroupSpec represents the template of a pod group.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "minTaskMember",
     "priorityClassName",
     "queue"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -205,6 +196,78 @@ public class PodGroupSpec implements Editable<PodGroupSpecBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodGroupSpec)) {
+            return false;
+        }
+        PodGroupSpec other = (PodGroupSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$minMember = this.getMinMember();
+        Object other$minMember = other.getMinMember();
+        if (this$minMember == null ? other$minMember != null : !this$minMember.equals(other$minMember)) {
+            return false;
+        }
+        Object this$minResources = this.getMinResources();
+        Object other$minResources = other.getMinResources();
+        if (this$minResources == null ? other$minResources != null : !this$minResources.equals(other$minResources)) {
+            return false;
+        }
+        Object this$minTaskMember = this.getMinTaskMember();
+        Object other$minTaskMember = other.getMinTaskMember();
+        if (this$minTaskMember == null ? other$minTaskMember != null : !this$minTaskMember.equals(other$minTaskMember)) {
+            return false;
+        }
+        Object this$priorityClassName = this.getPriorityClassName();
+        Object other$priorityClassName = other.getPriorityClassName();
+        if (this$priorityClassName == null ? other$priorityClassName != null : !this$priorityClassName.equals(other$priorityClassName)) {
+            return false;
+        }
+        Object this$queue = this.getQueue();
+        Object other$queue = other.getQueue();
+        if (this$queue == null ? other$queue != null : !this$queue.equals(other$queue)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodGroupSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $minMember = this.getMinMember();
+        result = result * prime + ($minMember == null ? 43 : $minMember.hashCode());
+        Object $minResources = this.getMinResources();
+        result = result * prime + ($minResources == null ? 43 : $minResources.hashCode());
+        Object $minTaskMember = this.getMinTaskMember();
+        result = result * prime + ($minTaskMember == null ? 43 : $minTaskMember.hashCode());
+        Object $priorityClassName = this.getPriorityClassName();
+        result = result * prime + ($priorityClassName == null ? 43 : $priorityClassName.hashCode());
+        Object $queue = this.getQueue();
+        result = result * prime + ($queue == null ? 43 : $queue.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodGroupSpec(" + "minMember=" + this.getMinMember() + ", minResources=" + this.getMinResources() + ", minTaskMember=" + this.getMinTaskMember() + ", priorityClassName=" + this.getPriorityClassName() + ", queue=" + this.getQueue() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

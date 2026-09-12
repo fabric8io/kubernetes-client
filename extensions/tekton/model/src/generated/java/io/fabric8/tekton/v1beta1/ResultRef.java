@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ResultRef is a type that represents a reference to a task run result
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "property",
     "result",
     "resultsIndex"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class ResultRef implements Editable<ResultRefBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ResultRef)) {
+            return false;
+        }
+        ResultRef other = (ResultRef) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$pipelineTask = this.getPipelineTask();
+        Object other$pipelineTask = other.getPipelineTask();
+        if (this$pipelineTask == null ? other$pipelineTask != null : !this$pipelineTask.equals(other$pipelineTask)) {
+            return false;
+        }
+        Object this$property = this.getProperty();
+        Object other$property = other.getProperty();
+        if (this$property == null ? other$property != null : !this$property.equals(other$property)) {
+            return false;
+        }
+        Object this$result = this.getResult();
+        Object other$result = other.getResult();
+        if (this$result == null ? other$result != null : !this$result.equals(other$result)) {
+            return false;
+        }
+        Object this$resultsIndex = this.getResultsIndex();
+        Object other$resultsIndex = other.getResultsIndex();
+        if (this$resultsIndex == null ? other$resultsIndex != null : !this$resultsIndex.equals(other$resultsIndex)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ResultRef;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $pipelineTask = this.getPipelineTask();
+        result = result * prime + ($pipelineTask == null ? 43 : $pipelineTask.hashCode());
+        Object $property = this.getProperty();
+        result = result * prime + ($property == null ? 43 : $property.hashCode());
+        Object $result = this.getResult();
+        result = result * prime + ($result == null ? 43 : $result.hashCode());
+        Object $resultsIndex = this.getResultsIndex();
+        result = result * prime + ($resultsIndex == null ? 43 : $resultsIndex.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ResultRef(" + "pipelineTask=" + this.getPipelineTask() + ", property=" + this.getProperty() + ", result=" + this.getResult() + ", resultsIndex=" + this.getResultsIndex() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

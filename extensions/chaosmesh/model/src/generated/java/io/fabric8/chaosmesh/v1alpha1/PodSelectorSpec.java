@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PodSelectorSpec defines the some selectors to select objects. If the all selectors are empty, all objects will be used in chaos experiment.
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "nodes",
     "podPhaseSelectors",
     "pods"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -278,6 +269,99 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodSelectorSpec)) {
+            return false;
+        }
+        PodSelectorSpec other = (PodSelectorSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$annotationSelectors = this.getAnnotationSelectors();
+        Object other$annotationSelectors = other.getAnnotationSelectors();
+        if (this$annotationSelectors == null ? other$annotationSelectors != null : !this$annotationSelectors.equals(other$annotationSelectors)) {
+            return false;
+        }
+        Object this$fieldSelectors = this.getFieldSelectors();
+        Object other$fieldSelectors = other.getFieldSelectors();
+        if (this$fieldSelectors == null ? other$fieldSelectors != null : !this$fieldSelectors.equals(other$fieldSelectors)) {
+            return false;
+        }
+        Object this$labelSelectors = this.getLabelSelectors();
+        Object other$labelSelectors = other.getLabelSelectors();
+        if (this$labelSelectors == null ? other$labelSelectors != null : !this$labelSelectors.equals(other$labelSelectors)) {
+            return false;
+        }
+        Object this$namespaces = this.getNamespaces();
+        Object other$namespaces = other.getNamespaces();
+        if (this$namespaces == null ? other$namespaces != null : !this$namespaces.equals(other$namespaces)) {
+            return false;
+        }
+        Object this$nodeSelectors = this.getNodeSelectors();
+        Object other$nodeSelectors = other.getNodeSelectors();
+        if (this$nodeSelectors == null ? other$nodeSelectors != null : !this$nodeSelectors.equals(other$nodeSelectors)) {
+            return false;
+        }
+        Object this$nodes = this.getNodes();
+        Object other$nodes = other.getNodes();
+        if (this$nodes == null ? other$nodes != null : !this$nodes.equals(other$nodes)) {
+            return false;
+        }
+        Object this$podPhaseSelectors = this.getPodPhaseSelectors();
+        Object other$podPhaseSelectors = other.getPodPhaseSelectors();
+        if (this$podPhaseSelectors == null ? other$podPhaseSelectors != null : !this$podPhaseSelectors.equals(other$podPhaseSelectors)) {
+            return false;
+        }
+        Object this$pods = this.getPods();
+        Object other$pods = other.getPods();
+        if (this$pods == null ? other$pods != null : !this$pods.equals(other$pods)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodSelectorSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $annotationSelectors = this.getAnnotationSelectors();
+        result = result * prime + ($annotationSelectors == null ? 43 : $annotationSelectors.hashCode());
+        Object $fieldSelectors = this.getFieldSelectors();
+        result = result * prime + ($fieldSelectors == null ? 43 : $fieldSelectors.hashCode());
+        Object $labelSelectors = this.getLabelSelectors();
+        result = result * prime + ($labelSelectors == null ? 43 : $labelSelectors.hashCode());
+        Object $namespaces = this.getNamespaces();
+        result = result * prime + ($namespaces == null ? 43 : $namespaces.hashCode());
+        Object $nodeSelectors = this.getNodeSelectors();
+        result = result * prime + ($nodeSelectors == null ? 43 : $nodeSelectors.hashCode());
+        Object $nodes = this.getNodes();
+        result = result * prime + ($nodes == null ? 43 : $nodes.hashCode());
+        Object $podPhaseSelectors = this.getPodPhaseSelectors();
+        result = result * prime + ($podPhaseSelectors == null ? 43 : $podPhaseSelectors.hashCode());
+        Object $pods = this.getPods();
+        result = result * prime + ($pods == null ? 43 : $pods.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodSelectorSpec(" + "annotationSelectors=" + this.getAnnotationSelectors() + ", fieldSelectors=" + this.getFieldSelectors() + ", labelSelectors=" + this.getLabelSelectors() + ", namespaces=" + this.getNamespaces() + ", nodeSelectors=" + this.getNodeSelectors() + ", nodes=" + this.getNodes() + ", podPhaseSelectors=" + this.getPodPhaseSelectors() + ", pods=" + this.getPods() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ExtractContentConfig configures context extraction from a file-based catalog index image.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "cacheDir",
     "catalogDir"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class ExtractContentConfig implements Editable<ExtractContentConfigBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ExtractContentConfig)) {
+            return false;
+        }
+        ExtractContentConfig other = (ExtractContentConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cacheDir = this.getCacheDir();
+        Object other$cacheDir = other.getCacheDir();
+        if (this$cacheDir == null ? other$cacheDir != null : !this$cacheDir.equals(other$cacheDir)) {
+            return false;
+        }
+        Object this$catalogDir = this.getCatalogDir();
+        Object other$catalogDir = other.getCatalogDir();
+        if (this$catalogDir == null ? other$catalogDir != null : !this$catalogDir.equals(other$catalogDir)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ExtractContentConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cacheDir = this.getCacheDir();
+        result = result * prime + ($cacheDir == null ? 43 : $cacheDir.hashCode());
+        Object $catalogDir = this.getCatalogDir();
+        result = result * prime + ($catalogDir == null ? 43 : $catalogDir.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ExtractContentConfig(" + "cacheDir=" + this.getCacheDir() + ", catalogDir=" + this.getCatalogDir() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

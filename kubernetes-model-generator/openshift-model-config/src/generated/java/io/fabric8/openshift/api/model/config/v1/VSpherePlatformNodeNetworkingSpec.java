@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VSpherePlatformNodeNetworkingSpec holds the network CIDR(s) and port group name for including and excluding IP ranges in the cloud provider. This would be used for example when multiple network adapters are attached to a guest to help determine which IP address the cloud config manager should use for the external and internal node networking.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "excludeNetworkSubnetCidr",
     "network",
     "networkSubnetCidr"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -165,6 +156,64 @@ public class VSpherePlatformNodeNetworkingSpec implements Editable<VSpherePlatfo
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VSpherePlatformNodeNetworkingSpec)) {
+            return false;
+        }
+        VSpherePlatformNodeNetworkingSpec other = (VSpherePlatformNodeNetworkingSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$excludeNetworkSubnetCidr = this.getExcludeNetworkSubnetCidr();
+        Object other$excludeNetworkSubnetCidr = other.getExcludeNetworkSubnetCidr();
+        if (this$excludeNetworkSubnetCidr == null ? other$excludeNetworkSubnetCidr != null : !this$excludeNetworkSubnetCidr.equals(other$excludeNetworkSubnetCidr)) {
+            return false;
+        }
+        Object this$network = this.getNetwork();
+        Object other$network = other.getNetwork();
+        if (this$network == null ? other$network != null : !this$network.equals(other$network)) {
+            return false;
+        }
+        Object this$networkSubnetCidr = this.getNetworkSubnetCidr();
+        Object other$networkSubnetCidr = other.getNetworkSubnetCidr();
+        if (this$networkSubnetCidr == null ? other$networkSubnetCidr != null : !this$networkSubnetCidr.equals(other$networkSubnetCidr)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VSpherePlatformNodeNetworkingSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $excludeNetworkSubnetCidr = this.getExcludeNetworkSubnetCidr();
+        result = result * prime + ($excludeNetworkSubnetCidr == null ? 43 : $excludeNetworkSubnetCidr.hashCode());
+        Object $network = this.getNetwork();
+        result = result * prime + ($network == null ? 43 : $network.hashCode());
+        Object $networkSubnetCidr = this.getNetworkSubnetCidr();
+        result = result * prime + ($networkSubnetCidr == null ? 43 : $networkSubnetCidr.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VSpherePlatformNodeNetworkingSpec(" + "excludeNetworkSubnetCidr=" + this.getExcludeNetworkSubnetCidr() + ", network=" + this.getNetwork() + ", networkSubnetCidr=" + this.getNetworkSubnetCidr() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

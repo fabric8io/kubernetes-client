@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "reason",
     "state",
     "url"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -235,6 +226,92 @@ public class OrderStatus implements Editable<OrderStatusBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OrderStatus)) {
+            return false;
+        }
+        OrderStatus other = (OrderStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$authorizations = this.getAuthorizations();
+        Object other$authorizations = other.getAuthorizations();
+        if (this$authorizations == null ? other$authorizations != null : !this$authorizations.equals(other$authorizations)) {
+            return false;
+        }
+        Object this$certificate = this.getCertificate();
+        Object other$certificate = other.getCertificate();
+        if (this$certificate == null ? other$certificate != null : !this$certificate.equals(other$certificate)) {
+            return false;
+        }
+        Object this$failureTime = this.getFailureTime();
+        Object other$failureTime = other.getFailureTime();
+        if (this$failureTime == null ? other$failureTime != null : !this$failureTime.equals(other$failureTime)) {
+            return false;
+        }
+        Object this$finalizeURL = this.getFinalizeURL();
+        Object other$finalizeURL = other.getFinalizeURL();
+        if (this$finalizeURL == null ? other$finalizeURL != null : !this$finalizeURL.equals(other$finalizeURL)) {
+            return false;
+        }
+        Object this$reason = this.getReason();
+        Object other$reason = other.getReason();
+        if (this$reason == null ? other$reason != null : !this$reason.equals(other$reason)) {
+            return false;
+        }
+        Object this$state = this.getState();
+        Object other$state = other.getState();
+        if (this$state == null ? other$state != null : !this$state.equals(other$state)) {
+            return false;
+        }
+        Object this$url = this.getUrl();
+        Object other$url = other.getUrl();
+        if (this$url == null ? other$url != null : !this$url.equals(other$url)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OrderStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $authorizations = this.getAuthorizations();
+        result = result * prime + ($authorizations == null ? 43 : $authorizations.hashCode());
+        Object $certificate = this.getCertificate();
+        result = result * prime + ($certificate == null ? 43 : $certificate.hashCode());
+        Object $failureTime = this.getFailureTime();
+        result = result * prime + ($failureTime == null ? 43 : $failureTime.hashCode());
+        Object $finalizeURL = this.getFinalizeURL();
+        result = result * prime + ($finalizeURL == null ? 43 : $finalizeURL.hashCode());
+        Object $reason = this.getReason();
+        result = result * prime + ($reason == null ? 43 : $reason.hashCode());
+        Object $state = this.getState();
+        result = result * prime + ($state == null ? 43 : $state.hashCode());
+        Object $url = this.getUrl();
+        result = result * prime + ($url == null ? 43 : $url.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderStatus(" + "authorizations=" + this.getAuthorizations() + ", certificate=" + this.getCertificate() + ", failureTime=" + this.getFailureTime() + ", finalizeURL=" + this.getFinalizeURL() + ", reason=" + this.getReason() + ", state=" + this.getState() + ", url=" + this.getUrl() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

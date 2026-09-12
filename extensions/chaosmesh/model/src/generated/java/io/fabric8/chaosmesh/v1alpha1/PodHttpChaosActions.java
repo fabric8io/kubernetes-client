@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PodHttpChaosActions defines possible actions of HttpChaos.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "delay",
     "patch",
     "replace"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class PodHttpChaosActions implements Editable<PodHttpChaosActionsBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodHttpChaosActions)) {
+            return false;
+        }
+        PodHttpChaosActions other = (PodHttpChaosActions) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$abort = this.getAbort();
+        Object other$abort = other.getAbort();
+        if (this$abort == null ? other$abort != null : !this$abort.equals(other$abort)) {
+            return false;
+        }
+        Object this$delay = this.getDelay();
+        Object other$delay = other.getDelay();
+        if (this$delay == null ? other$delay != null : !this$delay.equals(other$delay)) {
+            return false;
+        }
+        Object this$patch = this.getPatch();
+        Object other$patch = other.getPatch();
+        if (this$patch == null ? other$patch != null : !this$patch.equals(other$patch)) {
+            return false;
+        }
+        Object this$replace = this.getReplace();
+        Object other$replace = other.getReplace();
+        if (this$replace == null ? other$replace != null : !this$replace.equals(other$replace)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodHttpChaosActions;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $abort = this.getAbort();
+        result = result * prime + ($abort == null ? 43 : $abort.hashCode());
+        Object $delay = this.getDelay();
+        result = result * prime + ($delay == null ? 43 : $delay.hashCode());
+        Object $patch = this.getPatch();
+        result = result * prime + ($patch == null ? 43 : $patch.hashCode());
+        Object $replace = this.getReplace();
+        result = result * prime + ($replace == null ? 43 : $replace.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodHttpChaosActions(" + "abort=" + this.getAbort() + ", delay=" + this.getDelay() + ", patch=" + this.getPatch() + ", replace=" + this.getReplace() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

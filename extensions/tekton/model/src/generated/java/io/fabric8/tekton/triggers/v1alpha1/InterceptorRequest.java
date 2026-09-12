@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Do not generate DeepCopy(). See #827
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "extensions",
     "header",
     "interceptor_params"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -211,6 +202,78 @@ public class InterceptorRequest implements Editable<InterceptorRequestBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof InterceptorRequest)) {
+            return false;
+        }
+        InterceptorRequest other = (InterceptorRequest) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$body = this.getBody();
+        Object other$body = other.getBody();
+        if (this$body == null ? other$body != null : !this$body.equals(other$body)) {
+            return false;
+        }
+        Object this$context = this.getContext();
+        Object other$context = other.getContext();
+        if (this$context == null ? other$context != null : !this$context.equals(other$context)) {
+            return false;
+        }
+        Object this$extensions = this.getExtensions();
+        Object other$extensions = other.getExtensions();
+        if (this$extensions == null ? other$extensions != null : !this$extensions.equals(other$extensions)) {
+            return false;
+        }
+        Object this$header = this.getHeader();
+        Object other$header = other.getHeader();
+        if (this$header == null ? other$header != null : !this$header.equals(other$header)) {
+            return false;
+        }
+        Object this$interceptorParams = this.getInterceptorParams();
+        Object other$interceptorParams = other.getInterceptorParams();
+        if (this$interceptorParams == null ? other$interceptorParams != null : !this$interceptorParams.equals(other$interceptorParams)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof InterceptorRequest;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $body = this.getBody();
+        result = result * prime + ($body == null ? 43 : $body.hashCode());
+        Object $context = this.getContext();
+        result = result * prime + ($context == null ? 43 : $context.hashCode());
+        Object $extensions = this.getExtensions();
+        result = result * prime + ($extensions == null ? 43 : $extensions.hashCode());
+        Object $header = this.getHeader();
+        result = result * prime + ($header == null ? 43 : $header.hashCode());
+        Object $interceptorParams = this.getInterceptorParams();
+        result = result * prime + ($interceptorParams == null ? 43 : $interceptorParams.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "InterceptorRequest(" + "body=" + this.getBody() + ", context=" + this.getContext() + ", extensions=" + this.getExtensions() + ", header=" + this.getHeader() + ", interceptorParams=" + this.getInterceptorParams() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

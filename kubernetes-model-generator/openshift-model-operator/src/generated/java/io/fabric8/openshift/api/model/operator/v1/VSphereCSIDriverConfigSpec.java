@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VSphereCSIDriverConfigSpec defines properties that can be configured for vsphere CSI driver.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "granularMaxSnapshotsPerBlockVolumeInVVOL",
     "maxAllowedBlockVolumesPerNode",
     "topologyCategories"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -204,6 +195,78 @@ public class VSphereCSIDriverConfigSpec implements Editable<VSphereCSIDriverConf
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VSphereCSIDriverConfigSpec)) {
+            return false;
+        }
+        VSphereCSIDriverConfigSpec other = (VSphereCSIDriverConfigSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$globalMaxSnapshotsPerBlockVolume = this.getGlobalMaxSnapshotsPerBlockVolume();
+        Object other$globalMaxSnapshotsPerBlockVolume = other.getGlobalMaxSnapshotsPerBlockVolume();
+        if (this$globalMaxSnapshotsPerBlockVolume == null ? other$globalMaxSnapshotsPerBlockVolume != null : !this$globalMaxSnapshotsPerBlockVolume.equals(other$globalMaxSnapshotsPerBlockVolume)) {
+            return false;
+        }
+        Object this$granularMaxSnapshotsPerBlockVolumeInVSAN = this.getGranularMaxSnapshotsPerBlockVolumeInVSAN();
+        Object other$granularMaxSnapshotsPerBlockVolumeInVSAN = other.getGranularMaxSnapshotsPerBlockVolumeInVSAN();
+        if (this$granularMaxSnapshotsPerBlockVolumeInVSAN == null ? other$granularMaxSnapshotsPerBlockVolumeInVSAN != null : !this$granularMaxSnapshotsPerBlockVolumeInVSAN.equals(other$granularMaxSnapshotsPerBlockVolumeInVSAN)) {
+            return false;
+        }
+        Object this$granularMaxSnapshotsPerBlockVolumeInVVOL = this.getGranularMaxSnapshotsPerBlockVolumeInVVOL();
+        Object other$granularMaxSnapshotsPerBlockVolumeInVVOL = other.getGranularMaxSnapshotsPerBlockVolumeInVVOL();
+        if (this$granularMaxSnapshotsPerBlockVolumeInVVOL == null ? other$granularMaxSnapshotsPerBlockVolumeInVVOL != null : !this$granularMaxSnapshotsPerBlockVolumeInVVOL.equals(other$granularMaxSnapshotsPerBlockVolumeInVVOL)) {
+            return false;
+        }
+        Object this$maxAllowedBlockVolumesPerNode = this.getMaxAllowedBlockVolumesPerNode();
+        Object other$maxAllowedBlockVolumesPerNode = other.getMaxAllowedBlockVolumesPerNode();
+        if (this$maxAllowedBlockVolumesPerNode == null ? other$maxAllowedBlockVolumesPerNode != null : !this$maxAllowedBlockVolumesPerNode.equals(other$maxAllowedBlockVolumesPerNode)) {
+            return false;
+        }
+        Object this$topologyCategories = this.getTopologyCategories();
+        Object other$topologyCategories = other.getTopologyCategories();
+        if (this$topologyCategories == null ? other$topologyCategories != null : !this$topologyCategories.equals(other$topologyCategories)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VSphereCSIDriverConfigSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $globalMaxSnapshotsPerBlockVolume = this.getGlobalMaxSnapshotsPerBlockVolume();
+        result = result * prime + ($globalMaxSnapshotsPerBlockVolume == null ? 43 : $globalMaxSnapshotsPerBlockVolume.hashCode());
+        Object $granularMaxSnapshotsPerBlockVolumeInVSAN = this.getGranularMaxSnapshotsPerBlockVolumeInVSAN();
+        result = result * prime + ($granularMaxSnapshotsPerBlockVolumeInVSAN == null ? 43 : $granularMaxSnapshotsPerBlockVolumeInVSAN.hashCode());
+        Object $granularMaxSnapshotsPerBlockVolumeInVVOL = this.getGranularMaxSnapshotsPerBlockVolumeInVVOL();
+        result = result * prime + ($granularMaxSnapshotsPerBlockVolumeInVVOL == null ? 43 : $granularMaxSnapshotsPerBlockVolumeInVVOL.hashCode());
+        Object $maxAllowedBlockVolumesPerNode = this.getMaxAllowedBlockVolumesPerNode();
+        result = result * prime + ($maxAllowedBlockVolumesPerNode == null ? 43 : $maxAllowedBlockVolumesPerNode.hashCode());
+        Object $topologyCategories = this.getTopologyCategories();
+        result = result * prime + ($topologyCategories == null ? 43 : $topologyCategories.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VSphereCSIDriverConfigSpec(" + "globalMaxSnapshotsPerBlockVolume=" + this.getGlobalMaxSnapshotsPerBlockVolume() + ", granularMaxSnapshotsPerBlockVolumeInVSAN=" + this.getGranularMaxSnapshotsPerBlockVolumeInVSAN() + ", granularMaxSnapshotsPerBlockVolumeInVVOL=" + this.getGranularMaxSnapshotsPerBlockVolumeInVVOL() + ", maxAllowedBlockVolumesPerNode=" + this.getMaxAllowedBlockVolumesPerNode() + ", topologyCategories=" + this.getTopologyCategories() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

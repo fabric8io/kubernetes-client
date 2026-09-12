@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HostClaimStatus defines the observed state of HostClaim.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "hardwareData",
     "lastUpdated",
     "poweredOn"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -204,6 +195,78 @@ public class HostClaimStatus implements Editable<HostClaimStatusBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HostClaimStatus)) {
+            return false;
+        }
+        HostClaimStatus other = (HostClaimStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bareMetalHost = this.getBareMetalHost();
+        Object other$bareMetalHost = other.getBareMetalHost();
+        if (this$bareMetalHost == null ? other$bareMetalHost != null : !this$bareMetalHost.equals(other$bareMetalHost)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$hardwareData = this.getHardwareData();
+        Object other$hardwareData = other.getHardwareData();
+        if (this$hardwareData == null ? other$hardwareData != null : !this$hardwareData.equals(other$hardwareData)) {
+            return false;
+        }
+        Object this$lastUpdated = this.getLastUpdated();
+        Object other$lastUpdated = other.getLastUpdated();
+        if (this$lastUpdated == null ? other$lastUpdated != null : !this$lastUpdated.equals(other$lastUpdated)) {
+            return false;
+        }
+        Object this$poweredOn = this.getPoweredOn();
+        Object other$poweredOn = other.getPoweredOn();
+        if (this$poweredOn == null ? other$poweredOn != null : !this$poweredOn.equals(other$poweredOn)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HostClaimStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bareMetalHost = this.getBareMetalHost();
+        result = result * prime + ($bareMetalHost == null ? 43 : $bareMetalHost.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $hardwareData = this.getHardwareData();
+        result = result * prime + ($hardwareData == null ? 43 : $hardwareData.hashCode());
+        Object $lastUpdated = this.getLastUpdated();
+        result = result * prime + ($lastUpdated == null ? 43 : $lastUpdated.hashCode());
+        Object $poweredOn = this.getPoweredOn();
+        result = result * prime + ($poweredOn == null ? 43 : $poweredOn.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HostClaimStatus(" + "bareMetalHost=" + this.getBareMetalHost() + ", conditions=" + this.getConditions() + ", hardwareData=" + this.getHardwareData() + ", lastUpdated=" + this.getLastUpdated() + ", poweredOn=" + this.getPoweredOn() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

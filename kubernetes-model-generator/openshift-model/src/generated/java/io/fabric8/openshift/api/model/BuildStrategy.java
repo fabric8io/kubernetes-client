@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * BuildStrategy contains the details of how to perform a build.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "jenkinsPipelineStrategy",
     "sourceStrategy",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -199,6 +190,78 @@ public class BuildStrategy implements Editable<BuildStrategyBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BuildStrategy)) {
+            return false;
+        }
+        BuildStrategy other = (BuildStrategy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$customStrategy = this.getCustomStrategy();
+        Object other$customStrategy = other.getCustomStrategy();
+        if (this$customStrategy == null ? other$customStrategy != null : !this$customStrategy.equals(other$customStrategy)) {
+            return false;
+        }
+        Object this$dockerStrategy = this.getDockerStrategy();
+        Object other$dockerStrategy = other.getDockerStrategy();
+        if (this$dockerStrategy == null ? other$dockerStrategy != null : !this$dockerStrategy.equals(other$dockerStrategy)) {
+            return false;
+        }
+        Object this$jenkinsPipelineStrategy = this.getJenkinsPipelineStrategy();
+        Object other$jenkinsPipelineStrategy = other.getJenkinsPipelineStrategy();
+        if (this$jenkinsPipelineStrategy == null ? other$jenkinsPipelineStrategy != null : !this$jenkinsPipelineStrategy.equals(other$jenkinsPipelineStrategy)) {
+            return false;
+        }
+        Object this$sourceStrategy = this.getSourceStrategy();
+        Object other$sourceStrategy = other.getSourceStrategy();
+        if (this$sourceStrategy == null ? other$sourceStrategy != null : !this$sourceStrategy.equals(other$sourceStrategy)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BuildStrategy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $customStrategy = this.getCustomStrategy();
+        result = result * prime + ($customStrategy == null ? 43 : $customStrategy.hashCode());
+        Object $dockerStrategy = this.getDockerStrategy();
+        result = result * prime + ($dockerStrategy == null ? 43 : $dockerStrategy.hashCode());
+        Object $jenkinsPipelineStrategy = this.getJenkinsPipelineStrategy();
+        result = result * prime + ($jenkinsPipelineStrategy == null ? 43 : $jenkinsPipelineStrategy.hashCode());
+        Object $sourceStrategy = this.getSourceStrategy();
+        result = result * prime + ($sourceStrategy == null ? 43 : $sourceStrategy.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BuildStrategy(" + "customStrategy=" + this.getCustomStrategy() + ", dockerStrategy=" + this.getDockerStrategy() + ", jenkinsPipelineStrategy=" + this.getJenkinsPipelineStrategy() + ", sourceStrategy=" + this.getSourceStrategy() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

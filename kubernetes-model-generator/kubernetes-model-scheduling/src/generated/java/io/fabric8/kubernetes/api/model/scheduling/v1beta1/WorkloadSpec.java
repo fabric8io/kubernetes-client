@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * WorkloadSpec defines the desired state of a Workload.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "compositePodGroupTemplates",
     "controllerRef",
     "podGroupTemplates"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -166,6 +157,64 @@ public class WorkloadSpec implements Editable<WorkloadSpecBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof WorkloadSpec)) {
+            return false;
+        }
+        WorkloadSpec other = (WorkloadSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$compositePodGroupTemplates = this.getCompositePodGroupTemplates();
+        Object other$compositePodGroupTemplates = other.getCompositePodGroupTemplates();
+        if (this$compositePodGroupTemplates == null ? other$compositePodGroupTemplates != null : !this$compositePodGroupTemplates.equals(other$compositePodGroupTemplates)) {
+            return false;
+        }
+        Object this$controllerRef = this.getControllerRef();
+        Object other$controllerRef = other.getControllerRef();
+        if (this$controllerRef == null ? other$controllerRef != null : !this$controllerRef.equals(other$controllerRef)) {
+            return false;
+        }
+        Object this$podGroupTemplates = this.getPodGroupTemplates();
+        Object other$podGroupTemplates = other.getPodGroupTemplates();
+        if (this$podGroupTemplates == null ? other$podGroupTemplates != null : !this$podGroupTemplates.equals(other$podGroupTemplates)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof WorkloadSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $compositePodGroupTemplates = this.getCompositePodGroupTemplates();
+        result = result * prime + ($compositePodGroupTemplates == null ? 43 : $compositePodGroupTemplates.hashCode());
+        Object $controllerRef = this.getControllerRef();
+        result = result * prime + ($controllerRef == null ? 43 : $controllerRef.hashCode());
+        Object $podGroupTemplates = this.getPodGroupTemplates();
+        result = result * prime + ($podGroupTemplates == null ? 43 : $podGroupTemplates.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WorkloadSpec(" + "compositePodGroupTemplates=" + this.getCompositePodGroupTemplates() + ", controllerRef=" + this.getControllerRef() + ", podGroupTemplates=" + this.getPodGroupTemplates() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

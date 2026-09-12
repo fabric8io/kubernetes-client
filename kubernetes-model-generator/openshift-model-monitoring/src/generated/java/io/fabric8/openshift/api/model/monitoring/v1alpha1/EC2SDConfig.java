@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.monitoring.v1.SafeTLSConfig;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * EC2SDConfig allow retrieving scrape targets from AWS EC2 instances. The private IP address is used by default, but may be changed to the public IP address with relabeling. The IAM credentials used must have the ec2:DescribeInstances permission to discover scrape targets See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#ec2_sd_config<br><p> <br><p> The EC2 service discovery requires AWS API keys or role ARN for authentication. BasicAuth, Authorization and OAuth2 fields are not present on purpose.
@@ -56,12 +53,6 @@ import lombok.experimental.Accessors;
     "roleARN",
     "secretKey",
     "tlsConfig"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -388,6 +379,141 @@ public class EC2SDConfig implements Editable<EC2SDConfigBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EC2SDConfig)) {
+            return false;
+        }
+        EC2SDConfig other = (EC2SDConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$accessKey = this.getAccessKey();
+        Object other$accessKey = other.getAccessKey();
+        if (this$accessKey == null ? other$accessKey != null : !this$accessKey.equals(other$accessKey)) {
+            return false;
+        }
+        Object this$enableHTTP2 = this.getEnableHTTP2();
+        Object other$enableHTTP2 = other.getEnableHTTP2();
+        if (this$enableHTTP2 == null ? other$enableHTTP2 != null : !this$enableHTTP2.equals(other$enableHTTP2)) {
+            return false;
+        }
+        Object this$filters = this.getFilters();
+        Object other$filters = other.getFilters();
+        if (this$filters == null ? other$filters != null : !this$filters.equals(other$filters)) {
+            return false;
+        }
+        Object this$followRedirects = this.getFollowRedirects();
+        Object other$followRedirects = other.getFollowRedirects();
+        if (this$followRedirects == null ? other$followRedirects != null : !this$followRedirects.equals(other$followRedirects)) {
+            return false;
+        }
+        Object this$noProxy = this.getNoProxy();
+        Object other$noProxy = other.getNoProxy();
+        if (this$noProxy == null ? other$noProxy != null : !this$noProxy.equals(other$noProxy)) {
+            return false;
+        }
+        Object this$port = this.getPort();
+        Object other$port = other.getPort();
+        if (this$port == null ? other$port != null : !this$port.equals(other$port)) {
+            return false;
+        }
+        Object this$proxyConnectHeader = this.getProxyConnectHeader();
+        Object other$proxyConnectHeader = other.getProxyConnectHeader();
+        if (this$proxyConnectHeader == null ? other$proxyConnectHeader != null : !this$proxyConnectHeader.equals(other$proxyConnectHeader)) {
+            return false;
+        }
+        Object this$proxyFromEnvironment = this.getProxyFromEnvironment();
+        Object other$proxyFromEnvironment = other.getProxyFromEnvironment();
+        if (this$proxyFromEnvironment == null ? other$proxyFromEnvironment != null : !this$proxyFromEnvironment.equals(other$proxyFromEnvironment)) {
+            return false;
+        }
+        Object this$proxyUrl = this.getProxyUrl();
+        Object other$proxyUrl = other.getProxyUrl();
+        if (this$proxyUrl == null ? other$proxyUrl != null : !this$proxyUrl.equals(other$proxyUrl)) {
+            return false;
+        }
+        Object this$refreshInterval = this.getRefreshInterval();
+        Object other$refreshInterval = other.getRefreshInterval();
+        if (this$refreshInterval == null ? other$refreshInterval != null : !this$refreshInterval.equals(other$refreshInterval)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$roleARN = this.getRoleARN();
+        Object other$roleARN = other.getRoleARN();
+        if (this$roleARN == null ? other$roleARN != null : !this$roleARN.equals(other$roleARN)) {
+            return false;
+        }
+        Object this$secretKey = this.getSecretKey();
+        Object other$secretKey = other.getSecretKey();
+        if (this$secretKey == null ? other$secretKey != null : !this$secretKey.equals(other$secretKey)) {
+            return false;
+        }
+        Object this$tlsConfig = this.getTlsConfig();
+        Object other$tlsConfig = other.getTlsConfig();
+        if (this$tlsConfig == null ? other$tlsConfig != null : !this$tlsConfig.equals(other$tlsConfig)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EC2SDConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $accessKey = this.getAccessKey();
+        result = result * prime + ($accessKey == null ? 43 : $accessKey.hashCode());
+        Object $enableHTTP2 = this.getEnableHTTP2();
+        result = result * prime + ($enableHTTP2 == null ? 43 : $enableHTTP2.hashCode());
+        Object $filters = this.getFilters();
+        result = result * prime + ($filters == null ? 43 : $filters.hashCode());
+        Object $followRedirects = this.getFollowRedirects();
+        result = result * prime + ($followRedirects == null ? 43 : $followRedirects.hashCode());
+        Object $noProxy = this.getNoProxy();
+        result = result * prime + ($noProxy == null ? 43 : $noProxy.hashCode());
+        Object $port = this.getPort();
+        result = result * prime + ($port == null ? 43 : $port.hashCode());
+        Object $proxyConnectHeader = this.getProxyConnectHeader();
+        result = result * prime + ($proxyConnectHeader == null ? 43 : $proxyConnectHeader.hashCode());
+        Object $proxyFromEnvironment = this.getProxyFromEnvironment();
+        result = result * prime + ($proxyFromEnvironment == null ? 43 : $proxyFromEnvironment.hashCode());
+        Object $proxyUrl = this.getProxyUrl();
+        result = result * prime + ($proxyUrl == null ? 43 : $proxyUrl.hashCode());
+        Object $refreshInterval = this.getRefreshInterval();
+        result = result * prime + ($refreshInterval == null ? 43 : $refreshInterval.hashCode());
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $roleARN = this.getRoleARN();
+        result = result * prime + ($roleARN == null ? 43 : $roleARN.hashCode());
+        Object $secretKey = this.getSecretKey();
+        result = result * prime + ($secretKey == null ? 43 : $secretKey.hashCode());
+        Object $tlsConfig = this.getTlsConfig();
+        result = result * prime + ($tlsConfig == null ? 43 : $tlsConfig.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EC2SDConfig(" + "accessKey=" + this.getAccessKey() + ", enableHTTP2=" + this.getEnableHTTP2() + ", filters=" + this.getFilters() + ", followRedirects=" + this.getFollowRedirects() + ", noProxy=" + this.getNoProxy() + ", port=" + this.getPort() + ", proxyConnectHeader=" + this.getProxyConnectHeader() + ", proxyFromEnvironment=" + this.getProxyFromEnvironment() + ", proxyUrl=" + this.getProxyUrl() + ", refreshInterval=" + this.getRefreshInterval() + ", region=" + this.getRegion() + ", roleARN=" + this.getRoleARN() + ", secretKey=" + this.getSecretKey() + ", tlsConfig=" + this.getTlsConfig() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

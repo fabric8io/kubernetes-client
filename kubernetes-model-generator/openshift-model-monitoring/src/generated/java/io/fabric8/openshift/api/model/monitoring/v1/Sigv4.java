@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Sigv4 defines AWS's Signature Verification 4 signing process to sign requests.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "roleArn",
     "secretKey",
     "useFIPSSTSEndpoint"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -240,6 +231,92 @@ public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Sigv4)) {
+            return false;
+        }
+        Sigv4 other = (Sigv4) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$accessKey = this.getAccessKey();
+        Object other$accessKey = other.getAccessKey();
+        if (this$accessKey == null ? other$accessKey != null : !this$accessKey.equals(other$accessKey)) {
+            return false;
+        }
+        Object this$externalId = this.getExternalId();
+        Object other$externalId = other.getExternalId();
+        if (this$externalId == null ? other$externalId != null : !this$externalId.equals(other$externalId)) {
+            return false;
+        }
+        Object this$profile = this.getProfile();
+        Object other$profile = other.getProfile();
+        if (this$profile == null ? other$profile != null : !this$profile.equals(other$profile)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$roleArn = this.getRoleArn();
+        Object other$roleArn = other.getRoleArn();
+        if (this$roleArn == null ? other$roleArn != null : !this$roleArn.equals(other$roleArn)) {
+            return false;
+        }
+        Object this$secretKey = this.getSecretKey();
+        Object other$secretKey = other.getSecretKey();
+        if (this$secretKey == null ? other$secretKey != null : !this$secretKey.equals(other$secretKey)) {
+            return false;
+        }
+        Object this$useFIPSSTSEndpoint = this.getUseFIPSSTSEndpoint();
+        Object other$useFIPSSTSEndpoint = other.getUseFIPSSTSEndpoint();
+        if (this$useFIPSSTSEndpoint == null ? other$useFIPSSTSEndpoint != null : !this$useFIPSSTSEndpoint.equals(other$useFIPSSTSEndpoint)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Sigv4;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $accessKey = this.getAccessKey();
+        result = result * prime + ($accessKey == null ? 43 : $accessKey.hashCode());
+        Object $externalId = this.getExternalId();
+        result = result * prime + ($externalId == null ? 43 : $externalId.hashCode());
+        Object $profile = this.getProfile();
+        result = result * prime + ($profile == null ? 43 : $profile.hashCode());
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $roleArn = this.getRoleArn();
+        result = result * prime + ($roleArn == null ? 43 : $roleArn.hashCode());
+        Object $secretKey = this.getSecretKey();
+        result = result * prime + ($secretKey == null ? 43 : $secretKey.hashCode());
+        Object $useFIPSSTSEndpoint = this.getUseFIPSSTSEndpoint();
+        result = result * prime + ($useFIPSSTSEndpoint == null ? 43 : $useFIPSSTSEndpoint.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Sigv4(" + "accessKey=" + this.getAccessKey() + ", externalId=" + this.getExternalId() + ", profile=" + this.getProfile() + ", region=" + this.getRegion() + ", roleArn=" + this.getRoleArn() + ", secretKey=" + this.getSecretKey() + ", useFIPSSTSEndpoint=" + this.getUseFIPSSTSEndpoint() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

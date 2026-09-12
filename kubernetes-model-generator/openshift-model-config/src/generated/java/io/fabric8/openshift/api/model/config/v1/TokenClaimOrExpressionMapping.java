@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TokenClaimOrExpressionMapping allows specifying either a JWT token claim or CEL expression to be used when mapping claims from an authentication token to cluster identities.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "claim",
     "expression"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -139,6 +130,57 @@ public class TokenClaimOrExpressionMapping implements Editable<TokenClaimOrExpre
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TokenClaimOrExpressionMapping)) {
+            return false;
+        }
+        TokenClaimOrExpressionMapping other = (TokenClaimOrExpressionMapping) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$claim = this.getClaim();
+        Object other$claim = other.getClaim();
+        if (this$claim == null ? other$claim != null : !this$claim.equals(other$claim)) {
+            return false;
+        }
+        Object this$expression = this.getExpression();
+        Object other$expression = other.getExpression();
+        if (this$expression == null ? other$expression != null : !this$expression.equals(other$expression)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TokenClaimOrExpressionMapping;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $claim = this.getClaim();
+        result = result * prime + ($claim == null ? 43 : $claim.hashCode());
+        Object $expression = this.getExpression();
+        result = result * prime + ($expression == null ? 43 : $expression.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TokenClaimOrExpressionMapping(" + "claim=" + this.getClaim() + ", expression=" + this.getExpression() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

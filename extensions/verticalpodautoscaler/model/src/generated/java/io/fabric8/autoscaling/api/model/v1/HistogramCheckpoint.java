@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HistogramCheckpoint contains data needed to reconstruct the histogram.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "bucketWeights",
     "referenceTimestamp",
     "totalWeight"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -162,6 +153,64 @@ public class HistogramCheckpoint implements Editable<HistogramCheckpointBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HistogramCheckpoint)) {
+            return false;
+        }
+        HistogramCheckpoint other = (HistogramCheckpoint) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bucketWeights = this.getBucketWeights();
+        Object other$bucketWeights = other.getBucketWeights();
+        if (this$bucketWeights == null ? other$bucketWeights != null : !this$bucketWeights.equals(other$bucketWeights)) {
+            return false;
+        }
+        Object this$referenceTimestamp = this.getReferenceTimestamp();
+        Object other$referenceTimestamp = other.getReferenceTimestamp();
+        if (this$referenceTimestamp == null ? other$referenceTimestamp != null : !this$referenceTimestamp.equals(other$referenceTimestamp)) {
+            return false;
+        }
+        Object this$totalWeight = this.getTotalWeight();
+        Object other$totalWeight = other.getTotalWeight();
+        if (this$totalWeight == null ? other$totalWeight != null : !this$totalWeight.equals(other$totalWeight)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HistogramCheckpoint;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bucketWeights = this.getBucketWeights();
+        result = result * prime + ($bucketWeights == null ? 43 : $bucketWeights.hashCode());
+        Object $referenceTimestamp = this.getReferenceTimestamp();
+        result = result * prime + ($referenceTimestamp == null ? 43 : $referenceTimestamp.hashCode());
+        Object $totalWeight = this.getTotalWeight();
+        result = result * prime + ($totalWeight == null ? 43 : $totalWeight.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HistogramCheckpoint(" + "bucketWeights=" + this.getBucketWeights() + ", referenceTimestamp=" + this.getReferenceTimestamp() + ", totalWeight=" + this.getTotalWeight() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * BareMetalHostSpec defines the desired state of BareMetalHost.
@@ -64,12 +61,6 @@ import lombok.experimental.Accessors;
     "rootDeviceHints",
     "taints",
     "userData"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -546,6 +537,197 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BareMetalHostSpec)) {
+            return false;
+        }
+        BareMetalHostSpec other = (BareMetalHostSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$architecture = this.getArchitecture();
+        Object other$architecture = other.getArchitecture();
+        if (this$architecture == null ? other$architecture != null : !this$architecture.equals(other$architecture)) {
+            return false;
+        }
+        Object this$automatedCleaningMode = this.getAutomatedCleaningMode();
+        Object other$automatedCleaningMode = other.getAutomatedCleaningMode();
+        if (this$automatedCleaningMode == null ? other$automatedCleaningMode != null : !this$automatedCleaningMode.equals(other$automatedCleaningMode)) {
+            return false;
+        }
+        Object this$bmc = this.getBmc();
+        Object other$bmc = other.getBmc();
+        if (this$bmc == null ? other$bmc != null : !this$bmc.equals(other$bmc)) {
+            return false;
+        }
+        Object this$bootMACAddress = this.getBootMACAddress();
+        Object other$bootMACAddress = other.getBootMACAddress();
+        if (this$bootMACAddress == null ? other$bootMACAddress != null : !this$bootMACAddress.equals(other$bootMACAddress)) {
+            return false;
+        }
+        Object this$bootMode = this.getBootMode();
+        Object other$bootMode = other.getBootMode();
+        if (this$bootMode == null ? other$bootMode != null : !this$bootMode.equals(other$bootMode)) {
+            return false;
+        }
+        Object this$consumerRef = this.getConsumerRef();
+        Object other$consumerRef = other.getConsumerRef();
+        if (this$consumerRef == null ? other$consumerRef != null : !this$consumerRef.equals(other$consumerRef)) {
+            return false;
+        }
+        Object this$customDeploy = this.getCustomDeploy();
+        Object other$customDeploy = other.getCustomDeploy();
+        if (this$customDeploy == null ? other$customDeploy != null : !this$customDeploy.equals(other$customDeploy)) {
+            return false;
+        }
+        Object this$description = this.getDescription();
+        Object other$description = other.getDescription();
+        if (this$description == null ? other$description != null : !this$description.equals(other$description)) {
+            return false;
+        }
+        Object this$disablePowerOff = this.getDisablePowerOff();
+        Object other$disablePowerOff = other.getDisablePowerOff();
+        if (this$disablePowerOff == null ? other$disablePowerOff != null : !this$disablePowerOff.equals(other$disablePowerOff)) {
+            return false;
+        }
+        Object this$externallyProvisioned = this.getExternallyProvisioned();
+        Object other$externallyProvisioned = other.getExternallyProvisioned();
+        if (this$externallyProvisioned == null ? other$externallyProvisioned != null : !this$externallyProvisioned.equals(other$externallyProvisioned)) {
+            return false;
+        }
+        Object this$firmware = this.getFirmware();
+        Object other$firmware = other.getFirmware();
+        if (this$firmware == null ? other$firmware != null : !this$firmware.equals(other$firmware)) {
+            return false;
+        }
+        Object this$hardwareProfile = this.getHardwareProfile();
+        Object other$hardwareProfile = other.getHardwareProfile();
+        if (this$hardwareProfile == null ? other$hardwareProfile != null : !this$hardwareProfile.equals(other$hardwareProfile)) {
+            return false;
+        }
+        Object this$image = this.getImage();
+        Object other$image = other.getImage();
+        if (this$image == null ? other$image != null : !this$image.equals(other$image)) {
+            return false;
+        }
+        Object this$inspectionMode = this.getInspectionMode();
+        Object other$inspectionMode = other.getInspectionMode();
+        if (this$inspectionMode == null ? other$inspectionMode != null : !this$inspectionMode.equals(other$inspectionMode)) {
+            return false;
+        }
+        Object this$metaData = this.getMetaData();
+        Object other$metaData = other.getMetaData();
+        if (this$metaData == null ? other$metaData != null : !this$metaData.equals(other$metaData)) {
+            return false;
+        }
+        Object this$networkData = this.getNetworkData();
+        Object other$networkData = other.getNetworkData();
+        if (this$networkData == null ? other$networkData != null : !this$networkData.equals(other$networkData)) {
+            return false;
+        }
+        Object this$online = this.getOnline();
+        Object other$online = other.getOnline();
+        if (this$online == null ? other$online != null : !this$online.equals(other$online)) {
+            return false;
+        }
+        Object this$preprovisioningNetworkDataName = this.getPreprovisioningNetworkDataName();
+        Object other$preprovisioningNetworkDataName = other.getPreprovisioningNetworkDataName();
+        if (this$preprovisioningNetworkDataName == null ? other$preprovisioningNetworkDataName != null : !this$preprovisioningNetworkDataName.equals(other$preprovisioningNetworkDataName)) {
+            return false;
+        }
+        Object this$raid = this.getRaid();
+        Object other$raid = other.getRaid();
+        if (this$raid == null ? other$raid != null : !this$raid.equals(other$raid)) {
+            return false;
+        }
+        Object this$rootDeviceHints = this.getRootDeviceHints();
+        Object other$rootDeviceHints = other.getRootDeviceHints();
+        if (this$rootDeviceHints == null ? other$rootDeviceHints != null : !this$rootDeviceHints.equals(other$rootDeviceHints)) {
+            return false;
+        }
+        Object this$taints = this.getTaints();
+        Object other$taints = other.getTaints();
+        if (this$taints == null ? other$taints != null : !this$taints.equals(other$taints)) {
+            return false;
+        }
+        Object this$userData = this.getUserData();
+        Object other$userData = other.getUserData();
+        if (this$userData == null ? other$userData != null : !this$userData.equals(other$userData)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BareMetalHostSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $architecture = this.getArchitecture();
+        result = result * prime + ($architecture == null ? 43 : $architecture.hashCode());
+        Object $automatedCleaningMode = this.getAutomatedCleaningMode();
+        result = result * prime + ($automatedCleaningMode == null ? 43 : $automatedCleaningMode.hashCode());
+        Object $bmc = this.getBmc();
+        result = result * prime + ($bmc == null ? 43 : $bmc.hashCode());
+        Object $bootMACAddress = this.getBootMACAddress();
+        result = result * prime + ($bootMACAddress == null ? 43 : $bootMACAddress.hashCode());
+        Object $bootMode = this.getBootMode();
+        result = result * prime + ($bootMode == null ? 43 : $bootMode.hashCode());
+        Object $consumerRef = this.getConsumerRef();
+        result = result * prime + ($consumerRef == null ? 43 : $consumerRef.hashCode());
+        Object $customDeploy = this.getCustomDeploy();
+        result = result * prime + ($customDeploy == null ? 43 : $customDeploy.hashCode());
+        Object $description = this.getDescription();
+        result = result * prime + ($description == null ? 43 : $description.hashCode());
+        Object $disablePowerOff = this.getDisablePowerOff();
+        result = result * prime + ($disablePowerOff == null ? 43 : $disablePowerOff.hashCode());
+        Object $externallyProvisioned = this.getExternallyProvisioned();
+        result = result * prime + ($externallyProvisioned == null ? 43 : $externallyProvisioned.hashCode());
+        Object $firmware = this.getFirmware();
+        result = result * prime + ($firmware == null ? 43 : $firmware.hashCode());
+        Object $hardwareProfile = this.getHardwareProfile();
+        result = result * prime + ($hardwareProfile == null ? 43 : $hardwareProfile.hashCode());
+        Object $image = this.getImage();
+        result = result * prime + ($image == null ? 43 : $image.hashCode());
+        Object $inspectionMode = this.getInspectionMode();
+        result = result * prime + ($inspectionMode == null ? 43 : $inspectionMode.hashCode());
+        Object $metaData = this.getMetaData();
+        result = result * prime + ($metaData == null ? 43 : $metaData.hashCode());
+        Object $networkData = this.getNetworkData();
+        result = result * prime + ($networkData == null ? 43 : $networkData.hashCode());
+        Object $online = this.getOnline();
+        result = result * prime + ($online == null ? 43 : $online.hashCode());
+        Object $preprovisioningNetworkDataName = this.getPreprovisioningNetworkDataName();
+        result = result * prime + ($preprovisioningNetworkDataName == null ? 43 : $preprovisioningNetworkDataName.hashCode());
+        Object $raid = this.getRaid();
+        result = result * prime + ($raid == null ? 43 : $raid.hashCode());
+        Object $rootDeviceHints = this.getRootDeviceHints();
+        result = result * prime + ($rootDeviceHints == null ? 43 : $rootDeviceHints.hashCode());
+        Object $taints = this.getTaints();
+        result = result * prime + ($taints == null ? 43 : $taints.hashCode());
+        Object $userData = this.getUserData();
+        result = result * prime + ($userData == null ? 43 : $userData.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BareMetalHostSpec(" + "architecture=" + this.getArchitecture() + ", automatedCleaningMode=" + this.getAutomatedCleaningMode() + ", bmc=" + this.getBmc() + ", bootMACAddress=" + this.getBootMACAddress() + ", bootMode=" + this.getBootMode() + ", consumerRef=" + this.getConsumerRef() + ", customDeploy=" + this.getCustomDeploy() + ", description=" + this.getDescription() + ", disablePowerOff=" + this.getDisablePowerOff() + ", externallyProvisioned=" + this.getExternallyProvisioned() + ", firmware=" + this.getFirmware() + ", hardwareProfile=" + this.getHardwareProfile() + ", image=" + this.getImage() + ", inspectionMode=" + this.getInspectionMode() + ", metaData=" + this.getMetaData() + ", networkData=" + this.getNetworkData() + ", online=" + this.getOnline() + ", preprovisioningNetworkDataName=" + this.getPreprovisioningNetworkDataName() + ", raid=" + this.getRaid() + ", rootDeviceHints=" + this.getRootDeviceHints() + ", taints=" + this.getTaints() + ", userData=" + this.getUserData() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

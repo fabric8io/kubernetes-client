@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.tekton.pod.Template;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
@@ -50,12 +47,6 @@ import lombok.experimental.Accessors;
     "taskPodTemplate",
     "taskServiceAccountName",
     "timeout"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -268,6 +259,99 @@ public class PipelineTaskRunSpec implements Editable<PipelineTaskRunSpecBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PipelineTaskRunSpec)) {
+            return false;
+        }
+        PipelineTaskRunSpec other = (PipelineTaskRunSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$computeResources = this.getComputeResources();
+        Object other$computeResources = other.getComputeResources();
+        if (this$computeResources == null ? other$computeResources != null : !this$computeResources.equals(other$computeResources)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$pipelineTaskName = this.getPipelineTaskName();
+        Object other$pipelineTaskName = other.getPipelineTaskName();
+        if (this$pipelineTaskName == null ? other$pipelineTaskName != null : !this$pipelineTaskName.equals(other$pipelineTaskName)) {
+            return false;
+        }
+        Object this$sidecarOverrides = this.getSidecarOverrides();
+        Object other$sidecarOverrides = other.getSidecarOverrides();
+        if (this$sidecarOverrides == null ? other$sidecarOverrides != null : !this$sidecarOverrides.equals(other$sidecarOverrides)) {
+            return false;
+        }
+        Object this$stepOverrides = this.getStepOverrides();
+        Object other$stepOverrides = other.getStepOverrides();
+        if (this$stepOverrides == null ? other$stepOverrides != null : !this$stepOverrides.equals(other$stepOverrides)) {
+            return false;
+        }
+        Object this$taskPodTemplate = this.getTaskPodTemplate();
+        Object other$taskPodTemplate = other.getTaskPodTemplate();
+        if (this$taskPodTemplate == null ? other$taskPodTemplate != null : !this$taskPodTemplate.equals(other$taskPodTemplate)) {
+            return false;
+        }
+        Object this$taskServiceAccountName = this.getTaskServiceAccountName();
+        Object other$taskServiceAccountName = other.getTaskServiceAccountName();
+        if (this$taskServiceAccountName == null ? other$taskServiceAccountName != null : !this$taskServiceAccountName.equals(other$taskServiceAccountName)) {
+            return false;
+        }
+        Object this$timeout = this.getTimeout();
+        Object other$timeout = other.getTimeout();
+        if (this$timeout == null ? other$timeout != null : !this$timeout.equals(other$timeout)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PipelineTaskRunSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $computeResources = this.getComputeResources();
+        result = result * prime + ($computeResources == null ? 43 : $computeResources.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $pipelineTaskName = this.getPipelineTaskName();
+        result = result * prime + ($pipelineTaskName == null ? 43 : $pipelineTaskName.hashCode());
+        Object $sidecarOverrides = this.getSidecarOverrides();
+        result = result * prime + ($sidecarOverrides == null ? 43 : $sidecarOverrides.hashCode());
+        Object $stepOverrides = this.getStepOverrides();
+        result = result * prime + ($stepOverrides == null ? 43 : $stepOverrides.hashCode());
+        Object $taskPodTemplate = this.getTaskPodTemplate();
+        result = result * prime + ($taskPodTemplate == null ? 43 : $taskPodTemplate.hashCode());
+        Object $taskServiceAccountName = this.getTaskServiceAccountName();
+        result = result * prime + ($taskServiceAccountName == null ? 43 : $taskServiceAccountName.hashCode());
+        Object $timeout = this.getTimeout();
+        result = result * prime + ($timeout == null ? 43 : $timeout.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PipelineTaskRunSpec(" + "computeResources=" + this.getComputeResources() + ", metadata=" + this.getMetadata() + ", pipelineTaskName=" + this.getPipelineTaskName() + ", sidecarOverrides=" + this.getSidecarOverrides() + ", stepOverrides=" + this.getStepOverrides() + ", taskPodTemplate=" + this.getTaskPodTemplate() + ", taskServiceAccountName=" + this.getTaskServiceAccountName() + ", timeout=" + this.getTimeout() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

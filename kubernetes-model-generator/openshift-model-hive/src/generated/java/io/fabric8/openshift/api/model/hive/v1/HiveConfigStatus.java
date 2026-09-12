@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HiveConfigStatus defines the observed state of Hive
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "conditions",
     "configApplied",
     "observedGeneration"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class HiveConfigStatus implements Editable<HiveConfigStatusBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HiveConfigStatus)) {
+            return false;
+        }
+        HiveConfigStatus other = (HiveConfigStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$aggregatorClientCAHash = this.getAggregatorClientCAHash();
+        Object other$aggregatorClientCAHash = other.getAggregatorClientCAHash();
+        if (this$aggregatorClientCAHash == null ? other$aggregatorClientCAHash != null : !this$aggregatorClientCAHash.equals(other$aggregatorClientCAHash)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$configApplied = this.getConfigApplied();
+        Object other$configApplied = other.getConfigApplied();
+        if (this$configApplied == null ? other$configApplied != null : !this$configApplied.equals(other$configApplied)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HiveConfigStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $aggregatorClientCAHash = this.getAggregatorClientCAHash();
+        result = result * prime + ($aggregatorClientCAHash == null ? 43 : $aggregatorClientCAHash.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $configApplied = this.getConfigApplied();
+        result = result * prime + ($configApplied == null ? 43 : $configApplied.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HiveConfigStatus(" + "aggregatorClientCAHash=" + this.getAggregatorClientCAHash() + ", conditions=" + this.getConditions() + ", configApplied=" + this.getConfigApplied() + ", observedGeneration=" + this.getObservedGeneration() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

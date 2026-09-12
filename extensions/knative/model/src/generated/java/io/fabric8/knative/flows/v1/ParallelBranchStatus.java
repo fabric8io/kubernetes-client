@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ParallelBranchStatus represents the current state of a Parallel branch
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "filterChannelStatus",
     "filterSubscriptionStatus",
     "subscriberSubscriptionStatus"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class ParallelBranchStatus implements Editable<ParallelBranchStatusBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ParallelBranchStatus)) {
+            return false;
+        }
+        ParallelBranchStatus other = (ParallelBranchStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$filterChannelStatus = this.getFilterChannelStatus();
+        Object other$filterChannelStatus = other.getFilterChannelStatus();
+        if (this$filterChannelStatus == null ? other$filterChannelStatus != null : !this$filterChannelStatus.equals(other$filterChannelStatus)) {
+            return false;
+        }
+        Object this$filterSubscriptionStatus = this.getFilterSubscriptionStatus();
+        Object other$filterSubscriptionStatus = other.getFilterSubscriptionStatus();
+        if (this$filterSubscriptionStatus == null ? other$filterSubscriptionStatus != null : !this$filterSubscriptionStatus.equals(other$filterSubscriptionStatus)) {
+            return false;
+        }
+        Object this$subscriberSubscriptionStatus = this.getSubscriberSubscriptionStatus();
+        Object other$subscriberSubscriptionStatus = other.getSubscriberSubscriptionStatus();
+        if (this$subscriberSubscriptionStatus == null ? other$subscriberSubscriptionStatus != null : !this$subscriberSubscriptionStatus.equals(other$subscriberSubscriptionStatus)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ParallelBranchStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $filterChannelStatus = this.getFilterChannelStatus();
+        result = result * prime + ($filterChannelStatus == null ? 43 : $filterChannelStatus.hashCode());
+        Object $filterSubscriptionStatus = this.getFilterSubscriptionStatus();
+        result = result * prime + ($filterSubscriptionStatus == null ? 43 : $filterSubscriptionStatus.hashCode());
+        Object $subscriberSubscriptionStatus = this.getSubscriberSubscriptionStatus();
+        result = result * prime + ($subscriberSubscriptionStatus == null ? 43 : $subscriberSubscriptionStatus.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ParallelBranchStatus(" + "filterChannelStatus=" + this.getFilterChannelStatus() + ", filterSubscriptionStatus=" + this.getFilterSubscriptionStatus() + ", subscriberSubscriptionStatus=" + this.getSubscriberSubscriptionStatus() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

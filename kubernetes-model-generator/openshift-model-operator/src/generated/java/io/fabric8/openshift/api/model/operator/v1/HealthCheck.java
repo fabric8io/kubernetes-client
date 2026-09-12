@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * healthCheck represents an Insights health check attributes.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "description",
     "state",
     "totalRisk"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class HealthCheck implements Editable<HealthCheckBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HealthCheck)) {
+            return false;
+        }
+        HealthCheck other = (HealthCheck) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$advisorURI = this.getAdvisorURI();
+        Object other$advisorURI = other.getAdvisorURI();
+        if (this$advisorURI == null ? other$advisorURI != null : !this$advisorURI.equals(other$advisorURI)) {
+            return false;
+        }
+        Object this$description = this.getDescription();
+        Object other$description = other.getDescription();
+        if (this$description == null ? other$description != null : !this$description.equals(other$description)) {
+            return false;
+        }
+        Object this$state = this.getState();
+        Object other$state = other.getState();
+        if (this$state == null ? other$state != null : !this$state.equals(other$state)) {
+            return false;
+        }
+        Object this$totalRisk = this.getTotalRisk();
+        Object other$totalRisk = other.getTotalRisk();
+        if (this$totalRisk == null ? other$totalRisk != null : !this$totalRisk.equals(other$totalRisk)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HealthCheck;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $advisorURI = this.getAdvisorURI();
+        result = result * prime + ($advisorURI == null ? 43 : $advisorURI.hashCode());
+        Object $description = this.getDescription();
+        result = result * prime + ($description == null ? 43 : $description.hashCode());
+        Object $state = this.getState();
+        result = result * prime + ($state == null ? 43 : $state.hashCode());
+        Object $totalRisk = this.getTotalRisk();
+        result = result * prime + ($totalRisk == null ? 43 : $totalRisk.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HealthCheck(" + "advisorURI=" + this.getAdvisorURI() + ", description=" + this.getDescription() + ", state=" + this.getState() + ", totalRisk=" + this.getTotalRisk() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

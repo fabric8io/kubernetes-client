@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ConsoleLinkSpec is the desired console link configuration.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "location",
     "namespaceDashboard",
     "text"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,78 @@ public class ConsoleLinkSpec implements Editable<ConsoleLinkSpecBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConsoleLinkSpec)) {
+            return false;
+        }
+        ConsoleLinkSpec other = (ConsoleLinkSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$applicationMenu = this.getApplicationMenu();
+        Object other$applicationMenu = other.getApplicationMenu();
+        if (this$applicationMenu == null ? other$applicationMenu != null : !this$applicationMenu.equals(other$applicationMenu)) {
+            return false;
+        }
+        Object this$href = this.getHref();
+        Object other$href = other.getHref();
+        if (this$href == null ? other$href != null : !this$href.equals(other$href)) {
+            return false;
+        }
+        Object this$location = this.getLocation();
+        Object other$location = other.getLocation();
+        if (this$location == null ? other$location != null : !this$location.equals(other$location)) {
+            return false;
+        }
+        Object this$namespaceDashboard = this.getNamespaceDashboard();
+        Object other$namespaceDashboard = other.getNamespaceDashboard();
+        if (this$namespaceDashboard == null ? other$namespaceDashboard != null : !this$namespaceDashboard.equals(other$namespaceDashboard)) {
+            return false;
+        }
+        Object this$text = this.getText();
+        Object other$text = other.getText();
+        if (this$text == null ? other$text != null : !this$text.equals(other$text)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConsoleLinkSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $applicationMenu = this.getApplicationMenu();
+        result = result * prime + ($applicationMenu == null ? 43 : $applicationMenu.hashCode());
+        Object $href = this.getHref();
+        result = result * prime + ($href == null ? 43 : $href.hashCode());
+        Object $location = this.getLocation();
+        result = result * prime + ($location == null ? 43 : $location.hashCode());
+        Object $namespaceDashboard = this.getNamespaceDashboard();
+        result = result * prime + ($namespaceDashboard == null ? 43 : $namespaceDashboard.hashCode());
+        Object $text = this.getText();
+        result = result * prime + ($text == null ? 43 : $text.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConsoleLinkSpec(" + "applicationMenu=" + this.getApplicationMenu() + ", href=" + this.getHref() + ", location=" + this.getLocation() + ", namespaceDashboard=" + this.getNamespaceDashboard() + ", text=" + this.getText() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

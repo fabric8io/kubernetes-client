@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DNSOverTLSConfig describes optional DNSTransportConfig fields that should be captured.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "caBundle",
     "serverName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -141,6 +132,57 @@ public class DNSOverTLSConfig implements Editable<DNSOverTLSConfigBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DNSOverTLSConfig)) {
+            return false;
+        }
+        DNSOverTLSConfig other = (DNSOverTLSConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$caBundle = this.getCaBundle();
+        Object other$caBundle = other.getCaBundle();
+        if (this$caBundle == null ? other$caBundle != null : !this$caBundle.equals(other$caBundle)) {
+            return false;
+        }
+        Object this$serverName = this.getServerName();
+        Object other$serverName = other.getServerName();
+        if (this$serverName == null ? other$serverName != null : !this$serverName.equals(other$serverName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DNSOverTLSConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $caBundle = this.getCaBundle();
+        result = result * prime + ($caBundle == null ? 43 : $caBundle.hashCode());
+        Object $serverName = this.getServerName();
+        result = result * prime + ($serverName == null ? 43 : $serverName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DNSOverTLSConfig(" + "caBundle=" + this.getCaBundle() + ", serverName=" + this.getServerName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

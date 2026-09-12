@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NodeSystemInfo is a set of ids/uuids to uniquely identify the node.
@@ -35,12 +32,6 @@ import lombok.experimental.Accessors;
     "runningInUserNamespace",
     "swap",
     "systemUUID"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -311,6 +302,127 @@ public class NodeSystemInfo implements Editable<NodeSystemInfoBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NodeSystemInfo)) {
+            return false;
+        }
+        NodeSystemInfo other = (NodeSystemInfo) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$architecture = this.getArchitecture();
+        Object other$architecture = other.getArchitecture();
+        if (this$architecture == null ? other$architecture != null : !this$architecture.equals(other$architecture)) {
+            return false;
+        }
+        Object this$bootID = this.getBootID();
+        Object other$bootID = other.getBootID();
+        if (this$bootID == null ? other$bootID != null : !this$bootID.equals(other$bootID)) {
+            return false;
+        }
+        Object this$containerRuntimeVersion = this.getContainerRuntimeVersion();
+        Object other$containerRuntimeVersion = other.getContainerRuntimeVersion();
+        if (this$containerRuntimeVersion == null ? other$containerRuntimeVersion != null : !this$containerRuntimeVersion.equals(other$containerRuntimeVersion)) {
+            return false;
+        }
+        Object this$kernelVersion = this.getKernelVersion();
+        Object other$kernelVersion = other.getKernelVersion();
+        if (this$kernelVersion == null ? other$kernelVersion != null : !this$kernelVersion.equals(other$kernelVersion)) {
+            return false;
+        }
+        Object this$kubeProxyVersion = this.getKubeProxyVersion();
+        Object other$kubeProxyVersion = other.getKubeProxyVersion();
+        if (this$kubeProxyVersion == null ? other$kubeProxyVersion != null : !this$kubeProxyVersion.equals(other$kubeProxyVersion)) {
+            return false;
+        }
+        Object this$kubeletVersion = this.getKubeletVersion();
+        Object other$kubeletVersion = other.getKubeletVersion();
+        if (this$kubeletVersion == null ? other$kubeletVersion != null : !this$kubeletVersion.equals(other$kubeletVersion)) {
+            return false;
+        }
+        Object this$machineID = this.getMachineID();
+        Object other$machineID = other.getMachineID();
+        if (this$machineID == null ? other$machineID != null : !this$machineID.equals(other$machineID)) {
+            return false;
+        }
+        Object this$operatingSystem = this.getOperatingSystem();
+        Object other$operatingSystem = other.getOperatingSystem();
+        if (this$operatingSystem == null ? other$operatingSystem != null : !this$operatingSystem.equals(other$operatingSystem)) {
+            return false;
+        }
+        Object this$osImage = this.getOsImage();
+        Object other$osImage = other.getOsImage();
+        if (this$osImage == null ? other$osImage != null : !this$osImage.equals(other$osImage)) {
+            return false;
+        }
+        Object this$runningInUserNamespace = this.getRunningInUserNamespace();
+        Object other$runningInUserNamespace = other.getRunningInUserNamespace();
+        if (this$runningInUserNamespace == null ? other$runningInUserNamespace != null : !this$runningInUserNamespace.equals(other$runningInUserNamespace)) {
+            return false;
+        }
+        Object this$swap = this.getSwap();
+        Object other$swap = other.getSwap();
+        if (this$swap == null ? other$swap != null : !this$swap.equals(other$swap)) {
+            return false;
+        }
+        Object this$systemUUID = this.getSystemUUID();
+        Object other$systemUUID = other.getSystemUUID();
+        if (this$systemUUID == null ? other$systemUUID != null : !this$systemUUID.equals(other$systemUUID)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NodeSystemInfo;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $architecture = this.getArchitecture();
+        result = result * prime + ($architecture == null ? 43 : $architecture.hashCode());
+        Object $bootID = this.getBootID();
+        result = result * prime + ($bootID == null ? 43 : $bootID.hashCode());
+        Object $containerRuntimeVersion = this.getContainerRuntimeVersion();
+        result = result * prime + ($containerRuntimeVersion == null ? 43 : $containerRuntimeVersion.hashCode());
+        Object $kernelVersion = this.getKernelVersion();
+        result = result * prime + ($kernelVersion == null ? 43 : $kernelVersion.hashCode());
+        Object $kubeProxyVersion = this.getKubeProxyVersion();
+        result = result * prime + ($kubeProxyVersion == null ? 43 : $kubeProxyVersion.hashCode());
+        Object $kubeletVersion = this.getKubeletVersion();
+        result = result * prime + ($kubeletVersion == null ? 43 : $kubeletVersion.hashCode());
+        Object $machineID = this.getMachineID();
+        result = result * prime + ($machineID == null ? 43 : $machineID.hashCode());
+        Object $operatingSystem = this.getOperatingSystem();
+        result = result * prime + ($operatingSystem == null ? 43 : $operatingSystem.hashCode());
+        Object $osImage = this.getOsImage();
+        result = result * prime + ($osImage == null ? 43 : $osImage.hashCode());
+        Object $runningInUserNamespace = this.getRunningInUserNamespace();
+        result = result * prime + ($runningInUserNamespace == null ? 43 : $runningInUserNamespace.hashCode());
+        Object $swap = this.getSwap();
+        result = result * prime + ($swap == null ? 43 : $swap.hashCode());
+        Object $systemUUID = this.getSystemUUID();
+        result = result * prime + ($systemUUID == null ? 43 : $systemUUID.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NodeSystemInfo(" + "architecture=" + this.getArchitecture() + ", bootID=" + this.getBootID() + ", containerRuntimeVersion=" + this.getContainerRuntimeVersion() + ", kernelVersion=" + this.getKernelVersion() + ", kubeProxyVersion=" + this.getKubeProxyVersion() + ", kubeletVersion=" + this.getKubeletVersion() + ", machineID=" + this.getMachineID() + ", operatingSystem=" + this.getOperatingSystem() + ", osImage=" + this.getOsImage() + ", runningInUserNamespace=" + this.getRunningInUserNamespace() + ", swap=" + this.getSwap() + ", systemUUID=" + this.getSystemUUID() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

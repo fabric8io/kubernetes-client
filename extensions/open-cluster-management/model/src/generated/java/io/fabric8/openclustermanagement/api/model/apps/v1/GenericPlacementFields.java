@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * GenericPlacementFields - in alignment with kubefed
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "clusterSelector",
     "clusters"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -144,6 +135,57 @@ public class GenericPlacementFields implements Editable<GenericPlacementFieldsBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GenericPlacementFields)) {
+            return false;
+        }
+        GenericPlacementFields other = (GenericPlacementFields) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterSelector = this.getClusterSelector();
+        Object other$clusterSelector = other.getClusterSelector();
+        if (this$clusterSelector == null ? other$clusterSelector != null : !this$clusterSelector.equals(other$clusterSelector)) {
+            return false;
+        }
+        Object this$clusters = this.getClusters();
+        Object other$clusters = other.getClusters();
+        if (this$clusters == null ? other$clusters != null : !this$clusters.equals(other$clusters)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GenericPlacementFields;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterSelector = this.getClusterSelector();
+        result = result * prime + ($clusterSelector == null ? 43 : $clusterSelector.hashCode());
+        Object $clusters = this.getClusters();
+        result = result * prime + ($clusters == null ? 43 : $clusters.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GenericPlacementFields(" + "clusterSelector=" + this.getClusterSelector() + ", clusters=" + this.getClusters() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

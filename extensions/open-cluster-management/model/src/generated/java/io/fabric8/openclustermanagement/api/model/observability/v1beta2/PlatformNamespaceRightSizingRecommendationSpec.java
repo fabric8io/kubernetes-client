@@ -28,21 +28,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "enabled",
     "namespaceBinding"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -137,6 +128,57 @@ public class PlatformNamespaceRightSizingRecommendationSpec implements Editable<
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PlatformNamespaceRightSizingRecommendationSpec)) {
+            return false;
+        }
+        PlatformNamespaceRightSizingRecommendationSpec other = (PlatformNamespaceRightSizingRecommendationSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$enabled = this.getEnabled();
+        Object other$enabled = other.getEnabled();
+        if (this$enabled == null ? other$enabled != null : !this$enabled.equals(other$enabled)) {
+            return false;
+        }
+        Object this$namespaceBinding = this.getNamespaceBinding();
+        Object other$namespaceBinding = other.getNamespaceBinding();
+        if (this$namespaceBinding == null ? other$namespaceBinding != null : !this$namespaceBinding.equals(other$namespaceBinding)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PlatformNamespaceRightSizingRecommendationSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $enabled = this.getEnabled();
+        result = result * prime + ($enabled == null ? 43 : $enabled.hashCode());
+        Object $namespaceBinding = this.getNamespaceBinding();
+        result = result * prime + ($namespaceBinding == null ? 43 : $namespaceBinding.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PlatformNamespaceRightSizingRecommendationSpec(" + "enabled=" + this.getEnabled() + ", namespaceBinding=" + this.getNamespaceBinding() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

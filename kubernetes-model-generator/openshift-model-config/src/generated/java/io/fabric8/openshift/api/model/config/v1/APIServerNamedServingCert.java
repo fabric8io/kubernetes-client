@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * APIServerNamedServingCert maps a server DNS name, as understood by a client, to a certificate.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "names",
     "servingCertificate"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -143,6 +134,57 @@ public class APIServerNamedServingCert implements Editable<APIServerNamedServing
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof APIServerNamedServingCert)) {
+            return false;
+        }
+        APIServerNamedServingCert other = (APIServerNamedServingCert) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$names = this.getNames();
+        Object other$names = other.getNames();
+        if (this$names == null ? other$names != null : !this$names.equals(other$names)) {
+            return false;
+        }
+        Object this$servingCertificate = this.getServingCertificate();
+        Object other$servingCertificate = other.getServingCertificate();
+        if (this$servingCertificate == null ? other$servingCertificate != null : !this$servingCertificate.equals(other$servingCertificate)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof APIServerNamedServingCert;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $names = this.getNames();
+        result = result * prime + ($names == null ? 43 : $names.hashCode());
+        Object $servingCertificate = this.getServingCertificate();
+        result = result * prime + ($servingCertificate == null ? 43 : $servingCertificate.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "APIServerNamedServingCert(" + "names=" + this.getNames() + ", servingCertificate=" + this.getServingCertificate() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

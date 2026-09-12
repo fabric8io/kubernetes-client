@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CompositePodGroupTemplate represents a template for a CompositePodGroup with a scheduling policy.
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "priorityClassName",
     "schedulingConstraints",
     "schedulingPolicy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -286,6 +277,106 @@ public class CompositePodGroupTemplate implements Editable<CompositePodGroupTemp
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CompositePodGroupTemplate)) {
+            return false;
+        }
+        CompositePodGroupTemplate other = (CompositePodGroupTemplate) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$compositePodGroupTemplates = this.getCompositePodGroupTemplates();
+        Object other$compositePodGroupTemplates = other.getCompositePodGroupTemplates();
+        if (this$compositePodGroupTemplates == null ? other$compositePodGroupTemplates != null : !this$compositePodGroupTemplates.equals(other$compositePodGroupTemplates)) {
+            return false;
+        }
+        Object this$disruptionMode = this.getDisruptionMode();
+        Object other$disruptionMode = other.getDisruptionMode();
+        if (this$disruptionMode == null ? other$disruptionMode != null : !this$disruptionMode.equals(other$disruptionMode)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$podGroupTemplates = this.getPodGroupTemplates();
+        Object other$podGroupTemplates = other.getPodGroupTemplates();
+        if (this$podGroupTemplates == null ? other$podGroupTemplates != null : !this$podGroupTemplates.equals(other$podGroupTemplates)) {
+            return false;
+        }
+        Object this$preemptionPolicy = this.getPreemptionPolicy();
+        Object other$preemptionPolicy = other.getPreemptionPolicy();
+        if (this$preemptionPolicy == null ? other$preemptionPolicy != null : !this$preemptionPolicy.equals(other$preemptionPolicy)) {
+            return false;
+        }
+        Object this$priority = this.getPriority();
+        Object other$priority = other.getPriority();
+        if (this$priority == null ? other$priority != null : !this$priority.equals(other$priority)) {
+            return false;
+        }
+        Object this$priorityClassName = this.getPriorityClassName();
+        Object other$priorityClassName = other.getPriorityClassName();
+        if (this$priorityClassName == null ? other$priorityClassName != null : !this$priorityClassName.equals(other$priorityClassName)) {
+            return false;
+        }
+        Object this$schedulingConstraints = this.getSchedulingConstraints();
+        Object other$schedulingConstraints = other.getSchedulingConstraints();
+        if (this$schedulingConstraints == null ? other$schedulingConstraints != null : !this$schedulingConstraints.equals(other$schedulingConstraints)) {
+            return false;
+        }
+        Object this$schedulingPolicy = this.getSchedulingPolicy();
+        Object other$schedulingPolicy = other.getSchedulingPolicy();
+        if (this$schedulingPolicy == null ? other$schedulingPolicy != null : !this$schedulingPolicy.equals(other$schedulingPolicy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CompositePodGroupTemplate;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $compositePodGroupTemplates = this.getCompositePodGroupTemplates();
+        result = result * prime + ($compositePodGroupTemplates == null ? 43 : $compositePodGroupTemplates.hashCode());
+        Object $disruptionMode = this.getDisruptionMode();
+        result = result * prime + ($disruptionMode == null ? 43 : $disruptionMode.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $podGroupTemplates = this.getPodGroupTemplates();
+        result = result * prime + ($podGroupTemplates == null ? 43 : $podGroupTemplates.hashCode());
+        Object $preemptionPolicy = this.getPreemptionPolicy();
+        result = result * prime + ($preemptionPolicy == null ? 43 : $preemptionPolicy.hashCode());
+        Object $priority = this.getPriority();
+        result = result * prime + ($priority == null ? 43 : $priority.hashCode());
+        Object $priorityClassName = this.getPriorityClassName();
+        result = result * prime + ($priorityClassName == null ? 43 : $priorityClassName.hashCode());
+        Object $schedulingConstraints = this.getSchedulingConstraints();
+        result = result * prime + ($schedulingConstraints == null ? 43 : $schedulingConstraints.hashCode());
+        Object $schedulingPolicy = this.getSchedulingPolicy();
+        result = result * prime + ($schedulingPolicy == null ? 43 : $schedulingPolicy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CompositePodGroupTemplate(" + "compositePodGroupTemplates=" + this.getCompositePodGroupTemplates() + ", disruptionMode=" + this.getDisruptionMode() + ", name=" + this.getName() + ", podGroupTemplates=" + this.getPodGroupTemplates() + ", preemptionPolicy=" + this.getPreemptionPolicy() + ", priority=" + this.getPriority() + ", priorityClassName=" + this.getPriorityClassName() + ", schedulingConstraints=" + this.getSchedulingConstraints() + ", schedulingPolicy=" + this.getSchedulingPolicy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * StorageSpec defines the configured storage for a group Prometheus servers. If no storage option is specified, then by default an [EmptyDir](https://kubernetes.io/docs/concepts/storage/volumes/#emptydir) will be used.<br><p> <br><p> If multiple storage options are specified, priority will be given as follows:<br><p>  1. emptyDir<br><p>  2. ephemeral<br><p>  3. volumeClaimTemplate
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "emptyDir",
     "ephemeral",
     "volumeClaimTemplate"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -181,6 +172,71 @@ public class StorageSpec implements Editable<StorageSpecBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof StorageSpec)) {
+            return false;
+        }
+        StorageSpec other = (StorageSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$disableMountSubPath = this.getDisableMountSubPath();
+        Object other$disableMountSubPath = other.getDisableMountSubPath();
+        if (this$disableMountSubPath == null ? other$disableMountSubPath != null : !this$disableMountSubPath.equals(other$disableMountSubPath)) {
+            return false;
+        }
+        Object this$emptyDir = this.getEmptyDir();
+        Object other$emptyDir = other.getEmptyDir();
+        if (this$emptyDir == null ? other$emptyDir != null : !this$emptyDir.equals(other$emptyDir)) {
+            return false;
+        }
+        Object this$ephemeral = this.getEphemeral();
+        Object other$ephemeral = other.getEphemeral();
+        if (this$ephemeral == null ? other$ephemeral != null : !this$ephemeral.equals(other$ephemeral)) {
+            return false;
+        }
+        Object this$volumeClaimTemplate = this.getVolumeClaimTemplate();
+        Object other$volumeClaimTemplate = other.getVolumeClaimTemplate();
+        if (this$volumeClaimTemplate == null ? other$volumeClaimTemplate != null : !this$volumeClaimTemplate.equals(other$volumeClaimTemplate)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof StorageSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $disableMountSubPath = this.getDisableMountSubPath();
+        result = result * prime + ($disableMountSubPath == null ? 43 : $disableMountSubPath.hashCode());
+        Object $emptyDir = this.getEmptyDir();
+        result = result * prime + ($emptyDir == null ? 43 : $emptyDir.hashCode());
+        Object $ephemeral = this.getEphemeral();
+        result = result * prime + ($ephemeral == null ? 43 : $ephemeral.hashCode());
+        Object $volumeClaimTemplate = this.getVolumeClaimTemplate();
+        result = result * prime + ($volumeClaimTemplate == null ? 43 : $volumeClaimTemplate.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "StorageSpec(" + "disableMountSubPath=" + this.getDisableMountSubPath() + ", emptyDir=" + this.getEmptyDir() + ", ephemeral=" + this.getEphemeral() + ", volumeClaimTemplate=" + this.getVolumeClaimTemplate() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * JVMChaosSpec defines the desired state of JVMChaos
@@ -62,12 +59,6 @@ import lombok.experimental.Accessors;
     "sqlType",
     "table",
     "value"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -544,6 +535,197 @@ public class JVMChaosSpec implements Editable<JVMChaosSpecBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof JVMChaosSpec)) {
+            return false;
+        }
+        JVMChaosSpec other = (JVMChaosSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$action = this.getAction();
+        Object other$action = other.getAction();
+        if (this$action == null ? other$action != null : !this$action.equals(other$action)) {
+            return false;
+        }
+        Object this$className = this.getClassName();
+        Object other$className = other.getClassName();
+        if (this$className == null ? other$className != null : !this$className.equals(other$className)) {
+            return false;
+        }
+        Object this$containerNames = this.getContainerNames();
+        Object other$containerNames = other.getContainerNames();
+        if (this$containerNames == null ? other$containerNames != null : !this$containerNames.equals(other$containerNames)) {
+            return false;
+        }
+        Object this$cpuCount = this.getCpuCount();
+        Object other$cpuCount = other.getCpuCount();
+        if (this$cpuCount == null ? other$cpuCount != null : !this$cpuCount.equals(other$cpuCount)) {
+            return false;
+        }
+        Object this$database = this.getDatabase();
+        Object other$database = other.getDatabase();
+        if (this$database == null ? other$database != null : !this$database.equals(other$database)) {
+            return false;
+        }
+        Object this$duration = this.getDuration();
+        Object other$duration = other.getDuration();
+        if (this$duration == null ? other$duration != null : !this$duration.equals(other$duration)) {
+            return false;
+        }
+        Object this$exception = this.getException();
+        Object other$exception = other.getException();
+        if (this$exception == null ? other$exception != null : !this$exception.equals(other$exception)) {
+            return false;
+        }
+        Object this$latency = this.getLatency();
+        Object other$latency = other.getLatency();
+        if (this$latency == null ? other$latency != null : !this$latency.equals(other$latency)) {
+            return false;
+        }
+        Object this$memType = this.getMemType();
+        Object other$memType = other.getMemType();
+        if (this$memType == null ? other$memType != null : !this$memType.equals(other$memType)) {
+            return false;
+        }
+        Object this$method = this.getMethod();
+        Object other$method = other.getMethod();
+        if (this$method == null ? other$method != null : !this$method.equals(other$method)) {
+            return false;
+        }
+        Object this$mode = this.getMode();
+        Object other$mode = other.getMode();
+        if (this$mode == null ? other$mode != null : !this$mode.equals(other$mode)) {
+            return false;
+        }
+        Object this$mysqlConnectorVersion = this.getMysqlConnectorVersion();
+        Object other$mysqlConnectorVersion = other.getMysqlConnectorVersion();
+        if (this$mysqlConnectorVersion == null ? other$mysqlConnectorVersion != null : !this$mysqlConnectorVersion.equals(other$mysqlConnectorVersion)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$pid = this.getPid();
+        Object other$pid = other.getPid();
+        if (this$pid == null ? other$pid != null : !this$pid.equals(other$pid)) {
+            return false;
+        }
+        Object this$port = this.getPort();
+        Object other$port = other.getPort();
+        if (this$port == null ? other$port != null : !this$port.equals(other$port)) {
+            return false;
+        }
+        Object this$remoteCluster = this.getRemoteCluster();
+        Object other$remoteCluster = other.getRemoteCluster();
+        if (this$remoteCluster == null ? other$remoteCluster != null : !this$remoteCluster.equals(other$remoteCluster)) {
+            return false;
+        }
+        Object this$returnValue = this.getReturnValue();
+        Object other$returnValue = other.getReturnValue();
+        if (this$returnValue == null ? other$returnValue != null : !this$returnValue.equals(other$returnValue)) {
+            return false;
+        }
+        Object this$ruleData = this.getRuleData();
+        Object other$ruleData = other.getRuleData();
+        if (this$ruleData == null ? other$ruleData != null : !this$ruleData.equals(other$ruleData)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$sqlType = this.getSqlType();
+        Object other$sqlType = other.getSqlType();
+        if (this$sqlType == null ? other$sqlType != null : !this$sqlType.equals(other$sqlType)) {
+            return false;
+        }
+        Object this$table = this.getTable();
+        Object other$table = other.getTable();
+        if (this$table == null ? other$table != null : !this$table.equals(other$table)) {
+            return false;
+        }
+        Object this$value = this.getValue();
+        Object other$value = other.getValue();
+        if (this$value == null ? other$value != null : !this$value.equals(other$value)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof JVMChaosSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $action = this.getAction();
+        result = result * prime + ($action == null ? 43 : $action.hashCode());
+        Object $className = this.getClassName();
+        result = result * prime + ($className == null ? 43 : $className.hashCode());
+        Object $containerNames = this.getContainerNames();
+        result = result * prime + ($containerNames == null ? 43 : $containerNames.hashCode());
+        Object $cpuCount = this.getCpuCount();
+        result = result * prime + ($cpuCount == null ? 43 : $cpuCount.hashCode());
+        Object $database = this.getDatabase();
+        result = result * prime + ($database == null ? 43 : $database.hashCode());
+        Object $duration = this.getDuration();
+        result = result * prime + ($duration == null ? 43 : $duration.hashCode());
+        Object $exception = this.getException();
+        result = result * prime + ($exception == null ? 43 : $exception.hashCode());
+        Object $latency = this.getLatency();
+        result = result * prime + ($latency == null ? 43 : $latency.hashCode());
+        Object $memType = this.getMemType();
+        result = result * prime + ($memType == null ? 43 : $memType.hashCode());
+        Object $method = this.getMethod();
+        result = result * prime + ($method == null ? 43 : $method.hashCode());
+        Object $mode = this.getMode();
+        result = result * prime + ($mode == null ? 43 : $mode.hashCode());
+        Object $mysqlConnectorVersion = this.getMysqlConnectorVersion();
+        result = result * prime + ($mysqlConnectorVersion == null ? 43 : $mysqlConnectorVersion.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $pid = this.getPid();
+        result = result * prime + ($pid == null ? 43 : $pid.hashCode());
+        Object $port = this.getPort();
+        result = result * prime + ($port == null ? 43 : $port.hashCode());
+        Object $remoteCluster = this.getRemoteCluster();
+        result = result * prime + ($remoteCluster == null ? 43 : $remoteCluster.hashCode());
+        Object $returnValue = this.getReturnValue();
+        result = result * prime + ($returnValue == null ? 43 : $returnValue.hashCode());
+        Object $ruleData = this.getRuleData();
+        result = result * prime + ($ruleData == null ? 43 : $ruleData.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $sqlType = this.getSqlType();
+        result = result * prime + ($sqlType == null ? 43 : $sqlType.hashCode());
+        Object $table = this.getTable();
+        result = result * prime + ($table == null ? 43 : $table.hashCode());
+        Object $value = this.getValue();
+        result = result * prime + ($value == null ? 43 : $value.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "JVMChaosSpec(" + "action=" + this.getAction() + ", className=" + this.getClassName() + ", containerNames=" + this.getContainerNames() + ", cpuCount=" + this.getCpuCount() + ", database=" + this.getDatabase() + ", duration=" + this.getDuration() + ", exception=" + this.getException() + ", latency=" + this.getLatency() + ", memType=" + this.getMemType() + ", method=" + this.getMethod() + ", mode=" + this.getMode() + ", mysqlConnectorVersion=" + this.getMysqlConnectorVersion() + ", name=" + this.getName() + ", pid=" + this.getPid() + ", port=" + this.getPort() + ", remoteCluster=" + this.getRemoteCluster() + ", returnValue=" + this.getReturnValue() + ", ruleData=" + this.getRuleData() + ", selector=" + this.getSelector() + ", sqlType=" + this.getSqlType() + ", table=" + this.getTable() + ", value=" + this.getValue() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

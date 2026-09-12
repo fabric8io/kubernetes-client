@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MachineOSConfigSpec describes user-configurable options as well as information about a build process.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "machineConfigPool",
     "renderedImagePushSecret",
     "renderedImagePushSpec"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -223,6 +214,85 @@ public class MachineOSConfigSpec implements Editable<MachineOSConfigSpecBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachineOSConfigSpec)) {
+            return false;
+        }
+        MachineOSConfigSpec other = (MachineOSConfigSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$baseImagePullSecret = this.getBaseImagePullSecret();
+        Object other$baseImagePullSecret = other.getBaseImagePullSecret();
+        if (this$baseImagePullSecret == null ? other$baseImagePullSecret != null : !this$baseImagePullSecret.equals(other$baseImagePullSecret)) {
+            return false;
+        }
+        Object this$containerFile = this.getContainerFile();
+        Object other$containerFile = other.getContainerFile();
+        if (this$containerFile == null ? other$containerFile != null : !this$containerFile.equals(other$containerFile)) {
+            return false;
+        }
+        Object this$imageBuilder = this.getImageBuilder();
+        Object other$imageBuilder = other.getImageBuilder();
+        if (this$imageBuilder == null ? other$imageBuilder != null : !this$imageBuilder.equals(other$imageBuilder)) {
+            return false;
+        }
+        Object this$machineConfigPool = this.getMachineConfigPool();
+        Object other$machineConfigPool = other.getMachineConfigPool();
+        if (this$machineConfigPool == null ? other$machineConfigPool != null : !this$machineConfigPool.equals(other$machineConfigPool)) {
+            return false;
+        }
+        Object this$renderedImagePushSecret = this.getRenderedImagePushSecret();
+        Object other$renderedImagePushSecret = other.getRenderedImagePushSecret();
+        if (this$renderedImagePushSecret == null ? other$renderedImagePushSecret != null : !this$renderedImagePushSecret.equals(other$renderedImagePushSecret)) {
+            return false;
+        }
+        Object this$renderedImagePushSpec = this.getRenderedImagePushSpec();
+        Object other$renderedImagePushSpec = other.getRenderedImagePushSpec();
+        if (this$renderedImagePushSpec == null ? other$renderedImagePushSpec != null : !this$renderedImagePushSpec.equals(other$renderedImagePushSpec)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachineOSConfigSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $baseImagePullSecret = this.getBaseImagePullSecret();
+        result = result * prime + ($baseImagePullSecret == null ? 43 : $baseImagePullSecret.hashCode());
+        Object $containerFile = this.getContainerFile();
+        result = result * prime + ($containerFile == null ? 43 : $containerFile.hashCode());
+        Object $imageBuilder = this.getImageBuilder();
+        result = result * prime + ($imageBuilder == null ? 43 : $imageBuilder.hashCode());
+        Object $machineConfigPool = this.getMachineConfigPool();
+        result = result * prime + ($machineConfigPool == null ? 43 : $machineConfigPool.hashCode());
+        Object $renderedImagePushSecret = this.getRenderedImagePushSecret();
+        result = result * prime + ($renderedImagePushSecret == null ? 43 : $renderedImagePushSecret.hashCode());
+        Object $renderedImagePushSpec = this.getRenderedImagePushSpec();
+        result = result * prime + ($renderedImagePushSpec == null ? 43 : $renderedImagePushSpec.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachineOSConfigSpec(" + "baseImagePullSecret=" + this.getBaseImagePullSecret() + ", containerFile=" + this.getContainerFile() + ", imageBuilder=" + this.getImageBuilder() + ", machineConfigPool=" + this.getMachineConfigPool() + ", renderedImagePushSecret=" + this.getRenderedImagePushSecret() + ", renderedImagePushSpec=" + this.getRenderedImagePushSpec() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

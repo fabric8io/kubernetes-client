@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * BuildTriggerCause holds information about a triggered build. It is used for displaying build trigger data for each build and build configuration in oc describe. It is also used to describe which triggers led to the most recent update in the build configuration.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "gitlabWebHook",
     "imageChangeBuild",
     "message"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -219,6 +210,85 @@ public class BuildTriggerCause implements Editable<BuildTriggerCauseBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BuildTriggerCause)) {
+            return false;
+        }
+        BuildTriggerCause other = (BuildTriggerCause) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bitbucketWebHook = this.getBitbucketWebHook();
+        Object other$bitbucketWebHook = other.getBitbucketWebHook();
+        if (this$bitbucketWebHook == null ? other$bitbucketWebHook != null : !this$bitbucketWebHook.equals(other$bitbucketWebHook)) {
+            return false;
+        }
+        Object this$genericWebHook = this.getGenericWebHook();
+        Object other$genericWebHook = other.getGenericWebHook();
+        if (this$genericWebHook == null ? other$genericWebHook != null : !this$genericWebHook.equals(other$genericWebHook)) {
+            return false;
+        }
+        Object this$githubWebHook = this.getGithubWebHook();
+        Object other$githubWebHook = other.getGithubWebHook();
+        if (this$githubWebHook == null ? other$githubWebHook != null : !this$githubWebHook.equals(other$githubWebHook)) {
+            return false;
+        }
+        Object this$gitlabWebHook = this.getGitlabWebHook();
+        Object other$gitlabWebHook = other.getGitlabWebHook();
+        if (this$gitlabWebHook == null ? other$gitlabWebHook != null : !this$gitlabWebHook.equals(other$gitlabWebHook)) {
+            return false;
+        }
+        Object this$imageChangeBuild = this.getImageChangeBuild();
+        Object other$imageChangeBuild = other.getImageChangeBuild();
+        if (this$imageChangeBuild == null ? other$imageChangeBuild != null : !this$imageChangeBuild.equals(other$imageChangeBuild)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BuildTriggerCause;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bitbucketWebHook = this.getBitbucketWebHook();
+        result = result * prime + ($bitbucketWebHook == null ? 43 : $bitbucketWebHook.hashCode());
+        Object $genericWebHook = this.getGenericWebHook();
+        result = result * prime + ($genericWebHook == null ? 43 : $genericWebHook.hashCode());
+        Object $githubWebHook = this.getGithubWebHook();
+        result = result * prime + ($githubWebHook == null ? 43 : $githubWebHook.hashCode());
+        Object $gitlabWebHook = this.getGitlabWebHook();
+        result = result * prime + ($gitlabWebHook == null ? 43 : $gitlabWebHook.hashCode());
+        Object $imageChangeBuild = this.getImageChangeBuild();
+        result = result * prime + ($imageChangeBuild == null ? 43 : $imageChangeBuild.hashCode());
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BuildTriggerCause(" + "bitbucketWebHook=" + this.getBitbucketWebHook() + ", genericWebHook=" + this.getGenericWebHook() + ", githubWebHook=" + this.getGithubWebHook() + ", gitlabWebHook=" + this.getGitlabWebHook() + ", imageChangeBuild=" + this.getImageChangeBuild() + ", message=" + this.getMessage() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

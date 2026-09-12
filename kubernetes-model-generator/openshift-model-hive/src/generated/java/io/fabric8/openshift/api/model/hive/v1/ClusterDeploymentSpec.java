@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClusterDeploymentSpec defines the desired state of ClusterDeployment
@@ -58,12 +55,6 @@ import lombok.experimental.Accessors;
     "preserveOnDelete",
     "provisioning",
     "pullSecretRef"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -466,6 +457,169 @@ public class ClusterDeploymentSpec implements Editable<ClusterDeploymentSpecBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterDeploymentSpec)) {
+            return false;
+        }
+        ClusterDeploymentSpec other = (ClusterDeploymentSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$baseDomain = this.getBaseDomain();
+        Object other$baseDomain = other.getBaseDomain();
+        if (this$baseDomain == null ? other$baseDomain != null : !this$baseDomain.equals(other$baseDomain)) {
+            return false;
+        }
+        Object this$boundServiceAccountSigningKeySecretRef = this.getBoundServiceAccountSigningKeySecretRef();
+        Object other$boundServiceAccountSigningKeySecretRef = other.getBoundServiceAccountSigningKeySecretRef();
+        if (this$boundServiceAccountSigningKeySecretRef == null ? other$boundServiceAccountSigningKeySecretRef != null : !this$boundServiceAccountSigningKeySecretRef.equals(other$boundServiceAccountSigningKeySecretRef)) {
+            return false;
+        }
+        Object this$certificateBundles = this.getCertificateBundles();
+        Object other$certificateBundles = other.getCertificateBundles();
+        if (this$certificateBundles == null ? other$certificateBundles != null : !this$certificateBundles.equals(other$certificateBundles)) {
+            return false;
+        }
+        Object this$clusterInstallRef = this.getClusterInstallRef();
+        Object other$clusterInstallRef = other.getClusterInstallRef();
+        if (this$clusterInstallRef == null ? other$clusterInstallRef != null : !this$clusterInstallRef.equals(other$clusterInstallRef)) {
+            return false;
+        }
+        Object this$clusterMetadata = this.getClusterMetadata();
+        Object other$clusterMetadata = other.getClusterMetadata();
+        if (this$clusterMetadata == null ? other$clusterMetadata != null : !this$clusterMetadata.equals(other$clusterMetadata)) {
+            return false;
+        }
+        Object this$clusterName = this.getClusterName();
+        Object other$clusterName = other.getClusterName();
+        if (this$clusterName == null ? other$clusterName != null : !this$clusterName.equals(other$clusterName)) {
+            return false;
+        }
+        Object this$clusterPoolRef = this.getClusterPoolRef();
+        Object other$clusterPoolRef = other.getClusterPoolRef();
+        if (this$clusterPoolRef == null ? other$clusterPoolRef != null : !this$clusterPoolRef.equals(other$clusterPoolRef)) {
+            return false;
+        }
+        Object this$controlPlaneConfig = this.getControlPlaneConfig();
+        Object other$controlPlaneConfig = other.getControlPlaneConfig();
+        if (this$controlPlaneConfig == null ? other$controlPlaneConfig != null : !this$controlPlaneConfig.equals(other$controlPlaneConfig)) {
+            return false;
+        }
+        Object this$hibernateAfter = this.getHibernateAfter();
+        Object other$hibernateAfter = other.getHibernateAfter();
+        if (this$hibernateAfter == null ? other$hibernateAfter != null : !this$hibernateAfter.equals(other$hibernateAfter)) {
+            return false;
+        }
+        Object this$ingress = this.getIngress();
+        Object other$ingress = other.getIngress();
+        if (this$ingress == null ? other$ingress != null : !this$ingress.equals(other$ingress)) {
+            return false;
+        }
+        Object this$installAttemptsLimit = this.getInstallAttemptsLimit();
+        Object other$installAttemptsLimit = other.getInstallAttemptsLimit();
+        if (this$installAttemptsLimit == null ? other$installAttemptsLimit != null : !this$installAttemptsLimit.equals(other$installAttemptsLimit)) {
+            return false;
+        }
+        Object this$installed = this.getInstalled();
+        Object other$installed = other.getInstalled();
+        if (this$installed == null ? other$installed != null : !this$installed.equals(other$installed)) {
+            return false;
+        }
+        Object this$manageDNS = this.getManageDNS();
+        Object other$manageDNS = other.getManageDNS();
+        if (this$manageDNS == null ? other$manageDNS != null : !this$manageDNS.equals(other$manageDNS)) {
+            return false;
+        }
+        Object this$platform = this.getPlatform();
+        Object other$platform = other.getPlatform();
+        if (this$platform == null ? other$platform != null : !this$platform.equals(other$platform)) {
+            return false;
+        }
+        Object this$powerState = this.getPowerState();
+        Object other$powerState = other.getPowerState();
+        if (this$powerState == null ? other$powerState != null : !this$powerState.equals(other$powerState)) {
+            return false;
+        }
+        Object this$preserveOnDelete = this.getPreserveOnDelete();
+        Object other$preserveOnDelete = other.getPreserveOnDelete();
+        if (this$preserveOnDelete == null ? other$preserveOnDelete != null : !this$preserveOnDelete.equals(other$preserveOnDelete)) {
+            return false;
+        }
+        Object this$provisioning = this.getProvisioning();
+        Object other$provisioning = other.getProvisioning();
+        if (this$provisioning == null ? other$provisioning != null : !this$provisioning.equals(other$provisioning)) {
+            return false;
+        }
+        Object this$pullSecretRef = this.getPullSecretRef();
+        Object other$pullSecretRef = other.getPullSecretRef();
+        if (this$pullSecretRef == null ? other$pullSecretRef != null : !this$pullSecretRef.equals(other$pullSecretRef)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterDeploymentSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $baseDomain = this.getBaseDomain();
+        result = result * prime + ($baseDomain == null ? 43 : $baseDomain.hashCode());
+        Object $boundServiceAccountSigningKeySecretRef = this.getBoundServiceAccountSigningKeySecretRef();
+        result = result * prime + ($boundServiceAccountSigningKeySecretRef == null ? 43 : $boundServiceAccountSigningKeySecretRef.hashCode());
+        Object $certificateBundles = this.getCertificateBundles();
+        result = result * prime + ($certificateBundles == null ? 43 : $certificateBundles.hashCode());
+        Object $clusterInstallRef = this.getClusterInstallRef();
+        result = result * prime + ($clusterInstallRef == null ? 43 : $clusterInstallRef.hashCode());
+        Object $clusterMetadata = this.getClusterMetadata();
+        result = result * prime + ($clusterMetadata == null ? 43 : $clusterMetadata.hashCode());
+        Object $clusterName = this.getClusterName();
+        result = result * prime + ($clusterName == null ? 43 : $clusterName.hashCode());
+        Object $clusterPoolRef = this.getClusterPoolRef();
+        result = result * prime + ($clusterPoolRef == null ? 43 : $clusterPoolRef.hashCode());
+        Object $controlPlaneConfig = this.getControlPlaneConfig();
+        result = result * prime + ($controlPlaneConfig == null ? 43 : $controlPlaneConfig.hashCode());
+        Object $hibernateAfter = this.getHibernateAfter();
+        result = result * prime + ($hibernateAfter == null ? 43 : $hibernateAfter.hashCode());
+        Object $ingress = this.getIngress();
+        result = result * prime + ($ingress == null ? 43 : $ingress.hashCode());
+        Object $installAttemptsLimit = this.getInstallAttemptsLimit();
+        result = result * prime + ($installAttemptsLimit == null ? 43 : $installAttemptsLimit.hashCode());
+        Object $installed = this.getInstalled();
+        result = result * prime + ($installed == null ? 43 : $installed.hashCode());
+        Object $manageDNS = this.getManageDNS();
+        result = result * prime + ($manageDNS == null ? 43 : $manageDNS.hashCode());
+        Object $platform = this.getPlatform();
+        result = result * prime + ($platform == null ? 43 : $platform.hashCode());
+        Object $powerState = this.getPowerState();
+        result = result * prime + ($powerState == null ? 43 : $powerState.hashCode());
+        Object $preserveOnDelete = this.getPreserveOnDelete();
+        result = result * prime + ($preserveOnDelete == null ? 43 : $preserveOnDelete.hashCode());
+        Object $provisioning = this.getProvisioning();
+        result = result * prime + ($provisioning == null ? 43 : $provisioning.hashCode());
+        Object $pullSecretRef = this.getPullSecretRef();
+        result = result * prime + ($pullSecretRef == null ? 43 : $pullSecretRef.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterDeploymentSpec(" + "baseDomain=" + this.getBaseDomain() + ", boundServiceAccountSigningKeySecretRef=" + this.getBoundServiceAccountSigningKeySecretRef() + ", certificateBundles=" + this.getCertificateBundles() + ", clusterInstallRef=" + this.getClusterInstallRef() + ", clusterMetadata=" + this.getClusterMetadata() + ", clusterName=" + this.getClusterName() + ", clusterPoolRef=" + this.getClusterPoolRef() + ", controlPlaneConfig=" + this.getControlPlaneConfig() + ", hibernateAfter=" + this.getHibernateAfter() + ", ingress=" + this.getIngress() + ", installAttemptsLimit=" + this.getInstallAttemptsLimit() + ", installed=" + this.getInstalled() + ", manageDNS=" + this.getManageDNS() + ", platform=" + this.getPlatform() + ", powerState=" + this.getPowerState() + ", preserveOnDelete=" + this.getPreserveOnDelete() + ", provisioning=" + this.getProvisioning() + ", pullSecretRef=" + this.getPullSecretRef() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

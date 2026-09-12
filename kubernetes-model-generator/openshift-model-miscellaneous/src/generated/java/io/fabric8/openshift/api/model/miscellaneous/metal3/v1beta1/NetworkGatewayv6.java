@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NetworkGatewayv6 represents a gateway, given as a string or as a reference to a Metal3IPPool.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "fromPoolAnnotation",
     "fromPoolRef",
     "string"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -181,6 +172,71 @@ public class NetworkGatewayv6 implements Editable<NetworkGatewayv6Builder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkGatewayv6)) {
+            return false;
+        }
+        NetworkGatewayv6 other = (NetworkGatewayv6) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$fromIPPool = this.getFromIPPool();
+        Object other$fromIPPool = other.getFromIPPool();
+        if (this$fromIPPool == null ? other$fromIPPool != null : !this$fromIPPool.equals(other$fromIPPool)) {
+            return false;
+        }
+        Object this$fromPoolAnnotation = this.getFromPoolAnnotation();
+        Object other$fromPoolAnnotation = other.getFromPoolAnnotation();
+        if (this$fromPoolAnnotation == null ? other$fromPoolAnnotation != null : !this$fromPoolAnnotation.equals(other$fromPoolAnnotation)) {
+            return false;
+        }
+        Object this$fromPoolRef = this.getFromPoolRef();
+        Object other$fromPoolRef = other.getFromPoolRef();
+        if (this$fromPoolRef == null ? other$fromPoolRef != null : !this$fromPoolRef.equals(other$fromPoolRef)) {
+            return false;
+        }
+        Object this$string = this.getString();
+        Object other$string = other.getString();
+        if (this$string == null ? other$string != null : !this$string.equals(other$string)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkGatewayv6;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $fromIPPool = this.getFromIPPool();
+        result = result * prime + ($fromIPPool == null ? 43 : $fromIPPool.hashCode());
+        Object $fromPoolAnnotation = this.getFromPoolAnnotation();
+        result = result * prime + ($fromPoolAnnotation == null ? 43 : $fromPoolAnnotation.hashCode());
+        Object $fromPoolRef = this.getFromPoolRef();
+        result = result * prime + ($fromPoolRef == null ? 43 : $fromPoolRef.hashCode());
+        Object $string = this.getString();
+        result = result * prime + ($string == null ? 43 : $string.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkGatewayv6(" + "fromIPPool=" + this.getFromIPPool() + ", fromPoolAnnotation=" + this.getFromPoolAnnotation() + ", fromPoolRef=" + this.getFromPoolRef() + ", string=" + this.getString() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

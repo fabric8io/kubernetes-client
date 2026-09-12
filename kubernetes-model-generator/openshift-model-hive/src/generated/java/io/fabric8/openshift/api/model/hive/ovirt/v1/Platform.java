@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Platform stores all the global oVirt configuration
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "ovirt_cluster_id",
     "ovirt_network_name",
     "storage_domain_id"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,78 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Platform)) {
+            return false;
+        }
+        Platform other = (Platform) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$certificatesSecretRef = this.getCertificatesSecretRef();
+        Object other$certificatesSecretRef = other.getCertificatesSecretRef();
+        if (this$certificatesSecretRef == null ? other$certificatesSecretRef != null : !this$certificatesSecretRef.equals(other$certificatesSecretRef)) {
+            return false;
+        }
+        Object this$credentialsSecretRef = this.getCredentialsSecretRef();
+        Object other$credentialsSecretRef = other.getCredentialsSecretRef();
+        if (this$credentialsSecretRef == null ? other$credentialsSecretRef != null : !this$credentialsSecretRef.equals(other$credentialsSecretRef)) {
+            return false;
+        }
+        Object this$ovirtClusterId = this.getOvirtClusterId();
+        Object other$ovirtClusterId = other.getOvirtClusterId();
+        if (this$ovirtClusterId == null ? other$ovirtClusterId != null : !this$ovirtClusterId.equals(other$ovirtClusterId)) {
+            return false;
+        }
+        Object this$ovirtNetworkName = this.getOvirtNetworkName();
+        Object other$ovirtNetworkName = other.getOvirtNetworkName();
+        if (this$ovirtNetworkName == null ? other$ovirtNetworkName != null : !this$ovirtNetworkName.equals(other$ovirtNetworkName)) {
+            return false;
+        }
+        Object this$storageDomainId = this.getStorageDomainId();
+        Object other$storageDomainId = other.getStorageDomainId();
+        if (this$storageDomainId == null ? other$storageDomainId != null : !this$storageDomainId.equals(other$storageDomainId)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Platform;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $certificatesSecretRef = this.getCertificatesSecretRef();
+        result = result * prime + ($certificatesSecretRef == null ? 43 : $certificatesSecretRef.hashCode());
+        Object $credentialsSecretRef = this.getCredentialsSecretRef();
+        result = result * prime + ($credentialsSecretRef == null ? 43 : $credentialsSecretRef.hashCode());
+        Object $ovirtClusterId = this.getOvirtClusterId();
+        result = result * prime + ($ovirtClusterId == null ? 43 : $ovirtClusterId.hashCode());
+        Object $ovirtNetworkName = this.getOvirtNetworkName();
+        result = result * prime + ($ovirtNetworkName == null ? 43 : $ovirtNetworkName.hashCode());
+        Object $storageDomainId = this.getStorageDomainId();
+        result = result * prime + ($storageDomainId == null ? 43 : $storageDomainId.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Platform(" + "certificatesSecretRef=" + this.getCertificatesSecretRef() + ", credentialsSecretRef=" + this.getCredentialsSecretRef() + ", ovirtClusterId=" + this.getOvirtClusterId() + ", ovirtNetworkName=" + this.getOvirtNetworkName() + ", storageDomainId=" + this.getStorageDomainId() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }
