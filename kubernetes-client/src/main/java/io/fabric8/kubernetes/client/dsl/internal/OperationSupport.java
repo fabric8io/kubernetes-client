@@ -61,7 +61,6 @@ import java.util.concurrent.TimeUnit;
 
 public class OperationSupport {
 
-  private static final String FIELD_MANAGER_PARAM = "?fieldManager=";
   public static final String JSON = "application/json";
   public static final String JSON_PATCH = "application/json-patch+json";
   public static final String STRATEGIC_MERGE_JSON_PATCH = "application/strategic-merge-patch+json";
@@ -197,29 +196,23 @@ public class OperationSupport {
   }
 
   public URL getResourceURLForWriteOperation(URL resourceURL) throws MalformedURLException {
-    if (dryRun) {
-      resourceURL = new URL(URLUtils.join(resourceURL.toString(), "?dryRun=All"));
-    }
+    URLUtils.URLBuilder urlBuilder = new URLUtils.URLBuilder(resourceURL);
     if (context.fieldValidation != null) {
-      resourceURL = new URL(
-          URLUtils.join(resourceURL.toString(), "?fieldValidation=" + context.fieldValidation.parameterValue()));
+      urlBuilder.addQueryParameter("fieldValidation", context.fieldValidation.parameterValue());
     }
-    return resourceURL;
+    if (dryRun) {
+      urlBuilder.addQueryParameter("dryRun", "All");
+    }
+    return urlBuilder.build();
   }
 
   public URL getResourceURLForPatchOperation(URL resourceUrl, PatchContext patchContext) throws MalformedURLException {
     if (patchContext != null) {
-      String url = resourceUrl.toString();
+      URLUtils.URLBuilder urlBuilder = new URLUtils.URLBuilder(resourceUrl);
       Boolean forceConflicts = patchContext.getForce();
 
       if (forceConflicts == null) {
         forceConflicts = this.context.forceConflicts;
-      }
-      if (forceConflicts != null) {
-        url = URLUtils.join(url, "?force=" + forceConflicts);
-      }
-      if ((patchContext.getDryRun() != null && !patchContext.getDryRun().isEmpty()) || dryRun) {
-        url = URLUtils.join(url, "?dryRun=All");
       }
       String fieldManager = patchContext.getFieldManager();
       if (fieldManager == null) {
@@ -228,17 +221,23 @@ public class OperationSupport {
       if (fieldManager == null && patchContext.getPatchType() == PatchType.SERVER_SIDE_APPLY) {
         fieldManager = "fabric8";
       }
-      if (fieldManager != null) {
-        url = URLUtils.join(url, FIELD_MANAGER_PARAM + fieldManager);
-      }
       String fieldValidation = patchContext.getFieldValidation();
       if (fieldValidation == null && this.context.fieldValidation != null) {
         fieldValidation = this.context.fieldValidation.parameterValue();
       }
       if (fieldValidation != null) {
-        url = URLUtils.join(url, "?fieldValidation=" + fieldValidation);
+        urlBuilder.addQueryParameter("fieldValidation", fieldValidation);
       }
-      return new URL(url);
+      if (fieldManager != null) {
+        urlBuilder.addQueryParameter("fieldManager", fieldManager);
+      }
+      if ((patchContext.getDryRun() != null && !patchContext.getDryRun().isEmpty()) || dryRun) {
+        urlBuilder.addQueryParameter("dryRun", "All");
+      }
+      if (forceConflicts != null) {
+        urlBuilder.addQueryParameter("force", forceConflicts.toString());
+      }
+      return urlBuilder.build();
     }
     return resourceUrl;
   }

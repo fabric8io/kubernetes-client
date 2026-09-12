@@ -165,44 +165,44 @@ public class BuildConfigOperationsImpl
   }
 
   private String getQueryParameters() throws MalformedURLException {
-    StringBuilder sb = new StringBuilder();
-    sb.append(URLUtils.join(getResourceUrl().toString(), "instantiatebinary"));
+    URLUtils.URLBuilder urlBuilder = new URLUtils.URLBuilder(
+        URLUtils.join(getResourceUrl().toString(), "instantiatebinary"));
     if (Utils.isNotNullOrEmpty(name)) {
-      sb.append("?name=").append(name);
+      urlBuilder.addQueryParameter("name", name);
     }
 
     if (Utils.isNotNullOrEmpty(namespace)) {
-      sb.append("&namespace=").append(namespace);
+      urlBuilder.addQueryParameter("namespace", namespace);
     }
 
     if (Utils.isNotNullOrEmpty(message)) {
-      sb.append("&commit=").append(message);
+      urlBuilder.addQueryParameter("commit", message);
     }
 
     if (!Utils.isNullOrEmpty(authorName)) {
-      sb.append("&revision.authorName=").append(authorName);
+      urlBuilder.addQueryParameter("revision.authorName", authorName);
     }
 
     if (!Utils.isNullOrEmpty(authorEmail)) {
-      sb.append("&revision.authorEmail=").append(authorEmail);
+      urlBuilder.addQueryParameter("revision.authorEmail", authorEmail);
     }
 
     if (!Utils.isNullOrEmpty(committerName)) {
-      sb.append("&revision.committerName=").append(committerName);
+      urlBuilder.addQueryParameter("revision.committerName", committerName);
     }
 
     if (!Utils.isNullOrEmpty(committerEmail)) {
-      sb.append("&revision.committerEmail=").append(committerEmail);
+      urlBuilder.addQueryParameter("revision.committerEmail", committerEmail);
     }
 
     if (!Utils.isNullOrEmpty(commit)) {
-      sb.append("&revision.commit=").append(commit);
+      urlBuilder.addQueryParameter("revision.commit", commit);
     }
 
     if (!Utils.isNullOrEmpty(asFile)) {
-      sb.append("&asFile=").append(asFile);
+      urlBuilder.addQueryParameter("asFile", asFile);
     }
-    return sb.toString();
+    return urlBuilder.toString();
   }
 
   @Override
