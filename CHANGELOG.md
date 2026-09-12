@@ -32,6 +32,7 @@
 * Fix #8033: bump gateway-api from 1.5.1 to 1.6.1
 
 #### New Features
+* (kubernetes-client-api) New `io.fabric8.kubernetes.client.extended.events` package, a port of the go client's `tools/events` event recorder. An `EventBroadcaster` hands out `EventRecorder`s that record `events.k8s.io/v1` events on behalf of a controller: recording only queues the event on a bounded queue, so it never blocks the caller and drops rather than backs up under load, and a background thread writes it to the cluster through an `EventSink`, retrying (12 attempts, jittered 10s backoff) a server it could not reach and abandoning an event the server rejected. Repeats — events matching in everything but their note — are folded into the `series` of the event already recorded rather than written again, so `kubectl describe` reports them once with a count; the series is flushed periodically and once it goes quiet. Recording needs `create` and `patch` on `events` in the `events.k8s.io` API group, and events about cluster scoped objects are created in the `default` namespace. See the [cheat sheet](doc/CHEATSHEET.md#recording-events)
 * Fix #7752: Support for Kubernetes v1.37.0 (Garhwal)
 * Fix #8033: gateway-api model gains `v1.TCPRoute` and `v1.UDPRoute` (both graduated from `v1alpha2` upstream in gateway-api v1.6.0). The `v1alpha2` types remain available, but upstream has deprecated them and will remove them in a future release, so new code should use the `v1` types
 
