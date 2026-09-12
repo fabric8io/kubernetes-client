@@ -31,14 +31,14 @@ require (
 	github.com/tektoncd/pipeline v1.12.0
 	github.com/tektoncd/triggers v0.36.0
 	istio.io/client-go v1.30.0
-	k8s.io/api v0.36.1
-	k8s.io/apiextensions-apiserver v0.36.1
-	k8s.io/apimachinery v0.36.1
-	k8s.io/autoscaler/vertical-pod-autoscaler v1.7.0
+	k8s.io/api v0.37.0
+	k8s.io/apiextensions-apiserver v0.37.0
+	k8s.io/apimachinery v0.37.0
+	k8s.io/autoscaler/vertical-pod-autoscaler v1.7.1
 	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/gengo/v2 v2.0.0-20260408192533-25e2208e0dc3
-	k8s.io/kube-openapi v0.0.0-20260501160325-927ab1f70cd6
-	k8s.io/metrics v0.36.1
+	k8s.io/kube-openapi v0.0.0-20260911184034-7970a1e230da
+	k8s.io/metrics v0.37.0
 	knative.dev/caching v0.0.0-20260422140616-453ad996bbe2
 	knative.dev/eventing v0.49.1
 	knative.dev/eventing-awssqs v0.29.0
@@ -53,8 +53,8 @@ require (
 	open-cluster-management.io/governance-policy-propagator v0.18.0
 	open-cluster-management.io/multicloud-operators-channel v0.16.0
 	open-cluster-management.io/multicloud-operators-subscription v0.16.0
-	sigs.k8s.io/cluster-api v1.13.1
-	sigs.k8s.io/gateway-api v1.6.1
+	sigs.k8s.io/cluster-api v1.14.2
+	sigs.k8s.io/gateway-api v1.6.2
 	sigs.k8s.io/kustomize/api v0.21.1
 	// This version is older than v1.10.0 see replacements below
 	volcano.sh/apis v1.19.6
@@ -71,20 +71,20 @@ replace (
 	github.com/openshift/hive => github.com/openshift/hive v1.1.17-0.20251208194543-6648a44ea777 // Latest Master
 	github.com/openshift/installer => github.com/openshift/installer v1.4.21-pre // Most up-to-date tag https://issues.redhat.com/browse/OCPBUGS-42448
 
-	k8s.io/api => k8s.io/api v0.35.2
-	k8s.io/client-go => k8s.io/client-go v0.35.2
-	k8s.io/cloud-provider => k8s.io/cloud-provider v0.35.2
-	k8s.io/csi-translation-lib => k8s.io/csi-translation-lib v0.35.2
-	k8s.io/kube-scheduler => k8s.io/kube-scheduler v0.35.2
-	k8s.io/mount-utils => k8s.io/mount-utils v0.35.2
+	k8s.io/api => k8s.io/api v0.37.0
+	k8s.io/client-go => k8s.io/client-go v0.37.0
+	k8s.io/cloud-provider => k8s.io/cloud-provider v0.37.0
+	k8s.io/csi-translation-lib => k8s.io/csi-translation-lib v0.37.0
+	k8s.io/kube-scheduler => k8s.io/kube-scheduler v0.37.0
+	k8s.io/mount-utils => k8s.io/mount-utils v0.37.0
 
 	// Pin knative.dev/pkg to a known-good pseudo-version (dependabot picks invalid tagged major versions)
 	knative.dev/pkg => knative.dev/pkg v0.0.0-20260422015212-ec452872dcc1
 
-	sigs.k8s.io/cluster-api => sigs.k8s.io/cluster-api v1.12.2
+	sigs.k8s.io/cluster-api => sigs.k8s.io/cluster-api v1.14.2
 
 	// Some dependencies are not compatible with latest controller-runtime webhooks TODO: should be removed as soon as possible
-	sigs.k8s.io/controller-runtime => sigs.k8s.io/controller-runtime v0.19.7
+	sigs.k8s.io/controller-runtime => sigs.k8s.io/controller-runtime v0.25.0
 )
 
 // Issues with dependabot, force pseudo-versions as replacements since dependabot will try to replace with invalid tagged major versions
