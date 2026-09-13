@@ -1,17 +1,28 @@
 ---
 name: regen-java-models-from-upstream
-description: Bump a Go dependency from a failing Renovate PR in the Kubernetes model generator, adapt the generator to upstream Go API changes, regenerate Java models, fix Java compilation, update CHANGELOG, and open a PR that closes the Renovate one.
-argument-hint: "<renovate-pr-number>"
+description: Fix a failing Renovate Go dependency PR in the Kubernetes model generator. Adapts the generator to upstream Go API changes, regenerates Java models, fixes Java compilation and updates CHANGELOG, pushing the fixes onto the Renovate PR itself.
+argument-hint: "<renovate-pr-number-or-url>"
 disable-model-invocation: true
 allowed-tools: Read, Edit, Write, Grep, Glob, Bash, AskUserQuestion, Agent
 ---
 
 # Go Dependency Bump
 
-You are performing a Go dependency bump for the Fabric8 Kubernetes Client project.
-The user provides a Renovate PR number. Your job is to bump the dependency, regenerate models, fix any issues, and create a clean PR that closes the Renovate one. The user may already be on a dedicated branch (e.g., in a git worktree) — detect this and skip branch creation if so.
+You are fixing a Go dependency bump for the Fabric8 Kubernetes Client project.
+The user provides a Renovate PR (number or URL). Renovate has already bumped `go.mod`/`go.sum` (and run `go mod tidy`), but CI fails. Your job is to make that PR green: adapt the generator, regenerate models, fix any issues, and **push the fixes as new commits onto the Renovate PR branch**. Only open a separate PR when you cannot push to that branch.
 
 ultrathink
+
+## Running in a Sandbox
+
+This workflow needs the network and the user's credentials: the GitHub API (`gh`), the Go module proxy, Maven Central and `git push`. Inside the Claude Code sandbox these commonly fail with errors that look like certificate, auth or install problems:
+
+- `tls: failed to verify certificate: x509: OSStatus -26276` (Go tools such as `gh` and `go` on macOS)
+- HTTP 401 or `gh auth login` prompts (keyring-stored tokens are unreachable)
+- `Unable to locate a Java Runtime`
+- `ssh_dispatch_run_fatal: ... Broken pipe` on `git fetch`/`git pull`/`git push`
+
+When a command fails like this, rerun it with the sandbox disabled. Do not debug certificates, tokens, proxies or the JDK installation.
 
 ## Pre-fetched Context
 
@@ -19,24 +30,28 @@ ultrathink
 !`${CLAUDE_SKILL_DIR}/scripts/get-dep-context.sh $0`
 ```
 
+- `!! NO_PR` — ask the user for the Renovate PR number or URL, then run `${CLAUDE_SKILL_DIR}/scripts/get-dep-context.sh <pr>` with the Bash tool.
+- `!! GH_FETCH_FAILED` — the injected command ran inside the sandbox. Rerun `${CLAUDE_SKILL_DIR}/scripts/get-dep-context.sh <pr>` with the Bash tool and the sandbox disabled.
+
 ## Step 1: Analyze the Renovate PR
 
 From the context above, extract:
 - **Single-dep or grouped PR?** — see below.
 - **Go module path(s)** (e.g., `sigs.k8s.io/kustomize/api`)
-- **Old version** and **new version** for each dep
+- **Old version** and **new version** for each dep (digest updates show short commit hashes, e.g. `4db47f5` → `d70b66a`)
 - **CI failure details** — understand what failed and why
+- **Where the fixes go** — see Step 2
 
 ### Single-dep vs grouped PR
 
 Renovate groups are configured as `groupName` package rules in `renovate.json` (e.g., `kubernetes`, `openshift`, `knative`, `opentelemetry`, `golang-x`, `operator-framework`, etc.). When a group has multiple eligible updates, Renovate opens a single PR for the whole group.
 
 Signals of a grouped PR:
-- Title like `chore(deps): update <group-name>` (single-dep PRs read `chore(deps): update module <module-path> to v<new>`)
-- Branch like `renovate/<group-name>` (single-dep PRs use `renovate/<module-path>-<major>.x`)
+- Title like `chore(deps): update <group-name>` (single-dep PRs read `chore(deps): update module <module-path> to v<new>` or `chore(deps): update <module-path> digest to <hash>`)
+- Branch like `renovate/<group-name>` (single-dep PRs use `renovate/<module-path>-<major>.x` or `renovate/<module-path>-digest`)
 - PR body table lists several modules
 
-Extract the **group name** and the **full list of (module, old, new)** tuples from the PR body. All subsequent steps (branch, CHANGELOG, commit, PR) must reflect every dep in the group.
+Extract the **group name** and the **full list of (module, old, new)** tuples from the PR body. All subsequent steps (CHANGELOG, commit) must reflect every dep in the group.
 
 Classify the failure:
 1. **Model drift** — `make generate-model` produces different output than what's committed (most common, the "Check No Schema file modified" step fails)
@@ -46,36 +61,39 @@ Classify the failure:
 
 Present your analysis and the plan to the user. Wait for confirmation via `AskUserQuestion` before proceeding.
 
-## Step 2: Prepare Working Branch
+## Step 2: Check Out the Renovate PR Branch
 
-First, check the current branch:
+Decide where the fixes go:
+- **Renovate branch (default)** — `Head repository` is `fabric8io/kubernetes-client` and your permission is `WRITE`, `MAINTAIN` or `ADMIN`.
+- **Separate PR (fallback)** — anything else. Follow the _Fallback_ notes in Steps 2, 3, 6, 8 and 9.
 
-```bash
-git branch --show-current
-```
+If `Uncommitted changes` is not `0`, stop and ask the user how to proceed.
 
-- **If already on a non-main branch** (e.g., in a git worktree prepared for this task): use the current branch as-is. Do NOT create a new branch or switch to main.
-- **If on `main`**: create a new branch:
+If `Mergeable` is `CONFLICTING`, ask the user to tick Renovate's rebase/retry checkbox and wait for Renovate to rebase **before** you push anything. Once someone else pushes to the branch Renovate stops rebasing it, and ticking the checkbox afterwards discards those commits.
 
-```bash
-git pull --rebase origin main
-git checkout -b chore/bump-<short-dep-name>-<new-version>
-```
-
-Use a short, readable name for the dependency (e.g., `kustomize-api-0.21.1`, `gateway-api-1.5.0`, `cert-manager-1.20.0`).
-
-**For grouped PRs**, name the branch after the group and the shared target version when there is one (e.g., `chore/bump-kubernetes-0.36.0`, `chore/bump-opentelemetry-1.43.0`). If there is no single shared version, just use the group name (e.g., `chore/bump-knative-group`).
-
-## Step 3: Bump the Dependency
-
-### 3a. Update go.mod
+Check out the PR branch (this also works when you're already on it, e.g. in a prepared worktree, and fast-forwards it to Renovate's latest commit):
 
 ```bash
-cd kubernetes-model-generator/openapi/generator
-go get <module-path>@v<new-version>
+gh pr checkout <renovate-pr-number> --repo fabric8io/kubernetes-client
 ```
 
-**For grouped PRs**, run `go get` for **every** module in the group, each at its target version. Do this in one invocation when possible (`go get foo@v1 bar@v2 baz@v3`) so the solver resolves them together.
+_Fallback_: create a branch from an up-to-date `main` instead, named `chore/bump-<short-dep-name>-<new-version>` (e.g., `kustomize-api-0.21.1`, `cert-manager-1.20.0`). For grouped PRs use the group and the shared target version (`chore/bump-kubernetes-0.36.0`), or just the group name when there is none (`chore/bump-knative-group`).
+
+## Step 3: Verify the Dependency Bump
+
+All commands in this step run from `kubernetes-model-generator/openapi/generator`.
+
+### 3a. Check go.mod
+
+Renovate already updated `go.mod`/`go.sum`. Verify that for every bumped module:
+- The `require` entry is at the new version.
+- Any `replace` pin for the module moved too. A `replace` wins over `require`, so a stale pin silently keeps the old version.
+
+_Fallback_: bump it yourself. For grouped PRs, pass **every** module in one invocation so the solver resolves them together, then update any `replace` pin:
+
+```bash
+go get <module-path>@<new-version> [<module-path>@<new-version> ...]
+```
 
 ### 3b. Check for related dependencies that may need bumping
 
@@ -96,6 +114,8 @@ If a new replace directive is needed, add it to the appropriate block with a com
 
 ### 3d. Tidy
 
+If you changed `go.mod` (or on the fallback path):
+
 ```bash
 go mod tidy
 ```
@@ -103,12 +123,6 @@ go mod tidy
 If `go mod tidy` fails, analyze the error. Common fixes:
 - Add a `replace` directive to pin a conflicting transitive dependency
 - Bump a related dependency to a compatible version
-
-### 3e. Return to project root
-
-```bash
-cd /path/to/kubernetes-client
-```
 
 ## Step 4: Generate Models
 
@@ -127,8 +141,8 @@ make generate-model
 Common issues and fixes:
 
 #### Go compilation errors
-- A type was renamed/removed in the new dependency version
-- Fix: update references in Go code (e.g., `cmd/reflection.go`, `pkg/packages/packages.go`, `pkg/openapi/openapi-gen-processors.go`)
+- A type or variable was renamed/removed in the new dependency version (e.g. `GroupVersion` renamed to `SchemeGroupVersion`)
+- Fix: update references in Go code (e.g., `cmd/supported-apis.go`, `cmd/reflection.go`, `pkg/packages/packages.go`, `pkg/openapi/openapi-gen-processors.go`)
 - After fixing, re-run `make generate-model`
 
 #### Java compilation errors
@@ -181,30 +195,31 @@ mvn clean install -pl <failing-module> -am -DskipTests -T 1C
 
 ## Step 6: Update CHANGELOG
 
-Edit `CHANGELOG.md` and add entries under the `### 7.7-SNAPSHOT` section (or whatever the current SNAPSHOT version is).
+Edit `CHANGELOG.md` and add entries under the current SNAPSHOT section (e.g. `### 8.0-SNAPSHOT`).
+
+Reference the Renovate PR number: `Fix #<renovate-pr-number>`.
+_Fallback_: use `Fix #PLACEHOLDER` — the real PR number is not known yet (see Step 10).
 
 **IMPORTANT — Alphabetical ordering**: Insert all entries in **alphabetical order by dependency/topic name** within each section. This is critical for avoiding merge conflicts when multiple dependency bumps run in parallel — each entry lands at a deterministic position, allowing Git to auto-merge.
-
-Use `PLACEHOLDER` — the real PR number is not known yet.
 
 ### Dependency Upgrade entry (always)
 
 Under `#### Dependency Upgrade`, insert in alphabetical order by the readable dependency name:
 
 ```
-* Fix #PLACEHOLDER: bump <readable-dep-name> from <old-version> to <new-version>
+* Fix #<renovate-pr-number>: bump <readable-dep-name> from <old-version> to <new-version>
 ```
 
 For example, "bump cert-manager..." goes before "bump gateway-api..." which goes before "bump tekton...".
 
-**For grouped PRs**, emit **one entry per dep in the group**, each in its own alphabetical position. Use the same `#PLACEHOLDER` for all of them — they all resolve to the single fix PR number in Step 10.
+**For grouped PRs**, emit **one entry per dep in the group**, each in its own alphabetical position, all with the same PR number.
 
 ### Bug fix entry (if generator code was fixed)
 
 Under `#### Bugs`, insert in alphabetical order by topic:
 
 ```
-* Fix #PLACEHOLDER: <description of what was fixed in the generator>
+* Fix #<renovate-pr-number>: <description of what was fixed in the generator>
 ```
 
 ### Breaking changes entry (if applicable)
@@ -217,8 +232,8 @@ Under `#### _**Note**_: Breaking changes`, insert in alphabetical order by modul
 Format:
 
 ```
-* Fix #PLACEHOLDER: <module> model `<ClassName>` removed
-* Fix #PLACEHOLDER: <module> model classes moved from package `old.package` to `new.package`
+* Fix #<renovate-pr-number>: <module> model `<ClassName>` removed
+* Fix #<renovate-pr-number>: <module> model classes moved from package `old.package` to `new.package`
 ```
 
 ### Identifying breaking changes
@@ -228,6 +243,8 @@ Compare the generated schemas before and after. Key indicators:
 - Package path changes in generated classes
 - Type renames visible in the OpenAPI schema diff
 
+New fields are backward compatible, even though they add a parameter to the generated all-args constructor. They don't need a breaking changes entry.
+
 ## Step 7: Format Code
 
 ```bash
@@ -236,42 +253,42 @@ make format
 
 ## Step 8: Commit
 
-Stage all changes and create a single commit:
+Stage all changes and create a single commit. Renovate's commit already carries the version bump, so describe what you added on top:
+
+```
+chore(deps): regenerate models for <readable-dep-name> <new-version>
+
+<Optional: explanation of special handling — generator fixes, replace directives, cascade bumps>
+```
+
+**For grouped PRs**, use `chore(deps): regenerate models for the <group-name> group`.
+
+_Fallback_: the commit carries the bump itself and closes the Renovate PR:
 
 ```
 chore(deps): bump <readable-dep-name> from <old-version> to <new-version>
 
-<Optional: explanation of special handling — replace directives, generator fixes, cascade bumps>
+<Optional: explanation of special handling>
 
 Closes #<renovate-pr-number>
 ```
 
-**IMPORTANT**: Include `Closes #<renovate-pr-number>` to auto-close the Renovate PR.
+For grouped PRs: subject `chore(deps): bump the <group-name> group`, and list each `<module-path> from <old> to <new>` in the body.
 
-**For grouped PRs**, use a group-level subject and list each dep in the body:
+## Step 9: Push
 
-```
-chore(deps): bump the <group-name> group
-
-- <module-path> from <old> to <new>
-- <module-path> from <old> to <new>
-- ...
-
-Closes #<renovate-pr-number>
-```
-
-## Step 9: Push and Create PR
-
-Push the branch and create the PR:
+Push onto the Renovate branch (`gh pr checkout` already configured where it pushes):
 
 ```bash
-git push -u origin <branch-name>
+git push
 ```
 
-Create the PR with `gh pr create`. The PR body format:
+**NEVER force-push** — it would rewrite Renovate's commits. CI re-runs on the Renovate PR automatically. Remind the user not to tick Renovate's rebase/retry checkbox from now on, since that would discard the pushed commits.
+
+_Fallback_: push the branch to your fork and create the PR:
 
 ```
-gh pr create --repo fabric8io/kubernetes-client --title "chore(deps): bump <dep> from <old> to <new>" --body "$(cat <<'EOF'
+gh pr create --repo fabric8io/kubernetes-client --head <fork-owner>:<branch-name> --title "chore(deps): bump <dep> from <old> to <new>" --body "$(cat <<'EOF'
 ## Summary
 <1-3 bullet points describing what changed>
 
@@ -280,11 +297,11 @@ EOF
 )"
 ```
 
-**For grouped PRs**, mirror the commit style — title `chore(deps): bump the <group-name> group`, body `## Summary` lists each `<module-path> from <old> to <new>` as bullets, and closes the single Renovate group PR.
+**For grouped PRs**, mirror the commit style — title `chore(deps): bump the <group-name> group`, body `## Summary` lists each `<module-path> from <old> to <new>` as bullets.
 
 **IMPORTANT**: Do NOT include a "Test plan" section or "Generated with Claude Code" footer in the PR body.
 
-## Step 10: Update CHANGELOG with Real PR Number
+## Step 10 (Fallback only): Update CHANGELOG with Real PR Number
 
 After the PR is created, you'll have the real PR number. Update `CHANGELOG.md`:
 
@@ -305,6 +322,7 @@ Key files you may need to read or modify:
 |------|---------|
 | `kubernetes-model-generator/openapi/generator/go.mod` | Go dependency versions and replace directives |
 | `kubernetes-model-generator/openapi/generator/go.sum` | Go dependency checksums (auto-managed) |
+| `kubernetes-model-generator/openapi/generator/cmd/supported-apis.go` | Imports every supported API group (group/version identifiers) |
 | `kubernetes-model-generator/openapi/generator/cmd/reflection.go` | Reflection-based schema generation (type lists, import paths) |
 | `kubernetes-model-generator/openapi/generator/cmd/openapi.go` | OpenAPI schema generation (module definitions) |
 | `kubernetes-model-generator/openapi/generator/pkg/packages/packages.go` | Package glob patterns for each API group |
@@ -313,6 +331,7 @@ Key files you may need to read or modify:
 | `kubernetes-model-generator/openapi/generator/pkg/parser/parser.go` | Extracts fabric8 metadata from Go types |
 | `kubernetes-model-generator/openapi/schemas/*.json` | Generated OpenAPI schemas |
 | `kubernetes-model-generator/openapi/maven-plugin/src/it/*/expected/` | Integration test expected output |
+| `renovate.json` | Renovate groups and Go module update rules |
 | `CHANGELOG.md` | Release changelog |
 
 ## Reference: Common Dependency Relationships
@@ -323,6 +342,7 @@ Key files you may need to read or modify:
 | `knative.dev/eventing-*` | May need `knative.dev/pkg` replace directive pinned |
 | `tektoncd/*` | Usually straightforward |
 | `cert-manager` | Usually straightforward |
+| `chaos-mesh/chaos-mesh/api` | Digest updates; the pseudo-version is also pinned in the bot workarounds `replace` block |
 | `prometheus-operator` | May expose inline embed edge cases in generator |
 | `openshift/*` | Pinned to release branches via replace directives |
 | `sigs.k8s.io/kustomize/*` | May need `sigs.k8s.io/kustomize/kyaml` bumped together |

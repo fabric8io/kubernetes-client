@@ -25,6 +25,9 @@ The process has four user-confirmation checkpoints so nothing ships without revi
 !`${CLAUDE_SKILL_DIR}/scripts/get-update-context.sh $0 $1`
 ```
 
+- `!! MISSING_ARGS` — ask the user for the Kubernetes version and the GitHub issue number, then run `${CLAUDE_SKILL_DIR}/scripts/get-update-context.sh <version> <issue-number>` with the Bash tool.
+- `!! GH_FETCH_FAILED` — check the error above it. TLS or auth errors mean the injected command ran inside the sandbox: rerun `${CLAUDE_SKILL_DIR}/scripts/get-update-context.sh $0 $1` with the Bash tool and the sandbox disabled. Otherwise confirm the issue number with the user.
+
 ---
 
 ## Prerequisites
@@ -32,6 +35,17 @@ The process has four user-confirmation checkpoints so nothing ships without revi
 - **Java 17** — required to build the project, to generate the model (`make generate-model`) and to run `make format`. JDK 25 is NOT supported.
 
 Before starting, verify the active JDK version (`java -version`).
+
+## Running in a Sandbox
+
+This workflow needs the network and the user's credentials: the GitHub API (`gh`), `raw.githubusercontent.com`, the Go module proxy, Maven Central and `git push`. Inside the Claude Code sandbox these commonly fail with errors that look like certificate, auth or install problems:
+
+- `tls: failed to verify certificate: x509: OSStatus -26276` (Go tools such as `gh` and `go` on macOS)
+- HTTP 401 or `gh auth login` prompts (keyring-stored tokens are unreachable)
+- `Unable to locate a Java Runtime` (including from `java -version` in the pre-fetched context)
+- `ssh_dispatch_run_fatal: ... Broken pipe` on `git fetch`/`git pull`/`git push`
+
+When a command fails like this, rerun it with the sandbox disabled. Do not debug certificates, tokens, proxies or the JDK installation.
 
 ---
 
@@ -49,10 +63,10 @@ Run `make quickly` to confirm a clean starting state (~3-5 minutes). Fix any fai
 
 ### 3. Download the OpenAPI spec
 
-Use the bundled download script:
+Run the bundled download script with the Bash tool:
 
-```
-!`${CLAUDE_SKILL_DIR}/scripts/download-k8s-schema.sh $0`
+```bash
+${CLAUDE_SKILL_DIR}/scripts/download-k8s-schema.sh $0
 ```
 
 The script auto-detects the project root and saves the spec as `kubernetes-model-generator/openapi/schemas/kubernetes-$0.json`.
