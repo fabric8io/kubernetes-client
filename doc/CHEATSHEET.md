@@ -1,3 +1,11 @@
+---
+title: "Fabric8 Kubernetes Java Client Cheat Sheet"
+description: "Common usages of different resources using Fabric8 Kubernetes Client"
+draft: false
+weight: 1
+bookHidden: true
+---
+
 # Fabric8 Kubernetes Java Client Cheat Sheet
 
 This document contains common usages of different resources using Fabric8 Kubernetes Client. 

@@ -1,3 +1,11 @@
+---
+title: "Kubernetes Log4j Lookup"
+description: "Log4j Core Lookup for Kubernetes container-specific log data"
+draft: false
+weight: 40
+bookHidden: true
+---
+
 # Kubernetes Log4j Lookup
 
 The Kubernetes Log4j Lookup provides a [Log4j Core Lookup](https://logging.apache.org/log4j/2.x/manual/lookups) that
