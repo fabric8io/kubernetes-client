@@ -82,3 +82,6 @@ zz_generated.openapi.go.report.txt
 
 # MacOS
 .DS_Store
+
+# Personal Claude Code settings (shared ones live in .claude/settings.json)
+.claude/settings.local.json

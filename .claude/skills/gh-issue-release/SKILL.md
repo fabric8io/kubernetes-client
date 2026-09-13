@@ -28,7 +28,7 @@ After a release is published, you manage the release tracking issues:
 
 ### Running in a Sandbox
 
-Every step talks to the GitHub API through `gh`. Inside the Claude Code sandbox `gh` commonly fails with `tls: failed to verify certificate: x509: OSStatus -26276` (macOS) or HTTP 401 (keyring-stored tokens are unreachable). Only when a `gh` command (or the context script) fails with such an error, rerun it with the sandbox disabled. If it still fails outside the sandbox, stop and report it to the user; never disable TLS verification.
+Every step talks to the GitHub API through `gh`. Inside the Claude Code sandbox `gh` commonly fails with `tls: failed to verify certificate: x509: OSStatus -26276` (macOS) or HTTP 401 (keyring-stored tokens are unreachable), so the repo's `.claude/settings.json` excludes `gh` and the context script from the sandbox. Only when a `gh` command (or the context script) still fails with such an error, rerun it with the sandbox disabled. If it still fails outside the sandbox, stop and report it to the user; never disable TLS verification.
 
 ### Process
 

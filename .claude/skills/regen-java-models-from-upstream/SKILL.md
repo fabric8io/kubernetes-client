@@ -17,10 +17,10 @@ ultrathink
 
 The Claude Code sandbox gets in the way of anything that needs the network or credentials: on macOS `gh` and `go` can't verify TLS certificates there (`x509: OSStatus -26276`), `gh` can't read keyring-stored tokens (HTTP 401), and Java ignores the sandbox's network proxy (`Unknown host`). Split the work accordingly.
 
-Run these with the sandbox disabled:
+These run outside the sandbox. The repo's `.claude/settings.json` excludes them in the exact forms this skill uses, so they need nothing extra; only if one still fails with a TLS, auth or `Unknown host` error, rerun it with the sandbox disabled:
 - `gh` and the scripts in `${CLAUDE_SKILL_DIR}/scripts/`
 - `git fetch`, `git pull` and `git push`
-- `go get`, `go mod tidy` and `go mod download`, which only fetch and checksum-verify modules
+- `go -C kubernetes-model-generator/openapi/generator` with `get`, `mod tidy` or `mod download`, which only fetch and checksum-verify modules
 - The Java side: `make openapi-generate-java-classes`, `make format` and `mvn`. They build the project's own code, but download Maven artifacts and CRDs from `raw.githubusercontent.com`
 
 Keep `make openapi-generate-schema` inside the sandbox: it compiles and runs the freshly bumped Go modules, and works offline once `go mod download` has filled the module cache.
@@ -94,7 +94,7 @@ _Fallback_: create a branch from an up-to-date `main` instead, named `chore/bump
 
 ## Step 3: Verify the Dependency Bump
 
-All commands in this step run from `kubernetes-model-generator/openapi/generator`.
+Run Go commands from the project root with `go -C kubernetes-model-generator/openapi/generator`, in the exact forms below (see _Running in a Sandbox_).
 
 ### 3a. Check go.mod
 
@@ -105,7 +105,7 @@ Renovate already updated `go.mod`/`go.sum`. Verify that for every bumped module:
 _Fallback_: bump it yourself. For grouped PRs, pass **every** module in one invocation so the solver resolves them together, then update any `replace` pin:
 
 ```bash
-go get <module-path>@<new-version> [<module-path>@<new-version> ...]
+go -C kubernetes-model-generator/openapi/generator get <module-path>@<new-version> [<module-path>@<new-version> ...]
 ```
 
 ### 3b. Check for related dependencies that may need bumping
@@ -130,7 +130,7 @@ If a new replace directive is needed, add it to the appropriate block with a com
 If you changed `go.mod` (or on the fallback path):
 
 ```bash
-go mod tidy
+go -C kubernetes-model-generator/openapi/generator mod tidy
 ```
 
 If `go mod tidy` fails, analyze the error. Common fixes:

@@ -1,0 +1,46 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh pr view *)",
+      "Bash(gh pr checks *)",
+      "Bash(gh pr list *)",
+      "Bash(gh pr diff *)",
+      "Bash(gh run list *)",
+      "Bash(gh run view *)",
+      "Bash(gh issue view *)",
+      "Bash(gh issue list *)",
+      "Bash(gh release list *)",
+      "Bash(gh repo view *)",
+      "Bash(git fetch *)",
+      "Bash(go -C kubernetes-model-generator/openapi/generator mod download)",
+      "Bash(make quickly)",
+      "Bash(make format)",
+      "Bash(make openapi-generate-schema)",
+      "Bash(make openapi-generate-java-classes)",
+      "Bash(make generate-javadoc-links)"
+    ]
+  },
+  "sandbox": {
+    "excludedCommands": [
+      "gh *",
+      "git fetch",
+      "git fetch *",
+      "git pull",
+      "git pull *",
+      "git push",
+      "git push *",
+      "go -C kubernetes-model-generator/openapi/generator get *",
+      "go -C kubernetes-model-generator/openapi/generator mod tidy",
+      "go -C kubernetes-model-generator/openapi/generator mod download",
+      "mvn *",
+      "make quickly",
+      "make install",
+      "make format",
+      "make openapi-generate-java-classes",
+      "make generate-javadoc-links",
+      "*.claude/skills/gh-issue-release/scripts/*",
+      "*.claude/skills/k8s-model-update/scripts/*",
+      "*.claude/skills/regen-java-models-from-upstream/scripts/*"
+    ]
+  }
+}

@@ -40,10 +40,10 @@ Before starting, verify the active JDK version (`java -version`).
 
 The Claude Code sandbox gets in the way of anything that needs the network or credentials: on macOS `gh` and `go` can't verify TLS certificates there (`x509: OSStatus -26276`), `gh` can't read keyring-stored tokens (HTTP 401), and Java ignores the sandbox's network proxy (`Unknown host`) and can't find the JDK (`Unable to locate a Java Runtime`, also from `java -version` in the pre-fetched context). Split the work accordingly.
 
-Run these with the sandbox disabled:
+These run outside the sandbox. The repo's `.claude/settings.json` excludes them in the exact forms this skill uses, so they need nothing extra; only if one still fails with a TLS, auth or `Unknown host` error, rerun it with the sandbox disabled:
 - `gh`, `get-update-context.sh` and `download-k8s-schema.sh`
 - `git fetch`, `git pull` and `git push`
-- `go mod download` (from `kubernetes-model-generator/openapi/generator`), which only fetches and checksum-verifies modules
+- `go -C kubernetes-model-generator/openapi/generator mod download`, which only fetches and checksum-verifies modules
 - The Java side, including `java -version`: `make quickly`, `make openapi-generate-java-classes`, `make generate-javadoc-links`, `make format` and `mvn`. They build the project's own code, but download Maven artifacts and CRDs from `raw.githubusercontent.com`
 
 Keep `make openapi-generate-schema` inside the sandbox: it compiles and runs the Go generator and its dependencies, and works offline once `go mod download` has filled the module cache.
