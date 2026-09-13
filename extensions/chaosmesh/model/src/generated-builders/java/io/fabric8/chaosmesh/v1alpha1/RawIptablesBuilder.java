@@ -25,7 +25,7 @@ public class RawIptablesBuilder extends RawIptablesFluent<RawIptablesBuilder> im
   }
 
   public RawIptables build() {
-    RawIptables buildable = new RawIptables(fluent.getDevice(), fluent.getDirection(), fluent.getIpsets(), fluent.getName(), fluent.getSource());
+    RawIptables buildable = new RawIptables(fluent.getDevice(), fluent.getDirection(), fluent.getIpsets(), fluent.getName(), fluent.getPartitionBehavior(), fluent.getSource());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }
