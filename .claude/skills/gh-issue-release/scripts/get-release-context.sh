@@ -47,7 +47,7 @@ lookup gh issue list --repo "$REPO" \
 echo ""
 
 echo "### Milestone ($VERSION)"
-lookup gh api "repos/$REPO/milestones?state=all&per_page=100" \
+lookup gh api --paginate "repos/$REPO/milestones?state=all&per_page=100" \
   --jq ".[] | select(.title == \"$VERSION\") | \"\(.html_url) (\(.state))\""
 echo ""
 
@@ -57,7 +57,7 @@ lookup gh release list --repo "$REPO" --limit 100 --json tagName \
 echo ""
 
 echo "### Next Milestone ($NEXT_VERSION)"
-lookup gh api "repos/$REPO/milestones?state=all&per_page=100" \
+lookup gh api --paginate "repos/$REPO/milestones?state=all&per_page=100" \
   --jq ".[] | select(.title == \"$NEXT_VERSION\") | \"\(.html_url) (\(.state))\""
 echo ""
 

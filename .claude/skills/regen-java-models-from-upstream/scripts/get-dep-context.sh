@@ -9,14 +9,17 @@ set -uo pipefail
 exec 2>&1
 
 REPO="fabric8io/kubernetes-client"
-REPO_ROOT="$(cd "$(dirname "$0")/../../../.." && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 GO_MOD="$REPO_ROOT/kubernetes-model-generator/openapi/generator/go.mod"
 
 ARG="${1:-}"
-if [[ "$ARG" =~ ^#?([0-9]+)$ ]] || [[ "$ARG" =~ /pull/([0-9]+) ]]; then
+PR_NUMBER_RE='^#?([0-9]+)$'
+PR_URL_RE='^https://github\.com/fabric8io/kubernetes-client/pull/([0-9]+)([/?#].*)?$'
+if [[ "$ARG" =~ $PR_NUMBER_RE ]] || [[ "$ARG" =~ $PR_URL_RE ]]; then
   PR_NUMBER="${BASH_REMATCH[1]}"
 else
-  echo "!! NO_PR: expected a Renovate PR number or URL, got '${ARG}'"
+  echo "!! NO_PR: expected a $REPO PR number or URL, got '${ARG}'"
   exit 0
 fi
 
@@ -25,45 +28,56 @@ echo "Branch: $(git -C "$REPO_ROOT" branch --show-current)"
 echo "Uncommitted changes: $(git -C "$REPO_ROOT" status --porcelain | wc -l | tr -d ' ') file(s)"
 
 echo ""
-echo "=== PR Details ==="
-if ! gh pr view "$PR_NUMBER" --repo "$REPO" \
-  --json number,title,state,author,headRefName,headRepository,mergeable,url \
-  --template '{{printf "Number: %v\nTitle: %s\nState: %s\nAuthor: %s\nBranch: %s\nHead repository: %s\nMergeable: %s\nURL: %s\n" .number .title .state .author.login .headRefName .headRepository.nameWithOwner .mergeable .url}}'; then
+echo "=== PR State ==="
+if ! PR_STATE="$("$SCRIPT_DIR/get-pr-state.sh" "$PR_NUMBER" 2>&1)"; then
+  echo "$PR_STATE"
   echo "!! GH_FETCH_FAILED"
   exit 0
 fi
-echo "Your permission on $REPO: $(gh repo view "$REPO" --json viewerPermission -q .viewerPermission)"
+echo "$PR_STATE"
+BRANCH="$(sed -n 's/^Branch: //p' <<<"$PR_STATE")"
 
 echo ""
-echo "=== PR Body (first 40 lines) ==="
-gh pr view "$PR_NUMBER" --repo "$REPO" --json body -q .body | head -40
+echo "=== PR Title and Body (first 40 lines) ==="
+if BODY="$(gh pr view "$PR_NUMBER" --repo "$REPO" --json title,url,body \
+  --jq '"Title: \(.title)\nURL: \(.url)\n\n\(.body)"' 2>&1)"; then
+  head -40 <<<"$BODY"
+else
+  echo "$BODY"
+  echo "!! LOOKUP_FAILED"
+fi
 
 echo ""
 echo "=== CI Check Status ==="
+# gh pr checks also exits non-zero for failing or pending checks, so its exit code can't flag a failed lookup
 gh pr checks "$PR_NUMBER" --repo "$REPO"
 
 echo ""
 echo "=== Failed CI Run Logs (Generate Model) ==="
-BRANCH="$(gh pr view "$PR_NUMBER" --repo "$REPO" --json headRefName -q .headRefName)"
-FAILED_RUN_ID="$(gh run list --repo "$REPO" --branch "$BRANCH" --workflow "Generate Model" \
-  --status failure --limit 1 --json databaseId -q '.[0].databaseId')"
-
-if [ -n "$FAILED_RUN_ID" ]; then
+if ! FAILED_RUN_ID="$(gh run list --repo "$REPO" --branch "$BRANCH" --workflow "Generate Model" \
+  --status failure --limit 1 --json databaseId -q '.[0].databaseId // empty' 2>&1)"; then
+  echo "$FAILED_RUN_ID"
+  echo "!! LOOKUP_FAILED"
+elif [ -z "$FAILED_RUN_ID" ]; then
+  echo "No failed Generate Model run found."
+elif ! LOG="$(gh run view "$FAILED_RUN_ID" --repo "$REPO" --log-failed 2>&1)"; then
+  echo "$LOG"
+  echo "!! LOOKUP_FAILED"
+else
   echo "Run URL: https://github.com/$REPO/actions/runs/$FAILED_RUN_ID"
   # Drop the job/step/timestamp columns
-  LOG="$(gh run view "$FAILED_RUN_ID" --repo "$REPO" --log-failed | cut -f3- | sed -E 's/^[0-9-]+T[0-9:.]+Z ?//')"
-  FIRST_ERROR="$(grep -n '##\[error\]' <<<"$LOG" | head -1 | cut -d: -f1)"
+  LOG="$(cut -f3- <<<"$LOG" | sed -E 's/^[0-9-]+T[0-9:.]+Z ?//')"
   LAST_ERROR="$(grep -n '##\[error\]' <<<"$LOG" | tail -1 | cut -d: -f1)"
-  if [ -n "$FIRST_ERROR" ]; then
-    # The tail of a failed job is post-job cleanup; show the lead-up to the errors instead
-    echo "--- Log up to the last error (max 150 lines) ---"
-    sed -n "$(( FIRST_ERROR > 40 ? FIRST_ERROR - 40 : 1 )),${LAST_ERROR}p" <<<"$LOG" | tail -150
+  if [ -n "$LAST_ERROR" ]; then
+    echo "--- Error lines ---"
+    grep '##\[error\]' <<<"$LOG" | head -20
+    # Later steps (e.g. workflow cleanup) can follow the errors, so end the excerpt at the last one
+    echo "--- Log up to the last error (last 150 lines) ---"
+    head -n "$LAST_ERROR" <<<"$LOG" | tail -150
   else
-    echo "--- Failed job logs (last 100 lines) ---"
-    tail -100 <<<"$LOG"
+    echo "--- Failed job logs (last 150 lines) ---"
+    tail -150 <<<"$LOG"
   fi
-else
-  echo "No failed Generate Model run found."
 fi
 
 echo ""

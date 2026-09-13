@@ -22,11 +22,11 @@ The process has four user-confirmation checkpoints so nothing ships without revi
 ### Pre-fetched Context
 
 ```
-!`${CLAUDE_SKILL_DIR}/scripts/get-update-context.sh $0 $1`
+!`${CLAUDE_SKILL_DIR}/scripts/get-update-context.sh "$0" "$1"`
 ```
 
-- `!! MISSING_ARGS` — ask the user for the Kubernetes version and the GitHub issue number, then run `${CLAUDE_SKILL_DIR}/scripts/get-update-context.sh <version> <issue-number>` with the Bash tool.
-- `!! GH_FETCH_FAILED` — check the error above it. TLS or auth errors mean the injected command ran inside the sandbox: rerun `${CLAUDE_SKILL_DIR}/scripts/get-update-context.sh $0 $1` with the Bash tool and the sandbox disabled. Otherwise confirm the issue number with the user.
+- `!! MISSING_ARGS` — ask the user for the Kubernetes version and the GitHub issue number, then run `${CLAUDE_SKILL_DIR}/scripts/get-update-context.sh "<version>" "<issue-number>"` with the Bash tool.
+- `!! GH_FETCH_FAILED` — check the error above it. A TLS or auth error means the injected command ran inside the sandbox: rerun `${CLAUDE_SKILL_DIR}/scripts/get-update-context.sh "$0" "$1"` with the Bash tool and the sandbox disabled. Anything else means the issue is wrong: confirm the issue number with the user.
 
 ---
 
@@ -38,14 +38,17 @@ Before starting, verify the active JDK version (`java -version`).
 
 ## Running in a Sandbox
 
-This workflow needs the network and the user's credentials: the GitHub API (`gh`), `raw.githubusercontent.com`, the Go module proxy, Maven Central and `git push`. Inside the Claude Code sandbox these commonly fail with errors that look like certificate, auth or install problems:
+The Claude Code sandbox gets in the way of anything that needs the network or credentials: on macOS `gh` and `go` can't verify TLS certificates there (`x509: OSStatus -26276`), `gh` can't read keyring-stored tokens (HTTP 401), and Java ignores the sandbox's network proxy (`Unknown host`) and can't find the JDK (`Unable to locate a Java Runtime`, also from `java -version` in the pre-fetched context). Split the work accordingly.
 
-- `tls: failed to verify certificate: x509: OSStatus -26276` (Go tools such as `gh` and `go` on macOS)
-- HTTP 401 or `gh auth login` prompts (keyring-stored tokens are unreachable)
-- `Unable to locate a Java Runtime` (including from `java -version` in the pre-fetched context)
-- `ssh_dispatch_run_fatal: ... Broken pipe` on `git fetch`/`git pull`/`git push`
+Run these with the sandbox disabled:
+- `gh`, `get-update-context.sh` and `download-k8s-schema.sh`
+- `git fetch`, `git pull` and `git push`
+- `go mod download` (from `kubernetes-model-generator/openapi/generator`), which only fetches and checksum-verifies modules
+- The Java side, including `java -version`: `make quickly`, `make openapi-generate-java-classes`, `make generate-javadoc-links`, `make format` and `mvn`. They build the project's own code, but download Maven artifacts and CRDs from `raw.githubusercontent.com`
 
-When a command fails like this, rerun it with the sandbox disabled. Do not debug certificates, tokens, proxies or the JDK installation.
+Keep `make openapi-generate-schema` inside the sandbox: it compiles and runs the Go generator and its dependencies, and works offline once `go mod download` has filled the module cache.
+
+If any of these fails anyway, stop and report it to the user rather than moving more commands out of the sandbox. Never disable TLS or checksum verification (e.g. `GOINSECURE`, `GONOSUMDB`, `GOSUMDB=off`, `GIT_SSL_NO_VERIFY`, `curl -k`, `-Dmaven.wagon.http.ssl.insecure=true`).
 
 ---
 
@@ -81,13 +84,17 @@ In `kubernetes-model-generator/pom.xml`, update the `<openapi.schema.kubernetes-
 
 ### 5. Generate updated models
 
+Run the two targets `make generate-model` consists of, one at a time so the Go half can stay sandboxed (see _Running in a Sandbox_), after filling the Go module cache:
+
 ```
-make generate-model
+go -C kubernetes-model-generator/openapi/generator mod download  # outside the sandbox
+make openapi-generate-schema                                     # inside the sandbox
+make openapi-generate-java-classes                               # outside the sandbox
 ```
 
-This runs the Go-based OpenAPI generator and Maven code-generation plugin across all `kubernetes-model-*` modules. Takes several minutes.
+This runs the Go-based OpenAPI generator and Maven code-generation plugin across all `kubernetes-model-*` modules. Takes several minutes. If `openapi-generate-java-classes` fails partway, it can leave a model module's generated sources deleted: regenerate, don't commit that state.
 
-**When `make generate-model` fails with unknown types or unresolved imports:**
+**When generation fails with unknown types or unresolved imports:**
 
 Do **NOT** modify Go code, update Go dependencies, or change anything in the generator project itself. Instead, fix the issue in the failing model module's `pom.xml` by adding a `refToJavaTypeMappings` entry that maps the unresolved schema reference to a Java type.
 
@@ -110,7 +117,7 @@ Map to `java.lang.String` for simple value types (IPs, names) and `java.lang.Obj
 
 **Always present the proposed `refToJavaTypeMappings` changes to the user and get explicit approval before modifying any `pom.xml`.** Show which module, which schema refs, and which Java types you plan to map them to.
 
-After fixing, re-run `make generate-model` until it succeeds.
+After fixing, re-run both generation targets until they succeed.
 
 ### 6. Verify the build compiles
 

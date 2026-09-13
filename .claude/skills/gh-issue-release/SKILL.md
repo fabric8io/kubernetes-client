@@ -23,20 +23,20 @@ After a release is published, you manage the release tracking issues:
 ### Pre-fetched Release Context
 
 ```
-!`${CLAUDE_SKILL_DIR}/scripts/get-release-context.sh $0 $1`
+!`${CLAUDE_SKILL_DIR}/scripts/get-release-context.sh "$0" "$1"`
 ```
 
 ### Running in a Sandbox
 
-Every step talks to the GitHub API through `gh`. Inside the Claude Code sandbox `gh` commonly fails with `tls: failed to verify certificate: x509: OSStatus -26276` (macOS) or HTTP 401 (keyring-stored tokens are unreachable). When a `gh` command fails like this, rerun it with the sandbox disabled. Do not debug certificates or tokens.
+Every step talks to the GitHub API through `gh`. Inside the Claude Code sandbox `gh` commonly fails with `tls: failed to verify certificate: x509: OSStatus -26276` (macOS) or HTTP 401 (keyring-stored tokens are unreachable). Only when a `gh` command (or the context script) fails with such an error, rerun it with the sandbox disabled. If it still fails outside the sandbox, stop and report it to the user; never disable TLS verification.
 
 ### Process
 
 #### 1. Validate Context
 
 First check the pre-fetched context for failure markers:
-- `!! MISSING_ARGS` — ask the user for the released and next versions, then run `${CLAUDE_SKILL_DIR}/scripts/get-release-context.sh <released-version> <next-version>` with the Bash tool.
-- `!! GH_FETCH_FAILED` — the injected command ran inside the sandbox. Rerun `${CLAUDE_SKILL_DIR}/scripts/get-release-context.sh $0 $1` with the Bash tool and the sandbox disabled.
+- `!! MISSING_ARGS` — ask the user for the released and next versions, then run `${CLAUDE_SKILL_DIR}/scripts/get-release-context.sh "<released-version>" "<next-version>"` with the Bash tool.
+- `!! GH_FETCH_FAILED` — check the error above it. A TLS or auth error means the injected command ran inside the sandbox: rerun `${CLAUDE_SKILL_DIR}/scripts/get-release-context.sh "$0" "$1"` with the Bash tool and the sandbox disabled. Otherwise report the error to the user.
 - `!! LOOKUP_FAILED` — that single query failed (unlike `Not found`, it says nothing about whether the item exists). Rerun the script, or run the query yourself, before drawing conclusions.
 
 Then review the context and verify:

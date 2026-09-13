@@ -15,23 +15,27 @@ ultrathink
 
 ## Running in a Sandbox
 
-This workflow needs the network and the user's credentials: the GitHub API (`gh`), the Go module proxy, Maven Central and `git push`. Inside the Claude Code sandbox these commonly fail with errors that look like certificate, auth or install problems:
+The Claude Code sandbox gets in the way of anything that needs the network or credentials: on macOS `gh` and `go` can't verify TLS certificates there (`x509: OSStatus -26276`), `gh` can't read keyring-stored tokens (HTTP 401), and Java ignores the sandbox's network proxy (`Unknown host`). Split the work accordingly.
 
-- `tls: failed to verify certificate: x509: OSStatus -26276` (Go tools such as `gh` and `go` on macOS)
-- HTTP 401 or `gh auth login` prompts (keyring-stored tokens are unreachable)
-- `Unable to locate a Java Runtime`
-- `ssh_dispatch_run_fatal: ... Broken pipe` on `git fetch`/`git pull`/`git push`
+Run these with the sandbox disabled:
+- `gh` and the scripts in `${CLAUDE_SKILL_DIR}/scripts/`
+- `git fetch`, `git pull` and `git push`
+- `go get`, `go mod tidy` and `go mod download`, which only fetch and checksum-verify modules
+- The Java side: `make openapi-generate-java-classes`, `make format` and `mvn`. They build the project's own code, but download Maven artifacts and CRDs from `raw.githubusercontent.com`
 
-When a command fails like this, rerun it with the sandbox disabled. Do not debug certificates, tokens, proxies or the JDK installation.
+Keep `make openapi-generate-schema` inside the sandbox: it compiles and runs the freshly bumped Go modules, and works offline once `go mod download` has filled the module cache.
+
+If any of these fails anyway, stop and report it to the user rather than moving more commands out of the sandbox. Never disable TLS or checksum verification (e.g. `GOINSECURE`, `GONOSUMDB`, `GOSUMDB=off`, `GIT_SSL_NO_VERIFY`, `-Dmaven.wagon.http.ssl.insecure=true`).
 
 ## Pre-fetched Context
 
 ```
-!`${CLAUDE_SKILL_DIR}/scripts/get-dep-context.sh $0`
+!`${CLAUDE_SKILL_DIR}/scripts/get-dep-context.sh "$0"`
 ```
 
-- `!! NO_PR` — ask the user for the Renovate PR number or URL, then run `${CLAUDE_SKILL_DIR}/scripts/get-dep-context.sh <pr>` with the Bash tool.
-- `!! GH_FETCH_FAILED` — the injected command ran inside the sandbox. Rerun `${CLAUDE_SKILL_DIR}/scripts/get-dep-context.sh <pr>` with the Bash tool and the sandbox disabled.
+- `!! NO_PR` — ask the user for the Renovate PR number or URL (a `fabric8io/kubernetes-client` PR), then run `${CLAUDE_SKILL_DIR}/scripts/get-dep-context.sh "<pr>"` with the Bash tool.
+- `!! GH_FETCH_FAILED` — check the error above it. A TLS or auth error means the injected command ran inside the sandbox: rerun `${CLAUDE_SKILL_DIR}/scripts/get-dep-context.sh "<pr>"` with the Bash tool and the sandbox disabled. Anything else (e.g. `Could not resolve to a PullRequest`) means the PR is wrong: confirm it with the user.
+- `!! LOOKUP_FAILED` — only that section's lookup failed. Rerun the script before relying on that section.
 
 ## Step 1: Analyze the Renovate PR
 
@@ -64,17 +68,26 @@ Present your analysis and the plan to the user. Wait for confirmation via `AskUs
 ## Step 2: Check Out the Renovate PR Branch
 
 Decide where the fixes go:
-- **Renovate branch (default)** — `Head repository` is `fabric8io/kubernetes-client` and your permission is `WRITE`, `MAINTAIN` or `ADMIN`.
+- **Renovate branch (default)** — `Author` is `app/renovate`, `Head repository` is `fabric8io/kubernetes-client` and your permission is `WRITE`, `MAINTAIN` or `ADMIN`.
 - **Separate PR (fallback)** — anything else. Follow the _Fallback_ notes in Steps 2, 3, 6, 8 and 9.
 
-If `Uncommitted changes` is not `0`, stop and ask the user how to proceed.
+If `State` is not `OPEN`, or `Uncommitted changes` is not `0`, stop and ask the user how to proceed.
 
-If `Mergeable` is `CONFLICTING`, ask the user to tick Renovate's rebase/retry checkbox and wait for Renovate to rebase **before** you push anything. Once someone else pushes to the branch Renovate stops rebasing it, and ticking the checkbox afterwards discards those commits.
+The PR state in the context may be stale. Fetch it again right before checking out (the script waits while GitHub still reports `Mergeable: UNKNOWN`, which it computes lazily):
 
-Check out the PR branch (this also works when you're already on it, e.g. in a prepared worktree, and fast-forwards it to Renovate's latest commit):
+```bash
+${CLAUDE_SKILL_DIR}/scripts/get-pr-state.sh <renovate-pr-number>
+```
+
+- `MERGEABLE` — continue.
+- `CONFLICTING` — ask the user to tick Renovate's rebase/retry checkbox, wait for Renovate to rebase, then fetch the state again. Don't start before it's `MERGEABLE`: once someone else pushes to the branch Renovate stops rebasing it, and ticking the checkbox afterwards discards those commits.
+- `UNKNOWN` — run the script again. If it stays `UNKNOWN`, ask the user.
+
+Check out the PR branch (this also works when you're already on it, e.g. in a prepared worktree, and fast-forwards it to Renovate's latest commit), then record `git rev-parse HEAD` as the **base commit**. It must match `Head commit` from the state script; Step 9 compares against it:
 
 ```bash
 gh pr checkout <renovate-pr-number> --repo fabric8io/kubernetes-client
+git rev-parse HEAD
 ```
 
 _Fallback_: create a branch from an up-to-date `main` instead, named `chore/bump-<short-dep-name>-<new-version>` (e.g., `kustomize-api-0.21.1`, `cert-manager-1.20.0`). For grouped PRs use the group and the shared target version (`chore/bump-kubernetes-0.36.0`), or just the group name when there is none (`chore/bump-knative-group`).
@@ -126,15 +139,22 @@ If `go mod tidy` fails, analyze the error. Common fixes:
 
 ## Step 4: Generate Models
 
-Run from the **project root**:
+Fill the Go module cache first (outside the sandbox):
 
 ```bash
-make generate-model
+go -C kubernetes-model-generator/openapi/generator mod download
 ```
 
-**IMPORTANT**: This is a long-running command (~10-15 minutes). Run it with a suitable timeout (600000ms). Do NOT cancel it.
+Then, from the **project root**, run the two targets `make generate-model` consists of, one at a time so the Go half can stay sandboxed (see _Running in a Sandbox_):
 
-**CRITICAL**: Always use `make generate-model` from the project root. NEVER build the Go binary manually or run generator commands individually.
+```bash
+make openapi-generate-schema        # inside the sandbox
+make openapi-generate-java-classes  # outside the sandbox
+```
+
+**IMPORTANT**: Together these take ~10-15 minutes. Run them with a suitable timeout (600000ms). Do NOT cancel them.
+
+**CRITICAL**: Always generate through these make targets from the project root. NEVER build the Go binary manually or run generator commands individually. If `openapi-generate-java-classes` fails partway, it can leave a model module's generated sources deleted: regenerate, don't commit that state.
 
 ### If model generation fails
 
@@ -143,17 +163,17 @@ Common issues and fixes:
 #### Go compilation errors
 - A type or variable was renamed/removed in the new dependency version (e.g. `GroupVersion` renamed to `SchemeGroupVersion`)
 - Fix: update references in Go code (e.g., `cmd/supported-apis.go`, `cmd/reflection.go`, `pkg/packages/packages.go`, `pkg/openapi/openapi-gen-processors.go`)
-- After fixing, re-run `make generate-model`
+- After fixing, re-run both generation targets
 
 #### Java compilation errors
 - Generated Java code references a type that no longer exists
 - Fix: may need `refToJavaTypeMappings` in the relevant module's `pom.xml`, or import path updates
-- After fixing, re-run `make generate-model`
+- After fixing, re-run both generation targets
 
 #### Generator logic issues
 - New upstream patterns (nested inline embeds, new protobuf patterns) not handled by the generator
 - Fix: update processor code in `kubernetes-model-generator/openapi/generator/pkg/openapi/openapi-gen-processors.go`
-- After fixing, re-run `make generate-model`
+- After fixing, re-run both generation targets
 
 ## Step 5: Check for Additional Issues
 
@@ -277,13 +297,48 @@ For grouped PRs: subject `chore(deps): bump the <group-name> group`, and list ea
 
 ## Step 9: Push
 
-Push onto the Renovate branch (`gh pr checkout` already configured where it pushes):
+Generating and building takes long enough for the PR to move meanwhile, e.g. a sibling bump merges and Renovate rebases this branch. Fetch the state again right before pushing:
 
 ```bash
-git push
+${CLAUDE_SKILL_DIR}/scripts/get-pr-state.sh <renovate-pr-number>
 ```
 
-**NEVER force-push** — it would rewrite Renovate's commits. CI re-runs on the Renovate PR automatically. Remind the user not to tick Renovate's rebase/retry checkbox from now on, since that would discard the pushed commits.
+- `Head commit` differs from the base commit — Renovate rebased the branch. Follow _Branch moved_ below.
+- `CONFLICTING` with the same head commit — nothing of yours is on the branch yet: ask the user to tick Renovate's rebase/retry checkbox, wait for the rebase, then follow _Branch moved_.
+- `UNKNOWN` — run the script again.
+- `MERGEABLE` with the same head commit — push.
+
+Push explicitly to the PR's head branch. A bare `git push` follows `remote.pushDefault`, which may point at your fork:
+
+```bash
+git push "$(git config branch.<head-branch>.remote)" HEAD:refs/heads/<head-branch>
+```
+
+**NEVER force-push** — it would rewrite Renovate's commits. A rejected push means the branch moved: follow _Branch moved_.
+
+Run `get-pr-state.sh` once more and check that `Head commit` now equals `git rev-parse HEAD`, i.e. the push landed on the PR. CI re-runs automatically. Remind the user not to tick Renovate's rebase/retry checkbox from now on, since that would discard the pushed commits.
+
+### Branch moved
+
+Replay your commit onto the new head. The new base can change the generator's output, so regenerate even if the rebase is clean:
+
+```bash
+git fetch "$(git config branch.<head-branch>.remote)" <head-branch>
+git rebase --onto FETCH_HEAD <base-commit>
+```
+
+On conflicts, merge hand-written files (Go code, `pom.xml`, `CHANGELOG.md`) by keeping both sides' changes. Generated files (`kubernetes-model-generator/openapi/schemas/`, `src/generated/`, `src/generated-builders/`) can take either side, since they're regenerated next. Then redo Steps 3–7 on the new base, amend your commit, record `git rev-parse FETCH_HEAD` as the new base commit, and start Step 9 again.
+
+### Conflicts after your push
+
+Renovate doesn't rebase a branch someone else pushed to, so if the PR turns `CONFLICTING` later, merge `main` into it instead:
+
+```bash
+git fetch "$(git config branch.<head-branch>.remote)" main
+git merge FETCH_HEAD
+```
+
+Resolve conflicts as in _Branch moved_, redo Steps 3–7, commit, and push with the explicit command above.
 
 _Fallback_: push the branch to your fork and create the PR:
 
