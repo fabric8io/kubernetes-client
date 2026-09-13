@@ -94,6 +94,10 @@
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
     <!-- jackson-bom decouples jackson-annotations from jackson.version since 2.20 (it drops the patch segment). Keep in sync with jackson-bom's jackson.version.annotations, Refer: https://github.com/FasterXML/jackson-bom/blob/54f854ba1ce69c5827f8acf6d08ba2d7ce36233c/pom.xml#L53-L62 -->
     <jackson.bundle.version.annotations>2.22</jackson.bundle.version.annotations>
+    <!-- TODO: pinned to Jetty 11. Moving to 12 is not an in-place bump: it reorganises the
+         artifacts and changes the EE baseline, so it wants its own module next to httpclient-jetty,
+         the way httpclient-vertx (4.x) and httpclient-vertx-5 (5.x) coexist. Renovate is configured
+         to withhold Jetty majors until then. -->
     <jetty.version>11.0.26</jetty.version>
     <maven-core.version>3.9.16</maven-core.version>
     <maven-plugin-annotations.version>3.16.0</maven-plugin-annotations.version>
