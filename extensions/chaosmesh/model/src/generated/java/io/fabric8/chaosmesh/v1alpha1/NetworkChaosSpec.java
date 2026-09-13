@@ -51,6 +51,7 @@ import lombok.experimental.Accessors;
     "externalTargets",
     "loss",
     "mode",
+    "partitionBehavior",
     "rate",
     "remoteCluster",
     "selector",
@@ -106,6 +107,8 @@ public class NetworkChaosSpec implements Editable<NetworkChaosSpecBuilder>, Kube
     private LossSpec loss;
     @JsonProperty("mode")
     private String mode;
+    @JsonProperty("partitionBehavior")
+    private String partitionBehavior;
     @JsonProperty("rate")
     private RateSpec rate;
     @JsonProperty("remoteCluster")
@@ -127,7 +130,7 @@ public class NetworkChaosSpec implements Editable<NetworkChaosSpecBuilder>, Kube
     public NetworkChaosSpec() {
     }
 
-    public NetworkChaosSpec(String action, BandwidthSpec bandwidth, CorruptSpec corrupt, DelaySpec delay, String device, String direction, DuplicateSpec duplicate, String duration, List<String> externalTargets, LossSpec loss, String mode, RateSpec rate, String remoteCluster, PodSelectorSpec selector, PodSelector target, String targetDevice, String value) {
+    public NetworkChaosSpec(String action, BandwidthSpec bandwidth, CorruptSpec corrupt, DelaySpec delay, String device, String direction, DuplicateSpec duplicate, String duration, List<String> externalTargets, LossSpec loss, String mode, String partitionBehavior, RateSpec rate, String remoteCluster, PodSelectorSpec selector, PodSelector target, String targetDevice, String value) {
         super();
         this.action = action;
         this.bandwidth = bandwidth;
@@ -140,6 +143,7 @@ public class NetworkChaosSpec implements Editable<NetworkChaosSpecBuilder>, Kube
         this.externalTargets = externalTargets;
         this.loss = loss;
         this.mode = mode;
+        this.partitionBehavior = partitionBehavior;
         this.rate = rate;
         this.remoteCluster = remoteCluster;
         this.selector = selector;
@@ -323,6 +327,22 @@ public class NetworkChaosSpec implements Editable<NetworkChaosSpecBuilder>, Kube
     @JsonProperty("mode")
     public void setMode(String mode) {
         this.mode = mode;
+    }
+
+    /**
+     * PartitionBehavior defines how matched packets are handled for the partition action. "drop" silently discards packets, while "reject" resets TCP connections and rejects remaining traffic with the platform-default response.
+     */
+    @JsonProperty("partitionBehavior")
+    public String getPartitionBehavior() {
+        return partitionBehavior;
+    }
+
+    /**
+     * PartitionBehavior defines how matched packets are handled for the partition action. "drop" silently discards packets, while "reject" resets TCP connections and rejects remaining traffic with the platform-default response.
+     */
+    @JsonProperty("partitionBehavior")
+    public void setPartitionBehavior(String partitionBehavior) {
+        this.partitionBehavior = partitionBehavior;
     }
 
     /**

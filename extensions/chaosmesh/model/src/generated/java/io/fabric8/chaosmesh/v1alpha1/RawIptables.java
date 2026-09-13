@@ -44,6 +44,7 @@ import lombok.experimental.Accessors;
     "direction",
     "ipsets",
     "name",
+    "partitionBehavior",
     "source"
 })
 @ToString
@@ -80,6 +81,8 @@ public class RawIptables implements Editable<RawIptablesBuilder>, KubernetesReso
     private List<String> ipsets = new ArrayList<>();
     @JsonProperty("name")
     private String name;
+    @JsonProperty("partitionBehavior")
+    private String partitionBehavior;
     @JsonProperty("source")
     private String source;
     @JsonIgnore
@@ -91,12 +94,13 @@ public class RawIptables implements Editable<RawIptablesBuilder>, KubernetesReso
     public RawIptables() {
     }
 
-    public RawIptables(String device, String direction, List<String> ipsets, String name, String source) {
+    public RawIptables(String device, String direction, List<String> ipsets, String name, String partitionBehavior, String source) {
         super();
         this.device = device;
         this.direction = direction;
         this.ipsets = ipsets;
         this.name = name;
+        this.partitionBehavior = partitionBehavior;
         this.source = source;
     }
 
@@ -163,6 +167,22 @@ public class RawIptables implements Editable<RawIptablesBuilder>, KubernetesReso
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * PartitionBehavior defines whether matching packets are dropped or rejected. Reject resets TCP connections and rejects remaining traffic with the platform-default response. An empty value preserves the legacy drop behavior.
+     */
+    @JsonProperty("partitionBehavior")
+    public String getPartitionBehavior() {
+        return partitionBehavior;
+    }
+
+    /**
+     * PartitionBehavior defines whether matching packets are dropped or rejected. Reject resets TCP connections and rejects remaining traffic with the platform-default response. An empty value preserves the legacy drop behavior.
+     */
+    @JsonProperty("partitionBehavior")
+    public void setPartitionBehavior(String partitionBehavior) {
+        this.partitionBehavior = partitionBehavior;
     }
 
     /**

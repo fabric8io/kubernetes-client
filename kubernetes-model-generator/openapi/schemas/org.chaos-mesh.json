@@ -2140,6 +2140,14 @@
             "default": ""
           }
         },
+        "expressionSelectors": {
+          "description": "a slice of label selector expressions that can be used to select objects. A list of selectors based on set-based label expressions.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelectorRequirement"
+          }
+        },
         "fieldSelectors": {
           "description": "Map of string keys and values that can be used to select objects. A selector based on fields.",
           "type": "object",
@@ -2815,7 +2823,7 @@
           "default": ""
         },
         "attr": {
-          "description": "Attr defines the overrided attribution",
+          "description": "Attr defines the overridden attribution",
           "$ref": "#/definitions/org.chaos-mesh.v1alpha1.AttrOverrideSpec"
         },
         "containerNames": {
@@ -4110,6 +4118,10 @@
           "type": "string",
           "default": ""
         },
+        "partitionBehavior": {
+          "description": "PartitionBehavior defines how matched packets are handled for the partition action. \"drop\" silently discards packets, while \"reject\" resets TCP connections and rejects remaining traffic with the platform-default response.",
+          "type": "string"
+        },
         "rate": {
           "description": "Rate represents the detail about rate control action",
           "$ref": "#/definitions/org.chaos-mesh.v1alpha1.RateSpec"
@@ -4969,6 +4981,14 @@
           "additionalProperties": {
             "type": "string",
             "default": ""
+          }
+        },
+        "expressionSelectors": {
+          "description": "a slice of label selector expressions that can be used to select objects. A list of selectors based on set-based label expressions.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelectorRequirement"
           }
         },
         "fieldSelectors": {
@@ -5928,6 +5948,14 @@
             "default": ""
           }
         },
+        "expressionSelectors": {
+          "description": "a slice of label selector expressions that can be used to select objects. A list of selectors based on set-based label expressions.",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelectorRequirement"
+          }
+        },
         "fieldSelectors": {
           "description": "Map of string keys and values that can be used to select objects. A selector based on fields.",
           "type": "object",
@@ -6127,6 +6155,10 @@
           "description": "The name of iptables chain",
           "type": "string",
           "default": ""
+        },
+        "partitionBehavior": {
+          "description": "PartitionBehavior defines whether matching packets are dropped or rejected. Reject resets TCP connections and rejects remaining traffic with the platform-default response. An empty value preserves the legacy drop behavior.",
+          "type": "string"
         },
         "source": {
           "type": "string",
@@ -7533,6 +7565,13 @@
         "container": {
           "description": "Container is the main container image to run in the pod",
           "$ref": "#/definitions/io.k8s.api.core.v1.Container"
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "default": ""
+          }
         },
         "volumes": {
           "description": "Volumes is a list of volumes that can be mounted by containers in a template.",

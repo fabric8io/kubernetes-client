@@ -24,6 +24,7 @@ public class RawIptablesFluent<A extends io.fabric8.chaosmesh.v1alpha1.RawIptabl
   private String direction;
   private List<String> ipsets = new ArrayList<String>();
   private String name;
+  private String partitionBehavior;
   private String source;
 
   public RawIptablesFluent() {
@@ -88,6 +89,7 @@ public class RawIptablesFluent<A extends io.fabric8.chaosmesh.v1alpha1.RawIptabl
         this.withDirection(instance.getDirection());
         this.withIpsets(instance.getIpsets());
         this.withName(instance.getName());
+        this.withPartitionBehavior(instance.getPartitionBehavior());
         this.withSource(instance.getSource());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -114,6 +116,9 @@ public class RawIptablesFluent<A extends io.fabric8.chaosmesh.v1alpha1.RawIptabl
       return false;
     }
     if (!(Objects.equals(name, that.name))) {
+      return false;
+    }
+    if (!(Objects.equals(partitionBehavior, that.partitionBehavior))) {
       return false;
     }
     if (!(Objects.equals(source, that.source))) {
@@ -166,6 +171,10 @@ public class RawIptablesFluent<A extends io.fabric8.chaosmesh.v1alpha1.RawIptabl
     return this.name;
   }
   
+  public String getPartitionBehavior() {
+    return this.partitionBehavior;
+  }
+  
   public String getSource() {
     return this.source;
   }
@@ -199,12 +208,16 @@ public class RawIptablesFluent<A extends io.fabric8.chaosmesh.v1alpha1.RawIptabl
     return this.name != null;
   }
   
+  public boolean hasPartitionBehavior() {
+    return this.partitionBehavior != null;
+  }
+  
   public boolean hasSource() {
     return this.source != null;
   }
   
   public int hashCode() {
-    return Objects.hash(device, direction, ipsets, name, source, additionalProperties);
+    return Objects.hash(device, direction, ipsets, name, partitionBehavior, source, additionalProperties);
   }
   
   public A removeAllFromIpsets(Collection<String> items) {
@@ -282,6 +295,11 @@ public class RawIptablesFluent<A extends io.fabric8.chaosmesh.v1alpha1.RawIptabl
         sb.append(name);
         sb.append(",");
     }
+    if (!(partitionBehavior == null)) {
+        sb.append("partitionBehavior:");
+        sb.append(partitionBehavior);
+        sb.append(",");
+    }
     if (!(source == null)) {
         sb.append("source:");
         sb.append(source);
@@ -341,6 +359,11 @@ public class RawIptablesFluent<A extends io.fabric8.chaosmesh.v1alpha1.RawIptabl
   
   public A withName(String name) {
     this.name = name;
+    return (A) this;
+  }
+  
+  public A withPartitionBehavior(String partitionBehavior) {
+    this.partitionBehavior = partitionBehavior;
     return (A) this;
   }
   
