@@ -125377,14 +125377,12 @@
       "description": "Image holds the details of an image to use during provisioning.",
       "type": "object",
       "required": [
-        "url",
-        "checksum"
+        "url"
       ],
       "properties": {
         "checksum": {
-          "description": "Checksum is a md5sum, sha256sum or sha512sum value or a URL to retrieve one.",
-          "type": "string",
-          "default": ""
+          "description": "Checksum is a md5sum, sha256sum or sha512sum value or a URL to retrieve one. Optional for live-iso and oci:// URLs; required otherwise.",
+          "type": "string"
         },
         "checksumType": {
           "description": "ChecksumType is the checksum algorithm for the image. e.g md5, sha256, sha512",
@@ -127847,12 +127845,11 @@
       "description": "Image holds the details of an image to use during provisioning.",
       "type": "object",
       "required": [
-        "url",
-        "checksum"
+        "url"
       ],
       "properties": {
         "checksum": {
-          "description": "checksum is a md5sum, sha256sum or sha512sum value or a URL to retrieve one. When diskFormat is live-iso, empty string is also a valid value.",
+          "description": "checksum is a md5sum, sha256sum or sha512sum value or a URL to retrieve one. Optional for live-iso and oci:// URLs; required otherwise.",
           "type": "string"
         },
         "checksumType": {
@@ -128906,12 +128903,9 @@
     "io.x-k8s.cluster.infrastructure.v1beta2.Metal3DataTemplateSpec": {
       "description": "Metal3DataTemplateSpec defines the desired state of Metal3DataTemplate.",
       "type": "object",
-      "required": [
-        "clusterName"
-      ],
       "properties": {
         "clusterName": {
-          "description": "clusterName is the name of the Cluster this object belongs to.",
+          "description": "clusterName is the name of the Cluster this object belongs to.\n\nDeprecated: This field is deprecated and will be removed in a future release. It is no longer used by the controllers.",
           "type": "string"
         },
         "metaData": {
@@ -130343,7 +130337,7 @@
           "format": "int32"
         },
         "timeoutSeconds": {
-          "description": "timeoutSeconds defines the timeout between remediation retries. The minimum allowed value is 100 seconds. The default is 600 seconds.",
+          "description": "timeoutSeconds defines the timeout between remediation retries. The minimum allowed value is 100 seconds. The default is 600 seconds. Setting a very high value is discouraged: the controller waits this long between attempts, so a large timeout delays every retry and can effectively stall remediation for a very long time.",
           "type": "integer",
           "format": "int32"
         },
