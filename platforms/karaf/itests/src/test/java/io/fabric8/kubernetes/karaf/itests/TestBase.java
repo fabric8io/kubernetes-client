@@ -31,6 +31,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.ops4j.pax.exam.CoreOptions.composite;
 import static org.ops4j.pax.exam.CoreOptions.maven;
+import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.configureConsole;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.configureSecurity;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFileExtend;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFilePut;
@@ -54,6 +55,9 @@ public class TestBase {
       ret.addAll(Arrays.asList(
           karafDistributionConfiguration().frameworkUrl(karafUrl).name("Apache Karaf").unpackDirectory(new File("target/exam")),
           configureSecurity().disableKarafMBeanServerBuilder(),
+          // Karaf 4.4's local console calls Subject.getSubject, which throws on JDK 23+ (apache/karaf#2214). The tests
+          // don't need it, and its failed shell bundle would make every later feature install fail.
+          configureConsole().ignoreLocalConsole(),
           features,
           editConfigurationFileExtend(
               "etc/io.fabric8.kubernetes.client.cfg", "junit", "ignored"),

@@ -27,7 +27,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@DisabledForJreRange(min = JRE.JAVA_25, disabledReason = "Gradle 8.x does not support JDK 25+")
+@DisabledForJreRange(min = JRE.JAVA_22, disabledReason = "The Gradle version these ITs run (gradle-api.version) supports Java 21 at most, see #8104")
 public class BuildWithGradlePluginIT {
   @RegisterExtension
   final ITGradleRunnerExtension gradleRunner = new ITGradleRunnerExtension();
