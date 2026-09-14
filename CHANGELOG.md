@@ -7,6 +7,7 @@
 #### Improvements
 
 #### Dependency Upgrade
+* Fix #8098: bump chaos-mesh api from 4db47f5 to d70b66a
 * Fix #8050: (karaf) The Karaf feature bundles Aries SPI-Fly 1.3.7 (from 1.3.0) and ASM 9.10.1 (from 8.0.1), the versions required to weave Java 17 bytecode
 
 #### New Features

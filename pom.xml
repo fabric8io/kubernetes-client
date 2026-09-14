@@ -89,16 +89,20 @@
 
     <!-- Core versions -->
     <sundrio.version>0.230.2</sundrio.version>
-    <okhttp.version>5.4.0</okhttp.version>
-    <jackson.version>2.21.4</jackson.version>
+    <okhttp.version>5.5.0</okhttp.version>
+    <jackson.version>2.22.2</jackson.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
-    <!-- fix as jackson-annotations version 2.20 was released, Refer: https://github.com/FasterXML/jackson-bom/blob/54f854ba1ce69c5827f8acf6d08ba2d7ce36233c/pom.xml#L53-L62 -->
-    <jackson.bundle.version.annotations>2.21</jackson.bundle.version.annotations>
+    <!-- jackson-bom decouples jackson-annotations from jackson.version since 2.20 (it drops the patch segment). Keep in sync with jackson-bom's jackson.version.annotations, Refer: https://github.com/FasterXML/jackson-bom/blob/54f854ba1ce69c5827f8acf6d08ba2d7ce36233c/pom.xml#L53-L62 -->
+    <jackson.bundle.version.annotations>2.22</jackson.bundle.version.annotations>
+    <!-- TODO: pinned to Jetty 11. Moving to 12 is not an in-place bump: it reorganises the
+         artifacts and changes the EE baseline, so it wants its own module next to httpclient-jetty,
+         the way httpclient-vertx (4.x) and httpclient-vertx-5 (5.x) coexist. Renovate is configured
+         to withhold Jetty majors until then. -->
     <jetty.version>11.0.26</jetty.version>
     <maven-core.version>3.9.16</maven-core.version>
     <maven-plugin-annotations.version>3.16.0</maven-plugin-annotations.version>
     <vertx.version>4.5.33</vertx.version>
-    <vertx5.version>5.1.7</vertx5.version>
+    <vertx5.version>5.1.8</vertx5.version>
     <jandex.version>3.6.0</jandex.version>
     <snakeyaml.version>3.1.1</snakeyaml.version>
     <snakeyaml.bundle.version>2.5</snakeyaml.bundle.version> <!-- Transitive Jackson -->

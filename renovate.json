@@ -8,7 +8,18 @@
   "enabledManagers": [
     "maven",
     "gomod",
-    "github-actions"
+    "github-actions",
+    "custom.regex"
+  ],
+  "customManagers": [
+    {
+      "description": "jackson.bundle.version.annotations pins the jackson-annotations OSGi bundle in the Karaf feature. jackson-bom decouples it from jackson.version (2.20+ drops the patch segment), and it is not a dependency declaration, so the maven manager never sees it. Tracking it here keeps it in the same grouped jackson PR",
+      "customType": "regex",
+      "managerFilePatterns": ["/^pom\\.xml$/"],
+      "matchStrings": ["<jackson\\.bundle\\.version\\.annotations>(?<currentValue>.*?)</jackson\\.bundle\\.version\\.annotations>"],
+      "depNameTemplate": "com.fasterxml.jackson.core:jackson-annotations",
+      "datasourceTemplate": "maven"
+    }
   ],
   "ignorePaths": [
     "**/src/it/**"
@@ -31,9 +42,20 @@
       "enabled": false
     },
     {
-      "description": "swagger-request-validator 3.x requires Java 21; we still target Java 17",
-      "matchPackageNames": ["com.atlassian.oai:**"],
+      "description": "TODO: httpclient-jetty is still on Jetty 11. Jetty 12 reorganises the artifacts and changes the servlet/EE baseline, so it needs its own module alongside this one, mirroring the httpclient-vertx (4.x) / httpclient-vertx-5 (5.x) split, rather than being upgraded in place. Until that module exists Jetty stays on 11.x. Note this is effectively a freeze: 11.0.26 (2025-08-14) is the newest 11.x and there is no 11.1.x line, so no minor or patch updates are expected either",
+      "matchPackageNames": ["org.eclipse.jetty**"],
       "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "description": "swagger-request-validator 3.x requires Java 21; we still target Java 17. 3.x also renamed the artifact to openapi-request-validator-core, which arrives as a replacement rather than a major, so both update types are disabled",
+      "matchPackageNames": ["com.atlassian.oai:**"],
+      "matchUpdateTypes": ["major", "replacement"],
+      "enabled": false
+    },
+    {
+      "description": "org.gradle:gradle-all is not published to Maven Central. gradle-api-maven-plugin synthesizes it locally from the Gradle distribution, so the lookup can only ever fail. gradle-api.version is a compatibility floor for the Gradle plugin and is bumped deliberately",
+      "matchPackageNames": ["org.gradle:gradle-all"],
       "enabled": false
     },
     {

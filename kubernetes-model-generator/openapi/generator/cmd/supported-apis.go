@@ -84,7 +84,7 @@ func init() {
 var supportedApisRun = func(cobraCmd *cobra.Command, args []string) {
 	fmt.Printf("This generator generates OpenAPI schemas for the following supported APIs:\n%s\n", strings.Join([]string{
 		certmanagerv1.SchemeGroupVersion.String(),
-		chaosmeshv1alpha1.GroupVersion.String(),
+		chaosmeshv1alpha1.SchemeGroupVersion.String(),
 		networkattachmentdefinition.SchemeGroupVersion.String(),
 		olm.SchemeGroupVersion.String(),
 		openshiftbaremetaloperatorv1alpha1.GroupVersion.String(),

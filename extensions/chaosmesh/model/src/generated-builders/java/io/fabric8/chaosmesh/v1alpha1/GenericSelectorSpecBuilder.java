@@ -25,7 +25,7 @@ public class GenericSelectorSpecBuilder extends GenericSelectorSpecFluent<Generi
   }
 
   public GenericSelectorSpec build() {
-    GenericSelectorSpec buildable = new GenericSelectorSpec(fluent.getAnnotationSelectors(), fluent.getFieldSelectors(), fluent.getLabelSelectors(), fluent.getNamespaces());
+    GenericSelectorSpec buildable = new GenericSelectorSpec(fluent.getAnnotationSelectors(), fluent.getExpressionSelectors(), fluent.getFieldSelectors(), fluent.getLabelSelectors(), fluent.getNamespaces());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -41,6 +42,7 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "annotationSelectors",
+    "expressionSelectors",
     "fieldSelectors",
     "labelSelectors",
     "namespaces",
@@ -77,6 +79,9 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder>, Kubern
     @JsonProperty("annotationSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotationSelectors = new LinkedHashMap<>();
+    @JsonProperty("expressionSelectors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<LabelSelectorRequirement> expressionSelectors = new ArrayList<>();
     @JsonProperty("fieldSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> fieldSelectors = new LinkedHashMap<>();
@@ -107,9 +112,10 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder>, Kubern
     public PodSelectorSpec() {
     }
 
-    public PodSelectorSpec(Map<String, String> annotationSelectors, Map<String, String> fieldSelectors, Map<String, String> labelSelectors, List<String> namespaces, Map<String, String> nodeSelectors, List<String> nodes, List<String> podPhaseSelectors, Map<String, List<String>> pods) {
+    public PodSelectorSpec(Map<String, String> annotationSelectors, List<LabelSelectorRequirement> expressionSelectors, Map<String, String> fieldSelectors, Map<String, String> labelSelectors, List<String> namespaces, Map<String, String> nodeSelectors, List<String> nodes, List<String> podPhaseSelectors, Map<String, List<String>> pods) {
         super();
         this.annotationSelectors = annotationSelectors;
+        this.expressionSelectors = expressionSelectors;
         this.fieldSelectors = fieldSelectors;
         this.labelSelectors = labelSelectors;
         this.namespaces = namespaces;
@@ -134,6 +140,23 @@ public class PodSelectorSpec implements Editable<PodSelectorSpecBuilder>, Kubern
     @JsonProperty("annotationSelectors")
     public void setAnnotationSelectors(Map<String, String> annotationSelectors) {
         this.annotationSelectors = annotationSelectors;
+    }
+
+    /**
+     * a slice of label selector expressions that can be used to select objects. A list of selectors based on set-based label expressions.
+     */
+    @JsonProperty("expressionSelectors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<LabelSelectorRequirement> getExpressionSelectors() {
+        return expressionSelectors;
+    }
+
+    /**
+     * a slice of label selector expressions that can be used to select objects. A list of selectors based on set-based label expressions.
+     */
+    @JsonProperty("expressionSelectors")
+    public void setExpressionSelectors(List<LabelSelectorRequirement> expressionSelectors) {
+        this.expressionSelectors = expressionSelectors;
     }
 
     /**
