@@ -25,7 +25,7 @@ public class MachineDeletionStatusBuilder extends MachineDeletionStatusFluent<Ma
   }
 
   public MachineDeletionStatus build() {
-    MachineDeletionStatus buildable = new MachineDeletionStatus(fluent.getNodeDrainStartTime(), fluent.getWaitForNodeVolumeDetachStartTime());
+    MachineDeletionStatus buildable = new MachineDeletionStatus(fluent.getNodeDrainStartTime(), fluent.getWaitForNodeVolumeDetachStartTime(), fluent.getWaitForPreDrainHookStartTime(), fluent.getWaitForPreTerminateHookStartTime());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }
