@@ -56,7 +56,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.ovn.k8s.v1.AdminPolicyBasedExternalRoute"
           }
         },
@@ -116,8 +115,7 @@
           "description": "An array of Human-readable messages indicating details about the status of the object.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "set",
           "x-kubernetes-patch-strategy": "merge"
@@ -250,7 +248,6 @@
           "description": "List of EgressFirewalls.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.ovn.k8s.v1.EgressFirewall"
           }
         },
@@ -311,7 +308,6 @@
           "description": "ports specify what ports and protocols the rule applies to",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.ovn.k8s.v1.EgressFirewallPort"
           }
         },
@@ -345,7 +341,6 @@
           "description": "a collection of egress firewall rule objects",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.ovn.k8s.v1.EgressFirewallRule"
           }
         }
@@ -364,8 +359,7 @@
         "messages": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "set",
           "x-kubernetes-patch-strategy": "merge"
@@ -435,7 +429,6 @@
           "description": "List of EgressIP.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.ovn.k8s.v1.EgressIP"
           }
         },
@@ -468,8 +461,7 @@
           "description": "EgressIPs is the list of egress IP addresses requested. Can be IPv4 and/or IPv6. This field is mandatory.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "namespaceSelector": {
@@ -501,7 +493,6 @@
           "description": "The list of assigned egress IPs and their corresponding node assignment.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.ovn.k8s.v1.EgressIPStatusItem"
           }
         }
@@ -588,7 +579,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.ovn.k8s.v1.EgressQoS"
           }
         },
@@ -650,7 +640,6 @@
           "description": "a collection of Egress QoS rule objects",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.ovn.k8s.v1.EgressQoSRule"
           }
         }
@@ -671,7 +660,6 @@
           "description": "An array of condition objects indicating details about status of EgressQoS object.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
           },
           "x-kubernetes-list-map-keys": [
@@ -741,7 +729,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.ovn.k8s.v1.EgressService"
           }
         },
@@ -871,8 +858,7 @@
           "description": "JoinSubnets are used inside the OVN network topology.\n\nDual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed. This field is only allowed for \"Primary\" network. It is not recommended to set this field without explicit need and understanding of the OVN network topology. When omitted, the platform will choose a reasonable default which is subject to change over time.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "mtu": {
@@ -889,8 +875,7 @@
           "description": "Subnets are used for the pod network across the cluster. Dual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed.\n\nThe format should match standard CIDR notation (for example, \"10.128.0.0/16\"). This field may be omitted. In that case the logical switch implementing the network only provides layer 2 communication, and users must configure IP addresses for the pods. As a consequence, Port security only prevents MAC spoofing.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -913,8 +898,7 @@
           "description": "JoinSubnets are used inside the OVN network topology.\n\nDual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed. This field is only allowed for \"Primary\" network. It is not recommended to set this field without explicit need and understanding of the OVN network topology. When omitted, the platform will choose a reasonable default which is subject to change over time.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "mtu": {
@@ -931,7 +915,6 @@
           "description": "Subnets are used for the pod network across the cluster.\n\nDual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed. Given subnet is split into smaller subnets for every node.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.ovn.k8s.v1.Layer3Subnet"
           }
         }
@@ -1044,7 +1027,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.ovn.k8s.v1.UserDefinedNetwork"
           }
         },
@@ -1110,7 +1092,6 @@
         "conditions": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
           },
           "x-kubernetes-list-map-keys": [

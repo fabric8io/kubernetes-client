@@ -8,6 +8,15 @@
 
 #### Dependency Upgrade
 * Fix #8098: bump chaos-mesh api from 4db47f5 to d70b66a
+* Fix #8086: bump cluster-api from 1.12.2 to 1.13.6
+* Fix #8086: bump gateway-api from 1.6.1 to 1.6.2
+* Fix #8086: bump k8s.io/api from 0.35.2 to 0.35.8
+* Fix #8086: bump k8s.io/apiextensions-apiserver from 0.36.1 to 0.37.0
+* Fix #8086: bump k8s.io/apimachinery from 0.36.1 to 0.37.0
+* Fix #8086: bump k8s.io/autoscaler/vertical-pod-autoscaler from 1.7.0 to 1.7.1
+* Fix #8086: bump k8s.io/client-go from 0.35.2 to 0.35.8
+* Fix #8086: bump k8s.io/kube-openapi from 0.0.0-20260501160325-927ab1f70cd6 to 0.0.0-20260821135717-be32def86098
+* Fix #8086: bump k8s.io/metrics from 0.36.1 to 0.37.0
 * Fix #8050: (karaf) The Karaf feature bundles Aries SPI-Fly 1.3.7 (from 1.3.0) and ASM 9.10.1 (from 8.0.1), the versions required to weave Java 17 bytecode
 
 #### New Features

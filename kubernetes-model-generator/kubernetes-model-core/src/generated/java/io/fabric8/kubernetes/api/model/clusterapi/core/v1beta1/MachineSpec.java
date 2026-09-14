@@ -34,6 +34,7 @@ import lombok.experimental.Accessors;
     "nodeVolumeDetachTimeout",
     "providerID",
     "readinessGates",
+    "taints",
     "version"
 })
 @ToString
@@ -66,6 +67,9 @@ public class MachineSpec implements Editable<MachineSpecBuilder>, KubernetesReso
     @JsonProperty("readinessGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<MachineReadinessGate> readinessGates = new ArrayList<>();
+    @JsonProperty("taints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<MachineTaint> taints = new ArrayList<>();
     @JsonProperty("version")
     private String version;
     @JsonIgnore
@@ -77,7 +81,7 @@ public class MachineSpec implements Editable<MachineSpecBuilder>, KubernetesReso
     public MachineSpec() {
     }
 
-    public MachineSpec(Bootstrap bootstrap, String clusterName, String failureDomain, ObjectReference infrastructureRef, Duration nodeDeletionTimeout, Duration nodeDrainTimeout, Duration nodeVolumeDetachTimeout, String providerID, List<MachineReadinessGate> readinessGates, String version) {
+    public MachineSpec(Bootstrap bootstrap, String clusterName, String failureDomain, ObjectReference infrastructureRef, Duration nodeDeletionTimeout, Duration nodeDrainTimeout, Duration nodeVolumeDetachTimeout, String providerID, List<MachineReadinessGate> readinessGates, List<MachineTaint> taints, String version) {
         super();
         this.bootstrap = bootstrap;
         this.clusterName = clusterName;
@@ -88,6 +92,7 @@ public class MachineSpec implements Editable<MachineSpecBuilder>, KubernetesReso
         this.nodeVolumeDetachTimeout = nodeVolumeDetachTimeout;
         this.providerID = providerID;
         this.readinessGates = readinessGates;
+        this.taints = taints;
         this.version = version;
     }
 
@@ -180,6 +185,17 @@ public class MachineSpec implements Editable<MachineSpecBuilder>, KubernetesReso
     @JsonProperty("readinessGates")
     public void setReadinessGates(List<MachineReadinessGate> readinessGates) {
         this.readinessGates = readinessGates;
+    }
+
+    @JsonProperty("taints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<MachineTaint> getTaints() {
+        return taints;
+    }
+
+    @JsonProperty("taints")
+    public void setTaints(List<MachineTaint> taints) {
+        this.taints = taints;
     }
 
     @JsonProperty("version")

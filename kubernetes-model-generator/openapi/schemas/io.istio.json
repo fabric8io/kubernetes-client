@@ -133,8 +133,7 @@
           "description": "A list of strings specifying the resource identifiers that were the cause of message generation. A \"path\" here is a (NAMESPACE\\/)?RESOURCETYPE/NAME tuple that uniquely identifies a particular resource. There doesn't seem to be a single concept for this, but this is intuitively taken from https://kubernetes.io/docs/reference/using-api/api-concepts/#standard-api-terminology At least one is required.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -741,8 +740,7 @@
           "description": "A list of alternate names to verify the subject identity in the certificate. If specified, the proxy will verify that the server certificate's subject alt name matches one of the specified values. If specified, this list overrides the value of `subjectAltNames` from the `ServiceEntry`. If unspecified, automatic validation of upstream presented certificate for new upstream connections will be done based on the downstream HTTP host/authority header.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -924,24 +922,21 @@
           "description": "List of HTTP headers that can be used when requesting the resource. Serialized to Access-Control-Allow-Headers header.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "allowMethods": {
           "description": "List of HTTP methods allowed to access the resource. The content will be serialized into the Access-Control-Allow-Methods header.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "allowOrigin": {
           "description": "The list of origins that are allowed to perform CORS requests. The content will be serialized into the Access-Control-Allow-Origin header. Wildcard * will allow all origins. $hide_from_docs\n\nDeprecated: Marked as deprecated in networking/v1alpha3/virtual_service.proto.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "allowOrigins": {
@@ -955,8 +950,7 @@
           "description": "A list of HTTP headers that the browsers are allowed to access. Serialized into Access-Control-Expose-Headers header.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "maxAge": {
@@ -1043,8 +1037,7 @@
           "description": "A list of namespaces to which this destination rule is exported. The resolution of a destination rule to apply to a service occurs in the context of a hierarchy of namespaces. Exporting a destination rule allows it to be included in the resolution hierarchy for services in other namespaces. This feature provides a mechanism for service owners and mesh administrators to control the visibility of destination rules across namespace boundaries.\n\nIf no namespaces are specified then the destination rule is exported to all namespaces by default.\n\nThe value \".\" is reserved and defines an export to the same namespace that the destination rule is declared in. Similarly, the value \"*\" is reserved and defines an export to all namespaces.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "host": {
@@ -1475,8 +1468,7 @@
           "description": "Match on the node metadata supplied by a proxy when connecting to istiod. Note that while Envoy's node metadata is of type Struct, only string key-value pairs are processed by istiod. All keys specified in the metadata must match with exact values. The match will fail if any of the specified keys are absent or the values fail to match.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "proxyVersion": {
@@ -1674,8 +1666,7 @@
           "description": "Command to run. Exit status of 0 is treated as live/healthy and non-zero is unhealthy.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -1695,8 +1686,7 @@
           "description": "One or more labels that indicate a specific set of pods/VMs on which this gateway configuration should be applied. By default workloads are searched across all namespaces based on label selectors. This implies that a gateway resource in the namespace \"foo\" can select pods in the namespace \"bar\" based on labels. This behavior can be controlled via the `PILOT_SCOPE_GATEWAY_TO_NAMESPACE` environment variable in istiod. If this variable is set to true, the scope of label search is restricted to the configuration namespace in which the the resource is present. In other words, the Gateway resource must reside in the same namespace as the gateway workload instance. If selector is nil, the Gateway will be applied to all workloads.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "servers": {
@@ -2078,8 +2068,7 @@
           "description": "Names of gateways where the rule should be applied. Gateway names in the top-level `gateways` field of the VirtualService (if any) are overridden. The gateway match is independent of sourceLabels.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "headers": {
@@ -2121,8 +2110,7 @@
           "description": "One or more labels that constrain the applicability of a rule to source (client) workloads with the given labels. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it must include the reserved gateway `mesh` for this field to be applicable.\n\n**Note:** This is not a runtime match, but is a selector; it filters which workloads the VirtualService applies to.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "sourceNamespace": {
@@ -2474,24 +2462,21 @@
           "description": "Append the given values to the headers specified by keys (will create a comma-separated list of values)",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "remove": {
           "description": "Remove the specified headers",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "set": {
           "description": "Overwrite the headers specified by key with the given values",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -2640,8 +2625,7 @@
           "description": "One or more service hosts exposed by the listener in `namespace/dnsName` format. Services in the specified namespace matching `dnsName` will be exposed. The corresponding service can be a service in the service registry (e.g., a Kubernetes or cloud foundry service) or a service specified using a `ServiceEntry` or `VirtualService` configuration. Any associated `DestinationRule` in the same namespace will also be used.\n\nThe `dnsName` should be specified using FQDN format, optionally including a wildcard character in the left-most component (e.g., `prod/*.example.com`). Set the `dnsName` to `*` to select all services from the specified namespace (e.g., `prod/*`).\n\nThe `namespace` can be set to `*`, `.`, or `~`, representing any, the current, or no namespace, respectively. For example, `*/foo.example.com` selects the service from any available namespace while `./foo.example.com` only selects the service from the namespace of the sidecar. If a host is set to `*/*`, Istio will configure the sidecar to be able to reach every service in the mesh that is exported to the sidecar's namespace. The value `~/*` can be used to completely trim the configuration for sidecars that simply receive traffic and respond, but make no outbound connections of their own.\n\nNOTE: Only services and configuration artifacts exported to the sidecar's namespace (e.g., `exportTo` value of `*`) can be referenced. Private configurations (e.g., `exportTo` set to `.`) will not be available. Refer to the `exportTo` setting in `VirtualService`, `DestinationRule`, and `ServiceEntry` configurations for details.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "port": {
@@ -2703,16 +2687,14 @@
           "description": "IPv4 or IPv6 ip addresses of destination with optional subnet.  E.g., a.b.c.d/xx form or just a.b.c.d.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "gateways": {
           "description": "Names of gateways where the rule should be applied. Gateway names in the top-level `gateways` field of the VirtualService (if any) are overridden. The gateway match is independent of sourceLabels.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "port": {
@@ -2724,8 +2706,7 @@
           "description": "One or more labels that constrain the applicability of a rule to workloads with the given labels. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it should include the reserved gateway `mesh` in order for this field to be applicable.\n\n**Note:** This is not a runtime match, but is a selector; it filters which workloads the VirtualService applies to.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "sourceNamespace": {
@@ -3106,8 +3087,7 @@
           "description": "failoverPriority is an ordered list of labels used to sort endpoints to do priority based load balancing. This is to support traffic failover across different groups of endpoints. Two kinds of labels can be specified:\n\n  - Specify only label keys `[key1, key2, key3]`, istio would compare the label values of client with endpoints.\n    Suppose there are total N label keys `[key1, key2, key3, ...keyN]` specified:\n\n    1. Endpoints matching all N labels with the client proxy have priority P(0) i.e. the highest priority.\n    2. Endpoints matching the first N-1 labels with the client proxy have priority P(1) i.e. second highest priority.\n    3. By extension of this logic, endpoints matching only the first label with the client proxy has priority P(N-1) i.e. second lowest priority.\n    4. All the other endpoints have priority P(N) i.e. lowest priority.\n\n  - Specify labels with key and value `[key1=value1, key2=value2, key3=value3]`, istio would compare the labels with endpoints.\n    Suppose there are total N labels `[key1=value1, key2=value2, key3=value3, ...keyN=valueN]` specified:\n\n    1. Endpoints matching all N labels have priority P(0) i.e. the highest priority.\n    2. Endpoints matching the first N-1 labels have priority P(1) i.e. second highest priority.\n    3. By extension of this logic, endpoints matching only the first label has priority P(N-1) i.e. second lowest priority.\n    4. All the other endpoints have priority P(N) i.e. lowest priority.\n\nNote: For a label to be considered for match, the previous labels must match, i.e. nth label would be considered matched only if first n-1 labels match.\n\nIt can be any label specified on both client and server workloads. The following labels which have special semantic meaning are also supported:\n\n  - `topology.istio.io/network` is used to match the network metadata of an endpoint, which can be specified by pod/namespace label `topology.istio.io/network`, sidecar env `ISTIO_META_NETWORK` or MeshNetworks.\n  - `topology.istio.io/cluster` is used to match the clusterID of an endpoint, which can be specified by pod label `topology.istio.io/cluster` or pod env `ISTIO_META_CLUSTER_ID`.\n  - `topology.kubernetes.io/region` is used to match the region metadata of an endpoint, which maps to Kubernetes node label `topology.kubernetes.io/region` or the deprecated label `failure-domain.beta.kubernetes.io/region`.\n  - `topology.kubernetes.io/zone` is used to match the zone metadata of an endpoint, which maps to Kubernetes node label `topology.kubernetes.io/zone` or the deprecated label `failure-domain.beta.kubernetes.io/zone`.\n  - `topology.istio.io/subzone` is used to match the subzone metadata of an endpoint, which maps to Istio node label `topology.istio.io/subzone`.\n  - `kubernetes.io/hostname` is used to match the current node of an endpoint, which maps to Kubernetes node label `kubernetes.io/hostname`.\n\nThe below topology config indicates the following priority levels:\n\n```yaml failoverPriority: - \"topology.istio.io/network\" - \"topology.kubernetes.io/region\" - \"topology.kubernetes.io/zone\" - \"topology.istio.io/subzone\" ```\n\n1. endpoints match same [network, region, zone, subzone] label with the client proxy have the highest priority. 2. endpoints have same [network, region, zone] label but different [subzone] label with the client proxy have the second highest priority. 3. endpoints have same [network, region] label but different [zone] label with the client proxy have the third highest priority. 4. endpoints have same [network] but different [region] labels with the client proxy have the fourth highest priority. 5. all the other endpoints have the same lowest priority.\n\nSuppose a service associated endpoints reside in multi clusters, the below example represents: 1. endpoints in `clusterA` and has `version=v1` label have P(0) priority. 2. endpoints not in `clusterA` but has `version=v1` label have P(1) priority. 2. all the other endpoints have P(2) priority.\n\n```yaml failoverPriority: - \"version=v1\" - \"topology.istio.io/cluster=clusterA\" ```\n\nOptional: only one of distribute, failover or failoverPriority can be set. And it should be used together with `OutlierDetection` to detect unhealthy endpoints, otherwise has no effect.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -3132,8 +3112,7 @@
           "type": "object",
           "additionalProperties": {
             "type": "integer",
-            "format": "int64",
-            "default": 0
+            "format": "int64"
           }
         }
       },
@@ -3505,8 +3484,7 @@
           "description": "One or more hosts exposed by this gateway. While typically applicable to HTTP services, it can also be used for TCP services using TLS with SNI. A host is specified as a `dnsName` with an optional `namespace/` prefix. The `dnsName` should be specified using FQDN format, optionally including a wildcard character in the left-most component (e.g., `prod/*.example.com`). Set the `dnsName` to `*` to select all `VirtualService` hosts from the specified namespace (e.g.,`prod/*`).\n\nThe `namespace` can be set to `*` or `.`, representing any or the current namespace, respectively. For example, `*/foo.example.com` selects the service from any available namespace while `./foo.example.com` only selects the service from the namespace of the sidecar. The default, if no `namespace/` is specified, is `*/`, that is, select services from any namespace. Any associated `DestinationRule` in the selected namespace will also be used.\n\nA `VirtualService` must be bound to the gateway and must have one or more hosts that match the hosts specified in a server. The match could be an exact match or a suffix match with the server's hosts. For example, if the server's hosts specifies `*.example.com`, a `VirtualService` with hosts `dev.example.com` or `prod.example.com` will match. However, a `VirtualService` with host `example.com` or `newexample.com` will not match.\n\nNOTE: Only virtual services exported to the gateway's namespace (e.g., `exportTo` value of `*`) can be referenced. Private configurations (e.g., `exportTo` set to `.`) will not be available. Refer to the `exportTo` setting in `VirtualService`, `DestinationRule`, and `ServiceEntry` configurations for details.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "name": {
@@ -3549,8 +3527,7 @@
           "description": "Optional: If specified, only support the specified cipher list. Otherwise default to the default cipher list supported by Envoy as specified [here](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/transport_sockets/tls/v3/common.proto). The supported list of ciphers are: * `ECDHE-ECDSA-AES128-GCM-SHA256` * `ECDHE-RSA-AES128-GCM-SHA256` * `ECDHE-ECDSA-AES256-GCM-SHA384` * `ECDHE-RSA-AES256-GCM-SHA384` * `ECDHE-ECDSA-CHACHA20-POLY1305` * `ECDHE-RSA-CHACHA20-POLY1305` * `ECDHE-ECDSA-AES128-SHA` * `ECDHE-RSA-AES128-SHA` * `ECDHE-ECDSA-AES256-SHA` * `ECDHE-RSA-AES256-SHA` * `AES128-GCM-SHA256` * `AES256-GCM-SHA384` * `AES128-SHA` * `AES256-SHA` * `DES-CBC3-SHA`",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "credentialName": {
@@ -3561,8 +3538,7 @@
           "description": "Same as CredentialName but for multiple certificates. Mainly used for specifying RSA and ECDSA certificates for the same server.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "httpsRedirect": {
@@ -3596,8 +3572,7 @@
           "description": "A list of alternate names to verify the subject identity in the certificate presented by the client. Requires TLS mode to be set to `MUTUAL`. When multiple certificates are provided via `credential_names` or `tls_certificates`, the subject alternate names are validated against the selected certificate.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "tlsCertificates": {
@@ -3611,16 +3586,14 @@
           "description": "An optional list of hex-encoded SHA-256 hashes of the authorized client certificates. Both simple and colon separated formats are acceptable. Note: When both verify_certificate_hash and verify_certificate_spki are specified, a hash matching either value will result in the certificate being accepted.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "verifyCertificateSpki": {
           "description": "An optional list of base64-encoded SHA-256 hashes of the SPKIs of authorized client certificates. Note: When both verify_certificate_hash and verify_certificate_spki are specified, a hash matching either value will result in the certificate being accepted.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -3691,8 +3664,7 @@
           "description": "The virtual IP addresses associated with the service. Could be CIDR prefix. For HTTP traffic, generated route configurations will include http route domains for both the `addresses` and `hosts` field values and the destination will be identified based on the HTTP Host/Authority header. If one or more IP addresses are specified, the incoming traffic will be identified as belonging to this service if the destination IP matches the IP/CIDRs specified in the addresses field. If the Addresses field is empty, traffic will be identified solely based on the destination port. In such scenarios, the port on which the service is being accessed must not be shared by any other service in the mesh. In other words, the sidecar will behave as a simple TCP proxy, forwarding incoming traffic on a specified port to the specified destination endpoint IP/host. Unix domain socket addresses are not supported in this field. Although the API allows specifying addresses in a list, multiple addresses will not be used by a single host. This means manual specification of dual-stack addressing is not supported.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "endpoints": {
@@ -3706,16 +3678,14 @@
           "description": "A list of namespaces to which this service is exported. Exporting a service allows it to be used by sidecars, gateways and virtual services defined in other namespaces. This feature provides a mechanism for service owners and mesh administrators to control the visibility of services across namespace boundaries.\n\nIf no namespaces are specified then the service is exported to all namespaces by default.\n\nThe value \".\" is reserved and defines an export to the same namespace that the service is declared in. Similarly the value \"*\" is reserved and defines an export to all namespaces.\n\nFor a Kubernetes Service, the equivalent effect can be achieved by setting the annotation \"networking.istio.io/exportTo\" to a comma-separated list of namespace names.\n\n**Note:** Ztunnel and Waypoint proxies not support this field and will read it at \"*\".",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "hosts": {
           "description": "The hosts associated with the ServiceEntry. Could be a DNS name with wildcard prefix.\n\n1. The hosts field is used to select matching hosts in VirtualServices and DestinationRules. 2. For HTTP traffic the HTTP Host/Authority header will be matched against the hosts field. 3. For HTTPs or TLS traffic containing Server Name Indication (SNI), the SNI value will be matched against the hosts field.\n\n**NOTE 1:** When resolution is set to type DNS and no endpoints are specified, the host field will be used as the DNS name of the endpoint to route traffic to.\n\n**NOTE 2:** If the hostname matches with the name of a service from another service registry such as Kubernetes that also supplies its own set of endpoints, the ServiceEntry will be treated as a decorator of the existing Kubernetes service. Properties in the service entry will be added to the Kubernetes service if applicable. Currently, only the following additional properties will be considered by `istiod`:\n\n 1. subjectAltNames: In addition to verifying the SANs of the\n    service accounts associated with the pods of the service, the\n    SANs specified here will also be verified.\n\n**NOTE 3:** Ztunnel and Waypoint proxies do not support wildcard hosts.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "location": {
@@ -3743,8 +3713,7 @@
           "description": "If specified, the proxy will verify that the server certificate's subject alternate name matches one of the specified values.\n\nNOTE: When using the workloadEntry with workloadSelectors, the service account specified in the workloadEntry will also be used to derive the additional subject alternate names that should be verified.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "workloadSelector": {
@@ -4046,8 +4015,7 @@
           "description": "Labels apply a filter over the endpoints of a service in the service registry. See route rules for examples of usage.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "name": {
@@ -4123,16 +4091,14 @@
           "description": "IPv4 or IPv6 ip addresses of destination with optional subnet.  E.g., a.b.c.d/xx form or just a.b.c.d.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "gateways": {
           "description": "Names of gateways where the rule should be applied. Gateway names in the top-level `gateways` field of the VirtualService (if any) are overridden. The gateway match is independent of sourceLabels.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "port": {
@@ -4144,16 +4110,14 @@
           "description": "SNI (server name indicator) to match on. Wildcard prefixes can be used in the SNI value, e.g., *.com will match foo.example.com as well as example.com. An SNI value must be a subset (i.e., fall within the domain) of the corresponding virtual service's hosts.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "sourceLabels": {
           "description": "One or more labels that constrain the applicability of a rule to workloads with the given labels. If the VirtualService has a list of gateways specified in the top-level `gateways` field, it should include the reserved gateway `mesh` in order for this field to be applicable.\n\n**Note:** This is not a runtime match, but is a selector; it filters which workloads the VirtualService applies to.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "sourceNamespace": {
@@ -4360,24 +4324,21 @@
           "description": "A list of namespaces to which this virtual service is exported. Exporting a virtual service allows it to be used by sidecars and gateways defined in other namespaces. This feature provides a mechanism for service owners and mesh administrators to control the visibility of virtual services across namespace boundaries.\n\nIf no namespaces are specified then the virtual service is exported to all namespaces by default.\n\nThe value \".\" is reserved and defines an export to the same namespace that the virtual service is declared in. Similarly the value \"*\" is reserved and defines an export to all namespaces.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "gateways": {
           "description": "The names of gateways and sidecars that should apply these routes. Gateways in other namespaces may be referred to by `\u003cgateway namespace\u003e/\u003cgateway name\u003e`; specifying a gateway with no namespace qualifier is the same as specifying the VirtualService's namespace. A single VirtualService is used for sidecars inside the mesh as well as for one or more gateways. The selection condition imposed by this field can be overridden using the source field in the match conditions of protocol-specific routes. The reserved word `mesh` is used to imply all the sidecars in the mesh. When this field is omitted, the default gateway (`mesh`) will be used, which would apply the rule to all sidecars in the mesh. If a list of gateway names is provided, the rules will apply only to the gateways. To apply the rules to both gateways and sidecars, specify `mesh` as one of the gateway names.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "hosts": {
           "description": "The destination hosts to which traffic is being sent. Could be a DNS name with wildcard prefix or an IP address.  Depending on the platform, short-names can also be used instead of a FQDN (i.e. has no dots in the name). In such a scenario, the FQDN of the host would be derived based on the underlying platform.\n\nA single VirtualService can be used to describe all the traffic properties of the corresponding hosts, including those for multiple HTTP and TCP ports. Alternatively, the traffic properties of a host can be defined using more than one VirtualService, with certain caveats. Refer to the [Operations Guide](https://istio.io/docs/ops/best-practices/traffic-management/#split-virtual-services) for details.\n\n*Note for Kubernetes users*: When short names are used (e.g. \"reviews\" instead of \"reviews.default.svc.cluster.local\"), Istio will interpret the short name based on the namespace of the rule, not the service. A rule in the \"default\" namespace containing a host \"reviews\" will be interpreted as \"reviews.default.svc.cluster.local\", irrespective of the actual namespace associated with the reviews service. _To avoid potential misconfigurations, it is recommended to always use fully qualified domain names over short names._\n\nThe hosts field applies to both HTTP and TCP services. Service inside the mesh, i.e., those found in the service registry, must always be referred to using their alphanumeric names. IP addresses are allowed only for services defined via the Gateway.\n\n*Note*: It must be empty for a delegate VirtualService.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "http": {
@@ -4446,8 +4407,7 @@
           "description": "One or more labels associated with the endpoint.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "locality": {
@@ -4463,8 +4423,7 @@
           "type": "object",
           "additionalProperties": {
             "type": "integer",
-            "format": "int64",
-            "default": 0
+            "format": "int64"
           }
         },
         "serviceAccount": {
@@ -4518,16 +4477,14 @@
           "description": "Annotations to attach",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "labels": {
           "description": "Labels to attach",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -4547,8 +4504,7 @@
           "description": "One or more labels that indicate a specific set of pods/VMs on which the configuration should be applied. The scope of label search is restricted to the configuration namespace in which the the resource is present.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -4572,8 +4528,7 @@
           "description": "Additional environment variables for the proxy. Names starting with `ISTIO_META_` will be included in the generated bootstrap configuration and sent to the XDS server.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "image": {
@@ -4644,8 +4599,7 @@
           "description": "PEM-encoded certificate chain. The leaf cert is the first element, and the root cert is the last element.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -4800,16 +4754,14 @@
           "description": "Optional. A list of negative match of values for the attribute. Note: at least one of `values` or `notValues` must be set.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "values": {
           "description": "Optional. A list of allowed values for the attribute. Note: at least one of `values` or `notValues` must be set.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -4862,8 +4814,7 @@
           "description": "The list of JWT [audiences](https://tools.ietf.org/html/rfc7519#section-4.1.3) that are allowed to access. A JWT containing any of these audiences will be accepted.\n\nThe service name will be accepted if audiences is empty.\n\nExample:\n\n```yaml audiences:\n  - bookstore_android.apps.example.com\n    bookstore_web.apps.example.com\n\n```",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "forwardOriginalToken": {
@@ -4874,8 +4825,7 @@
           "description": "List of cookie names from which JWT is expected.\t// For example, if config is:\n\n``` yaml\n\n\tfromCookies:\n\t- auth-token\n\n``` Then JWT will be extracted from `auth-token` cookie in the request.\n\nNote: Requests with multiple tokens (at different locations) are not supported, the output principal of such requests is undefined.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "fromHeaders": {
@@ -4889,8 +4839,7 @@
           "description": "List of query parameters from which JWT is expected. For example, if JWT is provided via query parameter `my_token` (e.g `/path?my_token=\u003cJWT\u003e`), the config is:\n\n```yaml\n\n\tfromParams:\n\t- \"my_token\"\n\n```\n\nNote: Requests with multiple tokens (at different locations) are not supported, the output principal of such requests is undefined.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "issuer": {
@@ -4920,8 +4869,7 @@
           "description": "List of JWT claim names that should be treated as space-delimited strings. These claims will be split on whitespace and each individual value will be available for matching in authorization policies. This extends the default behavior that only treats 'scope' and 'permission' claims as space-delimited.\n\nExample usage for custom claims: ```yaml spaceDelimitedClaims: - \"custom_scope\" - \"provider.login.scope\" - \"roles\" ```\n\nThis allows authorization policies to match individual values within space-separated claim strings, maintaining compatibility with existing JWT token formats.\n\nNote: The default claims 'scope' and 'permission' are always treated as space-delimited regardless of this setting.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "timeout": {
@@ -4945,64 +4893,56 @@
           "description": "Optional. A list of hosts as specified in the HTTP request. The match is case-insensitive. See the [security best practices](https://istio.io/latest/docs/ops/best-practices/security/#writing-host-match-policies) for recommended usage of this field.\n\nIf not set, any host is allowed. Must be used only with HTTP.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "methods": {
           "description": "Optional. A list of methods as specified in the HTTP request. For gRPC service, this will always be `POST`.\n\nIf not set, any method is allowed. Must be used only with HTTP.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "notHosts": {
           "description": "Optional. A list of negative match of hosts as specified in the HTTP request. The match is case-insensitive.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "notMethods": {
           "description": "Optional. A list of negative match of methods as specified in the HTTP request.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "notPaths": {
           "description": "Optional. A list of negative match of paths.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "notPorts": {
           "description": "Optional. A list of negative match of ports as specified in the connection.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "paths": {
           "description": "Optional. A list of paths as specified in the HTTP request. See the [Authorization Policy Normalization](https://istio.io/latest/docs/reference/config/security/normalization/) for details of the path normalization. For gRPC service, this will be the fully-qualified name in the form of `/package.service/method`.\n\nIf a path in the list contains the `{*}` or `{**}` path template operator, it will be interpreted as an [Envoy Uri Template](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/path/match/uri_template/v3/uri_template_match.proto). To be a valid path template, the path must not contain `*`, `{`, or `}` outside of a supported operator. No other characters are allowed in the path segment with the path template operator. - `{*}` matches a single glob that cannot extend beyond a path segment. - `{**}` matches zero or more globs. If a path contains `{**}`, it must be the last operator.\n\nExamples: - `/foo/{*}` matches `/foo/bar` but not `/foo/bar/baz` - `/foo/{**}/` matches `/foo/bar/`, `/foo/bar/baz.txt`, and `/foo//` but not `/foo/bar` - `/foo/{*}/bar/{**}` matches `/foo/buzz/bar/` and `/foo/buzz/bar/baz` - `/*/baz/{*}` is not a valid path template since it includes `*` outside of a supported operator - `/**/baz/{*}` is not a valid path template since it includes `**` outside of a supported operator - `/{**}/foo/{*}` is not a valid path template since `{**}` is not the last operator - `/foo/{*}.txt` is invalid since there are characters other than `{*}` in the path segment\n\nIf not set, any path is allowed. Must be used only with HTTP.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "ports": {
           "description": "Optional. A list of ports as specified in the connection.\n\nIf not set, any port is allowed.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -5183,112 +5123,98 @@
           "description": "Optional. A list of IP blocks, populated from the source address of the IP packet. Single IP (e.g. `203.0.113.4`) and CIDR (e.g. `203.0.113.0/24`) are supported. This is the same as the `source.ip` attribute.\n\nIf not set, any IP is allowed.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "namespaces": {
           "description": "Optional. A list of namespaces derived from the peer certificate. This field requires mTLS enabled and is the same as the `source.namespace` attribute.\n\nIf not set, any namespace is allowed.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "notIpBlocks": {
           "description": "Optional. A list of negative match of IP blocks.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "notNamespaces": {
           "description": "Optional. A list of negative match of namespaces.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "notPrincipals": {
           "description": "Optional. A list of negative match of peer identities.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "notRemoteIpBlocks": {
           "description": "Optional. A list of negative match of remote IP blocks.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "notRequestPrincipals": {
           "description": "Optional. A list of negative match of request identities.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "notServiceAccounts": {
           "description": "Optional. A list of negative match of Kubernetes service accounts.\n\nThis takes the format `\u003cnamespace\u003e/\u003cserviceaccount\u003e`. `\u003cserviceaccount\u003e` may also be used to use the same namespace as the `AuthorizationPolicy`.\n\nNo form of wildcard (`*`) is allowed.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "notTrustDomains": {
           "description": "Optional. A list of negative match of trust domains. Can be exact, prefix, suffix and presence.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "principals": {
           "description": "Optional. A list of peer identities derived from the peer certificate. The peer identity is in the format of `\"\u003cTRUST_DOMAIN\u003e/ns/\u003cNAMESPACE\u003e/sa/\u003cSERVICE_ACCOUNT\u003e\"`, for example, `\"cluster.local/ns/default/sa/productpage\"`. This field requires mTLS enabled and is the same as the `source.principal` attribute.\n\nUsage of `serviceAccounts` is typically simpler and offers the same functionality.\n\nIf not set, any principal is allowed.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "remoteIpBlocks": {
           "description": "Optional. A list of IP blocks, populated from `X-Forwarded-For` header or proxy protocol. To make use of this field, you must configure the `numTrustedProxies` field of the `gatewayTopology` under the `meshConfig` when you install Istio or using an annotation on the ingress gateway.  See the documentation here: [Configuring Gateway Network Topology](https://istio.io/latest/docs/ops/configuration/traffic-management/network-topologies/). Single IP (e.g. `203.0.113.4`) and CIDR (e.g. `203.0.113.0/24`) are supported. This is the same as the `remote.ip` attribute.\n\nIf not set, any IP is allowed.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "requestPrincipals": {
           "description": "Optional. A list of request identities derived from the JWT. The request identity is in the format of `\"\u003cISS\u003e/\u003cSUB\u003e\"`, for example, `\"example.com/sub-1\"`. This field requires request authentication enabled and is the same as the `request.auth.principal` attribute.\n\nIf not set, any request principal is allowed.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "serviceAccounts": {
           "description": "Optional. A list of Kubernetes service accounts derived from the peer certificate. This field requires mTLS enabled and is the same as the `source.serviceaccount` attribute.\n\nThis takes the format `\u003cnamespace\u003e/\u003cserviceaccount\u003e`. `\u003cserviceaccount\u003e` may also be used to use the same namespace as the `AuthorizationPolicy`.\n\nIf not set, any service account is allowed.\n\nNo form of wildcard (`*`) is allowed. Cannot be set with `principals` or `namespaces`.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "trustDomains": {
           "description": "Optional. A list of trust domains derived from the peer certificate. Can be exact, prefix, suffix and presence. This field requires mTLS enabled and is the same as the `source.trustDomain` attribute.\n\nIf not set, any trust domain is allowed.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -5949,8 +5875,7 @@
           "description": "One or more labels that indicate a specific set of pods/VMs on which a policy should be applied. The scope of label search is restricted to the configuration namespace in which the resource is present.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
