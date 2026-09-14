@@ -3,7 +3,7 @@ name: k8s-model-update
 description: Updates Fabric8 Kubernetes Client models and DSL when a new Kubernetes version is released. Handles downloading the OpenAPI spec, regenerating Java models, analyzing API changes (new GA resources, graduations, deprecations, removals), updating the client DSL, and raising a PR. Use this skill whenever the user mentions updating Kubernetes models, bumping a K8s version, generating models from an OpenAPI spec, supporting a new Kubernetes release, or downloading swagger.json for a new K8s version — even if they don't say "skill" or "model update" explicitly.
 argument-hint: "<k8s-version> <github-issue-number>"
 disable-model-invocation: true
-allowed-tools: Read, Edit, Write, Grep, Glob, Bash(make *), Bash(mvn *), Bash(git *), Bash(gh *), Bash(java *), Bash(${CLAUDE_SKILL_DIR}/scripts/*), Bash(du *), Bash(find *), WebSearch, WebFetch, AskUserQuestion
+allowed-tools: Read, Edit, Write, Grep, Glob, Bash(${CLAUDE_SKILL_DIR}/scripts/get-update-context.sh *), Bash(${CLAUDE_SKILL_DIR}/scripts/download-k8s-schema.sh *), Bash(java -version), Bash(git status), Bash(git diff), Bash(git diff --stat), WebSearch, WebFetch(domain:kubernetes.io), AskUserQuestion
 ---
 
 # Kubernetes Model Update
@@ -46,7 +46,7 @@ These run outside the sandbox. The repo's `.claude/settings.json` excludes them 
 - `go -C kubernetes-model-generator/openapi/generator mod download`, which only fetches and checksum-verifies modules
 - The Java side, including `java -version`: `make quickly`, `make openapi-generate-java-classes`, `make generate-javadoc-links`, `make format` and `mvn`. They build the project's own code, but download Maven artifacts and CRDs from `raw.githubusercontent.com`
 
-Keep `make openapi-generate-schema` inside the sandbox: it compiles and runs the Go generator and its dependencies, and works offline once `go mod download` has filled the module cache.
+Keep `make openapi-generate-schema` inside the sandbox, with `GOCACHE` pointing at the repo's git-ignored `.cache/go-build`: it compiles and runs the Go generator and its dependencies. Once `go mod download` has filled the module cache, it only writes inside the repo, and what it compiles never lands in the build cache that unsandboxed Go builds use.
 
 If any of these fails anyway, stop and report it to the user rather than moving more commands out of the sandbox. Never disable TLS or checksum verification (e.g. `GOINSECURE`, `GONOSUMDB`, `GOSUMDB=off`, `GIT_SSL_NO_VERIFY`, `curl -k`, `-Dmaven.wagon.http.ssl.insecure=true`).
 
@@ -88,7 +88,7 @@ Run the two targets `make generate-model` consists of, one at a time so the Go h
 
 ```
 go -C kubernetes-model-generator/openapi/generator mod download  # outside the sandbox
-make openapi-generate-schema                                     # inside the sandbox
+GOCACHE="$PWD/.cache/go-build" make openapi-generate-schema      # inside the sandbox
 make openapi-generate-java-classes                               # outside the sandbox
 ```
 

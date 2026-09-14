@@ -11,11 +11,10 @@
       "Bash(gh issue list *)",
       "Bash(gh release list *)",
       "Bash(gh repo view *)",
-      "Bash(git fetch *)",
       "Bash(go -C kubernetes-model-generator/openapi/generator mod download)",
+      "Bash(java -version)",
       "Bash(make quickly)",
       "Bash(make format)",
-      "Bash(make openapi-generate-schema)",
       "Bash(make openapi-generate-java-classes)",
       "Bash(make generate-javadoc-links)"
     ]
@@ -32,15 +31,18 @@
       "go -C kubernetes-model-generator/openapi/generator get *",
       "go -C kubernetes-model-generator/openapi/generator mod tidy",
       "go -C kubernetes-model-generator/openapi/generator mod download",
+      "java -version",
       "mvn *",
       "make quickly",
       "make install",
       "make format",
       "make openapi-generate-java-classes",
       "make generate-javadoc-links",
-      "*.claude/skills/gh-issue-release/scripts/*",
-      "*.claude/skills/k8s-model-update/scripts/*",
-      "*.claude/skills/regen-java-models-from-upstream/scripts/*"
+      "*.claude/skills/gh-issue-release/scripts/get-release-context.sh *",
+      "*.claude/skills/k8s-model-update/scripts/download-k8s-schema.sh *",
+      "*.claude/skills/k8s-model-update/scripts/get-update-context.sh *",
+      "*.claude/skills/regen-java-models-from-upstream/scripts/get-dep-context.sh *",
+      "*.claude/skills/regen-java-models-from-upstream/scripts/get-pr-state.sh *"
     ]
   }
 }

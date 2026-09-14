@@ -3,7 +3,7 @@ name: regen-java-models-from-upstream
 description: Fix a failing Renovate Go dependency PR in the Kubernetes model generator. Adapts the generator to upstream Go API changes, regenerates Java models, fixes Java compilation and updates CHANGELOG, pushing the fixes onto the Renovate PR itself.
 argument-hint: "<renovate-pr-number-or-url>"
 disable-model-invocation: true
-allowed-tools: Read, Edit, Write, Grep, Glob, Bash, AskUserQuestion, Agent
+allowed-tools: Read, Edit, Write, Grep, Glob, AskUserQuestion, Agent, Bash(${CLAUDE_SKILL_DIR}/scripts/get-dep-context.sh *), Bash(${CLAUDE_SKILL_DIR}/scripts/get-pr-state.sh *), Bash(git rev-parse HEAD), Bash(git status), Bash(git diff --stat)
 ---
 
 # Go Dependency Bump
@@ -23,7 +23,7 @@ These run outside the sandbox. The repo's `.claude/settings.json` excludes them 
 - `go -C kubernetes-model-generator/openapi/generator` with `get`, `mod tidy` or `mod download`, which only fetch and checksum-verify modules
 - The Java side: `make openapi-generate-java-classes`, `make format` and `mvn`. They build the project's own code, but download Maven artifacts and CRDs from `raw.githubusercontent.com`
 
-Keep `make openapi-generate-schema` inside the sandbox: it compiles and runs the freshly bumped Go modules, and works offline once `go mod download` has filled the module cache.
+Keep `make openapi-generate-schema` inside the sandbox, with `GOCACHE` pointing at the repo's git-ignored `.cache/go-build`: it compiles and runs the freshly bumped Go modules. Once `go mod download` has filled the module cache, it only writes inside the repo, and what it compiles never lands in the build cache that unsandboxed Go builds use.
 
 If any of these fails anyway, stop and report it to the user rather than moving more commands out of the sandbox. Never disable TLS or checksum verification (e.g. `GOINSECURE`, `GONOSUMDB`, `GOSUMDB=off`, `GIT_SSL_NO_VERIFY`, `-Dmaven.wagon.http.ssl.insecure=true`).
 
@@ -148,8 +148,8 @@ go -C kubernetes-model-generator/openapi/generator mod download
 Then, from the **project root**, run the two targets `make generate-model` consists of, one at a time so the Go half can stay sandboxed (see _Running in a Sandbox_):
 
 ```bash
-make openapi-generate-schema        # inside the sandbox
-make openapi-generate-java-classes  # outside the sandbox
+GOCACHE="$PWD/.cache/go-build" make openapi-generate-schema  # inside the sandbox
+make openapi-generate-java-classes                           # outside the sandbox
 ```
 
 **IMPORTANT**: Together these take ~10-15 minutes. Run them with a suitable timeout (600000ms). Do NOT cancel them.

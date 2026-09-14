@@ -3,7 +3,7 @@ name: gh-issue-release
 description: Manage Fabric8 Kubernetes Client release tracking issues. Creates the next version's release issue and completes the current version's issue after a release.
 argument-hint: "<released-version> <next-version>"
 disable-model-invocation: true
-allowed-tools: Read, Grep, Glob, AskUserQuestion, Bash(${CLAUDE_SKILL_DIR}/scripts/*), Bash(gh *)
+allowed-tools: Read, Grep, Glob, AskUserQuestion, Bash(${CLAUDE_SKILL_DIR}/scripts/get-release-context.sh *)
 ---
 
 ## Release Issue Manager
