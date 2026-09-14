@@ -39,19 +39,22 @@ const (
 
 var astFileSet = token.NewFileSet()
 
+// isInlineEmbed mirrors kube-openapi's shouldInlineMembers: embedded members whose json tag has no name
+// (`json:",inline"`, or `json:""` since Kubernetes 1.37) are inlined into the parent schema.
+func isInlineEmbed(m *types.Member) bool {
+	jsonTag, exists := reflect.StructTag(m.Tags).Lookup("json")
+	return m.Embedded && exists && (jsonTag == "" || strings.HasPrefix(jsonTag, ","))
+}
+
 // processInlineDuplicateFields detects and resolves duplicate JSON field names that occur when
-// embedded structs with ",inline" json tag have fields with the same JSON name as the parent struct.
+// inline-embedded structs have fields with the same JSON name as the parent struct.
 // This prevents "duplicate key in map literal" compilation errors in generated OpenAPI code.
 //
 // Resolution strategy:
 // - Inlined/embedded type fields take precedence over parent struct fields
 // - The field from the inlined type should be kept
 func processInlineDuplicateFields(_ *generator.Context, _ *types.Package, t *types.Type, m *types.Member, memberIndex int) {
-	if !m.Embedded || t.Kind != types.Struct || t.Members == nil {
-		return
-	}
-
-	if !strings.Contains(reflect.StructTag(m.Tags).Get("json"), ",inline") {
+	if t.Kind != types.Struct || t.Members == nil || !isInlineEmbed(m) {
 		return
 	}
 
@@ -82,15 +85,16 @@ func collectInlineFieldNames(t *types.Type, fieldNames map[string]bool) {
 	for _, member := range t.Members {
 		swaggerIgnore := reflect.StructTag(member.Tags).Get("swaggerignore")
 		jsonTag := reflect.StructTag(member.Tags).Get("json")
-		if swaggerIgnore != "" || jsonTag == "" || jsonTag == "-" || strings.Contains(jsonTag, ",omitted") {
+		if swaggerIgnore != "" || jsonTag == "-" || strings.Contains(jsonTag, ",omitted") {
 			continue
 		}
-		jsonFieldName := strings.Split(jsonTag, ",")[0]
-		if jsonFieldName != "" {
-			fieldNames[jsonFieldName] = true
-		} else if member.Embedded && strings.Contains(jsonTag, ",inline") && member.Type != nil {
+		if isInlineEmbed(&member) {
 			// Nested inline embed with no explicit field name — recurse
-			collectInlineFieldNames(member.Type, fieldNames)
+			if member.Type != nil {
+				collectInlineFieldNames(member.Type, fieldNames)
+			}
+		} else if jsonFieldName := strings.Split(jsonTag, ",")[0]; jsonFieldName != "" {
+			fieldNames[jsonFieldName] = true
 		}
 	}
 }

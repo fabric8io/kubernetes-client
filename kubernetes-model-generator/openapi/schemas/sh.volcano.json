@@ -18,8 +18,7 @@
           "description": "Indicates the name of the tasks that this task depends on, which can depend on multiple tasks",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -105,7 +104,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.batch.v1alpha1.Job"
           }
         },
@@ -151,8 +149,7 @@
           "additionalProperties": {
             "type": "array",
             "items": {
-              "type": "string",
-              "default": ""
+              "type": "string"
             }
           }
         },
@@ -160,7 +157,6 @@
           "description": "Specifies the default lifecycle of tasks",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.batch.v1alpha1.LifecyclePolicy"
           }
         },
@@ -184,7 +180,6 @@
           "description": "Tasks specifies the task specification of Job",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.batch.v1alpha1.TaskSpec"
           }
         },
@@ -197,7 +192,6 @@
           "description": "The volumes mount on Job",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.batch.v1alpha1.VolumeSpec"
           }
         }
@@ -247,7 +241,6 @@
           "description": "Which conditions caused the current job state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.batch.v1alpha1.JobCondition"
           },
           "x-kubernetes-patch-merge-key": "status",
@@ -257,8 +250,7 @@
           "description": "The resources that controlled by this job, e.g. Service, ConfigMap",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "failed": {
@@ -304,7 +296,6 @@
           "description": "The status of pods for each task",
           "type": "object",
           "additionalProperties": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.batch.v1alpha1.TaskState"
           }
         },
@@ -348,8 +339,7 @@
           "description": "The Events recorded by scheduler; the controller takes actions according to this Events.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "exitCode": {
@@ -396,7 +386,6 @@
           "description": "Specifies the lifecycle of task",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.batch.v1alpha1.LifecyclePolicy"
           }
         },
@@ -432,8 +421,7 @@
           "type": "object",
           "additionalProperties": {
             "type": "integer",
-            "format": "int32",
-            "default": 0
+            "format": "int32"
           }
         }
       },
@@ -529,7 +517,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.bus.v1alpha1.Command"
           }
         },
@@ -565,7 +552,6 @@
         "taskStatusCount": {
           "type": "object",
           "additionalProperties": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.batch.v1alpha1.TaskState"
           }
         }
@@ -587,8 +573,7 @@
         "targets": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -696,7 +681,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.flow.v1alpha1.JobFlow"
           }
         },
@@ -725,7 +709,6 @@
           "description": "Foo is an example field of JobFlow. Edit jobflow_types.go to remove/update",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.flow.v1alpha1.Flow"
           }
         },
@@ -748,28 +731,24 @@
         "completedJobs": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "type": "object",
           "additionalProperties": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.flow.v1alpha1.Condition"
           }
         },
         "failedJobs": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "jobStatusList": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.flow.v1alpha1.JobStatus"
           }
         },
@@ -777,15 +756,13 @@
           "description": "INSERT ADDITIONAL STATUS FIELD - define observed state of cluster Important: Run \"make\" to regenerate code after modifying this file",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "runningJobs": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "state": {
@@ -795,15 +772,13 @@
         "terminatedJobs": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "unKnowJobs": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -852,7 +827,6 @@
         "runningHistories": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.flow.v1alpha1.JobRunningHistory"
           }
         },
@@ -918,7 +892,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.flow.v1alpha1.JobTemplate"
           }
         },
@@ -968,8 +941,7 @@
           "description": "Describes the Jobs generated from the JobTemplate",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -987,21 +959,18 @@
         "httpGetList": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.flow.v1alpha1.HttpGet"
           }
         },
         "taskStatusList": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.flow.v1alpha1.TaskStatus"
           }
         },
         "tcpSocketList": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.flow.v1alpha1.TcpSocket"
           }
         }
@@ -1103,7 +1072,6 @@
           "description": "Specifies the cpu topology info Key is cpu id",
           "type": "object",
           "additionalProperties": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.nodeinfo.v1alpha1.CPUInfo"
           }
         },
@@ -1111,7 +1079,6 @@
           "description": "Specifies the numa info for the resource Key is resource name",
           "type": "object",
           "additionalProperties": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.nodeinfo.v1alpha1.ResourceInfo"
           }
         },
@@ -1119,16 +1086,14 @@
           "description": "Specifies the policy of the manager",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "resReserved": {
           "description": "Specifies the reserved resource of the node Key is resource name",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -1184,7 +1149,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.nodeinfo.v1alpha1.Numatopology"
           }
         },
@@ -1298,15 +1262,13 @@
         "preferredDuringSchedulingIgnoredDuringExecution": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "requiredDuringSchedulingIgnoredDuringExecution": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -1324,15 +1286,13 @@
         "preferredDuringSchedulingIgnoredDuringExecution": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "requiredDuringSchedulingIgnoredDuringExecution": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -1431,7 +1391,6 @@
           "description": "items is the list of PodGroup",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.PodGroup"
           }
         },
@@ -1474,8 +1433,7 @@
           "type": "object",
           "additionalProperties": {
             "type": "integer",
-            "format": "int32",
-            "default": 0
+            "format": "int32"
           }
         },
         "priorityClassName": {
@@ -1503,7 +1461,6 @@
           "description": "The conditions of PodGroup.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.PodGroupCondition"
           }
         },
@@ -1585,7 +1542,6 @@
           "description": "items is the list of PodGroup",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.Queue"
           }
         },
@@ -1632,7 +1588,6 @@
           "description": "extendCluster indicate the jobs in this Queue will be dispatched to these clusters.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.Cluster"
           }
         },
@@ -1736,8 +1691,7 @@
           "description": "Nodes are Locked nodes for queue",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "resource": {
