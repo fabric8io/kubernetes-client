@@ -43,8 +43,9 @@ jobs:
     name: Java ${{ matrix.java }} Maven
     runs-on: windows-latest
     strategy:
+      fail-fast: false
       matrix:
-        java: [17]
+        java: [17, 25]
     steps:
       - name: Support long filenames in git
         run: git config --system core.longpaths true
@@ -60,7 +61,7 @@ jobs:
         shell: bash
         # The Karaf integration tests are skipped here: they take ~3x longer on Windows than on
         # Linux and the Karaf shell emits a spurious "Terminal has been closed" error annotation
-        # on shutdown. The Linux build matrix covers them on both Java 17 and 21.
+        # on shutdown. The Linux build matrix covers them on every Java version.
         run: ./mvnw ${MAVEN_ARGS} install -Dkaraf.itest.skip=true
       - name: Drop in-repo artifacts before cache save
         # Don't let io.fabric8:* jars installed by this run leak into the cache that future

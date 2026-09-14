@@ -179,6 +179,9 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <maven.compiler.release>17</maven.compiler.release>
+    <!-- JDK 23+ no longer discovers annotation processors (Lombok, Sundrio) on the classpath unless asked to
+         (JDK-8321314). Also forwarded to the maven-invoker-plugin ITs. -proc:full needs JDK 17.0.11+ -->
+    <maven.compiler.proc>full</maven.compiler.proc>
     <skipTests>false</skipTests>
     <generate.targetDirectory>${project.basedir}/src/generated/java</generate.targetDirectory>
     <generate.targetResourcesDirectory>${project.basedir}/src/generated/resources</generate.targetResourcesDirectory>
@@ -1039,8 +1042,8 @@
                 <failFast>true</failFast>
                 <rules>
                   <requireJavaVersion>
-                    <version>[17,)</version>
-                    <message>The Fabric8 Kubernetes Client requires JDK 17 or later to build (see doc/MIGRATION-v8.md).</message>
+                    <version>[17.0.11,)</version>
+                    <message>The Fabric8 Kubernetes Client requires JDK 17.0.11 or later to build (see doc/MIGRATION-v8.md).</message>
                   </requireJavaVersion>
                 </rules>
               </configuration>
@@ -1062,6 +1065,11 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-invoker-plugin</artifactId>
           <version>${maven.invoker.plugin.version}</version>
+          <configuration>
+            <properties>
+              <maven.compiler.proc>${maven.compiler.proc}</maven.compiler.proc>
+            </properties>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>io.smallrye</groupId>
