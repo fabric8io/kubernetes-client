@@ -15,11 +15,7 @@
  */
 package io.fabric8.crd.generator.approvaltests;
 
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.spun.util.tests.TestUtils;
-import io.fabric8.crd.generator.CRDGenerator;
-import io.fabric8.crd.generator.CRDInfo;
 import io.fabric8.crd.generator.approvaltests.annotated.Annotated;
 import io.fabric8.crd.generator.approvaltests.complex.Complex;
 import io.fabric8.crd.generator.approvaltests.described.Described;
@@ -34,7 +30,6 @@ import io.fabric8.crd.generator.approvaltests.required.Required;
 import io.fabric8.crd.generator.approvaltests.selectablefield.SelectableField;
 import io.fabric8.crd.generator.approvaltests.validation.Validation;
 import io.fabric8.kubernetes.client.CustomResource;
-import io.sundr.utils.Strings;
 import org.approvaltests.Approvals;
 import org.approvaltests.namer.StackTraceNamer;
 import org.approvaltests.writers.FileApprovalWriter;
@@ -60,45 +55,9 @@ class CRDGeneratorApprovalTest {
   @TempDir(cleanup = CleanupMode.ON_SUCCESS)
   File tempDir;
 
-  private boolean minimizeQuotes;
-
   @BeforeEach
   void setUp() {
     Approvals.settings().allowMultipleVerifyCallsForThisClass();
-    minimizeQuotes = ((YAMLFactory) CRDGenerator.YAML_MAPPER.getFactory()).isEnabled(YAMLGenerator.Feature.MINIMIZE_QUOTES);
-    ((YAMLFactory) CRDGenerator.YAML_MAPPER.getFactory()).disable(YAMLGenerator.Feature.MINIMIZE_QUOTES);
-  }
-
-  @AfterEach
-  void tearDown() {
-    if (minimizeQuotes) {
-      ((YAMLFactory) CRDGenerator.YAML_MAPPER.getFactory()).enable(YAMLGenerator.Feature.MINIMIZE_QUOTES);
-    }
-  }
-
-  @ParameterizedTest(name = "{1}.{2} parallel={3}")
-  @MethodSource("crdApprovalTestsApiV1")
-  @DisplayName("CRD Generator V1 Approval Tests")
-  void apiV1ApprovalTest(
-      Class<? extends CustomResource<?, ?>>[] crClasses, String expectedCrd, String version, boolean parallel) {
-    final Map<String, Map<String, CRDInfo>> result = new CRDGenerator()
-        .withParallelGenerationEnabled(parallel)
-        .inOutputDir(tempDir)
-        .customResourceClasses(crClasses)
-        .forCRDVersions(version)
-        .detailedGenerate()
-        .getCRDDetailsPerNameAndVersion();
-
-    assertThat(result)
-        .withFailMessage(() -> "Could not find expected CRD " + expectedCrd
-            + " in results. Found instead: " + result.keySet())
-        .containsKey(expectedCrd)
-        .extractingByKey(expectedCrd)
-        .isNotNull();
-
-    Approvals.verify(
-        new FileApprovalWriter(new File(result.get(expectedCrd).get(version).getFilePath())),
-        new Namer(expectedCrd, version));
   }
 
   @ParameterizedTest(name = "{1}.{2} parallel={3}")
@@ -125,18 +84,6 @@ class CRDGeneratorApprovalTest {
     Approvals.verify(
         new FileApprovalWriter(new File(result.get(expectedCrd).get(version).getFilePath())),
         new Namer(expectedCrd, version));
-  }
-
-  /**
-   * Method source for test cases targeting CRD-Generator api-v1.
-   *
-   * @return the arguments for the test cases
-   */
-  static Stream<Arguments> crdApprovalTestsApiV1() {
-    return Stream.concat(
-        crdApprovalCasesBase("v1"),
-        crdApprovalCasesBase("v1beta1"))
-        .map(tc -> Arguments.of(tc.crClasses, tc.expectedCrd, tc.version, tc.parallel));
   }
 
   /**
@@ -213,7 +160,7 @@ class CRDGeneratorApprovalTest {
 
     public Namer(String... parameters) {
       super(TestUtils.getCurrentFileForMethod(0), null);
-      additionalInformation = Strings.join(parameters, ".");
+      additionalInformation = String.join(".", parameters);
     }
 
     @Override
