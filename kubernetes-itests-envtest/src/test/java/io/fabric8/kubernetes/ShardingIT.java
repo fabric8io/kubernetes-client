@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
+import io.fabric8.kubernetes.client.dsl.ShardSelector;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;
@@ -60,6 +61,22 @@ public class ShardingIT {
     var shard2 = client.configMaps()
         .withLabelSelector(LABEL_SELECTOR)
         .withShardSelector(SHARD2).list();
+
+    assertThat(shard1.getItems().size() + shard2.getItems().size()).isEqualTo(1);
+  }
+
+  // The expression rendered by ShardSelector must be accepted by the apiserver as-is, including the
+  // zero padded bounds and the 17 digit '0x10000000000000000' upper bound of the last shard.
+  @Test
+  void shardedListWithTypedShardSelector() {
+    client.resource(configMap()).create();
+
+    var shard1 = client.configMaps()
+        .withLabelSelector(LABEL_SELECTOR)
+        .withShardSelector(ShardSelector.ofShard(0, 2)).list();
+    var shard2 = client.configMaps()
+        .withLabelSelector(LABEL_SELECTOR)
+        .withShardSelector(ShardSelector.ofShard(1, 2)).list();
 
     assertThat(shard1.getItems().size() + shard2.getItems().size()).isEqualTo(1);
   }
