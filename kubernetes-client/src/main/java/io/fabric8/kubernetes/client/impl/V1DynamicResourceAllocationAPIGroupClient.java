@@ -45,6 +45,11 @@ public class V1DynamicResourceAllocationAPIGroupClient extends
   }
 
   @Override
+  public NonNamespaceOperation<DeviceTaintRule, DeviceTaintRuleList, Resource<DeviceTaintRule>> deviceTaintRules() {
+    return resources(DeviceTaintRule.class, DeviceTaintRuleList.class);
+  }
+
+  @Override
   public NonNamespaceOperation<ResourceSlice, ResourceSliceList, Resource<ResourceSlice>> resourcesSlices() {
     return resources(ResourceSlice.class, ResourceSliceList.class);
   }
