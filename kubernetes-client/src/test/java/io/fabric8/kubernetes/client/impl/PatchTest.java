@@ -196,6 +196,22 @@ class PatchTest {
   }
 
   @Test
+  void testServerSideApplyEncodesFieldManager() {
+    // Given
+
+    // When
+    kubernetesClient.pods().inNamespace("ns1")
+        .resource(new PodBuilder().withNewMetadata().withName("pod1").endMetadata().build())
+        .fieldManager("tenant&force=false").forceConflicts().serverSideApply();
+
+    // Then
+    verify(mockClient, times(1)).sendAsync(any(), any());
+    assertRequest(0, "PATCH", "/api/v1/namespaces/ns1/pods/pod1",
+        "fieldManager=tenant%26force%3Dfalse&force=true",
+        PatchType.SERVER_SIDE_APPLY.getContentType());
+  }
+
+  @Test
   void testResourceListServerSideApply() {
     // Given
     Pod pod = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("default").endMetadata().build();
