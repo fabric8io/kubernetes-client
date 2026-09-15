@@ -1,14 +1,19 @@
 # Migration from CRD Generator v1 to CRD Generator v2
 
+> [!IMPORTANT]
+> CRD Generator v1 has been **removed** in version 8.0.0. This guide is provided for historical reference for users migrating from 7.x to 8.x.
+> 
+> If you are still using CRD Generator v1, you must migrate to v2 before upgrading to 8.0.0. See [MIGRATION-v8.md](MIGRATION-v8.md#crd-generator-v1-removed) for migration instructions.
+
 ## Overview
 
 ### CRD Generator v1
 
-_Deprecated since 7.0.0_
+_Deprecated since 7.0.0, removed in 8.0.0_
 
-- **CRD Generator API v1** - `io.fabric8:crd-generator-api`  
+- **CRD Generator API v1** - `io.fabric8:crd-generator-api` (removed)
   _Core implementation of the old generator, based on [sundrio](https://github.com/sundrio/sundrio)._
-- **CRD Generator annotation processing tool (APT)** - `io.fabric8:crd-generator-apt`  
+- **CRD Generator annotation processing tool (APT)** - `io.fabric8:crd-generator-apt` (removed)
   _Annotation processor which hooks into the build process to generate CRDs._
 
 ### CRD Generator v2
@@ -50,7 +55,7 @@ The type of `format` in `@PrinterColumn` has changed from string to enum `Printe
 
 ## New Tooling
 
-To replace the [CRD Generator annotation processor](../crd-generator/apt/README.md) you can use the following tools:
+To replace the CRD Generator annotation processor (removed in 8.0.0) you can use the following tools:
 
 - [CRD Generator Maven Plugin](../crd-generator/maven-plugin/README.md)
 - [CRD Generator CLI tool](../crd-generator/cli/README.md)

@@ -25,6 +25,7 @@
 
 #### _**Note**_: Breaking changes
 * Check detailed migration documentation for breaking changes in [8.0.0](./doc/MIGRATION-v8.md)
+* Fix #8031: (crd-generator) The deprecated CRD Generator v1 has been removed. The following modules are no longer published: `crd-generator-api` (v1 API based on sundrio), `crd-generator-apt` (annotation processing tool), and `crd-generator-test-apt` (APT integration tests). Users must migrate to CRD Generator v2 (`crd-generator-api-v2`) and use the [Maven plugin](./crd-generator/maven-plugin/README.md), [CLI tool](./crd-generator/cli/README.md), or [Gradle plugin](./crd-generator/gradle/README.md). See the [migration guide](./doc/CRD-generator-migration-v2.md) for details
 * Fix #8009: Moved Java baseline from 11 to 17. In addition to the runtime requirement, the Maven plugins, the Gradle plugin and the annotation processor now require a Java 17+ JVM to run the build, and the OSGi bundles declare `osgi.ee=JavaSE 17`
 * Fix #8050: (karaf) The `kubernetes-karaf` feature repository no longer defines its own `scr` feature. `kubernetes-client` now depends on the `scr` feature provided by the Karaf distribution, which supplies the Declarative Services API bundles and the `scr:*` shell commands
 

@@ -1,10 +1,11 @@
 # CRD Generator
 
-The [CRD Generator annotation processing tool (APT)](../crd-generator/apt/README.md) (`io.fabric8:crd-generator-apt`) and its API (`io.fabric8:crd-generator-api`) are being deprecated and will eventually be removed once we offer a complete replacement for all users.
+> [!IMPORTANT]
+> The CRD Generator annotation processing tool (APT) (`io.fabric8:crd-generator-apt`) and its API (`io.fabric8:crd-generator-api`) were deprecated in 7.0.0 and **removed in 8.0.0**.
 
-As a replacement, we're currently providing a new version of the API in `io.fabric8:crd-generator-api-v2` and a few tools to be able to leverage it in your projects.
+The CRD Generator is now available via the following tools, all using the v2 API (`io.fabric8:crd-generator-api-v2`):
 
-A migration guide can be found [here](CRD-generator-migration-v2.md). 
+For users migrating from v1 to v2, see the [migration guide](CRD-generator-migration-v2.md). 
 
 The following list contains the available tooling:
 - [CRD Generator Maven Plugin](../crd-generator/maven-plugin/README.md): A Maven plugin that generates CRDs during the build process.
