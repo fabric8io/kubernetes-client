@@ -87,11 +87,11 @@ public abstract class MetricOperationsImpl<T, L> extends OperationSupport implem
   protected String getMetricEndpointUrlWithPlural(String plural) {
     String result = URLUtils.join(config.getMasterUrl(), METRIC_ENDPOINT_URL);
     if (isResourceNamespaced() && namespace != null) {
-      result += "namespaces/" + namespace + "/";
+      result += "namespaces/" + URLUtils.encodePathSegment(namespace) + "/";
     }
-    result += plural;
+    result += URLUtils.encodePathSegment(plural);
     if (context.getName() != null) {
-      result += "/" + context.getName();
+      result += "/" + URLUtils.encodePathSegment(context.getName());
     }
     if (Utils.isNotNullOrEmpty(context.getLabels())) {
       result = getUrlWithLabels(result, context.getLabels());

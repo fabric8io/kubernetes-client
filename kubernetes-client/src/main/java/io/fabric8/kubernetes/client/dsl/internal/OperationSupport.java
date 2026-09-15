@@ -133,11 +133,11 @@ public class OperationSupport {
     result.add(config.getMasterUrl());
     if (!Utils.isNullOrEmpty(apiGroupName)) {
       result.add("apis");
-      result.add(apiGroupName);
-      result.add(apiGroupVersion);
+      result.add(URLUtils.encodePathSegment(apiGroupName));
+      result.add(URLUtils.encodePathSegment(apiGroupVersion));
     } else {
       result.add("api");
-      result.add(apiGroupVersion);
+      result.add(URLUtils.encodePathSegment(apiGroupVersion));
     }
     return result;
   }
@@ -158,11 +158,11 @@ public class OperationSupport {
       //if resource is not namespaced don't even bother to check the namespace.
     } else if (Utils.isNotNullOrEmpty(namespace)) {
       parts.add("namespaces");
-      parts.add(namespace);
+      parts.add(URLUtils.encodePathSegment(namespace));
     }
 
     if (Utils.isNotNullOrEmpty(type)) {
-      parts.add(type);
+      parts.add(URLUtils.encodePathSegment(type));
     }
   }
 
@@ -171,7 +171,7 @@ public class OperationSupport {
   }
 
   public URL getResourceUrl(String namespace, String name, String... subresources) throws MalformedURLException {
-    String subresourcePath = URLUtils.pathJoin(subresources);
+    String subresourcePath = pathSegmentJoin(subresources);
     if (name == null) {
       if (Utils.isNotNullOrEmpty(subresourcePath)) {
         throw new KubernetesClientException("name not specified for an operation requiring one.");
@@ -180,7 +180,7 @@ public class OperationSupport {
       return getNamespacedUrl(namespace);
     }
 
-    String path = name;
+    String path = URLUtils.encodePathSegment(name);
     if (Utils.isNotNullOrEmpty(subresourcePath)) {
       path = URLUtils.pathJoin(path, subresourcePath);
     }
@@ -194,6 +194,16 @@ public class OperationSupport {
 
   public URL getResourceUrl() throws MalformedURLException {
     return getResourceUrl(namespace, name, subresource);
+  }
+
+  private static String pathSegmentJoin(String... segments) {
+    String[] encoded = new String[segments.length];
+    for (int i = 0; i < segments.length; i++) {
+      if (segments[i] != null) {
+        encoded[i] = URLUtils.encodePathSegment(segments[i]);
+      }
+    }
+    return URLUtils.pathJoin(encoded);
   }
 
   public URL getResourceURLForWriteOperation(URL resourceURL) throws MalformedURLException {
