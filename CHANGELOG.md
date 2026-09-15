@@ -3,6 +3,7 @@
 ### 8.0-SNAPSHOT
 
 #### Bugs
+* Fix requests hanging when a retry action, retry decision, or response cleanup throws an exception.
 
 #### Improvements
 
