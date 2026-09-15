@@ -84,8 +84,7 @@ public class KubernetesSerialization {
    * kubernetes resource serialization / deserialization.
    *
    * @param mapper the ObjectMapper to use.
-   * @param searchClassloaders if {
-   * @link KubernetesResource} should be automatically discovered via {@link ServiceLoader}.
+   * @param searchClassloaders if {@link KubernetesResource} should be automatically discovered via {@link ServiceLoader}.
    */
   public KubernetesSerialization(ObjectMapper mapper, boolean searchClassloaders) {
     this(mapper, searchClassloaders, new YamlDumpSettingsBuilder().build());

@@ -7,6 +7,7 @@
 #### Improvements
 
 #### Dependency Upgrade
+* Fix #7374: Upgrade Jackson from 2.x to 3.2.1
 * Fix #8098: bump chaos-mesh api from 4db47f5 to d70b66a
 * Fix #8086: bump cluster-api from 1.12.2 to 1.13.6
 * Fix #8101: bump cluster-api from 1.13.6 to 1.14.2
