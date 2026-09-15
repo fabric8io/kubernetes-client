@@ -95,7 +95,7 @@ replace (
 	github.com/chaos-mesh/chaos-mesh/api => github.com/chaos-mesh/chaos-mesh/api v0.0.0-20260906172039-d70b66ad97ac
 	github.com/stolostron/multicluster-observability-operator => github.com/stolostron/multicluster-observability-operator v0.0.0-20250726172846-3a17a1a4168e
 	github.com/stolostron/multiclusterhub-operator => github.com/stolostron/multiclusterhub-operator v0.0.0-20250728181123-c3e46b4bdbbc
-	volcano.sh/apis => volcano.sh/apis v1.11.0
+	volcano.sh/apis => volcano.sh/apis v1.15.2
 )
 
 require (
