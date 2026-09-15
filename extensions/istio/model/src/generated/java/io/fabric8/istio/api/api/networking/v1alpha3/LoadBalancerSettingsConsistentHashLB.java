@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -32,6 +31,7 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Consistent Hash-based load balancing can be used to provide soft session affinity based on HTTP headers, cookies or other properties. The affinity to a particular destination host may be lost when one or more hosts are added/removed from the destination service.<br><p> <br><p> Note: consistent hashing is less reliable at maintaining affinity than common "sticky sessions" implementations, which often encode a specific destination in a cookie, ensuring affinity is maintained as long as the backend remains. With consistent hash, the guarantees are weaker; any host addition or removal can break affinity for `1/backends` requests.<br><p> <br><p> Warning: consistent hashing depends on each proxy having a consistent view of endpoints. This is not the case when locality load balancing is enabled. Locality load balancing and consistent hash will only work together when all proxies are in the same locality, or a high level load balancer handles locality affinity.

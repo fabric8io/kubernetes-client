@@ -15,12 +15,11 @@
  */
 package io.fabric8.kubeapitest.binary.repo;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import io.fabric8.kubeapitest.KubeAPITestException;
 import io.fabric8.kubeapitest.binary.OSInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.dataformat.yaml.YAMLMapper;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +28,6 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class BinaryRepo {
@@ -37,7 +35,7 @@ public class BinaryRepo {
   private static final Logger logger = LoggerFactory.getLogger(BinaryRepo.class);
 
   private static final String BINARY_INDEX_URL = "https://raw.githubusercontent.com/kubernetes-sigs/controller-tools/HEAD/envtest-releases.yaml";
-  private static final ObjectMapper MAPPER = new ObjectMapper(new YAMLFactory());
+  private static final YAMLMapper MAPPER = new YAMLMapper();
   public static final String TAR_GZ_SUFFIX = ".tar.gz";
 
   private static List<ArchiveDescriptor> objectNames;
@@ -51,10 +49,10 @@ public class BinaryRepo {
   public synchronized Stream<ArchiveDescriptor> listObjectNames() {
     try {
       if (objectNames == null) {
-        var index = MAPPER.readValue(new URL(BINARY_INDEX_URL), BinaryIndex.class);
+        var index = MAPPER.readValue(new URL(BINARY_INDEX_URL).openStream(), BinaryIndex.class);
         objectNames = index.getReleases().values().stream().flatMap(v -> v.values().stream()).map(
             a -> mapSelfLinkToArchiveDescriptor(a.getSelfLink()))
-            .collect(Collectors.toList());
+            .toList();
       }
       return objectNames.stream();
     } catch (IOException e) {

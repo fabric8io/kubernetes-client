@@ -37,7 +37,6 @@ jobs:
   e2e:
     name: CRC ${{ matrix.crc }} / OKD ${{ matrix.okd }}
     runs-on: ubuntu-24.04
-    if: github.repository == 'fabric8io/kubernetes-client'
     strategy:
       fail-fast: false
       matrix:

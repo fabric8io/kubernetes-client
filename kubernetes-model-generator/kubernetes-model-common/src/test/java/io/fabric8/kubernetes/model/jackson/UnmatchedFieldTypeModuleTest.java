@@ -17,15 +17,16 @@ package io.fabric8.kubernetes.model.jackson;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.exc.MismatchedInputException;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,14 +49,15 @@ class UnmatchedFieldTypeModuleTest {
 
   @BeforeEach
   void setUp() {
-    objectMapper = new ObjectMapper();
     unmatchedFieldTypeModule = new UnmatchedFieldTypeModule(false, false);
-    objectMapper.registerModule(unmatchedFieldTypeModule);
+    objectMapper = JsonMapper.builder()
+        .addModule(unmatchedFieldTypeModule)
+        .build();
   }
 
   @Test
   @DisplayName("readValue, with unknown fields, values are set in additionalProperties map")
-  void readValueWithUnknownFields() throws JsonProcessingException {
+  void readValueWithUnknownFields() throws JacksonException {
     // Given
     final String json = "{" +
         "\"stringValue\": \"v1\"," +
@@ -74,7 +76,7 @@ class UnmatchedFieldTypeModuleTest {
 
   @Test
   @DisplayName("readValue, with unmatched type fields, values are set in additionalProperties map")
-  void readValueWithUnmatchedTypeFields() throws JsonProcessingException {
+  void readValueWithUnmatchedTypeFields() throws JacksonException {
     // Given
     final String json = "{" +
         "\"stringValue\": \"v1\"," +
@@ -94,7 +96,7 @@ class UnmatchedFieldTypeModuleTest {
 
   @Test
   @DisplayName("readValue, with unmatched type nested fields, values are set in additionalProperties map")
-  void readValueWithUnmatchedTypeNestedFields() throws JsonProcessingException {
+  void readValueWithUnmatchedTypeNestedFields() throws JacksonException {
     // Given
     final String json = "{" +
         "\"stringValue\": \"v1\"," +
@@ -145,7 +147,7 @@ class UnmatchedFieldTypeModuleTest {
 
   @Test
   @DisplayName("writeValueAsString, with additionalProperties overriding fields, additionalProperties are serialized and fields ignored")
-  void writeValueAsStringWithAdditionalPropertiesOverridingFields() throws JsonProcessingException {
+  void writeValueAsStringWithAdditionalPropertiesOverridingFields() throws JacksonException {
     // Given
     final ExampleWithAnySetter exampleWithAnySetter = new ExampleWithAnySetter();
     exampleWithAnySetter.setIntValue(1337);
@@ -160,8 +162,8 @@ class UnmatchedFieldTypeModuleTest {
     final String result = objectMapper.writeValueAsString(exampleWithAnySetter);
     // Then
     assertThat(result).isEqualTo("{" +
-        "\"stringValue\":\"the-string\"," +
         "\"booleanValue\":true," +
+        "\"stringValue\":\"the-string\"," +
         "\"intValue\":\"${intValue}\"," +
         "\"unknownField\":\"unknownValue\"," +
         "\"nested\":\"${nested}\"" +
@@ -170,7 +172,7 @@ class UnmatchedFieldTypeModuleTest {
 
   @Test
   @DisplayName("writeValueAsString, with additionalProperties overriding fields and enabled log, should log warning")
-  void writeValueAsStringWithAdditionalPropertiesOverridingFieldsShouldLogWarning() throws JsonProcessingException {
+  void writeValueAsStringWithAdditionalPropertiesOverridingFieldsShouldLogWarning() throws JacksonException {
     try (MockedStatic<LoggerFactory> lfMock = mockStatic(LoggerFactory.class, CALLS_REAL_METHODS)) {
       // Given
       unmatchedFieldTypeModule.setLogWarnings(true);
@@ -193,13 +195,14 @@ class UnmatchedFieldTypeModuleTest {
 
   @Test
   @DisplayName("writeValueAsString, with additionalProperties overriding fields and disabled log, should NOT log warning")
-  void writeValueAsStringWithAdditionalPropertiesOverridingFieldsShouldNotLogWarning() throws JsonProcessingException {
+  void writeValueAsStringWithAdditionalPropertiesOverridingFieldsShouldNotLogWarning() throws JacksonException {
     try (MockedStatic<LoggerFactory> lfMock = mockStatic(LoggerFactory.class, CALLS_REAL_METHODS)) {
       // Given
-      final ObjectMapper om = new ObjectMapper();
       final UnmatchedFieldTypeModule module = new UnmatchedFieldTypeModule();
-      om.registerModule(module);
       module.setLogWarnings(false);
+      final ObjectMapper om = JsonMapper.builder()
+          .addModule(module)
+          .build();
       final ExampleWithAnySetter exampleWithAnySetter = new ExampleWithAnySetter();
       exampleWithAnySetter.setIntValue(1337);
       exampleWithAnySetter.setStringValue("the-string");

@@ -15,16 +15,16 @@
  */
 package io.fabric8.kubernetes.model.jackson;
 
-import com.fasterxml.jackson.databind.BeanDescription;
-import com.fasterxml.jackson.databind.DeserializationConfig;
-import com.fasterxml.jackson.databind.SerializationConfig;
-import com.fasterxml.jackson.databind.deser.BeanDeserializerBuilder;
-import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
-import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
-import com.fasterxml.jackson.databind.ser.BeanSerializerBuilder;
-import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
+import tools.jackson.databind.BeanDescription;
+import tools.jackson.databind.DeserializationConfig;
+import tools.jackson.databind.SerializationConfig;
+import tools.jackson.databind.deser.BeanDeserializerBuilder;
+import tools.jackson.databind.deser.ValueDeserializerModifier;
+import tools.jackson.databind.introspect.AnnotatedMember;
+import tools.jackson.databind.module.SimpleModule;
+import tools.jackson.databind.ser.BeanPropertyWriter;
+import tools.jackson.databind.ser.BeanSerializerBuilder;
+import tools.jackson.databind.ser.ValueSerializerModifier;
 
 import java.lang.reflect.Member;
 import java.util.List;
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  * target's bean field types.
  *
  * <pre>{@code
- * ObjectMapper mapper = new ObjectMapper();
+ * ObjectMapper mapper = new JsonMapper();
  * mapper.registerModule(new UnmatchedFieldTypeModule());
  * }</pre>
  */
@@ -53,10 +53,10 @@ public class UnmatchedFieldTypeModule extends SimpleModule {
   public UnmatchedFieldTypeModule(boolean logWarnings, boolean restrictToTemplates) {
     this.logWarnings = logWarnings;
     this.restrictToTemplates = restrictToTemplates;
-    setDeserializerModifier(new BeanDeserializerModifier() {
+    setDeserializerModifier(new ValueDeserializerModifier() {
 
       @Override
-      public BeanDeserializerBuilder updateBuilder(DeserializationConfig config, BeanDescription beanDesc,
+      public BeanDeserializerBuilder updateBuilder(DeserializationConfig config, BeanDescription.Supplier beanDesc,
           BeanDeserializerBuilder builder) {
         builder.getProperties().forEachRemaining(p -> builder.addOrReplaceProperty(
             new SettableBeanPropertyDelegating(p, builder.getAnySetter(), UnmatchedFieldTypeModule.this::useAnySetter) {
@@ -64,7 +64,7 @@ public class UnmatchedFieldTypeModule extends SimpleModule {
         return builder;
       }
     });
-    setSerializerModifier(new BeanSerializerModifier() {
+    setSerializerModifier(new ValueSerializerModifier() {
       /**
        * Customizes property writers used during serialization.
        *
@@ -72,15 +72,15 @@ public class UnmatchedFieldTypeModule extends SimpleModule {
        * of fields that may be overridden by values in the map returned by {@code @JsonAnyGetter}.
        *
        * The property corresponding to the {@code @JsonAnyGetter} method itself is left unmodified
-       * to avoid interfering with Jackson’s internal handling via {@link com.fasterxml.jackson.databind.ser.AnyGetterWriter}.
+       * to avoid interfering with Jackson’s internal handling via {@link tools.jackson.databind.ser.AnyGetterWriter}.
        *
        * This mechanism ensures that if a field is both explicitly declared and also present in the
        * any-getter map, only the value from the any-getter is serialized, avoiding duplication or conflicts.
        */
       @Override
-      public BeanSerializerBuilder updateBuilder(SerializationConfig config, BeanDescription beanDesc,
+      public BeanSerializerBuilder updateBuilder(SerializationConfig config, BeanDescription.Supplier beanDesc,
           BeanSerializerBuilder builder) {
-        AnnotatedMember anyGetter = beanDesc.findAnyGetter();
+        AnnotatedMember anyGetter = beanDesc.get().findAnyGetter();
         Member anyGetterMember = (anyGetter != null) ? anyGetter.getMember() : null;
 
         // Wrap each property writer unless it's the any-getter (handled by Jackson separately)
@@ -150,7 +150,7 @@ public class UnmatchedFieldTypeModule extends SimpleModule {
    * Checks whether the given {@link BeanPropertyWriter} corresponds to the method annotated with {@code @JsonAnyGetter}.
    *
    * This is used to identify and exclude the any-getter property from custom wrapping,
-   * since Jackson handles it separately via {@link com.fasterxml.jackson.databind.ser.AnyGetterWriter}.
+   * since Jackson handles it separately via {@link tools.jackson.databind.ser.AnyGetterWriter}.
    *
    * @param writer the property writer to examine
    * @param anyGetterMember the reflective member (method or field) marked with {@code @JsonAnyGetter}, if available

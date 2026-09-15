@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -39,6 +38,7 @@ import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.core.JacksonException;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -164,7 +164,7 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
       }
 
       return createdObj;
-    } catch (NoSuchAlgorithmException | JsonProcessingException e) {
+    } catch (NoSuchAlgorithmException | JacksonException e) {
       throw new KubernetesClientException("Could not calculate MD5 of RC", e);
     }
   }
@@ -248,7 +248,7 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
     }
   }
 
-  private String md5sum(HasMetadata obj) throws NoSuchAlgorithmException, JsonProcessingException {
+  private String md5sum(HasMetadata obj) throws NoSuchAlgorithmException, JacksonException {
     byte[] digest = MessageDigest.getInstance("MD5").digest(PatchUtils
         .withoutRuntimeState(obj, Format.YAML, true, client.adapt(BaseClient.class).getKubernetesSerialization()).getBytes());
     BigInteger i = new BigInteger(1, digest);

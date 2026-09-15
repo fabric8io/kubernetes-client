@@ -15,14 +15,14 @@
  */
 package io.fabric8.kubernetes.model.jackson;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
-import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
-import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
+import tools.jackson.databind.introspect.AnnotatedMember;
+import tools.jackson.databind.jsontype.TypeSerializer;
+import tools.jackson.databind.ser.BeanPropertyWriter;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -56,7 +56,7 @@ public class BeanPropertyWriterDelegate extends BeanPropertyWriter {
   }
 
   @Override
-  public void serializeAsField(Object bean, JsonGenerator gen, SerializerProvider prov) throws Exception {
+  public void serializeAsProperty(Object bean, JsonGenerator gen, SerializationContext prov) throws Exception {
     Object valueInAnyGetter = null;
     if (anyGetter != null) {
       Object anyGetterValue = anyGetter.getValue(bean);
@@ -65,7 +65,7 @@ public class BeanPropertyWriterDelegate extends BeanPropertyWriter {
       }
     }
     if (valueInAnyGetter == null) {
-      delegate.serializeAsField(bean, gen, prov);
+      delegate.serializeAsProperty(bean, gen, prov);
     } else if (Boolean.TRUE.equals(logDuplicateWarning.get())) {
       logger.warn("Value in field '{}' ignored in favor of value in additionalProperties ({}) for {}",
           delegate.getName(), valueInAnyGetter, bean.getClass().getName());
@@ -73,12 +73,12 @@ public class BeanPropertyWriterDelegate extends BeanPropertyWriter {
   }
 
   @Override
-  public void assignNullSerializer(JsonSerializer<Object> nullSer) {
+  public void assignNullSerializer(ValueSerializer<Object> nullSer) {
     delegate.assignNullSerializer(nullSer);
   }
 
   @Override
-  public void assignSerializer(JsonSerializer<Object> ser) {
+  public void assignSerializer(ValueSerializer<Object> ser) {
     delegate.assignSerializer(ser);
   }
 

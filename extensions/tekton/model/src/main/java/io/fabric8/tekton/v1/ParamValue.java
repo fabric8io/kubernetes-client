@@ -22,25 +22,22 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.ObjectCodec;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.ValueSerializer;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -175,11 +172,10 @@ public class ParamValue implements Editable<ParamValueBuilder>, KubernetesResour
     this.additionalProperties = additionalProperties;
   }
 
-  public static class Serializer extends JsonSerializer<ParamValue> {
+  public static class Serializer extends ValueSerializer<ParamValue> {
 
     @Override
-    public void serialize(ParamValue value, JsonGenerator jgen, SerializerProvider provider)
-        throws IOException, JsonProcessingException {
+    public void serialize(ParamValue value, JsonGenerator jgen, SerializationContext provider) {
       if (value != null) {
         if (value.getType() == null) {
           String stringVal = value.getStringVal();
@@ -205,8 +201,8 @@ public class ParamValue implements Editable<ParamValueBuilder>, KubernetesResour
       }
     }
 
-    private void writeArray(ParamValue value, JsonGenerator jgen) throws IOException {
-      jgen.writeStartArray(value.getArrayVal().size());
+    private void writeArray(ParamValue value, JsonGenerator jgen) {
+      jgen.writeStartArray(value, value.getArrayVal().size());
       for (String n : value.getArrayVal()) {
         jgen.writeString(n);
       }
@@ -215,16 +211,15 @@ public class ParamValue implements Editable<ParamValueBuilder>, KubernetesResour
 
   }
 
-  public static class Deserializer extends JsonDeserializer<ParamValue> {
+  public static class Deserializer extends ValueDeserializer<ParamValue> {
 
     @Override
-    public ParamValue deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
-      ObjectCodec oc = jsonParser.getCodec();
-      JsonNode node = oc.readTree(jsonParser);
+    public ParamValue deserialize(JsonParser jsonParser, DeserializationContext ctxt) {
+      JsonNode node = jsonParser.readValueAsTree();
       ParamValue arrayOrString;
       if (node.isArray()) {
         List<String> elements = new ArrayList<>();
-        node.elements().forEachRemaining(n -> elements.add(n.asText()));
+        node.values().forEach(n -> elements.add(n.asText()));
         arrayOrString = new ParamValue(elements);
       } else {
         arrayOrString = new ParamValue(node.asText());

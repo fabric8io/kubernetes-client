@@ -15,8 +15,9 @@
  */
 package io.fabric8.tekton.v1;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -28,7 +29,7 @@ class ParamValueTest {
   @Test
   void testParamValueJson() throws IOException {
     ParamValue is = new ParamValue("string-value");
-    ObjectMapper mapper = new ObjectMapper();
+    ObjectMapper mapper = new JsonMapper();
     String json = mapper.writeValueAsString(is);
     ParamValue is2 = mapper.readValue(json, ParamValue.class);
     assertEquals(is, is2);

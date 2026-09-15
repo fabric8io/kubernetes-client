@@ -140,7 +140,7 @@ class TypedClusterScopeCustomResourceApiTest {
     assertEquals(1, server.getRequestCount());
     assertEquals("PUT", recordedRequest.getMethod());
     assertEquals(
-        "{\"apiVersion\":\"example.crd.com/v1alpha1\",\"kind\":\"Star\",\"metadata\":{\"name\":\"sun\",\"resourceVersion\":\"1\"},\"spec\":{\"type\":\"G\",\"location\":\"Galaxy\"},\"status\":{\"location\":\"M\"}}",
+        "{\"apiVersion\":\"example.crd.com/v1alpha1\",\"kind\":\"Star\",\"metadata\":{\"name\":\"sun\",\"resourceVersion\":\"1\"},\"spec\":{\"location\":\"Galaxy\",\"type\":\"G\"},\"status\":{\"location\":\"M\"}}",
         recordedRequest.getBody().readUtf8());
   }
 
@@ -153,10 +153,10 @@ class TypedClusterScopeCustomResourceApiTest {
 
     // without the resourceVersion set, it must first do a get for the latest version
     server.expect().get().withPath("/apis/example.crd.com/v1alpha1/stars/sun").andReturn(200,
-        "{\"apiVersion\":\"example.crd.com/v1alpha1\",\"kind\":\"Star\",\"metadata\":{\"name\":\"sun\",\"resourceVersion\":\"1\"},\"spec\":{\"type\":\"G\",\"location\":\"Galaxy\"},\"status\":{\"location\":\"M\"}}")
+        "{\"apiVersion\":\"example.crd.com/v1alpha1\",\"kind\":\"Star\",\"metadata\":{\"name\":\"sun\",\"resourceVersion\":\"1\"},\"spec\":{\"location\":\"Galaxy\",\"type\":\"G\"},\"status\":{\"location\":\"M\"}}")
         .once();
     server.expect().put().withPath("/apis/example.crd.com/v1alpha1/stars/sun/status").andReturn(200,
-        "{\"apiVersion\":\"example.crd.com/v1alpha1\",\"kind\":\"Star\",\"metadata\":{\"name\":\"sun\",\"resourceVersion\":\"2\"},\"spec\":{\"type\":\"G\",\"location\":\"Galaxy\"},\"status\":{\"location\":\"M\"}}")
+        "{\"apiVersion\":\"example.crd.com/v1alpha1\",\"kind\":\"Star\",\"metadata\":{\"name\":\"sun\",\"resourceVersion\":\"2\"},\"spec\":{\"location\":\"Galaxy\",\"type\":\"G\"},\"status\":{\"location\":\"M\"}}")
         .once();
     starClient = client.resources(Star.class);
 
@@ -167,7 +167,7 @@ class TypedClusterScopeCustomResourceApiTest {
     assertEquals(2, server.getRequestCount());
     assertEquals("PUT", recordedRequest.getMethod());
     assertEquals(
-        "{\"apiVersion\":\"example.crd.com/v1alpha1\",\"kind\":\"Star\",\"metadata\":{\"name\":\"sun\",\"resourceVersion\":\"1\"},\"spec\":{\"type\":\"G\",\"location\":\"Galaxy\"},\"status\":{\"location\":\"M\"}}",
+        "{\"apiVersion\":\"example.crd.com/v1alpha1\",\"kind\":\"Star\",\"metadata\":{\"name\":\"sun\",\"resourceVersion\":\"1\"},\"spec\":{\"location\":\"Galaxy\",\"type\":\"G\"},\"status\":{\"location\":\"M\"}}",
         recordedRequest.getBody().readUtf8());
   }
 

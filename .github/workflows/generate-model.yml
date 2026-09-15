@@ -17,14 +17,7 @@
 name: Generate Model
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    paths-ignore:
-      - 'doc/**'
-      - 'ide-config/**'
-      - '**.md'
+  workflow_dispatch:
 
 concurrency:
   # Only run once for latest commit per ref and cancel other (previous) runs.

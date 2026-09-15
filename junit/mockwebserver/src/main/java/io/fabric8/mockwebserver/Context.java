@@ -15,14 +15,15 @@
  */
 package io.fabric8.mockwebserver;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 public class Context {
 
   private final ObjectMapper mapper;
 
   public Context() {
-    this(new ObjectMapper());
+    this(new JsonMapper());
   }
 
   public Context(ObjectMapper mapper) {

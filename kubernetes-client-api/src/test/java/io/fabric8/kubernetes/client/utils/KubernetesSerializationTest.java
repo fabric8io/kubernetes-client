@@ -16,9 +16,6 @@
 package io.fabric8.kubernetes.client.utils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
@@ -33,6 +30,9 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.util.stream.Stream;
@@ -50,7 +50,7 @@ class KubernetesSerializationTest {
 
     @BeforeEach
     void setUp() {
-      kubernetesSerialization = new KubernetesSerialization(new ObjectMapper(), false);
+      kubernetesSerialization = new KubernetesSerialization(JsonMapper.builder().build(), false);
     }
 
     @Test
@@ -109,7 +109,7 @@ class KubernetesSerializationTest {
 
     @Test
     void asYamlWithDefaultYamlDumpSettings() {
-      kubernetesSerialization = new KubernetesSerialization(new ObjectMapper(), true,
+      kubernetesSerialization = new KubernetesSerialization(JsonMapper.builder().build(), true,
           new YamlDumpSettingsBuilder().build());
       assertThat(kubernetesSerialization.asYaml(inputResource))
           .contains("\"widgets.test.fabric8.io\"");
@@ -117,7 +117,7 @@ class KubernetesSerializationTest {
 
     @Test
     void asYamlWithDefaultYamlDumpSettingsMinimizeQuotes() {
-      kubernetesSerialization = new KubernetesSerialization(new ObjectMapper(), true,
+      kubernetesSerialization = new KubernetesSerialization(JsonMapper.builder().build(), true,
           new YamlDumpSettingsBuilder().setMinimizeQuotes(true).build());
       assertThat(kubernetesSerialization.asYaml(inputResource))
           .contains("widgets.test.fabric8.io");
@@ -127,7 +127,7 @@ class KubernetesSerializationTest {
 
   @Version("v1")
   @Group("custom.core.kubernetes.io")
-  @JsonDeserialize(using = JsonDeserializer.None.class)
+  @JsonDeserialize(using = ValueDeserializer.None.class)
   public static class Pod implements HasMetadata {
 
     @JsonProperty("apiVersion")

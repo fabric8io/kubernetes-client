@@ -15,13 +15,14 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.model.jackson.GoCompatibilityModule;
 import io.fabric8.kubernetes.model.jackson.UnmatchedFieldTypeModule;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.dataformat.yaml.YAMLFactory;
+import tools.jackson.dataformat.yaml.YAMLMapper;
+import tools.jackson.dataformat.yaml.YAMLWriteFeature;
 
 import java.io.InputStream;
 
@@ -88,10 +89,11 @@ public class Serialization {
     if (YAML_MAPPER == null) {
       synchronized (Serialization.class) {
         if (YAML_MAPPER == null) {
-          ObjectMapper mapper = new ObjectMapper(
-              new YAMLFactory().disable(YAMLGenerator.Feature.USE_NATIVE_TYPE_ID));
-          mapper.registerModules(new GoCompatibilityModule(), UNMATCHED_FIELD_TYPE_MODULE);
-          YAML_MAPPER = mapper;
+          YAML_MAPPER = YAMLMapper.builder(
+              YAMLFactory.builder().disable(YAMLWriteFeature.USE_NATIVE_TYPE_ID).build())
+              .addModule(new GoCompatibilityModule())
+              .addModule(UNMATCHED_FIELD_TYPE_MODULE)
+              .build();
         }
       }
     }

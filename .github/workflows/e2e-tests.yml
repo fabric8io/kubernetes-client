@@ -43,7 +43,6 @@ jobs:
   buildWithoutTests:
     name: BuildWithoutTests
     runs-on: ubuntu-24.04-arm
-    if: github.repository == 'fabric8io/kubernetes-client'
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -64,7 +63,6 @@ jobs:
     name: Baremetal K8S
     needs: buildWithoutTests
     runs-on: ubuntu-24.04-arm
-    if: github.repository == 'fabric8io/kubernetes-client'
     strategy:
       fail-fast: false
       matrix:

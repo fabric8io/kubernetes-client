@@ -15,14 +15,14 @@
  */
 package io.fabric8.kubernetes.api.model.coordination.v1alpha2;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.model.util.Helper;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.util.Map;
 
@@ -35,8 +35,7 @@ class LeaseCandidateListTest {
 
   @BeforeEach
   void setUp() {
-    mapper = new ObjectMapper();
-    mapper.registerModule(new JavaTimeModule());
+    mapper = new JsonMapper();
   }
 
   @Test

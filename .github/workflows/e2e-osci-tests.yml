@@ -34,7 +34,6 @@ jobs:
   e2e:
     name: E2E OpenShift 4
     runs-on: ubuntu-latest
-    if: github.repository == 'fabric8io/kubernetes-client'
     steps:
       - name: Checkout
         uses: actions/checkout@v7

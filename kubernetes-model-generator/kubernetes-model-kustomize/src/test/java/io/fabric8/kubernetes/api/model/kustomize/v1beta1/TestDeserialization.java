@@ -15,13 +15,14 @@
  */
 package io.fabric8.kubernetes.api.model.kustomize.v1beta1;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.fabric8.kubernetes.model.util.Helper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.dataformat.yaml.YAMLFactory;
+import tools.jackson.dataformat.yaml.YAMLMapper;
+import tools.jackson.dataformat.yaml.YAMLWriteFeature;
 
 import java.util.Map;
 
@@ -34,9 +35,12 @@ class TestDeserialization {
 
   @BeforeEach
   void setUp() {
-    objectMapper = new ObjectMapper(new YAMLFactory()
-        .enable(YAMLGenerator.Feature.MINIMIZE_QUOTES)
-        .disable(YAMLGenerator.Feature.USE_NATIVE_TYPE_ID));
+    objectMapper = YAMLMapper.builder(
+        YAMLFactory.builder()
+            .enable(YAMLWriteFeature.MINIMIZE_QUOTES)
+            .disable(YAMLWriteFeature.USE_NATIVE_TYPE_ID)
+            .build())
+        .build();
   }
 
   @Test

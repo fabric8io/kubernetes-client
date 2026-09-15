@@ -34,7 +34,6 @@ jobs:
   minikube:
     name: K8S
     runs-on: ubuntu-24.04-arm
-    if: github.repository == 'fabric8io/kubernetes-client'
     strategy:
       fail-fast: false
       matrix:

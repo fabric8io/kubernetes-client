@@ -328,7 +328,7 @@ class DefaultMockServerTest extends Specification {
 
 		then: "Expect the response to contain the serialized json"
 		req1.result().statusCode() == 200
-		req1.result().body().toString() == "{\"id\":0,\"username\":\"root\",\"enabled\":true}"
+		req1.result().body().toString() == "{\"enabled\":true,\"id\":0,\"username\":\"root\"}"
 	}
 
 	def "when setting a timed websocket String message it should be fired at the specified time"() {

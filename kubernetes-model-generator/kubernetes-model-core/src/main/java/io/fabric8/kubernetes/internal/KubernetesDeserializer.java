@@ -15,18 +15,21 @@
  */
 package io.fabric8.kubernetes.internal;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.runtime.RawExtension;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.BeanDescription;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.deser.BeanDeserializerFactory;
+import tools.jackson.databind.node.TreeTraversingParser;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -38,7 +41,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource> {
+public class KubernetesDeserializer extends ValueDeserializer<KubernetesResource> {
 
   static class TypeKey {
     final String kind;
@@ -74,6 +77,8 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
   private static final String KIND = "kind";
   private static final String API_VERSION = "apiVersion";
 
+  private static final ThreadLocal<java.util.Set<Class<?>>> ACTIVE_TYPES = ThreadLocal.withInitial(java.util.HashSet::new);
+
   private final Mapping mapping = new Mapping();
 
   private static Mapping DEFAULT_MAPPING;
@@ -95,59 +100,84 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
   }
 
   @Override
-  public KubernetesResource deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+  public KubernetesResource deserialize(JsonParser jp, DeserializationContext ctxt) {
     final JsonNode node = jp.readValueAsTree();
-    return deserialize(jp, node);
+    return deserialize(jp, ctxt, node);
   }
 
-  final KubernetesResource deserialize(JsonParser jp, JsonNode node) throws IOException {
+  final KubernetesResource deserialize(JsonParser jp, DeserializationContext ctxt, JsonNode node) {
     if (node.isObject()) {
-      return fromObjectNode(jp, node);
+      return fromObjectNode(jp, ctxt, node);
     } else if (node.isArray()) {
-      return fromArrayNode(jp, node);
+      return fromArrayNode(jp, ctxt, node);
     }
-    Object object = node.traverse(jp.getCodec()).readValueAs(Object.class);
+    Object object = ctxt.readTreeAsValue(node, Object.class);
     if (object == null) {
       return null;
     }
     return new RawExtension(object);
   }
 
-  private KubernetesResource fromArrayNode(JsonParser jp, JsonNode node) throws IOException {
-    Iterator<JsonNode> iterator = node.elements();
+  private KubernetesResource fromArrayNode(JsonParser jp, DeserializationContext ctxt, JsonNode node) {
+    Iterator<JsonNode> iterator = node.values().iterator();
     List<HasMetadata> list = new ArrayList<>();
     while (iterator.hasNext()) {
       JsonNode jsonNode = iterator.next();
       if (jsonNode.isObject()) {
-        KubernetesResource resource = fromObjectNode(jp, jsonNode);
+        KubernetesResource resource = fromObjectNode(jp, ctxt, jsonNode);
         if (!(resource instanceof HasMetadata)) {
-          throw new JsonMappingException(jp, "Cannot parse a nested array containing a non-HasMetadata resource");
+          throw DatabindException.from(jp, "Cannot parse a nested array containing a non-HasMetadata resource");
         }
         list.add((HasMetadata) resource);
       } else {
-        throw new JsonMappingException(jp, "Cannot parse a nested array containing non-object resource");
+        throw DatabindException.from(jp, "Cannot parse a nested array containing non-object resource");
       }
     }
     return new KubernetesListBuilder().withItems(list).build();
   }
 
-  private KubernetesResource fromObjectNode(JsonParser jp, JsonNode node) throws IOException {
+  private KubernetesResource fromObjectNode(JsonParser jp, DeserializationContext ctxt, JsonNode node) {
     TypeKey key = createKey(node);
     Class<? extends KubernetesResource> resourceType = mapping.getForKey(key);
     if (resourceType == null) {
       if (key == null) {
-        // just a wrapper around a map
-        // if this raw mapping typed as HasMetadata, a failure will result
-        return jp.getCodec().treeToValue(node, RawExtension.class);
+        return readTreeAsValue(ctxt, node, RawExtension.class);
       }
-      // this is not quite correct as not all resources have metadata - see LocalResourceAccessReview
-      return jp.getCodec().treeToValue(node, GenericKubernetesResource.class);
+      return readTreeAsValue(ctxt, node, GenericKubernetesResource.class);
     } else if (KubernetesResource.class.isAssignableFrom(resourceType)) {
-      return jp.getCodec().treeToValue(node, resourceType);
+      return readTreeAsValue(ctxt, node, resourceType);
     }
-    throw new JsonMappingException(jp, String.format(
+    throw DatabindException.from(jp, String.format(
         "There's a class loading issue, %s is registered as a KubernetesResource, but is not an instance of KubernetesResource",
         resourceType.getName()));
+  }
+
+  private <T> T readTreeAsValue(DeserializationContext ctxt, JsonNode node, Class<T> type) {
+    java.util.Set<Class<?>> active = ACTIVE_TYPES.get();
+    if (active.add(type)) {
+      // First time seeing this type — use normal Jackson path (preserves annotation resolution
+      // for nested KubernetesResource-typed properties like AdmissionRequest.object)
+      try {
+        return ctxt.readTreeAsValue(node, type);
+      } finally {
+        active.remove(type);
+      }
+    }
+    // Same type re-entered (recursion via @JsonDeserialize on KubernetesResource interface) —
+    // build bean deserializer from factory to bypass annotation resolution
+    JavaType javaType = ctxt.constructType(type);
+    BeanDescription desc = ctxt.introspectBeanDescriptionForCreation(javaType);
+    ValueDeserializer<Object> beanDeser = BeanDeserializerFactory.instance
+        .createBeanDeserializer(ctxt, javaType, desc.supplier());
+    beanDeser.resolve(ctxt);
+    @SuppressWarnings("unchecked")
+    ValueDeserializer<Object> contextual = (ValueDeserializer<Object>) beanDeser.createContextual(ctxt, null);
+    try (TreeTraversingParser treeParser = new TreeTraversingParser(node, ctxt)) {
+      treeParser.nextToken();
+      @SuppressWarnings("unchecked")
+      T result = (T) contextual.deserialize(treeParser, ctxt);
+      return result;
+    }
   }
 
   private TypeKey createKey(JsonNode node) {

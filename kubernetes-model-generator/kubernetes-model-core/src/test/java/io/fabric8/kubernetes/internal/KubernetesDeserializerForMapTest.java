@@ -16,9 +16,6 @@
  */
 package io.fabric8.kubernetes.internal;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
@@ -29,6 +26,10 @@ import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.util.Map;
@@ -43,12 +44,12 @@ public class KubernetesDeserializerForMapTest {
 
   @BeforeEach
   void setUp() {
-    mapper = new ObjectMapper();
+    mapper = new JsonMapper();
   }
 
   @Test
   void invalid() {
-    assertThatExceptionOfType(JsonProcessingException.class)
+    assertThatExceptionOfType(JacksonException.class)
         .isThrownBy(() -> mapper.readValue("{\"aMap\":[]}", MapWrapper.class))
         .withMessageContaining("Expected map but found ARRAY");
   }
