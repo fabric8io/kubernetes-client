@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AWSProviderStatus containes the status of the credentials request in AWS.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "kind",
     "policy",
     "user"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -185,6 +176,71 @@ public class AWSProviderStatus implements Editable<AWSProviderStatusBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AWSProviderStatus)) {
+            return false;
+        }
+        AWSProviderStatus other = (AWSProviderStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$policy = this.getPolicy();
+        Object other$policy = other.getPolicy();
+        if (this$policy == null ? other$policy != null : !this$policy.equals(other$policy)) {
+            return false;
+        }
+        Object this$user = this.getUser();
+        Object other$user = other.getUser();
+        if (this$user == null ? other$user != null : !this$user.equals(other$user)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AWSProviderStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $policy = this.getPolicy();
+        result = result * prime + ($policy == null ? 43 : $policy.hashCode());
+        Object $user = this.getUser();
+        result = result * prime + ($user == null ? 43 : $user.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AWSProviderStatus(" + "apiVersion=" + this.getApiVersion() + ", kind=" + this.getKind() + ", policy=" + this.getPolicy() + ", user=" + this.getUser() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

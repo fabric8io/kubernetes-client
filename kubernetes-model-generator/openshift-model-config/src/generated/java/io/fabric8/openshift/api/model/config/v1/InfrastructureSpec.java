@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * InfrastructureSpec contains settings that apply to the cluster infrastructure.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "cloudConfig",
     "platformSpec"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -139,6 +130,57 @@ public class InfrastructureSpec implements Editable<InfrastructureSpecBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof InfrastructureSpec)) {
+            return false;
+        }
+        InfrastructureSpec other = (InfrastructureSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cloudConfig = this.getCloudConfig();
+        Object other$cloudConfig = other.getCloudConfig();
+        if (this$cloudConfig == null ? other$cloudConfig != null : !this$cloudConfig.equals(other$cloudConfig)) {
+            return false;
+        }
+        Object this$platformSpec = this.getPlatformSpec();
+        Object other$platformSpec = other.getPlatformSpec();
+        if (this$platformSpec == null ? other$platformSpec != null : !this$platformSpec.equals(other$platformSpec)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof InfrastructureSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cloudConfig = this.getCloudConfig();
+        result = result * prime + ($cloudConfig == null ? 43 : $cloudConfig.hashCode());
+        Object $platformSpec = this.getPlatformSpec();
+        result = result * prime + ($platformSpec == null ? 43 : $platformSpec.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "InfrastructureSpec(" + "cloudConfig=" + this.getCloudConfig() + ", platformSpec=" + this.getPlatformSpec() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

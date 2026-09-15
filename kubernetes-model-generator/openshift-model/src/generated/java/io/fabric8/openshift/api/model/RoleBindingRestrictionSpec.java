@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RoleBindingRestrictionSpec defines a rolebinding restriction.  Exactly one field must be non-nil.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "grouprestriction",
     "serviceaccountrestriction",
     "userrestriction"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -159,6 +150,64 @@ public class RoleBindingRestrictionSpec implements Editable<RoleBindingRestricti
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RoleBindingRestrictionSpec)) {
+            return false;
+        }
+        RoleBindingRestrictionSpec other = (RoleBindingRestrictionSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$grouprestriction = this.getGrouprestriction();
+        Object other$grouprestriction = other.getGrouprestriction();
+        if (this$grouprestriction == null ? other$grouprestriction != null : !this$grouprestriction.equals(other$grouprestriction)) {
+            return false;
+        }
+        Object this$serviceaccountrestriction = this.getServiceaccountrestriction();
+        Object other$serviceaccountrestriction = other.getServiceaccountrestriction();
+        if (this$serviceaccountrestriction == null ? other$serviceaccountrestriction != null : !this$serviceaccountrestriction.equals(other$serviceaccountrestriction)) {
+            return false;
+        }
+        Object this$userrestriction = this.getUserrestriction();
+        Object other$userrestriction = other.getUserrestriction();
+        if (this$userrestriction == null ? other$userrestriction != null : !this$userrestriction.equals(other$userrestriction)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RoleBindingRestrictionSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $grouprestriction = this.getGrouprestriction();
+        result = result * prime + ($grouprestriction == null ? 43 : $grouprestriction.hashCode());
+        Object $serviceaccountrestriction = this.getServiceaccountrestriction();
+        result = result * prime + ($serviceaccountrestriction == null ? 43 : $serviceaccountrestriction.hashCode());
+        Object $userrestriction = this.getUserrestriction();
+        result = result * prime + ($userrestriction == null ? 43 : $userrestriction.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RoleBindingRestrictionSpec(" + "grouprestriction=" + this.getGrouprestriction() + ", serviceaccountrestriction=" + this.getServiceaccountrestriction() + ", userrestriction=" + this.getUserrestriction() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

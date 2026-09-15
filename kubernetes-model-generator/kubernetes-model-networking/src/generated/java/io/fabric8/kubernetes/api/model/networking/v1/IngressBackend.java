@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * IngressBackend describes all endpoints for a given service and port.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "resource",
     "service"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -141,6 +132,57 @@ public class IngressBackend implements Editable<IngressBackendBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof IngressBackend)) {
+            return false;
+        }
+        IngressBackend other = (IngressBackend) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$resource = this.getResource();
+        Object other$resource = other.getResource();
+        if (this$resource == null ? other$resource != null : !this$resource.equals(other$resource)) {
+            return false;
+        }
+        Object this$service = this.getService();
+        Object other$service = other.getService();
+        if (this$service == null ? other$service != null : !this$service.equals(other$service)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof IngressBackend;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $resource = this.getResource();
+        result = result * prime + ($resource == null ? 43 : $resource.hashCode());
+        Object $service = this.getService();
+        result = result * prime + ($service == null ? 43 : $service.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IngressBackend(" + "resource=" + this.getResource() + ", service=" + this.getService() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

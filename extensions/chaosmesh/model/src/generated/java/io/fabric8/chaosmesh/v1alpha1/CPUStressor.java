@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CPUStressor defines how to stress CPU out
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "load",
     "options",
     "workers"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -164,6 +155,64 @@ public class CPUStressor implements Editable<CPUStressorBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CPUStressor)) {
+            return false;
+        }
+        CPUStressor other = (CPUStressor) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$load = this.getLoad();
+        Object other$load = other.getLoad();
+        if (this$load == null ? other$load != null : !this$load.equals(other$load)) {
+            return false;
+        }
+        Object this$options = this.getOptions();
+        Object other$options = other.getOptions();
+        if (this$options == null ? other$options != null : !this$options.equals(other$options)) {
+            return false;
+        }
+        Object this$workers = this.getWorkers();
+        Object other$workers = other.getWorkers();
+        if (this$workers == null ? other$workers != null : !this$workers.equals(other$workers)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CPUStressor;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $load = this.getLoad();
+        result = result * prime + ($load == null ? 43 : $load.hashCode());
+        Object $options = this.getOptions();
+        result = result * prime + ($options == null ? 43 : $options.hashCode());
+        Object $workers = this.getWorkers();
+        result = result * prime + ($workers == null ? 43 : $workers.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CPUStressor(" + "load=" + this.getLoad() + ", options=" + this.getOptions() + ", workers=" + this.getWorkers() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

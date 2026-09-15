@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NamedResourcesAttribute is a combination of an attribute name and its value.
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "string",
     "stringSlice",
     "version"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -261,6 +252,99 @@ public class NamedResourcesAttribute implements Editable<NamedResourcesAttribute
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NamedResourcesAttribute)) {
+            return false;
+        }
+        NamedResourcesAttribute other = (NamedResourcesAttribute) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bool = this.getBool();
+        Object other$bool = other.getBool();
+        if (this$bool == null ? other$bool != null : !this$bool.equals(other$bool)) {
+            return false;
+        }
+        Object this$_int = this.getInt();
+        Object other$_int = other.getInt();
+        if (this$_int == null ? other$_int != null : !this$_int.equals(other$_int)) {
+            return false;
+        }
+        Object this$intSlice = this.getIntSlice();
+        Object other$intSlice = other.getIntSlice();
+        if (this$intSlice == null ? other$intSlice != null : !this$intSlice.equals(other$intSlice)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$quantity = this.getQuantity();
+        Object other$quantity = other.getQuantity();
+        if (this$quantity == null ? other$quantity != null : !this$quantity.equals(other$quantity)) {
+            return false;
+        }
+        Object this$string = this.getString();
+        Object other$string = other.getString();
+        if (this$string == null ? other$string != null : !this$string.equals(other$string)) {
+            return false;
+        }
+        Object this$stringSlice = this.getStringSlice();
+        Object other$stringSlice = other.getStringSlice();
+        if (this$stringSlice == null ? other$stringSlice != null : !this$stringSlice.equals(other$stringSlice)) {
+            return false;
+        }
+        Object this$version = this.getVersion();
+        Object other$version = other.getVersion();
+        if (this$version == null ? other$version != null : !this$version.equals(other$version)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NamedResourcesAttribute;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bool = this.getBool();
+        result = result * prime + ($bool == null ? 43 : $bool.hashCode());
+        Object $_int = this.getInt();
+        result = result * prime + ($_int == null ? 43 : $_int.hashCode());
+        Object $intSlice = this.getIntSlice();
+        result = result * prime + ($intSlice == null ? 43 : $intSlice.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $quantity = this.getQuantity();
+        result = result * prime + ($quantity == null ? 43 : $quantity.hashCode());
+        Object $string = this.getString();
+        result = result * prime + ($string == null ? 43 : $string.hashCode());
+        Object $stringSlice = this.getStringSlice();
+        result = result * prime + ($stringSlice == null ? 43 : $stringSlice.hashCode());
+        Object $version = this.getVersion();
+        result = result * prime + ($version == null ? 43 : $version.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NamedResourcesAttribute(" + "bool=" + this.getBool() + ", _int=" + this.getInt() + ", intSlice=" + this.getIntSlice() + ", name=" + this.getName() + ", quantity=" + this.getQuantity() + ", string=" + this.getString() + ", stringSlice=" + this.getStringSlice() + ", version=" + this.getVersion() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

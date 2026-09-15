@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SSL/TLS related settings for upstream connections. See Envoy's [TLS context](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/transport_sockets/tls/v3/common.proto.html#common-tls-configuration) for more details. These settings are common to both HTTP and TCP upstreams.<br><p> <br><p> For example, the following rule configures a client to use mutual TLS for connections to upstream database cluster.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: db-mtls<br><p> <br><p> spec:<br><p> <br><p> 	host: mydbserver.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  tls:<br><p> 	    mode: MUTUAL<br><p> 	    clientCertificate: /etc/certs/myclientcert.pem<br><p> 	    privateKey: /etc/certs/client_private_key.pem<br><p> 	    caCertificates: /etc/certs/rootcacerts.pem<br><p> <br><p> ```<br><p> <br><p> The following rule configures a client to use TLS when talking to a foreign service whose domain matches &#42;.foo.com.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: tls-foo<br><p> <br><p> spec:<br><p> <br><p> 	host: "&#42;.foo.com"<br><p> 	trafficPolicy:<br><p> 	  tls:<br><p> 	    mode: SIMPLE<br><p> <br><p> ```<br><p> <br><p> The following rule configures a client to use Istio mutual TLS when talking to rating services.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: ratings-istio-mtls<br><p> <br><p> spec:<br><p> <br><p> 	host: ratings.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  tls:<br><p> 	    mode: ISTIO_MUTUAL<br><p> <br><p> ```
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "privateKey",
     "sni",
     "subjectAltNames"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -284,6 +275,106 @@ public class ClientTLSSettings implements Editable<ClientTLSSettingsBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClientTLSSettings)) {
+            return false;
+        }
+        ClientTLSSettings other = (ClientTLSSettings) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$caCertificates = this.getCaCertificates();
+        Object other$caCertificates = other.getCaCertificates();
+        if (this$caCertificates == null ? other$caCertificates != null : !this$caCertificates.equals(other$caCertificates)) {
+            return false;
+        }
+        Object this$caCrl = this.getCaCrl();
+        Object other$caCrl = other.getCaCrl();
+        if (this$caCrl == null ? other$caCrl != null : !this$caCrl.equals(other$caCrl)) {
+            return false;
+        }
+        Object this$clientCertificate = this.getClientCertificate();
+        Object other$clientCertificate = other.getClientCertificate();
+        if (this$clientCertificate == null ? other$clientCertificate != null : !this$clientCertificate.equals(other$clientCertificate)) {
+            return false;
+        }
+        Object this$credentialName = this.getCredentialName();
+        Object other$credentialName = other.getCredentialName();
+        if (this$credentialName == null ? other$credentialName != null : !this$credentialName.equals(other$credentialName)) {
+            return false;
+        }
+        Object this$insecureSkipVerify = this.getInsecureSkipVerify();
+        Object other$insecureSkipVerify = other.getInsecureSkipVerify();
+        if (this$insecureSkipVerify == null ? other$insecureSkipVerify != null : !this$insecureSkipVerify.equals(other$insecureSkipVerify)) {
+            return false;
+        }
+        Object this$mode = this.getMode();
+        Object other$mode = other.getMode();
+        if (this$mode == null ? other$mode != null : !this$mode.equals(other$mode)) {
+            return false;
+        }
+        Object this$privateKey = this.getPrivateKey();
+        Object other$privateKey = other.getPrivateKey();
+        if (this$privateKey == null ? other$privateKey != null : !this$privateKey.equals(other$privateKey)) {
+            return false;
+        }
+        Object this$sni = this.getSni();
+        Object other$sni = other.getSni();
+        if (this$sni == null ? other$sni != null : !this$sni.equals(other$sni)) {
+            return false;
+        }
+        Object this$subjectAltNames = this.getSubjectAltNames();
+        Object other$subjectAltNames = other.getSubjectAltNames();
+        if (this$subjectAltNames == null ? other$subjectAltNames != null : !this$subjectAltNames.equals(other$subjectAltNames)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClientTLSSettings;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $caCertificates = this.getCaCertificates();
+        result = result * prime + ($caCertificates == null ? 43 : $caCertificates.hashCode());
+        Object $caCrl = this.getCaCrl();
+        result = result * prime + ($caCrl == null ? 43 : $caCrl.hashCode());
+        Object $clientCertificate = this.getClientCertificate();
+        result = result * prime + ($clientCertificate == null ? 43 : $clientCertificate.hashCode());
+        Object $credentialName = this.getCredentialName();
+        result = result * prime + ($credentialName == null ? 43 : $credentialName.hashCode());
+        Object $insecureSkipVerify = this.getInsecureSkipVerify();
+        result = result * prime + ($insecureSkipVerify == null ? 43 : $insecureSkipVerify.hashCode());
+        Object $mode = this.getMode();
+        result = result * prime + ($mode == null ? 43 : $mode.hashCode());
+        Object $privateKey = this.getPrivateKey();
+        result = result * prime + ($privateKey == null ? 43 : $privateKey.hashCode());
+        Object $sni = this.getSni();
+        result = result * prime + ($sni == null ? 43 : $sni.hashCode());
+        Object $subjectAltNames = this.getSubjectAltNames();
+        result = result * prime + ($subjectAltNames == null ? 43 : $subjectAltNames.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClientTLSSettings(" + "caCertificates=" + this.getCaCertificates() + ", caCrl=" + this.getCaCrl() + ", clientCertificate=" + this.getClientCertificate() + ", credentialName=" + this.getCredentialName() + ", insecureSkipVerify=" + this.getInsecureSkipVerify() + ", mode=" + this.getMode() + ", privateKey=" + this.getPrivateKey() + ", sni=" + this.getSni() + ", subjectAltNames=" + this.getSubjectAltNames() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

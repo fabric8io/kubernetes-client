@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ContainerRestartRuleOnExitCodes describes the condition for handling an exited container based on its exit codes.
@@ -27,12 +24,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "operator",
     "values"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -115,6 +106,57 @@ public class ContainerRestartRuleOnExitCodes implements Editable<ContainerRestar
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ContainerRestartRuleOnExitCodes)) {
+            return false;
+        }
+        ContainerRestartRuleOnExitCodes other = (ContainerRestartRuleOnExitCodes) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$operator = this.getOperator();
+        Object other$operator = other.getOperator();
+        if (this$operator == null ? other$operator != null : !this$operator.equals(other$operator)) {
+            return false;
+        }
+        Object this$values = this.getValues();
+        Object other$values = other.getValues();
+        if (this$values == null ? other$values != null : !this$values.equals(other$values)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ContainerRestartRuleOnExitCodes;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $operator = this.getOperator();
+        result = result * prime + ($operator == null ? 43 : $operator.hashCode());
+        Object $values = this.getValues();
+        result = result * prime + ($values == null ? 43 : $values.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ContainerRestartRuleOnExitCodes(" + "operator=" + this.getOperator() + ", values=" + this.getValues() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

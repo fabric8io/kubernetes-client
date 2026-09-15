@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CorruptSpec defines detail of a corrupt action
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "correlation",
     "corrupt"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class CorruptSpec implements Editable<CorruptSpecBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CorruptSpec)) {
+            return false;
+        }
+        CorruptSpec other = (CorruptSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$correlation = this.getCorrelation();
+        Object other$correlation = other.getCorrelation();
+        if (this$correlation == null ? other$correlation != null : !this$correlation.equals(other$correlation)) {
+            return false;
+        }
+        Object this$corrupt = this.getCorrupt();
+        Object other$corrupt = other.getCorrupt();
+        if (this$corrupt == null ? other$corrupt != null : !this$corrupt.equals(other$corrupt)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CorruptSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $correlation = this.getCorrelation();
+        result = result * prime + ($correlation == null ? 43 : $correlation.hashCode());
+        Object $corrupt = this.getCorrupt();
+        result = result * prime + ($corrupt == null ? 43 : $corrupt.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CorruptSpec(" + "correlation=" + this.getCorrelation() + ", corrupt=" + this.getCorrupt() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

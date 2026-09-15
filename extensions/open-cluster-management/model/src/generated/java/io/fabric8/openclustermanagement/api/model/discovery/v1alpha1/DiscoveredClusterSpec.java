@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DiscoveredClusterSpec defines the desired state of DiscoveredCluster
@@ -50,12 +47,6 @@ import lombok.experimental.Accessors;
     "openshiftVersion",
     "status",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -340,6 +331,127 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DiscoveredClusterSpec)) {
+            return false;
+        }
+        DiscoveredClusterSpec other = (DiscoveredClusterSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$activityTimestamp = this.getActivityTimestamp();
+        Object other$activityTimestamp = other.getActivityTimestamp();
+        if (this$activityTimestamp == null ? other$activityTimestamp != null : !this$activityTimestamp.equals(other$activityTimestamp)) {
+            return false;
+        }
+        Object this$apiUrl = this.getApiUrl();
+        Object other$apiUrl = other.getApiUrl();
+        if (this$apiUrl == null ? other$apiUrl != null : !this$apiUrl.equals(other$apiUrl)) {
+            return false;
+        }
+        Object this$cloudProvider = this.getCloudProvider();
+        Object other$cloudProvider = other.getCloudProvider();
+        if (this$cloudProvider == null ? other$cloudProvider != null : !this$cloudProvider.equals(other$cloudProvider)) {
+            return false;
+        }
+        Object this$console = this.getConsole();
+        Object other$console = other.getConsole();
+        if (this$console == null ? other$console != null : !this$console.equals(other$console)) {
+            return false;
+        }
+        Object this$creationTimestamp = this.getCreationTimestamp();
+        Object other$creationTimestamp = other.getCreationTimestamp();
+        if (this$creationTimestamp == null ? other$creationTimestamp != null : !this$creationTimestamp.equals(other$creationTimestamp)) {
+            return false;
+        }
+        Object this$credential = this.getCredential();
+        Object other$credential = other.getCredential();
+        if (this$credential == null ? other$credential != null : !this$credential.equals(other$credential)) {
+            return false;
+        }
+        Object this$displayName = this.getDisplayName();
+        Object other$displayName = other.getDisplayName();
+        if (this$displayName == null ? other$displayName != null : !this$displayName.equals(other$displayName)) {
+            return false;
+        }
+        Object this$isManagedCluster = this.getIsManagedCluster();
+        Object other$isManagedCluster = other.getIsManagedCluster();
+        if (this$isManagedCluster == null ? other$isManagedCluster != null : !this$isManagedCluster.equals(other$isManagedCluster)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$openshiftVersion = this.getOpenshiftVersion();
+        Object other$openshiftVersion = other.getOpenshiftVersion();
+        if (this$openshiftVersion == null ? other$openshiftVersion != null : !this$openshiftVersion.equals(other$openshiftVersion)) {
+            return false;
+        }
+        Object this$status = this.getStatus();
+        Object other$status = other.getStatus();
+        if (this$status == null ? other$status != null : !this$status.equals(other$status)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DiscoveredClusterSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $activityTimestamp = this.getActivityTimestamp();
+        result = result * prime + ($activityTimestamp == null ? 43 : $activityTimestamp.hashCode());
+        Object $apiUrl = this.getApiUrl();
+        result = result * prime + ($apiUrl == null ? 43 : $apiUrl.hashCode());
+        Object $cloudProvider = this.getCloudProvider();
+        result = result * prime + ($cloudProvider == null ? 43 : $cloudProvider.hashCode());
+        Object $console = this.getConsole();
+        result = result * prime + ($console == null ? 43 : $console.hashCode());
+        Object $creationTimestamp = this.getCreationTimestamp();
+        result = result * prime + ($creationTimestamp == null ? 43 : $creationTimestamp.hashCode());
+        Object $credential = this.getCredential();
+        result = result * prime + ($credential == null ? 43 : $credential.hashCode());
+        Object $displayName = this.getDisplayName();
+        result = result * prime + ($displayName == null ? 43 : $displayName.hashCode());
+        Object $isManagedCluster = this.getIsManagedCluster();
+        result = result * prime + ($isManagedCluster == null ? 43 : $isManagedCluster.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $openshiftVersion = this.getOpenshiftVersion();
+        result = result * prime + ($openshiftVersion == null ? 43 : $openshiftVersion.hashCode());
+        Object $status = this.getStatus();
+        result = result * prime + ($status == null ? 43 : $status.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DiscoveredClusterSpec(" + "activityTimestamp=" + this.getActivityTimestamp() + ", apiUrl=" + this.getApiUrl() + ", cloudProvider=" + this.getCloudProvider() + ", console=" + this.getConsole() + ", creationTimestamp=" + this.getCreationTimestamp() + ", credential=" + this.getCredential() + ", displayName=" + this.getDisplayName() + ", isManagedCluster=" + this.getIsManagedCluster() + ", name=" + this.getName() + ", openshiftVersion=" + this.getOpenshiftVersion() + ", status=" + this.getStatus() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

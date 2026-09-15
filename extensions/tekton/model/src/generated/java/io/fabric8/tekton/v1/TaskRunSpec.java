@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.tekton.pod.Template;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TaskRunSpec defines the desired state of TaskRun
@@ -57,12 +54,6 @@ import lombok.experimental.Accessors;
     "taskSpec",
     "timeout",
     "workspaces"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -412,6 +403,148 @@ public class TaskRunSpec implements Editable<TaskRunSpecBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TaskRunSpec)) {
+            return false;
+        }
+        TaskRunSpec other = (TaskRunSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$computeResources = this.getComputeResources();
+        Object other$computeResources = other.getComputeResources();
+        if (this$computeResources == null ? other$computeResources != null : !this$computeResources.equals(other$computeResources)) {
+            return false;
+        }
+        Object this$debug = this.getDebug();
+        Object other$debug = other.getDebug();
+        if (this$debug == null ? other$debug != null : !this$debug.equals(other$debug)) {
+            return false;
+        }
+        Object this$managedBy = this.getManagedBy();
+        Object other$managedBy = other.getManagedBy();
+        if (this$managedBy == null ? other$managedBy != null : !this$managedBy.equals(other$managedBy)) {
+            return false;
+        }
+        Object this$params = this.getParams();
+        Object other$params = other.getParams();
+        if (this$params == null ? other$params != null : !this$params.equals(other$params)) {
+            return false;
+        }
+        Object this$podTemplate = this.getPodTemplate();
+        Object other$podTemplate = other.getPodTemplate();
+        if (this$podTemplate == null ? other$podTemplate != null : !this$podTemplate.equals(other$podTemplate)) {
+            return false;
+        }
+        Object this$retries = this.getRetries();
+        Object other$retries = other.getRetries();
+        if (this$retries == null ? other$retries != null : !this$retries.equals(other$retries)) {
+            return false;
+        }
+        Object this$serviceAccountName = this.getServiceAccountName();
+        Object other$serviceAccountName = other.getServiceAccountName();
+        if (this$serviceAccountName == null ? other$serviceAccountName != null : !this$serviceAccountName.equals(other$serviceAccountName)) {
+            return false;
+        }
+        Object this$sidecarSpecs = this.getSidecarSpecs();
+        Object other$sidecarSpecs = other.getSidecarSpecs();
+        if (this$sidecarSpecs == null ? other$sidecarSpecs != null : !this$sidecarSpecs.equals(other$sidecarSpecs)) {
+            return false;
+        }
+        Object this$status = this.getStatus();
+        Object other$status = other.getStatus();
+        if (this$status == null ? other$status != null : !this$status.equals(other$status)) {
+            return false;
+        }
+        Object this$statusMessage = this.getStatusMessage();
+        Object other$statusMessage = other.getStatusMessage();
+        if (this$statusMessage == null ? other$statusMessage != null : !this$statusMessage.equals(other$statusMessage)) {
+            return false;
+        }
+        Object this$stepSpecs = this.getStepSpecs();
+        Object other$stepSpecs = other.getStepSpecs();
+        if (this$stepSpecs == null ? other$stepSpecs != null : !this$stepSpecs.equals(other$stepSpecs)) {
+            return false;
+        }
+        Object this$taskRef = this.getTaskRef();
+        Object other$taskRef = other.getTaskRef();
+        if (this$taskRef == null ? other$taskRef != null : !this$taskRef.equals(other$taskRef)) {
+            return false;
+        }
+        Object this$taskSpec = this.getTaskSpec();
+        Object other$taskSpec = other.getTaskSpec();
+        if (this$taskSpec == null ? other$taskSpec != null : !this$taskSpec.equals(other$taskSpec)) {
+            return false;
+        }
+        Object this$timeout = this.getTimeout();
+        Object other$timeout = other.getTimeout();
+        if (this$timeout == null ? other$timeout != null : !this$timeout.equals(other$timeout)) {
+            return false;
+        }
+        Object this$workspaces = this.getWorkspaces();
+        Object other$workspaces = other.getWorkspaces();
+        if (this$workspaces == null ? other$workspaces != null : !this$workspaces.equals(other$workspaces)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TaskRunSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $computeResources = this.getComputeResources();
+        result = result * prime + ($computeResources == null ? 43 : $computeResources.hashCode());
+        Object $debug = this.getDebug();
+        result = result * prime + ($debug == null ? 43 : $debug.hashCode());
+        Object $managedBy = this.getManagedBy();
+        result = result * prime + ($managedBy == null ? 43 : $managedBy.hashCode());
+        Object $params = this.getParams();
+        result = result * prime + ($params == null ? 43 : $params.hashCode());
+        Object $podTemplate = this.getPodTemplate();
+        result = result * prime + ($podTemplate == null ? 43 : $podTemplate.hashCode());
+        Object $retries = this.getRetries();
+        result = result * prime + ($retries == null ? 43 : $retries.hashCode());
+        Object $serviceAccountName = this.getServiceAccountName();
+        result = result * prime + ($serviceAccountName == null ? 43 : $serviceAccountName.hashCode());
+        Object $sidecarSpecs = this.getSidecarSpecs();
+        result = result * prime + ($sidecarSpecs == null ? 43 : $sidecarSpecs.hashCode());
+        Object $status = this.getStatus();
+        result = result * prime + ($status == null ? 43 : $status.hashCode());
+        Object $statusMessage = this.getStatusMessage();
+        result = result * prime + ($statusMessage == null ? 43 : $statusMessage.hashCode());
+        Object $stepSpecs = this.getStepSpecs();
+        result = result * prime + ($stepSpecs == null ? 43 : $stepSpecs.hashCode());
+        Object $taskRef = this.getTaskRef();
+        result = result * prime + ($taskRef == null ? 43 : $taskRef.hashCode());
+        Object $taskSpec = this.getTaskSpec();
+        result = result * prime + ($taskSpec == null ? 43 : $taskSpec.hashCode());
+        Object $timeout = this.getTimeout();
+        result = result * prime + ($timeout == null ? 43 : $timeout.hashCode());
+        Object $workspaces = this.getWorkspaces();
+        result = result * prime + ($workspaces == null ? 43 : $workspaces.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TaskRunSpec(" + "computeResources=" + this.getComputeResources() + ", debug=" + this.getDebug() + ", managedBy=" + this.getManagedBy() + ", params=" + this.getParams() + ", podTemplate=" + this.getPodTemplate() + ", retries=" + this.getRetries() + ", serviceAccountName=" + this.getServiceAccountName() + ", sidecarSpecs=" + this.getSidecarSpecs() + ", status=" + this.getStatus() + ", statusMessage=" + this.getStatusMessage() + ", stepSpecs=" + this.getStepSpecs() + ", taskRef=" + this.getTaskRef() + ", taskSpec=" + this.getTaskSpec() + ", timeout=" + this.getTimeout() + ", workspaces=" + this.getWorkspaces() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

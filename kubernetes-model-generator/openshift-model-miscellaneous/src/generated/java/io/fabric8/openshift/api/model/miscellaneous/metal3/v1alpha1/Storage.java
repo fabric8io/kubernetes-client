@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Storage describes one storage device (disk, SSD, etc.) on the host.
@@ -51,12 +48,6 @@ import lombok.experimental.Accessors;
     "wwn",
     "wwnVendorExtension",
     "wwnWithExtension"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -343,6 +334,127 @@ public class Storage implements Editable<StorageBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Storage)) {
+            return false;
+        }
+        Storage other = (Storage) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$alternateNames = this.getAlternateNames();
+        Object other$alternateNames = other.getAlternateNames();
+        if (this$alternateNames == null ? other$alternateNames != null : !this$alternateNames.equals(other$alternateNames)) {
+            return false;
+        }
+        Object this$hctl = this.getHctl();
+        Object other$hctl = other.getHctl();
+        if (this$hctl == null ? other$hctl != null : !this$hctl.equals(other$hctl)) {
+            return false;
+        }
+        Object this$model = this.getModel();
+        Object other$model = other.getModel();
+        if (this$model == null ? other$model != null : !this$model.equals(other$model)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$rotational = this.getRotational();
+        Object other$rotational = other.getRotational();
+        if (this$rotational == null ? other$rotational != null : !this$rotational.equals(other$rotational)) {
+            return false;
+        }
+        Object this$serialNumber = this.getSerialNumber();
+        Object other$serialNumber = other.getSerialNumber();
+        if (this$serialNumber == null ? other$serialNumber != null : !this$serialNumber.equals(other$serialNumber)) {
+            return false;
+        }
+        Object this$sizeBytes = this.getSizeBytes();
+        Object other$sizeBytes = other.getSizeBytes();
+        if (this$sizeBytes == null ? other$sizeBytes != null : !this$sizeBytes.equals(other$sizeBytes)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$vendor = this.getVendor();
+        Object other$vendor = other.getVendor();
+        if (this$vendor == null ? other$vendor != null : !this$vendor.equals(other$vendor)) {
+            return false;
+        }
+        Object this$wwn = this.getWwn();
+        Object other$wwn = other.getWwn();
+        if (this$wwn == null ? other$wwn != null : !this$wwn.equals(other$wwn)) {
+            return false;
+        }
+        Object this$wwnVendorExtension = this.getWwnVendorExtension();
+        Object other$wwnVendorExtension = other.getWwnVendorExtension();
+        if (this$wwnVendorExtension == null ? other$wwnVendorExtension != null : !this$wwnVendorExtension.equals(other$wwnVendorExtension)) {
+            return false;
+        }
+        Object this$wwnWithExtension = this.getWwnWithExtension();
+        Object other$wwnWithExtension = other.getWwnWithExtension();
+        if (this$wwnWithExtension == null ? other$wwnWithExtension != null : !this$wwnWithExtension.equals(other$wwnWithExtension)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Storage;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $alternateNames = this.getAlternateNames();
+        result = result * prime + ($alternateNames == null ? 43 : $alternateNames.hashCode());
+        Object $hctl = this.getHctl();
+        result = result * prime + ($hctl == null ? 43 : $hctl.hashCode());
+        Object $model = this.getModel();
+        result = result * prime + ($model == null ? 43 : $model.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $rotational = this.getRotational();
+        result = result * prime + ($rotational == null ? 43 : $rotational.hashCode());
+        Object $serialNumber = this.getSerialNumber();
+        result = result * prime + ($serialNumber == null ? 43 : $serialNumber.hashCode());
+        Object $sizeBytes = this.getSizeBytes();
+        result = result * prime + ($sizeBytes == null ? 43 : $sizeBytes.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $vendor = this.getVendor();
+        result = result * prime + ($vendor == null ? 43 : $vendor.hashCode());
+        Object $wwn = this.getWwn();
+        result = result * prime + ($wwn == null ? 43 : $wwn.hashCode());
+        Object $wwnVendorExtension = this.getWwnVendorExtension();
+        result = result * prime + ($wwnVendorExtension == null ? 43 : $wwnVendorExtension.hashCode());
+        Object $wwnWithExtension = this.getWwnWithExtension();
+        result = result * prime + ($wwnWithExtension == null ? 43 : $wwnWithExtension.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Storage(" + "alternateNames=" + this.getAlternateNames() + ", hctl=" + this.getHctl() + ", model=" + this.getModel() + ", name=" + this.getName() + ", rotational=" + this.getRotational() + ", serialNumber=" + this.getSerialNumber() + ", sizeBytes=" + this.getSizeBytes() + ", type=" + this.getType() + ", vendor=" + this.getVendor() + ", wwn=" + this.getWwn() + ", wwnVendorExtension=" + this.getWwnVendorExtension() + ", wwnWithExtension=" + this.getWwnWithExtension() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

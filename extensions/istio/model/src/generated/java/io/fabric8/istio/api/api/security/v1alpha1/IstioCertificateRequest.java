@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Certificate request message. The authentication should be based on: 1. Bearer tokens carried in the side channel; 2. Client-side certificate via Mutual TLS handshake. Note: the service implementation is REQUIRED to verify the authenticated caller is authorize to all SANs in the CSR. The server side may overwrite any requested certificate field based on its policies.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "metadata",
     "csr",
     "validityDuration"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -162,6 +153,64 @@ public class IstioCertificateRequest implements Editable<IstioCertificateRequest
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof IstioCertificateRequest)) {
+            return false;
+        }
+        IstioCertificateRequest other = (IstioCertificateRequest) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$csr = this.getCsr();
+        Object other$csr = other.getCsr();
+        if (this$csr == null ? other$csr != null : !this$csr.equals(other$csr)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$validityDuration = this.getValidityDuration();
+        Object other$validityDuration = other.getValidityDuration();
+        if (this$validityDuration == null ? other$validityDuration != null : !this$validityDuration.equals(other$validityDuration)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof IstioCertificateRequest;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $csr = this.getCsr();
+        result = result * prime + ($csr == null ? 43 : $csr.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $validityDuration = this.getValidityDuration();
+        result = result * prime + ($validityDuration == null ? 43 : $validityDuration.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IstioCertificateRequest(" + "csr=" + this.getCsr() + ", metadata=" + this.getMetadata() + ", validityDuration=" + this.getValidityDuration() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

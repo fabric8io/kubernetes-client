@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RevisionStatus communicates the observed state of the Revision (from the controller).
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "initContainerStatuses",
     "logUrl",
     "observedGeneration"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -271,6 +262,99 @@ public class RevisionStatus implements Editable<RevisionStatusBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RevisionStatus)) {
+            return false;
+        }
+        RevisionStatus other = (RevisionStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$actualReplicas = this.getActualReplicas();
+        Object other$actualReplicas = other.getActualReplicas();
+        if (this$actualReplicas == null ? other$actualReplicas != null : !this$actualReplicas.equals(other$actualReplicas)) {
+            return false;
+        }
+        Object this$annotations = this.getAnnotations();
+        Object other$annotations = other.getAnnotations();
+        if (this$annotations == null ? other$annotations != null : !this$annotations.equals(other$annotations)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$containerStatuses = this.getContainerStatuses();
+        Object other$containerStatuses = other.getContainerStatuses();
+        if (this$containerStatuses == null ? other$containerStatuses != null : !this$containerStatuses.equals(other$containerStatuses)) {
+            return false;
+        }
+        Object this$desiredReplicas = this.getDesiredReplicas();
+        Object other$desiredReplicas = other.getDesiredReplicas();
+        if (this$desiredReplicas == null ? other$desiredReplicas != null : !this$desiredReplicas.equals(other$desiredReplicas)) {
+            return false;
+        }
+        Object this$initContainerStatuses = this.getInitContainerStatuses();
+        Object other$initContainerStatuses = other.getInitContainerStatuses();
+        if (this$initContainerStatuses == null ? other$initContainerStatuses != null : !this$initContainerStatuses.equals(other$initContainerStatuses)) {
+            return false;
+        }
+        Object this$logUrl = this.getLogUrl();
+        Object other$logUrl = other.getLogUrl();
+        if (this$logUrl == null ? other$logUrl != null : !this$logUrl.equals(other$logUrl)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RevisionStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $actualReplicas = this.getActualReplicas();
+        result = result * prime + ($actualReplicas == null ? 43 : $actualReplicas.hashCode());
+        Object $annotations = this.getAnnotations();
+        result = result * prime + ($annotations == null ? 43 : $annotations.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $containerStatuses = this.getContainerStatuses();
+        result = result * prime + ($containerStatuses == null ? 43 : $containerStatuses.hashCode());
+        Object $desiredReplicas = this.getDesiredReplicas();
+        result = result * prime + ($desiredReplicas == null ? 43 : $desiredReplicas.hashCode());
+        Object $initContainerStatuses = this.getInitContainerStatuses();
+        result = result * prime + ($initContainerStatuses == null ? 43 : $initContainerStatuses.hashCode());
+        Object $logUrl = this.getLogUrl();
+        result = result * prime + ($logUrl == null ? 43 : $logUrl.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RevisionStatus(" + "actualReplicas=" + this.getActualReplicas() + ", annotations=" + this.getAnnotations() + ", conditions=" + this.getConditions() + ", containerStatuses=" + this.getContainerStatuses() + ", desiredReplicas=" + this.getDesiredReplicas() + ", initContainerStatuses=" + this.getInitContainerStatuses() + ", logUrl=" + this.getLogUrl() + ", observedGeneration=" + this.getObservedGeneration() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

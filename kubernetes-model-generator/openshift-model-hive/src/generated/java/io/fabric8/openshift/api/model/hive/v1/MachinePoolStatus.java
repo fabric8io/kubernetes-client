@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MachinePoolStatus defines the observed state of MachinePool
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "ownedMachineLabels",
     "ownedTaints",
     "replicas"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -252,6 +243,92 @@ public class MachinePoolStatus implements Editable<MachinePoolStatusBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachinePoolStatus)) {
+            return false;
+        }
+        MachinePoolStatus other = (MachinePoolStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$controlledByReplica = this.getControlledByReplica();
+        Object other$controlledByReplica = other.getControlledByReplica();
+        if (this$controlledByReplica == null ? other$controlledByReplica != null : !this$controlledByReplica.equals(other$controlledByReplica)) {
+            return false;
+        }
+        Object this$machineSets = this.getMachineSets();
+        Object other$machineSets = other.getMachineSets();
+        if (this$machineSets == null ? other$machineSets != null : !this$machineSets.equals(other$machineSets)) {
+            return false;
+        }
+        Object this$ownedLabels = this.getOwnedLabels();
+        Object other$ownedLabels = other.getOwnedLabels();
+        if (this$ownedLabels == null ? other$ownedLabels != null : !this$ownedLabels.equals(other$ownedLabels)) {
+            return false;
+        }
+        Object this$ownedMachineLabels = this.getOwnedMachineLabels();
+        Object other$ownedMachineLabels = other.getOwnedMachineLabels();
+        if (this$ownedMachineLabels == null ? other$ownedMachineLabels != null : !this$ownedMachineLabels.equals(other$ownedMachineLabels)) {
+            return false;
+        }
+        Object this$ownedTaints = this.getOwnedTaints();
+        Object other$ownedTaints = other.getOwnedTaints();
+        if (this$ownedTaints == null ? other$ownedTaints != null : !this$ownedTaints.equals(other$ownedTaints)) {
+            return false;
+        }
+        Object this$replicas = this.getReplicas();
+        Object other$replicas = other.getReplicas();
+        if (this$replicas == null ? other$replicas != null : !this$replicas.equals(other$replicas)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachinePoolStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $controlledByReplica = this.getControlledByReplica();
+        result = result * prime + ($controlledByReplica == null ? 43 : $controlledByReplica.hashCode());
+        Object $machineSets = this.getMachineSets();
+        result = result * prime + ($machineSets == null ? 43 : $machineSets.hashCode());
+        Object $ownedLabels = this.getOwnedLabels();
+        result = result * prime + ($ownedLabels == null ? 43 : $ownedLabels.hashCode());
+        Object $ownedMachineLabels = this.getOwnedMachineLabels();
+        result = result * prime + ($ownedMachineLabels == null ? 43 : $ownedMachineLabels.hashCode());
+        Object $ownedTaints = this.getOwnedTaints();
+        result = result * prime + ($ownedTaints == null ? 43 : $ownedTaints.hashCode());
+        Object $replicas = this.getReplicas();
+        result = result * prime + ($replicas == null ? 43 : $replicas.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachinePoolStatus(" + "conditions=" + this.getConditions() + ", controlledByReplica=" + this.getControlledByReplica() + ", machineSets=" + this.getMachineSets() + ", ownedLabels=" + this.getOwnedLabels() + ", ownedMachineLabels=" + this.getOwnedMachineLabels() + ", ownedTaints=" + this.getOwnedTaints() + ", replicas=" + this.getReplicas() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

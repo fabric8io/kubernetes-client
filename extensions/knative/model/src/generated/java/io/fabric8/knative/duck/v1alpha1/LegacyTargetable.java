@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * LegacyTargetable left around until we migrate to Addressable in the dependent resources. Addressable has more structure in the way it defines the fields. LegacyTargetable only assumed a single string in the Status field and we're moving towards defining proper structs under Status rather than strings. This is to support existing resources until they migrate.<br><p> <br><p> # Do not use this for anything new, use Addressable<br><p> <br><p> LegacyTargetable is the old schema for the addressable portion of the payload<br><p> <br><p> For new resources use Addressable.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "domainInternal"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -120,6 +111,50 @@ public class LegacyTargetable implements Editable<LegacyTargetableBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof LegacyTargetable)) {
+            return false;
+        }
+        LegacyTargetable other = (LegacyTargetable) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$domainInternal = this.getDomainInternal();
+        Object other$domainInternal = other.getDomainInternal();
+        if (this$domainInternal == null ? other$domainInternal != null : !this$domainInternal.equals(other$domainInternal)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof LegacyTargetable;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $domainInternal = this.getDomainInternal();
+        result = result * prime + ($domainInternal == null ? 43 : $domainInternal.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "LegacyTargetable(" + "domainInternal=" + this.getDomainInternal() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

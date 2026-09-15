@@ -15,9 +15,6 @@ import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Event is a report of an event somewhere in the cluster.  Events have a limited retention time and triggers and messages may evolve with time.  Event consumers should not rely on the timing of an event with a given Reason reflecting a consistent underlying trigger, or the continued existence of events with that Reason.  Events should be treated as informative, best-effort, supplemental data.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "series",
     "source",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Version("v1")
@@ -415,6 +406,162 @@ public class Event implements Editable<EventBuilder>, HasMetadata, Namespaced
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Event)) {
+            return false;
+        }
+        Event other = (Event) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$action = this.getAction();
+        Object other$action = other.getAction();
+        if (this$action == null ? other$action != null : !this$action.equals(other$action)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$count = this.getCount();
+        Object other$count = other.getCount();
+        if (this$count == null ? other$count != null : !this$count.equals(other$count)) {
+            return false;
+        }
+        Object this$eventTime = this.getEventTime();
+        Object other$eventTime = other.getEventTime();
+        if (this$eventTime == null ? other$eventTime != null : !this$eventTime.equals(other$eventTime)) {
+            return false;
+        }
+        Object this$firstTimestamp = this.getFirstTimestamp();
+        Object other$firstTimestamp = other.getFirstTimestamp();
+        if (this$firstTimestamp == null ? other$firstTimestamp != null : !this$firstTimestamp.equals(other$firstTimestamp)) {
+            return false;
+        }
+        Object this$involvedObject = this.getInvolvedObject();
+        Object other$involvedObject = other.getInvolvedObject();
+        if (this$involvedObject == null ? other$involvedObject != null : !this$involvedObject.equals(other$involvedObject)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$lastTimestamp = this.getLastTimestamp();
+        Object other$lastTimestamp = other.getLastTimestamp();
+        if (this$lastTimestamp == null ? other$lastTimestamp != null : !this$lastTimestamp.equals(other$lastTimestamp)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$reason = this.getReason();
+        Object other$reason = other.getReason();
+        if (this$reason == null ? other$reason != null : !this$reason.equals(other$reason)) {
+            return false;
+        }
+        Object this$related = this.getRelated();
+        Object other$related = other.getRelated();
+        if (this$related == null ? other$related != null : !this$related.equals(other$related)) {
+            return false;
+        }
+        Object this$reportingComponent = this.getReportingComponent();
+        Object other$reportingComponent = other.getReportingComponent();
+        if (this$reportingComponent == null ? other$reportingComponent != null : !this$reportingComponent.equals(other$reportingComponent)) {
+            return false;
+        }
+        Object this$reportingInstance = this.getReportingInstance();
+        Object other$reportingInstance = other.getReportingInstance();
+        if (this$reportingInstance == null ? other$reportingInstance != null : !this$reportingInstance.equals(other$reportingInstance)) {
+            return false;
+        }
+        Object this$series = this.getSeries();
+        Object other$series = other.getSeries();
+        if (this$series == null ? other$series != null : !this$series.equals(other$series)) {
+            return false;
+        }
+        Object this$source = this.getSource();
+        Object other$source = other.getSource();
+        if (this$source == null ? other$source != null : !this$source.equals(other$source)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Event;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $action = this.getAction();
+        result = result * prime + ($action == null ? 43 : $action.hashCode());
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $count = this.getCount();
+        result = result * prime + ($count == null ? 43 : $count.hashCode());
+        Object $eventTime = this.getEventTime();
+        result = result * prime + ($eventTime == null ? 43 : $eventTime.hashCode());
+        Object $firstTimestamp = this.getFirstTimestamp();
+        result = result * prime + ($firstTimestamp == null ? 43 : $firstTimestamp.hashCode());
+        Object $involvedObject = this.getInvolvedObject();
+        result = result * prime + ($involvedObject == null ? 43 : $involvedObject.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $lastTimestamp = this.getLastTimestamp();
+        result = result * prime + ($lastTimestamp == null ? 43 : $lastTimestamp.hashCode());
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $reason = this.getReason();
+        result = result * prime + ($reason == null ? 43 : $reason.hashCode());
+        Object $related = this.getRelated();
+        result = result * prime + ($related == null ? 43 : $related.hashCode());
+        Object $reportingComponent = this.getReportingComponent();
+        result = result * prime + ($reportingComponent == null ? 43 : $reportingComponent.hashCode());
+        Object $reportingInstance = this.getReportingInstance();
+        result = result * prime + ($reportingInstance == null ? 43 : $reportingInstance.hashCode());
+        Object $series = this.getSeries();
+        result = result * prime + ($series == null ? 43 : $series.hashCode());
+        Object $source = this.getSource();
+        result = result * prime + ($source == null ? 43 : $source.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Event(" + "action=" + this.getAction() + ", apiVersion=" + this.getApiVersion() + ", count=" + this.getCount() + ", eventTime=" + this.getEventTime() + ", firstTimestamp=" + this.getFirstTimestamp() + ", involvedObject=" + this.getInvolvedObject() + ", kind=" + this.getKind() + ", lastTimestamp=" + this.getLastTimestamp() + ", message=" + this.getMessage() + ", metadata=" + this.getMetadata() + ", reason=" + this.getReason() + ", related=" + this.getRelated() + ", reportingComponent=" + this.getReportingComponent() + ", reportingInstance=" + this.getReportingInstance() + ", series=" + this.getSeries() + ", source=" + this.getSource() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

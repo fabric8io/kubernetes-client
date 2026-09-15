@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClusterDeploymentStatus defines the observed state of ClusterDeployment
@@ -53,12 +50,6 @@ import lombok.experimental.Accessors;
     "powerState",
     "provisionRef",
     "webConsoleURL"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -366,6 +357,134 @@ public class ClusterDeploymentStatus implements Editable<ClusterDeploymentStatus
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterDeploymentStatus)) {
+            return false;
+        }
+        ClusterDeploymentStatus other = (ClusterDeploymentStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiURL = this.getApiURL();
+        Object other$apiURL = other.getApiURL();
+        if (this$apiURL == null ? other$apiURL != null : !this$apiURL.equals(other$apiURL)) {
+            return false;
+        }
+        Object this$certificateBundles = this.getCertificateBundles();
+        Object other$certificateBundles = other.getCertificateBundles();
+        if (this$certificateBundles == null ? other$certificateBundles != null : !this$certificateBundles.equals(other$certificateBundles)) {
+            return false;
+        }
+        Object this$cliImage = this.getCliImage();
+        Object other$cliImage = other.getCliImage();
+        if (this$cliImage == null ? other$cliImage != null : !this$cliImage.equals(other$cliImage)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$installRestarts = this.getInstallRestarts();
+        Object other$installRestarts = other.getInstallRestarts();
+        if (this$installRestarts == null ? other$installRestarts != null : !this$installRestarts.equals(other$installRestarts)) {
+            return false;
+        }
+        Object this$installStartedTimestamp = this.getInstallStartedTimestamp();
+        Object other$installStartedTimestamp = other.getInstallStartedTimestamp();
+        if (this$installStartedTimestamp == null ? other$installStartedTimestamp != null : !this$installStartedTimestamp.equals(other$installStartedTimestamp)) {
+            return false;
+        }
+        Object this$installVersion = this.getInstallVersion();
+        Object other$installVersion = other.getInstallVersion();
+        if (this$installVersion == null ? other$installVersion != null : !this$installVersion.equals(other$installVersion)) {
+            return false;
+        }
+        Object this$installedTimestamp = this.getInstalledTimestamp();
+        Object other$installedTimestamp = other.getInstalledTimestamp();
+        if (this$installedTimestamp == null ? other$installedTimestamp != null : !this$installedTimestamp.equals(other$installedTimestamp)) {
+            return false;
+        }
+        Object this$installerImage = this.getInstallerImage();
+        Object other$installerImage = other.getInstallerImage();
+        if (this$installerImage == null ? other$installerImage != null : !this$installerImage.equals(other$installerImage)) {
+            return false;
+        }
+        Object this$platformStatus = this.getPlatformStatus();
+        Object other$platformStatus = other.getPlatformStatus();
+        if (this$platformStatus == null ? other$platformStatus != null : !this$platformStatus.equals(other$platformStatus)) {
+            return false;
+        }
+        Object this$powerState = this.getPowerState();
+        Object other$powerState = other.getPowerState();
+        if (this$powerState == null ? other$powerState != null : !this$powerState.equals(other$powerState)) {
+            return false;
+        }
+        Object this$provisionRef = this.getProvisionRef();
+        Object other$provisionRef = other.getProvisionRef();
+        if (this$provisionRef == null ? other$provisionRef != null : !this$provisionRef.equals(other$provisionRef)) {
+            return false;
+        }
+        Object this$webConsoleURL = this.getWebConsoleURL();
+        Object other$webConsoleURL = other.getWebConsoleURL();
+        if (this$webConsoleURL == null ? other$webConsoleURL != null : !this$webConsoleURL.equals(other$webConsoleURL)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterDeploymentStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiURL = this.getApiURL();
+        result = result * prime + ($apiURL == null ? 43 : $apiURL.hashCode());
+        Object $certificateBundles = this.getCertificateBundles();
+        result = result * prime + ($certificateBundles == null ? 43 : $certificateBundles.hashCode());
+        Object $cliImage = this.getCliImage();
+        result = result * prime + ($cliImage == null ? 43 : $cliImage.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $installRestarts = this.getInstallRestarts();
+        result = result * prime + ($installRestarts == null ? 43 : $installRestarts.hashCode());
+        Object $installStartedTimestamp = this.getInstallStartedTimestamp();
+        result = result * prime + ($installStartedTimestamp == null ? 43 : $installStartedTimestamp.hashCode());
+        Object $installVersion = this.getInstallVersion();
+        result = result * prime + ($installVersion == null ? 43 : $installVersion.hashCode());
+        Object $installedTimestamp = this.getInstalledTimestamp();
+        result = result * prime + ($installedTimestamp == null ? 43 : $installedTimestamp.hashCode());
+        Object $installerImage = this.getInstallerImage();
+        result = result * prime + ($installerImage == null ? 43 : $installerImage.hashCode());
+        Object $platformStatus = this.getPlatformStatus();
+        result = result * prime + ($platformStatus == null ? 43 : $platformStatus.hashCode());
+        Object $powerState = this.getPowerState();
+        result = result * prime + ($powerState == null ? 43 : $powerState.hashCode());
+        Object $provisionRef = this.getProvisionRef();
+        result = result * prime + ($provisionRef == null ? 43 : $provisionRef.hashCode());
+        Object $webConsoleURL = this.getWebConsoleURL();
+        result = result * prime + ($webConsoleURL == null ? 43 : $webConsoleURL.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterDeploymentStatus(" + "apiURL=" + this.getApiURL() + ", certificateBundles=" + this.getCertificateBundles() + ", cliImage=" + this.getCliImage() + ", conditions=" + this.getConditions() + ", installRestarts=" + this.getInstallRestarts() + ", installStartedTimestamp=" + this.getInstallStartedTimestamp() + ", installVersion=" + this.getInstallVersion() + ", installedTimestamp=" + this.getInstalledTimestamp() + ", installerImage=" + this.getInstallerImage() + ", platformStatus=" + this.getPlatformStatus() + ", powerState=" + this.getPowerState() + ", provisionRef=" + this.getProvisionRef() + ", webConsoleURL=" + this.getWebConsoleURL() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

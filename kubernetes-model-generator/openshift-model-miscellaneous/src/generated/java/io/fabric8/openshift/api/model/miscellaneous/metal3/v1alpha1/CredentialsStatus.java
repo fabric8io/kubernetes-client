@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CredentialsStatus contains the reference and version of the last set of BMC credentials the controller was able to validate.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "credentials",
     "credentialsVersion"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class CredentialsStatus implements Editable<CredentialsStatusBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CredentialsStatus)) {
+            return false;
+        }
+        CredentialsStatus other = (CredentialsStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$credentials = this.getCredentials();
+        Object other$credentials = other.getCredentials();
+        if (this$credentials == null ? other$credentials != null : !this$credentials.equals(other$credentials)) {
+            return false;
+        }
+        Object this$credentialsVersion = this.getCredentialsVersion();
+        Object other$credentialsVersion = other.getCredentialsVersion();
+        if (this$credentialsVersion == null ? other$credentialsVersion != null : !this$credentialsVersion.equals(other$credentialsVersion)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CredentialsStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $credentials = this.getCredentials();
+        result = result * prime + ($credentials == null ? 43 : $credentials.hashCode());
+        Object $credentialsVersion = this.getCredentialsVersion();
+        result = result * prime + ($credentialsVersion == null ? 43 : $credentialsVersion.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CredentialsStatus(" + "credentials=" + this.getCredentials() + ", credentialsVersion=" + this.getCredentialsVersion() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

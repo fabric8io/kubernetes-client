@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MachinePool is a pool of machines to be installed.
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "name",
     "platform",
     "replicas"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -244,6 +235,92 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachinePool)) {
+            return false;
+        }
+        MachinePool other = (MachinePool) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$architecture = this.getArchitecture();
+        Object other$architecture = other.getArchitecture();
+        if (this$architecture == null ? other$architecture != null : !this$architecture.equals(other$architecture)) {
+            return false;
+        }
+        Object this$diskSetup = this.getDiskSetup();
+        Object other$diskSetup = other.getDiskSetup();
+        if (this$diskSetup == null ? other$diskSetup != null : !this$diskSetup.equals(other$diskSetup)) {
+            return false;
+        }
+        Object this$fencing = this.getFencing();
+        Object other$fencing = other.getFencing();
+        if (this$fencing == null ? other$fencing != null : !this$fencing.equals(other$fencing)) {
+            return false;
+        }
+        Object this$hyperthreading = this.getHyperthreading();
+        Object other$hyperthreading = other.getHyperthreading();
+        if (this$hyperthreading == null ? other$hyperthreading != null : !this$hyperthreading.equals(other$hyperthreading)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$platform = this.getPlatform();
+        Object other$platform = other.getPlatform();
+        if (this$platform == null ? other$platform != null : !this$platform.equals(other$platform)) {
+            return false;
+        }
+        Object this$replicas = this.getReplicas();
+        Object other$replicas = other.getReplicas();
+        if (this$replicas == null ? other$replicas != null : !this$replicas.equals(other$replicas)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachinePool;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $architecture = this.getArchitecture();
+        result = result * prime + ($architecture == null ? 43 : $architecture.hashCode());
+        Object $diskSetup = this.getDiskSetup();
+        result = result * prime + ($diskSetup == null ? 43 : $diskSetup.hashCode());
+        Object $fencing = this.getFencing();
+        result = result * prime + ($fencing == null ? 43 : $fencing.hashCode());
+        Object $hyperthreading = this.getHyperthreading();
+        result = result * prime + ($hyperthreading == null ? 43 : $hyperthreading.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $platform = this.getPlatform();
+        result = result * prime + ($platform == null ? 43 : $platform.hashCode());
+        Object $replicas = this.getReplicas();
+        result = result * prime + ($replicas == null ? 43 : $replicas.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachinePool(" + "architecture=" + this.getArchitecture() + ", diskSetup=" + this.getDiskSetup() + ", fencing=" + this.getFencing() + ", hyperthreading=" + this.getHyperthreading() + ", name=" + this.getName() + ", platform=" + this.getPlatform() + ", replicas=" + this.getReplicas() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

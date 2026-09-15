@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ACMEExternalAccountBinding is a reference to a CA external account of the ACME server.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "keyAlgorithm",
     "keyID",
     "keySecretRef"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -161,6 +152,64 @@ public class ACMEExternalAccountBinding implements Editable<ACMEExternalAccountB
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ACMEExternalAccountBinding)) {
+            return false;
+        }
+        ACMEExternalAccountBinding other = (ACMEExternalAccountBinding) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$keyAlgorithm = this.getKeyAlgorithm();
+        Object other$keyAlgorithm = other.getKeyAlgorithm();
+        if (this$keyAlgorithm == null ? other$keyAlgorithm != null : !this$keyAlgorithm.equals(other$keyAlgorithm)) {
+            return false;
+        }
+        Object this$keyID = this.getKeyID();
+        Object other$keyID = other.getKeyID();
+        if (this$keyID == null ? other$keyID != null : !this$keyID.equals(other$keyID)) {
+            return false;
+        }
+        Object this$keySecretRef = this.getKeySecretRef();
+        Object other$keySecretRef = other.getKeySecretRef();
+        if (this$keySecretRef == null ? other$keySecretRef != null : !this$keySecretRef.equals(other$keySecretRef)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ACMEExternalAccountBinding;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $keyAlgorithm = this.getKeyAlgorithm();
+        result = result * prime + ($keyAlgorithm == null ? 43 : $keyAlgorithm.hashCode());
+        Object $keyID = this.getKeyID();
+        result = result * prime + ($keyID == null ? 43 : $keyID.hashCode());
+        Object $keySecretRef = this.getKeySecretRef();
+        result = result * prime + ($keySecretRef == null ? 43 : $keySecretRef.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ACMEExternalAccountBinding(" + "keyAlgorithm=" + this.getKeyAlgorithm() + ", keyID=" + this.getKeyID() + ", keySecretRef=" + this.getKeySecretRef() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

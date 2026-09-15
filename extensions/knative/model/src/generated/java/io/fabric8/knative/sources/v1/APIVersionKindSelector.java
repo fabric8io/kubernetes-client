@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * APIVersionKindSelector is an APIVersion Kind tuple with a LabelSelector.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "selector"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class APIVersionKindSelector implements Editable<APIVersionKindSelectorBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof APIVersionKindSelector)) {
+            return false;
+        }
+        APIVersionKindSelector other = (APIVersionKindSelector) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof APIVersionKindSelector;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "APIVersionKindSelector(" + "apiVersion=" + this.getApiVersion() + ", kind=" + this.getKind() + ", selector=" + this.getSelector() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

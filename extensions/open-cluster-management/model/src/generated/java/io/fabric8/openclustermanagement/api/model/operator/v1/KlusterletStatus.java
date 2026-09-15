@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * KlusterletStatus represents the current status of Klusterlet agent.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "generations",
     "observedGeneration",
     "relatedResources"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -189,6 +180,71 @@ public class KlusterletStatus implements Editable<KlusterletStatusBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof KlusterletStatus)) {
+            return false;
+        }
+        KlusterletStatus other = (KlusterletStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$generations = this.getGenerations();
+        Object other$generations = other.getGenerations();
+        if (this$generations == null ? other$generations != null : !this$generations.equals(other$generations)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$relatedResources = this.getRelatedResources();
+        Object other$relatedResources = other.getRelatedResources();
+        if (this$relatedResources == null ? other$relatedResources != null : !this$relatedResources.equals(other$relatedResources)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof KlusterletStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $generations = this.getGenerations();
+        result = result * prime + ($generations == null ? 43 : $generations.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $relatedResources = this.getRelatedResources();
+        result = result * prime + ($relatedResources == null ? 43 : $relatedResources.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "KlusterletStatus(" + "conditions=" + this.getConditions() + ", generations=" + this.getGenerations() + ", observedGeneration=" + this.getObservedGeneration() + ", relatedResources=" + this.getRelatedResources() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

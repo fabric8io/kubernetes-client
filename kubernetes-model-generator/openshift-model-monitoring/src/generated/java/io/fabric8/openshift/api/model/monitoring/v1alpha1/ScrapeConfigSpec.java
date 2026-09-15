@@ -37,9 +37,6 @@ import io.fabric8.openshift.api.model.monitoring.v1.SafeAuthorization;
 import io.fabric8.openshift.api.model.monitoring.v1.SafeTLSConfig;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ScrapeConfigSpec is a specification of the desired configuration for a scrape configuration.
@@ -108,12 +105,6 @@ import lombok.experimental.Accessors;
     "targetLimit",
     "tlsConfig",
     "trackTimestampsStaleness"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -1385,6 +1376,470 @@ public class ScrapeConfigSpec implements Editable<ScrapeConfigSpecBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ScrapeConfigSpec)) {
+            return false;
+        }
+        ScrapeConfigSpec other = (ScrapeConfigSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$authorization = this.getAuthorization();
+        Object other$authorization = other.getAuthorization();
+        if (this$authorization == null ? other$authorization != null : !this$authorization.equals(other$authorization)) {
+            return false;
+        }
+        Object this$azureSDConfigs = this.getAzureSDConfigs();
+        Object other$azureSDConfigs = other.getAzureSDConfigs();
+        if (this$azureSDConfigs == null ? other$azureSDConfigs != null : !this$azureSDConfigs.equals(other$azureSDConfigs)) {
+            return false;
+        }
+        Object this$basicAuth = this.getBasicAuth();
+        Object other$basicAuth = other.getBasicAuth();
+        if (this$basicAuth == null ? other$basicAuth != null : !this$basicAuth.equals(other$basicAuth)) {
+            return false;
+        }
+        Object this$bodySizeLimit = this.getBodySizeLimit();
+        Object other$bodySizeLimit = other.getBodySizeLimit();
+        if (this$bodySizeLimit == null ? other$bodySizeLimit != null : !this$bodySizeLimit.equals(other$bodySizeLimit)) {
+            return false;
+        }
+        Object this$consulSDConfigs = this.getConsulSDConfigs();
+        Object other$consulSDConfigs = other.getConsulSDConfigs();
+        if (this$consulSDConfigs == null ? other$consulSDConfigs != null : !this$consulSDConfigs.equals(other$consulSDConfigs)) {
+            return false;
+        }
+        Object this$convertClassicHistogramsToNHCB = this.getConvertClassicHistogramsToNHCB();
+        Object other$convertClassicHistogramsToNHCB = other.getConvertClassicHistogramsToNHCB();
+        if (this$convertClassicHistogramsToNHCB == null ? other$convertClassicHistogramsToNHCB != null : !this$convertClassicHistogramsToNHCB.equals(other$convertClassicHistogramsToNHCB)) {
+            return false;
+        }
+        Object this$digitalOceanSDConfigs = this.getDigitalOceanSDConfigs();
+        Object other$digitalOceanSDConfigs = other.getDigitalOceanSDConfigs();
+        if (this$digitalOceanSDConfigs == null ? other$digitalOceanSDConfigs != null : !this$digitalOceanSDConfigs.equals(other$digitalOceanSDConfigs)) {
+            return false;
+        }
+        Object this$dnsSDConfigs = this.getDnsSDConfigs();
+        Object other$dnsSDConfigs = other.getDnsSDConfigs();
+        if (this$dnsSDConfigs == null ? other$dnsSDConfigs != null : !this$dnsSDConfigs.equals(other$dnsSDConfigs)) {
+            return false;
+        }
+        Object this$dockerSDConfigs = this.getDockerSDConfigs();
+        Object other$dockerSDConfigs = other.getDockerSDConfigs();
+        if (this$dockerSDConfigs == null ? other$dockerSDConfigs != null : !this$dockerSDConfigs.equals(other$dockerSDConfigs)) {
+            return false;
+        }
+        Object this$dockerSwarmSDConfigs = this.getDockerSwarmSDConfigs();
+        Object other$dockerSwarmSDConfigs = other.getDockerSwarmSDConfigs();
+        if (this$dockerSwarmSDConfigs == null ? other$dockerSwarmSDConfigs != null : !this$dockerSwarmSDConfigs.equals(other$dockerSwarmSDConfigs)) {
+            return false;
+        }
+        Object this$ec2SDConfigs = this.getEc2SDConfigs();
+        Object other$ec2SDConfigs = other.getEc2SDConfigs();
+        if (this$ec2SDConfigs == null ? other$ec2SDConfigs != null : !this$ec2SDConfigs.equals(other$ec2SDConfigs)) {
+            return false;
+        }
+        Object this$enableCompression = this.getEnableCompression();
+        Object other$enableCompression = other.getEnableCompression();
+        if (this$enableCompression == null ? other$enableCompression != null : !this$enableCompression.equals(other$enableCompression)) {
+            return false;
+        }
+        Object this$enableHTTP2 = this.getEnableHTTP2();
+        Object other$enableHTTP2 = other.getEnableHTTP2();
+        if (this$enableHTTP2 == null ? other$enableHTTP2 != null : !this$enableHTTP2.equals(other$enableHTTP2)) {
+            return false;
+        }
+        Object this$eurekaSDConfigs = this.getEurekaSDConfigs();
+        Object other$eurekaSDConfigs = other.getEurekaSDConfigs();
+        if (this$eurekaSDConfigs == null ? other$eurekaSDConfigs != null : !this$eurekaSDConfigs.equals(other$eurekaSDConfigs)) {
+            return false;
+        }
+        Object this$fallbackScrapeProtocol = this.getFallbackScrapeProtocol();
+        Object other$fallbackScrapeProtocol = other.getFallbackScrapeProtocol();
+        if (this$fallbackScrapeProtocol == null ? other$fallbackScrapeProtocol != null : !this$fallbackScrapeProtocol.equals(other$fallbackScrapeProtocol)) {
+            return false;
+        }
+        Object this$fileSDConfigs = this.getFileSDConfigs();
+        Object other$fileSDConfigs = other.getFileSDConfigs();
+        if (this$fileSDConfigs == null ? other$fileSDConfigs != null : !this$fileSDConfigs.equals(other$fileSDConfigs)) {
+            return false;
+        }
+        Object this$gceSDConfigs = this.getGceSDConfigs();
+        Object other$gceSDConfigs = other.getGceSDConfigs();
+        if (this$gceSDConfigs == null ? other$gceSDConfigs != null : !this$gceSDConfigs.equals(other$gceSDConfigs)) {
+            return false;
+        }
+        Object this$hetznerSDConfigs = this.getHetznerSDConfigs();
+        Object other$hetznerSDConfigs = other.getHetznerSDConfigs();
+        if (this$hetznerSDConfigs == null ? other$hetznerSDConfigs != null : !this$hetznerSDConfigs.equals(other$hetznerSDConfigs)) {
+            return false;
+        }
+        Object this$honorLabels = this.getHonorLabels();
+        Object other$honorLabels = other.getHonorLabels();
+        if (this$honorLabels == null ? other$honorLabels != null : !this$honorLabels.equals(other$honorLabels)) {
+            return false;
+        }
+        Object this$honorTimestamps = this.getHonorTimestamps();
+        Object other$honorTimestamps = other.getHonorTimestamps();
+        if (this$honorTimestamps == null ? other$honorTimestamps != null : !this$honorTimestamps.equals(other$honorTimestamps)) {
+            return false;
+        }
+        Object this$httpSDConfigs = this.getHttpSDConfigs();
+        Object other$httpSDConfigs = other.getHttpSDConfigs();
+        if (this$httpSDConfigs == null ? other$httpSDConfigs != null : !this$httpSDConfigs.equals(other$httpSDConfigs)) {
+            return false;
+        }
+        Object this$ionosSDConfigs = this.getIonosSDConfigs();
+        Object other$ionosSDConfigs = other.getIonosSDConfigs();
+        if (this$ionosSDConfigs == null ? other$ionosSDConfigs != null : !this$ionosSDConfigs.equals(other$ionosSDConfigs)) {
+            return false;
+        }
+        Object this$jobName = this.getJobName();
+        Object other$jobName = other.getJobName();
+        if (this$jobName == null ? other$jobName != null : !this$jobName.equals(other$jobName)) {
+            return false;
+        }
+        Object this$keepDroppedTargets = this.getKeepDroppedTargets();
+        Object other$keepDroppedTargets = other.getKeepDroppedTargets();
+        if (this$keepDroppedTargets == null ? other$keepDroppedTargets != null : !this$keepDroppedTargets.equals(other$keepDroppedTargets)) {
+            return false;
+        }
+        Object this$kubernetesSDConfigs = this.getKubernetesSDConfigs();
+        Object other$kubernetesSDConfigs = other.getKubernetesSDConfigs();
+        if (this$kubernetesSDConfigs == null ? other$kubernetesSDConfigs != null : !this$kubernetesSDConfigs.equals(other$kubernetesSDConfigs)) {
+            return false;
+        }
+        Object this$kumaSDConfigs = this.getKumaSDConfigs();
+        Object other$kumaSDConfigs = other.getKumaSDConfigs();
+        if (this$kumaSDConfigs == null ? other$kumaSDConfigs != null : !this$kumaSDConfigs.equals(other$kumaSDConfigs)) {
+            return false;
+        }
+        Object this$labelLimit = this.getLabelLimit();
+        Object other$labelLimit = other.getLabelLimit();
+        if (this$labelLimit == null ? other$labelLimit != null : !this$labelLimit.equals(other$labelLimit)) {
+            return false;
+        }
+        Object this$labelNameLengthLimit = this.getLabelNameLengthLimit();
+        Object other$labelNameLengthLimit = other.getLabelNameLengthLimit();
+        if (this$labelNameLengthLimit == null ? other$labelNameLengthLimit != null : !this$labelNameLengthLimit.equals(other$labelNameLengthLimit)) {
+            return false;
+        }
+        Object this$labelValueLengthLimit = this.getLabelValueLengthLimit();
+        Object other$labelValueLengthLimit = other.getLabelValueLengthLimit();
+        if (this$labelValueLengthLimit == null ? other$labelValueLengthLimit != null : !this$labelValueLengthLimit.equals(other$labelValueLengthLimit)) {
+            return false;
+        }
+        Object this$lightSailSDConfigs = this.getLightSailSDConfigs();
+        Object other$lightSailSDConfigs = other.getLightSailSDConfigs();
+        if (this$lightSailSDConfigs == null ? other$lightSailSDConfigs != null : !this$lightSailSDConfigs.equals(other$lightSailSDConfigs)) {
+            return false;
+        }
+        Object this$linodeSDConfigs = this.getLinodeSDConfigs();
+        Object other$linodeSDConfigs = other.getLinodeSDConfigs();
+        if (this$linodeSDConfigs == null ? other$linodeSDConfigs != null : !this$linodeSDConfigs.equals(other$linodeSDConfigs)) {
+            return false;
+        }
+        Object this$metricRelabelings = this.getMetricRelabelings();
+        Object other$metricRelabelings = other.getMetricRelabelings();
+        if (this$metricRelabelings == null ? other$metricRelabelings != null : !this$metricRelabelings.equals(other$metricRelabelings)) {
+            return false;
+        }
+        Object this$metricsPath = this.getMetricsPath();
+        Object other$metricsPath = other.getMetricsPath();
+        if (this$metricsPath == null ? other$metricsPath != null : !this$metricsPath.equals(other$metricsPath)) {
+            return false;
+        }
+        Object this$nameEscapingScheme = this.getNameEscapingScheme();
+        Object other$nameEscapingScheme = other.getNameEscapingScheme();
+        if (this$nameEscapingScheme == null ? other$nameEscapingScheme != null : !this$nameEscapingScheme.equals(other$nameEscapingScheme)) {
+            return false;
+        }
+        Object this$nameValidationScheme = this.getNameValidationScheme();
+        Object other$nameValidationScheme = other.getNameValidationScheme();
+        if (this$nameValidationScheme == null ? other$nameValidationScheme != null : !this$nameValidationScheme.equals(other$nameValidationScheme)) {
+            return false;
+        }
+        Object this$nativeHistogramBucketLimit = this.getNativeHistogramBucketLimit();
+        Object other$nativeHistogramBucketLimit = other.getNativeHistogramBucketLimit();
+        if (this$nativeHistogramBucketLimit == null ? other$nativeHistogramBucketLimit != null : !this$nativeHistogramBucketLimit.equals(other$nativeHistogramBucketLimit)) {
+            return false;
+        }
+        Object this$nativeHistogramMinBucketFactor = this.getNativeHistogramMinBucketFactor();
+        Object other$nativeHistogramMinBucketFactor = other.getNativeHistogramMinBucketFactor();
+        if (this$nativeHistogramMinBucketFactor == null ? other$nativeHistogramMinBucketFactor != null : !this$nativeHistogramMinBucketFactor.equals(other$nativeHistogramMinBucketFactor)) {
+            return false;
+        }
+        Object this$noProxy = this.getNoProxy();
+        Object other$noProxy = other.getNoProxy();
+        if (this$noProxy == null ? other$noProxy != null : !this$noProxy.equals(other$noProxy)) {
+            return false;
+        }
+        Object this$nomadSDConfigs = this.getNomadSDConfigs();
+        Object other$nomadSDConfigs = other.getNomadSDConfigs();
+        if (this$nomadSDConfigs == null ? other$nomadSDConfigs != null : !this$nomadSDConfigs.equals(other$nomadSDConfigs)) {
+            return false;
+        }
+        Object this$oauth2 = this.getOauth2();
+        Object other$oauth2 = other.getOauth2();
+        if (this$oauth2 == null ? other$oauth2 != null : !this$oauth2.equals(other$oauth2)) {
+            return false;
+        }
+        Object this$openstackSDConfigs = this.getOpenstackSDConfigs();
+        Object other$openstackSDConfigs = other.getOpenstackSDConfigs();
+        if (this$openstackSDConfigs == null ? other$openstackSDConfigs != null : !this$openstackSDConfigs.equals(other$openstackSDConfigs)) {
+            return false;
+        }
+        Object this$ovhcloudSDConfigs = this.getOvhcloudSDConfigs();
+        Object other$ovhcloudSDConfigs = other.getOvhcloudSDConfigs();
+        if (this$ovhcloudSDConfigs == null ? other$ovhcloudSDConfigs != null : !this$ovhcloudSDConfigs.equals(other$ovhcloudSDConfigs)) {
+            return false;
+        }
+        Object this$params = this.getParams();
+        Object other$params = other.getParams();
+        if (this$params == null ? other$params != null : !this$params.equals(other$params)) {
+            return false;
+        }
+        Object this$proxyConnectHeader = this.getProxyConnectHeader();
+        Object other$proxyConnectHeader = other.getProxyConnectHeader();
+        if (this$proxyConnectHeader == null ? other$proxyConnectHeader != null : !this$proxyConnectHeader.equals(other$proxyConnectHeader)) {
+            return false;
+        }
+        Object this$proxyFromEnvironment = this.getProxyFromEnvironment();
+        Object other$proxyFromEnvironment = other.getProxyFromEnvironment();
+        if (this$proxyFromEnvironment == null ? other$proxyFromEnvironment != null : !this$proxyFromEnvironment.equals(other$proxyFromEnvironment)) {
+            return false;
+        }
+        Object this$proxyUrl = this.getProxyUrl();
+        Object other$proxyUrl = other.getProxyUrl();
+        if (this$proxyUrl == null ? other$proxyUrl != null : !this$proxyUrl.equals(other$proxyUrl)) {
+            return false;
+        }
+        Object this$puppetDBSDConfigs = this.getPuppetDBSDConfigs();
+        Object other$puppetDBSDConfigs = other.getPuppetDBSDConfigs();
+        if (this$puppetDBSDConfigs == null ? other$puppetDBSDConfigs != null : !this$puppetDBSDConfigs.equals(other$puppetDBSDConfigs)) {
+            return false;
+        }
+        Object this$relabelings = this.getRelabelings();
+        Object other$relabelings = other.getRelabelings();
+        if (this$relabelings == null ? other$relabelings != null : !this$relabelings.equals(other$relabelings)) {
+            return false;
+        }
+        Object this$sampleLimit = this.getSampleLimit();
+        Object other$sampleLimit = other.getSampleLimit();
+        if (this$sampleLimit == null ? other$sampleLimit != null : !this$sampleLimit.equals(other$sampleLimit)) {
+            return false;
+        }
+        Object this$scalewaySDConfigs = this.getScalewaySDConfigs();
+        Object other$scalewaySDConfigs = other.getScalewaySDConfigs();
+        if (this$scalewaySDConfigs == null ? other$scalewaySDConfigs != null : !this$scalewaySDConfigs.equals(other$scalewaySDConfigs)) {
+            return false;
+        }
+        Object this$scheme = this.getScheme();
+        Object other$scheme = other.getScheme();
+        if (this$scheme == null ? other$scheme != null : !this$scheme.equals(other$scheme)) {
+            return false;
+        }
+        Object this$scrapeClass = this.getScrapeClass();
+        Object other$scrapeClass = other.getScrapeClass();
+        if (this$scrapeClass == null ? other$scrapeClass != null : !this$scrapeClass.equals(other$scrapeClass)) {
+            return false;
+        }
+        Object this$scrapeClassicHistograms = this.getScrapeClassicHistograms();
+        Object other$scrapeClassicHistograms = other.getScrapeClassicHistograms();
+        if (this$scrapeClassicHistograms == null ? other$scrapeClassicHistograms != null : !this$scrapeClassicHistograms.equals(other$scrapeClassicHistograms)) {
+            return false;
+        }
+        Object this$scrapeInterval = this.getScrapeInterval();
+        Object other$scrapeInterval = other.getScrapeInterval();
+        if (this$scrapeInterval == null ? other$scrapeInterval != null : !this$scrapeInterval.equals(other$scrapeInterval)) {
+            return false;
+        }
+        Object this$scrapeNativeHistograms = this.getScrapeNativeHistograms();
+        Object other$scrapeNativeHistograms = other.getScrapeNativeHistograms();
+        if (this$scrapeNativeHistograms == null ? other$scrapeNativeHistograms != null : !this$scrapeNativeHistograms.equals(other$scrapeNativeHistograms)) {
+            return false;
+        }
+        Object this$scrapeProtocols = this.getScrapeProtocols();
+        Object other$scrapeProtocols = other.getScrapeProtocols();
+        if (this$scrapeProtocols == null ? other$scrapeProtocols != null : !this$scrapeProtocols.equals(other$scrapeProtocols)) {
+            return false;
+        }
+        Object this$scrapeTimeout = this.getScrapeTimeout();
+        Object other$scrapeTimeout = other.getScrapeTimeout();
+        if (this$scrapeTimeout == null ? other$scrapeTimeout != null : !this$scrapeTimeout.equals(other$scrapeTimeout)) {
+            return false;
+        }
+        Object this$staticConfigs = this.getStaticConfigs();
+        Object other$staticConfigs = other.getStaticConfigs();
+        if (this$staticConfigs == null ? other$staticConfigs != null : !this$staticConfigs.equals(other$staticConfigs)) {
+            return false;
+        }
+        Object this$targetLimit = this.getTargetLimit();
+        Object other$targetLimit = other.getTargetLimit();
+        if (this$targetLimit == null ? other$targetLimit != null : !this$targetLimit.equals(other$targetLimit)) {
+            return false;
+        }
+        Object this$tlsConfig = this.getTlsConfig();
+        Object other$tlsConfig = other.getTlsConfig();
+        if (this$tlsConfig == null ? other$tlsConfig != null : !this$tlsConfig.equals(other$tlsConfig)) {
+            return false;
+        }
+        Object this$trackTimestampsStaleness = this.getTrackTimestampsStaleness();
+        Object other$trackTimestampsStaleness = other.getTrackTimestampsStaleness();
+        if (this$trackTimestampsStaleness == null ? other$trackTimestampsStaleness != null : !this$trackTimestampsStaleness.equals(other$trackTimestampsStaleness)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ScrapeConfigSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $authorization = this.getAuthorization();
+        result = result * prime + ($authorization == null ? 43 : $authorization.hashCode());
+        Object $azureSDConfigs = this.getAzureSDConfigs();
+        result = result * prime + ($azureSDConfigs == null ? 43 : $azureSDConfigs.hashCode());
+        Object $basicAuth = this.getBasicAuth();
+        result = result * prime + ($basicAuth == null ? 43 : $basicAuth.hashCode());
+        Object $bodySizeLimit = this.getBodySizeLimit();
+        result = result * prime + ($bodySizeLimit == null ? 43 : $bodySizeLimit.hashCode());
+        Object $consulSDConfigs = this.getConsulSDConfigs();
+        result = result * prime + ($consulSDConfigs == null ? 43 : $consulSDConfigs.hashCode());
+        Object $convertClassicHistogramsToNHCB = this.getConvertClassicHistogramsToNHCB();
+        result = result * prime + ($convertClassicHistogramsToNHCB == null ? 43 : $convertClassicHistogramsToNHCB.hashCode());
+        Object $digitalOceanSDConfigs = this.getDigitalOceanSDConfigs();
+        result = result * prime + ($digitalOceanSDConfigs == null ? 43 : $digitalOceanSDConfigs.hashCode());
+        Object $dnsSDConfigs = this.getDnsSDConfigs();
+        result = result * prime + ($dnsSDConfigs == null ? 43 : $dnsSDConfigs.hashCode());
+        Object $dockerSDConfigs = this.getDockerSDConfigs();
+        result = result * prime + ($dockerSDConfigs == null ? 43 : $dockerSDConfigs.hashCode());
+        Object $dockerSwarmSDConfigs = this.getDockerSwarmSDConfigs();
+        result = result * prime + ($dockerSwarmSDConfigs == null ? 43 : $dockerSwarmSDConfigs.hashCode());
+        Object $ec2SDConfigs = this.getEc2SDConfigs();
+        result = result * prime + ($ec2SDConfigs == null ? 43 : $ec2SDConfigs.hashCode());
+        Object $enableCompression = this.getEnableCompression();
+        result = result * prime + ($enableCompression == null ? 43 : $enableCompression.hashCode());
+        Object $enableHTTP2 = this.getEnableHTTP2();
+        result = result * prime + ($enableHTTP2 == null ? 43 : $enableHTTP2.hashCode());
+        Object $eurekaSDConfigs = this.getEurekaSDConfigs();
+        result = result * prime + ($eurekaSDConfigs == null ? 43 : $eurekaSDConfigs.hashCode());
+        Object $fallbackScrapeProtocol = this.getFallbackScrapeProtocol();
+        result = result * prime + ($fallbackScrapeProtocol == null ? 43 : $fallbackScrapeProtocol.hashCode());
+        Object $fileSDConfigs = this.getFileSDConfigs();
+        result = result * prime + ($fileSDConfigs == null ? 43 : $fileSDConfigs.hashCode());
+        Object $gceSDConfigs = this.getGceSDConfigs();
+        result = result * prime + ($gceSDConfigs == null ? 43 : $gceSDConfigs.hashCode());
+        Object $hetznerSDConfigs = this.getHetznerSDConfigs();
+        result = result * prime + ($hetznerSDConfigs == null ? 43 : $hetznerSDConfigs.hashCode());
+        Object $honorLabels = this.getHonorLabels();
+        result = result * prime + ($honorLabels == null ? 43 : $honorLabels.hashCode());
+        Object $honorTimestamps = this.getHonorTimestamps();
+        result = result * prime + ($honorTimestamps == null ? 43 : $honorTimestamps.hashCode());
+        Object $httpSDConfigs = this.getHttpSDConfigs();
+        result = result * prime + ($httpSDConfigs == null ? 43 : $httpSDConfigs.hashCode());
+        Object $ionosSDConfigs = this.getIonosSDConfigs();
+        result = result * prime + ($ionosSDConfigs == null ? 43 : $ionosSDConfigs.hashCode());
+        Object $jobName = this.getJobName();
+        result = result * prime + ($jobName == null ? 43 : $jobName.hashCode());
+        Object $keepDroppedTargets = this.getKeepDroppedTargets();
+        result = result * prime + ($keepDroppedTargets == null ? 43 : $keepDroppedTargets.hashCode());
+        Object $kubernetesSDConfigs = this.getKubernetesSDConfigs();
+        result = result * prime + ($kubernetesSDConfigs == null ? 43 : $kubernetesSDConfigs.hashCode());
+        Object $kumaSDConfigs = this.getKumaSDConfigs();
+        result = result * prime + ($kumaSDConfigs == null ? 43 : $kumaSDConfigs.hashCode());
+        Object $labelLimit = this.getLabelLimit();
+        result = result * prime + ($labelLimit == null ? 43 : $labelLimit.hashCode());
+        Object $labelNameLengthLimit = this.getLabelNameLengthLimit();
+        result = result * prime + ($labelNameLengthLimit == null ? 43 : $labelNameLengthLimit.hashCode());
+        Object $labelValueLengthLimit = this.getLabelValueLengthLimit();
+        result = result * prime + ($labelValueLengthLimit == null ? 43 : $labelValueLengthLimit.hashCode());
+        Object $lightSailSDConfigs = this.getLightSailSDConfigs();
+        result = result * prime + ($lightSailSDConfigs == null ? 43 : $lightSailSDConfigs.hashCode());
+        Object $linodeSDConfigs = this.getLinodeSDConfigs();
+        result = result * prime + ($linodeSDConfigs == null ? 43 : $linodeSDConfigs.hashCode());
+        Object $metricRelabelings = this.getMetricRelabelings();
+        result = result * prime + ($metricRelabelings == null ? 43 : $metricRelabelings.hashCode());
+        Object $metricsPath = this.getMetricsPath();
+        result = result * prime + ($metricsPath == null ? 43 : $metricsPath.hashCode());
+        Object $nameEscapingScheme = this.getNameEscapingScheme();
+        result = result * prime + ($nameEscapingScheme == null ? 43 : $nameEscapingScheme.hashCode());
+        Object $nameValidationScheme = this.getNameValidationScheme();
+        result = result * prime + ($nameValidationScheme == null ? 43 : $nameValidationScheme.hashCode());
+        Object $nativeHistogramBucketLimit = this.getNativeHistogramBucketLimit();
+        result = result * prime + ($nativeHistogramBucketLimit == null ? 43 : $nativeHistogramBucketLimit.hashCode());
+        Object $nativeHistogramMinBucketFactor = this.getNativeHistogramMinBucketFactor();
+        result = result * prime + ($nativeHistogramMinBucketFactor == null ? 43 : $nativeHistogramMinBucketFactor.hashCode());
+        Object $noProxy = this.getNoProxy();
+        result = result * prime + ($noProxy == null ? 43 : $noProxy.hashCode());
+        Object $nomadSDConfigs = this.getNomadSDConfigs();
+        result = result * prime + ($nomadSDConfigs == null ? 43 : $nomadSDConfigs.hashCode());
+        Object $oauth2 = this.getOauth2();
+        result = result * prime + ($oauth2 == null ? 43 : $oauth2.hashCode());
+        Object $openstackSDConfigs = this.getOpenstackSDConfigs();
+        result = result * prime + ($openstackSDConfigs == null ? 43 : $openstackSDConfigs.hashCode());
+        Object $ovhcloudSDConfigs = this.getOvhcloudSDConfigs();
+        result = result * prime + ($ovhcloudSDConfigs == null ? 43 : $ovhcloudSDConfigs.hashCode());
+        Object $params = this.getParams();
+        result = result * prime + ($params == null ? 43 : $params.hashCode());
+        Object $proxyConnectHeader = this.getProxyConnectHeader();
+        result = result * prime + ($proxyConnectHeader == null ? 43 : $proxyConnectHeader.hashCode());
+        Object $proxyFromEnvironment = this.getProxyFromEnvironment();
+        result = result * prime + ($proxyFromEnvironment == null ? 43 : $proxyFromEnvironment.hashCode());
+        Object $proxyUrl = this.getProxyUrl();
+        result = result * prime + ($proxyUrl == null ? 43 : $proxyUrl.hashCode());
+        Object $puppetDBSDConfigs = this.getPuppetDBSDConfigs();
+        result = result * prime + ($puppetDBSDConfigs == null ? 43 : $puppetDBSDConfigs.hashCode());
+        Object $relabelings = this.getRelabelings();
+        result = result * prime + ($relabelings == null ? 43 : $relabelings.hashCode());
+        Object $sampleLimit = this.getSampleLimit();
+        result = result * prime + ($sampleLimit == null ? 43 : $sampleLimit.hashCode());
+        Object $scalewaySDConfigs = this.getScalewaySDConfigs();
+        result = result * prime + ($scalewaySDConfigs == null ? 43 : $scalewaySDConfigs.hashCode());
+        Object $scheme = this.getScheme();
+        result = result * prime + ($scheme == null ? 43 : $scheme.hashCode());
+        Object $scrapeClass = this.getScrapeClass();
+        result = result * prime + ($scrapeClass == null ? 43 : $scrapeClass.hashCode());
+        Object $scrapeClassicHistograms = this.getScrapeClassicHistograms();
+        result = result * prime + ($scrapeClassicHistograms == null ? 43 : $scrapeClassicHistograms.hashCode());
+        Object $scrapeInterval = this.getScrapeInterval();
+        result = result * prime + ($scrapeInterval == null ? 43 : $scrapeInterval.hashCode());
+        Object $scrapeNativeHistograms = this.getScrapeNativeHistograms();
+        result = result * prime + ($scrapeNativeHistograms == null ? 43 : $scrapeNativeHistograms.hashCode());
+        Object $scrapeProtocols = this.getScrapeProtocols();
+        result = result * prime + ($scrapeProtocols == null ? 43 : $scrapeProtocols.hashCode());
+        Object $scrapeTimeout = this.getScrapeTimeout();
+        result = result * prime + ($scrapeTimeout == null ? 43 : $scrapeTimeout.hashCode());
+        Object $staticConfigs = this.getStaticConfigs();
+        result = result * prime + ($staticConfigs == null ? 43 : $staticConfigs.hashCode());
+        Object $targetLimit = this.getTargetLimit();
+        result = result * prime + ($targetLimit == null ? 43 : $targetLimit.hashCode());
+        Object $tlsConfig = this.getTlsConfig();
+        result = result * prime + ($tlsConfig == null ? 43 : $tlsConfig.hashCode());
+        Object $trackTimestampsStaleness = this.getTrackTimestampsStaleness();
+        result = result * prime + ($trackTimestampsStaleness == null ? 43 : $trackTimestampsStaleness.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ScrapeConfigSpec(" + "authorization=" + this.getAuthorization() + ", azureSDConfigs=" + this.getAzureSDConfigs() + ", basicAuth=" + this.getBasicAuth() + ", bodySizeLimit=" + this.getBodySizeLimit() + ", consulSDConfigs=" + this.getConsulSDConfigs() + ", convertClassicHistogramsToNHCB=" + this.getConvertClassicHistogramsToNHCB() + ", digitalOceanSDConfigs=" + this.getDigitalOceanSDConfigs() + ", dnsSDConfigs=" + this.getDnsSDConfigs() + ", dockerSDConfigs=" + this.getDockerSDConfigs() + ", dockerSwarmSDConfigs=" + this.getDockerSwarmSDConfigs() + ", ec2SDConfigs=" + this.getEc2SDConfigs() + ", enableCompression=" + this.getEnableCompression() + ", enableHTTP2=" + this.getEnableHTTP2() + ", eurekaSDConfigs=" + this.getEurekaSDConfigs() + ", fallbackScrapeProtocol=" + this.getFallbackScrapeProtocol() + ", fileSDConfigs=" + this.getFileSDConfigs() + ", gceSDConfigs=" + this.getGceSDConfigs() + ", hetznerSDConfigs=" + this.getHetznerSDConfigs() + ", honorLabels=" + this.getHonorLabels() + ", honorTimestamps=" + this.getHonorTimestamps() + ", httpSDConfigs=" + this.getHttpSDConfigs() + ", ionosSDConfigs=" + this.getIonosSDConfigs() + ", jobName=" + this.getJobName() + ", keepDroppedTargets=" + this.getKeepDroppedTargets() + ", kubernetesSDConfigs=" + this.getKubernetesSDConfigs() + ", kumaSDConfigs=" + this.getKumaSDConfigs() + ", labelLimit=" + this.getLabelLimit() + ", labelNameLengthLimit=" + this.getLabelNameLengthLimit() + ", labelValueLengthLimit=" + this.getLabelValueLengthLimit() + ", lightSailSDConfigs=" + this.getLightSailSDConfigs() + ", linodeSDConfigs=" + this.getLinodeSDConfigs() + ", metricRelabelings=" + this.getMetricRelabelings() + ", metricsPath=" + this.getMetricsPath() + ", nameEscapingScheme=" + this.getNameEscapingScheme() + ", nameValidationScheme=" + this.getNameValidationScheme() + ", nativeHistogramBucketLimit=" + this.getNativeHistogramBucketLimit() + ", nativeHistogramMinBucketFactor=" + this.getNativeHistogramMinBucketFactor() + ", noProxy=" + this.getNoProxy() + ", nomadSDConfigs=" + this.getNomadSDConfigs() + ", oauth2=" + this.getOauth2() + ", openstackSDConfigs=" + this.getOpenstackSDConfigs() + ", ovhcloudSDConfigs=" + this.getOvhcloudSDConfigs() + ", params=" + this.getParams() + ", proxyConnectHeader=" + this.getProxyConnectHeader() + ", proxyFromEnvironment=" + this.getProxyFromEnvironment() + ", proxyUrl=" + this.getProxyUrl() + ", puppetDBSDConfigs=" + this.getPuppetDBSDConfigs() + ", relabelings=" + this.getRelabelings() + ", sampleLimit=" + this.getSampleLimit() + ", scalewaySDConfigs=" + this.getScalewaySDConfigs() + ", scheme=" + this.getScheme() + ", scrapeClass=" + this.getScrapeClass() + ", scrapeClassicHistograms=" + this.getScrapeClassicHistograms() + ", scrapeInterval=" + this.getScrapeInterval() + ", scrapeNativeHistograms=" + this.getScrapeNativeHistograms() + ", scrapeProtocols=" + this.getScrapeProtocols() + ", scrapeTimeout=" + this.getScrapeTimeout() + ", staticConfigs=" + this.getStaticConfigs() + ", targetLimit=" + this.getTargetLimit() + ", tlsConfig=" + this.getTlsConfig() + ", trackTimestampsStaleness=" + this.getTrackTimestampsStaleness() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

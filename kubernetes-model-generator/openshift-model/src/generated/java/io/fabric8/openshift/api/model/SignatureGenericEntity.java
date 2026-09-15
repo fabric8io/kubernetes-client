@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SignatureGenericEntity holds a generic information about a person or entity who is an issuer or a subject of signing certificate or key.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "commonName",
     "organization"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -139,6 +130,57 @@ public class SignatureGenericEntity implements Editable<SignatureGenericEntityBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SignatureGenericEntity)) {
+            return false;
+        }
+        SignatureGenericEntity other = (SignatureGenericEntity) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$commonName = this.getCommonName();
+        Object other$commonName = other.getCommonName();
+        if (this$commonName == null ? other$commonName != null : !this$commonName.equals(other$commonName)) {
+            return false;
+        }
+        Object this$organization = this.getOrganization();
+        Object other$organization = other.getOrganization();
+        if (this$organization == null ? other$organization != null : !this$organization.equals(other$organization)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SignatureGenericEntity;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $commonName = this.getCommonName();
+        result = result * prime + ($commonName == null ? 43 : $commonName.hashCode());
+        Object $organization = this.getOrganization();
+        result = result * prime + ($organization == null ? 43 : $organization.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SignatureGenericEntity(" + "commonName=" + this.getCommonName() + ", organization=" + this.getOrganization() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

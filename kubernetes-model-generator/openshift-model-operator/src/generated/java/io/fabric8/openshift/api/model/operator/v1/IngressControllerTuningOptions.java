@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * IngressControllerTuningOptions specifies options for tuning the performance of ingress controller pods
@@ -52,12 +49,6 @@ import lombok.experimental.Accessors;
     "threadCount",
     "tlsInspectDelay",
     "tunnelTimeout"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -380,6 +371,141 @@ public class IngressControllerTuningOptions implements Editable<IngressControlle
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof IngressControllerTuningOptions)) {
+            return false;
+        }
+        IngressControllerTuningOptions other = (IngressControllerTuningOptions) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clientFinTimeout = this.getClientFinTimeout();
+        Object other$clientFinTimeout = other.getClientFinTimeout();
+        if (this$clientFinTimeout == null ? other$clientFinTimeout != null : !this$clientFinTimeout.equals(other$clientFinTimeout)) {
+            return false;
+        }
+        Object this$clientTimeout = this.getClientTimeout();
+        Object other$clientTimeout = other.getClientTimeout();
+        if (this$clientTimeout == null ? other$clientTimeout != null : !this$clientTimeout.equals(other$clientTimeout)) {
+            return false;
+        }
+        Object this$connectTimeout = this.getConnectTimeout();
+        Object other$connectTimeout = other.getConnectTimeout();
+        if (this$connectTimeout == null ? other$connectTimeout != null : !this$connectTimeout.equals(other$connectTimeout)) {
+            return false;
+        }
+        Object this$headerBufferBytes = this.getHeaderBufferBytes();
+        Object other$headerBufferBytes = other.getHeaderBufferBytes();
+        if (this$headerBufferBytes == null ? other$headerBufferBytes != null : !this$headerBufferBytes.equals(other$headerBufferBytes)) {
+            return false;
+        }
+        Object this$headerBufferMaxRewriteBytes = this.getHeaderBufferMaxRewriteBytes();
+        Object other$headerBufferMaxRewriteBytes = other.getHeaderBufferMaxRewriteBytes();
+        if (this$headerBufferMaxRewriteBytes == null ? other$headerBufferMaxRewriteBytes != null : !this$headerBufferMaxRewriteBytes.equals(other$headerBufferMaxRewriteBytes)) {
+            return false;
+        }
+        Object this$healthCheckInterval = this.getHealthCheckInterval();
+        Object other$healthCheckInterval = other.getHealthCheckInterval();
+        if (this$healthCheckInterval == null ? other$healthCheckInterval != null : !this$healthCheckInterval.equals(other$healthCheckInterval)) {
+            return false;
+        }
+        Object this$httpKeepAliveTimeout = this.getHttpKeepAliveTimeout();
+        Object other$httpKeepAliveTimeout = other.getHttpKeepAliveTimeout();
+        if (this$httpKeepAliveTimeout == null ? other$httpKeepAliveTimeout != null : !this$httpKeepAliveTimeout.equals(other$httpKeepAliveTimeout)) {
+            return false;
+        }
+        Object this$maxConnections = this.getMaxConnections();
+        Object other$maxConnections = other.getMaxConnections();
+        if (this$maxConnections == null ? other$maxConnections != null : !this$maxConnections.equals(other$maxConnections)) {
+            return false;
+        }
+        Object this$reloadInterval = this.getReloadInterval();
+        Object other$reloadInterval = other.getReloadInterval();
+        if (this$reloadInterval == null ? other$reloadInterval != null : !this$reloadInterval.equals(other$reloadInterval)) {
+            return false;
+        }
+        Object this$serverFinTimeout = this.getServerFinTimeout();
+        Object other$serverFinTimeout = other.getServerFinTimeout();
+        if (this$serverFinTimeout == null ? other$serverFinTimeout != null : !this$serverFinTimeout.equals(other$serverFinTimeout)) {
+            return false;
+        }
+        Object this$serverTimeout = this.getServerTimeout();
+        Object other$serverTimeout = other.getServerTimeout();
+        if (this$serverTimeout == null ? other$serverTimeout != null : !this$serverTimeout.equals(other$serverTimeout)) {
+            return false;
+        }
+        Object this$threadCount = this.getThreadCount();
+        Object other$threadCount = other.getThreadCount();
+        if (this$threadCount == null ? other$threadCount != null : !this$threadCount.equals(other$threadCount)) {
+            return false;
+        }
+        Object this$tlsInspectDelay = this.getTlsInspectDelay();
+        Object other$tlsInspectDelay = other.getTlsInspectDelay();
+        if (this$tlsInspectDelay == null ? other$tlsInspectDelay != null : !this$tlsInspectDelay.equals(other$tlsInspectDelay)) {
+            return false;
+        }
+        Object this$tunnelTimeout = this.getTunnelTimeout();
+        Object other$tunnelTimeout = other.getTunnelTimeout();
+        if (this$tunnelTimeout == null ? other$tunnelTimeout != null : !this$tunnelTimeout.equals(other$tunnelTimeout)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof IngressControllerTuningOptions;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clientFinTimeout = this.getClientFinTimeout();
+        result = result * prime + ($clientFinTimeout == null ? 43 : $clientFinTimeout.hashCode());
+        Object $clientTimeout = this.getClientTimeout();
+        result = result * prime + ($clientTimeout == null ? 43 : $clientTimeout.hashCode());
+        Object $connectTimeout = this.getConnectTimeout();
+        result = result * prime + ($connectTimeout == null ? 43 : $connectTimeout.hashCode());
+        Object $headerBufferBytes = this.getHeaderBufferBytes();
+        result = result * prime + ($headerBufferBytes == null ? 43 : $headerBufferBytes.hashCode());
+        Object $headerBufferMaxRewriteBytes = this.getHeaderBufferMaxRewriteBytes();
+        result = result * prime + ($headerBufferMaxRewriteBytes == null ? 43 : $headerBufferMaxRewriteBytes.hashCode());
+        Object $healthCheckInterval = this.getHealthCheckInterval();
+        result = result * prime + ($healthCheckInterval == null ? 43 : $healthCheckInterval.hashCode());
+        Object $httpKeepAliveTimeout = this.getHttpKeepAliveTimeout();
+        result = result * prime + ($httpKeepAliveTimeout == null ? 43 : $httpKeepAliveTimeout.hashCode());
+        Object $maxConnections = this.getMaxConnections();
+        result = result * prime + ($maxConnections == null ? 43 : $maxConnections.hashCode());
+        Object $reloadInterval = this.getReloadInterval();
+        result = result * prime + ($reloadInterval == null ? 43 : $reloadInterval.hashCode());
+        Object $serverFinTimeout = this.getServerFinTimeout();
+        result = result * prime + ($serverFinTimeout == null ? 43 : $serverFinTimeout.hashCode());
+        Object $serverTimeout = this.getServerTimeout();
+        result = result * prime + ($serverTimeout == null ? 43 : $serverTimeout.hashCode());
+        Object $threadCount = this.getThreadCount();
+        result = result * prime + ($threadCount == null ? 43 : $threadCount.hashCode());
+        Object $tlsInspectDelay = this.getTlsInspectDelay();
+        result = result * prime + ($tlsInspectDelay == null ? 43 : $tlsInspectDelay.hashCode());
+        Object $tunnelTimeout = this.getTunnelTimeout();
+        result = result * prime + ($tunnelTimeout == null ? 43 : $tunnelTimeout.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IngressControllerTuningOptions(" + "clientFinTimeout=" + this.getClientFinTimeout() + ", clientTimeout=" + this.getClientTimeout() + ", connectTimeout=" + this.getConnectTimeout() + ", headerBufferBytes=" + this.getHeaderBufferBytes() + ", headerBufferMaxRewriteBytes=" + this.getHeaderBufferMaxRewriteBytes() + ", healthCheckInterval=" + this.getHealthCheckInterval() + ", httpKeepAliveTimeout=" + this.getHttpKeepAliveTimeout() + ", maxConnections=" + this.getMaxConnections() + ", reloadInterval=" + this.getReloadInterval() + ", serverFinTimeout=" + this.getServerFinTimeout() + ", serverTimeout=" + this.getServerTimeout() + ", threadCount=" + this.getThreadCount() + ", tlsInspectDelay=" + this.getTlsInspectDelay() + ", tunnelTimeout=" + this.getTunnelTimeout() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

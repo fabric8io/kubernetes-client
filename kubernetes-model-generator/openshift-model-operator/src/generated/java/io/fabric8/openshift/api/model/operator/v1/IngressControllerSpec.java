@@ -30,9 +30,6 @@ import io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference;
 import io.fabric8.openshift.api.model.config.v1.TLSSecurityProfile;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * IngressControllerSpec is the specification of the desired behavior of the IngressController.
@@ -59,12 +56,6 @@ import lombok.experimental.Accessors;
     "tlsSecurityProfile",
     "tuningOptions",
     "unsupportedConfigOverrides"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -484,6 +475,176 @@ public class IngressControllerSpec implements Editable<IngressControllerSpecBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof IngressControllerSpec)) {
+            return false;
+        }
+        IngressControllerSpec other = (IngressControllerSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clientTLS = this.getClientTLS();
+        Object other$clientTLS = other.getClientTLS();
+        if (this$clientTLS == null ? other$clientTLS != null : !this$clientTLS.equals(other$clientTLS)) {
+            return false;
+        }
+        Object this$closedClientConnectionPolicy = this.getClosedClientConnectionPolicy();
+        Object other$closedClientConnectionPolicy = other.getClosedClientConnectionPolicy();
+        if (this$closedClientConnectionPolicy == null ? other$closedClientConnectionPolicy != null : !this$closedClientConnectionPolicy.equals(other$closedClientConnectionPolicy)) {
+            return false;
+        }
+        Object this$defaultCertificate = this.getDefaultCertificate();
+        Object other$defaultCertificate = other.getDefaultCertificate();
+        if (this$defaultCertificate == null ? other$defaultCertificate != null : !this$defaultCertificate.equals(other$defaultCertificate)) {
+            return false;
+        }
+        Object this$domain = this.getDomain();
+        Object other$domain = other.getDomain();
+        if (this$domain == null ? other$domain != null : !this$domain.equals(other$domain)) {
+            return false;
+        }
+        Object this$endpointPublishingStrategy = this.getEndpointPublishingStrategy();
+        Object other$endpointPublishingStrategy = other.getEndpointPublishingStrategy();
+        if (this$endpointPublishingStrategy == null ? other$endpointPublishingStrategy != null : !this$endpointPublishingStrategy.equals(other$endpointPublishingStrategy)) {
+            return false;
+        }
+        Object this$httpCompression = this.getHttpCompression();
+        Object other$httpCompression = other.getHttpCompression();
+        if (this$httpCompression == null ? other$httpCompression != null : !this$httpCompression.equals(other$httpCompression)) {
+            return false;
+        }
+        Object this$httpEmptyRequestsPolicy = this.getHttpEmptyRequestsPolicy();
+        Object other$httpEmptyRequestsPolicy = other.getHttpEmptyRequestsPolicy();
+        if (this$httpEmptyRequestsPolicy == null ? other$httpEmptyRequestsPolicy != null : !this$httpEmptyRequestsPolicy.equals(other$httpEmptyRequestsPolicy)) {
+            return false;
+        }
+        Object this$httpErrorCodePages = this.getHttpErrorCodePages();
+        Object other$httpErrorCodePages = other.getHttpErrorCodePages();
+        if (this$httpErrorCodePages == null ? other$httpErrorCodePages != null : !this$httpErrorCodePages.equals(other$httpErrorCodePages)) {
+            return false;
+        }
+        Object this$httpHeaders = this.getHttpHeaders();
+        Object other$httpHeaders = other.getHttpHeaders();
+        if (this$httpHeaders == null ? other$httpHeaders != null : !this$httpHeaders.equals(other$httpHeaders)) {
+            return false;
+        }
+        Object this$idleConnectionTerminationPolicy = this.getIdleConnectionTerminationPolicy();
+        Object other$idleConnectionTerminationPolicy = other.getIdleConnectionTerminationPolicy();
+        if (this$idleConnectionTerminationPolicy == null ? other$idleConnectionTerminationPolicy != null : !this$idleConnectionTerminationPolicy.equals(other$idleConnectionTerminationPolicy)) {
+            return false;
+        }
+        Object this$logging = this.getLogging();
+        Object other$logging = other.getLogging();
+        if (this$logging == null ? other$logging != null : !this$logging.equals(other$logging)) {
+            return false;
+        }
+        Object this$namespaceSelector = this.getNamespaceSelector();
+        Object other$namespaceSelector = other.getNamespaceSelector();
+        if (this$namespaceSelector == null ? other$namespaceSelector != null : !this$namespaceSelector.equals(other$namespaceSelector)) {
+            return false;
+        }
+        Object this$nodePlacement = this.getNodePlacement();
+        Object other$nodePlacement = other.getNodePlacement();
+        if (this$nodePlacement == null ? other$nodePlacement != null : !this$nodePlacement.equals(other$nodePlacement)) {
+            return false;
+        }
+        Object this$replicas = this.getReplicas();
+        Object other$replicas = other.getReplicas();
+        if (this$replicas == null ? other$replicas != null : !this$replicas.equals(other$replicas)) {
+            return false;
+        }
+        Object this$routeAdmission = this.getRouteAdmission();
+        Object other$routeAdmission = other.getRouteAdmission();
+        if (this$routeAdmission == null ? other$routeAdmission != null : !this$routeAdmission.equals(other$routeAdmission)) {
+            return false;
+        }
+        Object this$routeSelector = this.getRouteSelector();
+        Object other$routeSelector = other.getRouteSelector();
+        if (this$routeSelector == null ? other$routeSelector != null : !this$routeSelector.equals(other$routeSelector)) {
+            return false;
+        }
+        Object this$tlsSecurityProfile = this.getTlsSecurityProfile();
+        Object other$tlsSecurityProfile = other.getTlsSecurityProfile();
+        if (this$tlsSecurityProfile == null ? other$tlsSecurityProfile != null : !this$tlsSecurityProfile.equals(other$tlsSecurityProfile)) {
+            return false;
+        }
+        Object this$tuningOptions = this.getTuningOptions();
+        Object other$tuningOptions = other.getTuningOptions();
+        if (this$tuningOptions == null ? other$tuningOptions != null : !this$tuningOptions.equals(other$tuningOptions)) {
+            return false;
+        }
+        Object this$unsupportedConfigOverrides = this.getUnsupportedConfigOverrides();
+        Object other$unsupportedConfigOverrides = other.getUnsupportedConfigOverrides();
+        if (this$unsupportedConfigOverrides == null ? other$unsupportedConfigOverrides != null : !this$unsupportedConfigOverrides.equals(other$unsupportedConfigOverrides)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof IngressControllerSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clientTLS = this.getClientTLS();
+        result = result * prime + ($clientTLS == null ? 43 : $clientTLS.hashCode());
+        Object $closedClientConnectionPolicy = this.getClosedClientConnectionPolicy();
+        result = result * prime + ($closedClientConnectionPolicy == null ? 43 : $closedClientConnectionPolicy.hashCode());
+        Object $defaultCertificate = this.getDefaultCertificate();
+        result = result * prime + ($defaultCertificate == null ? 43 : $defaultCertificate.hashCode());
+        Object $domain = this.getDomain();
+        result = result * prime + ($domain == null ? 43 : $domain.hashCode());
+        Object $endpointPublishingStrategy = this.getEndpointPublishingStrategy();
+        result = result * prime + ($endpointPublishingStrategy == null ? 43 : $endpointPublishingStrategy.hashCode());
+        Object $httpCompression = this.getHttpCompression();
+        result = result * prime + ($httpCompression == null ? 43 : $httpCompression.hashCode());
+        Object $httpEmptyRequestsPolicy = this.getHttpEmptyRequestsPolicy();
+        result = result * prime + ($httpEmptyRequestsPolicy == null ? 43 : $httpEmptyRequestsPolicy.hashCode());
+        Object $httpErrorCodePages = this.getHttpErrorCodePages();
+        result = result * prime + ($httpErrorCodePages == null ? 43 : $httpErrorCodePages.hashCode());
+        Object $httpHeaders = this.getHttpHeaders();
+        result = result * prime + ($httpHeaders == null ? 43 : $httpHeaders.hashCode());
+        Object $idleConnectionTerminationPolicy = this.getIdleConnectionTerminationPolicy();
+        result = result * prime + ($idleConnectionTerminationPolicy == null ? 43 : $idleConnectionTerminationPolicy.hashCode());
+        Object $logging = this.getLogging();
+        result = result * prime + ($logging == null ? 43 : $logging.hashCode());
+        Object $namespaceSelector = this.getNamespaceSelector();
+        result = result * prime + ($namespaceSelector == null ? 43 : $namespaceSelector.hashCode());
+        Object $nodePlacement = this.getNodePlacement();
+        result = result * prime + ($nodePlacement == null ? 43 : $nodePlacement.hashCode());
+        Object $replicas = this.getReplicas();
+        result = result * prime + ($replicas == null ? 43 : $replicas.hashCode());
+        Object $routeAdmission = this.getRouteAdmission();
+        result = result * prime + ($routeAdmission == null ? 43 : $routeAdmission.hashCode());
+        Object $routeSelector = this.getRouteSelector();
+        result = result * prime + ($routeSelector == null ? 43 : $routeSelector.hashCode());
+        Object $tlsSecurityProfile = this.getTlsSecurityProfile();
+        result = result * prime + ($tlsSecurityProfile == null ? 43 : $tlsSecurityProfile.hashCode());
+        Object $tuningOptions = this.getTuningOptions();
+        result = result * prime + ($tuningOptions == null ? 43 : $tuningOptions.hashCode());
+        Object $unsupportedConfigOverrides = this.getUnsupportedConfigOverrides();
+        result = result * prime + ($unsupportedConfigOverrides == null ? 43 : $unsupportedConfigOverrides.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IngressControllerSpec(" + "clientTLS=" + this.getClientTLS() + ", closedClientConnectionPolicy=" + this.getClosedClientConnectionPolicy() + ", defaultCertificate=" + this.getDefaultCertificate() + ", domain=" + this.getDomain() + ", endpointPublishingStrategy=" + this.getEndpointPublishingStrategy() + ", httpCompression=" + this.getHttpCompression() + ", httpEmptyRequestsPolicy=" + this.getHttpEmptyRequestsPolicy() + ", httpErrorCodePages=" + this.getHttpErrorCodePages() + ", httpHeaders=" + this.getHttpHeaders() + ", idleConnectionTerminationPolicy=" + this.getIdleConnectionTerminationPolicy() + ", logging=" + this.getLogging() + ", namespaceSelector=" + this.getNamespaceSelector() + ", nodePlacement=" + this.getNodePlacement() + ", replicas=" + this.getReplicas() + ", routeAdmission=" + this.getRouteAdmission() + ", routeSelector=" + this.getRouteSelector() + ", tlsSecurityProfile=" + this.getTlsSecurityProfile() + ", tuningOptions=" + this.getTuningOptions() + ", unsupportedConfigOverrides=" + this.getUnsupportedConfigOverrides() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

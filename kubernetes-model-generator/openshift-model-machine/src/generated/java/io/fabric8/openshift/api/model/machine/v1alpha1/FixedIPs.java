@@ -28,21 +28,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "ipAddress",
     "subnetID"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -137,6 +128,57 @@ public class FixedIPs implements Editable<FixedIPsBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof FixedIPs)) {
+            return false;
+        }
+        FixedIPs other = (FixedIPs) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ipAddress = this.getIpAddress();
+        Object other$ipAddress = other.getIpAddress();
+        if (this$ipAddress == null ? other$ipAddress != null : !this$ipAddress.equals(other$ipAddress)) {
+            return false;
+        }
+        Object this$subnetID = this.getSubnetID();
+        Object other$subnetID = other.getSubnetID();
+        if (this$subnetID == null ? other$subnetID != null : !this$subnetID.equals(other$subnetID)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof FixedIPs;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ipAddress = this.getIpAddress();
+        result = result * prime + ($ipAddress == null ? 43 : $ipAddress.hashCode());
+        Object $subnetID = this.getSubnetID();
+        result = result * prime + ($subnetID == null ? 43 : $subnetID.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "FixedIPs(" + "ipAddress=" + this.getIpAddress() + ", subnetID=" + this.getSubnetID() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

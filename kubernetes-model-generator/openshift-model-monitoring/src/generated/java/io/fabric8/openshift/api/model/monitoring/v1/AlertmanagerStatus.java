@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AlertmanagerStatus is the most recent observed status of the Alertmanager cluster. Read-only. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "selector",
     "unavailableReplicas",
     "updatedReplicas"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -243,6 +234,92 @@ public class AlertmanagerStatus implements Editable<AlertmanagerStatusBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AlertmanagerStatus)) {
+            return false;
+        }
+        AlertmanagerStatus other = (AlertmanagerStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$availableReplicas = this.getAvailableReplicas();
+        Object other$availableReplicas = other.getAvailableReplicas();
+        if (this$availableReplicas == null ? other$availableReplicas != null : !this$availableReplicas.equals(other$availableReplicas)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$paused = this.getPaused();
+        Object other$paused = other.getPaused();
+        if (this$paused == null ? other$paused != null : !this$paused.equals(other$paused)) {
+            return false;
+        }
+        Object this$replicas = this.getReplicas();
+        Object other$replicas = other.getReplicas();
+        if (this$replicas == null ? other$replicas != null : !this$replicas.equals(other$replicas)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$unavailableReplicas = this.getUnavailableReplicas();
+        Object other$unavailableReplicas = other.getUnavailableReplicas();
+        if (this$unavailableReplicas == null ? other$unavailableReplicas != null : !this$unavailableReplicas.equals(other$unavailableReplicas)) {
+            return false;
+        }
+        Object this$updatedReplicas = this.getUpdatedReplicas();
+        Object other$updatedReplicas = other.getUpdatedReplicas();
+        if (this$updatedReplicas == null ? other$updatedReplicas != null : !this$updatedReplicas.equals(other$updatedReplicas)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AlertmanagerStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $availableReplicas = this.getAvailableReplicas();
+        result = result * prime + ($availableReplicas == null ? 43 : $availableReplicas.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $paused = this.getPaused();
+        result = result * prime + ($paused == null ? 43 : $paused.hashCode());
+        Object $replicas = this.getReplicas();
+        result = result * prime + ($replicas == null ? 43 : $replicas.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $unavailableReplicas = this.getUnavailableReplicas();
+        result = result * prime + ($unavailableReplicas == null ? 43 : $unavailableReplicas.hashCode());
+        Object $updatedReplicas = this.getUpdatedReplicas();
+        result = result * prime + ($updatedReplicas == null ? 43 : $updatedReplicas.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AlertmanagerStatus(" + "availableReplicas=" + this.getAvailableReplicas() + ", conditions=" + this.getConditions() + ", paused=" + this.getPaused() + ", replicas=" + this.getReplicas() + ", selector=" + this.getSelector() + ", unavailableReplicas=" + this.getUnavailableReplicas() + ", updatedReplicas=" + this.getUpdatedReplicas() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

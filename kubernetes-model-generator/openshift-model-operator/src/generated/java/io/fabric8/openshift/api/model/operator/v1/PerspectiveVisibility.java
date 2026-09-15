@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PerspectiveVisibility defines the criteria to show/hide a perspective
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "accessReview",
     "state"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class PerspectiveVisibility implements Editable<PerspectiveVisibilityBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PerspectiveVisibility)) {
+            return false;
+        }
+        PerspectiveVisibility other = (PerspectiveVisibility) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$accessReview = this.getAccessReview();
+        Object other$accessReview = other.getAccessReview();
+        if (this$accessReview == null ? other$accessReview != null : !this$accessReview.equals(other$accessReview)) {
+            return false;
+        }
+        Object this$state = this.getState();
+        Object other$state = other.getState();
+        if (this$state == null ? other$state != null : !this$state.equals(other$state)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PerspectiveVisibility;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $accessReview = this.getAccessReview();
+        result = result * prime + ($accessReview == null ? 43 : $accessReview.hashCode());
+        Object $state = this.getState();
+        result = result * prime + ($state == null ? 43 : $state.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PerspectiveVisibility(" + "accessReview=" + this.getAccessReview() + ", state=" + this.getState() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

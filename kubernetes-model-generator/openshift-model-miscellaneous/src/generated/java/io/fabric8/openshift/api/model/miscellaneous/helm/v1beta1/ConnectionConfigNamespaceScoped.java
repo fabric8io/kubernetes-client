@@ -30,9 +30,6 @@ import io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference;
 import io.fabric8.openshift.api.model.config.v1.SecretNameReference;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "ca",
     "tlsClientConfig",
     "url"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -161,6 +152,71 @@ public class ConnectionConfigNamespaceScoped implements Editable<ConnectionConfi
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConnectionConfigNamespaceScoped)) {
+            return false;
+        }
+        ConnectionConfigNamespaceScoped other = (ConnectionConfigNamespaceScoped) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$basicAuthConfig = this.getBasicAuthConfig();
+        Object other$basicAuthConfig = other.getBasicAuthConfig();
+        if (this$basicAuthConfig == null ? other$basicAuthConfig != null : !this$basicAuthConfig.equals(other$basicAuthConfig)) {
+            return false;
+        }
+        Object this$ca = this.getCa();
+        Object other$ca = other.getCa();
+        if (this$ca == null ? other$ca != null : !this$ca.equals(other$ca)) {
+            return false;
+        }
+        Object this$tlsClientConfig = this.getTlsClientConfig();
+        Object other$tlsClientConfig = other.getTlsClientConfig();
+        if (this$tlsClientConfig == null ? other$tlsClientConfig != null : !this$tlsClientConfig.equals(other$tlsClientConfig)) {
+            return false;
+        }
+        Object this$url = this.getUrl();
+        Object other$url = other.getUrl();
+        if (this$url == null ? other$url != null : !this$url.equals(other$url)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConnectionConfigNamespaceScoped;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $basicAuthConfig = this.getBasicAuthConfig();
+        result = result * prime + ($basicAuthConfig == null ? 43 : $basicAuthConfig.hashCode());
+        Object $ca = this.getCa();
+        result = result * prime + ($ca == null ? 43 : $ca.hashCode());
+        Object $tlsClientConfig = this.getTlsClientConfig();
+        result = result * prime + ($tlsClientConfig == null ? 43 : $tlsClientConfig.hashCode());
+        Object $url = this.getUrl();
+        result = result * prime + ($url == null ? 43 : $url.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConnectionConfigNamespaceScoped(" + "basicAuthConfig=" + this.getBasicAuthConfig() + ", ca=" + this.getCa() + ", tlsClientConfig=" + this.getTlsClientConfig() + ", url=" + this.getUrl() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

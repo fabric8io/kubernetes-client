@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "localityLbSetting",
     "warmup",
     "warmupDurationSecs"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -156,6 +147,71 @@ public class LoadBalancerSettings implements Editable<LoadBalancerSettingsBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof LoadBalancerSettings)) {
+            return false;
+        }
+        LoadBalancerSettings other = (LoadBalancerSettings) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$lbPolicy = this.getLbPolicy();
+        Object other$lbPolicy = other.getLbPolicy();
+        if (this$lbPolicy == null ? other$lbPolicy != null : !this$lbPolicy.equals(other$lbPolicy)) {
+            return false;
+        }
+        Object this$localityLbSetting = this.getLocalityLbSetting();
+        Object other$localityLbSetting = other.getLocalityLbSetting();
+        if (this$localityLbSetting == null ? other$localityLbSetting != null : !this$localityLbSetting.equals(other$localityLbSetting)) {
+            return false;
+        }
+        Object this$warmup = this.getWarmup();
+        Object other$warmup = other.getWarmup();
+        if (this$warmup == null ? other$warmup != null : !this$warmup.equals(other$warmup)) {
+            return false;
+        }
+        Object this$warmupDurationSecs = this.getWarmupDurationSecs();
+        Object other$warmupDurationSecs = other.getWarmupDurationSecs();
+        if (this$warmupDurationSecs == null ? other$warmupDurationSecs != null : !this$warmupDurationSecs.equals(other$warmupDurationSecs)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof LoadBalancerSettings;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $lbPolicy = this.getLbPolicy();
+        result = result * prime + ($lbPolicy == null ? 43 : $lbPolicy.hashCode());
+        Object $localityLbSetting = this.getLocalityLbSetting();
+        result = result * prime + ($localityLbSetting == null ? 43 : $localityLbSetting.hashCode());
+        Object $warmup = this.getWarmup();
+        result = result * prime + ($warmup == null ? 43 : $warmup.hashCode());
+        Object $warmupDurationSecs = this.getWarmupDurationSecs();
+        result = result * prime + ($warmupDurationSecs == null ? 43 : $warmupDurationSecs.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "LoadBalancerSettings(" + "lbPolicy=" + this.getLbPolicy() + ", localityLbSetting=" + this.getLocalityLbSetting() + ", warmup=" + this.getWarmup() + ", warmupDurationSecs=" + this.getWarmupDurationSecs() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

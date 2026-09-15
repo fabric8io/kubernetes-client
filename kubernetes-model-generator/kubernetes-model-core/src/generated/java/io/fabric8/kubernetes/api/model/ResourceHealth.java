@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ResourceHealth represents the health of a resource. It has the latest device health information. This is a part of KEP https://kep.k8s.io/4680.
@@ -26,12 +23,6 @@ import lombok.experimental.Accessors;
     "health",
     "message",
     "resourceID"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -131,6 +122,64 @@ public class ResourceHealth implements Editable<ResourceHealthBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ResourceHealth)) {
+            return false;
+        }
+        ResourceHealth other = (ResourceHealth) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$health = this.getHealth();
+        Object other$health = other.getHealth();
+        if (this$health == null ? other$health != null : !this$health.equals(other$health)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$resourceID = this.getResourceID();
+        Object other$resourceID = other.getResourceID();
+        if (this$resourceID == null ? other$resourceID != null : !this$resourceID.equals(other$resourceID)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ResourceHealth;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $health = this.getHealth();
+        result = result * prime + ($health == null ? 43 : $health.hashCode());
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $resourceID = this.getResourceID();
+        result = result * prime + ($resourceID == null ? 43 : $resourceID.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ResourceHealth(" + "health=" + this.getHealth() + ", message=" + this.getMessage() + ", resourceID=" + this.getResourceID() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

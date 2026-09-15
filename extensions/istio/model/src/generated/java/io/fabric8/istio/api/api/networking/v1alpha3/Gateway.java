@@ -33,9 +33,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Gateway describes a load balancer operating at the edge of the mesh receiving incoming or outgoing HTTP/TCP connections.<br><p> <br><p> &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "selector",
     "servers"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -151,6 +142,57 @@ public class Gateway implements Editable<GatewayBuilder>, KubernetesResource, Na
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Gateway)) {
+            return false;
+        }
+        Gateway other = (Gateway) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$servers = this.getServers();
+        Object other$servers = other.getServers();
+        if (this$servers == null ? other$servers != null : !this$servers.equals(other$servers)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Gateway;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $servers = this.getServers();
+        result = result * prime + ($servers == null ? 43 : $servers.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Gateway(" + "selector=" + this.getSelector() + ", servers=" + this.getServers() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ACMEChallengeSolverHTTP01IngressPodResources defines resource requirements for ACME HTTP01 solver pods. To keep API surface essential, this trims down the 'corev1.ResourceRequirements' type to only include the Requests and Limits fields.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "limits",
     "requests"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -145,6 +136,57 @@ public class ACMEChallengeSolverHTTP01IngressPodResources implements Editable<AC
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ACMEChallengeSolverHTTP01IngressPodResources)) {
+            return false;
+        }
+        ACMEChallengeSolverHTTP01IngressPodResources other = (ACMEChallengeSolverHTTP01IngressPodResources) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$limits = this.getLimits();
+        Object other$limits = other.getLimits();
+        if (this$limits == null ? other$limits != null : !this$limits.equals(other$limits)) {
+            return false;
+        }
+        Object this$requests = this.getRequests();
+        Object other$requests = other.getRequests();
+        if (this$requests == null ? other$requests != null : !this$requests.equals(other$requests)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ACMEChallengeSolverHTTP01IngressPodResources;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $limits = this.getLimits();
+        result = result * prime + ($limits == null ? 43 : $limits.hashCode());
+        Object $requests = this.getRequests();
+        result = result * prime + ($requests == null ? 43 : $requests.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ACMEChallengeSolverHTTP01IngressPodResources(" + "limits=" + this.getLimits() + ", requests=" + this.getRequests() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

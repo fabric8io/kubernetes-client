@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * GCPNetworkInterface describes network interfaces for GCP
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "projectID",
     "publicIP",
     "subnetwork"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -179,6 +170,71 @@ public class GCPNetworkInterface implements Editable<GCPNetworkInterfaceBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GCPNetworkInterface)) {
+            return false;
+        }
+        GCPNetworkInterface other = (GCPNetworkInterface) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$network = this.getNetwork();
+        Object other$network = other.getNetwork();
+        if (this$network == null ? other$network != null : !this$network.equals(other$network)) {
+            return false;
+        }
+        Object this$projectID = this.getProjectID();
+        Object other$projectID = other.getProjectID();
+        if (this$projectID == null ? other$projectID != null : !this$projectID.equals(other$projectID)) {
+            return false;
+        }
+        Object this$publicIP = this.getPublicIP();
+        Object other$publicIP = other.getPublicIP();
+        if (this$publicIP == null ? other$publicIP != null : !this$publicIP.equals(other$publicIP)) {
+            return false;
+        }
+        Object this$subnetwork = this.getSubnetwork();
+        Object other$subnetwork = other.getSubnetwork();
+        if (this$subnetwork == null ? other$subnetwork != null : !this$subnetwork.equals(other$subnetwork)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GCPNetworkInterface;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $network = this.getNetwork();
+        result = result * prime + ($network == null ? 43 : $network.hashCode());
+        Object $projectID = this.getProjectID();
+        result = result * prime + ($projectID == null ? 43 : $projectID.hashCode());
+        Object $publicIP = this.getPublicIP();
+        result = result * prime + ($publicIP == null ? 43 : $publicIP.hashCode());
+        Object $subnetwork = this.getSubnetwork();
+        result = result * prime + ($subnetwork == null ? 43 : $subnetwork.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GCPNetworkInterface(" + "network=" + this.getNetwork() + ", projectID=" + this.getProjectID() + ", publicIP=" + this.getPublicIP() + ", subnetwork=" + this.getSubnetwork() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

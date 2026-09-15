@@ -30,21 +30,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "branches",
     "context"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -131,6 +122,57 @@ public class ConditionalBranchesStatus implements Editable<ConditionalBranchesSt
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConditionalBranchesStatus)) {
+            return false;
+        }
+        ConditionalBranchesStatus other = (ConditionalBranchesStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$branches = this.getBranches();
+        Object other$branches = other.getBranches();
+        if (this$branches == null ? other$branches != null : !this$branches.equals(other$branches)) {
+            return false;
+        }
+        Object this$context = this.getContext();
+        Object other$context = other.getContext();
+        if (this$context == null ? other$context != null : !this$context.equals(other$context)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConditionalBranchesStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $branches = this.getBranches();
+        result = result * prime + ($branches == null ? 43 : $branches.hashCode());
+        Object $context = this.getContext();
+        result = result * prime + ($context == null ? 43 : $context.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConditionalBranchesStatus(" + "branches=" + this.getBranches() + ", context=" + this.getContext() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

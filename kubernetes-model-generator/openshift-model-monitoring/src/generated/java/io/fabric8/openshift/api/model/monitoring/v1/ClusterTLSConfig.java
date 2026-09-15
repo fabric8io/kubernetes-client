@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClusterTLSConfig defines the mutual TLS configuration for the Alertmanager cluster TLS protocol.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "client",
     "server"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -139,6 +130,57 @@ public class ClusterTLSConfig implements Editable<ClusterTLSConfigBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterTLSConfig)) {
+            return false;
+        }
+        ClusterTLSConfig other = (ClusterTLSConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$client = this.getClient();
+        Object other$client = other.getClient();
+        if (this$client == null ? other$client != null : !this$client.equals(other$client)) {
+            return false;
+        }
+        Object this$server = this.getServer();
+        Object other$server = other.getServer();
+        if (this$server == null ? other$server != null : !this$server.equals(other$server)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterTLSConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $client = this.getClient();
+        result = result * prime + ($client == null ? 43 : $client.hashCode());
+        Object $server = this.getServer();
+        result = result * prime + ($server == null ? 43 : $server.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterTLSConfig(" + "client=" + this.getClient() + ", server=" + this.getServer() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

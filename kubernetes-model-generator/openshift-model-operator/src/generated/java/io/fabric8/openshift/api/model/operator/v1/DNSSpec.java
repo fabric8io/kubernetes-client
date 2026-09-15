@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DNSSpec is the specification of the desired behavior of the DNS.
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "operatorLogLevel",
     "servers",
     "upstreamResolvers"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -244,6 +235,92 @@ public class DNSSpec implements Editable<DNSSpecBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DNSSpec)) {
+            return false;
+        }
+        DNSSpec other = (DNSSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cache = this.getCache();
+        Object other$cache = other.getCache();
+        if (this$cache == null ? other$cache != null : !this$cache.equals(other$cache)) {
+            return false;
+        }
+        Object this$logLevel = this.getLogLevel();
+        Object other$logLevel = other.getLogLevel();
+        if (this$logLevel == null ? other$logLevel != null : !this$logLevel.equals(other$logLevel)) {
+            return false;
+        }
+        Object this$managementState = this.getManagementState();
+        Object other$managementState = other.getManagementState();
+        if (this$managementState == null ? other$managementState != null : !this$managementState.equals(other$managementState)) {
+            return false;
+        }
+        Object this$nodePlacement = this.getNodePlacement();
+        Object other$nodePlacement = other.getNodePlacement();
+        if (this$nodePlacement == null ? other$nodePlacement != null : !this$nodePlacement.equals(other$nodePlacement)) {
+            return false;
+        }
+        Object this$operatorLogLevel = this.getOperatorLogLevel();
+        Object other$operatorLogLevel = other.getOperatorLogLevel();
+        if (this$operatorLogLevel == null ? other$operatorLogLevel != null : !this$operatorLogLevel.equals(other$operatorLogLevel)) {
+            return false;
+        }
+        Object this$servers = this.getServers();
+        Object other$servers = other.getServers();
+        if (this$servers == null ? other$servers != null : !this$servers.equals(other$servers)) {
+            return false;
+        }
+        Object this$upstreamResolvers = this.getUpstreamResolvers();
+        Object other$upstreamResolvers = other.getUpstreamResolvers();
+        if (this$upstreamResolvers == null ? other$upstreamResolvers != null : !this$upstreamResolvers.equals(other$upstreamResolvers)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DNSSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cache = this.getCache();
+        result = result * prime + ($cache == null ? 43 : $cache.hashCode());
+        Object $logLevel = this.getLogLevel();
+        result = result * prime + ($logLevel == null ? 43 : $logLevel.hashCode());
+        Object $managementState = this.getManagementState();
+        result = result * prime + ($managementState == null ? 43 : $managementState.hashCode());
+        Object $nodePlacement = this.getNodePlacement();
+        result = result * prime + ($nodePlacement == null ? 43 : $nodePlacement.hashCode());
+        Object $operatorLogLevel = this.getOperatorLogLevel();
+        result = result * prime + ($operatorLogLevel == null ? 43 : $operatorLogLevel.hashCode());
+        Object $servers = this.getServers();
+        result = result * prime + ($servers == null ? 43 : $servers.hashCode());
+        Object $upstreamResolvers = this.getUpstreamResolvers();
+        result = result * prime + ($upstreamResolvers == null ? 43 : $upstreamResolvers.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DNSSpec(" + "cache=" + this.getCache() + ", logLevel=" + this.getLogLevel() + ", managementState=" + this.getManagementState() + ", nodePlacement=" + this.getNodePlacement() + ", operatorLogLevel=" + this.getOperatorLogLevel() + ", servers=" + this.getServers() + ", upstreamResolvers=" + this.getUpstreamResolvers() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

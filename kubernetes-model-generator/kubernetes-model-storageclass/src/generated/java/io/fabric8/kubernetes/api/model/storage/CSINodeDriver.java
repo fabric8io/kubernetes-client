@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CSINodeDriver holds information about the specification of one CSI driver installed on a node
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "name",
     "nodeID",
     "topologyKeys"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class CSINodeDriver implements Editable<CSINodeDriverBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CSINodeDriver)) {
+            return false;
+        }
+        CSINodeDriver other = (CSINodeDriver) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allocatable = this.getAllocatable();
+        Object other$allocatable = other.getAllocatable();
+        if (this$allocatable == null ? other$allocatable != null : !this$allocatable.equals(other$allocatable)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$nodeID = this.getNodeID();
+        Object other$nodeID = other.getNodeID();
+        if (this$nodeID == null ? other$nodeID != null : !this$nodeID.equals(other$nodeID)) {
+            return false;
+        }
+        Object this$topologyKeys = this.getTopologyKeys();
+        Object other$topologyKeys = other.getTopologyKeys();
+        if (this$topologyKeys == null ? other$topologyKeys != null : !this$topologyKeys.equals(other$topologyKeys)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CSINodeDriver;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allocatable = this.getAllocatable();
+        result = result * prime + ($allocatable == null ? 43 : $allocatable.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $nodeID = this.getNodeID();
+        result = result * prime + ($nodeID == null ? 43 : $nodeID.hashCode());
+        Object $topologyKeys = this.getTopologyKeys();
+        result = result * prime + ($topologyKeys == null ? 43 : $topologyKeys.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CSINodeDriver(" + "allocatable=" + this.getAllocatable() + ", name=" + this.getName() + ", nodeID=" + this.getNodeID() + ", topologyKeys=" + this.getTopologyKeys() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

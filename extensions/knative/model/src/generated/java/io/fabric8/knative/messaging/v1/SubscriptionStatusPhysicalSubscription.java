@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SubscriptionStatusPhysicalSubscription represents the fully resolved values for this Subscription.
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "subscriberAudience",
     "subscriberCACerts",
     "subscriberUri"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -280,6 +271,106 @@ public class SubscriptionStatusPhysicalSubscription implements Editable<Subscrip
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SubscriptionStatusPhysicalSubscription)) {
+            return false;
+        }
+        SubscriptionStatusPhysicalSubscription other = (SubscriptionStatusPhysicalSubscription) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$deadLetterSinkAudience = this.getDeadLetterSinkAudience();
+        Object other$deadLetterSinkAudience = other.getDeadLetterSinkAudience();
+        if (this$deadLetterSinkAudience == null ? other$deadLetterSinkAudience != null : !this$deadLetterSinkAudience.equals(other$deadLetterSinkAudience)) {
+            return false;
+        }
+        Object this$deadLetterSinkCACerts = this.getDeadLetterSinkCACerts();
+        Object other$deadLetterSinkCACerts = other.getDeadLetterSinkCACerts();
+        if (this$deadLetterSinkCACerts == null ? other$deadLetterSinkCACerts != null : !this$deadLetterSinkCACerts.equals(other$deadLetterSinkCACerts)) {
+            return false;
+        }
+        Object this$deadLetterSinkUri = this.getDeadLetterSinkUri();
+        Object other$deadLetterSinkUri = other.getDeadLetterSinkUri();
+        if (this$deadLetterSinkUri == null ? other$deadLetterSinkUri != null : !this$deadLetterSinkUri.equals(other$deadLetterSinkUri)) {
+            return false;
+        }
+        Object this$replyAudience = this.getReplyAudience();
+        Object other$replyAudience = other.getReplyAudience();
+        if (this$replyAudience == null ? other$replyAudience != null : !this$replyAudience.equals(other$replyAudience)) {
+            return false;
+        }
+        Object this$replyCACerts = this.getReplyCACerts();
+        Object other$replyCACerts = other.getReplyCACerts();
+        if (this$replyCACerts == null ? other$replyCACerts != null : !this$replyCACerts.equals(other$replyCACerts)) {
+            return false;
+        }
+        Object this$replyUri = this.getReplyUri();
+        Object other$replyUri = other.getReplyUri();
+        if (this$replyUri == null ? other$replyUri != null : !this$replyUri.equals(other$replyUri)) {
+            return false;
+        }
+        Object this$subscriberAudience = this.getSubscriberAudience();
+        Object other$subscriberAudience = other.getSubscriberAudience();
+        if (this$subscriberAudience == null ? other$subscriberAudience != null : !this$subscriberAudience.equals(other$subscriberAudience)) {
+            return false;
+        }
+        Object this$subscriberCACerts = this.getSubscriberCACerts();
+        Object other$subscriberCACerts = other.getSubscriberCACerts();
+        if (this$subscriberCACerts == null ? other$subscriberCACerts != null : !this$subscriberCACerts.equals(other$subscriberCACerts)) {
+            return false;
+        }
+        Object this$subscriberUri = this.getSubscriberUri();
+        Object other$subscriberUri = other.getSubscriberUri();
+        if (this$subscriberUri == null ? other$subscriberUri != null : !this$subscriberUri.equals(other$subscriberUri)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SubscriptionStatusPhysicalSubscription;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $deadLetterSinkAudience = this.getDeadLetterSinkAudience();
+        result = result * prime + ($deadLetterSinkAudience == null ? 43 : $deadLetterSinkAudience.hashCode());
+        Object $deadLetterSinkCACerts = this.getDeadLetterSinkCACerts();
+        result = result * prime + ($deadLetterSinkCACerts == null ? 43 : $deadLetterSinkCACerts.hashCode());
+        Object $deadLetterSinkUri = this.getDeadLetterSinkUri();
+        result = result * prime + ($deadLetterSinkUri == null ? 43 : $deadLetterSinkUri.hashCode());
+        Object $replyAudience = this.getReplyAudience();
+        result = result * prime + ($replyAudience == null ? 43 : $replyAudience.hashCode());
+        Object $replyCACerts = this.getReplyCACerts();
+        result = result * prime + ($replyCACerts == null ? 43 : $replyCACerts.hashCode());
+        Object $replyUri = this.getReplyUri();
+        result = result * prime + ($replyUri == null ? 43 : $replyUri.hashCode());
+        Object $subscriberAudience = this.getSubscriberAudience();
+        result = result * prime + ($subscriberAudience == null ? 43 : $subscriberAudience.hashCode());
+        Object $subscriberCACerts = this.getSubscriberCACerts();
+        result = result * prime + ($subscriberCACerts == null ? 43 : $subscriberCACerts.hashCode());
+        Object $subscriberUri = this.getSubscriberUri();
+        result = result * prime + ($subscriberUri == null ? 43 : $subscriberUri.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SubscriptionStatusPhysicalSubscription(" + "deadLetterSinkAudience=" + this.getDeadLetterSinkAudience() + ", deadLetterSinkCACerts=" + this.getDeadLetterSinkCACerts() + ", deadLetterSinkUri=" + this.getDeadLetterSinkUri() + ", replyAudience=" + this.getReplyAudience() + ", replyCACerts=" + this.getReplyCACerts() + ", replyUri=" + this.getReplyUri() + ", subscriberAudience=" + this.getSubscriberAudience() + ", subscriberCACerts=" + this.getSubscriberCACerts() + ", subscriberUri=" + this.getSubscriberUri() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

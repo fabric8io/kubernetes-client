@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RouteAdmissionPolicy is an admission policy for allowing new route claims.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "namespaceOwnership",
     "wildcardPolicy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class RouteAdmissionPolicy implements Editable<RouteAdmissionPolicyBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RouteAdmissionPolicy)) {
+            return false;
+        }
+        RouteAdmissionPolicy other = (RouteAdmissionPolicy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$namespaceOwnership = this.getNamespaceOwnership();
+        Object other$namespaceOwnership = other.getNamespaceOwnership();
+        if (this$namespaceOwnership == null ? other$namespaceOwnership != null : !this$namespaceOwnership.equals(other$namespaceOwnership)) {
+            return false;
+        }
+        Object this$wildcardPolicy = this.getWildcardPolicy();
+        Object other$wildcardPolicy = other.getWildcardPolicy();
+        if (this$wildcardPolicy == null ? other$wildcardPolicy != null : !this$wildcardPolicy.equals(other$wildcardPolicy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RouteAdmissionPolicy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $namespaceOwnership = this.getNamespaceOwnership();
+        result = result * prime + ($namespaceOwnership == null ? 43 : $namespaceOwnership.hashCode());
+        Object $wildcardPolicy = this.getWildcardPolicy();
+        result = result * prime + ($wildcardPolicy == null ? 43 : $wildcardPolicy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RouteAdmissionPolicy(" + "namespaceOwnership=" + this.getNamespaceOwnership() + ", wildcardPolicy=" + this.getWildcardPolicy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

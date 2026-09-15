@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AlertmanagerConfigSpec is a specification of the desired behavior of the Alertmanager configuration. By default, the Alertmanager configuration only applies to alerts for which the `namespace` label is equal to the namespace of the AlertmanagerConfig resource (see the `.spec.alertmanagerConfigMatcherStrategy` field of the Alertmanager CRD).
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "muteTimeIntervals",
     "receivers",
     "route"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -188,6 +179,71 @@ public class AlertmanagerConfigSpec implements Editable<AlertmanagerConfigSpecBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AlertmanagerConfigSpec)) {
+            return false;
+        }
+        AlertmanagerConfigSpec other = (AlertmanagerConfigSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$inhibitRules = this.getInhibitRules();
+        Object other$inhibitRules = other.getInhibitRules();
+        if (this$inhibitRules == null ? other$inhibitRules != null : !this$inhibitRules.equals(other$inhibitRules)) {
+            return false;
+        }
+        Object this$muteTimeIntervals = this.getMuteTimeIntervals();
+        Object other$muteTimeIntervals = other.getMuteTimeIntervals();
+        if (this$muteTimeIntervals == null ? other$muteTimeIntervals != null : !this$muteTimeIntervals.equals(other$muteTimeIntervals)) {
+            return false;
+        }
+        Object this$receivers = this.getReceivers();
+        Object other$receivers = other.getReceivers();
+        if (this$receivers == null ? other$receivers != null : !this$receivers.equals(other$receivers)) {
+            return false;
+        }
+        Object this$route = this.getRoute();
+        Object other$route = other.getRoute();
+        if (this$route == null ? other$route != null : !this$route.equals(other$route)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AlertmanagerConfigSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $inhibitRules = this.getInhibitRules();
+        result = result * prime + ($inhibitRules == null ? 43 : $inhibitRules.hashCode());
+        Object $muteTimeIntervals = this.getMuteTimeIntervals();
+        result = result * prime + ($muteTimeIntervals == null ? 43 : $muteTimeIntervals.hashCode());
+        Object $receivers = this.getReceivers();
+        result = result * prime + ($receivers == null ? 43 : $receivers.hashCode());
+        Object $route = this.getRoute();
+        result = result * prime + ($route == null ? 43 : $route.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AlertmanagerConfigSpec(" + "inhibitRules=" + this.getInhibitRules() + ", muteTimeIntervals=" + this.getMuteTimeIntervals() + ", receivers=" + this.getReceivers() + ", route=" + this.getRoute() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

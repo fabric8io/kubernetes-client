@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "jitter",
     "latency",
     "source-port"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -297,6 +288,113 @@ public class NetworkDelaySpec implements Editable<NetworkDelaySpecBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkDelaySpec)) {
+            return false;
+        }
+        NetworkDelaySpec other = (NetworkDelaySpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$acceptTcpFlags = this.getAcceptTcpFlags();
+        Object other$acceptTcpFlags = other.getAcceptTcpFlags();
+        if (this$acceptTcpFlags == null ? other$acceptTcpFlags != null : !this$acceptTcpFlags.equals(other$acceptTcpFlags)) {
+            return false;
+        }
+        Object this$correlation = this.getCorrelation();
+        Object other$correlation = other.getCorrelation();
+        if (this$correlation == null ? other$correlation != null : !this$correlation.equals(other$correlation)) {
+            return false;
+        }
+        Object this$device = this.getDevice();
+        Object other$device = other.getDevice();
+        if (this$device == null ? other$device != null : !this$device.equals(other$device)) {
+            return false;
+        }
+        Object this$egressPort = this.getEgressPort();
+        Object other$egressPort = other.getEgressPort();
+        if (this$egressPort == null ? other$egressPort != null : !this$egressPort.equals(other$egressPort)) {
+            return false;
+        }
+        Object this$hostname = this.getHostname();
+        Object other$hostname = other.getHostname();
+        if (this$hostname == null ? other$hostname != null : !this$hostname.equals(other$hostname)) {
+            return false;
+        }
+        Object this$ipAddress = this.getIpAddress();
+        Object other$ipAddress = other.getIpAddress();
+        if (this$ipAddress == null ? other$ipAddress != null : !this$ipAddress.equals(other$ipAddress)) {
+            return false;
+        }
+        Object this$ipProtocol = this.getIpProtocol();
+        Object other$ipProtocol = other.getIpProtocol();
+        if (this$ipProtocol == null ? other$ipProtocol != null : !this$ipProtocol.equals(other$ipProtocol)) {
+            return false;
+        }
+        Object this$jitter = this.getJitter();
+        Object other$jitter = other.getJitter();
+        if (this$jitter == null ? other$jitter != null : !this$jitter.equals(other$jitter)) {
+            return false;
+        }
+        Object this$latency = this.getLatency();
+        Object other$latency = other.getLatency();
+        if (this$latency == null ? other$latency != null : !this$latency.equals(other$latency)) {
+            return false;
+        }
+        Object this$sourcePort = this.getSourcePort();
+        Object other$sourcePort = other.getSourcePort();
+        if (this$sourcePort == null ? other$sourcePort != null : !this$sourcePort.equals(other$sourcePort)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkDelaySpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $acceptTcpFlags = this.getAcceptTcpFlags();
+        result = result * prime + ($acceptTcpFlags == null ? 43 : $acceptTcpFlags.hashCode());
+        Object $correlation = this.getCorrelation();
+        result = result * prime + ($correlation == null ? 43 : $correlation.hashCode());
+        Object $device = this.getDevice();
+        result = result * prime + ($device == null ? 43 : $device.hashCode());
+        Object $egressPort = this.getEgressPort();
+        result = result * prime + ($egressPort == null ? 43 : $egressPort.hashCode());
+        Object $hostname = this.getHostname();
+        result = result * prime + ($hostname == null ? 43 : $hostname.hashCode());
+        Object $ipAddress = this.getIpAddress();
+        result = result * prime + ($ipAddress == null ? 43 : $ipAddress.hashCode());
+        Object $ipProtocol = this.getIpProtocol();
+        result = result * prime + ($ipProtocol == null ? 43 : $ipProtocol.hashCode());
+        Object $jitter = this.getJitter();
+        result = result * prime + ($jitter == null ? 43 : $jitter.hashCode());
+        Object $latency = this.getLatency();
+        result = result * prime + ($latency == null ? 43 : $latency.hashCode());
+        Object $sourcePort = this.getSourcePort();
+        result = result * prime + ($sourcePort == null ? 43 : $sourcePort.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkDelaySpec(" + "acceptTcpFlags=" + this.getAcceptTcpFlags() + ", correlation=" + this.getCorrelation() + ", device=" + this.getDevice() + ", egressPort=" + this.getEgressPort() + ", hostname=" + this.getHostname() + ", ipAddress=" + this.getIpAddress() + ", ipProtocol=" + this.getIpProtocol() + ", jitter=" + this.getJitter() + ", latency=" + this.getLatency() + ", sourcePort=" + this.getSourcePort() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

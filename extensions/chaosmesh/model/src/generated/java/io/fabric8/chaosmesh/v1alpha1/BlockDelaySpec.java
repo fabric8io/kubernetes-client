@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * BlockDelaySpec describes the block delay specification
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "correlation",
     "jitter",
     "latency"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class BlockDelaySpec implements Editable<BlockDelaySpecBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BlockDelaySpec)) {
+            return false;
+        }
+        BlockDelaySpec other = (BlockDelaySpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$correlation = this.getCorrelation();
+        Object other$correlation = other.getCorrelation();
+        if (this$correlation == null ? other$correlation != null : !this$correlation.equals(other$correlation)) {
+            return false;
+        }
+        Object this$jitter = this.getJitter();
+        Object other$jitter = other.getJitter();
+        if (this$jitter == null ? other$jitter != null : !this$jitter.equals(other$jitter)) {
+            return false;
+        }
+        Object this$latency = this.getLatency();
+        Object other$latency = other.getLatency();
+        if (this$latency == null ? other$latency != null : !this$latency.equals(other$latency)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BlockDelaySpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $correlation = this.getCorrelation();
+        result = result * prime + ($correlation == null ? 43 : $correlation.hashCode());
+        Object $jitter = this.getJitter();
+        result = result * prime + ($jitter == null ? 43 : $jitter.hashCode());
+        Object $latency = this.getLatency();
+        result = result * prime + ($latency == null ? 43 : $latency.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BlockDelaySpec(" + "correlation=" + this.getCorrelation() + ", jitter=" + this.getJitter() + ", latency=" + this.getLatency() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

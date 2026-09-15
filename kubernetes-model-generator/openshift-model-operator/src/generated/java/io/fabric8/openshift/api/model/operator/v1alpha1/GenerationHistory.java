@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * GenerationHistory keeps track of the generation for a given resource so that decisions about forced updated can be made. DEPRECATED: Use fields in v1.GenerationStatus instead
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "name",
     "namespace",
     "resource"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,78 @@ public class GenerationHistory implements Editable<GenerationHistoryBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GenerationHistory)) {
+            return false;
+        }
+        GenerationHistory other = (GenerationHistory) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$group = this.getGroup();
+        Object other$group = other.getGroup();
+        if (this$group == null ? other$group != null : !this$group.equals(other$group)) {
+            return false;
+        }
+        Object this$lastGeneration = this.getLastGeneration();
+        Object other$lastGeneration = other.getLastGeneration();
+        if (this$lastGeneration == null ? other$lastGeneration != null : !this$lastGeneration.equals(other$lastGeneration)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$namespace = this.getNamespace();
+        Object other$namespace = other.getNamespace();
+        if (this$namespace == null ? other$namespace != null : !this$namespace.equals(other$namespace)) {
+            return false;
+        }
+        Object this$resource = this.getResource();
+        Object other$resource = other.getResource();
+        if (this$resource == null ? other$resource != null : !this$resource.equals(other$resource)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GenerationHistory;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $group = this.getGroup();
+        result = result * prime + ($group == null ? 43 : $group.hashCode());
+        Object $lastGeneration = this.getLastGeneration();
+        result = result * prime + ($lastGeneration == null ? 43 : $lastGeneration.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $namespace = this.getNamespace();
+        result = result * prime + ($namespace == null ? 43 : $namespace.hashCode());
+        Object $resource = this.getResource();
+        result = result * prime + ($resource == null ? 43 : $resource.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GenerationHistory(" + "group=" + this.getGroup() + ", lastGeneration=" + this.getLastGeneration() + ", name=" + this.getName() + ", namespace=" + this.getNamespace() + ", resource=" + this.getResource() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

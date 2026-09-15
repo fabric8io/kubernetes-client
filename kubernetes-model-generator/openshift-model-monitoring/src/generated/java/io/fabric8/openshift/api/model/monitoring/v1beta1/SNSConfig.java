@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.monitoring.v1.Sigv4;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SNSConfig configures notifications via AWS SNS. See https://prometheus.io/docs/alerting/latest/configuration/#sns_configs
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "subject",
     "targetARN",
     "topicARN"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -303,6 +294,113 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SNSConfig)) {
+            return false;
+        }
+        SNSConfig other = (SNSConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiURL = this.getApiURL();
+        Object other$apiURL = other.getApiURL();
+        if (this$apiURL == null ? other$apiURL != null : !this$apiURL.equals(other$apiURL)) {
+            return false;
+        }
+        Object this$attributes = this.getAttributes();
+        Object other$attributes = other.getAttributes();
+        if (this$attributes == null ? other$attributes != null : !this$attributes.equals(other$attributes)) {
+            return false;
+        }
+        Object this$httpConfig = this.getHttpConfig();
+        Object other$httpConfig = other.getHttpConfig();
+        if (this$httpConfig == null ? other$httpConfig != null : !this$httpConfig.equals(other$httpConfig)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$phoneNumber = this.getPhoneNumber();
+        Object other$phoneNumber = other.getPhoneNumber();
+        if (this$phoneNumber == null ? other$phoneNumber != null : !this$phoneNumber.equals(other$phoneNumber)) {
+            return false;
+        }
+        Object this$sendResolved = this.getSendResolved();
+        Object other$sendResolved = other.getSendResolved();
+        if (this$sendResolved == null ? other$sendResolved != null : !this$sendResolved.equals(other$sendResolved)) {
+            return false;
+        }
+        Object this$sigv4 = this.getSigv4();
+        Object other$sigv4 = other.getSigv4();
+        if (this$sigv4 == null ? other$sigv4 != null : !this$sigv4.equals(other$sigv4)) {
+            return false;
+        }
+        Object this$subject = this.getSubject();
+        Object other$subject = other.getSubject();
+        if (this$subject == null ? other$subject != null : !this$subject.equals(other$subject)) {
+            return false;
+        }
+        Object this$targetARN = this.getTargetARN();
+        Object other$targetARN = other.getTargetARN();
+        if (this$targetARN == null ? other$targetARN != null : !this$targetARN.equals(other$targetARN)) {
+            return false;
+        }
+        Object this$topicARN = this.getTopicARN();
+        Object other$topicARN = other.getTopicARN();
+        if (this$topicARN == null ? other$topicARN != null : !this$topicARN.equals(other$topicARN)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SNSConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiURL = this.getApiURL();
+        result = result * prime + ($apiURL == null ? 43 : $apiURL.hashCode());
+        Object $attributes = this.getAttributes();
+        result = result * prime + ($attributes == null ? 43 : $attributes.hashCode());
+        Object $httpConfig = this.getHttpConfig();
+        result = result * prime + ($httpConfig == null ? 43 : $httpConfig.hashCode());
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $phoneNumber = this.getPhoneNumber();
+        result = result * prime + ($phoneNumber == null ? 43 : $phoneNumber.hashCode());
+        Object $sendResolved = this.getSendResolved();
+        result = result * prime + ($sendResolved == null ? 43 : $sendResolved.hashCode());
+        Object $sigv4 = this.getSigv4();
+        result = result * prime + ($sigv4 == null ? 43 : $sigv4.hashCode());
+        Object $subject = this.getSubject();
+        result = result * prime + ($subject == null ? 43 : $subject.hashCode());
+        Object $targetARN = this.getTargetARN();
+        result = result * prime + ($targetARN == null ? 43 : $targetARN.hashCode());
+        Object $topicARN = this.getTopicARN();
+        result = result * prime + ($topicARN == null ? 43 : $topicARN.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SNSConfig(" + "apiURL=" + this.getApiURL() + ", attributes=" + this.getAttributes() + ", httpConfig=" + this.getHttpConfig() + ", message=" + this.getMessage() + ", phoneNumber=" + this.getPhoneNumber() + ", sendResolved=" + this.getSendResolved() + ", sigv4=" + this.getSigv4() + ", subject=" + this.getSubject() + ", targetARN=" + this.getTargetARN() + ", topicARN=" + this.getTopicARN() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

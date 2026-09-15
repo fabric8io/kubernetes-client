@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DeploymentTriggerImageChangeParams represents the parameters to the ImageChange trigger.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "containerNames",
     "from",
     "lastTriggeredImage"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -183,6 +174,71 @@ public class DeploymentTriggerImageChangeParams implements Editable<DeploymentTr
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DeploymentTriggerImageChangeParams)) {
+            return false;
+        }
+        DeploymentTriggerImageChangeParams other = (DeploymentTriggerImageChangeParams) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$automatic = this.getAutomatic();
+        Object other$automatic = other.getAutomatic();
+        if (this$automatic == null ? other$automatic != null : !this$automatic.equals(other$automatic)) {
+            return false;
+        }
+        Object this$containerNames = this.getContainerNames();
+        Object other$containerNames = other.getContainerNames();
+        if (this$containerNames == null ? other$containerNames != null : !this$containerNames.equals(other$containerNames)) {
+            return false;
+        }
+        Object this$from = this.getFrom();
+        Object other$from = other.getFrom();
+        if (this$from == null ? other$from != null : !this$from.equals(other$from)) {
+            return false;
+        }
+        Object this$lastTriggeredImage = this.getLastTriggeredImage();
+        Object other$lastTriggeredImage = other.getLastTriggeredImage();
+        if (this$lastTriggeredImage == null ? other$lastTriggeredImage != null : !this$lastTriggeredImage.equals(other$lastTriggeredImage)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DeploymentTriggerImageChangeParams;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $automatic = this.getAutomatic();
+        result = result * prime + ($automatic == null ? 43 : $automatic.hashCode());
+        Object $containerNames = this.getContainerNames();
+        result = result * prime + ($containerNames == null ? 43 : $containerNames.hashCode());
+        Object $from = this.getFrom();
+        result = result * prime + ($from == null ? 43 : $from.hashCode());
+        Object $lastTriggeredImage = this.getLastTriggeredImage();
+        result = result * prime + ($lastTriggeredImage == null ? 43 : $lastTriggeredImage.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DeploymentTriggerImageChangeParams(" + "automatic=" + this.getAutomatic() + ", containerNames=" + this.getContainerNames() + ", from=" + this.getFrom() + ", lastTriggeredImage=" + this.getLastTriggeredImage() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

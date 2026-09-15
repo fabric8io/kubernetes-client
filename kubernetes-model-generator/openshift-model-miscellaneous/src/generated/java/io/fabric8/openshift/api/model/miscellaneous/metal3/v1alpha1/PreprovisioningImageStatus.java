@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PreprovisioningImageStatus defines the observed state of PreprovisioningImage.
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "imageUrl",
     "kernelUrl",
     "networkData"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -244,6 +235,92 @@ public class PreprovisioningImageStatus implements Editable<PreprovisioningImage
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PreprovisioningImageStatus)) {
+            return false;
+        }
+        PreprovisioningImageStatus other = (PreprovisioningImageStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$architecture = this.getArchitecture();
+        Object other$architecture = other.getArchitecture();
+        if (this$architecture == null ? other$architecture != null : !this$architecture.equals(other$architecture)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$extraKernelParams = this.getExtraKernelParams();
+        Object other$extraKernelParams = other.getExtraKernelParams();
+        if (this$extraKernelParams == null ? other$extraKernelParams != null : !this$extraKernelParams.equals(other$extraKernelParams)) {
+            return false;
+        }
+        Object this$format = this.getFormat();
+        Object other$format = other.getFormat();
+        if (this$format == null ? other$format != null : !this$format.equals(other$format)) {
+            return false;
+        }
+        Object this$imageUrl = this.getImageUrl();
+        Object other$imageUrl = other.getImageUrl();
+        if (this$imageUrl == null ? other$imageUrl != null : !this$imageUrl.equals(other$imageUrl)) {
+            return false;
+        }
+        Object this$kernelUrl = this.getKernelUrl();
+        Object other$kernelUrl = other.getKernelUrl();
+        if (this$kernelUrl == null ? other$kernelUrl != null : !this$kernelUrl.equals(other$kernelUrl)) {
+            return false;
+        }
+        Object this$networkData = this.getNetworkData();
+        Object other$networkData = other.getNetworkData();
+        if (this$networkData == null ? other$networkData != null : !this$networkData.equals(other$networkData)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PreprovisioningImageStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $architecture = this.getArchitecture();
+        result = result * prime + ($architecture == null ? 43 : $architecture.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $extraKernelParams = this.getExtraKernelParams();
+        result = result * prime + ($extraKernelParams == null ? 43 : $extraKernelParams.hashCode());
+        Object $format = this.getFormat();
+        result = result * prime + ($format == null ? 43 : $format.hashCode());
+        Object $imageUrl = this.getImageUrl();
+        result = result * prime + ($imageUrl == null ? 43 : $imageUrl.hashCode());
+        Object $kernelUrl = this.getKernelUrl();
+        result = result * prime + ($kernelUrl == null ? 43 : $kernelUrl.hashCode());
+        Object $networkData = this.getNetworkData();
+        result = result * prime + ($networkData == null ? 43 : $networkData.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PreprovisioningImageStatus(" + "architecture=" + this.getArchitecture() + ", conditions=" + this.getConditions() + ", extraKernelParams=" + this.getExtraKernelParams() + ", format=" + this.getFormat() + ", imageUrl=" + this.getImageUrl() + ", kernelUrl=" + this.getKernelUrl() + ", networkData=" + this.getNetworkData() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

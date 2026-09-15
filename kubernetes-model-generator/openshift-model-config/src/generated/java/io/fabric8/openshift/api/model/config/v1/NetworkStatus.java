@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NetworkStatus is the current network configuration.
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "migration",
     "networkType",
     "serviceNetwork"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -228,6 +219,85 @@ public class NetworkStatus implements Editable<NetworkStatusBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkStatus)) {
+            return false;
+        }
+        NetworkStatus other = (NetworkStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterNetwork = this.getClusterNetwork();
+        Object other$clusterNetwork = other.getClusterNetwork();
+        if (this$clusterNetwork == null ? other$clusterNetwork != null : !this$clusterNetwork.equals(other$clusterNetwork)) {
+            return false;
+        }
+        Object this$clusterNetworkMTU = this.getClusterNetworkMTU();
+        Object other$clusterNetworkMTU = other.getClusterNetworkMTU();
+        if (this$clusterNetworkMTU == null ? other$clusterNetworkMTU != null : !this$clusterNetworkMTU.equals(other$clusterNetworkMTU)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$migration = this.getMigration();
+        Object other$migration = other.getMigration();
+        if (this$migration == null ? other$migration != null : !this$migration.equals(other$migration)) {
+            return false;
+        }
+        Object this$networkType = this.getNetworkType();
+        Object other$networkType = other.getNetworkType();
+        if (this$networkType == null ? other$networkType != null : !this$networkType.equals(other$networkType)) {
+            return false;
+        }
+        Object this$serviceNetwork = this.getServiceNetwork();
+        Object other$serviceNetwork = other.getServiceNetwork();
+        if (this$serviceNetwork == null ? other$serviceNetwork != null : !this$serviceNetwork.equals(other$serviceNetwork)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterNetwork = this.getClusterNetwork();
+        result = result * prime + ($clusterNetwork == null ? 43 : $clusterNetwork.hashCode());
+        Object $clusterNetworkMTU = this.getClusterNetworkMTU();
+        result = result * prime + ($clusterNetworkMTU == null ? 43 : $clusterNetworkMTU.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $migration = this.getMigration();
+        result = result * prime + ($migration == null ? 43 : $migration.hashCode());
+        Object $networkType = this.getNetworkType();
+        result = result * prime + ($networkType == null ? 43 : $networkType.hashCode());
+        Object $serviceNetwork = this.getServiceNetwork();
+        result = result * prime + ($serviceNetwork == null ? 43 : $serviceNetwork.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkStatus(" + "clusterNetwork=" + this.getClusterNetwork() + ", clusterNetworkMTU=" + this.getClusterNetworkMTU() + ", conditions=" + this.getConditions() + ", migration=" + this.getMigration() + ", networkType=" + this.getNetworkType() + ", serviceNetwork=" + this.getServiceNetwork() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VSphereDisk describes additional disks for vSphere.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "name",
     "provisioningMode",
     "sizeGiB"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -159,6 +150,64 @@ public class VSphereDisk implements Editable<VSphereDiskBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VSphereDisk)) {
+            return false;
+        }
+        VSphereDisk other = (VSphereDisk) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$provisioningMode = this.getProvisioningMode();
+        Object other$provisioningMode = other.getProvisioningMode();
+        if (this$provisioningMode == null ? other$provisioningMode != null : !this$provisioningMode.equals(other$provisioningMode)) {
+            return false;
+        }
+        Object this$sizeGiB = this.getSizeGiB();
+        Object other$sizeGiB = other.getSizeGiB();
+        if (this$sizeGiB == null ? other$sizeGiB != null : !this$sizeGiB.equals(other$sizeGiB)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VSphereDisk;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $provisioningMode = this.getProvisioningMode();
+        result = result * prime + ($provisioningMode == null ? 43 : $provisioningMode.hashCode());
+        Object $sizeGiB = this.getSizeGiB();
+        result = result * prime + ($sizeGiB == null ? 43 : $sizeGiB.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VSphereDisk(" + "name=" + this.getName() + ", provisioningMode=" + this.getProvisioningMode() + ", sizeGiB=" + this.getSizeGiB() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

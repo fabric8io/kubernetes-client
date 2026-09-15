@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NonResourceAttributes includes the authorization attributes available for non-resource requests to the Authorizer interface
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "path",
     "verb"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class NonResourceAttributes implements Editable<NonResourceAttributesBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NonResourceAttributes)) {
+            return false;
+        }
+        NonResourceAttributes other = (NonResourceAttributes) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$path = this.getPath();
+        Object other$path = other.getPath();
+        if (this$path == null ? other$path != null : !this$path.equals(other$path)) {
+            return false;
+        }
+        Object this$verb = this.getVerb();
+        Object other$verb = other.getVerb();
+        if (this$verb == null ? other$verb != null : !this$verb.equals(other$verb)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NonResourceAttributes;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $path = this.getPath();
+        result = result * prime + ($path == null ? 43 : $path.hashCode());
+        Object $verb = this.getVerb();
+        result = result * prime + ($verb == null ? 43 : $verb.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NonResourceAttributes(" + "path=" + this.getPath() + ", verb=" + this.getVerb() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

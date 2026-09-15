@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * GitHubIdentityProvider provides identities for users authenticating using GitHub credentials
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "hostname",
     "organizations",
     "teams"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -225,6 +216,85 @@ public class GitHubIdentityProvider implements Editable<GitHubIdentityProviderBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GitHubIdentityProvider)) {
+            return false;
+        }
+        GitHubIdentityProvider other = (GitHubIdentityProvider) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ca = this.getCa();
+        Object other$ca = other.getCa();
+        if (this$ca == null ? other$ca != null : !this$ca.equals(other$ca)) {
+            return false;
+        }
+        Object this$clientID = this.getClientID();
+        Object other$clientID = other.getClientID();
+        if (this$clientID == null ? other$clientID != null : !this$clientID.equals(other$clientID)) {
+            return false;
+        }
+        Object this$clientSecret = this.getClientSecret();
+        Object other$clientSecret = other.getClientSecret();
+        if (this$clientSecret == null ? other$clientSecret != null : !this$clientSecret.equals(other$clientSecret)) {
+            return false;
+        }
+        Object this$hostname = this.getHostname();
+        Object other$hostname = other.getHostname();
+        if (this$hostname == null ? other$hostname != null : !this$hostname.equals(other$hostname)) {
+            return false;
+        }
+        Object this$organizations = this.getOrganizations();
+        Object other$organizations = other.getOrganizations();
+        if (this$organizations == null ? other$organizations != null : !this$organizations.equals(other$organizations)) {
+            return false;
+        }
+        Object this$teams = this.getTeams();
+        Object other$teams = other.getTeams();
+        if (this$teams == null ? other$teams != null : !this$teams.equals(other$teams)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GitHubIdentityProvider;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ca = this.getCa();
+        result = result * prime + ($ca == null ? 43 : $ca.hashCode());
+        Object $clientID = this.getClientID();
+        result = result * prime + ($clientID == null ? 43 : $clientID.hashCode());
+        Object $clientSecret = this.getClientSecret();
+        result = result * prime + ($clientSecret == null ? 43 : $clientSecret.hashCode());
+        Object $hostname = this.getHostname();
+        result = result * prime + ($hostname == null ? 43 : $hostname.hashCode());
+        Object $organizations = this.getOrganizations();
+        result = result * prime + ($organizations == null ? 43 : $organizations.hashCode());
+        Object $teams = this.getTeams();
+        result = result * prime + ($teams == null ? 43 : $teams.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GitHubIdentityProvider(" + "ca=" + this.getCa() + ", clientID=" + this.getClientID() + ", clientSecret=" + this.getClientSecret() + ", hostname=" + this.getHostname() + ", organizations=" + this.getOrganizations() + ", teams=" + this.getTeams() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

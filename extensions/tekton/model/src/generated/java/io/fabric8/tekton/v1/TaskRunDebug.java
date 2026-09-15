@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TaskRunDebug defines the breakpoint config for a particular TaskRun
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "breakpoints"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -120,6 +111,50 @@ public class TaskRunDebug implements Editable<TaskRunDebugBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TaskRunDebug)) {
+            return false;
+        }
+        TaskRunDebug other = (TaskRunDebug) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$breakpoints = this.getBreakpoints();
+        Object other$breakpoints = other.getBreakpoints();
+        if (this$breakpoints == null ? other$breakpoints != null : !this$breakpoints.equals(other$breakpoints)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TaskRunDebug;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $breakpoints = this.getBreakpoints();
+        result = result * prime + ($breakpoints == null ? 43 : $breakpoints.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TaskRunDebug(" + "breakpoints=" + this.getBreakpoints() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * APIResource specifies the name of a resource and whether it is namespaced.
@@ -35,12 +32,6 @@ import lombok.experimental.Accessors;
     "storageVersionHash",
     "verbs",
     "version"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -279,6 +270,113 @@ public class APIResource implements Editable<APIResourceBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof APIResource)) {
+            return false;
+        }
+        APIResource other = (APIResource) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$categories = this.getCategories();
+        Object other$categories = other.getCategories();
+        if (this$categories == null ? other$categories != null : !this$categories.equals(other$categories)) {
+            return false;
+        }
+        Object this$group = this.getGroup();
+        Object other$group = other.getGroup();
+        if (this$group == null ? other$group != null : !this$group.equals(other$group)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$namespaced = this.getNamespaced();
+        Object other$namespaced = other.getNamespaced();
+        if (this$namespaced == null ? other$namespaced != null : !this$namespaced.equals(other$namespaced)) {
+            return false;
+        }
+        Object this$shortNames = this.getShortNames();
+        Object other$shortNames = other.getShortNames();
+        if (this$shortNames == null ? other$shortNames != null : !this$shortNames.equals(other$shortNames)) {
+            return false;
+        }
+        Object this$singularName = this.getSingularName();
+        Object other$singularName = other.getSingularName();
+        if (this$singularName == null ? other$singularName != null : !this$singularName.equals(other$singularName)) {
+            return false;
+        }
+        Object this$storageVersionHash = this.getStorageVersionHash();
+        Object other$storageVersionHash = other.getStorageVersionHash();
+        if (this$storageVersionHash == null ? other$storageVersionHash != null : !this$storageVersionHash.equals(other$storageVersionHash)) {
+            return false;
+        }
+        Object this$verbs = this.getVerbs();
+        Object other$verbs = other.getVerbs();
+        if (this$verbs == null ? other$verbs != null : !this$verbs.equals(other$verbs)) {
+            return false;
+        }
+        Object this$version = this.getVersion();
+        Object other$version = other.getVersion();
+        if (this$version == null ? other$version != null : !this$version.equals(other$version)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof APIResource;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $categories = this.getCategories();
+        result = result * prime + ($categories == null ? 43 : $categories.hashCode());
+        Object $group = this.getGroup();
+        result = result * prime + ($group == null ? 43 : $group.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $namespaced = this.getNamespaced();
+        result = result * prime + ($namespaced == null ? 43 : $namespaced.hashCode());
+        Object $shortNames = this.getShortNames();
+        result = result * prime + ($shortNames == null ? 43 : $shortNames.hashCode());
+        Object $singularName = this.getSingularName();
+        result = result * prime + ($singularName == null ? 43 : $singularName.hashCode());
+        Object $storageVersionHash = this.getStorageVersionHash();
+        result = result * prime + ($storageVersionHash == null ? 43 : $storageVersionHash.hashCode());
+        Object $verbs = this.getVerbs();
+        result = result * prime + ($verbs == null ? 43 : $verbs.hashCode());
+        Object $version = this.getVersion();
+        result = result * prime + ($version == null ? 43 : $version.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "APIResource(" + "categories=" + this.getCategories() + ", group=" + this.getGroup() + ", kind=" + this.getKind() + ", name=" + this.getName() + ", namespaced=" + this.getNamespaced() + ", shortNames=" + this.getShortNames() + ", singularName=" + this.getSingularName() + ", storageVersionHash=" + this.getStorageVersionHash() + ", verbs=" + this.getVerbs() + ", version=" + this.getVersion() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

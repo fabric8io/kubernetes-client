@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClusterRelocateSpec defines the relocation of clusters from one Hive instance to another.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "clusterDeploymentSelector",
     "kubeconfigSecretRef"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class ClusterRelocateSpec implements Editable<ClusterRelocateSpecBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterRelocateSpec)) {
+            return false;
+        }
+        ClusterRelocateSpec other = (ClusterRelocateSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterDeploymentSelector = this.getClusterDeploymentSelector();
+        Object other$clusterDeploymentSelector = other.getClusterDeploymentSelector();
+        if (this$clusterDeploymentSelector == null ? other$clusterDeploymentSelector != null : !this$clusterDeploymentSelector.equals(other$clusterDeploymentSelector)) {
+            return false;
+        }
+        Object this$kubeconfigSecretRef = this.getKubeconfigSecretRef();
+        Object other$kubeconfigSecretRef = other.getKubeconfigSecretRef();
+        if (this$kubeconfigSecretRef == null ? other$kubeconfigSecretRef != null : !this$kubeconfigSecretRef.equals(other$kubeconfigSecretRef)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterRelocateSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterDeploymentSelector = this.getClusterDeploymentSelector();
+        result = result * prime + ($clusterDeploymentSelector == null ? 43 : $clusterDeploymentSelector.hashCode());
+        Object $kubeconfigSecretRef = this.getKubeconfigSecretRef();
+        result = result * prime + ($kubeconfigSecretRef == null ? 43 : $kubeconfigSecretRef.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterRelocateSpec(" + "clusterDeploymentSelector=" + this.getClusterDeploymentSelector() + ", kubeconfigSecretRef=" + this.getKubeconfigSecretRef() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

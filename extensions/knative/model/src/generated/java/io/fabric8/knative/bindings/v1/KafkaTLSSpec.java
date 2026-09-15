@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
     "cert",
     "enable",
     "key"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -153,6 +144,71 @@ public class KafkaTLSSpec implements Editable<KafkaTLSSpecBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof KafkaTLSSpec)) {
+            return false;
+        }
+        KafkaTLSSpec other = (KafkaTLSSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$caCert = this.getCaCert();
+        Object other$caCert = other.getCaCert();
+        if (this$caCert == null ? other$caCert != null : !this$caCert.equals(other$caCert)) {
+            return false;
+        }
+        Object this$cert = this.getCert();
+        Object other$cert = other.getCert();
+        if (this$cert == null ? other$cert != null : !this$cert.equals(other$cert)) {
+            return false;
+        }
+        Object this$enable = this.getEnable();
+        Object other$enable = other.getEnable();
+        if (this$enable == null ? other$enable != null : !this$enable.equals(other$enable)) {
+            return false;
+        }
+        Object this$key = this.getKey();
+        Object other$key = other.getKey();
+        if (this$key == null ? other$key != null : !this$key.equals(other$key)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof KafkaTLSSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $caCert = this.getCaCert();
+        result = result * prime + ($caCert == null ? 43 : $caCert.hashCode());
+        Object $cert = this.getCert();
+        result = result * prime + ($cert == null ? 43 : $cert.hashCode());
+        Object $enable = this.getEnable();
+        result = result * prime + ($enable == null ? 43 : $enable.hashCode());
+        Object $key = this.getKey();
+        result = result * prime + ($key == null ? 43 : $key.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "KafkaTLSSpec(" + "caCert=" + this.getCaCert() + ", cert=" + this.getCert() + ", enable=" + this.getEnable() + ", key=" + this.getKey() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

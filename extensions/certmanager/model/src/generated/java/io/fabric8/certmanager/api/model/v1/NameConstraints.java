@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NameConstraints is a type to represent x509 NameConstraints
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "critical",
     "excluded",
     "permitted"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class NameConstraints implements Editable<NameConstraintsBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NameConstraints)) {
+            return false;
+        }
+        NameConstraints other = (NameConstraints) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$critical = this.getCritical();
+        Object other$critical = other.getCritical();
+        if (this$critical == null ? other$critical != null : !this$critical.equals(other$critical)) {
+            return false;
+        }
+        Object this$excluded = this.getExcluded();
+        Object other$excluded = other.getExcluded();
+        if (this$excluded == null ? other$excluded != null : !this$excluded.equals(other$excluded)) {
+            return false;
+        }
+        Object this$permitted = this.getPermitted();
+        Object other$permitted = other.getPermitted();
+        if (this$permitted == null ? other$permitted != null : !this$permitted.equals(other$permitted)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NameConstraints;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $critical = this.getCritical();
+        result = result * prime + ($critical == null ? 43 : $critical.hashCode());
+        Object $excluded = this.getExcluded();
+        result = result * prime + ($excluded == null ? 43 : $excluded.hashCode());
+        Object $permitted = this.getPermitted();
+        result = result * prime + ($permitted == null ? 43 : $permitted.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NameConstraints(" + "critical=" + this.getCritical() + ", excluded=" + this.getExcluded() + ", permitted=" + this.getPermitted() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

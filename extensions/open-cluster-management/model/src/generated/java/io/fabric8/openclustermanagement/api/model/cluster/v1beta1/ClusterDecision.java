@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClusterDecision represents a decision from a placement An empty ClusterDecision indicates it is not scheduled yet.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "clusterName",
     "reason",
     "score"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class ClusterDecision implements Editable<ClusterDecisionBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterDecision)) {
+            return false;
+        }
+        ClusterDecision other = (ClusterDecision) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterName = this.getClusterName();
+        Object other$clusterName = other.getClusterName();
+        if (this$clusterName == null ? other$clusterName != null : !this$clusterName.equals(other$clusterName)) {
+            return false;
+        }
+        Object this$reason = this.getReason();
+        Object other$reason = other.getReason();
+        if (this$reason == null ? other$reason != null : !this$reason.equals(other$reason)) {
+            return false;
+        }
+        Object this$score = this.getScore();
+        Object other$score = other.getScore();
+        if (this$score == null ? other$score != null : !this$score.equals(other$score)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterDecision;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterName = this.getClusterName();
+        result = result * prime + ($clusterName == null ? 43 : $clusterName.hashCode());
+        Object $reason = this.getReason();
+        result = result * prime + ($reason == null ? 43 : $reason.hashCode());
+        Object $score = this.getScore();
+        result = result * prime + ($score == null ? 43 : $score.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterDecision(" + "clusterName=" + this.getClusterName() + ", reason=" + this.getReason() + ", score=" + this.getScore() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

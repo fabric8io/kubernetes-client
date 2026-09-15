@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "parallel",
     "port",
     "rate"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -197,6 +188,78 @@ public class NetworkFloodSpec implements Editable<NetworkFloodSpecBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkFloodSpec)) {
+            return false;
+        }
+        NetworkFloodSpec other = (NetworkFloodSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$duration = this.getDuration();
+        Object other$duration = other.getDuration();
+        if (this$duration == null ? other$duration != null : !this$duration.equals(other$duration)) {
+            return false;
+        }
+        Object this$ipAddress = this.getIpAddress();
+        Object other$ipAddress = other.getIpAddress();
+        if (this$ipAddress == null ? other$ipAddress != null : !this$ipAddress.equals(other$ipAddress)) {
+            return false;
+        }
+        Object this$parallel = this.getParallel();
+        Object other$parallel = other.getParallel();
+        if (this$parallel == null ? other$parallel != null : !this$parallel.equals(other$parallel)) {
+            return false;
+        }
+        Object this$port = this.getPort();
+        Object other$port = other.getPort();
+        if (this$port == null ? other$port != null : !this$port.equals(other$port)) {
+            return false;
+        }
+        Object this$rate = this.getRate();
+        Object other$rate = other.getRate();
+        if (this$rate == null ? other$rate != null : !this$rate.equals(other$rate)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkFloodSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $duration = this.getDuration();
+        result = result * prime + ($duration == null ? 43 : $duration.hashCode());
+        Object $ipAddress = this.getIpAddress();
+        result = result * prime + ($ipAddress == null ? 43 : $ipAddress.hashCode());
+        Object $parallel = this.getParallel();
+        result = result * prime + ($parallel == null ? 43 : $parallel.hashCode());
+        Object $port = this.getPort();
+        result = result * prime + ($port == null ? 43 : $port.hashCode());
+        Object $rate = this.getRate();
+        result = result * prime + ($rate == null ? 43 : $rate.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkFloodSpec(" + "duration=" + this.getDuration() + ", ipAddress=" + this.getIpAddress() + ", parallel=" + this.getParallel() + ", port=" + this.getPort() + ", rate=" + this.getRate() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

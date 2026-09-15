@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * FailedProvisionConfig contains settings to control behavior undertaken by Hive when an installation attempt fails.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "skipGatherLogs"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -120,6 +111,50 @@ public class FailedProvisionConfig implements Editable<FailedProvisionConfigBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof FailedProvisionConfig)) {
+            return false;
+        }
+        FailedProvisionConfig other = (FailedProvisionConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$skipGatherLogs = this.getSkipGatherLogs();
+        Object other$skipGatherLogs = other.getSkipGatherLogs();
+        if (this$skipGatherLogs == null ? other$skipGatherLogs != null : !this$skipGatherLogs.equals(other$skipGatherLogs)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof FailedProvisionConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $skipGatherLogs = this.getSkipGatherLogs();
+        result = result * prime + ($skipGatherLogs == null ? 43 : $skipGatherLogs.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "FailedProvisionConfig(" + "skipGatherLogs=" + this.getSkipGatherLogs() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

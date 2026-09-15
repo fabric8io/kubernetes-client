@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TcParameter represents the parameters for a traffic control chaos
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "duplicate",
     "loss",
     "rate"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -220,6 +211,85 @@ public class TcParameter implements Editable<TcParameterBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TcParameter)) {
+            return false;
+        }
+        TcParameter other = (TcParameter) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bandwidth = this.getBandwidth();
+        Object other$bandwidth = other.getBandwidth();
+        if (this$bandwidth == null ? other$bandwidth != null : !this$bandwidth.equals(other$bandwidth)) {
+            return false;
+        }
+        Object this$corrupt = this.getCorrupt();
+        Object other$corrupt = other.getCorrupt();
+        if (this$corrupt == null ? other$corrupt != null : !this$corrupt.equals(other$corrupt)) {
+            return false;
+        }
+        Object this$delay = this.getDelay();
+        Object other$delay = other.getDelay();
+        if (this$delay == null ? other$delay != null : !this$delay.equals(other$delay)) {
+            return false;
+        }
+        Object this$duplicate = this.getDuplicate();
+        Object other$duplicate = other.getDuplicate();
+        if (this$duplicate == null ? other$duplicate != null : !this$duplicate.equals(other$duplicate)) {
+            return false;
+        }
+        Object this$loss = this.getLoss();
+        Object other$loss = other.getLoss();
+        if (this$loss == null ? other$loss != null : !this$loss.equals(other$loss)) {
+            return false;
+        }
+        Object this$rate = this.getRate();
+        Object other$rate = other.getRate();
+        if (this$rate == null ? other$rate != null : !this$rate.equals(other$rate)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TcParameter;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bandwidth = this.getBandwidth();
+        result = result * prime + ($bandwidth == null ? 43 : $bandwidth.hashCode());
+        Object $corrupt = this.getCorrupt();
+        result = result * prime + ($corrupt == null ? 43 : $corrupt.hashCode());
+        Object $delay = this.getDelay();
+        result = result * prime + ($delay == null ? 43 : $delay.hashCode());
+        Object $duplicate = this.getDuplicate();
+        result = result * prime + ($duplicate == null ? 43 : $duplicate.hashCode());
+        Object $loss = this.getLoss();
+        result = result * prime + ($loss == null ? 43 : $loss.hashCode());
+        Object $rate = this.getRate();
+        result = result * prime + ($rate == null ? 43 : $rate.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TcParameter(" + "bandwidth=" + this.getBandwidth() + ", corrupt=" + this.getCorrupt() + ", delay=" + this.getDelay() + ", duplicate=" + this.getDuplicate() + ", loss=" + this.getLoss() + ", rate=" + this.getRate() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

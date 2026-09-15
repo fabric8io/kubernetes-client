@@ -28,21 +28,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "device",
     "duration"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -137,6 +128,57 @@ public class NetworkDownSpec implements Editable<NetworkDownSpecBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkDownSpec)) {
+            return false;
+        }
+        NetworkDownSpec other = (NetworkDownSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$device = this.getDevice();
+        Object other$device = other.getDevice();
+        if (this$device == null ? other$device != null : !this$device.equals(other$device)) {
+            return false;
+        }
+        Object this$duration = this.getDuration();
+        Object other$duration = other.getDuration();
+        if (this$duration == null ? other$duration != null : !this$duration.equals(other$duration)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkDownSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $device = this.getDevice();
+        result = result * prime + ($device == null ? 43 : $device.hashCode());
+        Object $duration = this.getDuration();
+        result = result * prime + ($duration == null ? 43 : $duration.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkDownSpec(" + "device=" + this.getDevice() + ", duration=" + this.getDuration() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

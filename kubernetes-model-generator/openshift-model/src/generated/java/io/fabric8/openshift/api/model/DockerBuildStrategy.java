@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DockerBuildStrategy defines input parameters specific to container image build.
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "noCache",
     "pullSecret",
     "volumes"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -288,6 +279,106 @@ public class DockerBuildStrategy implements Editable<DockerBuildStrategyBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DockerBuildStrategy)) {
+            return false;
+        }
+        DockerBuildStrategy other = (DockerBuildStrategy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$buildArgs = this.getBuildArgs();
+        Object other$buildArgs = other.getBuildArgs();
+        if (this$buildArgs == null ? other$buildArgs != null : !this$buildArgs.equals(other$buildArgs)) {
+            return false;
+        }
+        Object this$dockerfilePath = this.getDockerfilePath();
+        Object other$dockerfilePath = other.getDockerfilePath();
+        if (this$dockerfilePath == null ? other$dockerfilePath != null : !this$dockerfilePath.equals(other$dockerfilePath)) {
+            return false;
+        }
+        Object this$env = this.getEnv();
+        Object other$env = other.getEnv();
+        if (this$env == null ? other$env != null : !this$env.equals(other$env)) {
+            return false;
+        }
+        Object this$forcePull = this.getForcePull();
+        Object other$forcePull = other.getForcePull();
+        if (this$forcePull == null ? other$forcePull != null : !this$forcePull.equals(other$forcePull)) {
+            return false;
+        }
+        Object this$from = this.getFrom();
+        Object other$from = other.getFrom();
+        if (this$from == null ? other$from != null : !this$from.equals(other$from)) {
+            return false;
+        }
+        Object this$imageOptimizationPolicy = this.getImageOptimizationPolicy();
+        Object other$imageOptimizationPolicy = other.getImageOptimizationPolicy();
+        if (this$imageOptimizationPolicy == null ? other$imageOptimizationPolicy != null : !this$imageOptimizationPolicy.equals(other$imageOptimizationPolicy)) {
+            return false;
+        }
+        Object this$noCache = this.getNoCache();
+        Object other$noCache = other.getNoCache();
+        if (this$noCache == null ? other$noCache != null : !this$noCache.equals(other$noCache)) {
+            return false;
+        }
+        Object this$pullSecret = this.getPullSecret();
+        Object other$pullSecret = other.getPullSecret();
+        if (this$pullSecret == null ? other$pullSecret != null : !this$pullSecret.equals(other$pullSecret)) {
+            return false;
+        }
+        Object this$volumes = this.getVolumes();
+        Object other$volumes = other.getVolumes();
+        if (this$volumes == null ? other$volumes != null : !this$volumes.equals(other$volumes)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DockerBuildStrategy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $buildArgs = this.getBuildArgs();
+        result = result * prime + ($buildArgs == null ? 43 : $buildArgs.hashCode());
+        Object $dockerfilePath = this.getDockerfilePath();
+        result = result * prime + ($dockerfilePath == null ? 43 : $dockerfilePath.hashCode());
+        Object $env = this.getEnv();
+        result = result * prime + ($env == null ? 43 : $env.hashCode());
+        Object $forcePull = this.getForcePull();
+        result = result * prime + ($forcePull == null ? 43 : $forcePull.hashCode());
+        Object $from = this.getFrom();
+        result = result * prime + ($from == null ? 43 : $from.hashCode());
+        Object $imageOptimizationPolicy = this.getImageOptimizationPolicy();
+        result = result * prime + ($imageOptimizationPolicy == null ? 43 : $imageOptimizationPolicy.hashCode());
+        Object $noCache = this.getNoCache();
+        result = result * prime + ($noCache == null ? 43 : $noCache.hashCode());
+        Object $pullSecret = this.getPullSecret();
+        result = result * prime + ($pullSecret == null ? 43 : $pullSecret.hashCode());
+        Object $volumes = this.getVolumes();
+        result = result * prime + ($volumes == null ? 43 : $volumes.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DockerBuildStrategy(" + "buildArgs=" + this.getBuildArgs() + ", dockerfilePath=" + this.getDockerfilePath() + ", env=" + this.getEnv() + ", forcePull=" + this.getForcePull() + ", from=" + this.getFrom() + ", imageOptimizationPolicy=" + this.getImageOptimizationPolicy() + ", noCache=" + this.getNoCache() + ", pullSecret=" + this.getPullSecret() + ", volumes=" + this.getVolumes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

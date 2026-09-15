@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PodStatus represents information about the status of a pod. Status may trail the actual state of a system, especially if the node that hosts the pod cannot contact the control plane.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "resize",
     "resourceClaimStatuses",
     "startTime"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -427,6 +418,162 @@ public class PodStatus implements Editable<PodStatusBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodStatus)) {
+            return false;
+        }
+        PodStatus other = (PodStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$containerStatuses = this.getContainerStatuses();
+        Object other$containerStatuses = other.getContainerStatuses();
+        if (this$containerStatuses == null ? other$containerStatuses != null : !this$containerStatuses.equals(other$containerStatuses)) {
+            return false;
+        }
+        Object this$ephemeralContainerStatuses = this.getEphemeralContainerStatuses();
+        Object other$ephemeralContainerStatuses = other.getEphemeralContainerStatuses();
+        if (this$ephemeralContainerStatuses == null ? other$ephemeralContainerStatuses != null : !this$ephemeralContainerStatuses.equals(other$ephemeralContainerStatuses)) {
+            return false;
+        }
+        Object this$hostIP = this.getHostIP();
+        Object other$hostIP = other.getHostIP();
+        if (this$hostIP == null ? other$hostIP != null : !this$hostIP.equals(other$hostIP)) {
+            return false;
+        }
+        Object this$hostIPs = this.getHostIPs();
+        Object other$hostIPs = other.getHostIPs();
+        if (this$hostIPs == null ? other$hostIPs != null : !this$hostIPs.equals(other$hostIPs)) {
+            return false;
+        }
+        Object this$initContainerStatuses = this.getInitContainerStatuses();
+        Object other$initContainerStatuses = other.getInitContainerStatuses();
+        if (this$initContainerStatuses == null ? other$initContainerStatuses != null : !this$initContainerStatuses.equals(other$initContainerStatuses)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$nominatedNodeName = this.getNominatedNodeName();
+        Object other$nominatedNodeName = other.getNominatedNodeName();
+        if (this$nominatedNodeName == null ? other$nominatedNodeName != null : !this$nominatedNodeName.equals(other$nominatedNodeName)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$phase = this.getPhase();
+        Object other$phase = other.getPhase();
+        if (this$phase == null ? other$phase != null : !this$phase.equals(other$phase)) {
+            return false;
+        }
+        Object this$podIP = this.getPodIP();
+        Object other$podIP = other.getPodIP();
+        if (this$podIP == null ? other$podIP != null : !this$podIP.equals(other$podIP)) {
+            return false;
+        }
+        Object this$podIPs = this.getPodIPs();
+        Object other$podIPs = other.getPodIPs();
+        if (this$podIPs == null ? other$podIPs != null : !this$podIPs.equals(other$podIPs)) {
+            return false;
+        }
+        Object this$qosClass = this.getQosClass();
+        Object other$qosClass = other.getQosClass();
+        if (this$qosClass == null ? other$qosClass != null : !this$qosClass.equals(other$qosClass)) {
+            return false;
+        }
+        Object this$reason = this.getReason();
+        Object other$reason = other.getReason();
+        if (this$reason == null ? other$reason != null : !this$reason.equals(other$reason)) {
+            return false;
+        }
+        Object this$resize = this.getResize();
+        Object other$resize = other.getResize();
+        if (this$resize == null ? other$resize != null : !this$resize.equals(other$resize)) {
+            return false;
+        }
+        Object this$resourceClaimStatuses = this.getResourceClaimStatuses();
+        Object other$resourceClaimStatuses = other.getResourceClaimStatuses();
+        if (this$resourceClaimStatuses == null ? other$resourceClaimStatuses != null : !this$resourceClaimStatuses.equals(other$resourceClaimStatuses)) {
+            return false;
+        }
+        Object this$startTime = this.getStartTime();
+        Object other$startTime = other.getStartTime();
+        if (this$startTime == null ? other$startTime != null : !this$startTime.equals(other$startTime)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $containerStatuses = this.getContainerStatuses();
+        result = result * prime + ($containerStatuses == null ? 43 : $containerStatuses.hashCode());
+        Object $ephemeralContainerStatuses = this.getEphemeralContainerStatuses();
+        result = result * prime + ($ephemeralContainerStatuses == null ? 43 : $ephemeralContainerStatuses.hashCode());
+        Object $hostIP = this.getHostIP();
+        result = result * prime + ($hostIP == null ? 43 : $hostIP.hashCode());
+        Object $hostIPs = this.getHostIPs();
+        result = result * prime + ($hostIPs == null ? 43 : $hostIPs.hashCode());
+        Object $initContainerStatuses = this.getInitContainerStatuses();
+        result = result * prime + ($initContainerStatuses == null ? 43 : $initContainerStatuses.hashCode());
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $nominatedNodeName = this.getNominatedNodeName();
+        result = result * prime + ($nominatedNodeName == null ? 43 : $nominatedNodeName.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $phase = this.getPhase();
+        result = result * prime + ($phase == null ? 43 : $phase.hashCode());
+        Object $podIP = this.getPodIP();
+        result = result * prime + ($podIP == null ? 43 : $podIP.hashCode());
+        Object $podIPs = this.getPodIPs();
+        result = result * prime + ($podIPs == null ? 43 : $podIPs.hashCode());
+        Object $qosClass = this.getQosClass();
+        result = result * prime + ($qosClass == null ? 43 : $qosClass.hashCode());
+        Object $reason = this.getReason();
+        result = result * prime + ($reason == null ? 43 : $reason.hashCode());
+        Object $resize = this.getResize();
+        result = result * prime + ($resize == null ? 43 : $resize.hashCode());
+        Object $resourceClaimStatuses = this.getResourceClaimStatuses();
+        result = result * prime + ($resourceClaimStatuses == null ? 43 : $resourceClaimStatuses.hashCode());
+        Object $startTime = this.getStartTime();
+        result = result * prime + ($startTime == null ? 43 : $startTime.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodStatus(" + "conditions=" + this.getConditions() + ", containerStatuses=" + this.getContainerStatuses() + ", ephemeralContainerStatuses=" + this.getEphemeralContainerStatuses() + ", hostIP=" + this.getHostIP() + ", hostIPs=" + this.getHostIPs() + ", initContainerStatuses=" + this.getInitContainerStatuses() + ", message=" + this.getMessage() + ", nominatedNodeName=" + this.getNominatedNodeName() + ", observedGeneration=" + this.getObservedGeneration() + ", phase=" + this.getPhase() + ", podIP=" + this.getPodIP() + ", podIPs=" + this.getPodIPs() + ", qosClass=" + this.getQosClass() + ", reason=" + this.getReason() + ", resize=" + this.getResize() + ", resourceClaimStatuses=" + this.getResourceClaimStatuses() + ", startTime=" + this.getStartTime() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

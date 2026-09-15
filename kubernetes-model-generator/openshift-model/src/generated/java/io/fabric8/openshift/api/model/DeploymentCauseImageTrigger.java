@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DeploymentCauseImageTrigger represents details about the cause of a deployment originating from an image change trigger
@@ -38,12 +35,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "from"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -119,6 +110,50 @@ public class DeploymentCauseImageTrigger implements Editable<DeploymentCauseImag
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DeploymentCauseImageTrigger)) {
+            return false;
+        }
+        DeploymentCauseImageTrigger other = (DeploymentCauseImageTrigger) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$from = this.getFrom();
+        Object other$from = other.getFrom();
+        if (this$from == null ? other$from != null : !this$from.equals(other$from)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DeploymentCauseImageTrigger;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $from = this.getFrom();
+        result = result * prime + ($from == null ? 43 : $from.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DeploymentCauseImageTrigger(" + "from=" + this.getFrom() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

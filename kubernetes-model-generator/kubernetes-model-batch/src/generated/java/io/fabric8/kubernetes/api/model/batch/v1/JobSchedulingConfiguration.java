@@ -34,9 +34,6 @@ import io.fabric8.kubernetes.api.model.scheduling.v1alpha3.WorkloadPodGroupSched
 import io.fabric8.kubernetes.api.model.scheduling.v1alpha3.WorkloadPodGroupSchedulingPolicy;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * JobSchedulingConfiguration composes the reusable workload-aware scheduling building blocks.
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "resourceClaims",
     "schedulingConstraints",
     "schedulingPolicy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -188,6 +179,71 @@ public class JobSchedulingConfiguration implements Editable<JobSchedulingConfigu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof JobSchedulingConfiguration)) {
+            return false;
+        }
+        JobSchedulingConfiguration other = (JobSchedulingConfiguration) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$disruptionMode = this.getDisruptionMode();
+        Object other$disruptionMode = other.getDisruptionMode();
+        if (this$disruptionMode == null ? other$disruptionMode != null : !this$disruptionMode.equals(other$disruptionMode)) {
+            return false;
+        }
+        Object this$resourceClaims = this.getResourceClaims();
+        Object other$resourceClaims = other.getResourceClaims();
+        if (this$resourceClaims == null ? other$resourceClaims != null : !this$resourceClaims.equals(other$resourceClaims)) {
+            return false;
+        }
+        Object this$schedulingConstraints = this.getSchedulingConstraints();
+        Object other$schedulingConstraints = other.getSchedulingConstraints();
+        if (this$schedulingConstraints == null ? other$schedulingConstraints != null : !this$schedulingConstraints.equals(other$schedulingConstraints)) {
+            return false;
+        }
+        Object this$schedulingPolicy = this.getSchedulingPolicy();
+        Object other$schedulingPolicy = other.getSchedulingPolicy();
+        if (this$schedulingPolicy == null ? other$schedulingPolicy != null : !this$schedulingPolicy.equals(other$schedulingPolicy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof JobSchedulingConfiguration;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $disruptionMode = this.getDisruptionMode();
+        result = result * prime + ($disruptionMode == null ? 43 : $disruptionMode.hashCode());
+        Object $resourceClaims = this.getResourceClaims();
+        result = result * prime + ($resourceClaims == null ? 43 : $resourceClaims.hashCode());
+        Object $schedulingConstraints = this.getSchedulingConstraints();
+        result = result * prime + ($schedulingConstraints == null ? 43 : $schedulingConstraints.hashCode());
+        Object $schedulingPolicy = this.getSchedulingPolicy();
+        result = result * prime + ($schedulingPolicy == null ? 43 : $schedulingPolicy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "JobSchedulingConfiguration(" + "disruptionMode=" + this.getDisruptionMode() + ", resourceClaims=" + this.getResourceClaims() + ", schedulingConstraints=" + this.getSchedulingConstraints() + ", schedulingPolicy=" + this.getSchedulingPolicy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

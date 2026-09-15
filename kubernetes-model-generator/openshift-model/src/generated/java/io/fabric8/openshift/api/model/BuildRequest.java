@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * BuildRequest is the resource used to pass parameters to build generator<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
@@ -54,12 +51,6 @@ import lombok.experimental.Accessors;
     "sourceStrategyOptions",
     "triggeredBy",
     "triggeredByImage"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -350,6 +341,127 @@ public class BuildRequest implements Editable<BuildRequestBuilder>, HasMetadata,
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BuildRequest)) {
+            return false;
+        }
+        BuildRequest other = (BuildRequest) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$binary = this.getBinary();
+        Object other$binary = other.getBinary();
+        if (this$binary == null ? other$binary != null : !this$binary.equals(other$binary)) {
+            return false;
+        }
+        Object this$dockerStrategyOptions = this.getDockerStrategyOptions();
+        Object other$dockerStrategyOptions = other.getDockerStrategyOptions();
+        if (this$dockerStrategyOptions == null ? other$dockerStrategyOptions != null : !this$dockerStrategyOptions.equals(other$dockerStrategyOptions)) {
+            return false;
+        }
+        Object this$env = this.getEnv();
+        Object other$env = other.getEnv();
+        if (this$env == null ? other$env != null : !this$env.equals(other$env)) {
+            return false;
+        }
+        Object this$from = this.getFrom();
+        Object other$from = other.getFrom();
+        if (this$from == null ? other$from != null : !this$from.equals(other$from)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$lastVersion = this.getLastVersion();
+        Object other$lastVersion = other.getLastVersion();
+        if (this$lastVersion == null ? other$lastVersion != null : !this$lastVersion.equals(other$lastVersion)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$revision = this.getRevision();
+        Object other$revision = other.getRevision();
+        if (this$revision == null ? other$revision != null : !this$revision.equals(other$revision)) {
+            return false;
+        }
+        Object this$sourceStrategyOptions = this.getSourceStrategyOptions();
+        Object other$sourceStrategyOptions = other.getSourceStrategyOptions();
+        if (this$sourceStrategyOptions == null ? other$sourceStrategyOptions != null : !this$sourceStrategyOptions.equals(other$sourceStrategyOptions)) {
+            return false;
+        }
+        Object this$triggeredBy = this.getTriggeredBy();
+        Object other$triggeredBy = other.getTriggeredBy();
+        if (this$triggeredBy == null ? other$triggeredBy != null : !this$triggeredBy.equals(other$triggeredBy)) {
+            return false;
+        }
+        Object this$triggeredByImage = this.getTriggeredByImage();
+        Object other$triggeredByImage = other.getTriggeredByImage();
+        if (this$triggeredByImage == null ? other$triggeredByImage != null : !this$triggeredByImage.equals(other$triggeredByImage)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BuildRequest;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $binary = this.getBinary();
+        result = result * prime + ($binary == null ? 43 : $binary.hashCode());
+        Object $dockerStrategyOptions = this.getDockerStrategyOptions();
+        result = result * prime + ($dockerStrategyOptions == null ? 43 : $dockerStrategyOptions.hashCode());
+        Object $env = this.getEnv();
+        result = result * prime + ($env == null ? 43 : $env.hashCode());
+        Object $from = this.getFrom();
+        result = result * prime + ($from == null ? 43 : $from.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $lastVersion = this.getLastVersion();
+        result = result * prime + ($lastVersion == null ? 43 : $lastVersion.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $revision = this.getRevision();
+        result = result * prime + ($revision == null ? 43 : $revision.hashCode());
+        Object $sourceStrategyOptions = this.getSourceStrategyOptions();
+        result = result * prime + ($sourceStrategyOptions == null ? 43 : $sourceStrategyOptions.hashCode());
+        Object $triggeredBy = this.getTriggeredBy();
+        result = result * prime + ($triggeredBy == null ? 43 : $triggeredBy.hashCode());
+        Object $triggeredByImage = this.getTriggeredByImage();
+        result = result * prime + ($triggeredByImage == null ? 43 : $triggeredByImage.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BuildRequest(" + "apiVersion=" + this.getApiVersion() + ", binary=" + this.getBinary() + ", dockerStrategyOptions=" + this.getDockerStrategyOptions() + ", env=" + this.getEnv() + ", from=" + this.getFrom() + ", kind=" + this.getKind() + ", lastVersion=" + this.getLastVersion() + ", metadata=" + this.getMetadata() + ", revision=" + this.getRevision() + ", sourceStrategyOptions=" + this.getSourceStrategyOptions() + ", triggeredBy=" + this.getTriggeredBy() + ", triggeredByImage=" + this.getTriggeredByImage() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

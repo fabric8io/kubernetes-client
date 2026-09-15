@@ -34,9 +34,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * KafkaSourceSpec defines the desired state of the KafkaSource.
@@ -54,12 +51,6 @@ import lombok.experimental.Accessors;
     "ordering",
     "sink",
     "topics"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -310,6 +301,113 @@ public class KafkaSourceSpec implements Editable<KafkaSourceSpecBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof KafkaSourceSpec)) {
+            return false;
+        }
+        KafkaSourceSpec other = (KafkaSourceSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bootstrapServers = this.getBootstrapServers();
+        Object other$bootstrapServers = other.getBootstrapServers();
+        if (this$bootstrapServers == null ? other$bootstrapServers != null : !this$bootstrapServers.equals(other$bootstrapServers)) {
+            return false;
+        }
+        Object this$ceOverrides = this.getCeOverrides();
+        Object other$ceOverrides = other.getCeOverrides();
+        if (this$ceOverrides == null ? other$ceOverrides != null : !this$ceOverrides.equals(other$ceOverrides)) {
+            return false;
+        }
+        Object this$consumerGroup = this.getConsumerGroup();
+        Object other$consumerGroup = other.getConsumerGroup();
+        if (this$consumerGroup == null ? other$consumerGroup != null : !this$consumerGroup.equals(other$consumerGroup)) {
+            return false;
+        }
+        Object this$consumers = this.getConsumers();
+        Object other$consumers = other.getConsumers();
+        if (this$consumers == null ? other$consumers != null : !this$consumers.equals(other$consumers)) {
+            return false;
+        }
+        Object this$delivery = this.getDelivery();
+        Object other$delivery = other.getDelivery();
+        if (this$delivery == null ? other$delivery != null : !this$delivery.equals(other$delivery)) {
+            return false;
+        }
+        Object this$initialOffset = this.getInitialOffset();
+        Object other$initialOffset = other.getInitialOffset();
+        if (this$initialOffset == null ? other$initialOffset != null : !this$initialOffset.equals(other$initialOffset)) {
+            return false;
+        }
+        Object this$net = this.getNet();
+        Object other$net = other.getNet();
+        if (this$net == null ? other$net != null : !this$net.equals(other$net)) {
+            return false;
+        }
+        Object this$ordering = this.getOrdering();
+        Object other$ordering = other.getOrdering();
+        if (this$ordering == null ? other$ordering != null : !this$ordering.equals(other$ordering)) {
+            return false;
+        }
+        Object this$sink = this.getSink();
+        Object other$sink = other.getSink();
+        if (this$sink == null ? other$sink != null : !this$sink.equals(other$sink)) {
+            return false;
+        }
+        Object this$topics = this.getTopics();
+        Object other$topics = other.getTopics();
+        if (this$topics == null ? other$topics != null : !this$topics.equals(other$topics)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof KafkaSourceSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bootstrapServers = this.getBootstrapServers();
+        result = result * prime + ($bootstrapServers == null ? 43 : $bootstrapServers.hashCode());
+        Object $ceOverrides = this.getCeOverrides();
+        result = result * prime + ($ceOverrides == null ? 43 : $ceOverrides.hashCode());
+        Object $consumerGroup = this.getConsumerGroup();
+        result = result * prime + ($consumerGroup == null ? 43 : $consumerGroup.hashCode());
+        Object $consumers = this.getConsumers();
+        result = result * prime + ($consumers == null ? 43 : $consumers.hashCode());
+        Object $delivery = this.getDelivery();
+        result = result * prime + ($delivery == null ? 43 : $delivery.hashCode());
+        Object $initialOffset = this.getInitialOffset();
+        result = result * prime + ($initialOffset == null ? 43 : $initialOffset.hashCode());
+        Object $net = this.getNet();
+        result = result * prime + ($net == null ? 43 : $net.hashCode());
+        Object $ordering = this.getOrdering();
+        result = result * prime + ($ordering == null ? 43 : $ordering.hashCode());
+        Object $sink = this.getSink();
+        result = result * prime + ($sink == null ? 43 : $sink.hashCode());
+        Object $topics = this.getTopics();
+        result = result * prime + ($topics == null ? 43 : $topics.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "KafkaSourceSpec(" + "bootstrapServers=" + this.getBootstrapServers() + ", ceOverrides=" + this.getCeOverrides() + ", consumerGroup=" + this.getConsumerGroup() + ", consumers=" + this.getConsumers() + ", delivery=" + this.getDelivery() + ", initialOffset=" + this.getInitialOffset() + ", net=" + this.getNet() + ", ordering=" + this.getOrdering() + ", sink=" + this.getSink() + ", topics=" + this.getTopics() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

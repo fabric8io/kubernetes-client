@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * BMCDetails contains the information necessary to communicate with the bare metal controller module on host.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "address",
     "credentialsName",
     "disableCertificateVerification"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -159,6 +150,64 @@ public class BMCDetails implements Editable<BMCDetailsBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BMCDetails)) {
+            return false;
+        }
+        BMCDetails other = (BMCDetails) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$address = this.getAddress();
+        Object other$address = other.getAddress();
+        if (this$address == null ? other$address != null : !this$address.equals(other$address)) {
+            return false;
+        }
+        Object this$credentialsName = this.getCredentialsName();
+        Object other$credentialsName = other.getCredentialsName();
+        if (this$credentialsName == null ? other$credentialsName != null : !this$credentialsName.equals(other$credentialsName)) {
+            return false;
+        }
+        Object this$disableCertificateVerification = this.getDisableCertificateVerification();
+        Object other$disableCertificateVerification = other.getDisableCertificateVerification();
+        if (this$disableCertificateVerification == null ? other$disableCertificateVerification != null : !this$disableCertificateVerification.equals(other$disableCertificateVerification)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BMCDetails;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $address = this.getAddress();
+        result = result * prime + ($address == null ? 43 : $address.hashCode());
+        Object $credentialsName = this.getCredentialsName();
+        result = result * prime + ($credentialsName == null ? 43 : $credentialsName.hashCode());
+        Object $disableCertificateVerification = this.getDisableCertificateVerification();
+        result = result * prime + ($disableCertificateVerification == null ? 43 : $disableCertificateVerification.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BMCDetails(" + "address=" + this.getAddress() + ", credentialsName=" + this.getCredentialsName() + ", disableCertificateVerification=" + this.getDisableCertificateVerification() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

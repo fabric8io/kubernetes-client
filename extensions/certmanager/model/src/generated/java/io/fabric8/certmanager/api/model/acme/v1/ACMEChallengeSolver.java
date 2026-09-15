@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * An ACMEChallengeSolver describes how to solve ACME challenges for the issuer it is part of. A selector may be provided to use different solving strategies for different DNS names. Only one of HTTP01 or DNS01 must be provided.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "dns01",
     "http01",
     "selector"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class ACMEChallengeSolver implements Editable<ACMEChallengeSolverBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ACMEChallengeSolver)) {
+            return false;
+        }
+        ACMEChallengeSolver other = (ACMEChallengeSolver) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$dns01 = this.getDns01();
+        Object other$dns01 = other.getDns01();
+        if (this$dns01 == null ? other$dns01 != null : !this$dns01.equals(other$dns01)) {
+            return false;
+        }
+        Object this$http01 = this.getHttp01();
+        Object other$http01 = other.getHttp01();
+        if (this$http01 == null ? other$http01 != null : !this$http01.equals(other$http01)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ACMEChallengeSolver;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $dns01 = this.getDns01();
+        result = result * prime + ($dns01 == null ? 43 : $dns01.hashCode());
+        Object $http01 = this.getHttp01();
+        result = result * prime + ($http01 == null ? 43 : $http01.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ACMEChallengeSolver(" + "dns01=" + this.getDns01() + ", http01=" + this.getHttp01() + ", selector=" + this.getSelector() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * KReference contains enough information to refer to another object. It's a trimmed down version of corev1.ObjectReference.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "group",
     "name",
     "namespace"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -220,6 +211,85 @@ public class KReference implements Editable<KReferenceBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof KReference)) {
+            return false;
+        }
+        KReference other = (KReference) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$address = this.getAddress();
+        Object other$address = other.getAddress();
+        if (this$address == null ? other$address != null : !this$address.equals(other$address)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$group = this.getGroup();
+        Object other$group = other.getGroup();
+        if (this$group == null ? other$group != null : !this$group.equals(other$group)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$namespace = this.getNamespace();
+        Object other$namespace = other.getNamespace();
+        if (this$namespace == null ? other$namespace != null : !this$namespace.equals(other$namespace)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof KReference;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $address = this.getAddress();
+        result = result * prime + ($address == null ? 43 : $address.hashCode());
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $group = this.getGroup();
+        result = result * prime + ($group == null ? 43 : $group.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $namespace = this.getNamespace();
+        result = result * prime + ($namespace == null ? 43 : $namespace.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "KReference(" + "address=" + this.getAddress() + ", apiVersion=" + this.getApiVersion() + ", group=" + this.getGroup() + ", kind=" + this.getKind() + ", name=" + this.getName() + ", namespace=" + this.getNamespace() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

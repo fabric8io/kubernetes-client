@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Overrides provides developer overrides for MCH installation
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "components",
     "imagePullPolicy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -144,6 +135,57 @@ public class Overrides implements Editable<OverridesBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Overrides)) {
+            return false;
+        }
+        Overrides other = (Overrides) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$components = this.getComponents();
+        Object other$components = other.getComponents();
+        if (this$components == null ? other$components != null : !this$components.equals(other$components)) {
+            return false;
+        }
+        Object this$imagePullPolicy = this.getImagePullPolicy();
+        Object other$imagePullPolicy = other.getImagePullPolicy();
+        if (this$imagePullPolicy == null ? other$imagePullPolicy != null : !this$imagePullPolicy.equals(other$imagePullPolicy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Overrides;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $components = this.getComponents();
+        result = result * prime + ($components == null ? 43 : $components.hashCode());
+        Object $imagePullPolicy = this.getImagePullPolicy();
+        result = result * prime + ($imagePullPolicy == null ? 43 : $imagePullPolicy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Overrides(" + "components=" + this.getComponents() + ", imagePullPolicy=" + this.getImagePullPolicy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

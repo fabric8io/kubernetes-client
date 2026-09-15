@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AccessLogging describes how client requests should be logged.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "httpCaptureHeaders",
     "httpLogFormat",
     "logEmptyRequests"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -204,6 +195,78 @@ public class AccessLogging implements Editable<AccessLoggingBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AccessLogging)) {
+            return false;
+        }
+        AccessLogging other = (AccessLogging) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$destination = this.getDestination();
+        Object other$destination = other.getDestination();
+        if (this$destination == null ? other$destination != null : !this$destination.equals(other$destination)) {
+            return false;
+        }
+        Object this$httpCaptureCookies = this.getHttpCaptureCookies();
+        Object other$httpCaptureCookies = other.getHttpCaptureCookies();
+        if (this$httpCaptureCookies == null ? other$httpCaptureCookies != null : !this$httpCaptureCookies.equals(other$httpCaptureCookies)) {
+            return false;
+        }
+        Object this$httpCaptureHeaders = this.getHttpCaptureHeaders();
+        Object other$httpCaptureHeaders = other.getHttpCaptureHeaders();
+        if (this$httpCaptureHeaders == null ? other$httpCaptureHeaders != null : !this$httpCaptureHeaders.equals(other$httpCaptureHeaders)) {
+            return false;
+        }
+        Object this$httpLogFormat = this.getHttpLogFormat();
+        Object other$httpLogFormat = other.getHttpLogFormat();
+        if (this$httpLogFormat == null ? other$httpLogFormat != null : !this$httpLogFormat.equals(other$httpLogFormat)) {
+            return false;
+        }
+        Object this$logEmptyRequests = this.getLogEmptyRequests();
+        Object other$logEmptyRequests = other.getLogEmptyRequests();
+        if (this$logEmptyRequests == null ? other$logEmptyRequests != null : !this$logEmptyRequests.equals(other$logEmptyRequests)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AccessLogging;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $destination = this.getDestination();
+        result = result * prime + ($destination == null ? 43 : $destination.hashCode());
+        Object $httpCaptureCookies = this.getHttpCaptureCookies();
+        result = result * prime + ($httpCaptureCookies == null ? 43 : $httpCaptureCookies.hashCode());
+        Object $httpCaptureHeaders = this.getHttpCaptureHeaders();
+        result = result * prime + ($httpCaptureHeaders == null ? 43 : $httpCaptureHeaders.hashCode());
+        Object $httpLogFormat = this.getHttpLogFormat();
+        result = result * prime + ($httpLogFormat == null ? 43 : $httpLogFormat.hashCode());
+        Object $logEmptyRequests = this.getLogEmptyRequests();
+        result = result * prime + ($logEmptyRequests == null ? 43 : $logEmptyRequests.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AccessLogging(" + "destination=" + this.getDestination() + ", httpCaptureCookies=" + this.getHttpCaptureCookies() + ", httpCaptureHeaders=" + this.getHttpCaptureHeaders() + ", httpLogFormat=" + this.getHttpLogFormat() + ", logEmptyRequests=" + this.getLogEmptyRequests() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

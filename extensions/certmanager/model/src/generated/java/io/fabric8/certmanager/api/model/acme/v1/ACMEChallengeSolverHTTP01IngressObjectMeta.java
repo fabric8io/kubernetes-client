@@ -28,21 +28,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "annotations",
     "labels"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -141,6 +132,57 @@ public class ACMEChallengeSolverHTTP01IngressObjectMeta implements Editable<ACME
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ACMEChallengeSolverHTTP01IngressObjectMeta)) {
+            return false;
+        }
+        ACMEChallengeSolverHTTP01IngressObjectMeta other = (ACMEChallengeSolverHTTP01IngressObjectMeta) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$annotations = this.getAnnotations();
+        Object other$annotations = other.getAnnotations();
+        if (this$annotations == null ? other$annotations != null : !this$annotations.equals(other$annotations)) {
+            return false;
+        }
+        Object this$labels = this.getLabels();
+        Object other$labels = other.getLabels();
+        if (this$labels == null ? other$labels != null : !this$labels.equals(other$labels)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ACMEChallengeSolverHTTP01IngressObjectMeta;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $annotations = this.getAnnotations();
+        result = result * prime + ($annotations == null ? 43 : $annotations.hashCode());
+        Object $labels = this.getLabels();
+        result = result * prime + ($labels == null ? 43 : $labels.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ACMEChallengeSolverHTTP01IngressObjectMeta(" + "annotations=" + this.getAnnotations() + ", labels=" + this.getLabels() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

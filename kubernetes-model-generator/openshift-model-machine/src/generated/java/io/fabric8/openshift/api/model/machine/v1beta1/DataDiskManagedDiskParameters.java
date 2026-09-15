@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DataDiskManagedDiskParameters is the parameters of a DataDisk managed disk.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "diskEncryptionSet",
     "storageAccountType"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -139,6 +130,57 @@ public class DataDiskManagedDiskParameters implements Editable<DataDiskManagedDi
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DataDiskManagedDiskParameters)) {
+            return false;
+        }
+        DataDiskManagedDiskParameters other = (DataDiskManagedDiskParameters) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$diskEncryptionSet = this.getDiskEncryptionSet();
+        Object other$diskEncryptionSet = other.getDiskEncryptionSet();
+        if (this$diskEncryptionSet == null ? other$diskEncryptionSet != null : !this$diskEncryptionSet.equals(other$diskEncryptionSet)) {
+            return false;
+        }
+        Object this$storageAccountType = this.getStorageAccountType();
+        Object other$storageAccountType = other.getStorageAccountType();
+        if (this$storageAccountType == null ? other$storageAccountType != null : !this$storageAccountType.equals(other$storageAccountType)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DataDiskManagedDiskParameters;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $diskEncryptionSet = this.getDiskEncryptionSet();
+        result = result * prime + ($diskEncryptionSet == null ? 43 : $diskEncryptionSet.hashCode());
+        Object $storageAccountType = this.getStorageAccountType();
+        result = result * prime + ($storageAccountType == null ? 43 : $storageAccountType.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DataDiskManagedDiskParameters(" + "diskEncryptionSet=" + this.getDiskEncryptionSet() + ", storageAccountType=" + this.getStorageAccountType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * GCPChaosSpec is the content of the specification for a GCPChaos
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "remoteCluster",
     "secretName",
     "zone"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -264,6 +255,99 @@ public class GCPChaosSpec implements Editable<GCPChaosSpecBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GCPChaosSpec)) {
+            return false;
+        }
+        GCPChaosSpec other = (GCPChaosSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$action = this.getAction();
+        Object other$action = other.getAction();
+        if (this$action == null ? other$action != null : !this$action.equals(other$action)) {
+            return false;
+        }
+        Object this$deviceNames = this.getDeviceNames();
+        Object other$deviceNames = other.getDeviceNames();
+        if (this$deviceNames == null ? other$deviceNames != null : !this$deviceNames.equals(other$deviceNames)) {
+            return false;
+        }
+        Object this$duration = this.getDuration();
+        Object other$duration = other.getDuration();
+        if (this$duration == null ? other$duration != null : !this$duration.equals(other$duration)) {
+            return false;
+        }
+        Object this$instance = this.getInstance();
+        Object other$instance = other.getInstance();
+        if (this$instance == null ? other$instance != null : !this$instance.equals(other$instance)) {
+            return false;
+        }
+        Object this$project = this.getProject();
+        Object other$project = other.getProject();
+        if (this$project == null ? other$project != null : !this$project.equals(other$project)) {
+            return false;
+        }
+        Object this$remoteCluster = this.getRemoteCluster();
+        Object other$remoteCluster = other.getRemoteCluster();
+        if (this$remoteCluster == null ? other$remoteCluster != null : !this$remoteCluster.equals(other$remoteCluster)) {
+            return false;
+        }
+        Object this$secretName = this.getSecretName();
+        Object other$secretName = other.getSecretName();
+        if (this$secretName == null ? other$secretName != null : !this$secretName.equals(other$secretName)) {
+            return false;
+        }
+        Object this$zone = this.getZone();
+        Object other$zone = other.getZone();
+        if (this$zone == null ? other$zone != null : !this$zone.equals(other$zone)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GCPChaosSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $action = this.getAction();
+        result = result * prime + ($action == null ? 43 : $action.hashCode());
+        Object $deviceNames = this.getDeviceNames();
+        result = result * prime + ($deviceNames == null ? 43 : $deviceNames.hashCode());
+        Object $duration = this.getDuration();
+        result = result * prime + ($duration == null ? 43 : $duration.hashCode());
+        Object $instance = this.getInstance();
+        result = result * prime + ($instance == null ? 43 : $instance.hashCode());
+        Object $project = this.getProject();
+        result = result * prime + ($project == null ? 43 : $project.hashCode());
+        Object $remoteCluster = this.getRemoteCluster();
+        result = result * prime + ($remoteCluster == null ? 43 : $remoteCluster.hashCode());
+        Object $secretName = this.getSecretName();
+        result = result * prime + ($secretName == null ? 43 : $secretName.hashCode());
+        Object $zone = this.getZone();
+        result = result * prime + ($zone == null ? 43 : $zone.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GCPChaosSpec(" + "action=" + this.getAction() + ", deviceNames=" + this.getDeviceNames() + ", duration=" + this.getDuration() + ", instance=" + this.getInstance() + ", project=" + this.getProject() + ", remoteCluster=" + this.getRemoteCluster() + ", secretName=" + this.getSecretName() + ", zone=" + this.getZone() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

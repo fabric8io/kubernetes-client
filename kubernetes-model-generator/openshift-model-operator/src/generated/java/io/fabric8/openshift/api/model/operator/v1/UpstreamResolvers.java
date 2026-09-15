@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * UpstreamResolvers defines a schema for configuring the CoreDNS forward plugin in the specific case of the default (".") server. It defers from ForwardPlugin in the default values it accepts: &#42; At least one upstream should be specified. &#42; the default policy is Sequential
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "protocolStrategy",
     "transportConfig",
     "upstreams"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class UpstreamResolvers implements Editable<UpstreamResolversBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof UpstreamResolvers)) {
+            return false;
+        }
+        UpstreamResolvers other = (UpstreamResolvers) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$policy = this.getPolicy();
+        Object other$policy = other.getPolicy();
+        if (this$policy == null ? other$policy != null : !this$policy.equals(other$policy)) {
+            return false;
+        }
+        Object this$protocolStrategy = this.getProtocolStrategy();
+        Object other$protocolStrategy = other.getProtocolStrategy();
+        if (this$protocolStrategy == null ? other$protocolStrategy != null : !this$protocolStrategy.equals(other$protocolStrategy)) {
+            return false;
+        }
+        Object this$transportConfig = this.getTransportConfig();
+        Object other$transportConfig = other.getTransportConfig();
+        if (this$transportConfig == null ? other$transportConfig != null : !this$transportConfig.equals(other$transportConfig)) {
+            return false;
+        }
+        Object this$upstreams = this.getUpstreams();
+        Object other$upstreams = other.getUpstreams();
+        if (this$upstreams == null ? other$upstreams != null : !this$upstreams.equals(other$upstreams)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof UpstreamResolvers;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $policy = this.getPolicy();
+        result = result * prime + ($policy == null ? 43 : $policy.hashCode());
+        Object $protocolStrategy = this.getProtocolStrategy();
+        result = result * prime + ($protocolStrategy == null ? 43 : $protocolStrategy.hashCode());
+        Object $transportConfig = this.getTransportConfig();
+        result = result * prime + ($transportConfig == null ? 43 : $transportConfig.hashCode());
+        Object $upstreams = this.getUpstreams();
+        result = result * prime + ($upstreams == null ? 43 : $upstreams.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "UpstreamResolvers(" + "policy=" + this.getPolicy() + ", protocolStrategy=" + this.getProtocolStrategy() + ", transportConfig=" + this.getTransportConfig() + ", upstreams=" + this.getUpstreams() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

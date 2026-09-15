@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HostNetworkStrategy holds parameters for the HostNetwork endpoint publishing strategy.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "httpsPort",
     "protocol",
     "statsPort"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class HostNetworkStrategy implements Editable<HostNetworkStrategyBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HostNetworkStrategy)) {
+            return false;
+        }
+        HostNetworkStrategy other = (HostNetworkStrategy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$httpPort = this.getHttpPort();
+        Object other$httpPort = other.getHttpPort();
+        if (this$httpPort == null ? other$httpPort != null : !this$httpPort.equals(other$httpPort)) {
+            return false;
+        }
+        Object this$httpsPort = this.getHttpsPort();
+        Object other$httpsPort = other.getHttpsPort();
+        if (this$httpsPort == null ? other$httpsPort != null : !this$httpsPort.equals(other$httpsPort)) {
+            return false;
+        }
+        Object this$protocol = this.getProtocol();
+        Object other$protocol = other.getProtocol();
+        if (this$protocol == null ? other$protocol != null : !this$protocol.equals(other$protocol)) {
+            return false;
+        }
+        Object this$statsPort = this.getStatsPort();
+        Object other$statsPort = other.getStatsPort();
+        if (this$statsPort == null ? other$statsPort != null : !this$statsPort.equals(other$statsPort)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HostNetworkStrategy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $httpPort = this.getHttpPort();
+        result = result * prime + ($httpPort == null ? 43 : $httpPort.hashCode());
+        Object $httpsPort = this.getHttpsPort();
+        result = result * prime + ($httpsPort == null ? 43 : $httpsPort.hashCode());
+        Object $protocol = this.getProtocol();
+        result = result * prime + ($protocol == null ? 43 : $protocol.hashCode());
+        Object $statsPort = this.getStatsPort();
+        result = result * prime + ($statsPort == null ? 43 : $statsPort.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HostNetworkStrategy(" + "httpPort=" + this.getHttpPort() + ", httpsPort=" + this.getHttpsPort() + ", protocol=" + this.getProtocol() + ", statsPort=" + this.getStatsPort() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PowerVSPlatformStatus holds the current status of the IBM Power Systems Virtual Servers infrastrucutre provider.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "resourceGroup",
     "serviceEndpoints",
     "zone"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -223,6 +214,85 @@ public class PowerVSPlatformStatus implements Editable<PowerVSPlatformStatusBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PowerVSPlatformStatus)) {
+            return false;
+        }
+        PowerVSPlatformStatus other = (PowerVSPlatformStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cisInstanceCRN = this.getCisInstanceCRN();
+        Object other$cisInstanceCRN = other.getCisInstanceCRN();
+        if (this$cisInstanceCRN == null ? other$cisInstanceCRN != null : !this$cisInstanceCRN.equals(other$cisInstanceCRN)) {
+            return false;
+        }
+        Object this$dnsInstanceCRN = this.getDnsInstanceCRN();
+        Object other$dnsInstanceCRN = other.getDnsInstanceCRN();
+        if (this$dnsInstanceCRN == null ? other$dnsInstanceCRN != null : !this$dnsInstanceCRN.equals(other$dnsInstanceCRN)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$resourceGroup = this.getResourceGroup();
+        Object other$resourceGroup = other.getResourceGroup();
+        if (this$resourceGroup == null ? other$resourceGroup != null : !this$resourceGroup.equals(other$resourceGroup)) {
+            return false;
+        }
+        Object this$serviceEndpoints = this.getServiceEndpoints();
+        Object other$serviceEndpoints = other.getServiceEndpoints();
+        if (this$serviceEndpoints == null ? other$serviceEndpoints != null : !this$serviceEndpoints.equals(other$serviceEndpoints)) {
+            return false;
+        }
+        Object this$zone = this.getZone();
+        Object other$zone = other.getZone();
+        if (this$zone == null ? other$zone != null : !this$zone.equals(other$zone)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PowerVSPlatformStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cisInstanceCRN = this.getCisInstanceCRN();
+        result = result * prime + ($cisInstanceCRN == null ? 43 : $cisInstanceCRN.hashCode());
+        Object $dnsInstanceCRN = this.getDnsInstanceCRN();
+        result = result * prime + ($dnsInstanceCRN == null ? 43 : $dnsInstanceCRN.hashCode());
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $resourceGroup = this.getResourceGroup();
+        result = result * prime + ($resourceGroup == null ? 43 : $resourceGroup.hashCode());
+        Object $serviceEndpoints = this.getServiceEndpoints();
+        result = result * prime + ($serviceEndpoints == null ? 43 : $serviceEndpoints.hashCode());
+        Object $zone = this.getZone();
+        result = result * prime + ($zone == null ? 43 : $zone.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PowerVSPlatformStatus(" + "cisInstanceCRN=" + this.getCisInstanceCRN() + ", dnsInstanceCRN=" + this.getDnsInstanceCRN() + ", region=" + this.getRegion() + ", resourceGroup=" + this.getResourceGroup() + ", serviceEndpoints=" + this.getServiceEndpoints() + ", zone=" + this.getZone() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * EnvVar represents an environment variable present in a Container.
@@ -26,12 +23,6 @@ import lombok.experimental.Accessors;
     "name",
     "value",
     "valueFrom"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -131,6 +122,64 @@ public class EnvVar implements Editable<EnvVarBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EnvVar)) {
+            return false;
+        }
+        EnvVar other = (EnvVar) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$value = this.getValue();
+        Object other$value = other.getValue();
+        if (this$value == null ? other$value != null : !this$value.equals(other$value)) {
+            return false;
+        }
+        Object this$valueFrom = this.getValueFrom();
+        Object other$valueFrom = other.getValueFrom();
+        if (this$valueFrom == null ? other$valueFrom != null : !this$valueFrom.equals(other$valueFrom)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EnvVar;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $value = this.getValue();
+        result = result * prime + ($value == null ? 43 : $value.hashCode());
+        Object $valueFrom = this.getValueFrom();
+        result = result * prime + ($valueFrom == null ? 43 : $valueFrom.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EnvVar(" + "name=" + this.getName() + ", value=" + this.getValue() + ", valueFrom=" + this.getValueFrom() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

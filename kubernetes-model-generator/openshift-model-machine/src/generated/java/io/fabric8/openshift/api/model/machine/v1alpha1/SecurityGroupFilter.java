@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "tags",
     "tagsAny",
     "tenantId"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -357,6 +348,134 @@ public class SecurityGroupFilter implements Editable<SecurityGroupFilterBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SecurityGroupFilter)) {
+            return false;
+        }
+        SecurityGroupFilter other = (SecurityGroupFilter) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$description = this.getDescription();
+        Object other$description = other.getDescription();
+        if (this$description == null ? other$description != null : !this$description.equals(other$description)) {
+            return false;
+        }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {
+            return false;
+        }
+        Object this$limit = this.getLimit();
+        Object other$limit = other.getLimit();
+        if (this$limit == null ? other$limit != null : !this$limit.equals(other$limit)) {
+            return false;
+        }
+        Object this$marker = this.getMarker();
+        Object other$marker = other.getMarker();
+        if (this$marker == null ? other$marker != null : !this$marker.equals(other$marker)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$notTags = this.getNotTags();
+        Object other$notTags = other.getNotTags();
+        if (this$notTags == null ? other$notTags != null : !this$notTags.equals(other$notTags)) {
+            return false;
+        }
+        Object this$notTagsAny = this.getNotTagsAny();
+        Object other$notTagsAny = other.getNotTagsAny();
+        if (this$notTagsAny == null ? other$notTagsAny != null : !this$notTagsAny.equals(other$notTagsAny)) {
+            return false;
+        }
+        Object this$projectId = this.getProjectId();
+        Object other$projectId = other.getProjectId();
+        if (this$projectId == null ? other$projectId != null : !this$projectId.equals(other$projectId)) {
+            return false;
+        }
+        Object this$sortDir = this.getSortDir();
+        Object other$sortDir = other.getSortDir();
+        if (this$sortDir == null ? other$sortDir != null : !this$sortDir.equals(other$sortDir)) {
+            return false;
+        }
+        Object this$sortKey = this.getSortKey();
+        Object other$sortKey = other.getSortKey();
+        if (this$sortKey == null ? other$sortKey != null : !this$sortKey.equals(other$sortKey)) {
+            return false;
+        }
+        Object this$tags = this.getTags();
+        Object other$tags = other.getTags();
+        if (this$tags == null ? other$tags != null : !this$tags.equals(other$tags)) {
+            return false;
+        }
+        Object this$tagsAny = this.getTagsAny();
+        Object other$tagsAny = other.getTagsAny();
+        if (this$tagsAny == null ? other$tagsAny != null : !this$tagsAny.equals(other$tagsAny)) {
+            return false;
+        }
+        Object this$tenantId = this.getTenantId();
+        Object other$tenantId = other.getTenantId();
+        if (this$tenantId == null ? other$tenantId != null : !this$tenantId.equals(other$tenantId)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SecurityGroupFilter;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $description = this.getDescription();
+        result = result * prime + ($description == null ? 43 : $description.hashCode());
+        Object $id = this.getId();
+        result = result * prime + ($id == null ? 43 : $id.hashCode());
+        Object $limit = this.getLimit();
+        result = result * prime + ($limit == null ? 43 : $limit.hashCode());
+        Object $marker = this.getMarker();
+        result = result * prime + ($marker == null ? 43 : $marker.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $notTags = this.getNotTags();
+        result = result * prime + ($notTags == null ? 43 : $notTags.hashCode());
+        Object $notTagsAny = this.getNotTagsAny();
+        result = result * prime + ($notTagsAny == null ? 43 : $notTagsAny.hashCode());
+        Object $projectId = this.getProjectId();
+        result = result * prime + ($projectId == null ? 43 : $projectId.hashCode());
+        Object $sortDir = this.getSortDir();
+        result = result * prime + ($sortDir == null ? 43 : $sortDir.hashCode());
+        Object $sortKey = this.getSortKey();
+        result = result * prime + ($sortKey == null ? 43 : $sortKey.hashCode());
+        Object $tags = this.getTags();
+        result = result * prime + ($tags == null ? 43 : $tags.hashCode());
+        Object $tagsAny = this.getTagsAny();
+        result = result * prime + ($tagsAny == null ? 43 : $tagsAny.hashCode());
+        Object $tenantId = this.getTenantId();
+        result = result * prime + ($tenantId == null ? 43 : $tenantId.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SecurityGroupFilter(" + "description=" + this.getDescription() + ", id=" + this.getId() + ", limit=" + this.getLimit() + ", marker=" + this.getMarker() + ", name=" + this.getName() + ", notTags=" + this.getNotTags() + ", notTagsAny=" + this.getNotTagsAny() + ", projectId=" + this.getProjectId() + ", sortDir=" + this.getSortDir() + ", sortKey=" + this.getSortKey() + ", tags=" + this.getTags() + ", tagsAny=" + this.getTagsAny() + ", tenantId=" + this.getTenantId() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

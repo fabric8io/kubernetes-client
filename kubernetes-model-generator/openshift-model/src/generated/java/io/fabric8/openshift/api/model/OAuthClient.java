@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OAuthClient describes an OAuth client<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
@@ -52,12 +49,6 @@ import lombok.experimental.Accessors;
     "respondWithChallenges",
     "scopeRestrictions",
     "secret"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -331,6 +322,120 @@ public class OAuthClient implements Editable<OAuthClientBuilder>, HasMetadata
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OAuthClient)) {
+            return false;
+        }
+        OAuthClient other = (OAuthClient) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$accessTokenInactivityTimeoutSeconds = this.getAccessTokenInactivityTimeoutSeconds();
+        Object other$accessTokenInactivityTimeoutSeconds = other.getAccessTokenInactivityTimeoutSeconds();
+        if (this$accessTokenInactivityTimeoutSeconds == null ? other$accessTokenInactivityTimeoutSeconds != null : !this$accessTokenInactivityTimeoutSeconds.equals(other$accessTokenInactivityTimeoutSeconds)) {
+            return false;
+        }
+        Object this$accessTokenMaxAgeSeconds = this.getAccessTokenMaxAgeSeconds();
+        Object other$accessTokenMaxAgeSeconds = other.getAccessTokenMaxAgeSeconds();
+        if (this$accessTokenMaxAgeSeconds == null ? other$accessTokenMaxAgeSeconds != null : !this$accessTokenMaxAgeSeconds.equals(other$accessTokenMaxAgeSeconds)) {
+            return false;
+        }
+        Object this$additionalSecrets = this.getAdditionalSecrets();
+        Object other$additionalSecrets = other.getAdditionalSecrets();
+        if (this$additionalSecrets == null ? other$additionalSecrets != null : !this$additionalSecrets.equals(other$additionalSecrets)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$grantMethod = this.getGrantMethod();
+        Object other$grantMethod = other.getGrantMethod();
+        if (this$grantMethod == null ? other$grantMethod != null : !this$grantMethod.equals(other$grantMethod)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$redirectURIs = this.getRedirectURIs();
+        Object other$redirectURIs = other.getRedirectURIs();
+        if (this$redirectURIs == null ? other$redirectURIs != null : !this$redirectURIs.equals(other$redirectURIs)) {
+            return false;
+        }
+        Object this$respondWithChallenges = this.getRespondWithChallenges();
+        Object other$respondWithChallenges = other.getRespondWithChallenges();
+        if (this$respondWithChallenges == null ? other$respondWithChallenges != null : !this$respondWithChallenges.equals(other$respondWithChallenges)) {
+            return false;
+        }
+        Object this$scopeRestrictions = this.getScopeRestrictions();
+        Object other$scopeRestrictions = other.getScopeRestrictions();
+        if (this$scopeRestrictions == null ? other$scopeRestrictions != null : !this$scopeRestrictions.equals(other$scopeRestrictions)) {
+            return false;
+        }
+        Object this$secret = this.getSecret();
+        Object other$secret = other.getSecret();
+        if (this$secret == null ? other$secret != null : !this$secret.equals(other$secret)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OAuthClient;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $accessTokenInactivityTimeoutSeconds = this.getAccessTokenInactivityTimeoutSeconds();
+        result = result * prime + ($accessTokenInactivityTimeoutSeconds == null ? 43 : $accessTokenInactivityTimeoutSeconds.hashCode());
+        Object $accessTokenMaxAgeSeconds = this.getAccessTokenMaxAgeSeconds();
+        result = result * prime + ($accessTokenMaxAgeSeconds == null ? 43 : $accessTokenMaxAgeSeconds.hashCode());
+        Object $additionalSecrets = this.getAdditionalSecrets();
+        result = result * prime + ($additionalSecrets == null ? 43 : $additionalSecrets.hashCode());
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $grantMethod = this.getGrantMethod();
+        result = result * prime + ($grantMethod == null ? 43 : $grantMethod.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $redirectURIs = this.getRedirectURIs();
+        result = result * prime + ($redirectURIs == null ? 43 : $redirectURIs.hashCode());
+        Object $respondWithChallenges = this.getRespondWithChallenges();
+        result = result * prime + ($respondWithChallenges == null ? 43 : $respondWithChallenges.hashCode());
+        Object $scopeRestrictions = this.getScopeRestrictions();
+        result = result * prime + ($scopeRestrictions == null ? 43 : $scopeRestrictions.hashCode());
+        Object $secret = this.getSecret();
+        result = result * prime + ($secret == null ? 43 : $secret.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OAuthClient(" + "accessTokenInactivityTimeoutSeconds=" + this.getAccessTokenInactivityTimeoutSeconds() + ", accessTokenMaxAgeSeconds=" + this.getAccessTokenMaxAgeSeconds() + ", additionalSecrets=" + this.getAdditionalSecrets() + ", apiVersion=" + this.getApiVersion() + ", grantMethod=" + this.getGrantMethod() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata() + ", redirectURIs=" + this.getRedirectURIs() + ", respondWithChallenges=" + this.getRespondWithChallenges() + ", scopeRestrictions=" + this.getScopeRestrictions() + ", secret=" + this.getSecret() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

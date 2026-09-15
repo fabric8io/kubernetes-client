@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OperatorStatus contains common fields for an operator to need.  It is intended to be anonymous included inside of the Status struct for you particular operator. DEPRECATED: Use v1.OperatorStatus instead
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "state",
     "targetVersionAvailability",
     "taskSummary"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -224,6 +215,85 @@ public class OperatorStatus implements Editable<OperatorStatusBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OperatorStatus)) {
+            return false;
+        }
+        OperatorStatus other = (OperatorStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$currentVersionAvailability = this.getCurrentVersionAvailability();
+        Object other$currentVersionAvailability = other.getCurrentVersionAvailability();
+        if (this$currentVersionAvailability == null ? other$currentVersionAvailability != null : !this$currentVersionAvailability.equals(other$currentVersionAvailability)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$state = this.getState();
+        Object other$state = other.getState();
+        if (this$state == null ? other$state != null : !this$state.equals(other$state)) {
+            return false;
+        }
+        Object this$targetVersionAvailability = this.getTargetVersionAvailability();
+        Object other$targetVersionAvailability = other.getTargetVersionAvailability();
+        if (this$targetVersionAvailability == null ? other$targetVersionAvailability != null : !this$targetVersionAvailability.equals(other$targetVersionAvailability)) {
+            return false;
+        }
+        Object this$taskSummary = this.getTaskSummary();
+        Object other$taskSummary = other.getTaskSummary();
+        if (this$taskSummary == null ? other$taskSummary != null : !this$taskSummary.equals(other$taskSummary)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OperatorStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $currentVersionAvailability = this.getCurrentVersionAvailability();
+        result = result * prime + ($currentVersionAvailability == null ? 43 : $currentVersionAvailability.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $state = this.getState();
+        result = result * prime + ($state == null ? 43 : $state.hashCode());
+        Object $targetVersionAvailability = this.getTargetVersionAvailability();
+        result = result * prime + ($targetVersionAvailability == null ? 43 : $targetVersionAvailability.hashCode());
+        Object $taskSummary = this.getTaskSummary();
+        result = result * prime + ($taskSummary == null ? 43 : $taskSummary.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OperatorStatus(" + "conditions=" + this.getConditions() + ", currentVersionAvailability=" + this.getCurrentVersionAvailability() + ", observedGeneration=" + this.getObservedGeneration() + ", state=" + this.getState() + ", targetVersionAvailability=" + this.getTargetVersionAvailability() + ", taskSummary=" + this.getTaskSummary() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

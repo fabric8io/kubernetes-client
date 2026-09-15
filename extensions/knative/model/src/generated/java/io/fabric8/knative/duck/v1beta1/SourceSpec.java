@@ -28,21 +28,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "ceOverrides",
     "sink"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -125,6 +116,57 @@ public class SourceSpec implements Editable<SourceSpecBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SourceSpec)) {
+            return false;
+        }
+        SourceSpec other = (SourceSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ceOverrides = this.getCeOverrides();
+        Object other$ceOverrides = other.getCeOverrides();
+        if (this$ceOverrides == null ? other$ceOverrides != null : !this$ceOverrides.equals(other$ceOverrides)) {
+            return false;
+        }
+        Object this$sink = this.getSink();
+        Object other$sink = other.getSink();
+        if (this$sink == null ? other$sink != null : !this$sink.equals(other$sink)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SourceSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ceOverrides = this.getCeOverrides();
+        result = result * prime + ($ceOverrides == null ? 43 : $ceOverrides.hashCode());
+        Object $sink = this.getSink();
+        result = result * prime + ($sink == null ? 43 : $sink.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SourceSpec(" + "ceOverrides=" + this.getCeOverrides() + ", sink=" + this.getSink() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MutatingAdmissionPolicyBindingSpec defines the specification of the MutatingAdmissionPolicyBinding.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "matchResources",
     "paramRef",
     "policyName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class MutatingAdmissionPolicyBindingSpec implements Editable<MutatingAdmi
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MutatingAdmissionPolicyBindingSpec)) {
+            return false;
+        }
+        MutatingAdmissionPolicyBindingSpec other = (MutatingAdmissionPolicyBindingSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$matchResources = this.getMatchResources();
+        Object other$matchResources = other.getMatchResources();
+        if (this$matchResources == null ? other$matchResources != null : !this$matchResources.equals(other$matchResources)) {
+            return false;
+        }
+        Object this$paramRef = this.getParamRef();
+        Object other$paramRef = other.getParamRef();
+        if (this$paramRef == null ? other$paramRef != null : !this$paramRef.equals(other$paramRef)) {
+            return false;
+        }
+        Object this$policyName = this.getPolicyName();
+        Object other$policyName = other.getPolicyName();
+        if (this$policyName == null ? other$policyName != null : !this$policyName.equals(other$policyName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MutatingAdmissionPolicyBindingSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $matchResources = this.getMatchResources();
+        result = result * prime + ($matchResources == null ? 43 : $matchResources.hashCode());
+        Object $paramRef = this.getParamRef();
+        result = result * prime + ($paramRef == null ? 43 : $paramRef.hashCode());
+        Object $policyName = this.getPolicyName();
+        result = result * prime + ($policyName == null ? 43 : $policyName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MutatingAdmissionPolicyBindingSpec(" + "matchResources=" + this.getMatchResources() + ", paramRef=" + this.getParamRef() + ", policyName=" + this.getPolicyName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

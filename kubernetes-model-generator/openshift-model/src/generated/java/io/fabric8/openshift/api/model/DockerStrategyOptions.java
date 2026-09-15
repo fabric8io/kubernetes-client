@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DockerStrategyOptions contains extra strategy options for container image builds
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "buildArgs",
     "noCache"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -143,6 +134,57 @@ public class DockerStrategyOptions implements Editable<DockerStrategyOptionsBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DockerStrategyOptions)) {
+            return false;
+        }
+        DockerStrategyOptions other = (DockerStrategyOptions) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$buildArgs = this.getBuildArgs();
+        Object other$buildArgs = other.getBuildArgs();
+        if (this$buildArgs == null ? other$buildArgs != null : !this$buildArgs.equals(other$buildArgs)) {
+            return false;
+        }
+        Object this$noCache = this.getNoCache();
+        Object other$noCache = other.getNoCache();
+        if (this$noCache == null ? other$noCache != null : !this$noCache.equals(other$noCache)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DockerStrategyOptions;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $buildArgs = this.getBuildArgs();
+        result = result * prime + ($buildArgs == null ? 43 : $buildArgs.hashCode());
+        Object $noCache = this.getNoCache();
+        result = result * prime + ($noCache == null ? 43 : $noCache.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DockerStrategyOptions(" + "buildArgs=" + this.getBuildArgs() + ", noCache=" + this.getNoCache() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NodeRuntimeHandlerFeatures is a set of features implemented by the runtime handler.
@@ -25,12 +22,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "recursiveReadOnlyMounts",
     "userNamespaces"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -111,6 +102,57 @@ public class NodeRuntimeHandlerFeatures implements Editable<NodeRuntimeHandlerFe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NodeRuntimeHandlerFeatures)) {
+            return false;
+        }
+        NodeRuntimeHandlerFeatures other = (NodeRuntimeHandlerFeatures) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$recursiveReadOnlyMounts = this.getRecursiveReadOnlyMounts();
+        Object other$recursiveReadOnlyMounts = other.getRecursiveReadOnlyMounts();
+        if (this$recursiveReadOnlyMounts == null ? other$recursiveReadOnlyMounts != null : !this$recursiveReadOnlyMounts.equals(other$recursiveReadOnlyMounts)) {
+            return false;
+        }
+        Object this$userNamespaces = this.getUserNamespaces();
+        Object other$userNamespaces = other.getUserNamespaces();
+        if (this$userNamespaces == null ? other$userNamespaces != null : !this$userNamespaces.equals(other$userNamespaces)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NodeRuntimeHandlerFeatures;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $recursiveReadOnlyMounts = this.getRecursiveReadOnlyMounts();
+        result = result * prime + ($recursiveReadOnlyMounts == null ? 43 : $recursiveReadOnlyMounts.hashCode());
+        Object $userNamespaces = this.getUserNamespaces();
+        result = result * prime + ($userNamespaces == null ? 43 : $userNamespaces.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NodeRuntimeHandlerFeatures(" + "recursiveReadOnlyMounts=" + this.getRecursiveReadOnlyMounts() + ", userNamespaces=" + this.getUserNamespaces() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

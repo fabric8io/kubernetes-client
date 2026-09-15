@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ContainerResourcePolicy controls how autoscaler computes the recommended resources for a specific container.
@@ -52,12 +49,6 @@ import lombok.experimental.Accessors;
     "oomBumpUpRatio",
     "oomMinBumpUp",
     "startupBoost"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -329,6 +320,120 @@ public class ContainerResourcePolicy implements Editable<ContainerResourcePolicy
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ContainerResourcePolicy)) {
+            return false;
+        }
+        ContainerResourcePolicy other = (ContainerResourcePolicy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$containerName = this.getContainerName();
+        Object other$containerName = other.getContainerName();
+        if (this$containerName == null ? other$containerName != null : !this$containerName.equals(other$containerName)) {
+            return false;
+        }
+        Object this$controlledResources = this.getControlledResources();
+        Object other$controlledResources = other.getControlledResources();
+        if (this$controlledResources == null ? other$controlledResources != null : !this$controlledResources.equals(other$controlledResources)) {
+            return false;
+        }
+        Object this$controlledValues = this.getControlledValues();
+        Object other$controlledValues = other.getControlledValues();
+        if (this$controlledValues == null ? other$controlledValues != null : !this$controlledValues.equals(other$controlledValues)) {
+            return false;
+        }
+        Object this$maxAllowed = this.getMaxAllowed();
+        Object other$maxAllowed = other.getMaxAllowed();
+        if (this$maxAllowed == null ? other$maxAllowed != null : !this$maxAllowed.equals(other$maxAllowed)) {
+            return false;
+        }
+        Object this$memoryAggregationIntervalCount = this.getMemoryAggregationIntervalCount();
+        Object other$memoryAggregationIntervalCount = other.getMemoryAggregationIntervalCount();
+        if (this$memoryAggregationIntervalCount == null ? other$memoryAggregationIntervalCount != null : !this$memoryAggregationIntervalCount.equals(other$memoryAggregationIntervalCount)) {
+            return false;
+        }
+        Object this$memoryAggregationIntervalSeconds = this.getMemoryAggregationIntervalSeconds();
+        Object other$memoryAggregationIntervalSeconds = other.getMemoryAggregationIntervalSeconds();
+        if (this$memoryAggregationIntervalSeconds == null ? other$memoryAggregationIntervalSeconds != null : !this$memoryAggregationIntervalSeconds.equals(other$memoryAggregationIntervalSeconds)) {
+            return false;
+        }
+        Object this$minAllowed = this.getMinAllowed();
+        Object other$minAllowed = other.getMinAllowed();
+        if (this$minAllowed == null ? other$minAllowed != null : !this$minAllowed.equals(other$minAllowed)) {
+            return false;
+        }
+        Object this$mode = this.getMode();
+        Object other$mode = other.getMode();
+        if (this$mode == null ? other$mode != null : !this$mode.equals(other$mode)) {
+            return false;
+        }
+        Object this$oomBumpUpRatio = this.getOomBumpUpRatio();
+        Object other$oomBumpUpRatio = other.getOomBumpUpRatio();
+        if (this$oomBumpUpRatio == null ? other$oomBumpUpRatio != null : !this$oomBumpUpRatio.equals(other$oomBumpUpRatio)) {
+            return false;
+        }
+        Object this$oomMinBumpUp = this.getOomMinBumpUp();
+        Object other$oomMinBumpUp = other.getOomMinBumpUp();
+        if (this$oomMinBumpUp == null ? other$oomMinBumpUp != null : !this$oomMinBumpUp.equals(other$oomMinBumpUp)) {
+            return false;
+        }
+        Object this$startupBoost = this.getStartupBoost();
+        Object other$startupBoost = other.getStartupBoost();
+        if (this$startupBoost == null ? other$startupBoost != null : !this$startupBoost.equals(other$startupBoost)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ContainerResourcePolicy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $containerName = this.getContainerName();
+        result = result * prime + ($containerName == null ? 43 : $containerName.hashCode());
+        Object $controlledResources = this.getControlledResources();
+        result = result * prime + ($controlledResources == null ? 43 : $controlledResources.hashCode());
+        Object $controlledValues = this.getControlledValues();
+        result = result * prime + ($controlledValues == null ? 43 : $controlledValues.hashCode());
+        Object $maxAllowed = this.getMaxAllowed();
+        result = result * prime + ($maxAllowed == null ? 43 : $maxAllowed.hashCode());
+        Object $memoryAggregationIntervalCount = this.getMemoryAggregationIntervalCount();
+        result = result * prime + ($memoryAggregationIntervalCount == null ? 43 : $memoryAggregationIntervalCount.hashCode());
+        Object $memoryAggregationIntervalSeconds = this.getMemoryAggregationIntervalSeconds();
+        result = result * prime + ($memoryAggregationIntervalSeconds == null ? 43 : $memoryAggregationIntervalSeconds.hashCode());
+        Object $minAllowed = this.getMinAllowed();
+        result = result * prime + ($minAllowed == null ? 43 : $minAllowed.hashCode());
+        Object $mode = this.getMode();
+        result = result * prime + ($mode == null ? 43 : $mode.hashCode());
+        Object $oomBumpUpRatio = this.getOomBumpUpRatio();
+        result = result * prime + ($oomBumpUpRatio == null ? 43 : $oomBumpUpRatio.hashCode());
+        Object $oomMinBumpUp = this.getOomMinBumpUp();
+        result = result * prime + ($oomMinBumpUp == null ? 43 : $oomMinBumpUp.hashCode());
+        Object $startupBoost = this.getStartupBoost();
+        result = result * prime + ($startupBoost == null ? 43 : $startupBoost.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ContainerResourcePolicy(" + "containerName=" + this.getContainerName() + ", controlledResources=" + this.getControlledResources() + ", controlledValues=" + this.getControlledValues() + ", maxAllowed=" + this.getMaxAllowed() + ", memoryAggregationIntervalCount=" + this.getMemoryAggregationIntervalCount() + ", memoryAggregationIntervalSeconds=" + this.getMemoryAggregationIntervalSeconds() + ", minAllowed=" + this.getMinAllowed() + ", mode=" + this.getMode() + ", oomBumpUpRatio=" + this.getOomBumpUpRatio() + ", oomMinBumpUp=" + this.getOomMinBumpUp() + ", startupBoost=" + this.getStartupBoost() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

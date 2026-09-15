@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Placement field to be referenced in specs, align with Fedv2, add placementref
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "clusters",
     "local",
     "placementRef"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Placement)) {
+            return false;
+        }
+        Placement other = (Placement) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterSelector = this.getClusterSelector();
+        Object other$clusterSelector = other.getClusterSelector();
+        if (this$clusterSelector == null ? other$clusterSelector != null : !this$clusterSelector.equals(other$clusterSelector)) {
+            return false;
+        }
+        Object this$clusters = this.getClusters();
+        Object other$clusters = other.getClusters();
+        if (this$clusters == null ? other$clusters != null : !this$clusters.equals(other$clusters)) {
+            return false;
+        }
+        Object this$local = this.getLocal();
+        Object other$local = other.getLocal();
+        if (this$local == null ? other$local != null : !this$local.equals(other$local)) {
+            return false;
+        }
+        Object this$placementRef = this.getPlacementRef();
+        Object other$placementRef = other.getPlacementRef();
+        if (this$placementRef == null ? other$placementRef != null : !this$placementRef.equals(other$placementRef)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Placement;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterSelector = this.getClusterSelector();
+        result = result * prime + ($clusterSelector == null ? 43 : $clusterSelector.hashCode());
+        Object $clusters = this.getClusters();
+        result = result * prime + ($clusters == null ? 43 : $clusters.hashCode());
+        Object $local = this.getLocal();
+        result = result * prime + ($local == null ? 43 : $local.hashCode());
+        Object $placementRef = this.getPlacementRef();
+        result = result * prime + ($placementRef == null ? 43 : $placementRef.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Placement(" + "clusterSelector=" + this.getClusterSelector() + ", clusters=" + this.getClusters() + ", local=" + this.getLocal() + ", placementRef=" + this.getPlacementRef() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "issuer",
     "name",
     "oidcClients"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -190,6 +181,78 @@ public class OIDCProvider implements Editable<OIDCProviderBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OIDCProvider)) {
+            return false;
+        }
+        OIDCProvider other = (OIDCProvider) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$claimMappings = this.getClaimMappings();
+        Object other$claimMappings = other.getClaimMappings();
+        if (this$claimMappings == null ? other$claimMappings != null : !this$claimMappings.equals(other$claimMappings)) {
+            return false;
+        }
+        Object this$claimValidationRules = this.getClaimValidationRules();
+        Object other$claimValidationRules = other.getClaimValidationRules();
+        if (this$claimValidationRules == null ? other$claimValidationRules != null : !this$claimValidationRules.equals(other$claimValidationRules)) {
+            return false;
+        }
+        Object this$issuer = this.getIssuer();
+        Object other$issuer = other.getIssuer();
+        if (this$issuer == null ? other$issuer != null : !this$issuer.equals(other$issuer)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$oidcClients = this.getOidcClients();
+        Object other$oidcClients = other.getOidcClients();
+        if (this$oidcClients == null ? other$oidcClients != null : !this$oidcClients.equals(other$oidcClients)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OIDCProvider;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $claimMappings = this.getClaimMappings();
+        result = result * prime + ($claimMappings == null ? 43 : $claimMappings.hashCode());
+        Object $claimValidationRules = this.getClaimValidationRules();
+        result = result * prime + ($claimValidationRules == null ? 43 : $claimValidationRules.hashCode());
+        Object $issuer = this.getIssuer();
+        result = result * prime + ($issuer == null ? 43 : $issuer.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $oidcClients = this.getOidcClients();
+        result = result * prime + ($oidcClients == null ? 43 : $oidcClients.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OIDCProvider(" + "claimMappings=" + this.getClaimMappings() + ", claimValidationRules=" + this.getClaimValidationRules() + ", issuer=" + this.getIssuer() + ", name=" + this.getName() + ", oidcClients=" + this.getOidcClients() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

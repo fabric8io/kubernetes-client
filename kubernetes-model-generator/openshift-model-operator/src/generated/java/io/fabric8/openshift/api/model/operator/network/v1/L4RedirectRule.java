@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * L4RedirectRule defines a DNAT redirection from a given port to a destination IP and port.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "port",
     "protocol",
     "targetPort"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class L4RedirectRule implements Editable<L4RedirectRuleBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof L4RedirectRule)) {
+            return false;
+        }
+        L4RedirectRule other = (L4RedirectRule) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$destinationIP = this.getDestinationIP();
+        Object other$destinationIP = other.getDestinationIP();
+        if (this$destinationIP == null ? other$destinationIP != null : !this$destinationIP.equals(other$destinationIP)) {
+            return false;
+        }
+        Object this$port = this.getPort();
+        Object other$port = other.getPort();
+        if (this$port == null ? other$port != null : !this$port.equals(other$port)) {
+            return false;
+        }
+        Object this$protocol = this.getProtocol();
+        Object other$protocol = other.getProtocol();
+        if (this$protocol == null ? other$protocol != null : !this$protocol.equals(other$protocol)) {
+            return false;
+        }
+        Object this$targetPort = this.getTargetPort();
+        Object other$targetPort = other.getTargetPort();
+        if (this$targetPort == null ? other$targetPort != null : !this$targetPort.equals(other$targetPort)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof L4RedirectRule;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $destinationIP = this.getDestinationIP();
+        result = result * prime + ($destinationIP == null ? 43 : $destinationIP.hashCode());
+        Object $port = this.getPort();
+        result = result * prime + ($port == null ? 43 : $port.hashCode());
+        Object $protocol = this.getProtocol();
+        result = result * prime + ($protocol == null ? 43 : $protocol.hashCode());
+        Object $targetPort = this.getTargetPort();
+        result = result * prime + ($targetPort == null ? 43 : $targetPort.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "L4RedirectRule(" + "destinationIP=" + this.getDestinationIP() + ", port=" + this.getPort() + ", protocol=" + this.getProtocol() + ", targetPort=" + this.getTargetPort() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

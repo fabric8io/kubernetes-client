@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Source specifies the source identities of a request. Fields in the source are ANDed together.<br><p> <br><p> For example, the following source matches if the principal is `admin` or `dev` and the namespace is `prod` or `test` and the ip is not `203.0.113.4`.<br><p> <br><p> ```yaml principals: ["admin", "dev"] namespaces: ["prod", "test"] notIpBlocks: ["203.0.113.4"] ```
@@ -54,12 +51,6 @@ import lombok.experimental.Accessors;
     "requestPrincipals",
     "serviceAccounts",
     "trustDomains"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -410,6 +401,141 @@ public class Source implements Editable<SourceBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Source)) {
+            return false;
+        }
+        Source other = (Source) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ipBlocks = this.getIpBlocks();
+        Object other$ipBlocks = other.getIpBlocks();
+        if (this$ipBlocks == null ? other$ipBlocks != null : !this$ipBlocks.equals(other$ipBlocks)) {
+            return false;
+        }
+        Object this$namespaces = this.getNamespaces();
+        Object other$namespaces = other.getNamespaces();
+        if (this$namespaces == null ? other$namespaces != null : !this$namespaces.equals(other$namespaces)) {
+            return false;
+        }
+        Object this$notIpBlocks = this.getNotIpBlocks();
+        Object other$notIpBlocks = other.getNotIpBlocks();
+        if (this$notIpBlocks == null ? other$notIpBlocks != null : !this$notIpBlocks.equals(other$notIpBlocks)) {
+            return false;
+        }
+        Object this$notNamespaces = this.getNotNamespaces();
+        Object other$notNamespaces = other.getNotNamespaces();
+        if (this$notNamespaces == null ? other$notNamespaces != null : !this$notNamespaces.equals(other$notNamespaces)) {
+            return false;
+        }
+        Object this$notPrincipals = this.getNotPrincipals();
+        Object other$notPrincipals = other.getNotPrincipals();
+        if (this$notPrincipals == null ? other$notPrincipals != null : !this$notPrincipals.equals(other$notPrincipals)) {
+            return false;
+        }
+        Object this$notRemoteIpBlocks = this.getNotRemoteIpBlocks();
+        Object other$notRemoteIpBlocks = other.getNotRemoteIpBlocks();
+        if (this$notRemoteIpBlocks == null ? other$notRemoteIpBlocks != null : !this$notRemoteIpBlocks.equals(other$notRemoteIpBlocks)) {
+            return false;
+        }
+        Object this$notRequestPrincipals = this.getNotRequestPrincipals();
+        Object other$notRequestPrincipals = other.getNotRequestPrincipals();
+        if (this$notRequestPrincipals == null ? other$notRequestPrincipals != null : !this$notRequestPrincipals.equals(other$notRequestPrincipals)) {
+            return false;
+        }
+        Object this$notServiceAccounts = this.getNotServiceAccounts();
+        Object other$notServiceAccounts = other.getNotServiceAccounts();
+        if (this$notServiceAccounts == null ? other$notServiceAccounts != null : !this$notServiceAccounts.equals(other$notServiceAccounts)) {
+            return false;
+        }
+        Object this$notTrustDomains = this.getNotTrustDomains();
+        Object other$notTrustDomains = other.getNotTrustDomains();
+        if (this$notTrustDomains == null ? other$notTrustDomains != null : !this$notTrustDomains.equals(other$notTrustDomains)) {
+            return false;
+        }
+        Object this$principals = this.getPrincipals();
+        Object other$principals = other.getPrincipals();
+        if (this$principals == null ? other$principals != null : !this$principals.equals(other$principals)) {
+            return false;
+        }
+        Object this$remoteIpBlocks = this.getRemoteIpBlocks();
+        Object other$remoteIpBlocks = other.getRemoteIpBlocks();
+        if (this$remoteIpBlocks == null ? other$remoteIpBlocks != null : !this$remoteIpBlocks.equals(other$remoteIpBlocks)) {
+            return false;
+        }
+        Object this$requestPrincipals = this.getRequestPrincipals();
+        Object other$requestPrincipals = other.getRequestPrincipals();
+        if (this$requestPrincipals == null ? other$requestPrincipals != null : !this$requestPrincipals.equals(other$requestPrincipals)) {
+            return false;
+        }
+        Object this$serviceAccounts = this.getServiceAccounts();
+        Object other$serviceAccounts = other.getServiceAccounts();
+        if (this$serviceAccounts == null ? other$serviceAccounts != null : !this$serviceAccounts.equals(other$serviceAccounts)) {
+            return false;
+        }
+        Object this$trustDomains = this.getTrustDomains();
+        Object other$trustDomains = other.getTrustDomains();
+        if (this$trustDomains == null ? other$trustDomains != null : !this$trustDomains.equals(other$trustDomains)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Source;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ipBlocks = this.getIpBlocks();
+        result = result * prime + ($ipBlocks == null ? 43 : $ipBlocks.hashCode());
+        Object $namespaces = this.getNamespaces();
+        result = result * prime + ($namespaces == null ? 43 : $namespaces.hashCode());
+        Object $notIpBlocks = this.getNotIpBlocks();
+        result = result * prime + ($notIpBlocks == null ? 43 : $notIpBlocks.hashCode());
+        Object $notNamespaces = this.getNotNamespaces();
+        result = result * prime + ($notNamespaces == null ? 43 : $notNamespaces.hashCode());
+        Object $notPrincipals = this.getNotPrincipals();
+        result = result * prime + ($notPrincipals == null ? 43 : $notPrincipals.hashCode());
+        Object $notRemoteIpBlocks = this.getNotRemoteIpBlocks();
+        result = result * prime + ($notRemoteIpBlocks == null ? 43 : $notRemoteIpBlocks.hashCode());
+        Object $notRequestPrincipals = this.getNotRequestPrincipals();
+        result = result * prime + ($notRequestPrincipals == null ? 43 : $notRequestPrincipals.hashCode());
+        Object $notServiceAccounts = this.getNotServiceAccounts();
+        result = result * prime + ($notServiceAccounts == null ? 43 : $notServiceAccounts.hashCode());
+        Object $notTrustDomains = this.getNotTrustDomains();
+        result = result * prime + ($notTrustDomains == null ? 43 : $notTrustDomains.hashCode());
+        Object $principals = this.getPrincipals();
+        result = result * prime + ($principals == null ? 43 : $principals.hashCode());
+        Object $remoteIpBlocks = this.getRemoteIpBlocks();
+        result = result * prime + ($remoteIpBlocks == null ? 43 : $remoteIpBlocks.hashCode());
+        Object $requestPrincipals = this.getRequestPrincipals();
+        result = result * prime + ($requestPrincipals == null ? 43 : $requestPrincipals.hashCode());
+        Object $serviceAccounts = this.getServiceAccounts();
+        result = result * prime + ($serviceAccounts == null ? 43 : $serviceAccounts.hashCode());
+        Object $trustDomains = this.getTrustDomains();
+        result = result * prime + ($trustDomains == null ? 43 : $trustDomains.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Source(" + "ipBlocks=" + this.getIpBlocks() + ", namespaces=" + this.getNamespaces() + ", notIpBlocks=" + this.getNotIpBlocks() + ", notNamespaces=" + this.getNotNamespaces() + ", notPrincipals=" + this.getNotPrincipals() + ", notRemoteIpBlocks=" + this.getNotRemoteIpBlocks() + ", notRequestPrincipals=" + this.getNotRequestPrincipals() + ", notServiceAccounts=" + this.getNotServiceAccounts() + ", notTrustDomains=" + this.getNotTrustDomains() + ", principals=" + this.getPrincipals() + ", remoteIpBlocks=" + this.getRemoteIpBlocks() + ", requestPrincipals=" + this.getRequestPrincipals() + ", serviceAccounts=" + this.getServiceAccounts() + ", trustDomains=" + this.getTrustDomains() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -34,9 +34,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OpenstackProviderSpec is the type that will be embedded in a Machine.Spec.ProviderSpec field for an OpenStack Instance. It is used by the Openstack machine actuator to create a single machine instance. Compatibility level 4: No compatibility is provided, the API can change at any point for any reason. These capabilities should not be used by applications needing long term support.
@@ -68,12 +65,6 @@ import lombok.experimental.Accessors;
     "tags",
     "trunk",
     "userDataSecret"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -600,6 +591,211 @@ public class OpenstackProviderSpec implements Editable<OpenstackProviderSpecBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OpenstackProviderSpec)) {
+            return false;
+        }
+        OpenstackProviderSpec other = (OpenstackProviderSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$additionalBlockDevices = this.getAdditionalBlockDevices();
+        Object other$additionalBlockDevices = other.getAdditionalBlockDevices();
+        if (this$additionalBlockDevices == null ? other$additionalBlockDevices != null : !this$additionalBlockDevices.equals(other$additionalBlockDevices)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$availabilityZone = this.getAvailabilityZone();
+        Object other$availabilityZone = other.getAvailabilityZone();
+        if (this$availabilityZone == null ? other$availabilityZone != null : !this$availabilityZone.equals(other$availabilityZone)) {
+            return false;
+        }
+        Object this$cloudName = this.getCloudName();
+        Object other$cloudName = other.getCloudName();
+        if (this$cloudName == null ? other$cloudName != null : !this$cloudName.equals(other$cloudName)) {
+            return false;
+        }
+        Object this$cloudsSecret = this.getCloudsSecret();
+        Object other$cloudsSecret = other.getCloudsSecret();
+        if (this$cloudsSecret == null ? other$cloudsSecret != null : !this$cloudsSecret.equals(other$cloudsSecret)) {
+            return false;
+        }
+        Object this$configDrive = this.getConfigDrive();
+        Object other$configDrive = other.getConfigDrive();
+        if (this$configDrive == null ? other$configDrive != null : !this$configDrive.equals(other$configDrive)) {
+            return false;
+        }
+        Object this$flavor = this.getFlavor();
+        Object other$flavor = other.getFlavor();
+        if (this$flavor == null ? other$flavor != null : !this$flavor.equals(other$flavor)) {
+            return false;
+        }
+        Object this$floatingIP = this.getFloatingIP();
+        Object other$floatingIP = other.getFloatingIP();
+        if (this$floatingIP == null ? other$floatingIP != null : !this$floatingIP.equals(other$floatingIP)) {
+            return false;
+        }
+        Object this$image = this.getImage();
+        Object other$image = other.getImage();
+        if (this$image == null ? other$image != null : !this$image.equals(other$image)) {
+            return false;
+        }
+        Object this$keyName = this.getKeyName();
+        Object other$keyName = other.getKeyName();
+        if (this$keyName == null ? other$keyName != null : !this$keyName.equals(other$keyName)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$networks = this.getNetworks();
+        Object other$networks = other.getNetworks();
+        if (this$networks == null ? other$networks != null : !this$networks.equals(other$networks)) {
+            return false;
+        }
+        Object this$ports = this.getPorts();
+        Object other$ports = other.getPorts();
+        if (this$ports == null ? other$ports != null : !this$ports.equals(other$ports)) {
+            return false;
+        }
+        Object this$primarySubnet = this.getPrimarySubnet();
+        Object other$primarySubnet = other.getPrimarySubnet();
+        if (this$primarySubnet == null ? other$primarySubnet != null : !this$primarySubnet.equals(other$primarySubnet)) {
+            return false;
+        }
+        Object this$rootVolume = this.getRootVolume();
+        Object other$rootVolume = other.getRootVolume();
+        if (this$rootVolume == null ? other$rootVolume != null : !this$rootVolume.equals(other$rootVolume)) {
+            return false;
+        }
+        Object this$securityGroups = this.getSecurityGroups();
+        Object other$securityGroups = other.getSecurityGroups();
+        if (this$securityGroups == null ? other$securityGroups != null : !this$securityGroups.equals(other$securityGroups)) {
+            return false;
+        }
+        Object this$serverGroupID = this.getServerGroupID();
+        Object other$serverGroupID = other.getServerGroupID();
+        if (this$serverGroupID == null ? other$serverGroupID != null : !this$serverGroupID.equals(other$serverGroupID)) {
+            return false;
+        }
+        Object this$serverGroupName = this.getServerGroupName();
+        Object other$serverGroupName = other.getServerGroupName();
+        if (this$serverGroupName == null ? other$serverGroupName != null : !this$serverGroupName.equals(other$serverGroupName)) {
+            return false;
+        }
+        Object this$serverMetadata = this.getServerMetadata();
+        Object other$serverMetadata = other.getServerMetadata();
+        if (this$serverMetadata == null ? other$serverMetadata != null : !this$serverMetadata.equals(other$serverMetadata)) {
+            return false;
+        }
+        Object this$sshUserName = this.getSshUserName();
+        Object other$sshUserName = other.getSshUserName();
+        if (this$sshUserName == null ? other$sshUserName != null : !this$sshUserName.equals(other$sshUserName)) {
+            return false;
+        }
+        Object this$tags = this.getTags();
+        Object other$tags = other.getTags();
+        if (this$tags == null ? other$tags != null : !this$tags.equals(other$tags)) {
+            return false;
+        }
+        Object this$trunk = this.getTrunk();
+        Object other$trunk = other.getTrunk();
+        if (this$trunk == null ? other$trunk != null : !this$trunk.equals(other$trunk)) {
+            return false;
+        }
+        Object this$userDataSecret = this.getUserDataSecret();
+        Object other$userDataSecret = other.getUserDataSecret();
+        if (this$userDataSecret == null ? other$userDataSecret != null : !this$userDataSecret.equals(other$userDataSecret)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OpenstackProviderSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $additionalBlockDevices = this.getAdditionalBlockDevices();
+        result = result * prime + ($additionalBlockDevices == null ? 43 : $additionalBlockDevices.hashCode());
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $availabilityZone = this.getAvailabilityZone();
+        result = result * prime + ($availabilityZone == null ? 43 : $availabilityZone.hashCode());
+        Object $cloudName = this.getCloudName();
+        result = result * prime + ($cloudName == null ? 43 : $cloudName.hashCode());
+        Object $cloudsSecret = this.getCloudsSecret();
+        result = result * prime + ($cloudsSecret == null ? 43 : $cloudsSecret.hashCode());
+        Object $configDrive = this.getConfigDrive();
+        result = result * prime + ($configDrive == null ? 43 : $configDrive.hashCode());
+        Object $flavor = this.getFlavor();
+        result = result * prime + ($flavor == null ? 43 : $flavor.hashCode());
+        Object $floatingIP = this.getFloatingIP();
+        result = result * prime + ($floatingIP == null ? 43 : $floatingIP.hashCode());
+        Object $image = this.getImage();
+        result = result * prime + ($image == null ? 43 : $image.hashCode());
+        Object $keyName = this.getKeyName();
+        result = result * prime + ($keyName == null ? 43 : $keyName.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $networks = this.getNetworks();
+        result = result * prime + ($networks == null ? 43 : $networks.hashCode());
+        Object $ports = this.getPorts();
+        result = result * prime + ($ports == null ? 43 : $ports.hashCode());
+        Object $primarySubnet = this.getPrimarySubnet();
+        result = result * prime + ($primarySubnet == null ? 43 : $primarySubnet.hashCode());
+        Object $rootVolume = this.getRootVolume();
+        result = result * prime + ($rootVolume == null ? 43 : $rootVolume.hashCode());
+        Object $securityGroups = this.getSecurityGroups();
+        result = result * prime + ($securityGroups == null ? 43 : $securityGroups.hashCode());
+        Object $serverGroupID = this.getServerGroupID();
+        result = result * prime + ($serverGroupID == null ? 43 : $serverGroupID.hashCode());
+        Object $serverGroupName = this.getServerGroupName();
+        result = result * prime + ($serverGroupName == null ? 43 : $serverGroupName.hashCode());
+        Object $serverMetadata = this.getServerMetadata();
+        result = result * prime + ($serverMetadata == null ? 43 : $serverMetadata.hashCode());
+        Object $sshUserName = this.getSshUserName();
+        result = result * prime + ($sshUserName == null ? 43 : $sshUserName.hashCode());
+        Object $tags = this.getTags();
+        result = result * prime + ($tags == null ? 43 : $tags.hashCode());
+        Object $trunk = this.getTrunk();
+        result = result * prime + ($trunk == null ? 43 : $trunk.hashCode());
+        Object $userDataSecret = this.getUserDataSecret();
+        result = result * prime + ($userDataSecret == null ? 43 : $userDataSecret.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OpenstackProviderSpec(" + "additionalBlockDevices=" + this.getAdditionalBlockDevices() + ", apiVersion=" + this.getApiVersion() + ", availabilityZone=" + this.getAvailabilityZone() + ", cloudName=" + this.getCloudName() + ", cloudsSecret=" + this.getCloudsSecret() + ", configDrive=" + this.getConfigDrive() + ", flavor=" + this.getFlavor() + ", floatingIP=" + this.getFloatingIP() + ", image=" + this.getImage() + ", keyName=" + this.getKeyName() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata() + ", networks=" + this.getNetworks() + ", ports=" + this.getPorts() + ", primarySubnet=" + this.getPrimarySubnet() + ", rootVolume=" + this.getRootVolume() + ", securityGroups=" + this.getSecurityGroups() + ", serverGroupID=" + this.getServerGroupID() + ", serverGroupName=" + this.getServerGroupName() + ", serverMetadata=" + this.getServerMetadata() + ", sshUserName=" + this.getSshUserName() + ", tags=" + this.getTags() + ", trunk=" + this.getTrunk() + ", userDataSecret=" + this.getUserDataSecret() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

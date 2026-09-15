@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DiscordConfig configures notifications via Discord. See https://prometheus.io/docs/alerting/latest/configuration/#discord_config
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "sendResolved",
     "title",
     "username"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -261,6 +252,99 @@ public class DiscordConfig implements Editable<DiscordConfigBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DiscordConfig)) {
+            return false;
+        }
+        DiscordConfig other = (DiscordConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiURL = this.getApiURL();
+        Object other$apiURL = other.getApiURL();
+        if (this$apiURL == null ? other$apiURL != null : !this$apiURL.equals(other$apiURL)) {
+            return false;
+        }
+        Object this$avatarURL = this.getAvatarURL();
+        Object other$avatarURL = other.getAvatarURL();
+        if (this$avatarURL == null ? other$avatarURL != null : !this$avatarURL.equals(other$avatarURL)) {
+            return false;
+        }
+        Object this$content = this.getContent();
+        Object other$content = other.getContent();
+        if (this$content == null ? other$content != null : !this$content.equals(other$content)) {
+            return false;
+        }
+        Object this$httpConfig = this.getHttpConfig();
+        Object other$httpConfig = other.getHttpConfig();
+        if (this$httpConfig == null ? other$httpConfig != null : !this$httpConfig.equals(other$httpConfig)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$sendResolved = this.getSendResolved();
+        Object other$sendResolved = other.getSendResolved();
+        if (this$sendResolved == null ? other$sendResolved != null : !this$sendResolved.equals(other$sendResolved)) {
+            return false;
+        }
+        Object this$title = this.getTitle();
+        Object other$title = other.getTitle();
+        if (this$title == null ? other$title != null : !this$title.equals(other$title)) {
+            return false;
+        }
+        Object this$username = this.getUsername();
+        Object other$username = other.getUsername();
+        if (this$username == null ? other$username != null : !this$username.equals(other$username)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DiscordConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiURL = this.getApiURL();
+        result = result * prime + ($apiURL == null ? 43 : $apiURL.hashCode());
+        Object $avatarURL = this.getAvatarURL();
+        result = result * prime + ($avatarURL == null ? 43 : $avatarURL.hashCode());
+        Object $content = this.getContent();
+        result = result * prime + ($content == null ? 43 : $content.hashCode());
+        Object $httpConfig = this.getHttpConfig();
+        result = result * prime + ($httpConfig == null ? 43 : $httpConfig.hashCode());
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $sendResolved = this.getSendResolved();
+        result = result * prime + ($sendResolved == null ? 43 : $sendResolved.hashCode());
+        Object $title = this.getTitle();
+        result = result * prime + ($title == null ? 43 : $title.hashCode());
+        Object $username = this.getUsername();
+        result = result * prime + ($username == null ? 43 : $username.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DiscordConfig(" + "apiURL=" + this.getApiURL() + ", avatarURL=" + this.getAvatarURL() + ", content=" + this.getContent() + ", httpConfig=" + this.getHttpConfig() + ", message=" + this.getMessage() + ", sendResolved=" + this.getSendResolved() + ", title=" + this.getTitle() + ", username=" + this.getUsername() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

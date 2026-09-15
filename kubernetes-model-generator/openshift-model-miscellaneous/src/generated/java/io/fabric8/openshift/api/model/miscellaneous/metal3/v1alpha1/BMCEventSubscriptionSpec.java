@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
     "destination",
     "hostName",
     "httpHeadersRef"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -171,6 +162,71 @@ public class BMCEventSubscriptionSpec implements Editable<BMCEventSubscriptionSp
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BMCEventSubscriptionSpec)) {
+            return false;
+        }
+        BMCEventSubscriptionSpec other = (BMCEventSubscriptionSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$context = this.getContext();
+        Object other$context = other.getContext();
+        if (this$context == null ? other$context != null : !this$context.equals(other$context)) {
+            return false;
+        }
+        Object this$destination = this.getDestination();
+        Object other$destination = other.getDestination();
+        if (this$destination == null ? other$destination != null : !this$destination.equals(other$destination)) {
+            return false;
+        }
+        Object this$hostName = this.getHostName();
+        Object other$hostName = other.getHostName();
+        if (this$hostName == null ? other$hostName != null : !this$hostName.equals(other$hostName)) {
+            return false;
+        }
+        Object this$httpHeadersRef = this.getHttpHeadersRef();
+        Object other$httpHeadersRef = other.getHttpHeadersRef();
+        if (this$httpHeadersRef == null ? other$httpHeadersRef != null : !this$httpHeadersRef.equals(other$httpHeadersRef)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BMCEventSubscriptionSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $context = this.getContext();
+        result = result * prime + ($context == null ? 43 : $context.hashCode());
+        Object $destination = this.getDestination();
+        result = result * prime + ($destination == null ? 43 : $destination.hashCode());
+        Object $hostName = this.getHostName();
+        result = result * prime + ($hostName == null ? 43 : $hostName.hashCode());
+        Object $httpHeadersRef = this.getHttpHeadersRef();
+        result = result * prime + ($httpHeadersRef == null ? 43 : $httpHeadersRef.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BMCEventSubscriptionSpec(" + "context=" + this.getContext() + ", destination=" + this.getDestination() + ", hostName=" + this.getHostName() + ", httpHeadersRef=" + this.getHttpHeadersRef() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

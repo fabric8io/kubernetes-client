@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openclustermanagement.api.model.shared.PreConfiguredStorage;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * StorageConfigObject is the spec of object storage.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "metricObjectStorage",
     "statefulSetSize",
     "statefulSetStorageClass"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -161,6 +152,64 @@ public class StorageConfigObject implements Editable<StorageConfigObjectBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof StorageConfigObject)) {
+            return false;
+        }
+        StorageConfigObject other = (StorageConfigObject) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$metricObjectStorage = this.getMetricObjectStorage();
+        Object other$metricObjectStorage = other.getMetricObjectStorage();
+        if (this$metricObjectStorage == null ? other$metricObjectStorage != null : !this$metricObjectStorage.equals(other$metricObjectStorage)) {
+            return false;
+        }
+        Object this$statefulSetSize = this.getStatefulSetSize();
+        Object other$statefulSetSize = other.getStatefulSetSize();
+        if (this$statefulSetSize == null ? other$statefulSetSize != null : !this$statefulSetSize.equals(other$statefulSetSize)) {
+            return false;
+        }
+        Object this$statefulSetStorageClass = this.getStatefulSetStorageClass();
+        Object other$statefulSetStorageClass = other.getStatefulSetStorageClass();
+        if (this$statefulSetStorageClass == null ? other$statefulSetStorageClass != null : !this$statefulSetStorageClass.equals(other$statefulSetStorageClass)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof StorageConfigObject;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $metricObjectStorage = this.getMetricObjectStorage();
+        result = result * prime + ($metricObjectStorage == null ? 43 : $metricObjectStorage.hashCode());
+        Object $statefulSetSize = this.getStatefulSetSize();
+        result = result * prime + ($statefulSetSize == null ? 43 : $statefulSetSize.hashCode());
+        Object $statefulSetStorageClass = this.getStatefulSetStorageClass();
+        result = result * prime + ($statefulSetStorageClass == null ? 43 : $statefulSetStorageClass.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "StorageConfigObject(" + "metricObjectStorage=" + this.getMetricObjectStorage() + ", statefulSetSize=" + this.getStatefulSetSize() + ", statefulSetStorageClass=" + this.getStatefulSetStorageClass() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DEPRECATED 1.9 - This group version of NetworkPolicyIngressRule is deprecated by networking/v1/NetworkPolicyIngressRule. This NetworkPolicyIngressRule matches traffic if and only if the traffic matches both ports AND from.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "from",
     "ports"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -146,6 +137,57 @@ public class NetworkPolicyIngressRule implements Editable<NetworkPolicyIngressRu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkPolicyIngressRule)) {
+            return false;
+        }
+        NetworkPolicyIngressRule other = (NetworkPolicyIngressRule) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$from = this.getFrom();
+        Object other$from = other.getFrom();
+        if (this$from == null ? other$from != null : !this$from.equals(other$from)) {
+            return false;
+        }
+        Object this$ports = this.getPorts();
+        Object other$ports = other.getPorts();
+        if (this$ports == null ? other$ports != null : !this$ports.equals(other$ports)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkPolicyIngressRule;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $from = this.getFrom();
+        result = result * prime + ($from == null ? 43 : $from.hashCode());
+        Object $ports = this.getPorts();
+        result = result * prime + ($ports == null ? 43 : $ports.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkPolicyIngressRule(" + "from=" + this.getFrom() + ", ports=" + this.getPorts() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

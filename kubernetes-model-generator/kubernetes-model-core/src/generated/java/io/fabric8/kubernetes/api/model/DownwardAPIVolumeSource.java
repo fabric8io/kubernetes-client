@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DownwardAPIVolumeSource represents a volume containing downward API info. Downward API volumes support ownership management and SELinux relabeling.
@@ -28,12 +25,6 @@ import lombok.experimental.Accessors;
     "defaultMode",
     "defaultUser",
     "items"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -135,6 +126,64 @@ public class DownwardAPIVolumeSource implements Editable<DownwardAPIVolumeSource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DownwardAPIVolumeSource)) {
+            return false;
+        }
+        DownwardAPIVolumeSource other = (DownwardAPIVolumeSource) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$defaultMode = this.getDefaultMode();
+        Object other$defaultMode = other.getDefaultMode();
+        if (this$defaultMode == null ? other$defaultMode != null : !this$defaultMode.equals(other$defaultMode)) {
+            return false;
+        }
+        Object this$defaultUser = this.getDefaultUser();
+        Object other$defaultUser = other.getDefaultUser();
+        if (this$defaultUser == null ? other$defaultUser != null : !this$defaultUser.equals(other$defaultUser)) {
+            return false;
+        }
+        Object this$items = this.getItems();
+        Object other$items = other.getItems();
+        if (this$items == null ? other$items != null : !this$items.equals(other$items)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DownwardAPIVolumeSource;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $defaultMode = this.getDefaultMode();
+        result = result * prime + ($defaultMode == null ? 43 : $defaultMode.hashCode());
+        Object $defaultUser = this.getDefaultUser();
+        result = result * prime + ($defaultUser == null ? 43 : $defaultUser.hashCode());
+        Object $items = this.getItems();
+        result = result * prime + ($items == null ? 43 : $items.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DownwardAPIVolumeSource(" + "defaultMode=" + this.getDefaultMode() + ", defaultUser=" + this.getDefaultUser() + ", items=" + this.getItems() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

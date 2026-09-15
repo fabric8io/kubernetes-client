@@ -29,21 +29,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "customRules",
     "profile"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class Audit implements Editable<AuditBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Audit)) {
+            return false;
+        }
+        Audit other = (Audit) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$customRules = this.getCustomRules();
+        Object other$customRules = other.getCustomRules();
+        if (this$customRules == null ? other$customRules != null : !this$customRules.equals(other$customRules)) {
+            return false;
+        }
+        Object this$profile = this.getProfile();
+        Object other$profile = other.getProfile();
+        if (this$profile == null ? other$profile != null : !this$profile.equals(other$profile)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Audit;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $customRules = this.getCustomRules();
+        result = result * prime + ($customRules == null ? 43 : $customRules.hashCode());
+        Object $profile = this.getProfile();
+        result = result * prime + ($profile == null ? 43 : $profile.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Audit(" + "customRules=" + this.getCustomRules() + ", profile=" + this.getProfile() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageStreamStatus contains information about the state of this image stream.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "dockerImageRepository",
     "publicDockerImageRepository",
     "tags"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -163,6 +154,64 @@ public class ImageStreamStatus implements Editable<ImageStreamStatusBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageStreamStatus)) {
+            return false;
+        }
+        ImageStreamStatus other = (ImageStreamStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$dockerImageRepository = this.getDockerImageRepository();
+        Object other$dockerImageRepository = other.getDockerImageRepository();
+        if (this$dockerImageRepository == null ? other$dockerImageRepository != null : !this$dockerImageRepository.equals(other$dockerImageRepository)) {
+            return false;
+        }
+        Object this$publicDockerImageRepository = this.getPublicDockerImageRepository();
+        Object other$publicDockerImageRepository = other.getPublicDockerImageRepository();
+        if (this$publicDockerImageRepository == null ? other$publicDockerImageRepository != null : !this$publicDockerImageRepository.equals(other$publicDockerImageRepository)) {
+            return false;
+        }
+        Object this$tags = this.getTags();
+        Object other$tags = other.getTags();
+        if (this$tags == null ? other$tags != null : !this$tags.equals(other$tags)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageStreamStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $dockerImageRepository = this.getDockerImageRepository();
+        result = result * prime + ($dockerImageRepository == null ? 43 : $dockerImageRepository.hashCode());
+        Object $publicDockerImageRepository = this.getPublicDockerImageRepository();
+        result = result * prime + ($publicDockerImageRepository == null ? 43 : $publicDockerImageRepository.hashCode());
+        Object $tags = this.getTags();
+        result = result * prime + ($tags == null ? 43 : $tags.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageStreamStatus(" + "dockerImageRepository=" + this.getDockerImageRepository() + ", publicDockerImageRepository=" + this.getPublicDockerImageRepository() + ", tags=" + this.getTags() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

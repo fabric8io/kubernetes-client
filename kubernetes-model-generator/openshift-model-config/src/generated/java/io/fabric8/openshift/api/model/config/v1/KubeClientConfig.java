@@ -27,21 +27,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "connectionOverrides",
     "kubeConfig"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -130,6 +121,57 @@ public class KubeClientConfig implements Editable<KubeClientConfigBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof KubeClientConfig)) {
+            return false;
+        }
+        KubeClientConfig other = (KubeClientConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$connectionOverrides = this.getConnectionOverrides();
+        Object other$connectionOverrides = other.getConnectionOverrides();
+        if (this$connectionOverrides == null ? other$connectionOverrides != null : !this$connectionOverrides.equals(other$connectionOverrides)) {
+            return false;
+        }
+        Object this$kubeConfig = this.getKubeConfig();
+        Object other$kubeConfig = other.getKubeConfig();
+        if (this$kubeConfig == null ? other$kubeConfig != null : !this$kubeConfig.equals(other$kubeConfig)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof KubeClientConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $connectionOverrides = this.getConnectionOverrides();
+        result = result * prime + ($connectionOverrides == null ? 43 : $connectionOverrides.hashCode());
+        Object $kubeConfig = this.getKubeConfig();
+        result = result * prime + ($kubeConfig == null ? 43 : $kubeConfig.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "KubeClientConfig(" + "connectionOverrides=" + this.getConnectionOverrides() + ", kubeConfig=" + this.getKubeConfig() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

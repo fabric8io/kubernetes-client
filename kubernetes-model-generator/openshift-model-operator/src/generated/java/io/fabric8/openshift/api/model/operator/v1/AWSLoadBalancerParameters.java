@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AWSLoadBalancerParameters provides configuration settings that are specific to AWS load balancers.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "classicLoadBalancer",
     "networkLoadBalancer",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class AWSLoadBalancerParameters implements Editable<AWSLoadBalancerParame
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AWSLoadBalancerParameters)) {
+            return false;
+        }
+        AWSLoadBalancerParameters other = (AWSLoadBalancerParameters) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$classicLoadBalancer = this.getClassicLoadBalancer();
+        Object other$classicLoadBalancer = other.getClassicLoadBalancer();
+        if (this$classicLoadBalancer == null ? other$classicLoadBalancer != null : !this$classicLoadBalancer.equals(other$classicLoadBalancer)) {
+            return false;
+        }
+        Object this$networkLoadBalancer = this.getNetworkLoadBalancer();
+        Object other$networkLoadBalancer = other.getNetworkLoadBalancer();
+        if (this$networkLoadBalancer == null ? other$networkLoadBalancer != null : !this$networkLoadBalancer.equals(other$networkLoadBalancer)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AWSLoadBalancerParameters;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $classicLoadBalancer = this.getClassicLoadBalancer();
+        result = result * prime + ($classicLoadBalancer == null ? 43 : $classicLoadBalancer.hashCode());
+        Object $networkLoadBalancer = this.getNetworkLoadBalancer();
+        result = result * prime + ($networkLoadBalancer == null ? 43 : $networkLoadBalancer.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AWSLoadBalancerParameters(" + "classicLoadBalancer=" + this.getClassicLoadBalancer() + ", networkLoadBalancer=" + this.getNetworkLoadBalancer() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

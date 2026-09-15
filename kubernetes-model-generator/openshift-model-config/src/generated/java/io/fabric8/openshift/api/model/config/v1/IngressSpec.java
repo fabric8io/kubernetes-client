@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "domain",
     "loadBalancer",
     "requiredHSTSPolicies"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -196,6 +187,78 @@ public class IngressSpec implements Editable<IngressSpecBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof IngressSpec)) {
+            return false;
+        }
+        IngressSpec other = (IngressSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$appsDomain = this.getAppsDomain();
+        Object other$appsDomain = other.getAppsDomain();
+        if (this$appsDomain == null ? other$appsDomain != null : !this$appsDomain.equals(other$appsDomain)) {
+            return false;
+        }
+        Object this$componentRoutes = this.getComponentRoutes();
+        Object other$componentRoutes = other.getComponentRoutes();
+        if (this$componentRoutes == null ? other$componentRoutes != null : !this$componentRoutes.equals(other$componentRoutes)) {
+            return false;
+        }
+        Object this$domain = this.getDomain();
+        Object other$domain = other.getDomain();
+        if (this$domain == null ? other$domain != null : !this$domain.equals(other$domain)) {
+            return false;
+        }
+        Object this$loadBalancer = this.getLoadBalancer();
+        Object other$loadBalancer = other.getLoadBalancer();
+        if (this$loadBalancer == null ? other$loadBalancer != null : !this$loadBalancer.equals(other$loadBalancer)) {
+            return false;
+        }
+        Object this$requiredHSTSPolicies = this.getRequiredHSTSPolicies();
+        Object other$requiredHSTSPolicies = other.getRequiredHSTSPolicies();
+        if (this$requiredHSTSPolicies == null ? other$requiredHSTSPolicies != null : !this$requiredHSTSPolicies.equals(other$requiredHSTSPolicies)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof IngressSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $appsDomain = this.getAppsDomain();
+        result = result * prime + ($appsDomain == null ? 43 : $appsDomain.hashCode());
+        Object $componentRoutes = this.getComponentRoutes();
+        result = result * prime + ($componentRoutes == null ? 43 : $componentRoutes.hashCode());
+        Object $domain = this.getDomain();
+        result = result * prime + ($domain == null ? 43 : $domain.hashCode());
+        Object $loadBalancer = this.getLoadBalancer();
+        result = result * prime + ($loadBalancer == null ? 43 : $loadBalancer.hashCode());
+        Object $requiredHSTSPolicies = this.getRequiredHSTSPolicies();
+        result = result * prime + ($requiredHSTSPolicies == null ? 43 : $requiredHSTSPolicies.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IngressSpec(" + "appsDomain=" + this.getAppsDomain() + ", componentRoutes=" + this.getComponentRoutes() + ", domain=" + this.getDomain() + ", loadBalancer=" + this.getLoadBalancer() + ", requiredHSTSPolicies=" + this.getRequiredHSTSPolicies() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

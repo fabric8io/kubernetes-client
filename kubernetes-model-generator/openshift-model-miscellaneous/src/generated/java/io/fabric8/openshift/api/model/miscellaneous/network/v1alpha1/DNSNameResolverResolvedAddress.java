@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DNSNameResolverResolvedAddress describes the details of an IP address for a resolved DNS name.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "ip",
     "lastLookupTime",
     "ttlSeconds"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class DNSNameResolverResolvedAddress implements Editable<DNSNameResolverR
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DNSNameResolverResolvedAddress)) {
+            return false;
+        }
+        DNSNameResolverResolvedAddress other = (DNSNameResolverResolvedAddress) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ip = this.getIp();
+        Object other$ip = other.getIp();
+        if (this$ip == null ? other$ip != null : !this$ip.equals(other$ip)) {
+            return false;
+        }
+        Object this$lastLookupTime = this.getLastLookupTime();
+        Object other$lastLookupTime = other.getLastLookupTime();
+        if (this$lastLookupTime == null ? other$lastLookupTime != null : !this$lastLookupTime.equals(other$lastLookupTime)) {
+            return false;
+        }
+        Object this$ttlSeconds = this.getTtlSeconds();
+        Object other$ttlSeconds = other.getTtlSeconds();
+        if (this$ttlSeconds == null ? other$ttlSeconds != null : !this$ttlSeconds.equals(other$ttlSeconds)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DNSNameResolverResolvedAddress;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ip = this.getIp();
+        result = result * prime + ($ip == null ? 43 : $ip.hashCode());
+        Object $lastLookupTime = this.getLastLookupTime();
+        result = result * prime + ($lastLookupTime == null ? 43 : $lastLookupTime.hashCode());
+        Object $ttlSeconds = this.getTtlSeconds();
+        result = result * prime + ($ttlSeconds == null ? 43 : $ttlSeconds.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DNSNameResolverResolvedAddress(" + "ip=" + this.getIp() + ", lastLookupTime=" + this.getLastLookupTime() + ", ttlSeconds=" + this.getTtlSeconds() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * KlusterletAddonConfigSpec defines the desired state of KlusterletAddonConfig
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "proxyConfig",
     "searchCollector",
     "version"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -302,6 +293,113 @@ public class KlusterletAddonConfigSpec implements Editable<KlusterletAddonConfig
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof KlusterletAddonConfigSpec)) {
+            return false;
+        }
+        KlusterletAddonConfigSpec other = (KlusterletAddonConfigSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$applicationManager = this.getApplicationManager();
+        Object other$applicationManager = other.getApplicationManager();
+        if (this$applicationManager == null ? other$applicationManager != null : !this$applicationManager.equals(other$applicationManager)) {
+            return false;
+        }
+        Object this$certPolicyController = this.getCertPolicyController();
+        Object other$certPolicyController = other.getCertPolicyController();
+        if (this$certPolicyController == null ? other$certPolicyController != null : !this$certPolicyController.equals(other$certPolicyController)) {
+            return false;
+        }
+        Object this$clusterLabels = this.getClusterLabels();
+        Object other$clusterLabels = other.getClusterLabels();
+        if (this$clusterLabels == null ? other$clusterLabels != null : !this$clusterLabels.equals(other$clusterLabels)) {
+            return false;
+        }
+        Object this$clusterName = this.getClusterName();
+        Object other$clusterName = other.getClusterName();
+        if (this$clusterName == null ? other$clusterName != null : !this$clusterName.equals(other$clusterName)) {
+            return false;
+        }
+        Object this$clusterNamespace = this.getClusterNamespace();
+        Object other$clusterNamespace = other.getClusterNamespace();
+        if (this$clusterNamespace == null ? other$clusterNamespace != null : !this$clusterNamespace.equals(other$clusterNamespace)) {
+            return false;
+        }
+        Object this$iamPolicyController = this.getIamPolicyController();
+        Object other$iamPolicyController = other.getIamPolicyController();
+        if (this$iamPolicyController == null ? other$iamPolicyController != null : !this$iamPolicyController.equals(other$iamPolicyController)) {
+            return false;
+        }
+        Object this$policyController = this.getPolicyController();
+        Object other$policyController = other.getPolicyController();
+        if (this$policyController == null ? other$policyController != null : !this$policyController.equals(other$policyController)) {
+            return false;
+        }
+        Object this$proxyConfig = this.getProxyConfig();
+        Object other$proxyConfig = other.getProxyConfig();
+        if (this$proxyConfig == null ? other$proxyConfig != null : !this$proxyConfig.equals(other$proxyConfig)) {
+            return false;
+        }
+        Object this$searchCollector = this.getSearchCollector();
+        Object other$searchCollector = other.getSearchCollector();
+        if (this$searchCollector == null ? other$searchCollector != null : !this$searchCollector.equals(other$searchCollector)) {
+            return false;
+        }
+        Object this$version = this.getVersion();
+        Object other$version = other.getVersion();
+        if (this$version == null ? other$version != null : !this$version.equals(other$version)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof KlusterletAddonConfigSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $applicationManager = this.getApplicationManager();
+        result = result * prime + ($applicationManager == null ? 43 : $applicationManager.hashCode());
+        Object $certPolicyController = this.getCertPolicyController();
+        result = result * prime + ($certPolicyController == null ? 43 : $certPolicyController.hashCode());
+        Object $clusterLabels = this.getClusterLabels();
+        result = result * prime + ($clusterLabels == null ? 43 : $clusterLabels.hashCode());
+        Object $clusterName = this.getClusterName();
+        result = result * prime + ($clusterName == null ? 43 : $clusterName.hashCode());
+        Object $clusterNamespace = this.getClusterNamespace();
+        result = result * prime + ($clusterNamespace == null ? 43 : $clusterNamespace.hashCode());
+        Object $iamPolicyController = this.getIamPolicyController();
+        result = result * prime + ($iamPolicyController == null ? 43 : $iamPolicyController.hashCode());
+        Object $policyController = this.getPolicyController();
+        result = result * prime + ($policyController == null ? 43 : $policyController.hashCode());
+        Object $proxyConfig = this.getProxyConfig();
+        result = result * prime + ($proxyConfig == null ? 43 : $proxyConfig.hashCode());
+        Object $searchCollector = this.getSearchCollector();
+        result = result * prime + ($searchCollector == null ? 43 : $searchCollector.hashCode());
+        Object $version = this.getVersion();
+        result = result * prime + ($version == null ? 43 : $version.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "KlusterletAddonConfigSpec(" + "applicationManager=" + this.getApplicationManager() + ", certPolicyController=" + this.getCertPolicyController() + ", clusterLabels=" + this.getClusterLabels() + ", clusterName=" + this.getClusterName() + ", clusterNamespace=" + this.getClusterNamespace() + ", iamPolicyController=" + this.getIamPolicyController() + ", policyController=" + this.getPolicyController() + ", proxyConfig=" + this.getProxyConfig() + ", searchCollector=" + this.getSearchCollector() + ", version=" + this.getVersion() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DeveloperConsoleCatalogCustomization allow cluster admin to configure developer catalog.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "categories",
     "types"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -144,6 +135,57 @@ public class DeveloperConsoleCatalogCustomization implements Editable<DeveloperC
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DeveloperConsoleCatalogCustomization)) {
+            return false;
+        }
+        DeveloperConsoleCatalogCustomization other = (DeveloperConsoleCatalogCustomization) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$categories = this.getCategories();
+        Object other$categories = other.getCategories();
+        if (this$categories == null ? other$categories != null : !this$categories.equals(other$categories)) {
+            return false;
+        }
+        Object this$types = this.getTypes();
+        Object other$types = other.getTypes();
+        if (this$types == null ? other$types != null : !this$types.equals(other$types)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DeveloperConsoleCatalogCustomization;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $categories = this.getCategories();
+        result = result * prime + ($categories == null ? 43 : $categories.hashCode());
+        Object $types = this.getTypes();
+        result = result * prime + ($types == null ? 43 : $types.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DeveloperConsoleCatalogCustomization(" + "categories=" + this.getCategories() + ", types=" + this.getTypes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

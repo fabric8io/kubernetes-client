@@ -33,9 +33,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PlacementBinding is the schema for the placementbindings API. A PlacementBinding resource binds a managed cluster placement resource to a policy or policy set, along with configurable overrides.
@@ -51,12 +48,6 @@ import lombok.experimental.Accessors;
     "status",
     "subFilter",
     "subjects"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -269,6 +260,99 @@ public class PlacementBinding implements Editable<PlacementBindingBuilder>, HasM
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PlacementBinding)) {
+            return false;
+        }
+        PlacementBinding other = (PlacementBinding) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$bindingOverrides = this.getBindingOverrides();
+        Object other$bindingOverrides = other.getBindingOverrides();
+        if (this$bindingOverrides == null ? other$bindingOverrides != null : !this$bindingOverrides.equals(other$bindingOverrides)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$placementRef = this.getPlacementRef();
+        Object other$placementRef = other.getPlacementRef();
+        if (this$placementRef == null ? other$placementRef != null : !this$placementRef.equals(other$placementRef)) {
+            return false;
+        }
+        Object this$status = this.getStatus();
+        Object other$status = other.getStatus();
+        if (this$status == null ? other$status != null : !this$status.equals(other$status)) {
+            return false;
+        }
+        Object this$subFilter = this.getSubFilter();
+        Object other$subFilter = other.getSubFilter();
+        if (this$subFilter == null ? other$subFilter != null : !this$subFilter.equals(other$subFilter)) {
+            return false;
+        }
+        Object this$subjects = this.getSubjects();
+        Object other$subjects = other.getSubjects();
+        if (this$subjects == null ? other$subjects != null : !this$subjects.equals(other$subjects)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PlacementBinding;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $bindingOverrides = this.getBindingOverrides();
+        result = result * prime + ($bindingOverrides == null ? 43 : $bindingOverrides.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $placementRef = this.getPlacementRef();
+        result = result * prime + ($placementRef == null ? 43 : $placementRef.hashCode());
+        Object $status = this.getStatus();
+        result = result * prime + ($status == null ? 43 : $status.hashCode());
+        Object $subFilter = this.getSubFilter();
+        result = result * prime + ($subFilter == null ? 43 : $subFilter.hashCode());
+        Object $subjects = this.getSubjects();
+        result = result * prime + ($subjects == null ? 43 : $subjects.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PlacementBinding(" + "apiVersion=" + this.getApiVersion() + ", bindingOverrides=" + this.getBindingOverrides() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata() + ", placementRef=" + this.getPlacementRef() + ", status=" + this.getStatus() + ", subFilter=" + this.getSubFilter() + ", subjects=" + this.getSubjects() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

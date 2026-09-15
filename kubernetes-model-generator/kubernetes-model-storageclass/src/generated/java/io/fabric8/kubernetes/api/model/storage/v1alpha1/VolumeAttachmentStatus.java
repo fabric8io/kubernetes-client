@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VolumeAttachmentStatus is the status of a VolumeAttachment request.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "attached",
     "attachmentMetadata",
     "detachError"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -182,6 +173,71 @@ public class VolumeAttachmentStatus implements Editable<VolumeAttachmentStatusBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VolumeAttachmentStatus)) {
+            return false;
+        }
+        VolumeAttachmentStatus other = (VolumeAttachmentStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$attachError = this.getAttachError();
+        Object other$attachError = other.getAttachError();
+        if (this$attachError == null ? other$attachError != null : !this$attachError.equals(other$attachError)) {
+            return false;
+        }
+        Object this$attached = this.getAttached();
+        Object other$attached = other.getAttached();
+        if (this$attached == null ? other$attached != null : !this$attached.equals(other$attached)) {
+            return false;
+        }
+        Object this$attachmentMetadata = this.getAttachmentMetadata();
+        Object other$attachmentMetadata = other.getAttachmentMetadata();
+        if (this$attachmentMetadata == null ? other$attachmentMetadata != null : !this$attachmentMetadata.equals(other$attachmentMetadata)) {
+            return false;
+        }
+        Object this$detachError = this.getDetachError();
+        Object other$detachError = other.getDetachError();
+        if (this$detachError == null ? other$detachError != null : !this$detachError.equals(other$detachError)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VolumeAttachmentStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $attachError = this.getAttachError();
+        result = result * prime + ($attachError == null ? 43 : $attachError.hashCode());
+        Object $attached = this.getAttached();
+        result = result * prime + ($attached == null ? 43 : $attached.hashCode());
+        Object $attachmentMetadata = this.getAttachmentMetadata();
+        result = result * prime + ($attachmentMetadata == null ? 43 : $attachmentMetadata.hashCode());
+        Object $detachError = this.getDetachError();
+        result = result * prime + ($detachError == null ? 43 : $detachError.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VolumeAttachmentStatus(" + "attachError=" + this.getAttachError() + ", attached=" + this.getAttached() + ", attachmentMetadata=" + this.getAttachmentMetadata() + ", detachError=" + this.getDetachError() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

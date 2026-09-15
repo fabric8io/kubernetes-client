@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * LoadBalancerStrategy holds parameters for a load balancer.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "dnsManagementPolicy",
     "providerParameters",
     "scope"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class LoadBalancerStrategy implements Editable<LoadBalancerStrategyBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof LoadBalancerStrategy)) {
+            return false;
+        }
+        LoadBalancerStrategy other = (LoadBalancerStrategy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allowedSourceRanges = this.getAllowedSourceRanges();
+        Object other$allowedSourceRanges = other.getAllowedSourceRanges();
+        if (this$allowedSourceRanges == null ? other$allowedSourceRanges != null : !this$allowedSourceRanges.equals(other$allowedSourceRanges)) {
+            return false;
+        }
+        Object this$dnsManagementPolicy = this.getDnsManagementPolicy();
+        Object other$dnsManagementPolicy = other.getDnsManagementPolicy();
+        if (this$dnsManagementPolicy == null ? other$dnsManagementPolicy != null : !this$dnsManagementPolicy.equals(other$dnsManagementPolicy)) {
+            return false;
+        }
+        Object this$providerParameters = this.getProviderParameters();
+        Object other$providerParameters = other.getProviderParameters();
+        if (this$providerParameters == null ? other$providerParameters != null : !this$providerParameters.equals(other$providerParameters)) {
+            return false;
+        }
+        Object this$scope = this.getScope();
+        Object other$scope = other.getScope();
+        if (this$scope == null ? other$scope != null : !this$scope.equals(other$scope)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof LoadBalancerStrategy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allowedSourceRanges = this.getAllowedSourceRanges();
+        result = result * prime + ($allowedSourceRanges == null ? 43 : $allowedSourceRanges.hashCode());
+        Object $dnsManagementPolicy = this.getDnsManagementPolicy();
+        result = result * prime + ($dnsManagementPolicy == null ? 43 : $dnsManagementPolicy.hashCode());
+        Object $providerParameters = this.getProviderParameters();
+        result = result * prime + ($providerParameters == null ? 43 : $providerParameters.hashCode());
+        Object $scope = this.getScope();
+        result = result * prime + ($scope == null ? 43 : $scope.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "LoadBalancerStrategy(" + "allowedSourceRanges=" + this.getAllowedSourceRanges() + ", dnsManagementPolicy=" + this.getDnsManagementPolicy() + ", providerParameters=" + this.getProviderParameters() + ", scope=" + this.getScope() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CheckpointSpec defines the metadata around the Hive objects state in the namespace at the time of the last backup.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "lastBackupChecksum",
     "lastBackupRef",
     "lastBackupTime"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class CheckpointSpec implements Editable<CheckpointSpecBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CheckpointSpec)) {
+            return false;
+        }
+        CheckpointSpec other = (CheckpointSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$lastBackupChecksum = this.getLastBackupChecksum();
+        Object other$lastBackupChecksum = other.getLastBackupChecksum();
+        if (this$lastBackupChecksum == null ? other$lastBackupChecksum != null : !this$lastBackupChecksum.equals(other$lastBackupChecksum)) {
+            return false;
+        }
+        Object this$lastBackupRef = this.getLastBackupRef();
+        Object other$lastBackupRef = other.getLastBackupRef();
+        if (this$lastBackupRef == null ? other$lastBackupRef != null : !this$lastBackupRef.equals(other$lastBackupRef)) {
+            return false;
+        }
+        Object this$lastBackupTime = this.getLastBackupTime();
+        Object other$lastBackupTime = other.getLastBackupTime();
+        if (this$lastBackupTime == null ? other$lastBackupTime != null : !this$lastBackupTime.equals(other$lastBackupTime)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CheckpointSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $lastBackupChecksum = this.getLastBackupChecksum();
+        result = result * prime + ($lastBackupChecksum == null ? 43 : $lastBackupChecksum.hashCode());
+        Object $lastBackupRef = this.getLastBackupRef();
+        result = result * prime + ($lastBackupRef == null ? 43 : $lastBackupRef.hashCode());
+        Object $lastBackupTime = this.getLastBackupTime();
+        result = result * prime + ($lastBackupTime == null ? 43 : $lastBackupTime.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CheckpointSpec(" + "lastBackupChecksum=" + this.getLastBackupChecksum() + ", lastBackupRef=" + this.getLastBackupRef() + ", lastBackupTime=" + this.getLastBackupTime() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

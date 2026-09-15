@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * IntegrationSourceSpec defines the desired state of IntegrationSource
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "sink",
     "template",
     "timer"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -202,6 +193,78 @@ public class IntegrationSourceSpec implements Editable<IntegrationSourceSpecBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof IntegrationSourceSpec)) {
+            return false;
+        }
+        IntegrationSourceSpec other = (IntegrationSourceSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$aws = this.getAws();
+        Object other$aws = other.getAws();
+        if (this$aws == null ? other$aws != null : !this$aws.equals(other$aws)) {
+            return false;
+        }
+        Object this$ceOverrides = this.getCeOverrides();
+        Object other$ceOverrides = other.getCeOverrides();
+        if (this$ceOverrides == null ? other$ceOverrides != null : !this$ceOverrides.equals(other$ceOverrides)) {
+            return false;
+        }
+        Object this$sink = this.getSink();
+        Object other$sink = other.getSink();
+        if (this$sink == null ? other$sink != null : !this$sink.equals(other$sink)) {
+            return false;
+        }
+        Object this$template = this.getTemplate();
+        Object other$template = other.getTemplate();
+        if (this$template == null ? other$template != null : !this$template.equals(other$template)) {
+            return false;
+        }
+        Object this$timer = this.getTimer();
+        Object other$timer = other.getTimer();
+        if (this$timer == null ? other$timer != null : !this$timer.equals(other$timer)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof IntegrationSourceSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $aws = this.getAws();
+        result = result * prime + ($aws == null ? 43 : $aws.hashCode());
+        Object $ceOverrides = this.getCeOverrides();
+        result = result * prime + ($ceOverrides == null ? 43 : $ceOverrides.hashCode());
+        Object $sink = this.getSink();
+        result = result * prime + ($sink == null ? 43 : $sink.hashCode());
+        Object $template = this.getTemplate();
+        result = result * prime + ($template == null ? 43 : $template.hashCode());
+        Object $timer = this.getTimer();
+        result = result * prime + ($timer == null ? 43 : $timer.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IntegrationSourceSpec(" + "aws=" + this.getAws() + ", ceOverrides=" + this.getCeOverrides() + ", sink=" + this.getSink() + ", template=" + this.getTemplate() + ", timer=" + this.getTimer() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

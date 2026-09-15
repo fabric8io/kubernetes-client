@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * JobFlowStatus defines the observed state of JobFlow
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "state",
     "terminatedJobs",
     "unKnowJobs"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -298,6 +289,106 @@ public class JobFlowStatus implements Editable<JobFlowStatusBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof JobFlowStatus)) {
+            return false;
+        }
+        JobFlowStatus other = (JobFlowStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$completedJobs = this.getCompletedJobs();
+        Object other$completedJobs = other.getCompletedJobs();
+        if (this$completedJobs == null ? other$completedJobs != null : !this$completedJobs.equals(other$completedJobs)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$failedJobs = this.getFailedJobs();
+        Object other$failedJobs = other.getFailedJobs();
+        if (this$failedJobs == null ? other$failedJobs != null : !this$failedJobs.equals(other$failedJobs)) {
+            return false;
+        }
+        Object this$jobStatusList = this.getJobStatusList();
+        Object other$jobStatusList = other.getJobStatusList();
+        if (this$jobStatusList == null ? other$jobStatusList != null : !this$jobStatusList.equals(other$jobStatusList)) {
+            return false;
+        }
+        Object this$pendingJobs = this.getPendingJobs();
+        Object other$pendingJobs = other.getPendingJobs();
+        if (this$pendingJobs == null ? other$pendingJobs != null : !this$pendingJobs.equals(other$pendingJobs)) {
+            return false;
+        }
+        Object this$runningJobs = this.getRunningJobs();
+        Object other$runningJobs = other.getRunningJobs();
+        if (this$runningJobs == null ? other$runningJobs != null : !this$runningJobs.equals(other$runningJobs)) {
+            return false;
+        }
+        Object this$state = this.getState();
+        Object other$state = other.getState();
+        if (this$state == null ? other$state != null : !this$state.equals(other$state)) {
+            return false;
+        }
+        Object this$terminatedJobs = this.getTerminatedJobs();
+        Object other$terminatedJobs = other.getTerminatedJobs();
+        if (this$terminatedJobs == null ? other$terminatedJobs != null : !this$terminatedJobs.equals(other$terminatedJobs)) {
+            return false;
+        }
+        Object this$unKnowJobs = this.getUnKnowJobs();
+        Object other$unKnowJobs = other.getUnKnowJobs();
+        if (this$unKnowJobs == null ? other$unKnowJobs != null : !this$unKnowJobs.equals(other$unKnowJobs)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof JobFlowStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $completedJobs = this.getCompletedJobs();
+        result = result * prime + ($completedJobs == null ? 43 : $completedJobs.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $failedJobs = this.getFailedJobs();
+        result = result * prime + ($failedJobs == null ? 43 : $failedJobs.hashCode());
+        Object $jobStatusList = this.getJobStatusList();
+        result = result * prime + ($jobStatusList == null ? 43 : $jobStatusList.hashCode());
+        Object $pendingJobs = this.getPendingJobs();
+        result = result * prime + ($pendingJobs == null ? 43 : $pendingJobs.hashCode());
+        Object $runningJobs = this.getRunningJobs();
+        result = result * prime + ($runningJobs == null ? 43 : $runningJobs.hashCode());
+        Object $state = this.getState();
+        result = result * prime + ($state == null ? 43 : $state.hashCode());
+        Object $terminatedJobs = this.getTerminatedJobs();
+        result = result * prime + ($terminatedJobs == null ? 43 : $terminatedJobs.hashCode());
+        Object $unKnowJobs = this.getUnKnowJobs();
+        result = result * prime + ($unKnowJobs == null ? 43 : $unKnowJobs.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "JobFlowStatus(" + "completedJobs=" + this.getCompletedJobs() + ", conditions=" + this.getConditions() + ", failedJobs=" + this.getFailedJobs() + ", jobStatusList=" + this.getJobStatusList() + ", pendingJobs=" + this.getPendingJobs() + ", runningJobs=" + this.getRunningJobs() + ", state=" + this.getState() + ", terminatedJobs=" + this.getTerminatedJobs() + ", unKnowJobs=" + this.getUnKnowJobs() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

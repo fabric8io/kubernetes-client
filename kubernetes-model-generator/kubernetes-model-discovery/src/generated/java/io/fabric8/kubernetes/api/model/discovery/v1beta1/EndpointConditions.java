@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * EndpointConditions represents the current condition of an endpoint.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "ready",
     "serving",
     "terminating"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class EndpointConditions implements Editable<EndpointConditionsBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EndpointConditions)) {
+            return false;
+        }
+        EndpointConditions other = (EndpointConditions) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ready = this.getReady();
+        Object other$ready = other.getReady();
+        if (this$ready == null ? other$ready != null : !this$ready.equals(other$ready)) {
+            return false;
+        }
+        Object this$serving = this.getServing();
+        Object other$serving = other.getServing();
+        if (this$serving == null ? other$serving != null : !this$serving.equals(other$serving)) {
+            return false;
+        }
+        Object this$terminating = this.getTerminating();
+        Object other$terminating = other.getTerminating();
+        if (this$terminating == null ? other$terminating != null : !this$terminating.equals(other$terminating)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EndpointConditions;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ready = this.getReady();
+        result = result * prime + ($ready == null ? 43 : $ready.hashCode());
+        Object $serving = this.getServing();
+        result = result * prime + ($serving == null ? 43 : $serving.hashCode());
+        Object $terminating = this.getTerminating();
+        result = result * prime + ($terminating == null ? 43 : $terminating.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EndpointConditions(" + "ready=" + this.getReady() + ", serving=" + this.getServing() + ", terminating=" + this.getTerminating() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * UserDefinedNetworkSpec defines the desired state of UserDefinedNetworkSpec.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "layer2",
     "layer3",
     "topology"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class UserDefinedNetworkSpec implements Editable<UserDefinedNetworkSpecBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof UserDefinedNetworkSpec)) {
+            return false;
+        }
+        UserDefinedNetworkSpec other = (UserDefinedNetworkSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$layer2 = this.getLayer2();
+        Object other$layer2 = other.getLayer2();
+        if (this$layer2 == null ? other$layer2 != null : !this$layer2.equals(other$layer2)) {
+            return false;
+        }
+        Object this$layer3 = this.getLayer3();
+        Object other$layer3 = other.getLayer3();
+        if (this$layer3 == null ? other$layer3 != null : !this$layer3.equals(other$layer3)) {
+            return false;
+        }
+        Object this$topology = this.getTopology();
+        Object other$topology = other.getTopology();
+        if (this$topology == null ? other$topology != null : !this$topology.equals(other$topology)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof UserDefinedNetworkSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $layer2 = this.getLayer2();
+        result = result * prime + ($layer2 == null ? 43 : $layer2.hashCode());
+        Object $layer3 = this.getLayer3();
+        result = result * prime + ($layer3 == null ? 43 : $layer3.hashCode());
+        Object $topology = this.getTopology();
+        result = result * prime + ($topology == null ? 43 : $topology.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDefinedNetworkSpec(" + "layer2=" + this.getLayer2() + ", layer3=" + this.getLayer3() + ", topology=" + this.getTopology() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

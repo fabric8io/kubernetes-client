@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Provisioning contains settings used only for initial cluster provisioning.
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "releaseImage",
     "sshKnownHosts",
     "sshPrivateKeySecretRef"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -286,6 +277,106 @@ public class Provisioning implements Editable<ProvisioningBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Provisioning)) {
+            return false;
+        }
+        Provisioning other = (Provisioning) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$imageSetRef = this.getImageSetRef();
+        Object other$imageSetRef = other.getImageSetRef();
+        if (this$imageSetRef == null ? other$imageSetRef != null : !this$imageSetRef.equals(other$imageSetRef)) {
+            return false;
+        }
+        Object this$installConfigSecretRef = this.getInstallConfigSecretRef();
+        Object other$installConfigSecretRef = other.getInstallConfigSecretRef();
+        if (this$installConfigSecretRef == null ? other$installConfigSecretRef != null : !this$installConfigSecretRef.equals(other$installConfigSecretRef)) {
+            return false;
+        }
+        Object this$installerEnv = this.getInstallerEnv();
+        Object other$installerEnv = other.getInstallerEnv();
+        if (this$installerEnv == null ? other$installerEnv != null : !this$installerEnv.equals(other$installerEnv)) {
+            return false;
+        }
+        Object this$installerImageOverride = this.getInstallerImageOverride();
+        Object other$installerImageOverride = other.getInstallerImageOverride();
+        if (this$installerImageOverride == null ? other$installerImageOverride != null : !this$installerImageOverride.equals(other$installerImageOverride)) {
+            return false;
+        }
+        Object this$manifestsConfigMapRef = this.getManifestsConfigMapRef();
+        Object other$manifestsConfigMapRef = other.getManifestsConfigMapRef();
+        if (this$manifestsConfigMapRef == null ? other$manifestsConfigMapRef != null : !this$manifestsConfigMapRef.equals(other$manifestsConfigMapRef)) {
+            return false;
+        }
+        Object this$manifestsSecretRef = this.getManifestsSecretRef();
+        Object other$manifestsSecretRef = other.getManifestsSecretRef();
+        if (this$manifestsSecretRef == null ? other$manifestsSecretRef != null : !this$manifestsSecretRef.equals(other$manifestsSecretRef)) {
+            return false;
+        }
+        Object this$releaseImage = this.getReleaseImage();
+        Object other$releaseImage = other.getReleaseImage();
+        if (this$releaseImage == null ? other$releaseImage != null : !this$releaseImage.equals(other$releaseImage)) {
+            return false;
+        }
+        Object this$sshKnownHosts = this.getSshKnownHosts();
+        Object other$sshKnownHosts = other.getSshKnownHosts();
+        if (this$sshKnownHosts == null ? other$sshKnownHosts != null : !this$sshKnownHosts.equals(other$sshKnownHosts)) {
+            return false;
+        }
+        Object this$sshPrivateKeySecretRef = this.getSshPrivateKeySecretRef();
+        Object other$sshPrivateKeySecretRef = other.getSshPrivateKeySecretRef();
+        if (this$sshPrivateKeySecretRef == null ? other$sshPrivateKeySecretRef != null : !this$sshPrivateKeySecretRef.equals(other$sshPrivateKeySecretRef)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Provisioning;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $imageSetRef = this.getImageSetRef();
+        result = result * prime + ($imageSetRef == null ? 43 : $imageSetRef.hashCode());
+        Object $installConfigSecretRef = this.getInstallConfigSecretRef();
+        result = result * prime + ($installConfigSecretRef == null ? 43 : $installConfigSecretRef.hashCode());
+        Object $installerEnv = this.getInstallerEnv();
+        result = result * prime + ($installerEnv == null ? 43 : $installerEnv.hashCode());
+        Object $installerImageOverride = this.getInstallerImageOverride();
+        result = result * prime + ($installerImageOverride == null ? 43 : $installerImageOverride.hashCode());
+        Object $manifestsConfigMapRef = this.getManifestsConfigMapRef();
+        result = result * prime + ($manifestsConfigMapRef == null ? 43 : $manifestsConfigMapRef.hashCode());
+        Object $manifestsSecretRef = this.getManifestsSecretRef();
+        result = result * prime + ($manifestsSecretRef == null ? 43 : $manifestsSecretRef.hashCode());
+        Object $releaseImage = this.getReleaseImage();
+        result = result * prime + ($releaseImage == null ? 43 : $releaseImage.hashCode());
+        Object $sshKnownHosts = this.getSshKnownHosts();
+        result = result * prime + ($sshKnownHosts == null ? 43 : $sshKnownHosts.hashCode());
+        Object $sshPrivateKeySecretRef = this.getSshPrivateKeySecretRef();
+        result = result * prime + ($sshPrivateKeySecretRef == null ? 43 : $sshPrivateKeySecretRef.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Provisioning(" + "imageSetRef=" + this.getImageSetRef() + ", installConfigSecretRef=" + this.getInstallConfigSecretRef() + ", installerEnv=" + this.getInstallerEnv() + ", installerImageOverride=" + this.getInstallerImageOverride() + ", manifestsConfigMapRef=" + this.getManifestsConfigMapRef() + ", manifestsSecretRef=" + this.getManifestsSecretRef() + ", releaseImage=" + this.getReleaseImage() + ", sshKnownHosts=" + this.getSshKnownHosts() + ", sshPrivateKeySecretRef=" + this.getSshPrivateKeySecretRef() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,21 +28,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "ref",
     "sub"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -131,6 +122,57 @@ public class EventPolicySpecFrom implements Editable<EventPolicySpecFromBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EventPolicySpecFrom)) {
+            return false;
+        }
+        EventPolicySpecFrom other = (EventPolicySpecFrom) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ref = this.getRef();
+        Object other$ref = other.getRef();
+        if (this$ref == null ? other$ref != null : !this$ref.equals(other$ref)) {
+            return false;
+        }
+        Object this$sub = this.getSub();
+        Object other$sub = other.getSub();
+        if (this$sub == null ? other$sub != null : !this$sub.equals(other$sub)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EventPolicySpecFrom;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ref = this.getRef();
+        result = result * prime + ($ref == null ? 43 : $ref.hashCode());
+        Object $sub = this.getSub();
+        result = result * prime + ($sub == null ? 43 : $sub.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EventPolicySpecFrom(" + "ref=" + this.getRef() + ", sub=" + this.getSub() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

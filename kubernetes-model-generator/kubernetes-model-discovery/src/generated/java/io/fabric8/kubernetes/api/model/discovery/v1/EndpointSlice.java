@@ -33,9 +33,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * EndpointSlice represents a set of service endpoints. Most EndpointSlices are created by the EndpointSlice controller to represent the Pods selected by Service objects. For a given service there may be multiple EndpointSlice objects which must be joined to produce the full set of endpoints; you can find all of the slices for a given service by listing EndpointSlices in the service's namespace whose `kubernetes.io/service-name` label contains the service's name.
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "addressType",
     "endpoints",
     "ports"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -231,6 +222,85 @@ public class EndpointSlice implements Editable<EndpointSliceBuilder>, HasMetadat
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EndpointSlice)) {
+            return false;
+        }
+        EndpointSlice other = (EndpointSlice) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$addressType = this.getAddressType();
+        Object other$addressType = other.getAddressType();
+        if (this$addressType == null ? other$addressType != null : !this$addressType.equals(other$addressType)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$endpoints = this.getEndpoints();
+        Object other$endpoints = other.getEndpoints();
+        if (this$endpoints == null ? other$endpoints != null : !this$endpoints.equals(other$endpoints)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$ports = this.getPorts();
+        Object other$ports = other.getPorts();
+        if (this$ports == null ? other$ports != null : !this$ports.equals(other$ports)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EndpointSlice;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $addressType = this.getAddressType();
+        result = result * prime + ($addressType == null ? 43 : $addressType.hashCode());
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $endpoints = this.getEndpoints();
+        result = result * prime + ($endpoints == null ? 43 : $endpoints.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $ports = this.getPorts();
+        result = result * prime + ($ports == null ? 43 : $ports.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EndpointSlice(" + "addressType=" + this.getAddressType() + ", apiVersion=" + this.getApiVersion() + ", endpoints=" + this.getEndpoints() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata() + ", ports=" + this.getPorts() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MachineSetStatus is the status of a machineset in the remote cluster.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "name",
     "readyReplicas",
     "replicas"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -240,6 +231,92 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachineSetStatus)) {
+            return false;
+        }
+        MachineSetStatus other = (MachineSetStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$errorMessage = this.getErrorMessage();
+        Object other$errorMessage = other.getErrorMessage();
+        if (this$errorMessage == null ? other$errorMessage != null : !this$errorMessage.equals(other$errorMessage)) {
+            return false;
+        }
+        Object this$errorReason = this.getErrorReason();
+        Object other$errorReason = other.getErrorReason();
+        if (this$errorReason == null ? other$errorReason != null : !this$errorReason.equals(other$errorReason)) {
+            return false;
+        }
+        Object this$maxReplicas = this.getMaxReplicas();
+        Object other$maxReplicas = other.getMaxReplicas();
+        if (this$maxReplicas == null ? other$maxReplicas != null : !this$maxReplicas.equals(other$maxReplicas)) {
+            return false;
+        }
+        Object this$minReplicas = this.getMinReplicas();
+        Object other$minReplicas = other.getMinReplicas();
+        if (this$minReplicas == null ? other$minReplicas != null : !this$minReplicas.equals(other$minReplicas)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$readyReplicas = this.getReadyReplicas();
+        Object other$readyReplicas = other.getReadyReplicas();
+        if (this$readyReplicas == null ? other$readyReplicas != null : !this$readyReplicas.equals(other$readyReplicas)) {
+            return false;
+        }
+        Object this$replicas = this.getReplicas();
+        Object other$replicas = other.getReplicas();
+        if (this$replicas == null ? other$replicas != null : !this$replicas.equals(other$replicas)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachineSetStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $errorMessage = this.getErrorMessage();
+        result = result * prime + ($errorMessage == null ? 43 : $errorMessage.hashCode());
+        Object $errorReason = this.getErrorReason();
+        result = result * prime + ($errorReason == null ? 43 : $errorReason.hashCode());
+        Object $maxReplicas = this.getMaxReplicas();
+        result = result * prime + ($maxReplicas == null ? 43 : $maxReplicas.hashCode());
+        Object $minReplicas = this.getMinReplicas();
+        result = result * prime + ($minReplicas == null ? 43 : $minReplicas.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $readyReplicas = this.getReadyReplicas();
+        result = result * prime + ($readyReplicas == null ? 43 : $readyReplicas.hashCode());
+        Object $replicas = this.getReplicas();
+        result = result * prime + ($replicas == null ? 43 : $replicas.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachineSetStatus(" + "errorMessage=" + this.getErrorMessage() + ", errorReason=" + this.getErrorReason() + ", maxReplicas=" + this.getMaxReplicas() + ", minReplicas=" + this.getMinReplicas() + ", name=" + this.getName() + ", readyReplicas=" + this.getReadyReplicas() + ", replicas=" + this.getReplicas() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

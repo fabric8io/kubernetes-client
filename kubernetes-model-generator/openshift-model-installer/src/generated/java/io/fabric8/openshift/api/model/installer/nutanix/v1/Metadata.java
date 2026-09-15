@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Metadata contains Nutanix metadata (e.g. for uninstalling the cluster).
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "port",
     "prismCentral",
     "username"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Metadata)) {
+            return false;
+        }
+        Metadata other = (Metadata) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$password = this.getPassword();
+        Object other$password = other.getPassword();
+        if (this$password == null ? other$password != null : !this$password.equals(other$password)) {
+            return false;
+        }
+        Object this$port = this.getPort();
+        Object other$port = other.getPort();
+        if (this$port == null ? other$port != null : !this$port.equals(other$port)) {
+            return false;
+        }
+        Object this$prismCentral = this.getPrismCentral();
+        Object other$prismCentral = other.getPrismCentral();
+        if (this$prismCentral == null ? other$prismCentral != null : !this$prismCentral.equals(other$prismCentral)) {
+            return false;
+        }
+        Object this$username = this.getUsername();
+        Object other$username = other.getUsername();
+        if (this$username == null ? other$username != null : !this$username.equals(other$username)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Metadata;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $password = this.getPassword();
+        result = result * prime + ($password == null ? 43 : $password.hashCode());
+        Object $port = this.getPort();
+        result = result * prime + ($port == null ? 43 : $port.hashCode());
+        Object $prismCentral = this.getPrismCentral();
+        result = result * prime + ($prismCentral == null ? 43 : $prismCentral.hashCode());
+        Object $username = this.getUsername();
+        result = result * prime + ($username == null ? 43 : $username.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Metadata(" + "password=" + this.getPassword() + ", port=" + this.getPort() + ", prismCentral=" + this.getPrismCentral() + ", username=" + this.getUsername() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

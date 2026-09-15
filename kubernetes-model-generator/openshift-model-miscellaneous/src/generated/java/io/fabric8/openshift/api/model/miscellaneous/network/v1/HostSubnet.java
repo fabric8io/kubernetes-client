@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HostSubnet was used by OpenShift SDN. DEPRECATED: OpenShift SDN is no longer supported and this object is no longer used in any way by OpenShift.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
@@ -50,12 +47,6 @@ import lombok.experimental.Accessors;
     "host",
     "hostIP",
     "subnet"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -270,6 +261,99 @@ public class HostSubnet implements Editable<HostSubnetBuilder>, HasMetadata
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HostSubnet)) {
+            return false;
+        }
+        HostSubnet other = (HostSubnet) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$egressCIDRs = this.getEgressCIDRs();
+        Object other$egressCIDRs = other.getEgressCIDRs();
+        if (this$egressCIDRs == null ? other$egressCIDRs != null : !this$egressCIDRs.equals(other$egressCIDRs)) {
+            return false;
+        }
+        Object this$egressIPs = this.getEgressIPs();
+        Object other$egressIPs = other.getEgressIPs();
+        if (this$egressIPs == null ? other$egressIPs != null : !this$egressIPs.equals(other$egressIPs)) {
+            return false;
+        }
+        Object this$host = this.getHost();
+        Object other$host = other.getHost();
+        if (this$host == null ? other$host != null : !this$host.equals(other$host)) {
+            return false;
+        }
+        Object this$hostIP = this.getHostIP();
+        Object other$hostIP = other.getHostIP();
+        if (this$hostIP == null ? other$hostIP != null : !this$hostIP.equals(other$hostIP)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$subnet = this.getSubnet();
+        Object other$subnet = other.getSubnet();
+        if (this$subnet == null ? other$subnet != null : !this$subnet.equals(other$subnet)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HostSubnet;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $egressCIDRs = this.getEgressCIDRs();
+        result = result * prime + ($egressCIDRs == null ? 43 : $egressCIDRs.hashCode());
+        Object $egressIPs = this.getEgressIPs();
+        result = result * prime + ($egressIPs == null ? 43 : $egressIPs.hashCode());
+        Object $host = this.getHost();
+        result = result * prime + ($host == null ? 43 : $host.hashCode());
+        Object $hostIP = this.getHostIP();
+        result = result * prime + ($hostIP == null ? 43 : $hostIP.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $subnet = this.getSubnet();
+        result = result * prime + ($subnet == null ? 43 : $subnet.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HostSubnet(" + "apiVersion=" + this.getApiVersion() + ", egressCIDRs=" + this.getEgressCIDRs() + ", egressIPs=" + this.getEgressIPs() + ", host=" + this.getHost() + ", hostIP=" + this.getHostIP() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata() + ", subnet=" + this.getSubnet() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

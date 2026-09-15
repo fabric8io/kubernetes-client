@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HTTPAuthConfig contains configuration for communication with HTTP-speaking backends.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "allowedHeaders",
     "allowedResponseHeaders",
     "path"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -164,6 +155,64 @@ public class HTTPAuthConfig implements Editable<HTTPAuthConfigBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HTTPAuthConfig)) {
+            return false;
+        }
+        HTTPAuthConfig other = (HTTPAuthConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allowedHeaders = this.getAllowedHeaders();
+        Object other$allowedHeaders = other.getAllowedHeaders();
+        if (this$allowedHeaders == null ? other$allowedHeaders != null : !this$allowedHeaders.equals(other$allowedHeaders)) {
+            return false;
+        }
+        Object this$allowedResponseHeaders = this.getAllowedResponseHeaders();
+        Object other$allowedResponseHeaders = other.getAllowedResponseHeaders();
+        if (this$allowedResponseHeaders == null ? other$allowedResponseHeaders != null : !this$allowedResponseHeaders.equals(other$allowedResponseHeaders)) {
+            return false;
+        }
+        Object this$path = this.getPath();
+        Object other$path = other.getPath();
+        if (this$path == null ? other$path != null : !this$path.equals(other$path)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HTTPAuthConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allowedHeaders = this.getAllowedHeaders();
+        result = result * prime + ($allowedHeaders == null ? 43 : $allowedHeaders.hashCode());
+        Object $allowedResponseHeaders = this.getAllowedResponseHeaders();
+        result = result * prime + ($allowedResponseHeaders == null ? 43 : $allowedResponseHeaders.hashCode());
+        Object $path = this.getPath();
+        result = result * prime + ($path == null ? 43 : $path.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HTTPAuthConfig(" + "allowedHeaders=" + this.getAllowedHeaders() + ", allowedResponseHeaders=" + this.getAllowedResponseHeaders() + ", path=" + this.getPath() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

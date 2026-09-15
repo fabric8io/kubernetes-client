@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageTagMirrorSetSpec is the specification of the ImageTagMirrorSet CRD.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "imageTagMirrors"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -123,6 +114,50 @@ public class ImageTagMirrorSetSpec implements Editable<ImageTagMirrorSetSpecBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageTagMirrorSetSpec)) {
+            return false;
+        }
+        ImageTagMirrorSetSpec other = (ImageTagMirrorSetSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$imageTagMirrors = this.getImageTagMirrors();
+        Object other$imageTagMirrors = other.getImageTagMirrors();
+        if (this$imageTagMirrors == null ? other$imageTagMirrors != null : !this$imageTagMirrors.equals(other$imageTagMirrors)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageTagMirrorSetSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $imageTagMirrors = this.getImageTagMirrors();
+        result = result * prime + ($imageTagMirrors == null ? 43 : $imageTagMirrors.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageTagMirrorSetSpec(" + "imageTagMirrors=" + this.getImageTagMirrors() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

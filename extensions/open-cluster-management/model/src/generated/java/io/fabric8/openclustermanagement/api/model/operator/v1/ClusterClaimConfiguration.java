@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClusterClaimConfiguration represents the configuration of ClusterClaim
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "maxCustomClusterClaims",
     "reservedClusterClaimSuffixes"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -144,6 +135,57 @@ public class ClusterClaimConfiguration implements Editable<ClusterClaimConfigura
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterClaimConfiguration)) {
+            return false;
+        }
+        ClusterClaimConfiguration other = (ClusterClaimConfiguration) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$maxCustomClusterClaims = this.getMaxCustomClusterClaims();
+        Object other$maxCustomClusterClaims = other.getMaxCustomClusterClaims();
+        if (this$maxCustomClusterClaims == null ? other$maxCustomClusterClaims != null : !this$maxCustomClusterClaims.equals(other$maxCustomClusterClaims)) {
+            return false;
+        }
+        Object this$reservedClusterClaimSuffixes = this.getReservedClusterClaimSuffixes();
+        Object other$reservedClusterClaimSuffixes = other.getReservedClusterClaimSuffixes();
+        if (this$reservedClusterClaimSuffixes == null ? other$reservedClusterClaimSuffixes != null : !this$reservedClusterClaimSuffixes.equals(other$reservedClusterClaimSuffixes)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterClaimConfiguration;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $maxCustomClusterClaims = this.getMaxCustomClusterClaims();
+        result = result * prime + ($maxCustomClusterClaims == null ? 43 : $maxCustomClusterClaims.hashCode());
+        Object $reservedClusterClaimSuffixes = this.getReservedClusterClaimSuffixes();
+        result = result * prime + ($reservedClusterClaimSuffixes == null ? 43 : $reservedClusterClaimSuffixes.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterClaimConfiguration(" + "maxCustomClusterClaims=" + this.getMaxCustomClusterClaims() + ", reservedClusterClaimSuffixes=" + this.getReservedClusterClaimSuffixes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

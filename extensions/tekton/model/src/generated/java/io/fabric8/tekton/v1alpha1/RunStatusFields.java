@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RunStatusFields holds the fields of Run's status.  This is defined separately and inlined so that other types can readily consume these fields via duck typing.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "results",
     "retriesStatus",
     "startTime"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -208,6 +199,78 @@ public class RunStatusFields implements Editable<RunStatusFieldsBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RunStatusFields)) {
+            return false;
+        }
+        RunStatusFields other = (RunStatusFields) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$completionTime = this.getCompletionTime();
+        Object other$completionTime = other.getCompletionTime();
+        if (this$completionTime == null ? other$completionTime != null : !this$completionTime.equals(other$completionTime)) {
+            return false;
+        }
+        Object this$extraFields = this.getExtraFields();
+        Object other$extraFields = other.getExtraFields();
+        if (this$extraFields == null ? other$extraFields != null : !this$extraFields.equals(other$extraFields)) {
+            return false;
+        }
+        Object this$results = this.getResults();
+        Object other$results = other.getResults();
+        if (this$results == null ? other$results != null : !this$results.equals(other$results)) {
+            return false;
+        }
+        Object this$retriesStatus = this.getRetriesStatus();
+        Object other$retriesStatus = other.getRetriesStatus();
+        if (this$retriesStatus == null ? other$retriesStatus != null : !this$retriesStatus.equals(other$retriesStatus)) {
+            return false;
+        }
+        Object this$startTime = this.getStartTime();
+        Object other$startTime = other.getStartTime();
+        if (this$startTime == null ? other$startTime != null : !this$startTime.equals(other$startTime)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RunStatusFields;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $completionTime = this.getCompletionTime();
+        result = result * prime + ($completionTime == null ? 43 : $completionTime.hashCode());
+        Object $extraFields = this.getExtraFields();
+        result = result * prime + ($extraFields == null ? 43 : $extraFields.hashCode());
+        Object $results = this.getResults();
+        result = result * prime + ($results == null ? 43 : $results.hashCode());
+        Object $retriesStatus = this.getRetriesStatus();
+        result = result * prime + ($retriesStatus == null ? 43 : $retriesStatus.hashCode());
+        Object $startTime = this.getStartTime();
+        result = result * prime + ($startTime == null ? 43 : $startTime.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RunStatusFields(" + "completionTime=" + this.getCompletionTime() + ", extraFields=" + this.getExtraFields() + ", results=" + this.getResults() + ", retriesStatus=" + this.getRetriesStatus() + ", startTime=" + this.getStartTime() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

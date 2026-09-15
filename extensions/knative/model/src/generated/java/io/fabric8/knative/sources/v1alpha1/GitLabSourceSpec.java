@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * GitLabSourceSpec defines the desired state of GitLabSource
@@ -50,12 +47,6 @@ import lombok.experimental.Accessors;
     "serviceAccountName",
     "sink",
     "sslverify"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -266,6 +257,99 @@ public class GitLabSourceSpec implements Editable<GitLabSourceSpecBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GitLabSourceSpec)) {
+            return false;
+        }
+        GitLabSourceSpec other = (GitLabSourceSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$accessToken = this.getAccessToken();
+        Object other$accessToken = other.getAccessToken();
+        if (this$accessToken == null ? other$accessToken != null : !this$accessToken.equals(other$accessToken)) {
+            return false;
+        }
+        Object this$ceOverrides = this.getCeOverrides();
+        Object other$ceOverrides = other.getCeOverrides();
+        if (this$ceOverrides == null ? other$ceOverrides != null : !this$ceOverrides.equals(other$ceOverrides)) {
+            return false;
+        }
+        Object this$eventTypes = this.getEventTypes();
+        Object other$eventTypes = other.getEventTypes();
+        if (this$eventTypes == null ? other$eventTypes != null : !this$eventTypes.equals(other$eventTypes)) {
+            return false;
+        }
+        Object this$projectUrl = this.getProjectUrl();
+        Object other$projectUrl = other.getProjectUrl();
+        if (this$projectUrl == null ? other$projectUrl != null : !this$projectUrl.equals(other$projectUrl)) {
+            return false;
+        }
+        Object this$secretToken = this.getSecretToken();
+        Object other$secretToken = other.getSecretToken();
+        if (this$secretToken == null ? other$secretToken != null : !this$secretToken.equals(other$secretToken)) {
+            return false;
+        }
+        Object this$serviceAccountName = this.getServiceAccountName();
+        Object other$serviceAccountName = other.getServiceAccountName();
+        if (this$serviceAccountName == null ? other$serviceAccountName != null : !this$serviceAccountName.equals(other$serviceAccountName)) {
+            return false;
+        }
+        Object this$sink = this.getSink();
+        Object other$sink = other.getSink();
+        if (this$sink == null ? other$sink != null : !this$sink.equals(other$sink)) {
+            return false;
+        }
+        Object this$sslverify = this.getSslverify();
+        Object other$sslverify = other.getSslverify();
+        if (this$sslverify == null ? other$sslverify != null : !this$sslverify.equals(other$sslverify)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GitLabSourceSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $accessToken = this.getAccessToken();
+        result = result * prime + ($accessToken == null ? 43 : $accessToken.hashCode());
+        Object $ceOverrides = this.getCeOverrides();
+        result = result * prime + ($ceOverrides == null ? 43 : $ceOverrides.hashCode());
+        Object $eventTypes = this.getEventTypes();
+        result = result * prime + ($eventTypes == null ? 43 : $eventTypes.hashCode());
+        Object $projectUrl = this.getProjectUrl();
+        result = result * prime + ($projectUrl == null ? 43 : $projectUrl.hashCode());
+        Object $secretToken = this.getSecretToken();
+        result = result * prime + ($secretToken == null ? 43 : $secretToken.hashCode());
+        Object $serviceAccountName = this.getServiceAccountName();
+        result = result * prime + ($serviceAccountName == null ? 43 : $serviceAccountName.hashCode());
+        Object $sink = this.getSink();
+        result = result * prime + ($sink == null ? 43 : $sink.hashCode());
+        Object $sslverify = this.getSslverify();
+        result = result * prime + ($sslverify == null ? 43 : $sslverify.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GitLabSourceSpec(" + "accessToken=" + this.getAccessToken() + ", ceOverrides=" + this.getCeOverrides() + ", eventTypes=" + this.getEventTypes() + ", projectUrl=" + this.getProjectUrl() + ", secretToken=" + this.getSecretToken() + ", serviceAccountName=" + this.getServiceAccountName() + ", sink=" + this.getSink() + ", sslverify=" + this.getSslverify() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Describes match conditions and actions for routing HTTP/1.1, HTTP2, and gRPC traffic. See VirtualService for usage examples.
@@ -56,12 +53,6 @@ import lombok.experimental.Accessors;
     "rewrite",
     "route",
     "timeout"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -428,6 +419,155 @@ public class HTTPRoute implements Editable<HTTPRouteBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HTTPRoute)) {
+            return false;
+        }
+        HTTPRoute other = (HTTPRoute) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$corsPolicy = this.getCorsPolicy();
+        Object other$corsPolicy = other.getCorsPolicy();
+        if (this$corsPolicy == null ? other$corsPolicy != null : !this$corsPolicy.equals(other$corsPolicy)) {
+            return false;
+        }
+        Object this$delegate = this.getDelegate();
+        Object other$delegate = other.getDelegate();
+        if (this$delegate == null ? other$delegate != null : !this$delegate.equals(other$delegate)) {
+            return false;
+        }
+        Object this$directResponse = this.getDirectResponse();
+        Object other$directResponse = other.getDirectResponse();
+        if (this$directResponse == null ? other$directResponse != null : !this$directResponse.equals(other$directResponse)) {
+            return false;
+        }
+        Object this$fault = this.getFault();
+        Object other$fault = other.getFault();
+        if (this$fault == null ? other$fault != null : !this$fault.equals(other$fault)) {
+            return false;
+        }
+        Object this$headers = this.getHeaders();
+        Object other$headers = other.getHeaders();
+        if (this$headers == null ? other$headers != null : !this$headers.equals(other$headers)) {
+            return false;
+        }
+        Object this$match = this.getMatch();
+        Object other$match = other.getMatch();
+        if (this$match == null ? other$match != null : !this$match.equals(other$match)) {
+            return false;
+        }
+        Object this$mirror = this.getMirror();
+        Object other$mirror = other.getMirror();
+        if (this$mirror == null ? other$mirror != null : !this$mirror.equals(other$mirror)) {
+            return false;
+        }
+        Object this$mirrorPercent = this.getMirrorPercent();
+        Object other$mirrorPercent = other.getMirrorPercent();
+        if (this$mirrorPercent == null ? other$mirrorPercent != null : !this$mirrorPercent.equals(other$mirrorPercent)) {
+            return false;
+        }
+        Object this$mirrorPercentage = this.getMirrorPercentage();
+        Object other$mirrorPercentage = other.getMirrorPercentage();
+        if (this$mirrorPercentage == null ? other$mirrorPercentage != null : !this$mirrorPercentage.equals(other$mirrorPercentage)) {
+            return false;
+        }
+        Object this$mirrors = this.getMirrors();
+        Object other$mirrors = other.getMirrors();
+        if (this$mirrors == null ? other$mirrors != null : !this$mirrors.equals(other$mirrors)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$redirect = this.getRedirect();
+        Object other$redirect = other.getRedirect();
+        if (this$redirect == null ? other$redirect != null : !this$redirect.equals(other$redirect)) {
+            return false;
+        }
+        Object this$retries = this.getRetries();
+        Object other$retries = other.getRetries();
+        if (this$retries == null ? other$retries != null : !this$retries.equals(other$retries)) {
+            return false;
+        }
+        Object this$rewrite = this.getRewrite();
+        Object other$rewrite = other.getRewrite();
+        if (this$rewrite == null ? other$rewrite != null : !this$rewrite.equals(other$rewrite)) {
+            return false;
+        }
+        Object this$route = this.getRoute();
+        Object other$route = other.getRoute();
+        if (this$route == null ? other$route != null : !this$route.equals(other$route)) {
+            return false;
+        }
+        Object this$timeout = this.getTimeout();
+        Object other$timeout = other.getTimeout();
+        if (this$timeout == null ? other$timeout != null : !this$timeout.equals(other$timeout)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HTTPRoute;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $corsPolicy = this.getCorsPolicy();
+        result = result * prime + ($corsPolicy == null ? 43 : $corsPolicy.hashCode());
+        Object $delegate = this.getDelegate();
+        result = result * prime + ($delegate == null ? 43 : $delegate.hashCode());
+        Object $directResponse = this.getDirectResponse();
+        result = result * prime + ($directResponse == null ? 43 : $directResponse.hashCode());
+        Object $fault = this.getFault();
+        result = result * prime + ($fault == null ? 43 : $fault.hashCode());
+        Object $headers = this.getHeaders();
+        result = result * prime + ($headers == null ? 43 : $headers.hashCode());
+        Object $match = this.getMatch();
+        result = result * prime + ($match == null ? 43 : $match.hashCode());
+        Object $mirror = this.getMirror();
+        result = result * prime + ($mirror == null ? 43 : $mirror.hashCode());
+        Object $mirrorPercent = this.getMirrorPercent();
+        result = result * prime + ($mirrorPercent == null ? 43 : $mirrorPercent.hashCode());
+        Object $mirrorPercentage = this.getMirrorPercentage();
+        result = result * prime + ($mirrorPercentage == null ? 43 : $mirrorPercentage.hashCode());
+        Object $mirrors = this.getMirrors();
+        result = result * prime + ($mirrors == null ? 43 : $mirrors.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $redirect = this.getRedirect();
+        result = result * prime + ($redirect == null ? 43 : $redirect.hashCode());
+        Object $retries = this.getRetries();
+        result = result * prime + ($retries == null ? 43 : $retries.hashCode());
+        Object $rewrite = this.getRewrite();
+        result = result * prime + ($rewrite == null ? 43 : $rewrite.hashCode());
+        Object $route = this.getRoute();
+        result = result * prime + ($route == null ? 43 : $route.hashCode());
+        Object $timeout = this.getTimeout();
+        result = result * prime + ($timeout == null ? 43 : $timeout.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HTTPRoute(" + "corsPolicy=" + this.getCorsPolicy() + ", delegate=" + this.getDelegate() + ", directResponse=" + this.getDirectResponse() + ", fault=" + this.getFault() + ", headers=" + this.getHeaders() + ", match=" + this.getMatch() + ", mirror=" + this.getMirror() + ", mirrorPercent=" + this.getMirrorPercent() + ", mirrorPercentage=" + this.getMirrorPercentage() + ", mirrors=" + this.getMirrors() + ", name=" + this.getName() + ", redirect=" + this.getRedirect() + ", retries=" + this.getRetries() + ", rewrite=" + this.getRewrite() + ", route=" + this.getRoute() + ", timeout=" + this.getTimeout() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

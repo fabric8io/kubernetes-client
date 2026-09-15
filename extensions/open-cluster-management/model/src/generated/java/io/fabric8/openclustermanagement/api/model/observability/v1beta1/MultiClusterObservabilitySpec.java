@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openclustermanagement.api.model.shared.ObservabilityAddonSpec;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MultiClusterObservabilitySpec defines the desired state of MultiClusterObservability.
@@ -53,12 +50,6 @@ import lombok.experimental.Accessors;
     "retentionResolutionRaw",
     "storageConfigObject",
     "tolerations"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -328,6 +319,120 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MultiClusterObservabilitySpec)) {
+            return false;
+        }
+        MultiClusterObservabilitySpec other = (MultiClusterObservabilitySpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$availabilityConfig = this.getAvailabilityConfig();
+        Object other$availabilityConfig = other.getAvailabilityConfig();
+        if (this$availabilityConfig == null ? other$availabilityConfig != null : !this$availabilityConfig.equals(other$availabilityConfig)) {
+            return false;
+        }
+        Object this$enableDownSampling = this.getEnableDownSampling();
+        Object other$enableDownSampling = other.getEnableDownSampling();
+        if (this$enableDownSampling == null ? other$enableDownSampling != null : !this$enableDownSampling.equals(other$enableDownSampling)) {
+            return false;
+        }
+        Object this$imagePullPolicy = this.getImagePullPolicy();
+        Object other$imagePullPolicy = other.getImagePullPolicy();
+        if (this$imagePullPolicy == null ? other$imagePullPolicy != null : !this$imagePullPolicy.equals(other$imagePullPolicy)) {
+            return false;
+        }
+        Object this$imagePullSecret = this.getImagePullSecret();
+        Object other$imagePullSecret = other.getImagePullSecret();
+        if (this$imagePullSecret == null ? other$imagePullSecret != null : !this$imagePullSecret.equals(other$imagePullSecret)) {
+            return false;
+        }
+        Object this$nodeSelector = this.getNodeSelector();
+        Object other$nodeSelector = other.getNodeSelector();
+        if (this$nodeSelector == null ? other$nodeSelector != null : !this$nodeSelector.equals(other$nodeSelector)) {
+            return false;
+        }
+        Object this$observabilityAddonSpec = this.getObservabilityAddonSpec();
+        Object other$observabilityAddonSpec = other.getObservabilityAddonSpec();
+        if (this$observabilityAddonSpec == null ? other$observabilityAddonSpec != null : !this$observabilityAddonSpec.equals(other$observabilityAddonSpec)) {
+            return false;
+        }
+        Object this$retentionResolution1h = this.getRetentionResolution1h();
+        Object other$retentionResolution1h = other.getRetentionResolution1h();
+        if (this$retentionResolution1h == null ? other$retentionResolution1h != null : !this$retentionResolution1h.equals(other$retentionResolution1h)) {
+            return false;
+        }
+        Object this$retentionResolution5m = this.getRetentionResolution5m();
+        Object other$retentionResolution5m = other.getRetentionResolution5m();
+        if (this$retentionResolution5m == null ? other$retentionResolution5m != null : !this$retentionResolution5m.equals(other$retentionResolution5m)) {
+            return false;
+        }
+        Object this$retentionResolutionRaw = this.getRetentionResolutionRaw();
+        Object other$retentionResolutionRaw = other.getRetentionResolutionRaw();
+        if (this$retentionResolutionRaw == null ? other$retentionResolutionRaw != null : !this$retentionResolutionRaw.equals(other$retentionResolutionRaw)) {
+            return false;
+        }
+        Object this$storageConfigObject = this.getStorageConfigObject();
+        Object other$storageConfigObject = other.getStorageConfigObject();
+        if (this$storageConfigObject == null ? other$storageConfigObject != null : !this$storageConfigObject.equals(other$storageConfigObject)) {
+            return false;
+        }
+        Object this$tolerations = this.getTolerations();
+        Object other$tolerations = other.getTolerations();
+        if (this$tolerations == null ? other$tolerations != null : !this$tolerations.equals(other$tolerations)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MultiClusterObservabilitySpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $availabilityConfig = this.getAvailabilityConfig();
+        result = result * prime + ($availabilityConfig == null ? 43 : $availabilityConfig.hashCode());
+        Object $enableDownSampling = this.getEnableDownSampling();
+        result = result * prime + ($enableDownSampling == null ? 43 : $enableDownSampling.hashCode());
+        Object $imagePullPolicy = this.getImagePullPolicy();
+        result = result * prime + ($imagePullPolicy == null ? 43 : $imagePullPolicy.hashCode());
+        Object $imagePullSecret = this.getImagePullSecret();
+        result = result * prime + ($imagePullSecret == null ? 43 : $imagePullSecret.hashCode());
+        Object $nodeSelector = this.getNodeSelector();
+        result = result * prime + ($nodeSelector == null ? 43 : $nodeSelector.hashCode());
+        Object $observabilityAddonSpec = this.getObservabilityAddonSpec();
+        result = result * prime + ($observabilityAddonSpec == null ? 43 : $observabilityAddonSpec.hashCode());
+        Object $retentionResolution1h = this.getRetentionResolution1h();
+        result = result * prime + ($retentionResolution1h == null ? 43 : $retentionResolution1h.hashCode());
+        Object $retentionResolution5m = this.getRetentionResolution5m();
+        result = result * prime + ($retentionResolution5m == null ? 43 : $retentionResolution5m.hashCode());
+        Object $retentionResolutionRaw = this.getRetentionResolutionRaw();
+        result = result * prime + ($retentionResolutionRaw == null ? 43 : $retentionResolutionRaw.hashCode());
+        Object $storageConfigObject = this.getStorageConfigObject();
+        result = result * prime + ($storageConfigObject == null ? 43 : $storageConfigObject.hashCode());
+        Object $tolerations = this.getTolerations();
+        result = result * prime + ($tolerations == null ? 43 : $tolerations.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MultiClusterObservabilitySpec(" + "availabilityConfig=" + this.getAvailabilityConfig() + ", enableDownSampling=" + this.getEnableDownSampling() + ", imagePullPolicy=" + this.getImagePullPolicy() + ", imagePullSecret=" + this.getImagePullSecret() + ", nodeSelector=" + this.getNodeSelector() + ", observabilityAddonSpec=" + this.getObservabilityAddonSpec() + ", retentionResolution1h=" + this.getRetentionResolution1h() + ", retentionResolution5m=" + this.getRetentionResolution5m() + ", retentionResolutionRaw=" + this.getRetentionResolutionRaw() + ", storageConfigObject=" + this.getStorageConfigObject() + ", tolerations=" + this.getTolerations() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

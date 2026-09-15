@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * WebexConfig configures notification via Cisco Webex See https://prometheus.io/docs/alerting/latest/configuration/#webex_config
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "message",
     "roomID",
     "sendResolved"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,78 @@ public class WebexConfig implements Editable<WebexConfigBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof WebexConfig)) {
+            return false;
+        }
+        WebexConfig other = (WebexConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiURL = this.getApiURL();
+        Object other$apiURL = other.getApiURL();
+        if (this$apiURL == null ? other$apiURL != null : !this$apiURL.equals(other$apiURL)) {
+            return false;
+        }
+        Object this$httpConfig = this.getHttpConfig();
+        Object other$httpConfig = other.getHttpConfig();
+        if (this$httpConfig == null ? other$httpConfig != null : !this$httpConfig.equals(other$httpConfig)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$roomID = this.getRoomID();
+        Object other$roomID = other.getRoomID();
+        if (this$roomID == null ? other$roomID != null : !this$roomID.equals(other$roomID)) {
+            return false;
+        }
+        Object this$sendResolved = this.getSendResolved();
+        Object other$sendResolved = other.getSendResolved();
+        if (this$sendResolved == null ? other$sendResolved != null : !this$sendResolved.equals(other$sendResolved)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof WebexConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiURL = this.getApiURL();
+        result = result * prime + ($apiURL == null ? 43 : $apiURL.hashCode());
+        Object $httpConfig = this.getHttpConfig();
+        result = result * prime + ($httpConfig == null ? 43 : $httpConfig.hashCode());
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $roomID = this.getRoomID();
+        result = result * prime + ($roomID == null ? 43 : $roomID.hashCode());
+        Object $sendResolved = this.getSendResolved();
+        result = result * prime + ($sendResolved == null ? 43 : $sendResolved.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WebexConfig(" + "apiURL=" + this.getApiURL() + ", httpConfig=" + this.getHttpConfig() + ", message=" + this.getMessage() + ", roomID=" + this.getRoomID() + ", sendResolved=" + this.getSendResolved() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

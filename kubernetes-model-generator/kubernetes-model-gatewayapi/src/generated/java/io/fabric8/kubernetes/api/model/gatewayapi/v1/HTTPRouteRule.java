@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HTTPRouteRule defines semantics for matching an HTTP request based on conditions (matches), processing it (filters), and forwarding the request to an API object (backendRefs).
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "retry",
     "sessionPersistence",
     "timeouts"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -246,6 +237,92 @@ public class HTTPRouteRule implements Editable<HTTPRouteRuleBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HTTPRouteRule)) {
+            return false;
+        }
+        HTTPRouteRule other = (HTTPRouteRule) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$backendRefs = this.getBackendRefs();
+        Object other$backendRefs = other.getBackendRefs();
+        if (this$backendRefs == null ? other$backendRefs != null : !this$backendRefs.equals(other$backendRefs)) {
+            return false;
+        }
+        Object this$filters = this.getFilters();
+        Object other$filters = other.getFilters();
+        if (this$filters == null ? other$filters != null : !this$filters.equals(other$filters)) {
+            return false;
+        }
+        Object this$matches = this.getMatches();
+        Object other$matches = other.getMatches();
+        if (this$matches == null ? other$matches != null : !this$matches.equals(other$matches)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$retry = this.getRetry();
+        Object other$retry = other.getRetry();
+        if (this$retry == null ? other$retry != null : !this$retry.equals(other$retry)) {
+            return false;
+        }
+        Object this$sessionPersistence = this.getSessionPersistence();
+        Object other$sessionPersistence = other.getSessionPersistence();
+        if (this$sessionPersistence == null ? other$sessionPersistence != null : !this$sessionPersistence.equals(other$sessionPersistence)) {
+            return false;
+        }
+        Object this$timeouts = this.getTimeouts();
+        Object other$timeouts = other.getTimeouts();
+        if (this$timeouts == null ? other$timeouts != null : !this$timeouts.equals(other$timeouts)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HTTPRouteRule;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $backendRefs = this.getBackendRefs();
+        result = result * prime + ($backendRefs == null ? 43 : $backendRefs.hashCode());
+        Object $filters = this.getFilters();
+        result = result * prime + ($filters == null ? 43 : $filters.hashCode());
+        Object $matches = this.getMatches();
+        result = result * prime + ($matches == null ? 43 : $matches.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $retry = this.getRetry();
+        result = result * prime + ($retry == null ? 43 : $retry.hashCode());
+        Object $sessionPersistence = this.getSessionPersistence();
+        result = result * prime + ($sessionPersistence == null ? 43 : $sessionPersistence.hashCode());
+        Object $timeouts = this.getTimeouts();
+        result = result * prime + ($timeouts == null ? 43 : $timeouts.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HTTPRouteRule(" + "backendRefs=" + this.getBackendRefs() + ", filters=" + this.getFilters() + ", matches=" + this.getMatches() + ", name=" + this.getName() + ", retry=" + this.getRetry() + ", sessionPersistence=" + this.getSessionPersistence() + ", timeouts=" + this.getTimeouts() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

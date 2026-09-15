@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Challenge specifies a challenge offered by the ACME server for an Order. An appropriate Challenge resource can be created to perform the ACME challenge process.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "token",
     "type",
     "url"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class ACMEChallenge implements Editable<ACMEChallengeBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ACMEChallenge)) {
+            return false;
+        }
+        ACMEChallenge other = (ACMEChallenge) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$token = this.getToken();
+        Object other$token = other.getToken();
+        if (this$token == null ? other$token != null : !this$token.equals(other$token)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$url = this.getUrl();
+        Object other$url = other.getUrl();
+        if (this$url == null ? other$url != null : !this$url.equals(other$url)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ACMEChallenge;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $token = this.getToken();
+        result = result * prime + ($token == null ? 43 : $token.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $url = this.getUrl();
+        result = result * prime + ($url == null ? 43 : $url.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ACMEChallenge(" + "token=" + this.getToken() + ", type=" + this.getType() + ", url=" + this.getUrl() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

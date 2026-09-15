@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PushoverConfig configures notifications via Pushover. See https://prometheus.io/docs/alerting/latest/configuration/#pushover_config
@@ -56,12 +53,6 @@ import lombok.experimental.Accessors;
     "urlTitle",
     "userKey",
     "userKeyFile"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -460,6 +451,169 @@ public class PushoverConfig implements Editable<PushoverConfigBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PushoverConfig)) {
+            return false;
+        }
+        PushoverConfig other = (PushoverConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$device = this.getDevice();
+        Object other$device = other.getDevice();
+        if (this$device == null ? other$device != null : !this$device.equals(other$device)) {
+            return false;
+        }
+        Object this$expire = this.getExpire();
+        Object other$expire = other.getExpire();
+        if (this$expire == null ? other$expire != null : !this$expire.equals(other$expire)) {
+            return false;
+        }
+        Object this$html = this.getHtml();
+        Object other$html = other.getHtml();
+        if (this$html == null ? other$html != null : !this$html.equals(other$html)) {
+            return false;
+        }
+        Object this$httpConfig = this.getHttpConfig();
+        Object other$httpConfig = other.getHttpConfig();
+        if (this$httpConfig == null ? other$httpConfig != null : !this$httpConfig.equals(other$httpConfig)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$monospace = this.getMonospace();
+        Object other$monospace = other.getMonospace();
+        if (this$monospace == null ? other$monospace != null : !this$monospace.equals(other$monospace)) {
+            return false;
+        }
+        Object this$priority = this.getPriority();
+        Object other$priority = other.getPriority();
+        if (this$priority == null ? other$priority != null : !this$priority.equals(other$priority)) {
+            return false;
+        }
+        Object this$retry = this.getRetry();
+        Object other$retry = other.getRetry();
+        if (this$retry == null ? other$retry != null : !this$retry.equals(other$retry)) {
+            return false;
+        }
+        Object this$sendResolved = this.getSendResolved();
+        Object other$sendResolved = other.getSendResolved();
+        if (this$sendResolved == null ? other$sendResolved != null : !this$sendResolved.equals(other$sendResolved)) {
+            return false;
+        }
+        Object this$sound = this.getSound();
+        Object other$sound = other.getSound();
+        if (this$sound == null ? other$sound != null : !this$sound.equals(other$sound)) {
+            return false;
+        }
+        Object this$title = this.getTitle();
+        Object other$title = other.getTitle();
+        if (this$title == null ? other$title != null : !this$title.equals(other$title)) {
+            return false;
+        }
+        Object this$token = this.getToken();
+        Object other$token = other.getToken();
+        if (this$token == null ? other$token != null : !this$token.equals(other$token)) {
+            return false;
+        }
+        Object this$tokenFile = this.getTokenFile();
+        Object other$tokenFile = other.getTokenFile();
+        if (this$tokenFile == null ? other$tokenFile != null : !this$tokenFile.equals(other$tokenFile)) {
+            return false;
+        }
+        Object this$ttl = this.getTtl();
+        Object other$ttl = other.getTtl();
+        if (this$ttl == null ? other$ttl != null : !this$ttl.equals(other$ttl)) {
+            return false;
+        }
+        Object this$url = this.getUrl();
+        Object other$url = other.getUrl();
+        if (this$url == null ? other$url != null : !this$url.equals(other$url)) {
+            return false;
+        }
+        Object this$urlTitle = this.getUrlTitle();
+        Object other$urlTitle = other.getUrlTitle();
+        if (this$urlTitle == null ? other$urlTitle != null : !this$urlTitle.equals(other$urlTitle)) {
+            return false;
+        }
+        Object this$userKey = this.getUserKey();
+        Object other$userKey = other.getUserKey();
+        if (this$userKey == null ? other$userKey != null : !this$userKey.equals(other$userKey)) {
+            return false;
+        }
+        Object this$userKeyFile = this.getUserKeyFile();
+        Object other$userKeyFile = other.getUserKeyFile();
+        if (this$userKeyFile == null ? other$userKeyFile != null : !this$userKeyFile.equals(other$userKeyFile)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PushoverConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $device = this.getDevice();
+        result = result * prime + ($device == null ? 43 : $device.hashCode());
+        Object $expire = this.getExpire();
+        result = result * prime + ($expire == null ? 43 : $expire.hashCode());
+        Object $html = this.getHtml();
+        result = result * prime + ($html == null ? 43 : $html.hashCode());
+        Object $httpConfig = this.getHttpConfig();
+        result = result * prime + ($httpConfig == null ? 43 : $httpConfig.hashCode());
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $monospace = this.getMonospace();
+        result = result * prime + ($monospace == null ? 43 : $monospace.hashCode());
+        Object $priority = this.getPriority();
+        result = result * prime + ($priority == null ? 43 : $priority.hashCode());
+        Object $retry = this.getRetry();
+        result = result * prime + ($retry == null ? 43 : $retry.hashCode());
+        Object $sendResolved = this.getSendResolved();
+        result = result * prime + ($sendResolved == null ? 43 : $sendResolved.hashCode());
+        Object $sound = this.getSound();
+        result = result * prime + ($sound == null ? 43 : $sound.hashCode());
+        Object $title = this.getTitle();
+        result = result * prime + ($title == null ? 43 : $title.hashCode());
+        Object $token = this.getToken();
+        result = result * prime + ($token == null ? 43 : $token.hashCode());
+        Object $tokenFile = this.getTokenFile();
+        result = result * prime + ($tokenFile == null ? 43 : $tokenFile.hashCode());
+        Object $ttl = this.getTtl();
+        result = result * prime + ($ttl == null ? 43 : $ttl.hashCode());
+        Object $url = this.getUrl();
+        result = result * prime + ($url == null ? 43 : $url.hashCode());
+        Object $urlTitle = this.getUrlTitle();
+        result = result * prime + ($urlTitle == null ? 43 : $urlTitle.hashCode());
+        Object $userKey = this.getUserKey();
+        result = result * prime + ($userKey == null ? 43 : $userKey.hashCode());
+        Object $userKeyFile = this.getUserKeyFile();
+        result = result * prime + ($userKeyFile == null ? 43 : $userKeyFile.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PushoverConfig(" + "device=" + this.getDevice() + ", expire=" + this.getExpire() + ", html=" + this.getHtml() + ", httpConfig=" + this.getHttpConfig() + ", message=" + this.getMessage() + ", monospace=" + this.getMonospace() + ", priority=" + this.getPriority() + ", retry=" + this.getRetry() + ", sendResolved=" + this.getSendResolved() + ", sound=" + this.getSound() + ", title=" + this.getTitle() + ", token=" + this.getToken() + ", tokenFile=" + this.getTokenFile() + ", ttl=" + this.getTtl() + ", url=" + this.getUrl() + ", urlTitle=" + this.getUrlTitle() + ", userKey=" + this.getUserKey() + ", userKeyFile=" + this.getUserKeyFile() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

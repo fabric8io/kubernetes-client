@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MetricSpec contains all values a metric collector needs to operate.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "panicWindow",
     "scrapeTarget",
     "stableWindow"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class MetricSpec implements Editable<MetricSpecBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MetricSpec)) {
+            return false;
+        }
+        MetricSpec other = (MetricSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$panicWindow = this.getPanicWindow();
+        Object other$panicWindow = other.getPanicWindow();
+        if (this$panicWindow == null ? other$panicWindow != null : !this$panicWindow.equals(other$panicWindow)) {
+            return false;
+        }
+        Object this$scrapeTarget = this.getScrapeTarget();
+        Object other$scrapeTarget = other.getScrapeTarget();
+        if (this$scrapeTarget == null ? other$scrapeTarget != null : !this$scrapeTarget.equals(other$scrapeTarget)) {
+            return false;
+        }
+        Object this$stableWindow = this.getStableWindow();
+        Object other$stableWindow = other.getStableWindow();
+        if (this$stableWindow == null ? other$stableWindow != null : !this$stableWindow.equals(other$stableWindow)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MetricSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $panicWindow = this.getPanicWindow();
+        result = result * prime + ($panicWindow == null ? 43 : $panicWindow.hashCode());
+        Object $scrapeTarget = this.getScrapeTarget();
+        result = result * prime + ($scrapeTarget == null ? 43 : $scrapeTarget.hashCode());
+        Object $stableWindow = this.getStableWindow();
+        result = result * prime + ($stableWindow == null ? 43 : $stableWindow.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MetricSpec(" + "panicWindow=" + this.getPanicWindow() + ", scrapeTarget=" + this.getScrapeTarget() + ", stableWindow=" + this.getStableWindow() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

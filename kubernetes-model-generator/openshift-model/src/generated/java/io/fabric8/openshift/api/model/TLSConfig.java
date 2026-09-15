@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TLSConfig defines config used to secure a route and provide termination
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "insecureEdgeTerminationPolicy",
     "key",
     "termination"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -239,6 +230,92 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TLSConfig)) {
+            return false;
+        }
+        TLSConfig other = (TLSConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$caCertificate = this.getCaCertificate();
+        Object other$caCertificate = other.getCaCertificate();
+        if (this$caCertificate == null ? other$caCertificate != null : !this$caCertificate.equals(other$caCertificate)) {
+            return false;
+        }
+        Object this$certificate = this.getCertificate();
+        Object other$certificate = other.getCertificate();
+        if (this$certificate == null ? other$certificate != null : !this$certificate.equals(other$certificate)) {
+            return false;
+        }
+        Object this$destinationCACertificate = this.getDestinationCACertificate();
+        Object other$destinationCACertificate = other.getDestinationCACertificate();
+        if (this$destinationCACertificate == null ? other$destinationCACertificate != null : !this$destinationCACertificate.equals(other$destinationCACertificate)) {
+            return false;
+        }
+        Object this$externalCertificate = this.getExternalCertificate();
+        Object other$externalCertificate = other.getExternalCertificate();
+        if (this$externalCertificate == null ? other$externalCertificate != null : !this$externalCertificate.equals(other$externalCertificate)) {
+            return false;
+        }
+        Object this$insecureEdgeTerminationPolicy = this.getInsecureEdgeTerminationPolicy();
+        Object other$insecureEdgeTerminationPolicy = other.getInsecureEdgeTerminationPolicy();
+        if (this$insecureEdgeTerminationPolicy == null ? other$insecureEdgeTerminationPolicy != null : !this$insecureEdgeTerminationPolicy.equals(other$insecureEdgeTerminationPolicy)) {
+            return false;
+        }
+        Object this$key = this.getKey();
+        Object other$key = other.getKey();
+        if (this$key == null ? other$key != null : !this$key.equals(other$key)) {
+            return false;
+        }
+        Object this$termination = this.getTermination();
+        Object other$termination = other.getTermination();
+        if (this$termination == null ? other$termination != null : !this$termination.equals(other$termination)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TLSConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $caCertificate = this.getCaCertificate();
+        result = result * prime + ($caCertificate == null ? 43 : $caCertificate.hashCode());
+        Object $certificate = this.getCertificate();
+        result = result * prime + ($certificate == null ? 43 : $certificate.hashCode());
+        Object $destinationCACertificate = this.getDestinationCACertificate();
+        result = result * prime + ($destinationCACertificate == null ? 43 : $destinationCACertificate.hashCode());
+        Object $externalCertificate = this.getExternalCertificate();
+        result = result * prime + ($externalCertificate == null ? 43 : $externalCertificate.hashCode());
+        Object $insecureEdgeTerminationPolicy = this.getInsecureEdgeTerminationPolicy();
+        result = result * prime + ($insecureEdgeTerminationPolicy == null ? 43 : $insecureEdgeTerminationPolicy.hashCode());
+        Object $key = this.getKey();
+        result = result * prime + ($key == null ? 43 : $key.hashCode());
+        Object $termination = this.getTermination();
+        result = result * prime + ($termination == null ? 43 : $termination.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TLSConfig(" + "caCertificate=" + this.getCaCertificate() + ", certificate=" + this.getCertificate() + ", destinationCACertificate=" + this.getDestinationCACertificate() + ", externalCertificate=" + this.getExternalCertificate() + ", insecureEdgeTerminationPolicy=" + this.getInsecureEdgeTerminationPolicy() + ", key=" + this.getKey() + ", termination=" + this.getTermination() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

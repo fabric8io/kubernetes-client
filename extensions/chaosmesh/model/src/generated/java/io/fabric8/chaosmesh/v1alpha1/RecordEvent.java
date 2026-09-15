@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
     "operation",
     "timestamp",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -171,6 +162,71 @@ public class RecordEvent implements Editable<RecordEventBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RecordEvent)) {
+            return false;
+        }
+        RecordEvent other = (RecordEvent) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$operation = this.getOperation();
+        Object other$operation = other.getOperation();
+        if (this$operation == null ? other$operation != null : !this$operation.equals(other$operation)) {
+            return false;
+        }
+        Object this$timestamp = this.getTimestamp();
+        Object other$timestamp = other.getTimestamp();
+        if (this$timestamp == null ? other$timestamp != null : !this$timestamp.equals(other$timestamp)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RecordEvent;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $operation = this.getOperation();
+        result = result * prime + ($operation == null ? 43 : $operation.hashCode());
+        Object $timestamp = this.getTimestamp();
+        result = result * prime + ($timestamp == null ? 43 : $timestamp.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RecordEvent(" + "message=" + this.getMessage() + ", operation=" + this.getOperation() + ", timestamp=" + this.getTimestamp() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

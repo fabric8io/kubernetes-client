@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PodDNSConfig defines the DNS parameters of a pod in addition to those generated from DNSPolicy.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "nameservers",
     "options",
     "searches"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -167,6 +158,64 @@ public class PodDNSConfig implements Editable<PodDNSConfigBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodDNSConfig)) {
+            return false;
+        }
+        PodDNSConfig other = (PodDNSConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$nameservers = this.getNameservers();
+        Object other$nameservers = other.getNameservers();
+        if (this$nameservers == null ? other$nameservers != null : !this$nameservers.equals(other$nameservers)) {
+            return false;
+        }
+        Object this$options = this.getOptions();
+        Object other$options = other.getOptions();
+        if (this$options == null ? other$options != null : !this$options.equals(other$options)) {
+            return false;
+        }
+        Object this$searches = this.getSearches();
+        Object other$searches = other.getSearches();
+        if (this$searches == null ? other$searches != null : !this$searches.equals(other$searches)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodDNSConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $nameservers = this.getNameservers();
+        result = result * prime + ($nameservers == null ? 43 : $nameservers.hashCode());
+        Object $options = this.getOptions();
+        result = result * prime + ($options == null ? 43 : $options.hashCode());
+        Object $searches = this.getSearches();
+        result = result * prime + ($searches == null ? 43 : $searches.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodDNSConfig(" + "nameservers=" + this.getNameservers() + ", options=" + this.getOptions() + ", searches=" + this.getSearches() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

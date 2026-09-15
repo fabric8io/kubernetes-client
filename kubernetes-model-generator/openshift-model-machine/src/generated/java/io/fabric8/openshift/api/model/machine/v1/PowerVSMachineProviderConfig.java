@@ -33,9 +33,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PowerVSMachineProviderConfig is the type that will be embedded in a Machine.Spec.ProviderSpec field for a PowerVS virtual machine. It is used by the PowerVS machine actuator to create a single Machine.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
@@ -57,12 +54,6 @@ import lombok.experimental.Accessors;
     "serviceInstance",
     "systemType",
     "userDataSecret"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -389,6 +380,141 @@ public class PowerVSMachineProviderConfig implements Editable<PowerVSMachineProv
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PowerVSMachineProviderConfig)) {
+            return false;
+        }
+        PowerVSMachineProviderConfig other = (PowerVSMachineProviderConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$credentialsSecret = this.getCredentialsSecret();
+        Object other$credentialsSecret = other.getCredentialsSecret();
+        if (this$credentialsSecret == null ? other$credentialsSecret != null : !this$credentialsSecret.equals(other$credentialsSecret)) {
+            return false;
+        }
+        Object this$image = this.getImage();
+        Object other$image = other.getImage();
+        if (this$image == null ? other$image != null : !this$image.equals(other$image)) {
+            return false;
+        }
+        Object this$keyPairName = this.getKeyPairName();
+        Object other$keyPairName = other.getKeyPairName();
+        if (this$keyPairName == null ? other$keyPairName != null : !this$keyPairName.equals(other$keyPairName)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$loadBalancers = this.getLoadBalancers();
+        Object other$loadBalancers = other.getLoadBalancers();
+        if (this$loadBalancers == null ? other$loadBalancers != null : !this$loadBalancers.equals(other$loadBalancers)) {
+            return false;
+        }
+        Object this$memoryGiB = this.getMemoryGiB();
+        Object other$memoryGiB = other.getMemoryGiB();
+        if (this$memoryGiB == null ? other$memoryGiB != null : !this$memoryGiB.equals(other$memoryGiB)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$network = this.getNetwork();
+        Object other$network = other.getNetwork();
+        if (this$network == null ? other$network != null : !this$network.equals(other$network)) {
+            return false;
+        }
+        Object this$processorType = this.getProcessorType();
+        Object other$processorType = other.getProcessorType();
+        if (this$processorType == null ? other$processorType != null : !this$processorType.equals(other$processorType)) {
+            return false;
+        }
+        Object this$processors = this.getProcessors();
+        Object other$processors = other.getProcessors();
+        if (this$processors == null ? other$processors != null : !this$processors.equals(other$processors)) {
+            return false;
+        }
+        Object this$serviceInstance = this.getServiceInstance();
+        Object other$serviceInstance = other.getServiceInstance();
+        if (this$serviceInstance == null ? other$serviceInstance != null : !this$serviceInstance.equals(other$serviceInstance)) {
+            return false;
+        }
+        Object this$systemType = this.getSystemType();
+        Object other$systemType = other.getSystemType();
+        if (this$systemType == null ? other$systemType != null : !this$systemType.equals(other$systemType)) {
+            return false;
+        }
+        Object this$userDataSecret = this.getUserDataSecret();
+        Object other$userDataSecret = other.getUserDataSecret();
+        if (this$userDataSecret == null ? other$userDataSecret != null : !this$userDataSecret.equals(other$userDataSecret)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PowerVSMachineProviderConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $credentialsSecret = this.getCredentialsSecret();
+        result = result * prime + ($credentialsSecret == null ? 43 : $credentialsSecret.hashCode());
+        Object $image = this.getImage();
+        result = result * prime + ($image == null ? 43 : $image.hashCode());
+        Object $keyPairName = this.getKeyPairName();
+        result = result * prime + ($keyPairName == null ? 43 : $keyPairName.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $loadBalancers = this.getLoadBalancers();
+        result = result * prime + ($loadBalancers == null ? 43 : $loadBalancers.hashCode());
+        Object $memoryGiB = this.getMemoryGiB();
+        result = result * prime + ($memoryGiB == null ? 43 : $memoryGiB.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $network = this.getNetwork();
+        result = result * prime + ($network == null ? 43 : $network.hashCode());
+        Object $processorType = this.getProcessorType();
+        result = result * prime + ($processorType == null ? 43 : $processorType.hashCode());
+        Object $processors = this.getProcessors();
+        result = result * prime + ($processors == null ? 43 : $processors.hashCode());
+        Object $serviceInstance = this.getServiceInstance();
+        result = result * prime + ($serviceInstance == null ? 43 : $serviceInstance.hashCode());
+        Object $systemType = this.getSystemType();
+        result = result * prime + ($systemType == null ? 43 : $systemType.hashCode());
+        Object $userDataSecret = this.getUserDataSecret();
+        result = result * prime + ($userDataSecret == null ? 43 : $userDataSecret.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PowerVSMachineProviderConfig(" + "apiVersion=" + this.getApiVersion() + ", credentialsSecret=" + this.getCredentialsSecret() + ", image=" + this.getImage() + ", keyPairName=" + this.getKeyPairName() + ", kind=" + this.getKind() + ", loadBalancers=" + this.getLoadBalancers() + ", memoryGiB=" + this.getMemoryGiB() + ", metadata=" + this.getMetadata() + ", network=" + this.getNetwork() + ", processorType=" + this.getProcessorType() + ", processors=" + this.getProcessors() + ", serviceInstance=" + this.getServiceInstance() + ", systemType=" + this.getSystemType() + ", userDataSecret=" + this.getUserDataSecret() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

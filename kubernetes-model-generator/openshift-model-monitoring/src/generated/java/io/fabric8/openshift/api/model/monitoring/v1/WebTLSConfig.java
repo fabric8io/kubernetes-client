@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * WebTLSConfig defines the TLS parameters for HTTPS.
@@ -52,12 +49,6 @@ import lombok.experimental.Accessors;
     "maxVersion",
     "minVersion",
     "preferServerCipherSuites"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -346,6 +337,127 @@ public class WebTLSConfig implements Editable<WebTLSConfigBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof WebTLSConfig)) {
+            return false;
+        }
+        WebTLSConfig other = (WebTLSConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cert = this.getCert();
+        Object other$cert = other.getCert();
+        if (this$cert == null ? other$cert != null : !this$cert.equals(other$cert)) {
+            return false;
+        }
+        Object this$certFile = this.getCertFile();
+        Object other$certFile = other.getCertFile();
+        if (this$certFile == null ? other$certFile != null : !this$certFile.equals(other$certFile)) {
+            return false;
+        }
+        Object this$cipherSuites = this.getCipherSuites();
+        Object other$cipherSuites = other.getCipherSuites();
+        if (this$cipherSuites == null ? other$cipherSuites != null : !this$cipherSuites.equals(other$cipherSuites)) {
+            return false;
+        }
+        Object this$clientAuthType = this.getClientAuthType();
+        Object other$clientAuthType = other.getClientAuthType();
+        if (this$clientAuthType == null ? other$clientAuthType != null : !this$clientAuthType.equals(other$clientAuthType)) {
+            return false;
+        }
+        Object this$clientCAFile = this.getClientCAFile();
+        Object other$clientCAFile = other.getClientCAFile();
+        if (this$clientCAFile == null ? other$clientCAFile != null : !this$clientCAFile.equals(other$clientCAFile)) {
+            return false;
+        }
+        Object this$clientCa = this.getClientCa();
+        Object other$clientCa = other.getClientCa();
+        if (this$clientCa == null ? other$clientCa != null : !this$clientCa.equals(other$clientCa)) {
+            return false;
+        }
+        Object this$curvePreferences = this.getCurvePreferences();
+        Object other$curvePreferences = other.getCurvePreferences();
+        if (this$curvePreferences == null ? other$curvePreferences != null : !this$curvePreferences.equals(other$curvePreferences)) {
+            return false;
+        }
+        Object this$keyFile = this.getKeyFile();
+        Object other$keyFile = other.getKeyFile();
+        if (this$keyFile == null ? other$keyFile != null : !this$keyFile.equals(other$keyFile)) {
+            return false;
+        }
+        Object this$keySecret = this.getKeySecret();
+        Object other$keySecret = other.getKeySecret();
+        if (this$keySecret == null ? other$keySecret != null : !this$keySecret.equals(other$keySecret)) {
+            return false;
+        }
+        Object this$maxVersion = this.getMaxVersion();
+        Object other$maxVersion = other.getMaxVersion();
+        if (this$maxVersion == null ? other$maxVersion != null : !this$maxVersion.equals(other$maxVersion)) {
+            return false;
+        }
+        Object this$minVersion = this.getMinVersion();
+        Object other$minVersion = other.getMinVersion();
+        if (this$minVersion == null ? other$minVersion != null : !this$minVersion.equals(other$minVersion)) {
+            return false;
+        }
+        Object this$preferServerCipherSuites = this.getPreferServerCipherSuites();
+        Object other$preferServerCipherSuites = other.getPreferServerCipherSuites();
+        if (this$preferServerCipherSuites == null ? other$preferServerCipherSuites != null : !this$preferServerCipherSuites.equals(other$preferServerCipherSuites)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof WebTLSConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cert = this.getCert();
+        result = result * prime + ($cert == null ? 43 : $cert.hashCode());
+        Object $certFile = this.getCertFile();
+        result = result * prime + ($certFile == null ? 43 : $certFile.hashCode());
+        Object $cipherSuites = this.getCipherSuites();
+        result = result * prime + ($cipherSuites == null ? 43 : $cipherSuites.hashCode());
+        Object $clientAuthType = this.getClientAuthType();
+        result = result * prime + ($clientAuthType == null ? 43 : $clientAuthType.hashCode());
+        Object $clientCAFile = this.getClientCAFile();
+        result = result * prime + ($clientCAFile == null ? 43 : $clientCAFile.hashCode());
+        Object $clientCa = this.getClientCa();
+        result = result * prime + ($clientCa == null ? 43 : $clientCa.hashCode());
+        Object $curvePreferences = this.getCurvePreferences();
+        result = result * prime + ($curvePreferences == null ? 43 : $curvePreferences.hashCode());
+        Object $keyFile = this.getKeyFile();
+        result = result * prime + ($keyFile == null ? 43 : $keyFile.hashCode());
+        Object $keySecret = this.getKeySecret();
+        result = result * prime + ($keySecret == null ? 43 : $keySecret.hashCode());
+        Object $maxVersion = this.getMaxVersion();
+        result = result * prime + ($maxVersion == null ? 43 : $maxVersion.hashCode());
+        Object $minVersion = this.getMinVersion();
+        result = result * prime + ($minVersion == null ? 43 : $minVersion.hashCode());
+        Object $preferServerCipherSuites = this.getPreferServerCipherSuites();
+        result = result * prime + ($preferServerCipherSuites == null ? 43 : $preferServerCipherSuites.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WebTLSConfig(" + "cert=" + this.getCert() + ", certFile=" + this.getCertFile() + ", cipherSuites=" + this.getCipherSuites() + ", clientAuthType=" + this.getClientAuthType() + ", clientCAFile=" + this.getClientCAFile() + ", clientCa=" + this.getClientCa() + ", curvePreferences=" + this.getCurvePreferences() + ", keyFile=" + this.getKeyFile() + ", keySecret=" + this.getKeySecret() + ", maxVersion=" + this.getMaxVersion() + ", minVersion=" + this.getMinVersion() + ", preferServerCipherSuites=" + this.getPreferServerCipherSuites() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

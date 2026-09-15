@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ovnKubernetesConfig contains the configuration parameters for networks using the ovn-kubernetes network project
@@ -50,12 +47,6 @@ import lombok.experimental.Accessors;
     "routeAdvertisements",
     "v4InternalSubnet",
     "v6InternalSubnet"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -340,6 +331,127 @@ public class OVNKubernetesConfig implements Editable<OVNKubernetesConfigBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OVNKubernetesConfig)) {
+            return false;
+        }
+        OVNKubernetesConfig other = (OVNKubernetesConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$egressIPConfig = this.getEgressIPConfig();
+        Object other$egressIPConfig = other.getEgressIPConfig();
+        if (this$egressIPConfig == null ? other$egressIPConfig != null : !this$egressIPConfig.equals(other$egressIPConfig)) {
+            return false;
+        }
+        Object this$gatewayConfig = this.getGatewayConfig();
+        Object other$gatewayConfig = other.getGatewayConfig();
+        if (this$gatewayConfig == null ? other$gatewayConfig != null : !this$gatewayConfig.equals(other$gatewayConfig)) {
+            return false;
+        }
+        Object this$genevePort = this.getGenevePort();
+        Object other$genevePort = other.getGenevePort();
+        if (this$genevePort == null ? other$genevePort != null : !this$genevePort.equals(other$genevePort)) {
+            return false;
+        }
+        Object this$hybridOverlayConfig = this.getHybridOverlayConfig();
+        Object other$hybridOverlayConfig = other.getHybridOverlayConfig();
+        if (this$hybridOverlayConfig == null ? other$hybridOverlayConfig != null : !this$hybridOverlayConfig.equals(other$hybridOverlayConfig)) {
+            return false;
+        }
+        Object this$ipsecConfig = this.getIpsecConfig();
+        Object other$ipsecConfig = other.getIpsecConfig();
+        if (this$ipsecConfig == null ? other$ipsecConfig != null : !this$ipsecConfig.equals(other$ipsecConfig)) {
+            return false;
+        }
+        Object this$ipv4 = this.getIpv4();
+        Object other$ipv4 = other.getIpv4();
+        if (this$ipv4 == null ? other$ipv4 != null : !this$ipv4.equals(other$ipv4)) {
+            return false;
+        }
+        Object this$ipv6 = this.getIpv6();
+        Object other$ipv6 = other.getIpv6();
+        if (this$ipv6 == null ? other$ipv6 != null : !this$ipv6.equals(other$ipv6)) {
+            return false;
+        }
+        Object this$mtu = this.getMtu();
+        Object other$mtu = other.getMtu();
+        if (this$mtu == null ? other$mtu != null : !this$mtu.equals(other$mtu)) {
+            return false;
+        }
+        Object this$policyAuditConfig = this.getPolicyAuditConfig();
+        Object other$policyAuditConfig = other.getPolicyAuditConfig();
+        if (this$policyAuditConfig == null ? other$policyAuditConfig != null : !this$policyAuditConfig.equals(other$policyAuditConfig)) {
+            return false;
+        }
+        Object this$routeAdvertisements = this.getRouteAdvertisements();
+        Object other$routeAdvertisements = other.getRouteAdvertisements();
+        if (this$routeAdvertisements == null ? other$routeAdvertisements != null : !this$routeAdvertisements.equals(other$routeAdvertisements)) {
+            return false;
+        }
+        Object this$v4InternalSubnet = this.getV4InternalSubnet();
+        Object other$v4InternalSubnet = other.getV4InternalSubnet();
+        if (this$v4InternalSubnet == null ? other$v4InternalSubnet != null : !this$v4InternalSubnet.equals(other$v4InternalSubnet)) {
+            return false;
+        }
+        Object this$v6InternalSubnet = this.getV6InternalSubnet();
+        Object other$v6InternalSubnet = other.getV6InternalSubnet();
+        if (this$v6InternalSubnet == null ? other$v6InternalSubnet != null : !this$v6InternalSubnet.equals(other$v6InternalSubnet)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OVNKubernetesConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $egressIPConfig = this.getEgressIPConfig();
+        result = result * prime + ($egressIPConfig == null ? 43 : $egressIPConfig.hashCode());
+        Object $gatewayConfig = this.getGatewayConfig();
+        result = result * prime + ($gatewayConfig == null ? 43 : $gatewayConfig.hashCode());
+        Object $genevePort = this.getGenevePort();
+        result = result * prime + ($genevePort == null ? 43 : $genevePort.hashCode());
+        Object $hybridOverlayConfig = this.getHybridOverlayConfig();
+        result = result * prime + ($hybridOverlayConfig == null ? 43 : $hybridOverlayConfig.hashCode());
+        Object $ipsecConfig = this.getIpsecConfig();
+        result = result * prime + ($ipsecConfig == null ? 43 : $ipsecConfig.hashCode());
+        Object $ipv4 = this.getIpv4();
+        result = result * prime + ($ipv4 == null ? 43 : $ipv4.hashCode());
+        Object $ipv6 = this.getIpv6();
+        result = result * prime + ($ipv6 == null ? 43 : $ipv6.hashCode());
+        Object $mtu = this.getMtu();
+        result = result * prime + ($mtu == null ? 43 : $mtu.hashCode());
+        Object $policyAuditConfig = this.getPolicyAuditConfig();
+        result = result * prime + ($policyAuditConfig == null ? 43 : $policyAuditConfig.hashCode());
+        Object $routeAdvertisements = this.getRouteAdvertisements();
+        result = result * prime + ($routeAdvertisements == null ? 43 : $routeAdvertisements.hashCode());
+        Object $v4InternalSubnet = this.getV4InternalSubnet();
+        result = result * prime + ($v4InternalSubnet == null ? 43 : $v4InternalSubnet.hashCode());
+        Object $v6InternalSubnet = this.getV6InternalSubnet();
+        result = result * prime + ($v6InternalSubnet == null ? 43 : $v6InternalSubnet.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OVNKubernetesConfig(" + "egressIPConfig=" + this.getEgressIPConfig() + ", gatewayConfig=" + this.getGatewayConfig() + ", genevePort=" + this.getGenevePort() + ", hybridOverlayConfig=" + this.getHybridOverlayConfig() + ", ipsecConfig=" + this.getIpsecConfig() + ", ipv4=" + this.getIpv4() + ", ipv6=" + this.getIpv6() + ", mtu=" + this.getMtu() + ", policyAuditConfig=" + this.getPolicyAuditConfig() + ", routeAdvertisements=" + this.getRouteAdvertisements() + ", v4InternalSubnet=" + this.getV4InternalSubnet() + ", v6InternalSubnet=" + this.getV6InternalSubnet() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

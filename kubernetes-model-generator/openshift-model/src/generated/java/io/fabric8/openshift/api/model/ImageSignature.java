@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageSignature holds a signature of an image. It allows to verify image identity and possibly other claims as long as the signature is trusted. Based on this information it is possible to restrict runnable images to those matching cluster-wide policy. Mandatory fields should be parsed by clients doing image verification. The others are parsed from signature's content by the server. They serve just an informative purpose.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
@@ -52,12 +49,6 @@ import lombok.experimental.Accessors;
     "issuedTo",
     "signedClaims",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -329,6 +320,120 @@ public class ImageSignature implements Editable<ImageSignatureBuilder>, HasMetad
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageSignature)) {
+            return false;
+        }
+        ImageSignature other = (ImageSignature) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$content = this.getContent();
+        Object other$content = other.getContent();
+        if (this$content == null ? other$content != null : !this$content.equals(other$content)) {
+            return false;
+        }
+        Object this$created = this.getCreated();
+        Object other$created = other.getCreated();
+        if (this$created == null ? other$created != null : !this$created.equals(other$created)) {
+            return false;
+        }
+        Object this$imageIdentity = this.getImageIdentity();
+        Object other$imageIdentity = other.getImageIdentity();
+        if (this$imageIdentity == null ? other$imageIdentity != null : !this$imageIdentity.equals(other$imageIdentity)) {
+            return false;
+        }
+        Object this$issuedBy = this.getIssuedBy();
+        Object other$issuedBy = other.getIssuedBy();
+        if (this$issuedBy == null ? other$issuedBy != null : !this$issuedBy.equals(other$issuedBy)) {
+            return false;
+        }
+        Object this$issuedTo = this.getIssuedTo();
+        Object other$issuedTo = other.getIssuedTo();
+        if (this$issuedTo == null ? other$issuedTo != null : !this$issuedTo.equals(other$issuedTo)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$signedClaims = this.getSignedClaims();
+        Object other$signedClaims = other.getSignedClaims();
+        if (this$signedClaims == null ? other$signedClaims != null : !this$signedClaims.equals(other$signedClaims)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageSignature;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $content = this.getContent();
+        result = result * prime + ($content == null ? 43 : $content.hashCode());
+        Object $created = this.getCreated();
+        result = result * prime + ($created == null ? 43 : $created.hashCode());
+        Object $imageIdentity = this.getImageIdentity();
+        result = result * prime + ($imageIdentity == null ? 43 : $imageIdentity.hashCode());
+        Object $issuedBy = this.getIssuedBy();
+        result = result * prime + ($issuedBy == null ? 43 : $issuedBy.hashCode());
+        Object $issuedTo = this.getIssuedTo();
+        result = result * prime + ($issuedTo == null ? 43 : $issuedTo.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $signedClaims = this.getSignedClaims();
+        result = result * prime + ($signedClaims == null ? 43 : $signedClaims.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageSignature(" + "apiVersion=" + this.getApiVersion() + ", conditions=" + this.getConditions() + ", content=" + this.getContent() + ", created=" + this.getCreated() + ", imageIdentity=" + this.getImageIdentity() + ", issuedBy=" + this.getIssuedBy() + ", issuedTo=" + this.getIssuedTo() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata() + ", signedClaims=" + this.getSignedClaims() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

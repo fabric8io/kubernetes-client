@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VMDiskSecurityProfile specifies the security profile settings for the managed disk. It can be set only for Confidential VMs.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "diskEncryptionSet",
     "securityEncryptionType"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -139,6 +130,57 @@ public class VMDiskSecurityProfile implements Editable<VMDiskSecurityProfileBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VMDiskSecurityProfile)) {
+            return false;
+        }
+        VMDiskSecurityProfile other = (VMDiskSecurityProfile) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$diskEncryptionSet = this.getDiskEncryptionSet();
+        Object other$diskEncryptionSet = other.getDiskEncryptionSet();
+        if (this$diskEncryptionSet == null ? other$diskEncryptionSet != null : !this$diskEncryptionSet.equals(other$diskEncryptionSet)) {
+            return false;
+        }
+        Object this$securityEncryptionType = this.getSecurityEncryptionType();
+        Object other$securityEncryptionType = other.getSecurityEncryptionType();
+        if (this$securityEncryptionType == null ? other$securityEncryptionType != null : !this$securityEncryptionType.equals(other$securityEncryptionType)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VMDiskSecurityProfile;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $diskEncryptionSet = this.getDiskEncryptionSet();
+        result = result * prime + ($diskEncryptionSet == null ? 43 : $diskEncryptionSet.hashCode());
+        Object $securityEncryptionType = this.getSecurityEncryptionType();
+        result = result * prime + ($securityEncryptionType == null ? 43 : $securityEncryptionType.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VMDiskSecurityProfile(" + "diskEncryptionSet=" + this.getDiskEncryptionSet() + ", securityEncryptionType=" + this.getSecurityEncryptionType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

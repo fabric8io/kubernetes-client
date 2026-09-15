@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * BandwidthEntry for CNI BandwidthEntry
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "egressRate",
     "ingressBurst",
     "ingressRate"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class BandwidthEntry implements Editable<BandwidthEntryBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BandwidthEntry)) {
+            return false;
+        }
+        BandwidthEntry other = (BandwidthEntry) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$egressBurst = this.getEgressBurst();
+        Object other$egressBurst = other.getEgressBurst();
+        if (this$egressBurst == null ? other$egressBurst != null : !this$egressBurst.equals(other$egressBurst)) {
+            return false;
+        }
+        Object this$egressRate = this.getEgressRate();
+        Object other$egressRate = other.getEgressRate();
+        if (this$egressRate == null ? other$egressRate != null : !this$egressRate.equals(other$egressRate)) {
+            return false;
+        }
+        Object this$ingressBurst = this.getIngressBurst();
+        Object other$ingressBurst = other.getIngressBurst();
+        if (this$ingressBurst == null ? other$ingressBurst != null : !this$ingressBurst.equals(other$ingressBurst)) {
+            return false;
+        }
+        Object this$ingressRate = this.getIngressRate();
+        Object other$ingressRate = other.getIngressRate();
+        if (this$ingressRate == null ? other$ingressRate != null : !this$ingressRate.equals(other$ingressRate)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BandwidthEntry;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $egressBurst = this.getEgressBurst();
+        result = result * prime + ($egressBurst == null ? 43 : $egressBurst.hashCode());
+        Object $egressRate = this.getEgressRate();
+        result = result * prime + ($egressRate == null ? 43 : $egressRate.hashCode());
+        Object $ingressBurst = this.getIngressBurst();
+        result = result * prime + ($ingressBurst == null ? 43 : $ingressBurst.hashCode());
+        Object $ingressRate = this.getIngressRate();
+        result = result * prime + ($ingressRate == null ? 43 : $ingressRate.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BandwidthEntry(" + "egressBurst=" + this.getEgressBurst() + ", egressRate=" + this.getEgressRate() + ", ingressBurst=" + this.getIngressBurst() + ", ingressRate=" + this.getIngressRate() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

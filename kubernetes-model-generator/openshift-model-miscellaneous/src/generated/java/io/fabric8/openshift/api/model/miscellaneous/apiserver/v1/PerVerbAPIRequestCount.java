@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PerVerbAPIRequestCount requestCounts requests by API request verb.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "requestCount",
     "verb"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class PerVerbAPIRequestCount implements Editable<PerVerbAPIRequestCountBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PerVerbAPIRequestCount)) {
+            return false;
+        }
+        PerVerbAPIRequestCount other = (PerVerbAPIRequestCount) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$requestCount = this.getRequestCount();
+        Object other$requestCount = other.getRequestCount();
+        if (this$requestCount == null ? other$requestCount != null : !this$requestCount.equals(other$requestCount)) {
+            return false;
+        }
+        Object this$verb = this.getVerb();
+        Object other$verb = other.getVerb();
+        if (this$verb == null ? other$verb != null : !this$verb.equals(other$verb)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PerVerbAPIRequestCount;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $requestCount = this.getRequestCount();
+        result = result * prime + ($requestCount == null ? 43 : $requestCount.hashCode());
+        Object $verb = this.getVerb();
+        result = result * prime + ($verb == null ? 43 : $verb.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PerVerbAPIRequestCount(" + "requestCount=" + this.getRequestCount() + ", verb=" + this.getVerb() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Step represents the status of an individual step in an InstallPlan.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "resolving",
     "resource",
     "status"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class Step implements Editable<StepBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Step)) {
+            return false;
+        }
+        Step other = (Step) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$optional = this.getOptional();
+        Object other$optional = other.getOptional();
+        if (this$optional == null ? other$optional != null : !this$optional.equals(other$optional)) {
+            return false;
+        }
+        Object this$resolving = this.getResolving();
+        Object other$resolving = other.getResolving();
+        if (this$resolving == null ? other$resolving != null : !this$resolving.equals(other$resolving)) {
+            return false;
+        }
+        Object this$resource = this.getResource();
+        Object other$resource = other.getResource();
+        if (this$resource == null ? other$resource != null : !this$resource.equals(other$resource)) {
+            return false;
+        }
+        Object this$status = this.getStatus();
+        Object other$status = other.getStatus();
+        if (this$status == null ? other$status != null : !this$status.equals(other$status)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Step;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $optional = this.getOptional();
+        result = result * prime + ($optional == null ? 43 : $optional.hashCode());
+        Object $resolving = this.getResolving();
+        result = result * prime + ($resolving == null ? 43 : $resolving.hashCode());
+        Object $resource = this.getResource();
+        result = result * prime + ($resource == null ? 43 : $resource.hashCode());
+        Object $status = this.getStatus();
+        result = result * prime + ($status == null ? 43 : $status.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Step(" + "optional=" + this.getOptional() + ", resolving=" + this.getResolving() + ", resource=" + this.getResource() + ", status=" + this.getStatus() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

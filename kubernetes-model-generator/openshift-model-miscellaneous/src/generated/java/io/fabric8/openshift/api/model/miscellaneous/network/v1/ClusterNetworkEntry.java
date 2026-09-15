@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClusterNetworkEntry defines an individual cluster network. The CIDRs cannot overlap with other cluster network CIDRs, CIDRs reserved for external ips, CIDRs reserved for service networks, and CIDRs reserved for ingress ips.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "CIDR",
     "hostSubnetLength"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class ClusterNetworkEntry implements Editable<ClusterNetworkEntryBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterNetworkEntry)) {
+            return false;
+        }
+        ClusterNetworkEntry other = (ClusterNetworkEntry) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cIDR = this.getCIDR();
+        Object other$cIDR = other.getCIDR();
+        if (this$cIDR == null ? other$cIDR != null : !this$cIDR.equals(other$cIDR)) {
+            return false;
+        }
+        Object this$hostSubnetLength = this.getHostSubnetLength();
+        Object other$hostSubnetLength = other.getHostSubnetLength();
+        if (this$hostSubnetLength == null ? other$hostSubnetLength != null : !this$hostSubnetLength.equals(other$hostSubnetLength)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterNetworkEntry;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cIDR = this.getCIDR();
+        result = result * prime + ($cIDR == null ? 43 : $cIDR.hashCode());
+        Object $hostSubnetLength = this.getHostSubnetLength();
+        result = result * prime + ($hostSubnetLength == null ? 43 : $hostSubnetLength.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterNetworkEntry(" + "cIDR=" + this.getCIDR() + ", hostSubnetLength=" + this.getHostSubnetLength() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

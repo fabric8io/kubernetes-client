@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RolloutProgressive is a RolloutStrategy Type
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "maxFailures",
     "minSuccessTime",
     "progressDeadline"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -205,6 +196,78 @@ public class RolloutProgressive implements Editable<RolloutProgressiveBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RolloutProgressive)) {
+            return false;
+        }
+        RolloutProgressive other = (RolloutProgressive) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$mandatoryDecisionGroups = this.getMandatoryDecisionGroups();
+        Object other$mandatoryDecisionGroups = other.getMandatoryDecisionGroups();
+        if (this$mandatoryDecisionGroups == null ? other$mandatoryDecisionGroups != null : !this$mandatoryDecisionGroups.equals(other$mandatoryDecisionGroups)) {
+            return false;
+        }
+        Object this$maxConcurrency = this.getMaxConcurrency();
+        Object other$maxConcurrency = other.getMaxConcurrency();
+        if (this$maxConcurrency == null ? other$maxConcurrency != null : !this$maxConcurrency.equals(other$maxConcurrency)) {
+            return false;
+        }
+        Object this$maxFailures = this.getMaxFailures();
+        Object other$maxFailures = other.getMaxFailures();
+        if (this$maxFailures == null ? other$maxFailures != null : !this$maxFailures.equals(other$maxFailures)) {
+            return false;
+        }
+        Object this$minSuccessTime = this.getMinSuccessTime();
+        Object other$minSuccessTime = other.getMinSuccessTime();
+        if (this$minSuccessTime == null ? other$minSuccessTime != null : !this$minSuccessTime.equals(other$minSuccessTime)) {
+            return false;
+        }
+        Object this$progressDeadline = this.getProgressDeadline();
+        Object other$progressDeadline = other.getProgressDeadline();
+        if (this$progressDeadline == null ? other$progressDeadline != null : !this$progressDeadline.equals(other$progressDeadline)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RolloutProgressive;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $mandatoryDecisionGroups = this.getMandatoryDecisionGroups();
+        result = result * prime + ($mandatoryDecisionGroups == null ? 43 : $mandatoryDecisionGroups.hashCode());
+        Object $maxConcurrency = this.getMaxConcurrency();
+        result = result * prime + ($maxConcurrency == null ? 43 : $maxConcurrency.hashCode());
+        Object $maxFailures = this.getMaxFailures();
+        result = result * prime + ($maxFailures == null ? 43 : $maxFailures.hashCode());
+        Object $minSuccessTime = this.getMinSuccessTime();
+        result = result * prime + ($minSuccessTime == null ? 43 : $minSuccessTime.hashCode());
+        Object $progressDeadline = this.getProgressDeadline();
+        result = result * prime + ($progressDeadline == null ? 43 : $progressDeadline.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RolloutProgressive(" + "mandatoryDecisionGroups=" + this.getMandatoryDecisionGroups() + ", maxConcurrency=" + this.getMaxConcurrency() + ", maxFailures=" + this.getMaxFailures() + ", minSuccessTime=" + this.getMinSuccessTime() + ", progressDeadline=" + this.getProgressDeadline() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

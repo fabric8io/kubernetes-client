@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "cloud",
     "tpp",
     "zone"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class VenafiIssuer implements Editable<VenafiIssuerBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VenafiIssuer)) {
+            return false;
+        }
+        VenafiIssuer other = (VenafiIssuer) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cloud = this.getCloud();
+        Object other$cloud = other.getCloud();
+        if (this$cloud == null ? other$cloud != null : !this$cloud.equals(other$cloud)) {
+            return false;
+        }
+        Object this$tpp = this.getTpp();
+        Object other$tpp = other.getTpp();
+        if (this$tpp == null ? other$tpp != null : !this$tpp.equals(other$tpp)) {
+            return false;
+        }
+        Object this$zone = this.getZone();
+        Object other$zone = other.getZone();
+        if (this$zone == null ? other$zone != null : !this$zone.equals(other$zone)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VenafiIssuer;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cloud = this.getCloud();
+        result = result * prime + ($cloud == null ? 43 : $cloud.hashCode());
+        Object $tpp = this.getTpp();
+        result = result * prime + ($tpp == null ? 43 : $tpp.hashCode());
+        Object $zone = this.getZone();
+        result = result * prime + ($zone == null ? 43 : $zone.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VenafiIssuer(" + "cloud=" + this.getCloud() + ", tpp=" + this.getTpp() + ", zone=" + this.getZone() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

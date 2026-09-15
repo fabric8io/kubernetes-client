@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CloudLoadBalancerConfig contains an union discriminator indicating the type of DNS solution in use within the cluster. When the DNSType is `ClusterHosted`, the cloud's Load Balancer configuration needs to be provided so that the DNS solution hosted within the cluster can be configured with those values.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "clusterHosted",
     "dnsType"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -139,6 +130,57 @@ public class CloudLoadBalancerConfig implements Editable<CloudLoadBalancerConfig
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CloudLoadBalancerConfig)) {
+            return false;
+        }
+        CloudLoadBalancerConfig other = (CloudLoadBalancerConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterHosted = this.getClusterHosted();
+        Object other$clusterHosted = other.getClusterHosted();
+        if (this$clusterHosted == null ? other$clusterHosted != null : !this$clusterHosted.equals(other$clusterHosted)) {
+            return false;
+        }
+        Object this$dnsType = this.getDnsType();
+        Object other$dnsType = other.getDnsType();
+        if (this$dnsType == null ? other$dnsType != null : !this$dnsType.equals(other$dnsType)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CloudLoadBalancerConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterHosted = this.getClusterHosted();
+        result = result * prime + ($clusterHosted == null ? 43 : $clusterHosted.hashCode());
+        Object $dnsType = this.getDnsType();
+        result = result * prime + ($dnsType == null ? 43 : $dnsType.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CloudLoadBalancerConfig(" + "clusterHosted=" + this.getClusterHosted() + ", dnsType=" + this.getDnsType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

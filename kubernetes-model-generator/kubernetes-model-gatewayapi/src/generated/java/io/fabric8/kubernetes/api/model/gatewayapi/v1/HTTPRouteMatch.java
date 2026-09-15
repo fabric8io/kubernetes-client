@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HTTPRouteMatch defines the predicate used to match requests to a given action. Multiple match types are ANDed together, i.e. the match will evaluate to true only if all conditions are satisfied.<br><p> <br><p> For example, the match below will match a HTTP request only if its path starts with `/foo` AND it contains the `version: v1` header:<br><p> <br><p> ``` match:<br><p> <br><p> 	path:<br><p> 	  value: "/foo"<br><p> 	headers:<br><p> 	- name: "version"<br><p> 	  value "v1"<br><p> <br><p> ```
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "method",
     "path",
     "queryParams"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class HTTPRouteMatch implements Editable<HTTPRouteMatchBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HTTPRouteMatch)) {
+            return false;
+        }
+        HTTPRouteMatch other = (HTTPRouteMatch) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$headers = this.getHeaders();
+        Object other$headers = other.getHeaders();
+        if (this$headers == null ? other$headers != null : !this$headers.equals(other$headers)) {
+            return false;
+        }
+        Object this$method = this.getMethod();
+        Object other$method = other.getMethod();
+        if (this$method == null ? other$method != null : !this$method.equals(other$method)) {
+            return false;
+        }
+        Object this$path = this.getPath();
+        Object other$path = other.getPath();
+        if (this$path == null ? other$path != null : !this$path.equals(other$path)) {
+            return false;
+        }
+        Object this$queryParams = this.getQueryParams();
+        Object other$queryParams = other.getQueryParams();
+        if (this$queryParams == null ? other$queryParams != null : !this$queryParams.equals(other$queryParams)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HTTPRouteMatch;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $headers = this.getHeaders();
+        result = result * prime + ($headers == null ? 43 : $headers.hashCode());
+        Object $method = this.getMethod();
+        result = result * prime + ($method == null ? 43 : $method.hashCode());
+        Object $path = this.getPath();
+        result = result * prime + ($path == null ? 43 : $path.hashCode());
+        Object $queryParams = this.getQueryParams();
+        result = result * prime + ($queryParams == null ? 43 : $queryParams.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HTTPRouteMatch(" + "headers=" + this.getHeaders() + ", method=" + this.getMethod() + ", path=" + this.getPath() + ", queryParams=" + this.getQueryParams() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

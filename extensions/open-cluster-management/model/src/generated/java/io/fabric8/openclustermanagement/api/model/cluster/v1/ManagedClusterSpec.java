@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ManagedClusterSpec provides the information to securely connect to a remote server and verify its identity.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "leaseDurationSeconds",
     "managedClusterClientConfigs",
     "taints"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -186,6 +177,71 @@ public class ManagedClusterSpec implements Editable<ManagedClusterSpecBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ManagedClusterSpec)) {
+            return false;
+        }
+        ManagedClusterSpec other = (ManagedClusterSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$hubAcceptsClient = this.getHubAcceptsClient();
+        Object other$hubAcceptsClient = other.getHubAcceptsClient();
+        if (this$hubAcceptsClient == null ? other$hubAcceptsClient != null : !this$hubAcceptsClient.equals(other$hubAcceptsClient)) {
+            return false;
+        }
+        Object this$leaseDurationSeconds = this.getLeaseDurationSeconds();
+        Object other$leaseDurationSeconds = other.getLeaseDurationSeconds();
+        if (this$leaseDurationSeconds == null ? other$leaseDurationSeconds != null : !this$leaseDurationSeconds.equals(other$leaseDurationSeconds)) {
+            return false;
+        }
+        Object this$managedClusterClientConfigs = this.getManagedClusterClientConfigs();
+        Object other$managedClusterClientConfigs = other.getManagedClusterClientConfigs();
+        if (this$managedClusterClientConfigs == null ? other$managedClusterClientConfigs != null : !this$managedClusterClientConfigs.equals(other$managedClusterClientConfigs)) {
+            return false;
+        }
+        Object this$taints = this.getTaints();
+        Object other$taints = other.getTaints();
+        if (this$taints == null ? other$taints != null : !this$taints.equals(other$taints)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ManagedClusterSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $hubAcceptsClient = this.getHubAcceptsClient();
+        result = result * prime + ($hubAcceptsClient == null ? 43 : $hubAcceptsClient.hashCode());
+        Object $leaseDurationSeconds = this.getLeaseDurationSeconds();
+        result = result * prime + ($leaseDurationSeconds == null ? 43 : $leaseDurationSeconds.hashCode());
+        Object $managedClusterClientConfigs = this.getManagedClusterClientConfigs();
+        result = result * prime + ($managedClusterClientConfigs == null ? 43 : $managedClusterClientConfigs.hashCode());
+        Object $taints = this.getTaints();
+        result = result * prime + ($taints == null ? 43 : $taints.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ManagedClusterSpec(" + "hubAcceptsClient=" + this.getHubAcceptsClient() + ", leaseDurationSeconds=" + this.getLeaseDurationSeconds() + ", managedClusterClientConfigs=" + this.getManagedClusterClientConfigs() + ", taints=" + this.getTaints() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TaskRunStatus defines the observed state of TaskRun
@@ -55,12 +52,6 @@ import lombok.experimental.Accessors;
     "startTime",
     "steps",
     "taskSpec"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -397,6 +388,141 @@ public class TaskRunStatus implements Editable<TaskRunStatusBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TaskRunStatus)) {
+            return false;
+        }
+        TaskRunStatus other = (TaskRunStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$annotations = this.getAnnotations();
+        Object other$annotations = other.getAnnotations();
+        if (this$annotations == null ? other$annotations != null : !this$annotations.equals(other$annotations)) {
+            return false;
+        }
+        Object this$artifacts = this.getArtifacts();
+        Object other$artifacts = other.getArtifacts();
+        if (this$artifacts == null ? other$artifacts != null : !this$artifacts.equals(other$artifacts)) {
+            return false;
+        }
+        Object this$completionTime = this.getCompletionTime();
+        Object other$completionTime = other.getCompletionTime();
+        if (this$completionTime == null ? other$completionTime != null : !this$completionTime.equals(other$completionTime)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$podName = this.getPodName();
+        Object other$podName = other.getPodName();
+        if (this$podName == null ? other$podName != null : !this$podName.equals(other$podName)) {
+            return false;
+        }
+        Object this$provenance = this.getProvenance();
+        Object other$provenance = other.getProvenance();
+        if (this$provenance == null ? other$provenance != null : !this$provenance.equals(other$provenance)) {
+            return false;
+        }
+        Object this$results = this.getResults();
+        Object other$results = other.getResults();
+        if (this$results == null ? other$results != null : !this$results.equals(other$results)) {
+            return false;
+        }
+        Object this$retriesStatus = this.getRetriesStatus();
+        Object other$retriesStatus = other.getRetriesStatus();
+        if (this$retriesStatus == null ? other$retriesStatus != null : !this$retriesStatus.equals(other$retriesStatus)) {
+            return false;
+        }
+        Object this$sidecars = this.getSidecars();
+        Object other$sidecars = other.getSidecars();
+        if (this$sidecars == null ? other$sidecars != null : !this$sidecars.equals(other$sidecars)) {
+            return false;
+        }
+        Object this$spanContext = this.getSpanContext();
+        Object other$spanContext = other.getSpanContext();
+        if (this$spanContext == null ? other$spanContext != null : !this$spanContext.equals(other$spanContext)) {
+            return false;
+        }
+        Object this$startTime = this.getStartTime();
+        Object other$startTime = other.getStartTime();
+        if (this$startTime == null ? other$startTime != null : !this$startTime.equals(other$startTime)) {
+            return false;
+        }
+        Object this$steps = this.getSteps();
+        Object other$steps = other.getSteps();
+        if (this$steps == null ? other$steps != null : !this$steps.equals(other$steps)) {
+            return false;
+        }
+        Object this$taskSpec = this.getTaskSpec();
+        Object other$taskSpec = other.getTaskSpec();
+        if (this$taskSpec == null ? other$taskSpec != null : !this$taskSpec.equals(other$taskSpec)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TaskRunStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $annotations = this.getAnnotations();
+        result = result * prime + ($annotations == null ? 43 : $annotations.hashCode());
+        Object $artifacts = this.getArtifacts();
+        result = result * prime + ($artifacts == null ? 43 : $artifacts.hashCode());
+        Object $completionTime = this.getCompletionTime();
+        result = result * prime + ($completionTime == null ? 43 : $completionTime.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $podName = this.getPodName();
+        result = result * prime + ($podName == null ? 43 : $podName.hashCode());
+        Object $provenance = this.getProvenance();
+        result = result * prime + ($provenance == null ? 43 : $provenance.hashCode());
+        Object $results = this.getResults();
+        result = result * prime + ($results == null ? 43 : $results.hashCode());
+        Object $retriesStatus = this.getRetriesStatus();
+        result = result * prime + ($retriesStatus == null ? 43 : $retriesStatus.hashCode());
+        Object $sidecars = this.getSidecars();
+        result = result * prime + ($sidecars == null ? 43 : $sidecars.hashCode());
+        Object $spanContext = this.getSpanContext();
+        result = result * prime + ($spanContext == null ? 43 : $spanContext.hashCode());
+        Object $startTime = this.getStartTime();
+        result = result * prime + ($startTime == null ? 43 : $startTime.hashCode());
+        Object $steps = this.getSteps();
+        result = result * prime + ($steps == null ? 43 : $steps.hashCode());
+        Object $taskSpec = this.getTaskSpec();
+        result = result * prime + ($taskSpec == null ? 43 : $taskSpec.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TaskRunStatus(" + "annotations=" + this.getAnnotations() + ", artifacts=" + this.getArtifacts() + ", completionTime=" + this.getCompletionTime() + ", conditions=" + this.getConditions() + ", observedGeneration=" + this.getObservedGeneration() + ", podName=" + this.getPodName() + ", provenance=" + this.getProvenance() + ", results=" + this.getResults() + ", retriesStatus=" + this.getRetriesStatus() + ", sidecars=" + this.getSidecars() + ", spanContext=" + this.getSpanContext() + ", startTime=" + this.getStartTime() + ", steps=" + this.getSteps() + ", taskSpec=" + this.getTaskSpec() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

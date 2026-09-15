@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Destination indicates the network addressable service to which the request/connection will be sent after processing a routing rule. The destination.host should unambiguously refer to a service in the service registry. Istio's service registry is composed of all the services found in the platform's service registry (e.g., Kubernetes services, Consul services), as well as services declared through the [ServiceEntry](https://istio.io/docs/reference/config/networking/service-entry/#ServiceEntry) resource.<br><p> <br><p> &#42;Note for Kubernetes users&#42;: When short names are used (e.g. "reviews" instead of "reviews.default.svc.cluster.local"), Istio will interpret the short name based on the namespace of the rule, not the service. A rule in the "default" namespace containing a host "reviews" will be interpreted as "reviews.default.svc.cluster.local", irrespective of the actual namespace associated with the reviews service. _To avoid potential misconfigurations, it is recommended to always use fully qualified domain names over short names._<br><p> <br><p> The following Kubernetes example routes all traffic by default to pods of the reviews service with label "version: v1" (i.e., subset v1), and some to subset v2, in a Kubernetes environment.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: reviews-route<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- reviews # interpreted as reviews.foo.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      prefix: "/wpcatalog"<br><p> 	  - uri:<br><p> 	      prefix: "/consumercatalog"<br><p> 	  rewrite:<br><p> 	    uri: "/newcatalog"<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: reviews # interpreted as reviews.foo.svc.cluster.local<br><p> 	      subset: v2<br><p> 	- route:<br><p> 	  - destination:<br><p> 	      host: reviews # interpreted as reviews.foo.svc.cluster.local<br><p> 	      subset: v1<br><p> <br><p> ```<br><p> <br><p> # And the associated DestinationRule<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: reviews-destination<br><p> 	namespace: foo<br><p> <br><p> spec:<br><p> <br><p> 	host: reviews # interpreted as reviews.foo.svc.cluster.local<br><p> 	subsets:<br><p> 	- name: v1<br><p> 	  labels:<br><p> 	    version: v1<br><p> 	- name: v2<br><p> 	  labels:<br><p> 	    version: v2<br><p> <br><p> ```<br><p> <br><p> The following VirtualService sets a timeout of 5s for all calls to productpage.prod.svc.cluster.local service in Kubernetes. Notice that there are no subsets defined in this rule. Istio will fetch all instances of productpage.prod.svc.cluster.local service from the service registry and populate the sidecar's load balancing pool. Also, notice that this rule is set in the istio-system namespace but uses the fully qualified domain name of the productpage service, productpage.prod.svc.cluster.local. Therefore the rule's namespace does not have an impact in resolving the name of the productpage service.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: my-productpage-rule<br><p> 	namespace: istio-system<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- productpage.prod.svc.cluster.local # ignores rule namespace<br><p> 	http:<br><p> 	- timeout: 5s<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: productpage.prod.svc.cluster.local<br><p> <br><p> ```<br><p> <br><p> To control routing for traffic bound to services outside the mesh, external services must first be added to Istio's internal service registry using the ServiceEntry resource. VirtualServices can then be defined to control traffic bound to these external services. For example, the following rules define a Service for wikipedia.org and set a timeout of 5s for HTTP requests.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: ServiceEntry metadata:<br><p> <br><p> 	name: external-svc-wikipedia<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- wikipedia.org<br><p> 	location: MESH_EXTERNAL<br><p> 	ports:<br><p> 	- number: 80<br><p> 	  name: example-http<br><p> 	  protocol: HTTP<br><p> 	resolution: DNS
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "host",
     "port",
     "subset"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class Destination implements Editable<DestinationBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Destination)) {
+            return false;
+        }
+        Destination other = (Destination) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$host = this.getHost();
+        Object other$host = other.getHost();
+        if (this$host == null ? other$host != null : !this$host.equals(other$host)) {
+            return false;
+        }
+        Object this$port = this.getPort();
+        Object other$port = other.getPort();
+        if (this$port == null ? other$port != null : !this$port.equals(other$port)) {
+            return false;
+        }
+        Object this$subset = this.getSubset();
+        Object other$subset = other.getSubset();
+        if (this$subset == null ? other$subset != null : !this$subset.equals(other$subset)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Destination;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $host = this.getHost();
+        result = result * prime + ($host == null ? 43 : $host.hashCode());
+        Object $port = this.getPort();
+        result = result * prime + ($port == null ? 43 : $port.hashCode());
+        Object $subset = this.getSubset();
+        result = result * prime + ($subset == null ? 43 : $subset.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Destination(" + "host=" + this.getHost() + ", port=" + this.getPort() + ", subset=" + this.getSubset() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

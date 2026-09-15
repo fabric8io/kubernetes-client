@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageContentPolicySpec is the specification of the ImageContentPolicy CRD.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "repositoryDigestMirrors"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -123,6 +114,50 @@ public class ImageContentPolicySpec implements Editable<ImageContentPolicySpecBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageContentPolicySpec)) {
+            return false;
+        }
+        ImageContentPolicySpec other = (ImageContentPolicySpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$repositoryDigestMirrors = this.getRepositoryDigestMirrors();
+        Object other$repositoryDigestMirrors = other.getRepositoryDigestMirrors();
+        if (this$repositoryDigestMirrors == null ? other$repositoryDigestMirrors != null : !this$repositoryDigestMirrors.equals(other$repositoryDigestMirrors)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageContentPolicySpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $repositoryDigestMirrors = this.getRepositoryDigestMirrors();
+        result = result * prime + ($repositoryDigestMirrors == null ? 43 : $repositoryDigestMirrors.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageContentPolicySpec(" + "repositoryDigestMirrors=" + this.getRepositoryDigestMirrors() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * LLDP represents Link Layer Discovery Protocol data for a network interface.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "portID",
     "switchID",
     "switchSystemName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -159,6 +150,64 @@ public class LLDP implements Editable<LLDPBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof LLDP)) {
+            return false;
+        }
+        LLDP other = (LLDP) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$portID = this.getPortID();
+        Object other$portID = other.getPortID();
+        if (this$portID == null ? other$portID != null : !this$portID.equals(other$portID)) {
+            return false;
+        }
+        Object this$switchID = this.getSwitchID();
+        Object other$switchID = other.getSwitchID();
+        if (this$switchID == null ? other$switchID != null : !this$switchID.equals(other$switchID)) {
+            return false;
+        }
+        Object this$switchSystemName = this.getSwitchSystemName();
+        Object other$switchSystemName = other.getSwitchSystemName();
+        if (this$switchSystemName == null ? other$switchSystemName != null : !this$switchSystemName.equals(other$switchSystemName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof LLDP;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $portID = this.getPortID();
+        result = result * prime + ($portID == null ? 43 : $portID.hashCode());
+        Object $switchID = this.getSwitchID();
+        result = result * prime + ($switchID == null ? 43 : $switchID.hashCode());
+        Object $switchSystemName = this.getSwitchSystemName();
+        result = result * prime + ($switchSystemName == null ? 43 : $switchSystemName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "LLDP(" + "portID=" + this.getPortID() + ", switchID=" + this.getSwitchID() + ", switchSystemName=" + this.getSwitchSystemName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

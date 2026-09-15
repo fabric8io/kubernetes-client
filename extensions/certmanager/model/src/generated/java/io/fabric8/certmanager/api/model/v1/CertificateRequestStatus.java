@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CertificateRequestStatus defines the observed state of CertificateRequest and resulting signed certificate.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "certificate",
     "conditions",
     "failureTime"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class CertificateRequestStatus implements Editable<CertificateRequestStat
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CertificateRequestStatus)) {
+            return false;
+        }
+        CertificateRequestStatus other = (CertificateRequestStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ca = this.getCa();
+        Object other$ca = other.getCa();
+        if (this$ca == null ? other$ca != null : !this$ca.equals(other$ca)) {
+            return false;
+        }
+        Object this$certificate = this.getCertificate();
+        Object other$certificate = other.getCertificate();
+        if (this$certificate == null ? other$certificate != null : !this$certificate.equals(other$certificate)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$failureTime = this.getFailureTime();
+        Object other$failureTime = other.getFailureTime();
+        if (this$failureTime == null ? other$failureTime != null : !this$failureTime.equals(other$failureTime)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CertificateRequestStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ca = this.getCa();
+        result = result * prime + ($ca == null ? 43 : $ca.hashCode());
+        Object $certificate = this.getCertificate();
+        result = result * prime + ($certificate == null ? 43 : $certificate.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $failureTime = this.getFailureTime();
+        result = result * prime + ($failureTime == null ? 43 : $failureTime.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CertificateRequestStatus(" + "ca=" + this.getCa() + ", certificate=" + this.getCertificate() + ", conditions=" + this.getConditions() + ", failureTime=" + this.getFailureTime() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

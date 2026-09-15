@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MachineOSBuildStatus describes the state of a build and other helpful information.
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "conditions",
     "digestedImagePushSpec",
     "relatedObjects"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -226,6 +217,85 @@ public class MachineOSBuildStatus implements Editable<MachineOSBuildStatusBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachineOSBuildStatus)) {
+            return false;
+        }
+        MachineOSBuildStatus other = (MachineOSBuildStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$buildEnd = this.getBuildEnd();
+        Object other$buildEnd = other.getBuildEnd();
+        if (this$buildEnd == null ? other$buildEnd != null : !this$buildEnd.equals(other$buildEnd)) {
+            return false;
+        }
+        Object this$buildStart = this.getBuildStart();
+        Object other$buildStart = other.getBuildStart();
+        if (this$buildStart == null ? other$buildStart != null : !this$buildStart.equals(other$buildStart)) {
+            return false;
+        }
+        Object this$builder = this.getBuilder();
+        Object other$builder = other.getBuilder();
+        if (this$builder == null ? other$builder != null : !this$builder.equals(other$builder)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$digestedImagePushSpec = this.getDigestedImagePushSpec();
+        Object other$digestedImagePushSpec = other.getDigestedImagePushSpec();
+        if (this$digestedImagePushSpec == null ? other$digestedImagePushSpec != null : !this$digestedImagePushSpec.equals(other$digestedImagePushSpec)) {
+            return false;
+        }
+        Object this$relatedObjects = this.getRelatedObjects();
+        Object other$relatedObjects = other.getRelatedObjects();
+        if (this$relatedObjects == null ? other$relatedObjects != null : !this$relatedObjects.equals(other$relatedObjects)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachineOSBuildStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $buildEnd = this.getBuildEnd();
+        result = result * prime + ($buildEnd == null ? 43 : $buildEnd.hashCode());
+        Object $buildStart = this.getBuildStart();
+        result = result * prime + ($buildStart == null ? 43 : $buildStart.hashCode());
+        Object $builder = this.getBuilder();
+        result = result * prime + ($builder == null ? 43 : $builder.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $digestedImagePushSpec = this.getDigestedImagePushSpec();
+        result = result * prime + ($digestedImagePushSpec == null ? 43 : $digestedImagePushSpec.hashCode());
+        Object $relatedObjects = this.getRelatedObjects();
+        result = result * prime + ($relatedObjects == null ? 43 : $relatedObjects.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachineOSBuildStatus(" + "buildEnd=" + this.getBuildEnd() + ", buildStart=" + this.getBuildStart() + ", builder=" + this.getBuilder() + ", conditions=" + this.getConditions() + ", digestedImagePushSpec=" + this.getDigestedImagePushSpec() + ", relatedObjects=" + this.getRelatedObjects() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

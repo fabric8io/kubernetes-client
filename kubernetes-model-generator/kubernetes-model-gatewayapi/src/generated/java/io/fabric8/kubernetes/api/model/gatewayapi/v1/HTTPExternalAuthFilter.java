@@ -26,9 +26,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HTTPExternalAuthFilter defines a filter that modifies requests by sending request details to an external authorization server.<br><p> <br><p> Support: Extended Feature Name: HTTPRouteExternalAuth
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "grpc",
     "http",
     "protocol"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -198,6 +189,78 @@ public class HTTPExternalAuthFilter implements Editable<HTTPExternalAuthFilterBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HTTPExternalAuthFilter)) {
+            return false;
+        }
+        HTTPExternalAuthFilter other = (HTTPExternalAuthFilter) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$backendRef = this.getBackendRef();
+        Object other$backendRef = other.getBackendRef();
+        if (this$backendRef == null ? other$backendRef != null : !this$backendRef.equals(other$backendRef)) {
+            return false;
+        }
+        Object this$forwardBody = this.getForwardBody();
+        Object other$forwardBody = other.getForwardBody();
+        if (this$forwardBody == null ? other$forwardBody != null : !this$forwardBody.equals(other$forwardBody)) {
+            return false;
+        }
+        Object this$grpc = this.getGrpc();
+        Object other$grpc = other.getGrpc();
+        if (this$grpc == null ? other$grpc != null : !this$grpc.equals(other$grpc)) {
+            return false;
+        }
+        Object this$http = this.getHttp();
+        Object other$http = other.getHttp();
+        if (this$http == null ? other$http != null : !this$http.equals(other$http)) {
+            return false;
+        }
+        Object this$protocol = this.getProtocol();
+        Object other$protocol = other.getProtocol();
+        if (this$protocol == null ? other$protocol != null : !this$protocol.equals(other$protocol)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HTTPExternalAuthFilter;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $backendRef = this.getBackendRef();
+        result = result * prime + ($backendRef == null ? 43 : $backendRef.hashCode());
+        Object $forwardBody = this.getForwardBody();
+        result = result * prime + ($forwardBody == null ? 43 : $forwardBody.hashCode());
+        Object $grpc = this.getGrpc();
+        result = result * prime + ($grpc == null ? 43 : $grpc.hashCode());
+        Object $http = this.getHttp();
+        result = result * prime + ($http == null ? 43 : $http.hashCode());
+        Object $protocol = this.getProtocol();
+        result = result * prime + ($protocol == null ? 43 : $protocol.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HTTPExternalAuthFilter(" + "backendRef=" + this.getBackendRef() + ", forwardBody=" + this.getForwardBody() + ", grpc=" + this.getGrpc() + ", http=" + this.getHttp() + ", protocol=" + this.getProtocol() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

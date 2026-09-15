@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -38,12 +35,6 @@ import lombok.experimental.Accessors;
     "lastPrivateKeyHash",
     "lastRegisteredEmail",
     "uri"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -157,6 +148,64 @@ public class ACMEIssuerStatus implements Editable<ACMEIssuerStatusBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ACMEIssuerStatus)) {
+            return false;
+        }
+        ACMEIssuerStatus other = (ACMEIssuerStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$lastPrivateKeyHash = this.getLastPrivateKeyHash();
+        Object other$lastPrivateKeyHash = other.getLastPrivateKeyHash();
+        if (this$lastPrivateKeyHash == null ? other$lastPrivateKeyHash != null : !this$lastPrivateKeyHash.equals(other$lastPrivateKeyHash)) {
+            return false;
+        }
+        Object this$lastRegisteredEmail = this.getLastRegisteredEmail();
+        Object other$lastRegisteredEmail = other.getLastRegisteredEmail();
+        if (this$lastRegisteredEmail == null ? other$lastRegisteredEmail != null : !this$lastRegisteredEmail.equals(other$lastRegisteredEmail)) {
+            return false;
+        }
+        Object this$uri = this.getUri();
+        Object other$uri = other.getUri();
+        if (this$uri == null ? other$uri != null : !this$uri.equals(other$uri)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ACMEIssuerStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $lastPrivateKeyHash = this.getLastPrivateKeyHash();
+        result = result * prime + ($lastPrivateKeyHash == null ? 43 : $lastPrivateKeyHash.hashCode());
+        Object $lastRegisteredEmail = this.getLastRegisteredEmail();
+        result = result * prime + ($lastRegisteredEmail == null ? 43 : $lastRegisteredEmail.hashCode());
+        Object $uri = this.getUri();
+        result = result * prime + ($uri == null ? 43 : $uri.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ACMEIssuerStatus(" + "lastPrivateKeyHash=" + this.getLastPrivateKeyHash() + ", lastRegisteredEmail=" + this.getLastRegisteredEmail() + ", uri=" + this.getUri() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

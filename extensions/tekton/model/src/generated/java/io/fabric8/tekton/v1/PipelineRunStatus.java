@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PipelineRunStatus defines the observed state of PipelineRun
@@ -53,12 +50,6 @@ import lombok.experimental.Accessors;
     "skippedTasks",
     "spanContext",
     "startTime"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -355,6 +346,127 @@ public class PipelineRunStatus implements Editable<PipelineRunStatusBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PipelineRunStatus)) {
+            return false;
+        }
+        PipelineRunStatus other = (PipelineRunStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$annotations = this.getAnnotations();
+        Object other$annotations = other.getAnnotations();
+        if (this$annotations == null ? other$annotations != null : !this$annotations.equals(other$annotations)) {
+            return false;
+        }
+        Object this$childReferences = this.getChildReferences();
+        Object other$childReferences = other.getChildReferences();
+        if (this$childReferences == null ? other$childReferences != null : !this$childReferences.equals(other$childReferences)) {
+            return false;
+        }
+        Object this$completionTime = this.getCompletionTime();
+        Object other$completionTime = other.getCompletionTime();
+        if (this$completionTime == null ? other$completionTime != null : !this$completionTime.equals(other$completionTime)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$finallyStartTime = this.getFinallyStartTime();
+        Object other$finallyStartTime = other.getFinallyStartTime();
+        if (this$finallyStartTime == null ? other$finallyStartTime != null : !this$finallyStartTime.equals(other$finallyStartTime)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$pipelineSpec = this.getPipelineSpec();
+        Object other$pipelineSpec = other.getPipelineSpec();
+        if (this$pipelineSpec == null ? other$pipelineSpec != null : !this$pipelineSpec.equals(other$pipelineSpec)) {
+            return false;
+        }
+        Object this$provenance = this.getProvenance();
+        Object other$provenance = other.getProvenance();
+        if (this$provenance == null ? other$provenance != null : !this$provenance.equals(other$provenance)) {
+            return false;
+        }
+        Object this$results = this.getResults();
+        Object other$results = other.getResults();
+        if (this$results == null ? other$results != null : !this$results.equals(other$results)) {
+            return false;
+        }
+        Object this$skippedTasks = this.getSkippedTasks();
+        Object other$skippedTasks = other.getSkippedTasks();
+        if (this$skippedTasks == null ? other$skippedTasks != null : !this$skippedTasks.equals(other$skippedTasks)) {
+            return false;
+        }
+        Object this$spanContext = this.getSpanContext();
+        Object other$spanContext = other.getSpanContext();
+        if (this$spanContext == null ? other$spanContext != null : !this$spanContext.equals(other$spanContext)) {
+            return false;
+        }
+        Object this$startTime = this.getStartTime();
+        Object other$startTime = other.getStartTime();
+        if (this$startTime == null ? other$startTime != null : !this$startTime.equals(other$startTime)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PipelineRunStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $annotations = this.getAnnotations();
+        result = result * prime + ($annotations == null ? 43 : $annotations.hashCode());
+        Object $childReferences = this.getChildReferences();
+        result = result * prime + ($childReferences == null ? 43 : $childReferences.hashCode());
+        Object $completionTime = this.getCompletionTime();
+        result = result * prime + ($completionTime == null ? 43 : $completionTime.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $finallyStartTime = this.getFinallyStartTime();
+        result = result * prime + ($finallyStartTime == null ? 43 : $finallyStartTime.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $pipelineSpec = this.getPipelineSpec();
+        result = result * prime + ($pipelineSpec == null ? 43 : $pipelineSpec.hashCode());
+        Object $provenance = this.getProvenance();
+        result = result * prime + ($provenance == null ? 43 : $provenance.hashCode());
+        Object $results = this.getResults();
+        result = result * prime + ($results == null ? 43 : $results.hashCode());
+        Object $skippedTasks = this.getSkippedTasks();
+        result = result * prime + ($skippedTasks == null ? 43 : $skippedTasks.hashCode());
+        Object $spanContext = this.getSpanContext();
+        result = result * prime + ($spanContext == null ? 43 : $spanContext.hashCode());
+        Object $startTime = this.getStartTime();
+        result = result * prime + ($startTime == null ? 43 : $startTime.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PipelineRunStatus(" + "annotations=" + this.getAnnotations() + ", childReferences=" + this.getChildReferences() + ", completionTime=" + this.getCompletionTime() + ", conditions=" + this.getConditions() + ", finallyStartTime=" + this.getFinallyStartTime() + ", observedGeneration=" + this.getObservedGeneration() + ", pipelineSpec=" + this.getPipelineSpec() + ", provenance=" + this.getProvenance() + ", results=" + this.getResults() + ", skippedTasks=" + this.getSkippedTasks() + ", spanContext=" + this.getSpanContext() + ", startTime=" + this.getStartTime() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

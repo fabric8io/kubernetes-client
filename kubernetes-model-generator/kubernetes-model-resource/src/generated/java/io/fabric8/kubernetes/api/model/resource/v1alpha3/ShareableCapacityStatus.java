@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ShareableCapacityStatus reports aggregate amounts for a single shareable capacity key.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "consumed",
     "name",
     "total"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -181,6 +172,71 @@ public class ShareableCapacityStatus implements Editable<ShareableCapacityStatus
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ShareableCapacityStatus)) {
+            return false;
+        }
+        ShareableCapacityStatus other = (ShareableCapacityStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$available = this.getAvailable();
+        Object other$available = other.getAvailable();
+        if (this$available == null ? other$available != null : !this$available.equals(other$available)) {
+            return false;
+        }
+        Object this$consumed = this.getConsumed();
+        Object other$consumed = other.getConsumed();
+        if (this$consumed == null ? other$consumed != null : !this$consumed.equals(other$consumed)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$total = this.getTotal();
+        Object other$total = other.getTotal();
+        if (this$total == null ? other$total != null : !this$total.equals(other$total)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ShareableCapacityStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $available = this.getAvailable();
+        result = result * prime + ($available == null ? 43 : $available.hashCode());
+        Object $consumed = this.getConsumed();
+        result = result * prime + ($consumed == null ? 43 : $consumed.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $total = this.getTotal();
+        result = result * prime + ($total == null ? 43 : $total.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ShareableCapacityStatus(" + "available=" + this.getAvailable() + ", consumed=" + this.getConsumed() + ", name=" + this.getName() + ", total=" + this.getTotal() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

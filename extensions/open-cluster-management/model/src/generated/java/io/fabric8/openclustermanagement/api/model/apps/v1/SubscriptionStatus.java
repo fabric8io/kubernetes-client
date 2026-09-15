@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SubscriptionStatus defines the observed status of a subscription
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "phase",
     "reason",
     "statuses"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -242,6 +233,92 @@ public class SubscriptionStatus implements Editable<SubscriptionStatusBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SubscriptionStatus)) {
+            return false;
+        }
+        SubscriptionStatus other = (SubscriptionStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ansiblejobs = this.getAnsiblejobs();
+        Object other$ansiblejobs = other.getAnsiblejobs();
+        if (this$ansiblejobs == null ? other$ansiblejobs != null : !this$ansiblejobs.equals(other$ansiblejobs)) {
+            return false;
+        }
+        Object this$appstatusReference = this.getAppstatusReference();
+        Object other$appstatusReference = other.getAppstatusReference();
+        if (this$appstatusReference == null ? other$appstatusReference != null : !this$appstatusReference.equals(other$appstatusReference)) {
+            return false;
+        }
+        Object this$lastUpdateTime = this.getLastUpdateTime();
+        Object other$lastUpdateTime = other.getLastUpdateTime();
+        if (this$lastUpdateTime == null ? other$lastUpdateTime != null : !this$lastUpdateTime.equals(other$lastUpdateTime)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$phase = this.getPhase();
+        Object other$phase = other.getPhase();
+        if (this$phase == null ? other$phase != null : !this$phase.equals(other$phase)) {
+            return false;
+        }
+        Object this$reason = this.getReason();
+        Object other$reason = other.getReason();
+        if (this$reason == null ? other$reason != null : !this$reason.equals(other$reason)) {
+            return false;
+        }
+        Object this$statuses = this.getStatuses();
+        Object other$statuses = other.getStatuses();
+        if (this$statuses == null ? other$statuses != null : !this$statuses.equals(other$statuses)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SubscriptionStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ansiblejobs = this.getAnsiblejobs();
+        result = result * prime + ($ansiblejobs == null ? 43 : $ansiblejobs.hashCode());
+        Object $appstatusReference = this.getAppstatusReference();
+        result = result * prime + ($appstatusReference == null ? 43 : $appstatusReference.hashCode());
+        Object $lastUpdateTime = this.getLastUpdateTime();
+        result = result * prime + ($lastUpdateTime == null ? 43 : $lastUpdateTime.hashCode());
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $phase = this.getPhase();
+        result = result * prime + ($phase == null ? 43 : $phase.hashCode());
+        Object $reason = this.getReason();
+        result = result * prime + ($reason == null ? 43 : $reason.hashCode());
+        Object $statuses = this.getStatuses();
+        result = result * prime + ($statuses == null ? 43 : $statuses.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SubscriptionStatus(" + "ansiblejobs=" + this.getAnsiblejobs() + ", appstatusReference=" + this.getAppstatusReference() + ", lastUpdateTime=" + this.getLastUpdateTime() + ", message=" + this.getMessage() + ", phase=" + this.getPhase() + ", reason=" + this.getReason() + ", statuses=" + this.getStatuses() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

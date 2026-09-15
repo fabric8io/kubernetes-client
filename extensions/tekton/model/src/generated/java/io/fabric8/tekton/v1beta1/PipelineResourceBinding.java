@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.tekton.v1alpha1.PipelineResourceSpec;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PipelineResourceBinding connects a reference to an instance of a PipelineResource with a PipelineResource dependency that the Pipeline has declared<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "name",
     "resourceRef",
     "resourceSpec"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -161,6 +152,64 @@ public class PipelineResourceBinding implements Editable<PipelineResourceBinding
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PipelineResourceBinding)) {
+            return false;
+        }
+        PipelineResourceBinding other = (PipelineResourceBinding) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$resourceRef = this.getResourceRef();
+        Object other$resourceRef = other.getResourceRef();
+        if (this$resourceRef == null ? other$resourceRef != null : !this$resourceRef.equals(other$resourceRef)) {
+            return false;
+        }
+        Object this$resourceSpec = this.getResourceSpec();
+        Object other$resourceSpec = other.getResourceSpec();
+        if (this$resourceSpec == null ? other$resourceSpec != null : !this$resourceSpec.equals(other$resourceSpec)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PipelineResourceBinding;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $resourceRef = this.getResourceRef();
+        result = result * prime + ($resourceRef == null ? 43 : $resourceRef.hashCode());
+        Object $resourceSpec = this.getResourceSpec();
+        result = result * prime + ($resourceSpec == null ? 43 : $resourceSpec.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PipelineResourceBinding(" + "name=" + this.getName() + ", resourceRef=" + this.getResourceRef() + ", resourceSpec=" + this.getResourceSpec() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

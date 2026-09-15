@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * `IstioEgressListener` specifies the properties of an outbound traffic listener on the sidecar proxy attached to a workload instance.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "captureMode",
     "hosts",
     "port"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class IstioEgressListener implements Editable<IstioEgressListenerBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof IstioEgressListener)) {
+            return false;
+        }
+        IstioEgressListener other = (IstioEgressListener) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bind = this.getBind();
+        Object other$bind = other.getBind();
+        if (this$bind == null ? other$bind != null : !this$bind.equals(other$bind)) {
+            return false;
+        }
+        Object this$captureMode = this.getCaptureMode();
+        Object other$captureMode = other.getCaptureMode();
+        if (this$captureMode == null ? other$captureMode != null : !this$captureMode.equals(other$captureMode)) {
+            return false;
+        }
+        Object this$hosts = this.getHosts();
+        Object other$hosts = other.getHosts();
+        if (this$hosts == null ? other$hosts != null : !this$hosts.equals(other$hosts)) {
+            return false;
+        }
+        Object this$port = this.getPort();
+        Object other$port = other.getPort();
+        if (this$port == null ? other$port != null : !this$port.equals(other$port)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof IstioEgressListener;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bind = this.getBind();
+        result = result * prime + ($bind == null ? 43 : $bind.hashCode());
+        Object $captureMode = this.getCaptureMode();
+        result = result * prime + ($captureMode == null ? 43 : $captureMode.hashCode());
+        Object $hosts = this.getHosts();
+        result = result * prime + ($hosts == null ? 43 : $hosts.hashCode());
+        Object $port = this.getPort();
+        result = result * prime + ($port == null ? 43 : $port.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IstioEgressListener(" + "bind=" + this.getBind() + ", captureMode=" + this.getCaptureMode() + ", hosts=" + this.getHosts() + ", port=" + this.getPort() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

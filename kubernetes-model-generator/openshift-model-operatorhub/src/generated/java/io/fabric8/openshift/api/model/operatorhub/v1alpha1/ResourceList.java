@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ResourceList represents a list of resources which are of the same Group/Kind
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "kind",
     "group",
     "instances"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -164,6 +155,64 @@ public class ResourceList implements Editable<ResourceListBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ResourceList)) {
+            return false;
+        }
+        ResourceList other = (ResourceList) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$group = this.getGroup();
+        Object other$group = other.getGroup();
+        if (this$group == null ? other$group != null : !this$group.equals(other$group)) {
+            return false;
+        }
+        Object this$instances = this.getInstances();
+        Object other$instances = other.getInstances();
+        if (this$instances == null ? other$instances != null : !this$instances.equals(other$instances)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ResourceList;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $group = this.getGroup();
+        result = result * prime + ($group == null ? 43 : $group.hashCode());
+        Object $instances = this.getInstances();
+        result = result * prime + ($instances == null ? 43 : $instances.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ResourceList(" + "group=" + this.getGroup() + ", instances=" + this.getInstances() + ", kind=" + this.getKind() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

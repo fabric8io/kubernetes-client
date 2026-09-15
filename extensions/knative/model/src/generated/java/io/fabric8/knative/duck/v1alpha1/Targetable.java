@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Targetable is an earlier version of the Callable interface. Callable is a higher-level interface which implements Addressable but further promises that the destination may synchronously return response messages in reply to a message.<br><p> <br><p> Targetable implementations should instead implement Addressable and include an `eventing.knative.dev/returns=any` annotation.<br><p> <br><p> Targetable is retired; implement Addressable for now.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "domainInternal"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -120,6 +111,50 @@ public class Targetable implements Editable<TargetableBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Targetable)) {
+            return false;
+        }
+        Targetable other = (Targetable) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$domainInternal = this.getDomainInternal();
+        Object other$domainInternal = other.getDomainInternal();
+        if (this$domainInternal == null ? other$domainInternal != null : !this$domainInternal.equals(other$domainInternal)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Targetable;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $domainInternal = this.getDomainInternal();
+        result = result * prime + ($domainInternal == null ? 43 : $domainInternal.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Targetable(" + "domainInternal=" + this.getDomainInternal() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

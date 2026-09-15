@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TimeRange defines a start and end time in 24hr format
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "endTime",
     "startTime"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class TimeRange implements Editable<TimeRangeBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TimeRange)) {
+            return false;
+        }
+        TimeRange other = (TimeRange) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$endTime = this.getEndTime();
+        Object other$endTime = other.getEndTime();
+        if (this$endTime == null ? other$endTime != null : !this$endTime.equals(other$endTime)) {
+            return false;
+        }
+        Object this$startTime = this.getStartTime();
+        Object other$startTime = other.getStartTime();
+        if (this$startTime == null ? other$startTime != null : !this$startTime.equals(other$startTime)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TimeRange;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $endTime = this.getEndTime();
+        result = result * prime + ($endTime == null ? 43 : $endTime.hashCode());
+        Object $startTime = this.getStartTime();
+        result = result * prime + ($startTime == null ? 43 : $startTime.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TimeRange(" + "endTime=" + this.getEndTime() + ", startTime=" + this.getStartTime() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

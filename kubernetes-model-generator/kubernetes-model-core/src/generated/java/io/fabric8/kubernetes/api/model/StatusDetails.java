@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -28,12 +25,6 @@ import lombok.experimental.Accessors;
     "name",
     "retryAfterSeconds",
     "uid"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -156,6 +147,85 @@ public class StatusDetails implements Editable<StatusDetailsBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof StatusDetails)) {
+            return false;
+        }
+        StatusDetails other = (StatusDetails) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$causes = this.getCauses();
+        Object other$causes = other.getCauses();
+        if (this$causes == null ? other$causes != null : !this$causes.equals(other$causes)) {
+            return false;
+        }
+        Object this$group = this.getGroup();
+        Object other$group = other.getGroup();
+        if (this$group == null ? other$group != null : !this$group.equals(other$group)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$retryAfterSeconds = this.getRetryAfterSeconds();
+        Object other$retryAfterSeconds = other.getRetryAfterSeconds();
+        if (this$retryAfterSeconds == null ? other$retryAfterSeconds != null : !this$retryAfterSeconds.equals(other$retryAfterSeconds)) {
+            return false;
+        }
+        Object this$uid = this.getUid();
+        Object other$uid = other.getUid();
+        if (this$uid == null ? other$uid != null : !this$uid.equals(other$uid)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof StatusDetails;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $causes = this.getCauses();
+        result = result * prime + ($causes == null ? 43 : $causes.hashCode());
+        Object $group = this.getGroup();
+        result = result * prime + ($group == null ? 43 : $group.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $retryAfterSeconds = this.getRetryAfterSeconds();
+        result = result * prime + ($retryAfterSeconds == null ? 43 : $retryAfterSeconds.hashCode());
+        Object $uid = this.getUid();
+        result = result * prime + ($uid == null ? 43 : $uid.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "StatusDetails(" + "causes=" + this.getCauses() + ", group=" + this.getGroup() + ", kind=" + this.getKind() + ", name=" + this.getName() + ", retryAfterSeconds=" + this.getRetryAfterSeconds() + ", uid=" + this.getUid() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

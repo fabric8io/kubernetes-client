@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AdminPolicyBasedRouteStatus contains the observed status of the AdminPolicyBased route types.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "lastTransitionTime",
     "messages",
     "status"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -164,6 +155,64 @@ public class AdminPolicyBasedRouteStatus implements Editable<AdminPolicyBasedRou
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AdminPolicyBasedRouteStatus)) {
+            return false;
+        }
+        AdminPolicyBasedRouteStatus other = (AdminPolicyBasedRouteStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$lastTransitionTime = this.getLastTransitionTime();
+        Object other$lastTransitionTime = other.getLastTransitionTime();
+        if (this$lastTransitionTime == null ? other$lastTransitionTime != null : !this$lastTransitionTime.equals(other$lastTransitionTime)) {
+            return false;
+        }
+        Object this$messages = this.getMessages();
+        Object other$messages = other.getMessages();
+        if (this$messages == null ? other$messages != null : !this$messages.equals(other$messages)) {
+            return false;
+        }
+        Object this$status = this.getStatus();
+        Object other$status = other.getStatus();
+        if (this$status == null ? other$status != null : !this$status.equals(other$status)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AdminPolicyBasedRouteStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $lastTransitionTime = this.getLastTransitionTime();
+        result = result * prime + ($lastTransitionTime == null ? 43 : $lastTransitionTime.hashCode());
+        Object $messages = this.getMessages();
+        result = result * prime + ($messages == null ? 43 : $messages.hashCode());
+        Object $status = this.getStatus();
+        result = result * prime + ($status == null ? 43 : $status.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AdminPolicyBasedRouteStatus(" + "lastTransitionTime=" + this.getLastTransitionTime() + ", messages=" + this.getMessages() + ", status=" + this.getStatus() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

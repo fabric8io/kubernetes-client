@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ObjectMetricStatus indicates the current value of a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "metricName",
     "selector",
     "target"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -201,6 +192,78 @@ public class ObjectMetricStatus implements Editable<ObjectMetricStatusBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ObjectMetricStatus)) {
+            return false;
+        }
+        ObjectMetricStatus other = (ObjectMetricStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$averageValue = this.getAverageValue();
+        Object other$averageValue = other.getAverageValue();
+        if (this$averageValue == null ? other$averageValue != null : !this$averageValue.equals(other$averageValue)) {
+            return false;
+        }
+        Object this$currentValue = this.getCurrentValue();
+        Object other$currentValue = other.getCurrentValue();
+        if (this$currentValue == null ? other$currentValue != null : !this$currentValue.equals(other$currentValue)) {
+            return false;
+        }
+        Object this$metricName = this.getMetricName();
+        Object other$metricName = other.getMetricName();
+        if (this$metricName == null ? other$metricName != null : !this$metricName.equals(other$metricName)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$target = this.getTarget();
+        Object other$target = other.getTarget();
+        if (this$target == null ? other$target != null : !this$target.equals(other$target)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ObjectMetricStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $averageValue = this.getAverageValue();
+        result = result * prime + ($averageValue == null ? 43 : $averageValue.hashCode());
+        Object $currentValue = this.getCurrentValue();
+        result = result * prime + ($currentValue == null ? 43 : $currentValue.hashCode());
+        Object $metricName = this.getMetricName();
+        result = result * prime + ($metricName == null ? 43 : $metricName.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $target = this.getTarget();
+        result = result * prime + ($target == null ? 43 : $target.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ObjectMetricStatus(" + "averageValue=" + this.getAverageValue() + ", currentValue=" + this.getCurrentValue() + ", metricName=" + this.getMetricName() + ", selector=" + this.getSelector() + ", target=" + this.getTarget() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

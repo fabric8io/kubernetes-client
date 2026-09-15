@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PodUpdatePolicy describes the rules on how changes are applied to the pods.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "evictionRequirements",
     "minReplicas",
     "updateMode"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class PodUpdatePolicy implements Editable<PodUpdatePolicyBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodUpdatePolicy)) {
+            return false;
+        }
+        PodUpdatePolicy other = (PodUpdatePolicy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$evictAfterOOMSeconds = this.getEvictAfterOOMSeconds();
+        Object other$evictAfterOOMSeconds = other.getEvictAfterOOMSeconds();
+        if (this$evictAfterOOMSeconds == null ? other$evictAfterOOMSeconds != null : !this$evictAfterOOMSeconds.equals(other$evictAfterOOMSeconds)) {
+            return false;
+        }
+        Object this$evictionRequirements = this.getEvictionRequirements();
+        Object other$evictionRequirements = other.getEvictionRequirements();
+        if (this$evictionRequirements == null ? other$evictionRequirements != null : !this$evictionRequirements.equals(other$evictionRequirements)) {
+            return false;
+        }
+        Object this$minReplicas = this.getMinReplicas();
+        Object other$minReplicas = other.getMinReplicas();
+        if (this$minReplicas == null ? other$minReplicas != null : !this$minReplicas.equals(other$minReplicas)) {
+            return false;
+        }
+        Object this$updateMode = this.getUpdateMode();
+        Object other$updateMode = other.getUpdateMode();
+        if (this$updateMode == null ? other$updateMode != null : !this$updateMode.equals(other$updateMode)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodUpdatePolicy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $evictAfterOOMSeconds = this.getEvictAfterOOMSeconds();
+        result = result * prime + ($evictAfterOOMSeconds == null ? 43 : $evictAfterOOMSeconds.hashCode());
+        Object $evictionRequirements = this.getEvictionRequirements();
+        result = result * prime + ($evictionRequirements == null ? 43 : $evictionRequirements.hashCode());
+        Object $minReplicas = this.getMinReplicas();
+        result = result * prime + ($minReplicas == null ? 43 : $minReplicas.hashCode());
+        Object $updateMode = this.getUpdateMode();
+        result = result * prime + ($updateMode == null ? 43 : $updateMode.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodUpdatePolicy(" + "evictAfterOOMSeconds=" + this.getEvictAfterOOMSeconds() + ", evictionRequirements=" + this.getEvictionRequirements() + ", minReplicas=" + this.getMinReplicas() + ", updateMode=" + this.getUpdateMode() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

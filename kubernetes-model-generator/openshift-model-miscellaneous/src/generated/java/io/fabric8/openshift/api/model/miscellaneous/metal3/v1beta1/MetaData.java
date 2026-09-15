@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MetaData represents a keyand value of the metadata.
@@ -51,12 +48,6 @@ import lombok.experimental.Accessors;
     "objectNames",
     "prefixesFromIPPool",
     "strings"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -344,6 +335,120 @@ public class MetaData implements Editable<MetaDataBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MetaData)) {
+            return false;
+        }
+        MetaData other = (MetaData) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$dnsServersFromIPPool = this.getDnsServersFromIPPool();
+        Object other$dnsServersFromIPPool = other.getDnsServersFromIPPool();
+        if (this$dnsServersFromIPPool == null ? other$dnsServersFromIPPool != null : !this$dnsServersFromIPPool.equals(other$dnsServersFromIPPool)) {
+            return false;
+        }
+        Object this$fromAnnotations = this.getFromAnnotations();
+        Object other$fromAnnotations = other.getFromAnnotations();
+        if (this$fromAnnotations == null ? other$fromAnnotations != null : !this$fromAnnotations.equals(other$fromAnnotations)) {
+            return false;
+        }
+        Object this$fromHostInterfaces = this.getFromHostInterfaces();
+        Object other$fromHostInterfaces = other.getFromHostInterfaces();
+        if (this$fromHostInterfaces == null ? other$fromHostInterfaces != null : !this$fromHostInterfaces.equals(other$fromHostInterfaces)) {
+            return false;
+        }
+        Object this$fromLabels = this.getFromLabels();
+        Object other$fromLabels = other.getFromLabels();
+        if (this$fromLabels == null ? other$fromLabels != null : !this$fromLabels.equals(other$fromLabels)) {
+            return false;
+        }
+        Object this$gatewaysFromIPPool = this.getGatewaysFromIPPool();
+        Object other$gatewaysFromIPPool = other.getGatewaysFromIPPool();
+        if (this$gatewaysFromIPPool == null ? other$gatewaysFromIPPool != null : !this$gatewaysFromIPPool.equals(other$gatewaysFromIPPool)) {
+            return false;
+        }
+        Object this$indexes = this.getIndexes();
+        Object other$indexes = other.getIndexes();
+        if (this$indexes == null ? other$indexes != null : !this$indexes.equals(other$indexes)) {
+            return false;
+        }
+        Object this$ipAddressesFromIPPool = this.getIpAddressesFromIPPool();
+        Object other$ipAddressesFromIPPool = other.getIpAddressesFromIPPool();
+        if (this$ipAddressesFromIPPool == null ? other$ipAddressesFromIPPool != null : !this$ipAddressesFromIPPool.equals(other$ipAddressesFromIPPool)) {
+            return false;
+        }
+        Object this$namespaces = this.getNamespaces();
+        Object other$namespaces = other.getNamespaces();
+        if (this$namespaces == null ? other$namespaces != null : !this$namespaces.equals(other$namespaces)) {
+            return false;
+        }
+        Object this$objectNames = this.getObjectNames();
+        Object other$objectNames = other.getObjectNames();
+        if (this$objectNames == null ? other$objectNames != null : !this$objectNames.equals(other$objectNames)) {
+            return false;
+        }
+        Object this$prefixesFromIPPool = this.getPrefixesFromIPPool();
+        Object other$prefixesFromIPPool = other.getPrefixesFromIPPool();
+        if (this$prefixesFromIPPool == null ? other$prefixesFromIPPool != null : !this$prefixesFromIPPool.equals(other$prefixesFromIPPool)) {
+            return false;
+        }
+        Object this$strings = this.getStrings();
+        Object other$strings = other.getStrings();
+        if (this$strings == null ? other$strings != null : !this$strings.equals(other$strings)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MetaData;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $dnsServersFromIPPool = this.getDnsServersFromIPPool();
+        result = result * prime + ($dnsServersFromIPPool == null ? 43 : $dnsServersFromIPPool.hashCode());
+        Object $fromAnnotations = this.getFromAnnotations();
+        result = result * prime + ($fromAnnotations == null ? 43 : $fromAnnotations.hashCode());
+        Object $fromHostInterfaces = this.getFromHostInterfaces();
+        result = result * prime + ($fromHostInterfaces == null ? 43 : $fromHostInterfaces.hashCode());
+        Object $fromLabels = this.getFromLabels();
+        result = result * prime + ($fromLabels == null ? 43 : $fromLabels.hashCode());
+        Object $gatewaysFromIPPool = this.getGatewaysFromIPPool();
+        result = result * prime + ($gatewaysFromIPPool == null ? 43 : $gatewaysFromIPPool.hashCode());
+        Object $indexes = this.getIndexes();
+        result = result * prime + ($indexes == null ? 43 : $indexes.hashCode());
+        Object $ipAddressesFromIPPool = this.getIpAddressesFromIPPool();
+        result = result * prime + ($ipAddressesFromIPPool == null ? 43 : $ipAddressesFromIPPool.hashCode());
+        Object $namespaces = this.getNamespaces();
+        result = result * prime + ($namespaces == null ? 43 : $namespaces.hashCode());
+        Object $objectNames = this.getObjectNames();
+        result = result * prime + ($objectNames == null ? 43 : $objectNames.hashCode());
+        Object $prefixesFromIPPool = this.getPrefixesFromIPPool();
+        result = result * prime + ($prefixesFromIPPool == null ? 43 : $prefixesFromIPPool.hashCode());
+        Object $strings = this.getStrings();
+        result = result * prime + ($strings == null ? 43 : $strings.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MetaData(" + "dnsServersFromIPPool=" + this.getDnsServersFromIPPool() + ", fromAnnotations=" + this.getFromAnnotations() + ", fromHostInterfaces=" + this.getFromHostInterfaces() + ", fromLabels=" + this.getFromLabels() + ", gatewaysFromIPPool=" + this.getGatewaysFromIPPool() + ", indexes=" + this.getIndexes() + ", ipAddressesFromIPPool=" + this.getIpAddressesFromIPPool() + ", namespaces=" + this.getNamespaces() + ", objectNames=" + this.getObjectNames() + ", prefixesFromIPPool=" + this.getPrefixesFromIPPool() + ", strings=" + this.getStrings() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

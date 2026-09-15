@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageImportStatus describes the result of an image import.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "manifests",
     "status",
     "tag"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class ImageImportStatus implements Editable<ImageImportStatusBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageImportStatus)) {
+            return false;
+        }
+        ImageImportStatus other = (ImageImportStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$image = this.getImage();
+        Object other$image = other.getImage();
+        if (this$image == null ? other$image != null : !this$image.equals(other$image)) {
+            return false;
+        }
+        Object this$manifests = this.getManifests();
+        Object other$manifests = other.getManifests();
+        if (this$manifests == null ? other$manifests != null : !this$manifests.equals(other$manifests)) {
+            return false;
+        }
+        Object this$status = this.getStatus();
+        Object other$status = other.getStatus();
+        if (this$status == null ? other$status != null : !this$status.equals(other$status)) {
+            return false;
+        }
+        Object this$tag = this.getTag();
+        Object other$tag = other.getTag();
+        if (this$tag == null ? other$tag != null : !this$tag.equals(other$tag)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageImportStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $image = this.getImage();
+        result = result * prime + ($image == null ? 43 : $image.hashCode());
+        Object $manifests = this.getManifests();
+        result = result * prime + ($manifests == null ? 43 : $manifests.hashCode());
+        Object $status = this.getStatus();
+        result = result * prime + ($status == null ? 43 : $status.hashCode());
+        Object $tag = this.getTag();
+        result = result * prime + ($tag == null ? 43 : $tag.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageImportStatus(" + "image=" + this.getImage() + ", manifests=" + this.getManifests() + ", status=" + this.getStatus() + ", tag=" + this.getTag() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

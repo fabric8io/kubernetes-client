@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VerticalPodAutoscalerCheckpointStatus contains data of the checkpoint.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "memoryHistogram",
     "totalSamplesCount",
     "version"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -240,6 +231,92 @@ public class VerticalPodAutoscalerCheckpointStatus implements Editable<VerticalP
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VerticalPodAutoscalerCheckpointStatus)) {
+            return false;
+        }
+        VerticalPodAutoscalerCheckpointStatus other = (VerticalPodAutoscalerCheckpointStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cpuHistogram = this.getCpuHistogram();
+        Object other$cpuHistogram = other.getCpuHistogram();
+        if (this$cpuHistogram == null ? other$cpuHistogram != null : !this$cpuHistogram.equals(other$cpuHistogram)) {
+            return false;
+        }
+        Object this$firstSampleStart = this.getFirstSampleStart();
+        Object other$firstSampleStart = other.getFirstSampleStart();
+        if (this$firstSampleStart == null ? other$firstSampleStart != null : !this$firstSampleStart.equals(other$firstSampleStart)) {
+            return false;
+        }
+        Object this$lastSampleStart = this.getLastSampleStart();
+        Object other$lastSampleStart = other.getLastSampleStart();
+        if (this$lastSampleStart == null ? other$lastSampleStart != null : !this$lastSampleStart.equals(other$lastSampleStart)) {
+            return false;
+        }
+        Object this$lastUpdateTime = this.getLastUpdateTime();
+        Object other$lastUpdateTime = other.getLastUpdateTime();
+        if (this$lastUpdateTime == null ? other$lastUpdateTime != null : !this$lastUpdateTime.equals(other$lastUpdateTime)) {
+            return false;
+        }
+        Object this$memoryHistogram = this.getMemoryHistogram();
+        Object other$memoryHistogram = other.getMemoryHistogram();
+        if (this$memoryHistogram == null ? other$memoryHistogram != null : !this$memoryHistogram.equals(other$memoryHistogram)) {
+            return false;
+        }
+        Object this$totalSamplesCount = this.getTotalSamplesCount();
+        Object other$totalSamplesCount = other.getTotalSamplesCount();
+        if (this$totalSamplesCount == null ? other$totalSamplesCount != null : !this$totalSamplesCount.equals(other$totalSamplesCount)) {
+            return false;
+        }
+        Object this$version = this.getVersion();
+        Object other$version = other.getVersion();
+        if (this$version == null ? other$version != null : !this$version.equals(other$version)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VerticalPodAutoscalerCheckpointStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cpuHistogram = this.getCpuHistogram();
+        result = result * prime + ($cpuHistogram == null ? 43 : $cpuHistogram.hashCode());
+        Object $firstSampleStart = this.getFirstSampleStart();
+        result = result * prime + ($firstSampleStart == null ? 43 : $firstSampleStart.hashCode());
+        Object $lastSampleStart = this.getLastSampleStart();
+        result = result * prime + ($lastSampleStart == null ? 43 : $lastSampleStart.hashCode());
+        Object $lastUpdateTime = this.getLastUpdateTime();
+        result = result * prime + ($lastUpdateTime == null ? 43 : $lastUpdateTime.hashCode());
+        Object $memoryHistogram = this.getMemoryHistogram();
+        result = result * prime + ($memoryHistogram == null ? 43 : $memoryHistogram.hashCode());
+        Object $totalSamplesCount = this.getTotalSamplesCount();
+        result = result * prime + ($totalSamplesCount == null ? 43 : $totalSamplesCount.hashCode());
+        Object $version = this.getVersion();
+        result = result * prime + ($version == null ? 43 : $version.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VerticalPodAutoscalerCheckpointStatus(" + "cpuHistogram=" + this.getCpuHistogram() + ", firstSampleStart=" + this.getFirstSampleStart() + ", lastSampleStart=" + this.getLastSampleStart() + ", lastUpdateTime=" + this.getLastUpdateTime() + ", memoryHistogram=" + this.getMemoryHistogram() + ", totalSamplesCount=" + this.getTotalSamplesCount() + ", version=" + this.getVersion() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

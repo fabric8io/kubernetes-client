@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "emailAddresses",
     "ipRanges",
     "uriDomains"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -187,6 +178,71 @@ public class NameConstraintItem implements Editable<NameConstraintItemBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NameConstraintItem)) {
+            return false;
+        }
+        NameConstraintItem other = (NameConstraintItem) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$dnsDomains = this.getDnsDomains();
+        Object other$dnsDomains = other.getDnsDomains();
+        if (this$dnsDomains == null ? other$dnsDomains != null : !this$dnsDomains.equals(other$dnsDomains)) {
+            return false;
+        }
+        Object this$emailAddresses = this.getEmailAddresses();
+        Object other$emailAddresses = other.getEmailAddresses();
+        if (this$emailAddresses == null ? other$emailAddresses != null : !this$emailAddresses.equals(other$emailAddresses)) {
+            return false;
+        }
+        Object this$ipRanges = this.getIpRanges();
+        Object other$ipRanges = other.getIpRanges();
+        if (this$ipRanges == null ? other$ipRanges != null : !this$ipRanges.equals(other$ipRanges)) {
+            return false;
+        }
+        Object this$uriDomains = this.getUriDomains();
+        Object other$uriDomains = other.getUriDomains();
+        if (this$uriDomains == null ? other$uriDomains != null : !this$uriDomains.equals(other$uriDomains)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NameConstraintItem;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $dnsDomains = this.getDnsDomains();
+        result = result * prime + ($dnsDomains == null ? 43 : $dnsDomains.hashCode());
+        Object $emailAddresses = this.getEmailAddresses();
+        result = result * prime + ($emailAddresses == null ? 43 : $emailAddresses.hashCode());
+        Object $ipRanges = this.getIpRanges();
+        result = result * prime + ($ipRanges == null ? 43 : $ipRanges.hashCode());
+        Object $uriDomains = this.getUriDomains();
+        result = result * prime + ($uriDomains == null ? 43 : $uriDomains.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NameConstraintItem(" + "dnsDomains=" + this.getDnsDomains() + ", emailAddresses=" + this.getEmailAddresses() + ", ipRanges=" + this.getIpRanges() + ", uriDomains=" + this.getUriDomains() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

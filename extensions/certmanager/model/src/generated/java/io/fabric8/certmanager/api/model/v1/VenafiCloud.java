@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VenafiCloud defines connection configuration details for CyberArk Certificate Manager SaaS
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "apiTokenSecretRef",
     "url"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -141,6 +132,57 @@ public class VenafiCloud implements Editable<VenafiCloudBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VenafiCloud)) {
+            return false;
+        }
+        VenafiCloud other = (VenafiCloud) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiTokenSecretRef = this.getApiTokenSecretRef();
+        Object other$apiTokenSecretRef = other.getApiTokenSecretRef();
+        if (this$apiTokenSecretRef == null ? other$apiTokenSecretRef != null : !this$apiTokenSecretRef.equals(other$apiTokenSecretRef)) {
+            return false;
+        }
+        Object this$url = this.getUrl();
+        Object other$url = other.getUrl();
+        if (this$url == null ? other$url != null : !this$url.equals(other$url)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VenafiCloud;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiTokenSecretRef = this.getApiTokenSecretRef();
+        result = result * prime + ($apiTokenSecretRef == null ? 43 : $apiTokenSecretRef.hashCode());
+        Object $url = this.getUrl();
+        result = result * prime + ($url == null ? 43 : $url.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VenafiCloud(" + "apiTokenSecretRef=" + this.getApiTokenSecretRef() + ", url=" + this.getUrl() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

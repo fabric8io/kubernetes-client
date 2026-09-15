@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OverlappingRangeIPReservationSpec defines the desired state of OverlappingRangeIPReservation
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "containerid",
     "ifname",
     "podref"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class OverlappingRangeIPReservationSpec implements Editable<OverlappingRa
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OverlappingRangeIPReservationSpec)) {
+            return false;
+        }
+        OverlappingRangeIPReservationSpec other = (OverlappingRangeIPReservationSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$containerid = this.getContainerid();
+        Object other$containerid = other.getContainerid();
+        if (this$containerid == null ? other$containerid != null : !this$containerid.equals(other$containerid)) {
+            return false;
+        }
+        Object this$ifname = this.getIfname();
+        Object other$ifname = other.getIfname();
+        if (this$ifname == null ? other$ifname != null : !this$ifname.equals(other$ifname)) {
+            return false;
+        }
+        Object this$podref = this.getPodref();
+        Object other$podref = other.getPodref();
+        if (this$podref == null ? other$podref != null : !this$podref.equals(other$podref)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OverlappingRangeIPReservationSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $containerid = this.getContainerid();
+        result = result * prime + ($containerid == null ? 43 : $containerid.hashCode());
+        Object $ifname = this.getIfname();
+        result = result * prime + ($ifname == null ? 43 : $ifname.hashCode());
+        Object $podref = this.getPodref();
+        result = result * prime + ($podref == null ? 43 : $podref.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OverlappingRangeIPReservationSpec(" + "containerid=" + this.getContainerid() + ", ifname=" + this.getIfname() + ", podref=" + this.getPodref() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

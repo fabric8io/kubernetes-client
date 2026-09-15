@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.config.v1.ConfigMapFileReference;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ConsoleCustomization defines a list of optional configuration for the console UI. Ensure that Logos and CustomLogoFile cannot be set at the same time.
@@ -52,12 +49,6 @@ import lombok.experimental.Accessors;
     "perspectives",
     "projectAccess",
     "quickStarts"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -329,6 +320,120 @@ public class ConsoleCustomization implements Editable<ConsoleCustomizationBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConsoleCustomization)) {
+            return false;
+        }
+        ConsoleCustomization other = (ConsoleCustomization) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$addPage = this.getAddPage();
+        Object other$addPage = other.getAddPage();
+        if (this$addPage == null ? other$addPage != null : !this$addPage.equals(other$addPage)) {
+            return false;
+        }
+        Object this$brand = this.getBrand();
+        Object other$brand = other.getBrand();
+        if (this$brand == null ? other$brand != null : !this$brand.equals(other$brand)) {
+            return false;
+        }
+        Object this$capabilities = this.getCapabilities();
+        Object other$capabilities = other.getCapabilities();
+        if (this$capabilities == null ? other$capabilities != null : !this$capabilities.equals(other$capabilities)) {
+            return false;
+        }
+        Object this$customLogoFile = this.getCustomLogoFile();
+        Object other$customLogoFile = other.getCustomLogoFile();
+        if (this$customLogoFile == null ? other$customLogoFile != null : !this$customLogoFile.equals(other$customLogoFile)) {
+            return false;
+        }
+        Object this$customProductName = this.getCustomProductName();
+        Object other$customProductName = other.getCustomProductName();
+        if (this$customProductName == null ? other$customProductName != null : !this$customProductName.equals(other$customProductName)) {
+            return false;
+        }
+        Object this$developerCatalog = this.getDeveloperCatalog();
+        Object other$developerCatalog = other.getDeveloperCatalog();
+        if (this$developerCatalog == null ? other$developerCatalog != null : !this$developerCatalog.equals(other$developerCatalog)) {
+            return false;
+        }
+        Object this$documentationBaseURL = this.getDocumentationBaseURL();
+        Object other$documentationBaseURL = other.getDocumentationBaseURL();
+        if (this$documentationBaseURL == null ? other$documentationBaseURL != null : !this$documentationBaseURL.equals(other$documentationBaseURL)) {
+            return false;
+        }
+        Object this$logos = this.getLogos();
+        Object other$logos = other.getLogos();
+        if (this$logos == null ? other$logos != null : !this$logos.equals(other$logos)) {
+            return false;
+        }
+        Object this$perspectives = this.getPerspectives();
+        Object other$perspectives = other.getPerspectives();
+        if (this$perspectives == null ? other$perspectives != null : !this$perspectives.equals(other$perspectives)) {
+            return false;
+        }
+        Object this$projectAccess = this.getProjectAccess();
+        Object other$projectAccess = other.getProjectAccess();
+        if (this$projectAccess == null ? other$projectAccess != null : !this$projectAccess.equals(other$projectAccess)) {
+            return false;
+        }
+        Object this$quickStarts = this.getQuickStarts();
+        Object other$quickStarts = other.getQuickStarts();
+        if (this$quickStarts == null ? other$quickStarts != null : !this$quickStarts.equals(other$quickStarts)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConsoleCustomization;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $addPage = this.getAddPage();
+        result = result * prime + ($addPage == null ? 43 : $addPage.hashCode());
+        Object $brand = this.getBrand();
+        result = result * prime + ($brand == null ? 43 : $brand.hashCode());
+        Object $capabilities = this.getCapabilities();
+        result = result * prime + ($capabilities == null ? 43 : $capabilities.hashCode());
+        Object $customLogoFile = this.getCustomLogoFile();
+        result = result * prime + ($customLogoFile == null ? 43 : $customLogoFile.hashCode());
+        Object $customProductName = this.getCustomProductName();
+        result = result * prime + ($customProductName == null ? 43 : $customProductName.hashCode());
+        Object $developerCatalog = this.getDeveloperCatalog();
+        result = result * prime + ($developerCatalog == null ? 43 : $developerCatalog.hashCode());
+        Object $documentationBaseURL = this.getDocumentationBaseURL();
+        result = result * prime + ($documentationBaseURL == null ? 43 : $documentationBaseURL.hashCode());
+        Object $logos = this.getLogos();
+        result = result * prime + ($logos == null ? 43 : $logos.hashCode());
+        Object $perspectives = this.getPerspectives();
+        result = result * prime + ($perspectives == null ? 43 : $perspectives.hashCode());
+        Object $projectAccess = this.getProjectAccess();
+        result = result * prime + ($projectAccess == null ? 43 : $projectAccess.hashCode());
+        Object $quickStarts = this.getQuickStarts();
+        result = result * prime + ($quickStarts == null ? 43 : $quickStarts.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConsoleCustomization(" + "addPage=" + this.getAddPage() + ", brand=" + this.getBrand() + ", capabilities=" + this.getCapabilities() + ", customLogoFile=" + this.getCustomLogoFile() + ", customProductName=" + this.getCustomProductName() + ", developerCatalog=" + this.getDeveloperCatalog() + ", documentationBaseURL=" + this.getDocumentationBaseURL() + ", logos=" + this.getLogos() + ", perspectives=" + this.getPerspectives() + ", projectAccess=" + this.getProjectAccess() + ", quickStarts=" + this.getQuickStarts() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

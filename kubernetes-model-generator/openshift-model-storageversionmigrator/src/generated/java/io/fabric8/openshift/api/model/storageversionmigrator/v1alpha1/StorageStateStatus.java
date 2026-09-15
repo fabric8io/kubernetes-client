@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Status of the storage state.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "currentStorageVersionHash",
     "lastHeartbeatTime",
     "persistedStorageVersionHashes"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -164,6 +155,64 @@ public class StorageStateStatus implements Editable<StorageStateStatusBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof StorageStateStatus)) {
+            return false;
+        }
+        StorageStateStatus other = (StorageStateStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$currentStorageVersionHash = this.getCurrentStorageVersionHash();
+        Object other$currentStorageVersionHash = other.getCurrentStorageVersionHash();
+        if (this$currentStorageVersionHash == null ? other$currentStorageVersionHash != null : !this$currentStorageVersionHash.equals(other$currentStorageVersionHash)) {
+            return false;
+        }
+        Object this$lastHeartbeatTime = this.getLastHeartbeatTime();
+        Object other$lastHeartbeatTime = other.getLastHeartbeatTime();
+        if (this$lastHeartbeatTime == null ? other$lastHeartbeatTime != null : !this$lastHeartbeatTime.equals(other$lastHeartbeatTime)) {
+            return false;
+        }
+        Object this$persistedStorageVersionHashes = this.getPersistedStorageVersionHashes();
+        Object other$persistedStorageVersionHashes = other.getPersistedStorageVersionHashes();
+        if (this$persistedStorageVersionHashes == null ? other$persistedStorageVersionHashes != null : !this$persistedStorageVersionHashes.equals(other$persistedStorageVersionHashes)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof StorageStateStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $currentStorageVersionHash = this.getCurrentStorageVersionHash();
+        result = result * prime + ($currentStorageVersionHash == null ? 43 : $currentStorageVersionHash.hashCode());
+        Object $lastHeartbeatTime = this.getLastHeartbeatTime();
+        result = result * prime + ($lastHeartbeatTime == null ? 43 : $lastHeartbeatTime.hashCode());
+        Object $persistedStorageVersionHashes = this.getPersistedStorageVersionHashes();
+        result = result * prime + ($persistedStorageVersionHashes == null ? 43 : $persistedStorageVersionHashes.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "StorageStateStatus(" + "currentStorageVersionHash=" + this.getCurrentStorageVersionHash() + ", lastHeartbeatTime=" + this.getLastHeartbeatTime() + ", persistedStorageVersionHashes=" + this.getPersistedStorageVersionHashes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

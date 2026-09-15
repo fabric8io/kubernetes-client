@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RocketChatConfig configures notifications via RocketChat. It requires Alertmanager &gt;= 0.28.0.
@@ -59,12 +56,6 @@ import lombok.experimental.Accessors;
     "titleLink",
     "token",
     "tokenID"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -467,6 +458,169 @@ public class RocketChatConfig implements Editable<RocketChatConfigBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RocketChatConfig)) {
+            return false;
+        }
+        RocketChatConfig other = (RocketChatConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$actions = this.getActions();
+        Object other$actions = other.getActions();
+        if (this$actions == null ? other$actions != null : !this$actions.equals(other$actions)) {
+            return false;
+        }
+        Object this$apiURL = this.getApiURL();
+        Object other$apiURL = other.getApiURL();
+        if (this$apiURL == null ? other$apiURL != null : !this$apiURL.equals(other$apiURL)) {
+            return false;
+        }
+        Object this$channel = this.getChannel();
+        Object other$channel = other.getChannel();
+        if (this$channel == null ? other$channel != null : !this$channel.equals(other$channel)) {
+            return false;
+        }
+        Object this$color = this.getColor();
+        Object other$color = other.getColor();
+        if (this$color == null ? other$color != null : !this$color.equals(other$color)) {
+            return false;
+        }
+        Object this$emoji = this.getEmoji();
+        Object other$emoji = other.getEmoji();
+        if (this$emoji == null ? other$emoji != null : !this$emoji.equals(other$emoji)) {
+            return false;
+        }
+        Object this$fields = this.getFields();
+        Object other$fields = other.getFields();
+        if (this$fields == null ? other$fields != null : !this$fields.equals(other$fields)) {
+            return false;
+        }
+        Object this$httpConfig = this.getHttpConfig();
+        Object other$httpConfig = other.getHttpConfig();
+        if (this$httpConfig == null ? other$httpConfig != null : !this$httpConfig.equals(other$httpConfig)) {
+            return false;
+        }
+        Object this$iconURL = this.getIconURL();
+        Object other$iconURL = other.getIconURL();
+        if (this$iconURL == null ? other$iconURL != null : !this$iconURL.equals(other$iconURL)) {
+            return false;
+        }
+        Object this$imageURL = this.getImageURL();
+        Object other$imageURL = other.getImageURL();
+        if (this$imageURL == null ? other$imageURL != null : !this$imageURL.equals(other$imageURL)) {
+            return false;
+        }
+        Object this$linkNames = this.getLinkNames();
+        Object other$linkNames = other.getLinkNames();
+        if (this$linkNames == null ? other$linkNames != null : !this$linkNames.equals(other$linkNames)) {
+            return false;
+        }
+        Object this$sendResolved = this.getSendResolved();
+        Object other$sendResolved = other.getSendResolved();
+        if (this$sendResolved == null ? other$sendResolved != null : !this$sendResolved.equals(other$sendResolved)) {
+            return false;
+        }
+        Object this$shortFields = this.getShortFields();
+        Object other$shortFields = other.getShortFields();
+        if (this$shortFields == null ? other$shortFields != null : !this$shortFields.equals(other$shortFields)) {
+            return false;
+        }
+        Object this$text = this.getText();
+        Object other$text = other.getText();
+        if (this$text == null ? other$text != null : !this$text.equals(other$text)) {
+            return false;
+        }
+        Object this$thumbURL = this.getThumbURL();
+        Object other$thumbURL = other.getThumbURL();
+        if (this$thumbURL == null ? other$thumbURL != null : !this$thumbURL.equals(other$thumbURL)) {
+            return false;
+        }
+        Object this$title = this.getTitle();
+        Object other$title = other.getTitle();
+        if (this$title == null ? other$title != null : !this$title.equals(other$title)) {
+            return false;
+        }
+        Object this$titleLink = this.getTitleLink();
+        Object other$titleLink = other.getTitleLink();
+        if (this$titleLink == null ? other$titleLink != null : !this$titleLink.equals(other$titleLink)) {
+            return false;
+        }
+        Object this$token = this.getToken();
+        Object other$token = other.getToken();
+        if (this$token == null ? other$token != null : !this$token.equals(other$token)) {
+            return false;
+        }
+        Object this$tokenID = this.getTokenID();
+        Object other$tokenID = other.getTokenID();
+        if (this$tokenID == null ? other$tokenID != null : !this$tokenID.equals(other$tokenID)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RocketChatConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $actions = this.getActions();
+        result = result * prime + ($actions == null ? 43 : $actions.hashCode());
+        Object $apiURL = this.getApiURL();
+        result = result * prime + ($apiURL == null ? 43 : $apiURL.hashCode());
+        Object $channel = this.getChannel();
+        result = result * prime + ($channel == null ? 43 : $channel.hashCode());
+        Object $color = this.getColor();
+        result = result * prime + ($color == null ? 43 : $color.hashCode());
+        Object $emoji = this.getEmoji();
+        result = result * prime + ($emoji == null ? 43 : $emoji.hashCode());
+        Object $fields = this.getFields();
+        result = result * prime + ($fields == null ? 43 : $fields.hashCode());
+        Object $httpConfig = this.getHttpConfig();
+        result = result * prime + ($httpConfig == null ? 43 : $httpConfig.hashCode());
+        Object $iconURL = this.getIconURL();
+        result = result * prime + ($iconURL == null ? 43 : $iconURL.hashCode());
+        Object $imageURL = this.getImageURL();
+        result = result * prime + ($imageURL == null ? 43 : $imageURL.hashCode());
+        Object $linkNames = this.getLinkNames();
+        result = result * prime + ($linkNames == null ? 43 : $linkNames.hashCode());
+        Object $sendResolved = this.getSendResolved();
+        result = result * prime + ($sendResolved == null ? 43 : $sendResolved.hashCode());
+        Object $shortFields = this.getShortFields();
+        result = result * prime + ($shortFields == null ? 43 : $shortFields.hashCode());
+        Object $text = this.getText();
+        result = result * prime + ($text == null ? 43 : $text.hashCode());
+        Object $thumbURL = this.getThumbURL();
+        result = result * prime + ($thumbURL == null ? 43 : $thumbURL.hashCode());
+        Object $title = this.getTitle();
+        result = result * prime + ($title == null ? 43 : $title.hashCode());
+        Object $titleLink = this.getTitleLink();
+        result = result * prime + ($titleLink == null ? 43 : $titleLink.hashCode());
+        Object $token = this.getToken();
+        result = result * prime + ($token == null ? 43 : $token.hashCode());
+        Object $tokenID = this.getTokenID();
+        result = result * prime + ($tokenID == null ? 43 : $tokenID.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RocketChatConfig(" + "actions=" + this.getActions() + ", apiURL=" + this.getApiURL() + ", channel=" + this.getChannel() + ", color=" + this.getColor() + ", emoji=" + this.getEmoji() + ", fields=" + this.getFields() + ", httpConfig=" + this.getHttpConfig() + ", iconURL=" + this.getIconURL() + ", imageURL=" + this.getImageURL() + ", linkNames=" + this.getLinkNames() + ", sendResolved=" + this.getSendResolved() + ", shortFields=" + this.getShortFields() + ", text=" + this.getText() + ", thumbURL=" + this.getThumbURL() + ", title=" + this.getTitle() + ", titleLink=" + this.getTitleLink() + ", token=" + this.getToken() + ", tokenID=" + this.getTokenID() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

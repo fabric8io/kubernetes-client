@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AWSPrivateLinkConfig defines the configuration for the aws-private-link controller.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "credentialsSecretRef",
     "dnsRecordType",
     "endpointVPCInventory"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -186,6 +177,71 @@ public class AWSPrivateLinkConfig implements Editable<AWSPrivateLinkConfigBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AWSPrivateLinkConfig)) {
+            return false;
+        }
+        AWSPrivateLinkConfig other = (AWSPrivateLinkConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$associatedVPCs = this.getAssociatedVPCs();
+        Object other$associatedVPCs = other.getAssociatedVPCs();
+        if (this$associatedVPCs == null ? other$associatedVPCs != null : !this$associatedVPCs.equals(other$associatedVPCs)) {
+            return false;
+        }
+        Object this$credentialsSecretRef = this.getCredentialsSecretRef();
+        Object other$credentialsSecretRef = other.getCredentialsSecretRef();
+        if (this$credentialsSecretRef == null ? other$credentialsSecretRef != null : !this$credentialsSecretRef.equals(other$credentialsSecretRef)) {
+            return false;
+        }
+        Object this$dnsRecordType = this.getDnsRecordType();
+        Object other$dnsRecordType = other.getDnsRecordType();
+        if (this$dnsRecordType == null ? other$dnsRecordType != null : !this$dnsRecordType.equals(other$dnsRecordType)) {
+            return false;
+        }
+        Object this$endpointVPCInventory = this.getEndpointVPCInventory();
+        Object other$endpointVPCInventory = other.getEndpointVPCInventory();
+        if (this$endpointVPCInventory == null ? other$endpointVPCInventory != null : !this$endpointVPCInventory.equals(other$endpointVPCInventory)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AWSPrivateLinkConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $associatedVPCs = this.getAssociatedVPCs();
+        result = result * prime + ($associatedVPCs == null ? 43 : $associatedVPCs.hashCode());
+        Object $credentialsSecretRef = this.getCredentialsSecretRef();
+        result = result * prime + ($credentialsSecretRef == null ? 43 : $credentialsSecretRef.hashCode());
+        Object $dnsRecordType = this.getDnsRecordType();
+        result = result * prime + ($dnsRecordType == null ? 43 : $dnsRecordType.hashCode());
+        Object $endpointVPCInventory = this.getEndpointVPCInventory();
+        result = result * prime + ($endpointVPCInventory == null ? 43 : $endpointVPCInventory.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AWSPrivateLinkConfig(" + "associatedVPCs=" + this.getAssociatedVPCs() + ", credentialsSecretRef=" + this.getCredentialsSecretRef() + ", dnsRecordType=" + this.getDnsRecordType() + ", endpointVPCInventory=" + this.getEndpointVPCInventory() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

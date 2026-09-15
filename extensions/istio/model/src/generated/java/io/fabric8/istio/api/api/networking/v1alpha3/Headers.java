@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Message headers can be manipulated when Envoy forwards requests to, or responses from, a destination service. Header manipulation rules can be specified for a specific route destination or for all destinations. The following VirtualService adds a `test` header with the value `true` to requests that are routed to any `reviews` service destination. It also removes the `foo` response header, but only from responses coming from the `v1` subset (version) of the `reviews` service.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: reviews-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- reviews.prod.svc.cluster.local<br><p> 	http:<br><p> 	- headers:<br><p> 	    request:<br><p> 	      set:<br><p> 	        test: "true"<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: reviews.prod.svc.cluster.local<br><p> 	      subset: v2<br><p> 	    weight: 25<br><p> 	  - destination:<br><p> 	      host: reviews.prod.svc.cluster.local<br><p> 	      subset: v1<br><p> 	    headers:<br><p> 	      response:<br><p> 	        remove:<br><p> 	        - foo<br><p> 	    weight: 75<br><p> <br><p> ```
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "request",
     "response"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class Headers implements Editable<HeadersBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Headers)) {
+            return false;
+        }
+        Headers other = (Headers) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$request = this.getRequest();
+        Object other$request = other.getRequest();
+        if (this$request == null ? other$request != null : !this$request.equals(other$request)) {
+            return false;
+        }
+        Object this$response = this.getResponse();
+        Object other$response = other.getResponse();
+        if (this$response == null ? other$response != null : !this$response.equals(other$response)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Headers;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $request = this.getRequest();
+        result = result * prime + ($request == null ? 43 : $request.hashCode());
+        Object $response = this.getResponse();
+        result = result * prime + ($response == null ? 43 : $response.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Headers(" + "request=" + this.getRequest() + ", response=" + this.getResponse() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

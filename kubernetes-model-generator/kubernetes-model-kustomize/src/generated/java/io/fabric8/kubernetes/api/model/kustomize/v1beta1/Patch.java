@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
     "patch",
     "path",
     "target"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -153,6 +144,71 @@ public class Patch implements Editable<PatchBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Patch)) {
+            return false;
+        }
+        Patch other = (Patch) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$options = this.getOptions();
+        Object other$options = other.getOptions();
+        if (this$options == null ? other$options != null : !this$options.equals(other$options)) {
+            return false;
+        }
+        Object this$patch = this.getPatch();
+        Object other$patch = other.getPatch();
+        if (this$patch == null ? other$patch != null : !this$patch.equals(other$patch)) {
+            return false;
+        }
+        Object this$path = this.getPath();
+        Object other$path = other.getPath();
+        if (this$path == null ? other$path != null : !this$path.equals(other$path)) {
+            return false;
+        }
+        Object this$target = this.getTarget();
+        Object other$target = other.getTarget();
+        if (this$target == null ? other$target != null : !this$target.equals(other$target)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Patch;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $options = this.getOptions();
+        result = result * prime + ($options == null ? 43 : $options.hashCode());
+        Object $patch = this.getPatch();
+        result = result * prime + ($patch == null ? 43 : $patch.hashCode());
+        Object $path = this.getPath();
+        result = result * prime + ($path == null ? 43 : $path.hashCode());
+        Object $target = this.getTarget();
+        result = result * prime + ($target == null ? 43 : $target.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Patch(" + "options=" + this.getOptions() + ", patch=" + this.getPatch() + ", path=" + this.getPath() + ", target=" + this.getTarget() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

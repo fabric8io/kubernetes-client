@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HostClaimSpec defines the desired state of HostClaim.
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "networkData",
     "poweredOn",
     "userData"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -281,6 +272,106 @@ public class HostClaimSpec implements Editable<HostClaimSpecBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HostClaimSpec)) {
+            return false;
+        }
+        HostClaimSpec other = (HostClaimSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$consumerRef = this.getConsumerRef();
+        Object other$consumerRef = other.getConsumerRef();
+        if (this$consumerRef == null ? other$consumerRef != null : !this$consumerRef.equals(other$consumerRef)) {
+            return false;
+        }
+        Object this$customDeploy = this.getCustomDeploy();
+        Object other$customDeploy = other.getCustomDeploy();
+        if (this$customDeploy == null ? other$customDeploy != null : !this$customDeploy.equals(other$customDeploy)) {
+            return false;
+        }
+        Object this$failureDomain = this.getFailureDomain();
+        Object other$failureDomain = other.getFailureDomain();
+        if (this$failureDomain == null ? other$failureDomain != null : !this$failureDomain.equals(other$failureDomain)) {
+            return false;
+        }
+        Object this$hostSelector = this.getHostSelector();
+        Object other$hostSelector = other.getHostSelector();
+        if (this$hostSelector == null ? other$hostSelector != null : !this$hostSelector.equals(other$hostSelector)) {
+            return false;
+        }
+        Object this$image = this.getImage();
+        Object other$image = other.getImage();
+        if (this$image == null ? other$image != null : !this$image.equals(other$image)) {
+            return false;
+        }
+        Object this$metaData = this.getMetaData();
+        Object other$metaData = other.getMetaData();
+        if (this$metaData == null ? other$metaData != null : !this$metaData.equals(other$metaData)) {
+            return false;
+        }
+        Object this$networkData = this.getNetworkData();
+        Object other$networkData = other.getNetworkData();
+        if (this$networkData == null ? other$networkData != null : !this$networkData.equals(other$networkData)) {
+            return false;
+        }
+        Object this$poweredOn = this.getPoweredOn();
+        Object other$poweredOn = other.getPoweredOn();
+        if (this$poweredOn == null ? other$poweredOn != null : !this$poweredOn.equals(other$poweredOn)) {
+            return false;
+        }
+        Object this$userData = this.getUserData();
+        Object other$userData = other.getUserData();
+        if (this$userData == null ? other$userData != null : !this$userData.equals(other$userData)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HostClaimSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $consumerRef = this.getConsumerRef();
+        result = result * prime + ($consumerRef == null ? 43 : $consumerRef.hashCode());
+        Object $customDeploy = this.getCustomDeploy();
+        result = result * prime + ($customDeploy == null ? 43 : $customDeploy.hashCode());
+        Object $failureDomain = this.getFailureDomain();
+        result = result * prime + ($failureDomain == null ? 43 : $failureDomain.hashCode());
+        Object $hostSelector = this.getHostSelector();
+        result = result * prime + ($hostSelector == null ? 43 : $hostSelector.hashCode());
+        Object $image = this.getImage();
+        result = result * prime + ($image == null ? 43 : $image.hashCode());
+        Object $metaData = this.getMetaData();
+        result = result * prime + ($metaData == null ? 43 : $metaData.hashCode());
+        Object $networkData = this.getNetworkData();
+        result = result * prime + ($networkData == null ? 43 : $networkData.hashCode());
+        Object $poweredOn = this.getPoweredOn();
+        result = result * prime + ($poweredOn == null ? 43 : $poweredOn.hashCode());
+        Object $userData = this.getUserData();
+        result = result * prime + ($userData == null ? 43 : $userData.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HostClaimSpec(" + "consumerRef=" + this.getConsumerRef() + ", customDeploy=" + this.getCustomDeploy() + ", failureDomain=" + this.getFailureDomain() + ", hostSelector=" + this.getHostSelector() + ", image=" + this.getImage() + ", metaData=" + this.getMetaData() + ", networkData=" + this.getNetworkData() + ", poweredOn=" + this.getPoweredOn() + ", userData=" + this.getUserData() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

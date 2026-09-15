@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SpreadConstraintsTerm defines a terminology to spread placement decisions.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "topologyKey",
     "topologyKeyType",
     "whenUnsatisfiable"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class SpreadConstraintsTerm implements Editable<SpreadConstraintsTermBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SpreadConstraintsTerm)) {
+            return false;
+        }
+        SpreadConstraintsTerm other = (SpreadConstraintsTerm) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$maxSkew = this.getMaxSkew();
+        Object other$maxSkew = other.getMaxSkew();
+        if (this$maxSkew == null ? other$maxSkew != null : !this$maxSkew.equals(other$maxSkew)) {
+            return false;
+        }
+        Object this$topologyKey = this.getTopologyKey();
+        Object other$topologyKey = other.getTopologyKey();
+        if (this$topologyKey == null ? other$topologyKey != null : !this$topologyKey.equals(other$topologyKey)) {
+            return false;
+        }
+        Object this$topologyKeyType = this.getTopologyKeyType();
+        Object other$topologyKeyType = other.getTopologyKeyType();
+        if (this$topologyKeyType == null ? other$topologyKeyType != null : !this$topologyKeyType.equals(other$topologyKeyType)) {
+            return false;
+        }
+        Object this$whenUnsatisfiable = this.getWhenUnsatisfiable();
+        Object other$whenUnsatisfiable = other.getWhenUnsatisfiable();
+        if (this$whenUnsatisfiable == null ? other$whenUnsatisfiable != null : !this$whenUnsatisfiable.equals(other$whenUnsatisfiable)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SpreadConstraintsTerm;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $maxSkew = this.getMaxSkew();
+        result = result * prime + ($maxSkew == null ? 43 : $maxSkew.hashCode());
+        Object $topologyKey = this.getTopologyKey();
+        result = result * prime + ($topologyKey == null ? 43 : $topologyKey.hashCode());
+        Object $topologyKeyType = this.getTopologyKeyType();
+        result = result * prime + ($topologyKeyType == null ? 43 : $topologyKeyType.hashCode());
+        Object $whenUnsatisfiable = this.getWhenUnsatisfiable();
+        result = result * prime + ($whenUnsatisfiable == null ? 43 : $whenUnsatisfiable.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SpreadConstraintsTerm(" + "maxSkew=" + this.getMaxSkew() + ", topologyKey=" + this.getTopologyKey() + ", topologyKeyType=" + this.getTopologyKeyType() + ", whenUnsatisfiable=" + this.getWhenUnsatisfiable() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

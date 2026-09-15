@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "phase",
     "recoveredCount",
     "selectorKey"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -203,6 +194,85 @@ public class Record implements Editable<RecordBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Record)) {
+            return false;
+        }
+        Record other = (Record) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$events = this.getEvents();
+        Object other$events = other.getEvents();
+        if (this$events == null ? other$events != null : !this$events.equals(other$events)) {
+            return false;
+        }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {
+            return false;
+        }
+        Object this$injectedCount = this.getInjectedCount();
+        Object other$injectedCount = other.getInjectedCount();
+        if (this$injectedCount == null ? other$injectedCount != null : !this$injectedCount.equals(other$injectedCount)) {
+            return false;
+        }
+        Object this$phase = this.getPhase();
+        Object other$phase = other.getPhase();
+        if (this$phase == null ? other$phase != null : !this$phase.equals(other$phase)) {
+            return false;
+        }
+        Object this$recoveredCount = this.getRecoveredCount();
+        Object other$recoveredCount = other.getRecoveredCount();
+        if (this$recoveredCount == null ? other$recoveredCount != null : !this$recoveredCount.equals(other$recoveredCount)) {
+            return false;
+        }
+        Object this$selectorKey = this.getSelectorKey();
+        Object other$selectorKey = other.getSelectorKey();
+        if (this$selectorKey == null ? other$selectorKey != null : !this$selectorKey.equals(other$selectorKey)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Record;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $events = this.getEvents();
+        result = result * prime + ($events == null ? 43 : $events.hashCode());
+        Object $id = this.getId();
+        result = result * prime + ($id == null ? 43 : $id.hashCode());
+        Object $injectedCount = this.getInjectedCount();
+        result = result * prime + ($injectedCount == null ? 43 : $injectedCount.hashCode());
+        Object $phase = this.getPhase();
+        result = result * prime + ($phase == null ? 43 : $phase.hashCode());
+        Object $recoveredCount = this.getRecoveredCount();
+        result = result * prime + ($recoveredCount == null ? 43 : $recoveredCount.hashCode());
+        Object $selectorKey = this.getSelectorKey();
+        result = result * prime + ($selectorKey == null ? 43 : $selectorKey.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Record(" + "events=" + this.getEvents() + ", id=" + this.getId() + ", injectedCount=" + this.getInjectedCount() + ", phase=" + this.getPhase() + ", recoveredCount=" + this.getRecoveredCount() + ", selectorKey=" + this.getSelectorKey() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

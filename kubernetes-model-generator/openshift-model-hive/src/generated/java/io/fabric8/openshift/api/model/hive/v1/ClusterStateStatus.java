@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClusterStateStatus defines the observed state of ClusterState
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "clusterOperators",
     "lastUpdated"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -144,6 +135,57 @@ public class ClusterStateStatus implements Editable<ClusterStateStatusBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterStateStatus)) {
+            return false;
+        }
+        ClusterStateStatus other = (ClusterStateStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterOperators = this.getClusterOperators();
+        Object other$clusterOperators = other.getClusterOperators();
+        if (this$clusterOperators == null ? other$clusterOperators != null : !this$clusterOperators.equals(other$clusterOperators)) {
+            return false;
+        }
+        Object this$lastUpdated = this.getLastUpdated();
+        Object other$lastUpdated = other.getLastUpdated();
+        if (this$lastUpdated == null ? other$lastUpdated != null : !this$lastUpdated.equals(other$lastUpdated)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterStateStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterOperators = this.getClusterOperators();
+        result = result * prime + ($clusterOperators == null ? 43 : $clusterOperators.hashCode());
+        Object $lastUpdated = this.getLastUpdated();
+        result = result * prime + ($lastUpdated == null ? 43 : $lastUpdated.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterStateStatus(" + "clusterOperators=" + this.getClusterOperators() + ", lastUpdated=" + this.getLastUpdated() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

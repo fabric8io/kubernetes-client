@@ -28,21 +28,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "internalJoinSubnet",
     "internalTransitSwitchSubnet"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -137,6 +128,57 @@ public class IPv6OVNKubernetesConfig implements Editable<IPv6OVNKubernetesConfig
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof IPv6OVNKubernetesConfig)) {
+            return false;
+        }
+        IPv6OVNKubernetesConfig other = (IPv6OVNKubernetesConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$internalJoinSubnet = this.getInternalJoinSubnet();
+        Object other$internalJoinSubnet = other.getInternalJoinSubnet();
+        if (this$internalJoinSubnet == null ? other$internalJoinSubnet != null : !this$internalJoinSubnet.equals(other$internalJoinSubnet)) {
+            return false;
+        }
+        Object this$internalTransitSwitchSubnet = this.getInternalTransitSwitchSubnet();
+        Object other$internalTransitSwitchSubnet = other.getInternalTransitSwitchSubnet();
+        if (this$internalTransitSwitchSubnet == null ? other$internalTransitSwitchSubnet != null : !this$internalTransitSwitchSubnet.equals(other$internalTransitSwitchSubnet)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof IPv6OVNKubernetesConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $internalJoinSubnet = this.getInternalJoinSubnet();
+        result = result * prime + ($internalJoinSubnet == null ? 43 : $internalJoinSubnet.hashCode());
+        Object $internalTransitSwitchSubnet = this.getInternalTransitSwitchSubnet();
+        result = result * prime + ($internalTransitSwitchSubnet == null ? 43 : $internalTransitSwitchSubnet.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IPv6OVNKubernetesConfig(" + "internalJoinSubnet=" + this.getInternalJoinSubnet() + ", internalTransitSwitchSubnet=" + this.getInternalTransitSwitchSubnet() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

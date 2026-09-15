@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DeploymentStatus is the most recently observed status of the Deployment.
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "terminatingReplicas",
     "unavailableReplicas",
     "updatedReplicas"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -284,6 +275,106 @@ public class DeploymentStatus implements Editable<DeploymentStatusBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DeploymentStatus)) {
+            return false;
+        }
+        DeploymentStatus other = (DeploymentStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$availableReplicas = this.getAvailableReplicas();
+        Object other$availableReplicas = other.getAvailableReplicas();
+        if (this$availableReplicas == null ? other$availableReplicas != null : !this$availableReplicas.equals(other$availableReplicas)) {
+            return false;
+        }
+        Object this$collisionCount = this.getCollisionCount();
+        Object other$collisionCount = other.getCollisionCount();
+        if (this$collisionCount == null ? other$collisionCount != null : !this$collisionCount.equals(other$collisionCount)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$readyReplicas = this.getReadyReplicas();
+        Object other$readyReplicas = other.getReadyReplicas();
+        if (this$readyReplicas == null ? other$readyReplicas != null : !this$readyReplicas.equals(other$readyReplicas)) {
+            return false;
+        }
+        Object this$replicas = this.getReplicas();
+        Object other$replicas = other.getReplicas();
+        if (this$replicas == null ? other$replicas != null : !this$replicas.equals(other$replicas)) {
+            return false;
+        }
+        Object this$terminatingReplicas = this.getTerminatingReplicas();
+        Object other$terminatingReplicas = other.getTerminatingReplicas();
+        if (this$terminatingReplicas == null ? other$terminatingReplicas != null : !this$terminatingReplicas.equals(other$terminatingReplicas)) {
+            return false;
+        }
+        Object this$unavailableReplicas = this.getUnavailableReplicas();
+        Object other$unavailableReplicas = other.getUnavailableReplicas();
+        if (this$unavailableReplicas == null ? other$unavailableReplicas != null : !this$unavailableReplicas.equals(other$unavailableReplicas)) {
+            return false;
+        }
+        Object this$updatedReplicas = this.getUpdatedReplicas();
+        Object other$updatedReplicas = other.getUpdatedReplicas();
+        if (this$updatedReplicas == null ? other$updatedReplicas != null : !this$updatedReplicas.equals(other$updatedReplicas)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DeploymentStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $availableReplicas = this.getAvailableReplicas();
+        result = result * prime + ($availableReplicas == null ? 43 : $availableReplicas.hashCode());
+        Object $collisionCount = this.getCollisionCount();
+        result = result * prime + ($collisionCount == null ? 43 : $collisionCount.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $readyReplicas = this.getReadyReplicas();
+        result = result * prime + ($readyReplicas == null ? 43 : $readyReplicas.hashCode());
+        Object $replicas = this.getReplicas();
+        result = result * prime + ($replicas == null ? 43 : $replicas.hashCode());
+        Object $terminatingReplicas = this.getTerminatingReplicas();
+        result = result * prime + ($terminatingReplicas == null ? 43 : $terminatingReplicas.hashCode());
+        Object $unavailableReplicas = this.getUnavailableReplicas();
+        result = result * prime + ($unavailableReplicas == null ? 43 : $unavailableReplicas.hashCode());
+        Object $updatedReplicas = this.getUpdatedReplicas();
+        result = result * prime + ($updatedReplicas == null ? 43 : $updatedReplicas.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DeploymentStatus(" + "availableReplicas=" + this.getAvailableReplicas() + ", collisionCount=" + this.getCollisionCount() + ", conditions=" + this.getConditions() + ", observedGeneration=" + this.getObservedGeneration() + ", readyReplicas=" + this.getReadyReplicas() + ", replicas=" + this.getReplicas() + ", terminatingReplicas=" + this.getTerminatingReplicas() + ", unavailableReplicas=" + this.getUnavailableReplicas() + ", updatedReplicas=" + this.getUpdatedReplicas() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PersistentVolumeClaimSpec describes the common attributes of storage devices and allows a Source for provider-specific attributes
@@ -34,12 +31,6 @@ import lombok.experimental.Accessors;
     "volumeAttributesClassName",
     "volumeMode",
     "volumeName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -255,6 +246,106 @@ public class PersistentVolumeClaimSpec implements Editable<PersistentVolumeClaim
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PersistentVolumeClaimSpec)) {
+            return false;
+        }
+        PersistentVolumeClaimSpec other = (PersistentVolumeClaimSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$accessModes = this.getAccessModes();
+        Object other$accessModes = other.getAccessModes();
+        if (this$accessModes == null ? other$accessModes != null : !this$accessModes.equals(other$accessModes)) {
+            return false;
+        }
+        Object this$dataSource = this.getDataSource();
+        Object other$dataSource = other.getDataSource();
+        if (this$dataSource == null ? other$dataSource != null : !this$dataSource.equals(other$dataSource)) {
+            return false;
+        }
+        Object this$dataSourceRef = this.getDataSourceRef();
+        Object other$dataSourceRef = other.getDataSourceRef();
+        if (this$dataSourceRef == null ? other$dataSourceRef != null : !this$dataSourceRef.equals(other$dataSourceRef)) {
+            return false;
+        }
+        Object this$resources = this.getResources();
+        Object other$resources = other.getResources();
+        if (this$resources == null ? other$resources != null : !this$resources.equals(other$resources)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$storageClassName = this.getStorageClassName();
+        Object other$storageClassName = other.getStorageClassName();
+        if (this$storageClassName == null ? other$storageClassName != null : !this$storageClassName.equals(other$storageClassName)) {
+            return false;
+        }
+        Object this$volumeAttributesClassName = this.getVolumeAttributesClassName();
+        Object other$volumeAttributesClassName = other.getVolumeAttributesClassName();
+        if (this$volumeAttributesClassName == null ? other$volumeAttributesClassName != null : !this$volumeAttributesClassName.equals(other$volumeAttributesClassName)) {
+            return false;
+        }
+        Object this$volumeMode = this.getVolumeMode();
+        Object other$volumeMode = other.getVolumeMode();
+        if (this$volumeMode == null ? other$volumeMode != null : !this$volumeMode.equals(other$volumeMode)) {
+            return false;
+        }
+        Object this$volumeName = this.getVolumeName();
+        Object other$volumeName = other.getVolumeName();
+        if (this$volumeName == null ? other$volumeName != null : !this$volumeName.equals(other$volumeName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PersistentVolumeClaimSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $accessModes = this.getAccessModes();
+        result = result * prime + ($accessModes == null ? 43 : $accessModes.hashCode());
+        Object $dataSource = this.getDataSource();
+        result = result * prime + ($dataSource == null ? 43 : $dataSource.hashCode());
+        Object $dataSourceRef = this.getDataSourceRef();
+        result = result * prime + ($dataSourceRef == null ? 43 : $dataSourceRef.hashCode());
+        Object $resources = this.getResources();
+        result = result * prime + ($resources == null ? 43 : $resources.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $storageClassName = this.getStorageClassName();
+        result = result * prime + ($storageClassName == null ? 43 : $storageClassName.hashCode());
+        Object $volumeAttributesClassName = this.getVolumeAttributesClassName();
+        result = result * prime + ($volumeAttributesClassName == null ? 43 : $volumeAttributesClassName.hashCode());
+        Object $volumeMode = this.getVolumeMode();
+        result = result * prime + ($volumeMode == null ? 43 : $volumeMode.hashCode());
+        Object $volumeName = this.getVolumeName();
+        result = result * prime + ($volumeName == null ? 43 : $volumeName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PersistentVolumeClaimSpec(" + "accessModes=" + this.getAccessModes() + ", dataSource=" + this.getDataSource() + ", dataSourceRef=" + this.getDataSourceRef() + ", resources=" + this.getResources() + ", selector=" + this.getSelector() + ", storageClassName=" + this.getStorageClassName() + ", volumeAttributesClassName=" + this.getVolumeAttributesClassName() + ", volumeMode=" + this.getVolumeMode() + ", volumeName=" + this.getVolumeName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

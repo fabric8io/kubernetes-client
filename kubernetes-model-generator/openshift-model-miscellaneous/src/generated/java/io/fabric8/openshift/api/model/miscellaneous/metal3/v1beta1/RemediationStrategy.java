@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RemediationStrategy describes how to remediate machines.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "retryLimit",
     "timeout",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class RemediationStrategy implements Editable<RemediationStrategyBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RemediationStrategy)) {
+            return false;
+        }
+        RemediationStrategy other = (RemediationStrategy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$retryLimit = this.getRetryLimit();
+        Object other$retryLimit = other.getRetryLimit();
+        if (this$retryLimit == null ? other$retryLimit != null : !this$retryLimit.equals(other$retryLimit)) {
+            return false;
+        }
+        Object this$timeout = this.getTimeout();
+        Object other$timeout = other.getTimeout();
+        if (this$timeout == null ? other$timeout != null : !this$timeout.equals(other$timeout)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RemediationStrategy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $retryLimit = this.getRetryLimit();
+        result = result * prime + ($retryLimit == null ? 43 : $retryLimit.hashCode());
+        Object $timeout = this.getTimeout();
+        result = result * prime + ($timeout == null ? 43 : $timeout.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RemediationStrategy(" + "retryLimit=" + this.getRetryLimit() + ", timeout=" + this.getTimeout() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VaultClientCertificateAuth is used to authenticate against Vault using a client certificate stored in a Secret.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "mountPath",
     "name",
     "secretName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class VaultClientCertificateAuth implements Editable<VaultClientCertifica
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VaultClientCertificateAuth)) {
+            return false;
+        }
+        VaultClientCertificateAuth other = (VaultClientCertificateAuth) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$mountPath = this.getMountPath();
+        Object other$mountPath = other.getMountPath();
+        if (this$mountPath == null ? other$mountPath != null : !this$mountPath.equals(other$mountPath)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$secretName = this.getSecretName();
+        Object other$secretName = other.getSecretName();
+        if (this$secretName == null ? other$secretName != null : !this$secretName.equals(other$secretName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VaultClientCertificateAuth;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $mountPath = this.getMountPath();
+        result = result * prime + ($mountPath == null ? 43 : $mountPath.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $secretName = this.getSecretName();
+        result = result * prime + ($secretName == null ? 43 : $secretName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VaultClientCertificateAuth(" + "mountPath=" + this.getMountPath() + ", name=" + this.getName() + ", secretName=" + this.getSecretName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

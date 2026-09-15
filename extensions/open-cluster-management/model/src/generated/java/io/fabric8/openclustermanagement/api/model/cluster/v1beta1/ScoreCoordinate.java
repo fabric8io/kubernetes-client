@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ScoreCoordinate represents the configuration of the score type and score source
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "addOn",
     "builtIn",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class ScoreCoordinate implements Editable<ScoreCoordinateBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ScoreCoordinate)) {
+            return false;
+        }
+        ScoreCoordinate other = (ScoreCoordinate) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$addOn = this.getAddOn();
+        Object other$addOn = other.getAddOn();
+        if (this$addOn == null ? other$addOn != null : !this$addOn.equals(other$addOn)) {
+            return false;
+        }
+        Object this$builtIn = this.getBuiltIn();
+        Object other$builtIn = other.getBuiltIn();
+        if (this$builtIn == null ? other$builtIn != null : !this$builtIn.equals(other$builtIn)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ScoreCoordinate;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $addOn = this.getAddOn();
+        result = result * prime + ($addOn == null ? 43 : $addOn.hashCode());
+        Object $builtIn = this.getBuiltIn();
+        result = result * prime + ($builtIn == null ? 43 : $builtIn.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ScoreCoordinate(" + "addOn=" + this.getAddOn() + ", builtIn=" + this.getBuiltIn() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

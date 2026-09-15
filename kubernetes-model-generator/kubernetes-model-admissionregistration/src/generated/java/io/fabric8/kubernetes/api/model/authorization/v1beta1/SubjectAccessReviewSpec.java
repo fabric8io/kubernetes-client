@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SubjectAccessReviewSpec is a description of the access request.  Exactly one of ResourceAuthorizationAttributes and NonResourceAuthorizationAttributes must be set
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "resourceAttributes",
     "uid",
     "user"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -226,6 +217,85 @@ public class SubjectAccessReviewSpec implements Editable<SubjectAccessReviewSpec
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SubjectAccessReviewSpec)) {
+            return false;
+        }
+        SubjectAccessReviewSpec other = (SubjectAccessReviewSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$extra = this.getExtra();
+        Object other$extra = other.getExtra();
+        if (this$extra == null ? other$extra != null : !this$extra.equals(other$extra)) {
+            return false;
+        }
+        Object this$group = this.getGroup();
+        Object other$group = other.getGroup();
+        if (this$group == null ? other$group != null : !this$group.equals(other$group)) {
+            return false;
+        }
+        Object this$nonResourceAttributes = this.getNonResourceAttributes();
+        Object other$nonResourceAttributes = other.getNonResourceAttributes();
+        if (this$nonResourceAttributes == null ? other$nonResourceAttributes != null : !this$nonResourceAttributes.equals(other$nonResourceAttributes)) {
+            return false;
+        }
+        Object this$resourceAttributes = this.getResourceAttributes();
+        Object other$resourceAttributes = other.getResourceAttributes();
+        if (this$resourceAttributes == null ? other$resourceAttributes != null : !this$resourceAttributes.equals(other$resourceAttributes)) {
+            return false;
+        }
+        Object this$uid = this.getUid();
+        Object other$uid = other.getUid();
+        if (this$uid == null ? other$uid != null : !this$uid.equals(other$uid)) {
+            return false;
+        }
+        Object this$user = this.getUser();
+        Object other$user = other.getUser();
+        if (this$user == null ? other$user != null : !this$user.equals(other$user)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SubjectAccessReviewSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $extra = this.getExtra();
+        result = result * prime + ($extra == null ? 43 : $extra.hashCode());
+        Object $group = this.getGroup();
+        result = result * prime + ($group == null ? 43 : $group.hashCode());
+        Object $nonResourceAttributes = this.getNonResourceAttributes();
+        result = result * prime + ($nonResourceAttributes == null ? 43 : $nonResourceAttributes.hashCode());
+        Object $resourceAttributes = this.getResourceAttributes();
+        result = result * prime + ($resourceAttributes == null ? 43 : $resourceAttributes.hashCode());
+        Object $uid = this.getUid();
+        result = result * prime + ($uid == null ? 43 : $uid.hashCode());
+        Object $user = this.getUser();
+        result = result * prime + ($user == null ? 43 : $user.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SubjectAccessReviewSpec(" + "extra=" + this.getExtra() + ", group=" + this.getGroup() + ", nonResourceAttributes=" + this.getNonResourceAttributes() + ", resourceAttributes=" + this.getResourceAttributes() + ", uid=" + this.getUid() + ", user=" + this.getUser() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

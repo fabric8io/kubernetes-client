@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ResourceClaimStatus tracks whether the resource has been allocated and what the result of that was.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "allocation",
     "devices",
     "reservedFor"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -166,6 +157,64 @@ public class ResourceClaimStatus implements Editable<ResourceClaimStatusBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ResourceClaimStatus)) {
+            return false;
+        }
+        ResourceClaimStatus other = (ResourceClaimStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allocation = this.getAllocation();
+        Object other$allocation = other.getAllocation();
+        if (this$allocation == null ? other$allocation != null : !this$allocation.equals(other$allocation)) {
+            return false;
+        }
+        Object this$devices = this.getDevices();
+        Object other$devices = other.getDevices();
+        if (this$devices == null ? other$devices != null : !this$devices.equals(other$devices)) {
+            return false;
+        }
+        Object this$reservedFor = this.getReservedFor();
+        Object other$reservedFor = other.getReservedFor();
+        if (this$reservedFor == null ? other$reservedFor != null : !this$reservedFor.equals(other$reservedFor)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ResourceClaimStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allocation = this.getAllocation();
+        result = result * prime + ($allocation == null ? 43 : $allocation.hashCode());
+        Object $devices = this.getDevices();
+        result = result * prime + ($devices == null ? 43 : $devices.hashCode());
+        Object $reservedFor = this.getReservedFor();
+        result = result * prime + ($reservedFor == null ? 43 : $reservedFor.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ResourceClaimStatus(" + "allocation=" + this.getAllocation() + ", devices=" + this.getDevices() + ", reservedFor=" + this.getReservedFor() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

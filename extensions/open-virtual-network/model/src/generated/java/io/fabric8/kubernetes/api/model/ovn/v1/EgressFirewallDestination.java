@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * EgressFirewallDestination is the target that traffic is either allowed or denied to
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "cidrSelector",
     "dnsName",
     "nodeSelector"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class EgressFirewallDestination implements Editable<EgressFirewallDestina
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EgressFirewallDestination)) {
+            return false;
+        }
+        EgressFirewallDestination other = (EgressFirewallDestination) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cidrSelector = this.getCidrSelector();
+        Object other$cidrSelector = other.getCidrSelector();
+        if (this$cidrSelector == null ? other$cidrSelector != null : !this$cidrSelector.equals(other$cidrSelector)) {
+            return false;
+        }
+        Object this$dnsName = this.getDnsName();
+        Object other$dnsName = other.getDnsName();
+        if (this$dnsName == null ? other$dnsName != null : !this$dnsName.equals(other$dnsName)) {
+            return false;
+        }
+        Object this$nodeSelector = this.getNodeSelector();
+        Object other$nodeSelector = other.getNodeSelector();
+        if (this$nodeSelector == null ? other$nodeSelector != null : !this$nodeSelector.equals(other$nodeSelector)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EgressFirewallDestination;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cidrSelector = this.getCidrSelector();
+        result = result * prime + ($cidrSelector == null ? 43 : $cidrSelector.hashCode());
+        Object $dnsName = this.getDnsName();
+        result = result * prime + ($dnsName == null ? 43 : $dnsName.hashCode());
+        Object $nodeSelector = this.getNodeSelector();
+        result = result * prime + ($nodeSelector == null ? 43 : $nodeSelector.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EgressFirewallDestination(" + "cidrSelector=" + this.getCidrSelector() + ", dnsName=" + this.getDnsName() + ", nodeSelector=" + this.getNodeSelector() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

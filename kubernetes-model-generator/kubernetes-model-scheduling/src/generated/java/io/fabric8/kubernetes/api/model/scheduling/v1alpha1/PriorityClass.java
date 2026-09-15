@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DEPRECATED - This group version of PriorityClass is deprecated by scheduling.k8s.io/v1/PriorityClass. PriorityClass defines mapping from a priority class name to the priority integer value. The value can be any valid integer.
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "globalDefault",
     "preemptionPolicy",
     "value"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -244,6 +235,92 @@ public class PriorityClass implements Editable<PriorityClassBuilder>, HasMetadat
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PriorityClass)) {
+            return false;
+        }
+        PriorityClass other = (PriorityClass) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$description = this.getDescription();
+        Object other$description = other.getDescription();
+        if (this$description == null ? other$description != null : !this$description.equals(other$description)) {
+            return false;
+        }
+        Object this$globalDefault = this.getGlobalDefault();
+        Object other$globalDefault = other.getGlobalDefault();
+        if (this$globalDefault == null ? other$globalDefault != null : !this$globalDefault.equals(other$globalDefault)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$preemptionPolicy = this.getPreemptionPolicy();
+        Object other$preemptionPolicy = other.getPreemptionPolicy();
+        if (this$preemptionPolicy == null ? other$preemptionPolicy != null : !this$preemptionPolicy.equals(other$preemptionPolicy)) {
+            return false;
+        }
+        Object this$value = this.getValue();
+        Object other$value = other.getValue();
+        if (this$value == null ? other$value != null : !this$value.equals(other$value)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PriorityClass;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $description = this.getDescription();
+        result = result * prime + ($description == null ? 43 : $description.hashCode());
+        Object $globalDefault = this.getGlobalDefault();
+        result = result * prime + ($globalDefault == null ? 43 : $globalDefault.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $preemptionPolicy = this.getPreemptionPolicy();
+        result = result * prime + ($preemptionPolicy == null ? 43 : $preemptionPolicy.hashCode());
+        Object $value = this.getValue();
+        result = result * prime + ($value == null ? 43 : $value.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PriorityClass(" + "apiVersion=" + this.getApiVersion() + ", description=" + this.getDescription() + ", globalDefault=" + this.getGlobalDefault() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata() + ", preemptionPolicy=" + this.getPreemptionPolicy() + ", value=" + this.getValue() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

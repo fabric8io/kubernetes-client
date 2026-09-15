@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PodFailurePolicyOnExitCodesRequirement describes the requirement for handling a failed pod based on its container exit codes. In particular, it lookups the .state.terminated.exitCode for each app container and init container status, represented by the .status.containerStatuses and .status.initContainerStatuses fields in the Pod status, respectively. Containers completed with success (exit code 0) are excluded from the requirement check.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "containerName",
     "operator",
     "values"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -164,6 +155,64 @@ public class PodFailurePolicyOnExitCodesRequirement implements Editable<PodFailu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodFailurePolicyOnExitCodesRequirement)) {
+            return false;
+        }
+        PodFailurePolicyOnExitCodesRequirement other = (PodFailurePolicyOnExitCodesRequirement) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$containerName = this.getContainerName();
+        Object other$containerName = other.getContainerName();
+        if (this$containerName == null ? other$containerName != null : !this$containerName.equals(other$containerName)) {
+            return false;
+        }
+        Object this$operator = this.getOperator();
+        Object other$operator = other.getOperator();
+        if (this$operator == null ? other$operator != null : !this$operator.equals(other$operator)) {
+            return false;
+        }
+        Object this$values = this.getValues();
+        Object other$values = other.getValues();
+        if (this$values == null ? other$values != null : !this$values.equals(other$values)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodFailurePolicyOnExitCodesRequirement;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $containerName = this.getContainerName();
+        result = result * prime + ($containerName == null ? 43 : $containerName.hashCode());
+        Object $operator = this.getOperator();
+        result = result * prime + ($operator == null ? 43 : $operator.hashCode());
+        Object $values = this.getValues();
+        result = result * prime + ($values == null ? 43 : $values.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodFailurePolicyOnExitCodesRequirement(" + "containerName=" + this.getContainerName() + ", operator=" + this.getOperator() + ", values=" + this.getValues() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1.RuleWithOperations;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * WebhookDescription provides details to OLM about required webhooks
@@ -56,12 +53,6 @@ import lombok.experimental.Accessors;
     "timeoutSeconds",
     "type",
     "webhookPath"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -409,6 +400,148 @@ public class WebhookDescription implements Editable<WebhookDescriptionBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof WebhookDescription)) {
+            return false;
+        }
+        WebhookDescription other = (WebhookDescription) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$admissionReviewVersions = this.getAdmissionReviewVersions();
+        Object other$admissionReviewVersions = other.getAdmissionReviewVersions();
+        if (this$admissionReviewVersions == null ? other$admissionReviewVersions != null : !this$admissionReviewVersions.equals(other$admissionReviewVersions)) {
+            return false;
+        }
+        Object this$containerPort = this.getContainerPort();
+        Object other$containerPort = other.getContainerPort();
+        if (this$containerPort == null ? other$containerPort != null : !this$containerPort.equals(other$containerPort)) {
+            return false;
+        }
+        Object this$conversionCRDs = this.getConversionCRDs();
+        Object other$conversionCRDs = other.getConversionCRDs();
+        if (this$conversionCRDs == null ? other$conversionCRDs != null : !this$conversionCRDs.equals(other$conversionCRDs)) {
+            return false;
+        }
+        Object this$deploymentName = this.getDeploymentName();
+        Object other$deploymentName = other.getDeploymentName();
+        if (this$deploymentName == null ? other$deploymentName != null : !this$deploymentName.equals(other$deploymentName)) {
+            return false;
+        }
+        Object this$failurePolicy = this.getFailurePolicy();
+        Object other$failurePolicy = other.getFailurePolicy();
+        if (this$failurePolicy == null ? other$failurePolicy != null : !this$failurePolicy.equals(other$failurePolicy)) {
+            return false;
+        }
+        Object this$generateName = this.getGenerateName();
+        Object other$generateName = other.getGenerateName();
+        if (this$generateName == null ? other$generateName != null : !this$generateName.equals(other$generateName)) {
+            return false;
+        }
+        Object this$matchPolicy = this.getMatchPolicy();
+        Object other$matchPolicy = other.getMatchPolicy();
+        if (this$matchPolicy == null ? other$matchPolicy != null : !this$matchPolicy.equals(other$matchPolicy)) {
+            return false;
+        }
+        Object this$objectSelector = this.getObjectSelector();
+        Object other$objectSelector = other.getObjectSelector();
+        if (this$objectSelector == null ? other$objectSelector != null : !this$objectSelector.equals(other$objectSelector)) {
+            return false;
+        }
+        Object this$reinvocationPolicy = this.getReinvocationPolicy();
+        Object other$reinvocationPolicy = other.getReinvocationPolicy();
+        if (this$reinvocationPolicy == null ? other$reinvocationPolicy != null : !this$reinvocationPolicy.equals(other$reinvocationPolicy)) {
+            return false;
+        }
+        Object this$rules = this.getRules();
+        Object other$rules = other.getRules();
+        if (this$rules == null ? other$rules != null : !this$rules.equals(other$rules)) {
+            return false;
+        }
+        Object this$sideEffects = this.getSideEffects();
+        Object other$sideEffects = other.getSideEffects();
+        if (this$sideEffects == null ? other$sideEffects != null : !this$sideEffects.equals(other$sideEffects)) {
+            return false;
+        }
+        Object this$targetPort = this.getTargetPort();
+        Object other$targetPort = other.getTargetPort();
+        if (this$targetPort == null ? other$targetPort != null : !this$targetPort.equals(other$targetPort)) {
+            return false;
+        }
+        Object this$timeoutSeconds = this.getTimeoutSeconds();
+        Object other$timeoutSeconds = other.getTimeoutSeconds();
+        if (this$timeoutSeconds == null ? other$timeoutSeconds != null : !this$timeoutSeconds.equals(other$timeoutSeconds)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$webhookPath = this.getWebhookPath();
+        Object other$webhookPath = other.getWebhookPath();
+        if (this$webhookPath == null ? other$webhookPath != null : !this$webhookPath.equals(other$webhookPath)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof WebhookDescription;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $admissionReviewVersions = this.getAdmissionReviewVersions();
+        result = result * prime + ($admissionReviewVersions == null ? 43 : $admissionReviewVersions.hashCode());
+        Object $containerPort = this.getContainerPort();
+        result = result * prime + ($containerPort == null ? 43 : $containerPort.hashCode());
+        Object $conversionCRDs = this.getConversionCRDs();
+        result = result * prime + ($conversionCRDs == null ? 43 : $conversionCRDs.hashCode());
+        Object $deploymentName = this.getDeploymentName();
+        result = result * prime + ($deploymentName == null ? 43 : $deploymentName.hashCode());
+        Object $failurePolicy = this.getFailurePolicy();
+        result = result * prime + ($failurePolicy == null ? 43 : $failurePolicy.hashCode());
+        Object $generateName = this.getGenerateName();
+        result = result * prime + ($generateName == null ? 43 : $generateName.hashCode());
+        Object $matchPolicy = this.getMatchPolicy();
+        result = result * prime + ($matchPolicy == null ? 43 : $matchPolicy.hashCode());
+        Object $objectSelector = this.getObjectSelector();
+        result = result * prime + ($objectSelector == null ? 43 : $objectSelector.hashCode());
+        Object $reinvocationPolicy = this.getReinvocationPolicy();
+        result = result * prime + ($reinvocationPolicy == null ? 43 : $reinvocationPolicy.hashCode());
+        Object $rules = this.getRules();
+        result = result * prime + ($rules == null ? 43 : $rules.hashCode());
+        Object $sideEffects = this.getSideEffects();
+        result = result * prime + ($sideEffects == null ? 43 : $sideEffects.hashCode());
+        Object $targetPort = this.getTargetPort();
+        result = result * prime + ($targetPort == null ? 43 : $targetPort.hashCode());
+        Object $timeoutSeconds = this.getTimeoutSeconds();
+        result = result * prime + ($timeoutSeconds == null ? 43 : $timeoutSeconds.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $webhookPath = this.getWebhookPath();
+        result = result * prime + ($webhookPath == null ? 43 : $webhookPath.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WebhookDescription(" + "admissionReviewVersions=" + this.getAdmissionReviewVersions() + ", containerPort=" + this.getContainerPort() + ", conversionCRDs=" + this.getConversionCRDs() + ", deploymentName=" + this.getDeploymentName() + ", failurePolicy=" + this.getFailurePolicy() + ", generateName=" + this.getGenerateName() + ", matchPolicy=" + this.getMatchPolicy() + ", objectSelector=" + this.getObjectSelector() + ", reinvocationPolicy=" + this.getReinvocationPolicy() + ", rules=" + this.getRules() + ", sideEffects=" + this.getSideEffects() + ", targetPort=" + this.getTargetPort() + ", timeoutSeconds=" + this.getTimeoutSeconds() + ", type=" + this.getType() + ", webhookPath=" + this.getWebhookPath() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

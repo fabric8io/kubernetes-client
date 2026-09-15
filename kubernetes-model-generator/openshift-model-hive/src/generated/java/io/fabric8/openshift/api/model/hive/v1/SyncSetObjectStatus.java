@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SyncSetObjectStatus describes the status of resources created or patches that have been applied from a SyncSet or SelectorSyncSet.
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "resourceApplyMode",
     "resources",
     "secrets"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -230,6 +221,85 @@ public class SyncSetObjectStatus implements Editable<SyncSetObjectStatusBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SyncSetObjectStatus)) {
+            return false;
+        }
+        SyncSetObjectStatus other = (SyncSetObjectStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$patches = this.getPatches();
+        Object other$patches = other.getPatches();
+        if (this$patches == null ? other$patches != null : !this$patches.equals(other$patches)) {
+            return false;
+        }
+        Object this$resourceApplyMode = this.getResourceApplyMode();
+        Object other$resourceApplyMode = other.getResourceApplyMode();
+        if (this$resourceApplyMode == null ? other$resourceApplyMode != null : !this$resourceApplyMode.equals(other$resourceApplyMode)) {
+            return false;
+        }
+        Object this$resources = this.getResources();
+        Object other$resources = other.getResources();
+        if (this$resources == null ? other$resources != null : !this$resources.equals(other$resources)) {
+            return false;
+        }
+        Object this$secrets = this.getSecrets();
+        Object other$secrets = other.getSecrets();
+        if (this$secrets == null ? other$secrets != null : !this$secrets.equals(other$secrets)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SyncSetObjectStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $patches = this.getPatches();
+        result = result * prime + ($patches == null ? 43 : $patches.hashCode());
+        Object $resourceApplyMode = this.getResourceApplyMode();
+        result = result * prime + ($resourceApplyMode == null ? 43 : $resourceApplyMode.hashCode());
+        Object $resources = this.getResources();
+        result = result * prime + ($resources == null ? 43 : $resources.hashCode());
+        Object $secrets = this.getSecrets();
+        result = result * prime + ($secrets == null ? 43 : $secrets.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SyncSetObjectStatus(" + "conditions=" + this.getConditions() + ", name=" + this.getName() + ", patches=" + this.getPatches() + ", resourceApplyMode=" + this.getResourceApplyMode() + ", resources=" + this.getResources() + ", secrets=" + this.getSecrets() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CSIDriverSpec is the specification of a CSIDriver.
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "storageCapacity",
     "tokenRequests",
     "volumeLifecycleModes"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -246,6 +237,92 @@ public class CSIDriverSpec implements Editable<CSIDriverSpecBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CSIDriverSpec)) {
+            return false;
+        }
+        CSIDriverSpec other = (CSIDriverSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$attachRequired = this.getAttachRequired();
+        Object other$attachRequired = other.getAttachRequired();
+        if (this$attachRequired == null ? other$attachRequired != null : !this$attachRequired.equals(other$attachRequired)) {
+            return false;
+        }
+        Object this$fsGroupPolicy = this.getFsGroupPolicy();
+        Object other$fsGroupPolicy = other.getFsGroupPolicy();
+        if (this$fsGroupPolicy == null ? other$fsGroupPolicy != null : !this$fsGroupPolicy.equals(other$fsGroupPolicy)) {
+            return false;
+        }
+        Object this$podInfoOnMount = this.getPodInfoOnMount();
+        Object other$podInfoOnMount = other.getPodInfoOnMount();
+        if (this$podInfoOnMount == null ? other$podInfoOnMount != null : !this$podInfoOnMount.equals(other$podInfoOnMount)) {
+            return false;
+        }
+        Object this$requiresRepublish = this.getRequiresRepublish();
+        Object other$requiresRepublish = other.getRequiresRepublish();
+        if (this$requiresRepublish == null ? other$requiresRepublish != null : !this$requiresRepublish.equals(other$requiresRepublish)) {
+            return false;
+        }
+        Object this$storageCapacity = this.getStorageCapacity();
+        Object other$storageCapacity = other.getStorageCapacity();
+        if (this$storageCapacity == null ? other$storageCapacity != null : !this$storageCapacity.equals(other$storageCapacity)) {
+            return false;
+        }
+        Object this$tokenRequests = this.getTokenRequests();
+        Object other$tokenRequests = other.getTokenRequests();
+        if (this$tokenRequests == null ? other$tokenRequests != null : !this$tokenRequests.equals(other$tokenRequests)) {
+            return false;
+        }
+        Object this$volumeLifecycleModes = this.getVolumeLifecycleModes();
+        Object other$volumeLifecycleModes = other.getVolumeLifecycleModes();
+        if (this$volumeLifecycleModes == null ? other$volumeLifecycleModes != null : !this$volumeLifecycleModes.equals(other$volumeLifecycleModes)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CSIDriverSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $attachRequired = this.getAttachRequired();
+        result = result * prime + ($attachRequired == null ? 43 : $attachRequired.hashCode());
+        Object $fsGroupPolicy = this.getFsGroupPolicy();
+        result = result * prime + ($fsGroupPolicy == null ? 43 : $fsGroupPolicy.hashCode());
+        Object $podInfoOnMount = this.getPodInfoOnMount();
+        result = result * prime + ($podInfoOnMount == null ? 43 : $podInfoOnMount.hashCode());
+        Object $requiresRepublish = this.getRequiresRepublish();
+        result = result * prime + ($requiresRepublish == null ? 43 : $requiresRepublish.hashCode());
+        Object $storageCapacity = this.getStorageCapacity();
+        result = result * prime + ($storageCapacity == null ? 43 : $storageCapacity.hashCode());
+        Object $tokenRequests = this.getTokenRequests();
+        result = result * prime + ($tokenRequests == null ? 43 : $tokenRequests.hashCode());
+        Object $volumeLifecycleModes = this.getVolumeLifecycleModes();
+        result = result * prime + ($volumeLifecycleModes == null ? 43 : $volumeLifecycleModes.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CSIDriverSpec(" + "attachRequired=" + this.getAttachRequired() + ", fsGroupPolicy=" + this.getFsGroupPolicy() + ", podInfoOnMount=" + this.getPodInfoOnMount() + ", requiresRepublish=" + this.getRequiresRepublish() + ", storageCapacity=" + this.getStorageCapacity() + ", tokenRequests=" + this.getTokenRequests() + ", volumeLifecycleModes=" + this.getVolumeLifecycleModes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

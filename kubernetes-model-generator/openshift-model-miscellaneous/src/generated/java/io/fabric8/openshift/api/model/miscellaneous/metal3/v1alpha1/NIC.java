@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NIC describes one network interface on the host.
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "speedGbps",
     "vlanId",
     "vlans"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -303,6 +294,113 @@ public class NIC implements Editable<NICBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NIC)) {
+            return false;
+        }
+        NIC other = (NIC) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ip = this.getIp();
+        Object other$ip = other.getIp();
+        if (this$ip == null ? other$ip != null : !this$ip.equals(other$ip)) {
+            return false;
+        }
+        Object this$lldp = this.getLldp();
+        Object other$lldp = other.getLldp();
+        if (this$lldp == null ? other$lldp != null : !this$lldp.equals(other$lldp)) {
+            return false;
+        }
+        Object this$mac = this.getMac();
+        Object other$mac = other.getMac();
+        if (this$mac == null ? other$mac != null : !this$mac.equals(other$mac)) {
+            return false;
+        }
+        Object this$model = this.getModel();
+        Object other$model = other.getModel();
+        if (this$model == null ? other$model != null : !this$model.equals(other$model)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$pciAddress = this.getPciAddress();
+        Object other$pciAddress = other.getPciAddress();
+        if (this$pciAddress == null ? other$pciAddress != null : !this$pciAddress.equals(other$pciAddress)) {
+            return false;
+        }
+        Object this$pxe = this.getPxe();
+        Object other$pxe = other.getPxe();
+        if (this$pxe == null ? other$pxe != null : !this$pxe.equals(other$pxe)) {
+            return false;
+        }
+        Object this$speedGbps = this.getSpeedGbps();
+        Object other$speedGbps = other.getSpeedGbps();
+        if (this$speedGbps == null ? other$speedGbps != null : !this$speedGbps.equals(other$speedGbps)) {
+            return false;
+        }
+        Object this$vlanId = this.getVlanId();
+        Object other$vlanId = other.getVlanId();
+        if (this$vlanId == null ? other$vlanId != null : !this$vlanId.equals(other$vlanId)) {
+            return false;
+        }
+        Object this$vlans = this.getVlans();
+        Object other$vlans = other.getVlans();
+        if (this$vlans == null ? other$vlans != null : !this$vlans.equals(other$vlans)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NIC;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ip = this.getIp();
+        result = result * prime + ($ip == null ? 43 : $ip.hashCode());
+        Object $lldp = this.getLldp();
+        result = result * prime + ($lldp == null ? 43 : $lldp.hashCode());
+        Object $mac = this.getMac();
+        result = result * prime + ($mac == null ? 43 : $mac.hashCode());
+        Object $model = this.getModel();
+        result = result * prime + ($model == null ? 43 : $model.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $pciAddress = this.getPciAddress();
+        result = result * prime + ($pciAddress == null ? 43 : $pciAddress.hashCode());
+        Object $pxe = this.getPxe();
+        result = result * prime + ($pxe == null ? 43 : $pxe.hashCode());
+        Object $speedGbps = this.getSpeedGbps();
+        result = result * prime + ($speedGbps == null ? 43 : $speedGbps.hashCode());
+        Object $vlanId = this.getVlanId();
+        result = result * prime + ($vlanId == null ? 43 : $vlanId.hashCode());
+        Object $vlans = this.getVlans();
+        result = result * prime + ($vlans == null ? 43 : $vlans.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NIC(" + "ip=" + this.getIp() + ", lldp=" + this.getLldp() + ", mac=" + this.getMac() + ", model=" + this.getModel() + ", name=" + this.getName() + ", pciAddress=" + this.getPciAddress() + ", pxe=" + this.getPxe() + ", speedGbps=" + this.getSpeedGbps() + ", vlanId=" + this.getVlanId() + ", vlans=" + this.getVlans() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

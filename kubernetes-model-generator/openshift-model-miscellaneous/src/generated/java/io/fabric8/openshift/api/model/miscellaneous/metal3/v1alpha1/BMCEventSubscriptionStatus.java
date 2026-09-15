@@ -27,21 +27,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "error",
     "subscriptionID"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -124,6 +115,57 @@ public class BMCEventSubscriptionStatus implements Editable<BMCEventSubscription
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BMCEventSubscriptionStatus)) {
+            return false;
+        }
+        BMCEventSubscriptionStatus other = (BMCEventSubscriptionStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$error = this.getError();
+        Object other$error = other.getError();
+        if (this$error == null ? other$error != null : !this$error.equals(other$error)) {
+            return false;
+        }
+        Object this$subscriptionID = this.getSubscriptionID();
+        Object other$subscriptionID = other.getSubscriptionID();
+        if (this$subscriptionID == null ? other$subscriptionID != null : !this$subscriptionID.equals(other$subscriptionID)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BMCEventSubscriptionStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $error = this.getError();
+        result = result * prime + ($error == null ? 43 : $error.hashCode());
+        Object $subscriptionID = this.getSubscriptionID();
+        result = result * prime + ($subscriptionID == null ? 43 : $subscriptionID.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BMCEventSubscriptionStatus(" + "error=" + this.getError() + ", subscriptionID=" + this.getSubscriptionID() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Rules governing application of a Tuned profile.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "match",
     "type",
     "value"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class TunedMatch implements Editable<TunedMatchBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TunedMatch)) {
+            return false;
+        }
+        TunedMatch other = (TunedMatch) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$label = this.getLabel();
+        Object other$label = other.getLabel();
+        if (this$label == null ? other$label != null : !this$label.equals(other$label)) {
+            return false;
+        }
+        Object this$match = this.getMatch();
+        Object other$match = other.getMatch();
+        if (this$match == null ? other$match != null : !this$match.equals(other$match)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$value = this.getValue();
+        Object other$value = other.getValue();
+        if (this$value == null ? other$value != null : !this$value.equals(other$value)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TunedMatch;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $label = this.getLabel();
+        result = result * prime + ($label == null ? 43 : $label.hashCode());
+        Object $match = this.getMatch();
+        result = result * prime + ($match == null ? 43 : $match.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $value = this.getValue();
+        result = result * prime + ($value == null ? 43 : $value.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TunedMatch(" + "label=" + this.getLabel() + ", match=" + this.getMatch() + ", type=" + this.getType() + ", value=" + this.getValue() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

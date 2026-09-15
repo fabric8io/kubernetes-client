@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ConsoleQuickStartTaskSummary contains information about a passed step.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "failed",
     "success"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class ConsoleQuickStartTaskSummary implements Editable<ConsoleQuickStartT
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConsoleQuickStartTaskSummary)) {
+            return false;
+        }
+        ConsoleQuickStartTaskSummary other = (ConsoleQuickStartTaskSummary) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$failed = this.getFailed();
+        Object other$failed = other.getFailed();
+        if (this$failed == null ? other$failed != null : !this$failed.equals(other$failed)) {
+            return false;
+        }
+        Object this$success = this.getSuccess();
+        Object other$success = other.getSuccess();
+        if (this$success == null ? other$success != null : !this$success.equals(other$success)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConsoleQuickStartTaskSummary;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $failed = this.getFailed();
+        result = result * prime + ($failed == null ? 43 : $failed.hashCode());
+        Object $success = this.getSuccess();
+        result = result * prime + ($success == null ? 43 : $success.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConsoleQuickStartTaskSummary(" + "failed=" + this.getFailed() + ", success=" + this.getSuccess() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

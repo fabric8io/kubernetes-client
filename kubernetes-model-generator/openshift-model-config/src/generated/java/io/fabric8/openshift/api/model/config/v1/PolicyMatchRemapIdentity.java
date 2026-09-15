@@ -27,21 +27,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "prefix",
     "signedPrefix"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -136,6 +127,57 @@ public class PolicyMatchRemapIdentity implements Editable<PolicyMatchRemapIdenti
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PolicyMatchRemapIdentity)) {
+            return false;
+        }
+        PolicyMatchRemapIdentity other = (PolicyMatchRemapIdentity) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$prefix = this.getPrefix();
+        Object other$prefix = other.getPrefix();
+        if (this$prefix == null ? other$prefix != null : !this$prefix.equals(other$prefix)) {
+            return false;
+        }
+        Object this$signedPrefix = this.getSignedPrefix();
+        Object other$signedPrefix = other.getSignedPrefix();
+        if (this$signedPrefix == null ? other$signedPrefix != null : !this$signedPrefix.equals(other$signedPrefix)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PolicyMatchRemapIdentity;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $prefix = this.getPrefix();
+        result = result * prime + ($prefix == null ? 43 : $prefix.hashCode());
+        Object $signedPrefix = this.getSignedPrefix();
+        result = result * prime + ($signedPrefix == null ? 43 : $signedPrefix.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PolicyMatchRemapIdentity(" + "prefix=" + this.getPrefix() + ", signedPrefix=" + this.getSignedPrefix() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

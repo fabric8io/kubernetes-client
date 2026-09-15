@@ -33,9 +33,6 @@ import io.fabric8.kubernetes.api.model.clusterapi.core.v1beta1.Condition;
 import io.fabric8.kubernetes.api.model.clusterapi.core.v1beta1.MachineAddress;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Metal3MachineStatus defines the observed state of Metal3Machine.
@@ -55,12 +52,6 @@ import lombok.experimental.Accessors;
     "renderedData",
     "userData",
     "v1beta2"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -349,6 +340,127 @@ public class Metal3MachineStatus implements Editable<Metal3MachineStatusBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Metal3MachineStatus)) {
+            return false;
+        }
+        Metal3MachineStatus other = (Metal3MachineStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$addresses = this.getAddresses();
+        Object other$addresses = other.getAddresses();
+        if (this$addresses == null ? other$addresses != null : !this$addresses.equals(other$addresses)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$failureMessage = this.getFailureMessage();
+        Object other$failureMessage = other.getFailureMessage();
+        if (this$failureMessage == null ? other$failureMessage != null : !this$failureMessage.equals(other$failureMessage)) {
+            return false;
+        }
+        Object this$failureReason = this.getFailureReason();
+        Object other$failureReason = other.getFailureReason();
+        if (this$failureReason == null ? other$failureReason != null : !this$failureReason.equals(other$failureReason)) {
+            return false;
+        }
+        Object this$lastUpdated = this.getLastUpdated();
+        Object other$lastUpdated = other.getLastUpdated();
+        if (this$lastUpdated == null ? other$lastUpdated != null : !this$lastUpdated.equals(other$lastUpdated)) {
+            return false;
+        }
+        Object this$metaData = this.getMetaData();
+        Object other$metaData = other.getMetaData();
+        if (this$metaData == null ? other$metaData != null : !this$metaData.equals(other$metaData)) {
+            return false;
+        }
+        Object this$networkData = this.getNetworkData();
+        Object other$networkData = other.getNetworkData();
+        if (this$networkData == null ? other$networkData != null : !this$networkData.equals(other$networkData)) {
+            return false;
+        }
+        Object this$phase = this.getPhase();
+        Object other$phase = other.getPhase();
+        if (this$phase == null ? other$phase != null : !this$phase.equals(other$phase)) {
+            return false;
+        }
+        Object this$ready = this.getReady();
+        Object other$ready = other.getReady();
+        if (this$ready == null ? other$ready != null : !this$ready.equals(other$ready)) {
+            return false;
+        }
+        Object this$renderedData = this.getRenderedData();
+        Object other$renderedData = other.getRenderedData();
+        if (this$renderedData == null ? other$renderedData != null : !this$renderedData.equals(other$renderedData)) {
+            return false;
+        }
+        Object this$userData = this.getUserData();
+        Object other$userData = other.getUserData();
+        if (this$userData == null ? other$userData != null : !this$userData.equals(other$userData)) {
+            return false;
+        }
+        Object this$v1beta2 = this.getV1beta2();
+        Object other$v1beta2 = other.getV1beta2();
+        if (this$v1beta2 == null ? other$v1beta2 != null : !this$v1beta2.equals(other$v1beta2)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Metal3MachineStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $addresses = this.getAddresses();
+        result = result * prime + ($addresses == null ? 43 : $addresses.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $failureMessage = this.getFailureMessage();
+        result = result * prime + ($failureMessage == null ? 43 : $failureMessage.hashCode());
+        Object $failureReason = this.getFailureReason();
+        result = result * prime + ($failureReason == null ? 43 : $failureReason.hashCode());
+        Object $lastUpdated = this.getLastUpdated();
+        result = result * prime + ($lastUpdated == null ? 43 : $lastUpdated.hashCode());
+        Object $metaData = this.getMetaData();
+        result = result * prime + ($metaData == null ? 43 : $metaData.hashCode());
+        Object $networkData = this.getNetworkData();
+        result = result * prime + ($networkData == null ? 43 : $networkData.hashCode());
+        Object $phase = this.getPhase();
+        result = result * prime + ($phase == null ? 43 : $phase.hashCode());
+        Object $ready = this.getReady();
+        result = result * prime + ($ready == null ? 43 : $ready.hashCode());
+        Object $renderedData = this.getRenderedData();
+        result = result * prime + ($renderedData == null ? 43 : $renderedData.hashCode());
+        Object $userData = this.getUserData();
+        result = result * prime + ($userData == null ? 43 : $userData.hashCode());
+        Object $v1beta2 = this.getV1beta2();
+        result = result * prime + ($v1beta2 == null ? 43 : $v1beta2.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Metal3MachineStatus(" + "addresses=" + this.getAddresses() + ", conditions=" + this.getConditions() + ", failureMessage=" + this.getFailureMessage() + ", failureReason=" + this.getFailureReason() + ", lastUpdated=" + this.getLastUpdated() + ", metaData=" + this.getMetaData() + ", networkData=" + this.getNetworkData() + ", phase=" + this.getPhase() + ", ready=" + this.getReady() + ", renderedData=" + this.getRenderedData() + ", userData=" + this.getUserData() + ", v1beta2=" + this.getV1beta2() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

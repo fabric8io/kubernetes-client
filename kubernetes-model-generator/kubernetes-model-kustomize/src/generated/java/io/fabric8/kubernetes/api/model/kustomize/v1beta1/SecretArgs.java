@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "namespace",
     "options",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -231,6 +222,106 @@ public class SecretArgs implements Editable<SecretArgsBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SecretArgs)) {
+            return false;
+        }
+        SecretArgs other = (SecretArgs) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$behavior = this.getBehavior();
+        Object other$behavior = other.getBehavior();
+        if (this$behavior == null ? other$behavior != null : !this$behavior.equals(other$behavior)) {
+            return false;
+        }
+        Object this$env = this.getEnv();
+        Object other$env = other.getEnv();
+        if (this$env == null ? other$env != null : !this$env.equals(other$env)) {
+            return false;
+        }
+        Object this$envs = this.getEnvs();
+        Object other$envs = other.getEnvs();
+        if (this$envs == null ? other$envs != null : !this$envs.equals(other$envs)) {
+            return false;
+        }
+        Object this$files = this.getFiles();
+        Object other$files = other.getFiles();
+        if (this$files == null ? other$files != null : !this$files.equals(other$files)) {
+            return false;
+        }
+        Object this$literals = this.getLiterals();
+        Object other$literals = other.getLiterals();
+        if (this$literals == null ? other$literals != null : !this$literals.equals(other$literals)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$namespace = this.getNamespace();
+        Object other$namespace = other.getNamespace();
+        if (this$namespace == null ? other$namespace != null : !this$namespace.equals(other$namespace)) {
+            return false;
+        }
+        Object this$options = this.getOptions();
+        Object other$options = other.getOptions();
+        if (this$options == null ? other$options != null : !this$options.equals(other$options)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SecretArgs;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $behavior = this.getBehavior();
+        result = result * prime + ($behavior == null ? 43 : $behavior.hashCode());
+        Object $env = this.getEnv();
+        result = result * prime + ($env == null ? 43 : $env.hashCode());
+        Object $envs = this.getEnvs();
+        result = result * prime + ($envs == null ? 43 : $envs.hashCode());
+        Object $files = this.getFiles();
+        result = result * prime + ($files == null ? 43 : $files.hashCode());
+        Object $literals = this.getLiterals();
+        result = result * prime + ($literals == null ? 43 : $literals.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $namespace = this.getNamespace();
+        result = result * prime + ($namespace == null ? 43 : $namespace.hashCode());
+        Object $options = this.getOptions();
+        result = result * prime + ($options == null ? 43 : $options.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SecretArgs(" + "behavior=" + this.getBehavior() + ", env=" + this.getEnv() + ", envs=" + this.getEnvs() + ", files=" + this.getFiles() + ", literals=" + this.getLiterals() + ", name=" + this.getName() + ", namespace=" + this.getNamespace() + ", options=" + this.getOptions() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

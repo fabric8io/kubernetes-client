@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.kubernetes.api.model.authorization.v1.ResourceAttributes;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ConsoleQuickStartSpec is the desired quick start configuration.
@@ -52,12 +49,6 @@ import lombok.experimental.Accessors;
     "prerequisites",
     "tags",
     "tasks"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -333,6 +324,120 @@ public class ConsoleQuickStartSpec implements Editable<ConsoleQuickStartSpecBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConsoleQuickStartSpec)) {
+            return false;
+        }
+        ConsoleQuickStartSpec other = (ConsoleQuickStartSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$accessReviewResources = this.getAccessReviewResources();
+        Object other$accessReviewResources = other.getAccessReviewResources();
+        if (this$accessReviewResources == null ? other$accessReviewResources != null : !this$accessReviewResources.equals(other$accessReviewResources)) {
+            return false;
+        }
+        Object this$conclusion = this.getConclusion();
+        Object other$conclusion = other.getConclusion();
+        if (this$conclusion == null ? other$conclusion != null : !this$conclusion.equals(other$conclusion)) {
+            return false;
+        }
+        Object this$description = this.getDescription();
+        Object other$description = other.getDescription();
+        if (this$description == null ? other$description != null : !this$description.equals(other$description)) {
+            return false;
+        }
+        Object this$displayName = this.getDisplayName();
+        Object other$displayName = other.getDisplayName();
+        if (this$displayName == null ? other$displayName != null : !this$displayName.equals(other$displayName)) {
+            return false;
+        }
+        Object this$durationMinutes = this.getDurationMinutes();
+        Object other$durationMinutes = other.getDurationMinutes();
+        if (this$durationMinutes == null ? other$durationMinutes != null : !this$durationMinutes.equals(other$durationMinutes)) {
+            return false;
+        }
+        Object this$icon = this.getIcon();
+        Object other$icon = other.getIcon();
+        if (this$icon == null ? other$icon != null : !this$icon.equals(other$icon)) {
+            return false;
+        }
+        Object this$introduction = this.getIntroduction();
+        Object other$introduction = other.getIntroduction();
+        if (this$introduction == null ? other$introduction != null : !this$introduction.equals(other$introduction)) {
+            return false;
+        }
+        Object this$nextQuickStart = this.getNextQuickStart();
+        Object other$nextQuickStart = other.getNextQuickStart();
+        if (this$nextQuickStart == null ? other$nextQuickStart != null : !this$nextQuickStart.equals(other$nextQuickStart)) {
+            return false;
+        }
+        Object this$prerequisites = this.getPrerequisites();
+        Object other$prerequisites = other.getPrerequisites();
+        if (this$prerequisites == null ? other$prerequisites != null : !this$prerequisites.equals(other$prerequisites)) {
+            return false;
+        }
+        Object this$tags = this.getTags();
+        Object other$tags = other.getTags();
+        if (this$tags == null ? other$tags != null : !this$tags.equals(other$tags)) {
+            return false;
+        }
+        Object this$tasks = this.getTasks();
+        Object other$tasks = other.getTasks();
+        if (this$tasks == null ? other$tasks != null : !this$tasks.equals(other$tasks)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConsoleQuickStartSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $accessReviewResources = this.getAccessReviewResources();
+        result = result * prime + ($accessReviewResources == null ? 43 : $accessReviewResources.hashCode());
+        Object $conclusion = this.getConclusion();
+        result = result * prime + ($conclusion == null ? 43 : $conclusion.hashCode());
+        Object $description = this.getDescription();
+        result = result * prime + ($description == null ? 43 : $description.hashCode());
+        Object $displayName = this.getDisplayName();
+        result = result * prime + ($displayName == null ? 43 : $displayName.hashCode());
+        Object $durationMinutes = this.getDurationMinutes();
+        result = result * prime + ($durationMinutes == null ? 43 : $durationMinutes.hashCode());
+        Object $icon = this.getIcon();
+        result = result * prime + ($icon == null ? 43 : $icon.hashCode());
+        Object $introduction = this.getIntroduction();
+        result = result * prime + ($introduction == null ? 43 : $introduction.hashCode());
+        Object $nextQuickStart = this.getNextQuickStart();
+        result = result * prime + ($nextQuickStart == null ? 43 : $nextQuickStart.hashCode());
+        Object $prerequisites = this.getPrerequisites();
+        result = result * prime + ($prerequisites == null ? 43 : $prerequisites.hashCode());
+        Object $tags = this.getTags();
+        result = result * prime + ($tags == null ? 43 : $tags.hashCode());
+        Object $tasks = this.getTasks();
+        result = result * prime + ($tasks == null ? 43 : $tasks.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConsoleQuickStartSpec(" + "accessReviewResources=" + this.getAccessReviewResources() + ", conclusion=" + this.getConclusion() + ", description=" + this.getDescription() + ", displayName=" + this.getDisplayName() + ", durationMinutes=" + this.getDurationMinutes() + ", icon=" + this.getIcon() + ", introduction=" + this.getIntroduction() + ", nextQuickStart=" + this.getNextQuickStart() + ", prerequisites=" + this.getPrerequisites() + ", tags=" + this.getTags() + ", tasks=" + this.getTasks() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

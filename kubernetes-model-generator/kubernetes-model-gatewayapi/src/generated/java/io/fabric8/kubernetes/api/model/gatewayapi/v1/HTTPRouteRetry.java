@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HTTPRouteRetry defines retry configuration for an HTTPRoute.<br><p> <br><p> Implementations SHOULD retry on connection errors (disconnect, reset, timeout, TCP failure) if a retry stanza is configured.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "attempts",
     "backoff",
     "codes"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -162,6 +153,64 @@ public class HTTPRouteRetry implements Editable<HTTPRouteRetryBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HTTPRouteRetry)) {
+            return false;
+        }
+        HTTPRouteRetry other = (HTTPRouteRetry) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$attempts = this.getAttempts();
+        Object other$attempts = other.getAttempts();
+        if (this$attempts == null ? other$attempts != null : !this$attempts.equals(other$attempts)) {
+            return false;
+        }
+        Object this$backoff = this.getBackoff();
+        Object other$backoff = other.getBackoff();
+        if (this$backoff == null ? other$backoff != null : !this$backoff.equals(other$backoff)) {
+            return false;
+        }
+        Object this$codes = this.getCodes();
+        Object other$codes = other.getCodes();
+        if (this$codes == null ? other$codes != null : !this$codes.equals(other$codes)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HTTPRouteRetry;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $attempts = this.getAttempts();
+        result = result * prime + ($attempts == null ? 43 : $attempts.hashCode());
+        Object $backoff = this.getBackoff();
+        result = result * prime + ($backoff == null ? 43 : $backoff.hashCode());
+        Object $codes = this.getCodes();
+        result = result * prime + ($codes == null ? 43 : $codes.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HTTPRouteRetry(" + "attempts=" + this.getAttempts() + ", backoff=" + this.getBackoff() + ", codes=" + this.getCodes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

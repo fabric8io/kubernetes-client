@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VolumeSnapshotSpec describes the common attributes of a volume snapshot.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "source",
     "volumeSnapshotClassName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class VolumeSnapshotSpec implements Editable<VolumeSnapshotSpecBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VolumeSnapshotSpec)) {
+            return false;
+        }
+        VolumeSnapshotSpec other = (VolumeSnapshotSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$source = this.getSource();
+        Object other$source = other.getSource();
+        if (this$source == null ? other$source != null : !this$source.equals(other$source)) {
+            return false;
+        }
+        Object this$volumeSnapshotClassName = this.getVolumeSnapshotClassName();
+        Object other$volumeSnapshotClassName = other.getVolumeSnapshotClassName();
+        if (this$volumeSnapshotClassName == null ? other$volumeSnapshotClassName != null : !this$volumeSnapshotClassName.equals(other$volumeSnapshotClassName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VolumeSnapshotSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $source = this.getSource();
+        result = result * prime + ($source == null ? 43 : $source.hashCode());
+        Object $volumeSnapshotClassName = this.getVolumeSnapshotClassName();
+        result = result * prime + ($volumeSnapshotClassName == null ? 43 : $volumeSnapshotClassName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VolumeSnapshotSpec(" + "source=" + this.getSource() + ", volumeSnapshotClassName=" + this.getVolumeSnapshotClassName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Image holds the details of an image to use during provisioning.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "checksumType",
     "format",
     "url"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class Image implements Editable<ImageBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Image)) {
+            return false;
+        }
+        Image other = (Image) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$checksum = this.getChecksum();
+        Object other$checksum = other.getChecksum();
+        if (this$checksum == null ? other$checksum != null : !this$checksum.equals(other$checksum)) {
+            return false;
+        }
+        Object this$checksumType = this.getChecksumType();
+        Object other$checksumType = other.getChecksumType();
+        if (this$checksumType == null ? other$checksumType != null : !this$checksumType.equals(other$checksumType)) {
+            return false;
+        }
+        Object this$format = this.getFormat();
+        Object other$format = other.getFormat();
+        if (this$format == null ? other$format != null : !this$format.equals(other$format)) {
+            return false;
+        }
+        Object this$url = this.getUrl();
+        Object other$url = other.getUrl();
+        if (this$url == null ? other$url != null : !this$url.equals(other$url)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Image;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $checksum = this.getChecksum();
+        result = result * prime + ($checksum == null ? 43 : $checksum.hashCode());
+        Object $checksumType = this.getChecksumType();
+        result = result * prime + ($checksumType == null ? 43 : $checksumType.hashCode());
+        Object $format = this.getFormat();
+        result = result * prime + ($format == null ? 43 : $format.hashCode());
+        Object $url = this.getUrl();
+        result = result * prime + ($url == null ? 43 : $url.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Image(" + "checksum=" + this.getChecksum() + ", checksumType=" + this.getChecksumType() + ", format=" + this.getFormat() + ", url=" + this.getUrl() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DeviceTaintSelector defines which device(s) a DeviceTaintRule applies to. The empty selector matches all devices. Without a selector, no devices are matched.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "device",
     "driver",
     "pool"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class DeviceTaintSelector implements Editable<DeviceTaintSelectorBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DeviceTaintSelector)) {
+            return false;
+        }
+        DeviceTaintSelector other = (DeviceTaintSelector) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$device = this.getDevice();
+        Object other$device = other.getDevice();
+        if (this$device == null ? other$device != null : !this$device.equals(other$device)) {
+            return false;
+        }
+        Object this$driver = this.getDriver();
+        Object other$driver = other.getDriver();
+        if (this$driver == null ? other$driver != null : !this$driver.equals(other$driver)) {
+            return false;
+        }
+        Object this$pool = this.getPool();
+        Object other$pool = other.getPool();
+        if (this$pool == null ? other$pool != null : !this$pool.equals(other$pool)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DeviceTaintSelector;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $device = this.getDevice();
+        result = result * prime + ($device == null ? 43 : $device.hashCode());
+        Object $driver = this.getDriver();
+        result = result * prime + ($driver == null ? 43 : $driver.hashCode());
+        Object $pool = this.getPool();
+        result = result * prime + ($pool == null ? 43 : $pool.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DeviceTaintSelector(" + "device=" + this.getDevice() + ", driver=" + this.getDriver() + ", pool=" + this.getPool() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

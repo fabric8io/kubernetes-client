@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.tekton.v1beta1;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -36,9 +35,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,25 +46,12 @@ import java.util.Objects;
 @JsonDeserialize(using = ParamValue.Deserializer.class)
 @JsonSerialize(using = ParamValue.Serializer.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "ArrayVal",
-    "ObjectVal",
-    "StringVal",
-    "Type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
-})
+@JsonPropertyOrder({ "ArrayVal", "ObjectVal", "StringVal", "Type" })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 public class ParamValue implements Editable<io.fabric8.tekton.v1beta1.ParamValueBuilder>, KubernetesResource {
-
   private static final String TYPE_STRING = "string";
   private static final String TYPE_ARRAY = "array";
   private static final String TYPE_OBJECT = "object";
-
   @JsonProperty("ArrayVal")
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private List<String> arrayVal = new ArrayList<>();
@@ -84,7 +67,6 @@ public class ParamValue implements Editable<io.fabric8.tekton.v1beta1.ParamValue
 
   /**
    * No args constructor for use in serialization
-   *
    */
   public ParamValue() {
   }
@@ -176,7 +158,6 @@ public class ParamValue implements Editable<io.fabric8.tekton.v1beta1.ParamValue
   }
 
   public static class Serializer extends JsonSerializer<ParamValue> {
-
     @Override
     public void serialize(ParamValue value, JsonGenerator jgen, SerializerProvider provider)
         throws IOException, JsonProcessingException {
@@ -212,11 +193,9 @@ public class ParamValue implements Editable<io.fabric8.tekton.v1beta1.ParamValue
       }
       jgen.writeEndArray();
     }
-
   }
 
   public static class Deserializer extends JsonDeserializer<ParamValue> {
-
     @Override
     public ParamValue deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
       ObjectCodec oc = jsonParser.getCodec();
@@ -231,6 +210,65 @@ public class ParamValue implements Editable<io.fabric8.tekton.v1beta1.ParamValue
       }
       return arrayOrString;
     }
+  }
 
+  @java.lang.Override
+  public java.lang.String toString() {
+    return "ParamValue(arrayVal=" + this.getArrayVal() + ", objectVal=" + this.getObjectVal() + ", stringVal="
+        + this.getStringVal() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
+  }
+
+  @java.lang.Override
+  public boolean equals(final java.lang.Object o) {
+    if (o == this)
+      return true;
+    if (!(o instanceof ParamValue))
+      return false;
+    final ParamValue other = (ParamValue) o;
+    if (!other.canEqual((java.lang.Object) this))
+      return false;
+    final java.lang.Object this$arrayVal = this.getArrayVal();
+    final java.lang.Object other$arrayVal = other.getArrayVal();
+    if (this$arrayVal == null ? other$arrayVal != null : !this$arrayVal.equals(other$arrayVal))
+      return false;
+    final java.lang.Object this$objectVal = this.getObjectVal();
+    final java.lang.Object other$objectVal = other.getObjectVal();
+    if (this$objectVal == null ? other$objectVal != null : !this$objectVal.equals(other$objectVal))
+      return false;
+    final java.lang.Object this$stringVal = this.getStringVal();
+    final java.lang.Object other$stringVal = other.getStringVal();
+    if (this$stringVal == null ? other$stringVal != null : !this$stringVal.equals(other$stringVal))
+      return false;
+    final java.lang.Object this$type = this.getType();
+    final java.lang.Object other$type = other.getType();
+    if (this$type == null ? other$type != null : !this$type.equals(other$type))
+      return false;
+    final java.lang.Object this$additionalProperties = this.getAdditionalProperties();
+    final java.lang.Object other$additionalProperties = other.getAdditionalProperties();
+    if (this$additionalProperties == null ? other$additionalProperties != null
+        : !this$additionalProperties.equals(other$additionalProperties))
+      return false;
+    return true;
+  }
+
+  protected boolean canEqual(final java.lang.Object other) {
+    return other instanceof ParamValue;
+  }
+
+  @java.lang.Override
+  public int hashCode() {
+    final int PRIME = 59;
+    int result = 1;
+    final java.lang.Object $arrayVal = this.getArrayVal();
+    result = result * PRIME + ($arrayVal == null ? 43 : $arrayVal.hashCode());
+    final java.lang.Object $objectVal = this.getObjectVal();
+    result = result * PRIME + ($objectVal == null ? 43 : $objectVal.hashCode());
+    final java.lang.Object $stringVal = this.getStringVal();
+    result = result * PRIME + ($stringVal == null ? 43 : $stringVal.hashCode());
+    final java.lang.Object $type = this.getType();
+    result = result * PRIME + ($type == null ? 43 : $type.hashCode());
+    final java.lang.Object $additionalProperties = this.getAdditionalProperties();
+    result = result * PRIME + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+    return result;
   }
 }

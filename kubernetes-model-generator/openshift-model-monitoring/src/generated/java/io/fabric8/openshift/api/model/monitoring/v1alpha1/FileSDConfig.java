@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * FileSDConfig defines a Prometheus file service discovery configuration See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#file_sd_config
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "files",
     "refreshInterval"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -144,6 +135,57 @@ public class FileSDConfig implements Editable<FileSDConfigBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof FileSDConfig)) {
+            return false;
+        }
+        FileSDConfig other = (FileSDConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$files = this.getFiles();
+        Object other$files = other.getFiles();
+        if (this$files == null ? other$files != null : !this$files.equals(other$files)) {
+            return false;
+        }
+        Object this$refreshInterval = this.getRefreshInterval();
+        Object other$refreshInterval = other.getRefreshInterval();
+        if (this$refreshInterval == null ? other$refreshInterval != null : !this$refreshInterval.equals(other$refreshInterval)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof FileSDConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $files = this.getFiles();
+        result = result * prime + ($files == null ? 43 : $files.hashCode());
+        Object $refreshInterval = this.getRefreshInterval();
+        result = result * prime + ($refreshInterval == null ? 43 : $refreshInterval.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "FileSDConfig(" + "files=" + this.getFiles() + ", refreshInterval=" + this.getRefreshInterval() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

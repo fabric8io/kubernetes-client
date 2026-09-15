@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.volcano.api.model.batch.v1alpha1.JobSpec;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * JobTemplateSpec defines the desired state of JobTemplate
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "JobSpec"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -121,6 +112,50 @@ public class JobTemplateSpec implements Editable<JobTemplateSpecBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof JobTemplateSpec)) {
+            return false;
+        }
+        JobTemplateSpec other = (JobTemplateSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$jobSpec = this.getJobSpec();
+        Object other$jobSpec = other.getJobSpec();
+        if (this$jobSpec == null ? other$jobSpec != null : !this$jobSpec.equals(other$jobSpec)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof JobTemplateSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $jobSpec = this.getJobSpec();
+        result = result * prime + ($jobSpec == null ? 43 : $jobSpec.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "JobTemplateSpec(" + "jobSpec=" + this.getJobSpec() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

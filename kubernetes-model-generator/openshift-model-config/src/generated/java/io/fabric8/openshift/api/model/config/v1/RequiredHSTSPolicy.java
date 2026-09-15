@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "maxAge",
     "namespaceSelector",
     "preloadPolicy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -188,6 +179,78 @@ public class RequiredHSTSPolicy implements Editable<RequiredHSTSPolicyBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RequiredHSTSPolicy)) {
+            return false;
+        }
+        RequiredHSTSPolicy other = (RequiredHSTSPolicy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$domainPatterns = this.getDomainPatterns();
+        Object other$domainPatterns = other.getDomainPatterns();
+        if (this$domainPatterns == null ? other$domainPatterns != null : !this$domainPatterns.equals(other$domainPatterns)) {
+            return false;
+        }
+        Object this$includeSubDomainsPolicy = this.getIncludeSubDomainsPolicy();
+        Object other$includeSubDomainsPolicy = other.getIncludeSubDomainsPolicy();
+        if (this$includeSubDomainsPolicy == null ? other$includeSubDomainsPolicy != null : !this$includeSubDomainsPolicy.equals(other$includeSubDomainsPolicy)) {
+            return false;
+        }
+        Object this$maxAge = this.getMaxAge();
+        Object other$maxAge = other.getMaxAge();
+        if (this$maxAge == null ? other$maxAge != null : !this$maxAge.equals(other$maxAge)) {
+            return false;
+        }
+        Object this$namespaceSelector = this.getNamespaceSelector();
+        Object other$namespaceSelector = other.getNamespaceSelector();
+        if (this$namespaceSelector == null ? other$namespaceSelector != null : !this$namespaceSelector.equals(other$namespaceSelector)) {
+            return false;
+        }
+        Object this$preloadPolicy = this.getPreloadPolicy();
+        Object other$preloadPolicy = other.getPreloadPolicy();
+        if (this$preloadPolicy == null ? other$preloadPolicy != null : !this$preloadPolicy.equals(other$preloadPolicy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RequiredHSTSPolicy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $domainPatterns = this.getDomainPatterns();
+        result = result * prime + ($domainPatterns == null ? 43 : $domainPatterns.hashCode());
+        Object $includeSubDomainsPolicy = this.getIncludeSubDomainsPolicy();
+        result = result * prime + ($includeSubDomainsPolicy == null ? 43 : $includeSubDomainsPolicy.hashCode());
+        Object $maxAge = this.getMaxAge();
+        result = result * prime + ($maxAge == null ? 43 : $maxAge.hashCode());
+        Object $namespaceSelector = this.getNamespaceSelector();
+        result = result * prime + ($namespaceSelector == null ? 43 : $namespaceSelector.hashCode());
+        Object $preloadPolicy = this.getPreloadPolicy();
+        result = result * prime + ($preloadPolicy == null ? 43 : $preloadPolicy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RequiredHSTSPolicy(" + "domainPatterns=" + this.getDomainPatterns() + ", includeSubDomainsPolicy=" + this.getIncludeSubDomainsPolicy() + ", maxAge=" + this.getMaxAge() + ", namespaceSelector=" + this.getNamespaceSelector() + ", preloadPolicy=" + this.getPreloadPolicy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

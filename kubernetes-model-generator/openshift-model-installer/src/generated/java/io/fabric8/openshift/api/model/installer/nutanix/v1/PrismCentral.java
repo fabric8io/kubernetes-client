@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PrismCentral holds the endpoint and credentials data used to connect to the Prism Central
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "endpoint",
     "password",
     "username"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class PrismCentral implements Editable<PrismCentralBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PrismCentral)) {
+            return false;
+        }
+        PrismCentral other = (PrismCentral) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$endpoint = this.getEndpoint();
+        Object other$endpoint = other.getEndpoint();
+        if (this$endpoint == null ? other$endpoint != null : !this$endpoint.equals(other$endpoint)) {
+            return false;
+        }
+        Object this$password = this.getPassword();
+        Object other$password = other.getPassword();
+        if (this$password == null ? other$password != null : !this$password.equals(other$password)) {
+            return false;
+        }
+        Object this$username = this.getUsername();
+        Object other$username = other.getUsername();
+        if (this$username == null ? other$username != null : !this$username.equals(other$username)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PrismCentral;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $endpoint = this.getEndpoint();
+        result = result * prime + ($endpoint == null ? 43 : $endpoint.hashCode());
+        Object $password = this.getPassword();
+        result = result * prime + ($password == null ? 43 : $password.hashCode());
+        Object $username = this.getUsername();
+        result = result * prime + ($username == null ? 43 : $username.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PrismCentral(" + "endpoint=" + this.getEndpoint() + ", password=" + this.getPassword() + ", username=" + this.getUsername() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

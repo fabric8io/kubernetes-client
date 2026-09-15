@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "path",
     "port",
     "scheme"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -201,6 +192,78 @@ public class HTTPHealthCheckConfig implements Editable<HTTPHealthCheckConfigBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HTTPHealthCheckConfig)) {
+            return false;
+        }
+        HTTPHealthCheckConfig other = (HTTPHealthCheckConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$host = this.getHost();
+        Object other$host = other.getHost();
+        if (this$host == null ? other$host != null : !this$host.equals(other$host)) {
+            return false;
+        }
+        Object this$httpHeaders = this.getHttpHeaders();
+        Object other$httpHeaders = other.getHttpHeaders();
+        if (this$httpHeaders == null ? other$httpHeaders != null : !this$httpHeaders.equals(other$httpHeaders)) {
+            return false;
+        }
+        Object this$path = this.getPath();
+        Object other$path = other.getPath();
+        if (this$path == null ? other$path != null : !this$path.equals(other$path)) {
+            return false;
+        }
+        Object this$port = this.getPort();
+        Object other$port = other.getPort();
+        if (this$port == null ? other$port != null : !this$port.equals(other$port)) {
+            return false;
+        }
+        Object this$scheme = this.getScheme();
+        Object other$scheme = other.getScheme();
+        if (this$scheme == null ? other$scheme != null : !this$scheme.equals(other$scheme)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HTTPHealthCheckConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $host = this.getHost();
+        result = result * prime + ($host == null ? 43 : $host.hashCode());
+        Object $httpHeaders = this.getHttpHeaders();
+        result = result * prime + ($httpHeaders == null ? 43 : $httpHeaders.hashCode());
+        Object $path = this.getPath();
+        result = result * prime + ($path == null ? 43 : $path.hashCode());
+        Object $port = this.getPort();
+        result = result * prime + ($port == null ? 43 : $port.hashCode());
+        Object $scheme = this.getScheme();
+        result = result * prime + ($scheme == null ? 43 : $scheme.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HTTPHealthCheckConfig(" + "host=" + this.getHost() + ", httpHeaders=" + this.getHttpHeaders() + ", path=" + this.getPath() + ", port=" + this.getPort() + ", scheme=" + this.getScheme() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

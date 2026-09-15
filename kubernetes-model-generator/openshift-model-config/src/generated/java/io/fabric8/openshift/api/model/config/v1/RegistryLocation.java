@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RegistryLocation contains a location of the registry specified by the registry domain name. The domain name might include wildcards, like '&#42;' or '??'.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "domainName",
     "insecure"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -139,6 +130,57 @@ public class RegistryLocation implements Editable<RegistryLocationBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RegistryLocation)) {
+            return false;
+        }
+        RegistryLocation other = (RegistryLocation) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$domainName = this.getDomainName();
+        Object other$domainName = other.getDomainName();
+        if (this$domainName == null ? other$domainName != null : !this$domainName.equals(other$domainName)) {
+            return false;
+        }
+        Object this$insecure = this.getInsecure();
+        Object other$insecure = other.getInsecure();
+        if (this$insecure == null ? other$insecure != null : !this$insecure.equals(other$insecure)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RegistryLocation;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $domainName = this.getDomainName();
+        result = result * prime + ($domainName == null ? 43 : $domainName.hashCode());
+        Object $insecure = this.getInsecure();
+        result = result * prime + ($insecure == null ? 43 : $insecure.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RegistryLocation(" + "domainName=" + this.getDomainName() + ", insecure=" + this.getInsecure() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

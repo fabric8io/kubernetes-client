@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MachineConfigPoolSpec is the spec for MachineConfigPool resource.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "nodeSelector",
     "paused",
     "pinnedImageSets"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -223,6 +214,85 @@ public class MachineConfigPoolSpec implements Editable<MachineConfigPoolSpecBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachineConfigPoolSpec)) {
+            return false;
+        }
+        MachineConfigPoolSpec other = (MachineConfigPoolSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$configuration = this.getConfiguration();
+        Object other$configuration = other.getConfiguration();
+        if (this$configuration == null ? other$configuration != null : !this$configuration.equals(other$configuration)) {
+            return false;
+        }
+        Object this$machineConfigSelector = this.getMachineConfigSelector();
+        Object other$machineConfigSelector = other.getMachineConfigSelector();
+        if (this$machineConfigSelector == null ? other$machineConfigSelector != null : !this$machineConfigSelector.equals(other$machineConfigSelector)) {
+            return false;
+        }
+        Object this$maxUnavailable = this.getMaxUnavailable();
+        Object other$maxUnavailable = other.getMaxUnavailable();
+        if (this$maxUnavailable == null ? other$maxUnavailable != null : !this$maxUnavailable.equals(other$maxUnavailable)) {
+            return false;
+        }
+        Object this$nodeSelector = this.getNodeSelector();
+        Object other$nodeSelector = other.getNodeSelector();
+        if (this$nodeSelector == null ? other$nodeSelector != null : !this$nodeSelector.equals(other$nodeSelector)) {
+            return false;
+        }
+        Object this$paused = this.getPaused();
+        Object other$paused = other.getPaused();
+        if (this$paused == null ? other$paused != null : !this$paused.equals(other$paused)) {
+            return false;
+        }
+        Object this$pinnedImageSets = this.getPinnedImageSets();
+        Object other$pinnedImageSets = other.getPinnedImageSets();
+        if (this$pinnedImageSets == null ? other$pinnedImageSets != null : !this$pinnedImageSets.equals(other$pinnedImageSets)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachineConfigPoolSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $configuration = this.getConfiguration();
+        result = result * prime + ($configuration == null ? 43 : $configuration.hashCode());
+        Object $machineConfigSelector = this.getMachineConfigSelector();
+        result = result * prime + ($machineConfigSelector == null ? 43 : $machineConfigSelector.hashCode());
+        Object $maxUnavailable = this.getMaxUnavailable();
+        result = result * prime + ($maxUnavailable == null ? 43 : $maxUnavailable.hashCode());
+        Object $nodeSelector = this.getNodeSelector();
+        result = result * prime + ($nodeSelector == null ? 43 : $nodeSelector.hashCode());
+        Object $paused = this.getPaused();
+        result = result * prime + ($paused == null ? 43 : $paused.hashCode());
+        Object $pinnedImageSets = this.getPinnedImageSets();
+        result = result * prime + ($pinnedImageSets == null ? 43 : $pinnedImageSets.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachineConfigPoolSpec(" + "configuration=" + this.getConfiguration() + ", machineConfigSelector=" + this.getMachineConfigSelector() + ", maxUnavailable=" + this.getMaxUnavailable() + ", nodeSelector=" + this.getNodeSelector() + ", paused=" + this.getPaused() + ", pinnedImageSets=" + this.getPinnedImageSets() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

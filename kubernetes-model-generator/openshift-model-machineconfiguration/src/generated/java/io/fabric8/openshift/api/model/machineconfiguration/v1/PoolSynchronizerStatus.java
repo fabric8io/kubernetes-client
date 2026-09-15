@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "readyMachineCount",
     "unavailableMachineCount",
     "updatedMachineCount"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -236,6 +227,92 @@ public class PoolSynchronizerStatus implements Editable<PoolSynchronizerStatusBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PoolSynchronizerStatus)) {
+            return false;
+        }
+        PoolSynchronizerStatus other = (PoolSynchronizerStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$availableMachineCount = this.getAvailableMachineCount();
+        Object other$availableMachineCount = other.getAvailableMachineCount();
+        if (this$availableMachineCount == null ? other$availableMachineCount != null : !this$availableMachineCount.equals(other$availableMachineCount)) {
+            return false;
+        }
+        Object this$machineCount = this.getMachineCount();
+        Object other$machineCount = other.getMachineCount();
+        if (this$machineCount == null ? other$machineCount != null : !this$machineCount.equals(other$machineCount)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$poolSynchronizerType = this.getPoolSynchronizerType();
+        Object other$poolSynchronizerType = other.getPoolSynchronizerType();
+        if (this$poolSynchronizerType == null ? other$poolSynchronizerType != null : !this$poolSynchronizerType.equals(other$poolSynchronizerType)) {
+            return false;
+        }
+        Object this$readyMachineCount = this.getReadyMachineCount();
+        Object other$readyMachineCount = other.getReadyMachineCount();
+        if (this$readyMachineCount == null ? other$readyMachineCount != null : !this$readyMachineCount.equals(other$readyMachineCount)) {
+            return false;
+        }
+        Object this$unavailableMachineCount = this.getUnavailableMachineCount();
+        Object other$unavailableMachineCount = other.getUnavailableMachineCount();
+        if (this$unavailableMachineCount == null ? other$unavailableMachineCount != null : !this$unavailableMachineCount.equals(other$unavailableMachineCount)) {
+            return false;
+        }
+        Object this$updatedMachineCount = this.getUpdatedMachineCount();
+        Object other$updatedMachineCount = other.getUpdatedMachineCount();
+        if (this$updatedMachineCount == null ? other$updatedMachineCount != null : !this$updatedMachineCount.equals(other$updatedMachineCount)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PoolSynchronizerStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $availableMachineCount = this.getAvailableMachineCount();
+        result = result * prime + ($availableMachineCount == null ? 43 : $availableMachineCount.hashCode());
+        Object $machineCount = this.getMachineCount();
+        result = result * prime + ($machineCount == null ? 43 : $machineCount.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $poolSynchronizerType = this.getPoolSynchronizerType();
+        result = result * prime + ($poolSynchronizerType == null ? 43 : $poolSynchronizerType.hashCode());
+        Object $readyMachineCount = this.getReadyMachineCount();
+        result = result * prime + ($readyMachineCount == null ? 43 : $readyMachineCount.hashCode());
+        Object $unavailableMachineCount = this.getUnavailableMachineCount();
+        result = result * prime + ($unavailableMachineCount == null ? 43 : $unavailableMachineCount.hashCode());
+        Object $updatedMachineCount = this.getUpdatedMachineCount();
+        result = result * prime + ($updatedMachineCount == null ? 43 : $updatedMachineCount.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PoolSynchronizerStatus(" + "availableMachineCount=" + this.getAvailableMachineCount() + ", machineCount=" + this.getMachineCount() + ", observedGeneration=" + this.getObservedGeneration() + ", poolSynchronizerType=" + this.getPoolSynchronizerType() + ", readyMachineCount=" + this.getReadyMachineCount() + ", unavailableMachineCount=" + this.getUnavailableMachineCount() + ", updatedMachineCount=" + this.getUpdatedMachineCount() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ContainerPort represents a network port in a single container.
@@ -28,12 +25,6 @@ import lombok.experimental.Accessors;
     "hostPort",
     "name",
     "protocol"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -171,6 +162,78 @@ public class ContainerPort implements Editable<ContainerPortBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ContainerPort)) {
+            return false;
+        }
+        ContainerPort other = (ContainerPort) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$containerPort = this.getContainerPort();
+        Object other$containerPort = other.getContainerPort();
+        if (this$containerPort == null ? other$containerPort != null : !this$containerPort.equals(other$containerPort)) {
+            return false;
+        }
+        Object this$hostIP = this.getHostIP();
+        Object other$hostIP = other.getHostIP();
+        if (this$hostIP == null ? other$hostIP != null : !this$hostIP.equals(other$hostIP)) {
+            return false;
+        }
+        Object this$hostPort = this.getHostPort();
+        Object other$hostPort = other.getHostPort();
+        if (this$hostPort == null ? other$hostPort != null : !this$hostPort.equals(other$hostPort)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$protocol = this.getProtocol();
+        Object other$protocol = other.getProtocol();
+        if (this$protocol == null ? other$protocol != null : !this$protocol.equals(other$protocol)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ContainerPort;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $containerPort = this.getContainerPort();
+        result = result * prime + ($containerPort == null ? 43 : $containerPort.hashCode());
+        Object $hostIP = this.getHostIP();
+        result = result * prime + ($hostIP == null ? 43 : $hostIP.hashCode());
+        Object $hostPort = this.getHostPort();
+        result = result * prime + ($hostPort == null ? 43 : $hostPort.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $protocol = this.getProtocol();
+        result = result * prime + ($protocol == null ? 43 : $protocol.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ContainerPort(" + "containerPort=" + this.getContainerPort() + ", hostIP=" + this.getHostIP() + ", hostPort=" + this.getHostPort() + ", name=" + this.getName() + ", protocol=" + this.getProtocol() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

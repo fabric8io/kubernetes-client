@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DataImageStatus defines the observed state of DataImage.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "attachedImage",
     "error",
     "lastReconciled"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -159,6 +150,64 @@ public class DataImageStatus implements Editable<DataImageStatusBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DataImageStatus)) {
+            return false;
+        }
+        DataImageStatus other = (DataImageStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$attachedImage = this.getAttachedImage();
+        Object other$attachedImage = other.getAttachedImage();
+        if (this$attachedImage == null ? other$attachedImage != null : !this$attachedImage.equals(other$attachedImage)) {
+            return false;
+        }
+        Object this$error = this.getError();
+        Object other$error = other.getError();
+        if (this$error == null ? other$error != null : !this$error.equals(other$error)) {
+            return false;
+        }
+        Object this$lastReconciled = this.getLastReconciled();
+        Object other$lastReconciled = other.getLastReconciled();
+        if (this$lastReconciled == null ? other$lastReconciled != null : !this$lastReconciled.equals(other$lastReconciled)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DataImageStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $attachedImage = this.getAttachedImage();
+        result = result * prime + ($attachedImage == null ? 43 : $attachedImage.hashCode());
+        Object $error = this.getError();
+        result = result * prime + ($error == null ? 43 : $error.hashCode());
+        Object $lastReconciled = this.getLastReconciled();
+        result = result * prime + ($lastReconciled == null ? 43 : $lastReconciled.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DataImageStatus(" + "attachedImage=" + this.getAttachedImage() + ", error=" + this.getError() + ", lastReconciled=" + this.getLastReconciled() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

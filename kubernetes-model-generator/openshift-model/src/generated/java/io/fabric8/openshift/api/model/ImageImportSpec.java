@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageImportSpec describes a request to import a specific image.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "includeManifest",
     "referencePolicy",
     "to"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,78 @@ public class ImageImportSpec implements Editable<ImageImportSpecBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageImportSpec)) {
+            return false;
+        }
+        ImageImportSpec other = (ImageImportSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$from = this.getFrom();
+        Object other$from = other.getFrom();
+        if (this$from == null ? other$from != null : !this$from.equals(other$from)) {
+            return false;
+        }
+        Object this$importPolicy = this.getImportPolicy();
+        Object other$importPolicy = other.getImportPolicy();
+        if (this$importPolicy == null ? other$importPolicy != null : !this$importPolicy.equals(other$importPolicy)) {
+            return false;
+        }
+        Object this$includeManifest = this.getIncludeManifest();
+        Object other$includeManifest = other.getIncludeManifest();
+        if (this$includeManifest == null ? other$includeManifest != null : !this$includeManifest.equals(other$includeManifest)) {
+            return false;
+        }
+        Object this$referencePolicy = this.getReferencePolicy();
+        Object other$referencePolicy = other.getReferencePolicy();
+        if (this$referencePolicy == null ? other$referencePolicy != null : !this$referencePolicy.equals(other$referencePolicy)) {
+            return false;
+        }
+        Object this$to = this.getTo();
+        Object other$to = other.getTo();
+        if (this$to == null ? other$to != null : !this$to.equals(other$to)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageImportSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $from = this.getFrom();
+        result = result * prime + ($from == null ? 43 : $from.hashCode());
+        Object $importPolicy = this.getImportPolicy();
+        result = result * prime + ($importPolicy == null ? 43 : $importPolicy.hashCode());
+        Object $includeManifest = this.getIncludeManifest();
+        result = result * prime + ($includeManifest == null ? 43 : $includeManifest.hashCode());
+        Object $referencePolicy = this.getReferencePolicy();
+        result = result * prime + ($referencePolicy == null ? 43 : $referencePolicy.hashCode());
+        Object $to = this.getTo();
+        result = result * prime + ($to == null ? 43 : $to.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageImportSpec(" + "from=" + this.getFrom() + ", importPolicy=" + this.getImportPolicy() + ", includeManifest=" + this.getIncludeManifest() + ", referencePolicy=" + this.getReferencePolicy() + ", to=" + this.getTo() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

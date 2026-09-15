@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PreprovisioningImageSpec defines the desired state of PreprovisioningImage.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "acceptFormats",
     "architecture",
     "networkDataName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -163,6 +154,64 @@ public class PreprovisioningImageSpec implements Editable<PreprovisioningImageSp
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PreprovisioningImageSpec)) {
+            return false;
+        }
+        PreprovisioningImageSpec other = (PreprovisioningImageSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$acceptFormats = this.getAcceptFormats();
+        Object other$acceptFormats = other.getAcceptFormats();
+        if (this$acceptFormats == null ? other$acceptFormats != null : !this$acceptFormats.equals(other$acceptFormats)) {
+            return false;
+        }
+        Object this$architecture = this.getArchitecture();
+        Object other$architecture = other.getArchitecture();
+        if (this$architecture == null ? other$architecture != null : !this$architecture.equals(other$architecture)) {
+            return false;
+        }
+        Object this$networkDataName = this.getNetworkDataName();
+        Object other$networkDataName = other.getNetworkDataName();
+        if (this$networkDataName == null ? other$networkDataName != null : !this$networkDataName.equals(other$networkDataName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PreprovisioningImageSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $acceptFormats = this.getAcceptFormats();
+        result = result * prime + ($acceptFormats == null ? 43 : $acceptFormats.hashCode());
+        Object $architecture = this.getArchitecture();
+        result = result * prime + ($architecture == null ? 43 : $architecture.hashCode());
+        Object $networkDataName = this.getNetworkDataName();
+        result = result * prime + ($networkDataName == null ? 43 : $networkDataName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PreprovisioningImageSpec(" + "acceptFormats=" + this.getAcceptFormats() + ", architecture=" + this.getArchitecture() + ", networkDataName=" + this.getNetworkDataName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

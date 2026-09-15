@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VolumeSnapshotContentSpec is the specification of a VolumeSnapshotContent
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "sourceVolumeMode",
     "volumeSnapshotClassName",
     "volumeSnapshotRef"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -220,6 +211,85 @@ public class VolumeSnapshotContentSpec implements Editable<VolumeSnapshotContent
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VolumeSnapshotContentSpec)) {
+            return false;
+        }
+        VolumeSnapshotContentSpec other = (VolumeSnapshotContentSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$deletionPolicy = this.getDeletionPolicy();
+        Object other$deletionPolicy = other.getDeletionPolicy();
+        if (this$deletionPolicy == null ? other$deletionPolicy != null : !this$deletionPolicy.equals(other$deletionPolicy)) {
+            return false;
+        }
+        Object this$driver = this.getDriver();
+        Object other$driver = other.getDriver();
+        if (this$driver == null ? other$driver != null : !this$driver.equals(other$driver)) {
+            return false;
+        }
+        Object this$source = this.getSource();
+        Object other$source = other.getSource();
+        if (this$source == null ? other$source != null : !this$source.equals(other$source)) {
+            return false;
+        }
+        Object this$sourceVolumeMode = this.getSourceVolumeMode();
+        Object other$sourceVolumeMode = other.getSourceVolumeMode();
+        if (this$sourceVolumeMode == null ? other$sourceVolumeMode != null : !this$sourceVolumeMode.equals(other$sourceVolumeMode)) {
+            return false;
+        }
+        Object this$volumeSnapshotClassName = this.getVolumeSnapshotClassName();
+        Object other$volumeSnapshotClassName = other.getVolumeSnapshotClassName();
+        if (this$volumeSnapshotClassName == null ? other$volumeSnapshotClassName != null : !this$volumeSnapshotClassName.equals(other$volumeSnapshotClassName)) {
+            return false;
+        }
+        Object this$volumeSnapshotRef = this.getVolumeSnapshotRef();
+        Object other$volumeSnapshotRef = other.getVolumeSnapshotRef();
+        if (this$volumeSnapshotRef == null ? other$volumeSnapshotRef != null : !this$volumeSnapshotRef.equals(other$volumeSnapshotRef)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VolumeSnapshotContentSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $deletionPolicy = this.getDeletionPolicy();
+        result = result * prime + ($deletionPolicy == null ? 43 : $deletionPolicy.hashCode());
+        Object $driver = this.getDriver();
+        result = result * prime + ($driver == null ? 43 : $driver.hashCode());
+        Object $source = this.getSource();
+        result = result * prime + ($source == null ? 43 : $source.hashCode());
+        Object $sourceVolumeMode = this.getSourceVolumeMode();
+        result = result * prime + ($sourceVolumeMode == null ? 43 : $sourceVolumeMode.hashCode());
+        Object $volumeSnapshotClassName = this.getVolumeSnapshotClassName();
+        result = result * prime + ($volumeSnapshotClassName == null ? 43 : $volumeSnapshotClassName.hashCode());
+        Object $volumeSnapshotRef = this.getVolumeSnapshotRef();
+        result = result * prime + ($volumeSnapshotRef == null ? 43 : $volumeSnapshotRef.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VolumeSnapshotContentSpec(" + "deletionPolicy=" + this.getDeletionPolicy() + ", driver=" + this.getDriver() + ", source=" + this.getSource() + ", sourceVolumeMode=" + this.getSourceVolumeMode() + ", volumeSnapshotClassName=" + this.getVolumeSnapshotClassName() + ", volumeSnapshotRef=" + this.getVolumeSnapshotRef() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "desiredAPIVersion",
     "objects",
     "uid"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -145,6 +136,64 @@ public class ConversionRequest implements Editable<ConversionRequestBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConversionRequest)) {
+            return false;
+        }
+        ConversionRequest other = (ConversionRequest) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$desiredAPIVersion = this.getDesiredAPIVersion();
+        Object other$desiredAPIVersion = other.getDesiredAPIVersion();
+        if (this$desiredAPIVersion == null ? other$desiredAPIVersion != null : !this$desiredAPIVersion.equals(other$desiredAPIVersion)) {
+            return false;
+        }
+        Object this$objects = this.getObjects();
+        Object other$objects = other.getObjects();
+        if (this$objects == null ? other$objects != null : !this$objects.equals(other$objects)) {
+            return false;
+        }
+        Object this$uid = this.getUid();
+        Object other$uid = other.getUid();
+        if (this$uid == null ? other$uid != null : !this$uid.equals(other$uid)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConversionRequest;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $desiredAPIVersion = this.getDesiredAPIVersion();
+        result = result * prime + ($desiredAPIVersion == null ? 43 : $desiredAPIVersion.hashCode());
+        Object $objects = this.getObjects();
+        result = result * prime + ($objects == null ? 43 : $objects.hashCode());
+        Object $uid = this.getUid();
+        result = result * prime + ($uid == null ? 43 : $uid.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConversionRequest(" + "desiredAPIVersion=" + this.getDesiredAPIVersion() + ", objects=" + this.getObjects() + ", uid=" + this.getUid() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

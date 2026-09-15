@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DeploymentStrategy describes how to perform a deployment.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "resources",
     "rollingParams",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -263,6 +254,99 @@ public class DeploymentStrategy implements Editable<DeploymentStrategyBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DeploymentStrategy)) {
+            return false;
+        }
+        DeploymentStrategy other = (DeploymentStrategy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$activeDeadlineSeconds = this.getActiveDeadlineSeconds();
+        Object other$activeDeadlineSeconds = other.getActiveDeadlineSeconds();
+        if (this$activeDeadlineSeconds == null ? other$activeDeadlineSeconds != null : !this$activeDeadlineSeconds.equals(other$activeDeadlineSeconds)) {
+            return false;
+        }
+        Object this$annotations = this.getAnnotations();
+        Object other$annotations = other.getAnnotations();
+        if (this$annotations == null ? other$annotations != null : !this$annotations.equals(other$annotations)) {
+            return false;
+        }
+        Object this$customParams = this.getCustomParams();
+        Object other$customParams = other.getCustomParams();
+        if (this$customParams == null ? other$customParams != null : !this$customParams.equals(other$customParams)) {
+            return false;
+        }
+        Object this$labels = this.getLabels();
+        Object other$labels = other.getLabels();
+        if (this$labels == null ? other$labels != null : !this$labels.equals(other$labels)) {
+            return false;
+        }
+        Object this$recreateParams = this.getRecreateParams();
+        Object other$recreateParams = other.getRecreateParams();
+        if (this$recreateParams == null ? other$recreateParams != null : !this$recreateParams.equals(other$recreateParams)) {
+            return false;
+        }
+        Object this$resources = this.getResources();
+        Object other$resources = other.getResources();
+        if (this$resources == null ? other$resources != null : !this$resources.equals(other$resources)) {
+            return false;
+        }
+        Object this$rollingParams = this.getRollingParams();
+        Object other$rollingParams = other.getRollingParams();
+        if (this$rollingParams == null ? other$rollingParams != null : !this$rollingParams.equals(other$rollingParams)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DeploymentStrategy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $activeDeadlineSeconds = this.getActiveDeadlineSeconds();
+        result = result * prime + ($activeDeadlineSeconds == null ? 43 : $activeDeadlineSeconds.hashCode());
+        Object $annotations = this.getAnnotations();
+        result = result * prime + ($annotations == null ? 43 : $annotations.hashCode());
+        Object $customParams = this.getCustomParams();
+        result = result * prime + ($customParams == null ? 43 : $customParams.hashCode());
+        Object $labels = this.getLabels();
+        result = result * prime + ($labels == null ? 43 : $labels.hashCode());
+        Object $recreateParams = this.getRecreateParams();
+        result = result * prime + ($recreateParams == null ? 43 : $recreateParams.hashCode());
+        Object $resources = this.getResources();
+        result = result * prime + ($resources == null ? 43 : $resources.hashCode());
+        Object $rollingParams = this.getRollingParams();
+        result = result * prime + ($rollingParams == null ? 43 : $rollingParams.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DeploymentStrategy(" + "activeDeadlineSeconds=" + this.getActiveDeadlineSeconds() + ", annotations=" + this.getAnnotations() + ", customParams=" + this.getCustomParams() + ", labels=" + this.getLabels() + ", recreateParams=" + this.getRecreateParams() + ", resources=" + this.getResources() + ", rollingParams=" + this.getRollingParams() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

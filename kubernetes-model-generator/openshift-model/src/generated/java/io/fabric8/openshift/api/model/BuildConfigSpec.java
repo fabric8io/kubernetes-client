@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * BuildConfigSpec describes when and how builds are created
@@ -53,12 +50,6 @@ import lombok.experimental.Accessors;
     "strategy",
     "successfulBuildsHistoryLimit",
     "triggers"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -385,6 +376,141 @@ public class BuildConfigSpec implements Editable<BuildConfigSpecBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BuildConfigSpec)) {
+            return false;
+        }
+        BuildConfigSpec other = (BuildConfigSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$completionDeadlineSeconds = this.getCompletionDeadlineSeconds();
+        Object other$completionDeadlineSeconds = other.getCompletionDeadlineSeconds();
+        if (this$completionDeadlineSeconds == null ? other$completionDeadlineSeconds != null : !this$completionDeadlineSeconds.equals(other$completionDeadlineSeconds)) {
+            return false;
+        }
+        Object this$failedBuildsHistoryLimit = this.getFailedBuildsHistoryLimit();
+        Object other$failedBuildsHistoryLimit = other.getFailedBuildsHistoryLimit();
+        if (this$failedBuildsHistoryLimit == null ? other$failedBuildsHistoryLimit != null : !this$failedBuildsHistoryLimit.equals(other$failedBuildsHistoryLimit)) {
+            return false;
+        }
+        Object this$mountTrustedCA = this.getMountTrustedCA();
+        Object other$mountTrustedCA = other.getMountTrustedCA();
+        if (this$mountTrustedCA == null ? other$mountTrustedCA != null : !this$mountTrustedCA.equals(other$mountTrustedCA)) {
+            return false;
+        }
+        Object this$nodeSelector = this.getNodeSelector();
+        Object other$nodeSelector = other.getNodeSelector();
+        if (this$nodeSelector == null ? other$nodeSelector != null : !this$nodeSelector.equals(other$nodeSelector)) {
+            return false;
+        }
+        Object this$output = this.getOutput();
+        Object other$output = other.getOutput();
+        if (this$output == null ? other$output != null : !this$output.equals(other$output)) {
+            return false;
+        }
+        Object this$postCommit = this.getPostCommit();
+        Object other$postCommit = other.getPostCommit();
+        if (this$postCommit == null ? other$postCommit != null : !this$postCommit.equals(other$postCommit)) {
+            return false;
+        }
+        Object this$resources = this.getResources();
+        Object other$resources = other.getResources();
+        if (this$resources == null ? other$resources != null : !this$resources.equals(other$resources)) {
+            return false;
+        }
+        Object this$revision = this.getRevision();
+        Object other$revision = other.getRevision();
+        if (this$revision == null ? other$revision != null : !this$revision.equals(other$revision)) {
+            return false;
+        }
+        Object this$runPolicy = this.getRunPolicy();
+        Object other$runPolicy = other.getRunPolicy();
+        if (this$runPolicy == null ? other$runPolicy != null : !this$runPolicy.equals(other$runPolicy)) {
+            return false;
+        }
+        Object this$serviceAccount = this.getServiceAccount();
+        Object other$serviceAccount = other.getServiceAccount();
+        if (this$serviceAccount == null ? other$serviceAccount != null : !this$serviceAccount.equals(other$serviceAccount)) {
+            return false;
+        }
+        Object this$source = this.getSource();
+        Object other$source = other.getSource();
+        if (this$source == null ? other$source != null : !this$source.equals(other$source)) {
+            return false;
+        }
+        Object this$strategy = this.getStrategy();
+        Object other$strategy = other.getStrategy();
+        if (this$strategy == null ? other$strategy != null : !this$strategy.equals(other$strategy)) {
+            return false;
+        }
+        Object this$successfulBuildsHistoryLimit = this.getSuccessfulBuildsHistoryLimit();
+        Object other$successfulBuildsHistoryLimit = other.getSuccessfulBuildsHistoryLimit();
+        if (this$successfulBuildsHistoryLimit == null ? other$successfulBuildsHistoryLimit != null : !this$successfulBuildsHistoryLimit.equals(other$successfulBuildsHistoryLimit)) {
+            return false;
+        }
+        Object this$triggers = this.getTriggers();
+        Object other$triggers = other.getTriggers();
+        if (this$triggers == null ? other$triggers != null : !this$triggers.equals(other$triggers)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BuildConfigSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $completionDeadlineSeconds = this.getCompletionDeadlineSeconds();
+        result = result * prime + ($completionDeadlineSeconds == null ? 43 : $completionDeadlineSeconds.hashCode());
+        Object $failedBuildsHistoryLimit = this.getFailedBuildsHistoryLimit();
+        result = result * prime + ($failedBuildsHistoryLimit == null ? 43 : $failedBuildsHistoryLimit.hashCode());
+        Object $mountTrustedCA = this.getMountTrustedCA();
+        result = result * prime + ($mountTrustedCA == null ? 43 : $mountTrustedCA.hashCode());
+        Object $nodeSelector = this.getNodeSelector();
+        result = result * prime + ($nodeSelector == null ? 43 : $nodeSelector.hashCode());
+        Object $output = this.getOutput();
+        result = result * prime + ($output == null ? 43 : $output.hashCode());
+        Object $postCommit = this.getPostCommit();
+        result = result * prime + ($postCommit == null ? 43 : $postCommit.hashCode());
+        Object $resources = this.getResources();
+        result = result * prime + ($resources == null ? 43 : $resources.hashCode());
+        Object $revision = this.getRevision();
+        result = result * prime + ($revision == null ? 43 : $revision.hashCode());
+        Object $runPolicy = this.getRunPolicy();
+        result = result * prime + ($runPolicy == null ? 43 : $runPolicy.hashCode());
+        Object $serviceAccount = this.getServiceAccount();
+        result = result * prime + ($serviceAccount == null ? 43 : $serviceAccount.hashCode());
+        Object $source = this.getSource();
+        result = result * prime + ($source == null ? 43 : $source.hashCode());
+        Object $strategy = this.getStrategy();
+        result = result * prime + ($strategy == null ? 43 : $strategy.hashCode());
+        Object $successfulBuildsHistoryLimit = this.getSuccessfulBuildsHistoryLimit();
+        result = result * prime + ($successfulBuildsHistoryLimit == null ? 43 : $successfulBuildsHistoryLimit.hashCode());
+        Object $triggers = this.getTriggers();
+        result = result * prime + ($triggers == null ? 43 : $triggers.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BuildConfigSpec(" + "completionDeadlineSeconds=" + this.getCompletionDeadlineSeconds() + ", failedBuildsHistoryLimit=" + this.getFailedBuildsHistoryLimit() + ", mountTrustedCA=" + this.getMountTrustedCA() + ", nodeSelector=" + this.getNodeSelector() + ", output=" + this.getOutput() + ", postCommit=" + this.getPostCommit() + ", resources=" + this.getResources() + ", revision=" + this.getRevision() + ", runPolicy=" + this.getRunPolicy() + ", serviceAccount=" + this.getServiceAccount() + ", source=" + this.getSource() + ", strategy=" + this.getStrategy() + ", successfulBuildsHistoryLimit=" + this.getSuccessfulBuildsHistoryLimit() + ", triggers=" + this.getTriggers() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SecurityContext holds security configuration that will be applied to a container. Some fields are present in both SecurityContext and PodSecurityContext.  When both are set, the values in SecurityContext take precedence.
@@ -35,12 +32,6 @@ import lombok.experimental.Accessors;
     "seLinuxOptions",
     "seccompProfile",
     "windowsOptions"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -311,6 +302,127 @@ public class SecurityContext implements Editable<SecurityContextBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SecurityContext)) {
+            return false;
+        }
+        SecurityContext other = (SecurityContext) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allowPrivilegeEscalation = this.getAllowPrivilegeEscalation();
+        Object other$allowPrivilegeEscalation = other.getAllowPrivilegeEscalation();
+        if (this$allowPrivilegeEscalation == null ? other$allowPrivilegeEscalation != null : !this$allowPrivilegeEscalation.equals(other$allowPrivilegeEscalation)) {
+            return false;
+        }
+        Object this$appArmorProfile = this.getAppArmorProfile();
+        Object other$appArmorProfile = other.getAppArmorProfile();
+        if (this$appArmorProfile == null ? other$appArmorProfile != null : !this$appArmorProfile.equals(other$appArmorProfile)) {
+            return false;
+        }
+        Object this$capabilities = this.getCapabilities();
+        Object other$capabilities = other.getCapabilities();
+        if (this$capabilities == null ? other$capabilities != null : !this$capabilities.equals(other$capabilities)) {
+            return false;
+        }
+        Object this$privileged = this.getPrivileged();
+        Object other$privileged = other.getPrivileged();
+        if (this$privileged == null ? other$privileged != null : !this$privileged.equals(other$privileged)) {
+            return false;
+        }
+        Object this$procMount = this.getProcMount();
+        Object other$procMount = other.getProcMount();
+        if (this$procMount == null ? other$procMount != null : !this$procMount.equals(other$procMount)) {
+            return false;
+        }
+        Object this$readOnlyRootFilesystem = this.getReadOnlyRootFilesystem();
+        Object other$readOnlyRootFilesystem = other.getReadOnlyRootFilesystem();
+        if (this$readOnlyRootFilesystem == null ? other$readOnlyRootFilesystem != null : !this$readOnlyRootFilesystem.equals(other$readOnlyRootFilesystem)) {
+            return false;
+        }
+        Object this$runAsGroup = this.getRunAsGroup();
+        Object other$runAsGroup = other.getRunAsGroup();
+        if (this$runAsGroup == null ? other$runAsGroup != null : !this$runAsGroup.equals(other$runAsGroup)) {
+            return false;
+        }
+        Object this$runAsNonRoot = this.getRunAsNonRoot();
+        Object other$runAsNonRoot = other.getRunAsNonRoot();
+        if (this$runAsNonRoot == null ? other$runAsNonRoot != null : !this$runAsNonRoot.equals(other$runAsNonRoot)) {
+            return false;
+        }
+        Object this$runAsUser = this.getRunAsUser();
+        Object other$runAsUser = other.getRunAsUser();
+        if (this$runAsUser == null ? other$runAsUser != null : !this$runAsUser.equals(other$runAsUser)) {
+            return false;
+        }
+        Object this$seLinuxOptions = this.getSeLinuxOptions();
+        Object other$seLinuxOptions = other.getSeLinuxOptions();
+        if (this$seLinuxOptions == null ? other$seLinuxOptions != null : !this$seLinuxOptions.equals(other$seLinuxOptions)) {
+            return false;
+        }
+        Object this$seccompProfile = this.getSeccompProfile();
+        Object other$seccompProfile = other.getSeccompProfile();
+        if (this$seccompProfile == null ? other$seccompProfile != null : !this$seccompProfile.equals(other$seccompProfile)) {
+            return false;
+        }
+        Object this$windowsOptions = this.getWindowsOptions();
+        Object other$windowsOptions = other.getWindowsOptions();
+        if (this$windowsOptions == null ? other$windowsOptions != null : !this$windowsOptions.equals(other$windowsOptions)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SecurityContext;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allowPrivilegeEscalation = this.getAllowPrivilegeEscalation();
+        result = result * prime + ($allowPrivilegeEscalation == null ? 43 : $allowPrivilegeEscalation.hashCode());
+        Object $appArmorProfile = this.getAppArmorProfile();
+        result = result * prime + ($appArmorProfile == null ? 43 : $appArmorProfile.hashCode());
+        Object $capabilities = this.getCapabilities();
+        result = result * prime + ($capabilities == null ? 43 : $capabilities.hashCode());
+        Object $privileged = this.getPrivileged();
+        result = result * prime + ($privileged == null ? 43 : $privileged.hashCode());
+        Object $procMount = this.getProcMount();
+        result = result * prime + ($procMount == null ? 43 : $procMount.hashCode());
+        Object $readOnlyRootFilesystem = this.getReadOnlyRootFilesystem();
+        result = result * prime + ($readOnlyRootFilesystem == null ? 43 : $readOnlyRootFilesystem.hashCode());
+        Object $runAsGroup = this.getRunAsGroup();
+        result = result * prime + ($runAsGroup == null ? 43 : $runAsGroup.hashCode());
+        Object $runAsNonRoot = this.getRunAsNonRoot();
+        result = result * prime + ($runAsNonRoot == null ? 43 : $runAsNonRoot.hashCode());
+        Object $runAsUser = this.getRunAsUser();
+        result = result * prime + ($runAsUser == null ? 43 : $runAsUser.hashCode());
+        Object $seLinuxOptions = this.getSeLinuxOptions();
+        result = result * prime + ($seLinuxOptions == null ? 43 : $seLinuxOptions.hashCode());
+        Object $seccompProfile = this.getSeccompProfile();
+        result = result * prime + ($seccompProfile == null ? 43 : $seccompProfile.hashCode());
+        Object $windowsOptions = this.getWindowsOptions();
+        result = result * prime + ($windowsOptions == null ? 43 : $windowsOptions.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SecurityContext(" + "allowPrivilegeEscalation=" + this.getAllowPrivilegeEscalation() + ", appArmorProfile=" + this.getAppArmorProfile() + ", capabilities=" + this.getCapabilities() + ", privileged=" + this.getPrivileged() + ", procMount=" + this.getProcMount() + ", readOnlyRootFilesystem=" + this.getReadOnlyRootFilesystem() + ", runAsGroup=" + this.getRunAsGroup() + ", runAsNonRoot=" + this.getRunAsNonRoot() + ", runAsUser=" + this.getRunAsUser() + ", seLinuxOptions=" + this.getSeLinuxOptions() + ", seccompProfile=" + this.getSeccompProfile() + ", windowsOptions=" + this.getWindowsOptions() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

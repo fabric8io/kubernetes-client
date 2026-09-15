@@ -33,9 +33,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ApiServerSourceSpec defines the desired state of ApiServerSource
@@ -51,12 +48,6 @@ import lombok.experimental.Accessors;
     "resources",
     "serviceAccountName",
     "sink"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -269,6 +260,99 @@ public class ApiServerSourceSpec implements Editable<ApiServerSourceSpecBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ApiServerSourceSpec)) {
+            return false;
+        }
+        ApiServerSourceSpec other = (ApiServerSourceSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ceOverrides = this.getCeOverrides();
+        Object other$ceOverrides = other.getCeOverrides();
+        if (this$ceOverrides == null ? other$ceOverrides != null : !this$ceOverrides.equals(other$ceOverrides)) {
+            return false;
+        }
+        Object this$filters = this.getFilters();
+        Object other$filters = other.getFilters();
+        if (this$filters == null ? other$filters != null : !this$filters.equals(other$filters)) {
+            return false;
+        }
+        Object this$mode = this.getMode();
+        Object other$mode = other.getMode();
+        if (this$mode == null ? other$mode != null : !this$mode.equals(other$mode)) {
+            return false;
+        }
+        Object this$namespaceSelector = this.getNamespaceSelector();
+        Object other$namespaceSelector = other.getNamespaceSelector();
+        if (this$namespaceSelector == null ? other$namespaceSelector != null : !this$namespaceSelector.equals(other$namespaceSelector)) {
+            return false;
+        }
+        Object this$owner = this.getOwner();
+        Object other$owner = other.getOwner();
+        if (this$owner == null ? other$owner != null : !this$owner.equals(other$owner)) {
+            return false;
+        }
+        Object this$resources = this.getResources();
+        Object other$resources = other.getResources();
+        if (this$resources == null ? other$resources != null : !this$resources.equals(other$resources)) {
+            return false;
+        }
+        Object this$serviceAccountName = this.getServiceAccountName();
+        Object other$serviceAccountName = other.getServiceAccountName();
+        if (this$serviceAccountName == null ? other$serviceAccountName != null : !this$serviceAccountName.equals(other$serviceAccountName)) {
+            return false;
+        }
+        Object this$sink = this.getSink();
+        Object other$sink = other.getSink();
+        if (this$sink == null ? other$sink != null : !this$sink.equals(other$sink)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ApiServerSourceSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ceOverrides = this.getCeOverrides();
+        result = result * prime + ($ceOverrides == null ? 43 : $ceOverrides.hashCode());
+        Object $filters = this.getFilters();
+        result = result * prime + ($filters == null ? 43 : $filters.hashCode());
+        Object $mode = this.getMode();
+        result = result * prime + ($mode == null ? 43 : $mode.hashCode());
+        Object $namespaceSelector = this.getNamespaceSelector();
+        result = result * prime + ($namespaceSelector == null ? 43 : $namespaceSelector.hashCode());
+        Object $owner = this.getOwner();
+        result = result * prime + ($owner == null ? 43 : $owner.hashCode());
+        Object $resources = this.getResources();
+        result = result * prime + ($resources == null ? 43 : $resources.hashCode());
+        Object $serviceAccountName = this.getServiceAccountName();
+        result = result * prime + ($serviceAccountName == null ? 43 : $serviceAccountName.hashCode());
+        Object $sink = this.getSink();
+        result = result * prime + ($sink == null ? 43 : $sink.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ApiServerSourceSpec(" + "ceOverrides=" + this.getCeOverrides() + ", filters=" + this.getFilters() + ", mode=" + this.getMode() + ", namespaceSelector=" + this.getNamespaceSelector() + ", owner=" + this.getOwner() + ", resources=" + this.getResources() + ", serviceAccountName=" + this.getServiceAccountName() + ", sink=" + this.getSink() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

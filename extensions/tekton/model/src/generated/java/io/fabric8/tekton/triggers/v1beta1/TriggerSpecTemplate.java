@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * EventListenerTemplate refers to a particular TriggerTemplate resource.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "apiversion",
     "ref",
     "spec"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class TriggerSpecTemplate implements Editable<TriggerSpecTemplateBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TriggerSpecTemplate)) {
+            return false;
+        }
+        TriggerSpecTemplate other = (TriggerSpecTemplate) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiversion = this.getApiversion();
+        Object other$apiversion = other.getApiversion();
+        if (this$apiversion == null ? other$apiversion != null : !this$apiversion.equals(other$apiversion)) {
+            return false;
+        }
+        Object this$ref = this.getRef();
+        Object other$ref = other.getRef();
+        if (this$ref == null ? other$ref != null : !this$ref.equals(other$ref)) {
+            return false;
+        }
+        Object this$spec = this.getSpec();
+        Object other$spec = other.getSpec();
+        if (this$spec == null ? other$spec != null : !this$spec.equals(other$spec)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TriggerSpecTemplate;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiversion = this.getApiversion();
+        result = result * prime + ($apiversion == null ? 43 : $apiversion.hashCode());
+        Object $ref = this.getRef();
+        result = result * prime + ($ref == null ? 43 : $ref.hashCode());
+        Object $spec = this.getSpec();
+        result = result * prime + ($spec == null ? 43 : $spec.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TriggerSpecTemplate(" + "apiversion=" + this.getApiversion() + ", ref=" + this.getRef() + ", spec=" + this.getSpec() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

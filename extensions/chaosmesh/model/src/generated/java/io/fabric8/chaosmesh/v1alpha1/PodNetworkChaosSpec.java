@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PodNetworkChaosSpec defines the desired state of PodNetworkChaos
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "ipsets",
     "iptables",
     "tcs"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -168,6 +159,64 @@ public class PodNetworkChaosSpec implements Editable<PodNetworkChaosSpecBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodNetworkChaosSpec)) {
+            return false;
+        }
+        PodNetworkChaosSpec other = (PodNetworkChaosSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ipsets = this.getIpsets();
+        Object other$ipsets = other.getIpsets();
+        if (this$ipsets == null ? other$ipsets != null : !this$ipsets.equals(other$ipsets)) {
+            return false;
+        }
+        Object this$iptables = this.getIptables();
+        Object other$iptables = other.getIptables();
+        if (this$iptables == null ? other$iptables != null : !this$iptables.equals(other$iptables)) {
+            return false;
+        }
+        Object this$tcs = this.getTcs();
+        Object other$tcs = other.getTcs();
+        if (this$tcs == null ? other$tcs != null : !this$tcs.equals(other$tcs)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodNetworkChaosSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ipsets = this.getIpsets();
+        result = result * prime + ($ipsets == null ? 43 : $ipsets.hashCode());
+        Object $iptables = this.getIptables();
+        result = result * prime + ($iptables == null ? 43 : $iptables.hashCode());
+        Object $tcs = this.getTcs();
+        result = result * prime + ($tcs == null ? 43 : $tcs.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodNetworkChaosSpec(" + "ipsets=" + this.getIpsets() + ", iptables=" + this.getIptables() + ", tcs=" + this.getTcs() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

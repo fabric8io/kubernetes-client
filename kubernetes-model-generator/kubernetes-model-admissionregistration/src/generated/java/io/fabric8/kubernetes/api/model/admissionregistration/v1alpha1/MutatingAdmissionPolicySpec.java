@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MutatingAdmissionPolicySpec is the specification of the desired behavior of the admission policy.
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "paramKind",
     "reinvocationPolicy",
     "variables"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -248,6 +239,92 @@ public class MutatingAdmissionPolicySpec implements Editable<MutatingAdmissionPo
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MutatingAdmissionPolicySpec)) {
+            return false;
+        }
+        MutatingAdmissionPolicySpec other = (MutatingAdmissionPolicySpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$failurePolicy = this.getFailurePolicy();
+        Object other$failurePolicy = other.getFailurePolicy();
+        if (this$failurePolicy == null ? other$failurePolicy != null : !this$failurePolicy.equals(other$failurePolicy)) {
+            return false;
+        }
+        Object this$matchConditions = this.getMatchConditions();
+        Object other$matchConditions = other.getMatchConditions();
+        if (this$matchConditions == null ? other$matchConditions != null : !this$matchConditions.equals(other$matchConditions)) {
+            return false;
+        }
+        Object this$matchConstraints = this.getMatchConstraints();
+        Object other$matchConstraints = other.getMatchConstraints();
+        if (this$matchConstraints == null ? other$matchConstraints != null : !this$matchConstraints.equals(other$matchConstraints)) {
+            return false;
+        }
+        Object this$mutations = this.getMutations();
+        Object other$mutations = other.getMutations();
+        if (this$mutations == null ? other$mutations != null : !this$mutations.equals(other$mutations)) {
+            return false;
+        }
+        Object this$paramKind = this.getParamKind();
+        Object other$paramKind = other.getParamKind();
+        if (this$paramKind == null ? other$paramKind != null : !this$paramKind.equals(other$paramKind)) {
+            return false;
+        }
+        Object this$reinvocationPolicy = this.getReinvocationPolicy();
+        Object other$reinvocationPolicy = other.getReinvocationPolicy();
+        if (this$reinvocationPolicy == null ? other$reinvocationPolicy != null : !this$reinvocationPolicy.equals(other$reinvocationPolicy)) {
+            return false;
+        }
+        Object this$variables = this.getVariables();
+        Object other$variables = other.getVariables();
+        if (this$variables == null ? other$variables != null : !this$variables.equals(other$variables)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MutatingAdmissionPolicySpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $failurePolicy = this.getFailurePolicy();
+        result = result * prime + ($failurePolicy == null ? 43 : $failurePolicy.hashCode());
+        Object $matchConditions = this.getMatchConditions();
+        result = result * prime + ($matchConditions == null ? 43 : $matchConditions.hashCode());
+        Object $matchConstraints = this.getMatchConstraints();
+        result = result * prime + ($matchConstraints == null ? 43 : $matchConstraints.hashCode());
+        Object $mutations = this.getMutations();
+        result = result * prime + ($mutations == null ? 43 : $mutations.hashCode());
+        Object $paramKind = this.getParamKind();
+        result = result * prime + ($paramKind == null ? 43 : $paramKind.hashCode());
+        Object $reinvocationPolicy = this.getReinvocationPolicy();
+        result = result * prime + ($reinvocationPolicy == null ? 43 : $reinvocationPolicy.hashCode());
+        Object $variables = this.getVariables();
+        result = result * prime + ($variables == null ? 43 : $variables.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MutatingAdmissionPolicySpec(" + "failurePolicy=" + this.getFailurePolicy() + ", matchConditions=" + this.getMatchConditions() + ", matchConstraints=" + this.getMatchConstraints() + ", mutations=" + this.getMutations() + ", paramKind=" + this.getParamKind() + ", reinvocationPolicy=" + this.getReinvocationPolicy() + ", variables=" + this.getVariables() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

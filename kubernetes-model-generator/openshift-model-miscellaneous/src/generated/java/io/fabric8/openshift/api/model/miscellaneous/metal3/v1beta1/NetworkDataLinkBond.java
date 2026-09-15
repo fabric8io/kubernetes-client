@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NetworkDataLinkBond represents a bond link object.
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "mtu",
     "name",
     "parameters"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -267,6 +258,99 @@ public class NetworkDataLinkBond implements Editable<NetworkDataLinkBondBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkDataLinkBond)) {
+            return false;
+        }
+        NetworkDataLinkBond other = (NetworkDataLinkBond) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bondLinks = this.getBondLinks();
+        Object other$bondLinks = other.getBondLinks();
+        if (this$bondLinks == null ? other$bondLinks != null : !this$bondLinks.equals(other$bondLinks)) {
+            return false;
+        }
+        Object this$bondMode = this.getBondMode();
+        Object other$bondMode = other.getBondMode();
+        if (this$bondMode == null ? other$bondMode != null : !this$bondMode.equals(other$bondMode)) {
+            return false;
+        }
+        Object this$bondXmitHashPolicy = this.getBondXmitHashPolicy();
+        Object other$bondXmitHashPolicy = other.getBondXmitHashPolicy();
+        if (this$bondXmitHashPolicy == null ? other$bondXmitHashPolicy != null : !this$bondXmitHashPolicy.equals(other$bondXmitHashPolicy)) {
+            return false;
+        }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {
+            return false;
+        }
+        Object this$macAddress = this.getMacAddress();
+        Object other$macAddress = other.getMacAddress();
+        if (this$macAddress == null ? other$macAddress != null : !this$macAddress.equals(other$macAddress)) {
+            return false;
+        }
+        Object this$mtu = this.getMtu();
+        Object other$mtu = other.getMtu();
+        if (this$mtu == null ? other$mtu != null : !this$mtu.equals(other$mtu)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$parameters = this.getParameters();
+        Object other$parameters = other.getParameters();
+        if (this$parameters == null ? other$parameters != null : !this$parameters.equals(other$parameters)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkDataLinkBond;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bondLinks = this.getBondLinks();
+        result = result * prime + ($bondLinks == null ? 43 : $bondLinks.hashCode());
+        Object $bondMode = this.getBondMode();
+        result = result * prime + ($bondMode == null ? 43 : $bondMode.hashCode());
+        Object $bondXmitHashPolicy = this.getBondXmitHashPolicy();
+        result = result * prime + ($bondXmitHashPolicy == null ? 43 : $bondXmitHashPolicy.hashCode());
+        Object $id = this.getId();
+        result = result * prime + ($id == null ? 43 : $id.hashCode());
+        Object $macAddress = this.getMacAddress();
+        result = result * prime + ($macAddress == null ? 43 : $macAddress.hashCode());
+        Object $mtu = this.getMtu();
+        result = result * prime + ($mtu == null ? 43 : $mtu.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $parameters = this.getParameters();
+        result = result * prime + ($parameters == null ? 43 : $parameters.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkDataLinkBond(" + "bondLinks=" + this.getBondLinks() + ", bondMode=" + this.getBondMode() + ", bondXmitHashPolicy=" + this.getBondXmitHashPolicy() + ", id=" + this.getId() + ", macAddress=" + this.getMacAddress() + ", mtu=" + this.getMtu() + ", name=" + this.getName() + ", parameters=" + this.getParameters() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

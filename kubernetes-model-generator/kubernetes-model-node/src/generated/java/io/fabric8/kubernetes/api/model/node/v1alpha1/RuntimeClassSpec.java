@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RuntimeClassSpec is a specification of a RuntimeClass. It contains parameters that are required to describe the RuntimeClass to the Container Runtime Interface (CRI) implementation, as well as any other components that need to understand how the pod will be run. The RuntimeClassSpec is immutable.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "overhead",
     "runtimeHandler",
     "scheduling"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class RuntimeClassSpec implements Editable<RuntimeClassSpecBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RuntimeClassSpec)) {
+            return false;
+        }
+        RuntimeClassSpec other = (RuntimeClassSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$overhead = this.getOverhead();
+        Object other$overhead = other.getOverhead();
+        if (this$overhead == null ? other$overhead != null : !this$overhead.equals(other$overhead)) {
+            return false;
+        }
+        Object this$runtimeHandler = this.getRuntimeHandler();
+        Object other$runtimeHandler = other.getRuntimeHandler();
+        if (this$runtimeHandler == null ? other$runtimeHandler != null : !this$runtimeHandler.equals(other$runtimeHandler)) {
+            return false;
+        }
+        Object this$scheduling = this.getScheduling();
+        Object other$scheduling = other.getScheduling();
+        if (this$scheduling == null ? other$scheduling != null : !this$scheduling.equals(other$scheduling)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RuntimeClassSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $overhead = this.getOverhead();
+        result = result * prime + ($overhead == null ? 43 : $overhead.hashCode());
+        Object $runtimeHandler = this.getRuntimeHandler();
+        result = result * prime + ($runtimeHandler == null ? 43 : $runtimeHandler.hashCode());
+        Object $scheduling = this.getScheduling();
+        result = result * prime + ($scheduling == null ? 43 : $scheduling.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RuntimeClassSpec(" + "overhead=" + this.getOverhead() + ", runtimeHandler=" + this.getRuntimeHandler() + ", scheduling=" + this.getScheduling() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

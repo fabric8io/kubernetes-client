@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * LimitRangeItem defines a min/max usage limit for any resource that matches on kind.
@@ -29,12 +26,6 @@ import lombok.experimental.Accessors;
     "maxLimitRequestRatio",
     "min",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -201,6 +192,85 @@ public class LimitRangeItem implements Editable<LimitRangeItemBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof LimitRangeItem)) {
+            return false;
+        }
+        LimitRangeItem other = (LimitRangeItem) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$_default = this.getDefault();
+        Object other$_default = other.getDefault();
+        if (this$_default == null ? other$_default != null : !this$_default.equals(other$_default)) {
+            return false;
+        }
+        Object this$defaultRequest = this.getDefaultRequest();
+        Object other$defaultRequest = other.getDefaultRequest();
+        if (this$defaultRequest == null ? other$defaultRequest != null : !this$defaultRequest.equals(other$defaultRequest)) {
+            return false;
+        }
+        Object this$max = this.getMax();
+        Object other$max = other.getMax();
+        if (this$max == null ? other$max != null : !this$max.equals(other$max)) {
+            return false;
+        }
+        Object this$maxLimitRequestRatio = this.getMaxLimitRequestRatio();
+        Object other$maxLimitRequestRatio = other.getMaxLimitRequestRatio();
+        if (this$maxLimitRequestRatio == null ? other$maxLimitRequestRatio != null : !this$maxLimitRequestRatio.equals(other$maxLimitRequestRatio)) {
+            return false;
+        }
+        Object this$min = this.getMin();
+        Object other$min = other.getMin();
+        if (this$min == null ? other$min != null : !this$min.equals(other$min)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof LimitRangeItem;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $_default = this.getDefault();
+        result = result * prime + ($_default == null ? 43 : $_default.hashCode());
+        Object $defaultRequest = this.getDefaultRequest();
+        result = result * prime + ($defaultRequest == null ? 43 : $defaultRequest.hashCode());
+        Object $max = this.getMax();
+        result = result * prime + ($max == null ? 43 : $max.hashCode());
+        Object $maxLimitRequestRatio = this.getMaxLimitRequestRatio();
+        result = result * prime + ($maxLimitRequestRatio == null ? 43 : $maxLimitRequestRatio.hashCode());
+        Object $min = this.getMin();
+        result = result * prime + ($min == null ? 43 : $min.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "LimitRangeItem(" + "_default=" + this.getDefault() + ", defaultRequest=" + this.getDefaultRequest() + ", max=" + this.getMax() + ", maxLimitRequestRatio=" + this.getMaxLimitRequestRatio() + ", min=" + this.getMin() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

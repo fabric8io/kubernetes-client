@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HPAScalingRules configures the scaling behavior for one direction via scaling Policy Rules and a configurable metric tolerance.<br><p> <br><p> Scaling Policy Rules are applied after calculating DesiredReplicas from metrics for the HPA. They can limit the scaling velocity by specifying scaling policies. They can prevent flapping by specifying the stabilization window, so that the number of replicas is not set instantly, instead, the safest value from the stabilization window is chosen.<br><p> <br><p> The tolerance is applied to the metric values and prevents scaling too eagerly for small metric variations.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "selectPolicy",
     "stabilizationWindowSeconds",
     "tolerance"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -185,6 +176,71 @@ public class HPAScalingRules implements Editable<HPAScalingRulesBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HPAScalingRules)) {
+            return false;
+        }
+        HPAScalingRules other = (HPAScalingRules) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$policies = this.getPolicies();
+        Object other$policies = other.getPolicies();
+        if (this$policies == null ? other$policies != null : !this$policies.equals(other$policies)) {
+            return false;
+        }
+        Object this$selectPolicy = this.getSelectPolicy();
+        Object other$selectPolicy = other.getSelectPolicy();
+        if (this$selectPolicy == null ? other$selectPolicy != null : !this$selectPolicy.equals(other$selectPolicy)) {
+            return false;
+        }
+        Object this$stabilizationWindowSeconds = this.getStabilizationWindowSeconds();
+        Object other$stabilizationWindowSeconds = other.getStabilizationWindowSeconds();
+        if (this$stabilizationWindowSeconds == null ? other$stabilizationWindowSeconds != null : !this$stabilizationWindowSeconds.equals(other$stabilizationWindowSeconds)) {
+            return false;
+        }
+        Object this$tolerance = this.getTolerance();
+        Object other$tolerance = other.getTolerance();
+        if (this$tolerance == null ? other$tolerance != null : !this$tolerance.equals(other$tolerance)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HPAScalingRules;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $policies = this.getPolicies();
+        result = result * prime + ($policies == null ? 43 : $policies.hashCode());
+        Object $selectPolicy = this.getSelectPolicy();
+        result = result * prime + ($selectPolicy == null ? 43 : $selectPolicy.hashCode());
+        Object $stabilizationWindowSeconds = this.getStabilizationWindowSeconds();
+        result = result * prime + ($stabilizationWindowSeconds == null ? 43 : $stabilizationWindowSeconds.hashCode());
+        Object $tolerance = this.getTolerance();
+        result = result * prime + ($tolerance == null ? 43 : $tolerance.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HPAScalingRules(" + "policies=" + this.getPolicies() + ", selectPolicy=" + this.getSelectPolicy() + ", stabilizationWindowSeconds=" + this.getStabilizationWindowSeconds() + ", tolerance=" + this.getTolerance() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

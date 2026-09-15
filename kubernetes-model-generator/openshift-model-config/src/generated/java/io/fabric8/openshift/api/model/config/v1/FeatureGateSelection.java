@@ -27,21 +27,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "customNoUpgrade",
     "featureSet"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -130,6 +121,57 @@ public class FeatureGateSelection implements Editable<FeatureGateSelectionBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof FeatureGateSelection)) {
+            return false;
+        }
+        FeatureGateSelection other = (FeatureGateSelection) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$customNoUpgrade = this.getCustomNoUpgrade();
+        Object other$customNoUpgrade = other.getCustomNoUpgrade();
+        if (this$customNoUpgrade == null ? other$customNoUpgrade != null : !this$customNoUpgrade.equals(other$customNoUpgrade)) {
+            return false;
+        }
+        Object this$featureSet = this.getFeatureSet();
+        Object other$featureSet = other.getFeatureSet();
+        if (this$featureSet == null ? other$featureSet != null : !this$featureSet.equals(other$featureSet)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof FeatureGateSelection;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $customNoUpgrade = this.getCustomNoUpgrade();
+        result = result * prime + ($customNoUpgrade == null ? 43 : $customNoUpgrade.hashCode());
+        Object $featureSet = this.getFeatureSet();
+        result = result * prime + ($featureSet == null ? 43 : $featureSet.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "FeatureGateSelection(" + "customNoUpgrade=" + this.getCustomNoUpgrade() + ", featureSet=" + this.getFeatureSet() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

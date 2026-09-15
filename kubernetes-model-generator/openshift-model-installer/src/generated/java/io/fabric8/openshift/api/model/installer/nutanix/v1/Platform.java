@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.config.v1.NutanixPlatformLoadBalancer;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Platform stores any global configuration used for Nutanix platforms.
@@ -54,12 +51,6 @@ import lombok.experimental.Accessors;
     "prismCentral",
     "prismElements",
     "subnetUUIDs"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -373,6 +364,134 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Platform)) {
+            return false;
+        }
+        Platform other = (Platform) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVIP = this.getApiVIP();
+        Object other$apiVIP = other.getApiVIP();
+        if (this$apiVIP == null ? other$apiVIP != null : !this$apiVIP.equals(other$apiVIP)) {
+            return false;
+        }
+        Object this$apiVIPs = this.getApiVIPs();
+        Object other$apiVIPs = other.getApiVIPs();
+        if (this$apiVIPs == null ? other$apiVIPs != null : !this$apiVIPs.equals(other$apiVIPs)) {
+            return false;
+        }
+        Object this$clusterOSImage = this.getClusterOSImage();
+        Object other$clusterOSImage = other.getClusterOSImage();
+        if (this$clusterOSImage == null ? other$clusterOSImage != null : !this$clusterOSImage.equals(other$clusterOSImage)) {
+            return false;
+        }
+        Object this$defaultMachinePlatform = this.getDefaultMachinePlatform();
+        Object other$defaultMachinePlatform = other.getDefaultMachinePlatform();
+        if (this$defaultMachinePlatform == null ? other$defaultMachinePlatform != null : !this$defaultMachinePlatform.equals(other$defaultMachinePlatform)) {
+            return false;
+        }
+        Object this$failureDomains = this.getFailureDomains();
+        Object other$failureDomains = other.getFailureDomains();
+        if (this$failureDomains == null ? other$failureDomains != null : !this$failureDomains.equals(other$failureDomains)) {
+            return false;
+        }
+        Object this$ingressVIP = this.getIngressVIP();
+        Object other$ingressVIP = other.getIngressVIP();
+        if (this$ingressVIP == null ? other$ingressVIP != null : !this$ingressVIP.equals(other$ingressVIP)) {
+            return false;
+        }
+        Object this$ingressVIPs = this.getIngressVIPs();
+        Object other$ingressVIPs = other.getIngressVIPs();
+        if (this$ingressVIPs == null ? other$ingressVIPs != null : !this$ingressVIPs.equals(other$ingressVIPs)) {
+            return false;
+        }
+        Object this$loadBalancer = this.getLoadBalancer();
+        Object other$loadBalancer = other.getLoadBalancer();
+        if (this$loadBalancer == null ? other$loadBalancer != null : !this$loadBalancer.equals(other$loadBalancer)) {
+            return false;
+        }
+        Object this$preloadedOSImageName = this.getPreloadedOSImageName();
+        Object other$preloadedOSImageName = other.getPreloadedOSImageName();
+        if (this$preloadedOSImageName == null ? other$preloadedOSImageName != null : !this$preloadedOSImageName.equals(other$preloadedOSImageName)) {
+            return false;
+        }
+        Object this$prismAPICallTimeout = this.getPrismAPICallTimeout();
+        Object other$prismAPICallTimeout = other.getPrismAPICallTimeout();
+        if (this$prismAPICallTimeout == null ? other$prismAPICallTimeout != null : !this$prismAPICallTimeout.equals(other$prismAPICallTimeout)) {
+            return false;
+        }
+        Object this$prismCentral = this.getPrismCentral();
+        Object other$prismCentral = other.getPrismCentral();
+        if (this$prismCentral == null ? other$prismCentral != null : !this$prismCentral.equals(other$prismCentral)) {
+            return false;
+        }
+        Object this$prismElements = this.getPrismElements();
+        Object other$prismElements = other.getPrismElements();
+        if (this$prismElements == null ? other$prismElements != null : !this$prismElements.equals(other$prismElements)) {
+            return false;
+        }
+        Object this$subnetUUIDs = this.getSubnetUUIDs();
+        Object other$subnetUUIDs = other.getSubnetUUIDs();
+        if (this$subnetUUIDs == null ? other$subnetUUIDs != null : !this$subnetUUIDs.equals(other$subnetUUIDs)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Platform;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVIP = this.getApiVIP();
+        result = result * prime + ($apiVIP == null ? 43 : $apiVIP.hashCode());
+        Object $apiVIPs = this.getApiVIPs();
+        result = result * prime + ($apiVIPs == null ? 43 : $apiVIPs.hashCode());
+        Object $clusterOSImage = this.getClusterOSImage();
+        result = result * prime + ($clusterOSImage == null ? 43 : $clusterOSImage.hashCode());
+        Object $defaultMachinePlatform = this.getDefaultMachinePlatform();
+        result = result * prime + ($defaultMachinePlatform == null ? 43 : $defaultMachinePlatform.hashCode());
+        Object $failureDomains = this.getFailureDomains();
+        result = result * prime + ($failureDomains == null ? 43 : $failureDomains.hashCode());
+        Object $ingressVIP = this.getIngressVIP();
+        result = result * prime + ($ingressVIP == null ? 43 : $ingressVIP.hashCode());
+        Object $ingressVIPs = this.getIngressVIPs();
+        result = result * prime + ($ingressVIPs == null ? 43 : $ingressVIPs.hashCode());
+        Object $loadBalancer = this.getLoadBalancer();
+        result = result * prime + ($loadBalancer == null ? 43 : $loadBalancer.hashCode());
+        Object $preloadedOSImageName = this.getPreloadedOSImageName();
+        result = result * prime + ($preloadedOSImageName == null ? 43 : $preloadedOSImageName.hashCode());
+        Object $prismAPICallTimeout = this.getPrismAPICallTimeout();
+        result = result * prime + ($prismAPICallTimeout == null ? 43 : $prismAPICallTimeout.hashCode());
+        Object $prismCentral = this.getPrismCentral();
+        result = result * prime + ($prismCentral == null ? 43 : $prismCentral.hashCode());
+        Object $prismElements = this.getPrismElements();
+        result = result * prime + ($prismElements == null ? 43 : $prismElements.hashCode());
+        Object $subnetUUIDs = this.getSubnetUUIDs();
+        result = result * prime + ($subnetUUIDs == null ? 43 : $subnetUUIDs.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Platform(" + "apiVIP=" + this.getApiVIP() + ", apiVIPs=" + this.getApiVIPs() + ", clusterOSImage=" + this.getClusterOSImage() + ", defaultMachinePlatform=" + this.getDefaultMachinePlatform() + ", failureDomains=" + this.getFailureDomains() + ", ingressVIP=" + this.getIngressVIP() + ", ingressVIPs=" + this.getIngressVIPs() + ", loadBalancer=" + this.getLoadBalancer() + ", preloadedOSImageName=" + this.getPreloadedOSImageName() + ", prismAPICallTimeout=" + this.getPrismAPICallTimeout() + ", prismCentral=" + this.getPrismCentral() + ", prismElements=" + this.getPrismElements() + ", subnetUUIDs=" + this.getSubnetUUIDs() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

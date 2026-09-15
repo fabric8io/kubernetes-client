@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ServiceAccountTokenProjection represents a projected service account token volume. This projection can be used to insert a service account token into the pods runtime filesystem for use against APIs (Kubernetes API Server or otherwise).
@@ -27,12 +24,6 @@ import lombok.experimental.Accessors;
     "expirationSeconds",
     "path",
     "user"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -151,6 +142,71 @@ public class ServiceAccountTokenProjection implements Editable<ServiceAccountTok
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ServiceAccountTokenProjection)) {
+            return false;
+        }
+        ServiceAccountTokenProjection other = (ServiceAccountTokenProjection) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$audience = this.getAudience();
+        Object other$audience = other.getAudience();
+        if (this$audience == null ? other$audience != null : !this$audience.equals(other$audience)) {
+            return false;
+        }
+        Object this$expirationSeconds = this.getExpirationSeconds();
+        Object other$expirationSeconds = other.getExpirationSeconds();
+        if (this$expirationSeconds == null ? other$expirationSeconds != null : !this$expirationSeconds.equals(other$expirationSeconds)) {
+            return false;
+        }
+        Object this$path = this.getPath();
+        Object other$path = other.getPath();
+        if (this$path == null ? other$path != null : !this$path.equals(other$path)) {
+            return false;
+        }
+        Object this$user = this.getUser();
+        Object other$user = other.getUser();
+        if (this$user == null ? other$user != null : !this$user.equals(other$user)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ServiceAccountTokenProjection;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $audience = this.getAudience();
+        result = result * prime + ($audience == null ? 43 : $audience.hashCode());
+        Object $expirationSeconds = this.getExpirationSeconds();
+        result = result * prime + ($expirationSeconds == null ? 43 : $expirationSeconds.hashCode());
+        Object $path = this.getPath();
+        result = result * prime + ($path == null ? 43 : $path.hashCode());
+        Object $user = this.getUser();
+        result = result * prime + ($user == null ? 43 : $user.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ServiceAccountTokenProjection(" + "audience=" + this.getAudience() + ", expirationSeconds=" + this.getExpirationSeconds() + ", path=" + this.getPath() + ", user=" + this.getUser() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

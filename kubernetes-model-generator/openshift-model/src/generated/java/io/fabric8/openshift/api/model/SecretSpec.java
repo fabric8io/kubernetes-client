@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SecretSpec specifies a secret to be included in a build pod and its corresponding mount point
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "mountPath",
     "secretSource"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class SecretSpec implements Editable<SecretSpecBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SecretSpec)) {
+            return false;
+        }
+        SecretSpec other = (SecretSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$mountPath = this.getMountPath();
+        Object other$mountPath = other.getMountPath();
+        if (this$mountPath == null ? other$mountPath != null : !this$mountPath.equals(other$mountPath)) {
+            return false;
+        }
+        Object this$secretSource = this.getSecretSource();
+        Object other$secretSource = other.getSecretSource();
+        if (this$secretSource == null ? other$secretSource != null : !this$secretSource.equals(other$secretSource)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SecretSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $mountPath = this.getMountPath();
+        result = result * prime + ($mountPath == null ? 43 : $mountPath.hashCode());
+        Object $secretSource = this.getSecretSource();
+        result = result * prime + ($secretSource == null ? 43 : $secretSource.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SecretSpec(" + "mountPath=" + this.getMountPath() + ", secretSource=" + this.getSecretSource() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

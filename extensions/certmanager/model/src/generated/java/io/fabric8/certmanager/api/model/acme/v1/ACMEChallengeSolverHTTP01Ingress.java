@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "name",
     "podTemplate",
     "serviceType"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -205,6 +196,85 @@ public class ACMEChallengeSolverHTTP01Ingress implements Editable<ACMEChallengeS
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ACMEChallengeSolverHTTP01Ingress)) {
+            return false;
+        }
+        ACMEChallengeSolverHTTP01Ingress other = (ACMEChallengeSolverHTTP01Ingress) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$className = this.getClassName();
+        Object other$className = other.getClassName();
+        if (this$className == null ? other$className != null : !this$className.equals(other$className)) {
+            return false;
+        }
+        Object this$ingressClassName = this.getIngressClassName();
+        Object other$ingressClassName = other.getIngressClassName();
+        if (this$ingressClassName == null ? other$ingressClassName != null : !this$ingressClassName.equals(other$ingressClassName)) {
+            return false;
+        }
+        Object this$ingressTemplate = this.getIngressTemplate();
+        Object other$ingressTemplate = other.getIngressTemplate();
+        if (this$ingressTemplate == null ? other$ingressTemplate != null : !this$ingressTemplate.equals(other$ingressTemplate)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$podTemplate = this.getPodTemplate();
+        Object other$podTemplate = other.getPodTemplate();
+        if (this$podTemplate == null ? other$podTemplate != null : !this$podTemplate.equals(other$podTemplate)) {
+            return false;
+        }
+        Object this$serviceType = this.getServiceType();
+        Object other$serviceType = other.getServiceType();
+        if (this$serviceType == null ? other$serviceType != null : !this$serviceType.equals(other$serviceType)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ACMEChallengeSolverHTTP01Ingress;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $className = this.getClassName();
+        result = result * prime + ($className == null ? 43 : $className.hashCode());
+        Object $ingressClassName = this.getIngressClassName();
+        result = result * prime + ($ingressClassName == null ? 43 : $ingressClassName.hashCode());
+        Object $ingressTemplate = this.getIngressTemplate();
+        result = result * prime + ($ingressTemplate == null ? 43 : $ingressTemplate.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $podTemplate = this.getPodTemplate();
+        result = result * prime + ($podTemplate == null ? 43 : $podTemplate.hashCode());
+        Object $serviceType = this.getServiceType();
+        result = result * prime + ($serviceType == null ? 43 : $serviceType.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ACMEChallengeSolverHTTP01Ingress(" + "className=" + this.getClassName() + ", ingressClassName=" + this.getIngressClassName() + ", ingressTemplate=" + this.getIngressTemplate() + ", name=" + this.getName() + ", podTemplate=" + this.getPodTemplate() + ", serviceType=" + this.getServiceType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PlacementSpec defines the attributes of Placement. An empty PlacementSpec selects all ManagedClusters from the ManagedClusterSets bound to the placement namespace. The containing fields are ANDed.
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "sortBy",
     "spreadPolicy",
     "tolerations"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -288,6 +279,106 @@ public class PlacementSpec implements Editable<PlacementSpecBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PlacementSpec)) {
+            return false;
+        }
+        PlacementSpec other = (PlacementSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterSets = this.getClusterSets();
+        Object other$clusterSets = other.getClusterSets();
+        if (this$clusterSets == null ? other$clusterSets != null : !this$clusterSets.equals(other$clusterSets)) {
+            return false;
+        }
+        Object this$decisionStrategy = this.getDecisionStrategy();
+        Object other$decisionStrategy = other.getDecisionStrategy();
+        if (this$decisionStrategy == null ? other$decisionStrategy != null : !this$decisionStrategy.equals(other$decisionStrategy)) {
+            return false;
+        }
+        Object this$numberOfClusters = this.getNumberOfClusters();
+        Object other$numberOfClusters = other.getNumberOfClusters();
+        if (this$numberOfClusters == null ? other$numberOfClusters != null : !this$numberOfClusters.equals(other$numberOfClusters)) {
+            return false;
+        }
+        Object this$predicates = this.getPredicates();
+        Object other$predicates = other.getPredicates();
+        if (this$predicates == null ? other$predicates != null : !this$predicates.equals(other$predicates)) {
+            return false;
+        }
+        Object this$prioritizerPolicy = this.getPrioritizerPolicy();
+        Object other$prioritizerPolicy = other.getPrioritizerPolicy();
+        if (this$prioritizerPolicy == null ? other$prioritizerPolicy != null : !this$prioritizerPolicy.equals(other$prioritizerPolicy)) {
+            return false;
+        }
+        Object this$scoreRateLimit = this.getScoreRateLimit();
+        Object other$scoreRateLimit = other.getScoreRateLimit();
+        if (this$scoreRateLimit == null ? other$scoreRateLimit != null : !this$scoreRateLimit.equals(other$scoreRateLimit)) {
+            return false;
+        }
+        Object this$sortBy = this.getSortBy();
+        Object other$sortBy = other.getSortBy();
+        if (this$sortBy == null ? other$sortBy != null : !this$sortBy.equals(other$sortBy)) {
+            return false;
+        }
+        Object this$spreadPolicy = this.getSpreadPolicy();
+        Object other$spreadPolicy = other.getSpreadPolicy();
+        if (this$spreadPolicy == null ? other$spreadPolicy != null : !this$spreadPolicy.equals(other$spreadPolicy)) {
+            return false;
+        }
+        Object this$tolerations = this.getTolerations();
+        Object other$tolerations = other.getTolerations();
+        if (this$tolerations == null ? other$tolerations != null : !this$tolerations.equals(other$tolerations)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PlacementSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterSets = this.getClusterSets();
+        result = result * prime + ($clusterSets == null ? 43 : $clusterSets.hashCode());
+        Object $decisionStrategy = this.getDecisionStrategy();
+        result = result * prime + ($decisionStrategy == null ? 43 : $decisionStrategy.hashCode());
+        Object $numberOfClusters = this.getNumberOfClusters();
+        result = result * prime + ($numberOfClusters == null ? 43 : $numberOfClusters.hashCode());
+        Object $predicates = this.getPredicates();
+        result = result * prime + ($predicates == null ? 43 : $predicates.hashCode());
+        Object $prioritizerPolicy = this.getPrioritizerPolicy();
+        result = result * prime + ($prioritizerPolicy == null ? 43 : $prioritizerPolicy.hashCode());
+        Object $scoreRateLimit = this.getScoreRateLimit();
+        result = result * prime + ($scoreRateLimit == null ? 43 : $scoreRateLimit.hashCode());
+        Object $sortBy = this.getSortBy();
+        result = result * prime + ($sortBy == null ? 43 : $sortBy.hashCode());
+        Object $spreadPolicy = this.getSpreadPolicy();
+        result = result * prime + ($spreadPolicy == null ? 43 : $spreadPolicy.hashCode());
+        Object $tolerations = this.getTolerations();
+        result = result * prime + ($tolerations == null ? 43 : $tolerations.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PlacementSpec(" + "clusterSets=" + this.getClusterSets() + ", decisionStrategy=" + this.getDecisionStrategy() + ", numberOfClusters=" + this.getNumberOfClusters() + ", predicates=" + this.getPredicates() + ", prioritizerPolicy=" + this.getPrioritizerPolicy() + ", scoreRateLimit=" + this.getScoreRateLimit() + ", sortBy=" + this.getSortBy() + ", spreadPolicy=" + this.getSpreadPolicy() + ", tolerations=" + this.getTolerations() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ResourceClaimStatus tracks whether the resource has been allocated and what the resulting attributes are.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "deallocationRequested",
     "driverName",
     "reservedFor"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class ResourceClaimStatus implements Editable<ResourceClaimStatusBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ResourceClaimStatus)) {
+            return false;
+        }
+        ResourceClaimStatus other = (ResourceClaimStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allocation = this.getAllocation();
+        Object other$allocation = other.getAllocation();
+        if (this$allocation == null ? other$allocation != null : !this$allocation.equals(other$allocation)) {
+            return false;
+        }
+        Object this$deallocationRequested = this.getDeallocationRequested();
+        Object other$deallocationRequested = other.getDeallocationRequested();
+        if (this$deallocationRequested == null ? other$deallocationRequested != null : !this$deallocationRequested.equals(other$deallocationRequested)) {
+            return false;
+        }
+        Object this$driverName = this.getDriverName();
+        Object other$driverName = other.getDriverName();
+        if (this$driverName == null ? other$driverName != null : !this$driverName.equals(other$driverName)) {
+            return false;
+        }
+        Object this$reservedFor = this.getReservedFor();
+        Object other$reservedFor = other.getReservedFor();
+        if (this$reservedFor == null ? other$reservedFor != null : !this$reservedFor.equals(other$reservedFor)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ResourceClaimStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allocation = this.getAllocation();
+        result = result * prime + ($allocation == null ? 43 : $allocation.hashCode());
+        Object $deallocationRequested = this.getDeallocationRequested();
+        result = result * prime + ($deallocationRequested == null ? 43 : $deallocationRequested.hashCode());
+        Object $driverName = this.getDriverName();
+        result = result * prime + ($driverName == null ? 43 : $driverName.hashCode());
+        Object $reservedFor = this.getReservedFor();
+        result = result * prime + ($reservedFor == null ? 43 : $reservedFor.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ResourceClaimStatus(" + "allocation=" + this.getAllocation() + ", deallocationRequested=" + this.getDeallocationRequested() + ", driverName=" + this.getDriverName() + ", reservedFor=" + this.getReservedFor() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

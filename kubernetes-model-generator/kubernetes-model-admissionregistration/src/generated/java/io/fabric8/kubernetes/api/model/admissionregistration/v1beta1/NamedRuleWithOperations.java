@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NamedRuleWithOperations is a tuple of Operations and Resources with ResourceNames.
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "resourceNames",
     "resources",
     "scope"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -232,6 +223,85 @@ public class NamedRuleWithOperations implements Editable<NamedRuleWithOperations
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NamedRuleWithOperations)) {
+            return false;
+        }
+        NamedRuleWithOperations other = (NamedRuleWithOperations) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiGroups = this.getApiGroups();
+        Object other$apiGroups = other.getApiGroups();
+        if (this$apiGroups == null ? other$apiGroups != null : !this$apiGroups.equals(other$apiGroups)) {
+            return false;
+        }
+        Object this$apiVersions = this.getApiVersions();
+        Object other$apiVersions = other.getApiVersions();
+        if (this$apiVersions == null ? other$apiVersions != null : !this$apiVersions.equals(other$apiVersions)) {
+            return false;
+        }
+        Object this$operations = this.getOperations();
+        Object other$operations = other.getOperations();
+        if (this$operations == null ? other$operations != null : !this$operations.equals(other$operations)) {
+            return false;
+        }
+        Object this$resourceNames = this.getResourceNames();
+        Object other$resourceNames = other.getResourceNames();
+        if (this$resourceNames == null ? other$resourceNames != null : !this$resourceNames.equals(other$resourceNames)) {
+            return false;
+        }
+        Object this$resources = this.getResources();
+        Object other$resources = other.getResources();
+        if (this$resources == null ? other$resources != null : !this$resources.equals(other$resources)) {
+            return false;
+        }
+        Object this$scope = this.getScope();
+        Object other$scope = other.getScope();
+        if (this$scope == null ? other$scope != null : !this$scope.equals(other$scope)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NamedRuleWithOperations;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiGroups = this.getApiGroups();
+        result = result * prime + ($apiGroups == null ? 43 : $apiGroups.hashCode());
+        Object $apiVersions = this.getApiVersions();
+        result = result * prime + ($apiVersions == null ? 43 : $apiVersions.hashCode());
+        Object $operations = this.getOperations();
+        result = result * prime + ($operations == null ? 43 : $operations.hashCode());
+        Object $resourceNames = this.getResourceNames();
+        result = result * prime + ($resourceNames == null ? 43 : $resourceNames.hashCode());
+        Object $resources = this.getResources();
+        result = result * prime + ($resources == null ? 43 : $resources.hashCode());
+        Object $scope = this.getScope();
+        result = result * prime + ($scope == null ? 43 : $scope.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NamedRuleWithOperations(" + "apiGroups=" + this.getApiGroups() + ", apiVersions=" + this.getApiVersions() + ", operations=" + this.getOperations() + ", resourceNames=" + this.getResourceNames() + ", resources=" + this.getResources() + ", scope=" + this.getScope() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

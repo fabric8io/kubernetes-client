@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OAuthSpec contains desired cluster auth configuration
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "identityProviders",
     "templates",
     "tokenConfig"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -163,6 +154,64 @@ public class OAuthSpec implements Editable<OAuthSpecBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OAuthSpec)) {
+            return false;
+        }
+        OAuthSpec other = (OAuthSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$identityProviders = this.getIdentityProviders();
+        Object other$identityProviders = other.getIdentityProviders();
+        if (this$identityProviders == null ? other$identityProviders != null : !this$identityProviders.equals(other$identityProviders)) {
+            return false;
+        }
+        Object this$templates = this.getTemplates();
+        Object other$templates = other.getTemplates();
+        if (this$templates == null ? other$templates != null : !this$templates.equals(other$templates)) {
+            return false;
+        }
+        Object this$tokenConfig = this.getTokenConfig();
+        Object other$tokenConfig = other.getTokenConfig();
+        if (this$tokenConfig == null ? other$tokenConfig != null : !this$tokenConfig.equals(other$tokenConfig)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OAuthSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $identityProviders = this.getIdentityProviders();
+        result = result * prime + ($identityProviders == null ? 43 : $identityProviders.hashCode());
+        Object $templates = this.getTemplates();
+        result = result * prime + ($templates == null ? 43 : $templates.hashCode());
+        Object $tokenConfig = this.getTokenConfig();
+        result = result * prime + ($tokenConfig == null ? 43 : $tokenConfig.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OAuthSpec(" + "identityProviders=" + this.getIdentityProviders() + ", templates=" + this.getTemplates() + ", tokenConfig=" + this.getTokenConfig() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

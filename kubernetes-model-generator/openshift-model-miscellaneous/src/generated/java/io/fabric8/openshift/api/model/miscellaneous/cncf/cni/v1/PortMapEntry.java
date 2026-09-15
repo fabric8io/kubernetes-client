@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PortMapEntry for CNI PortMapEntry
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "hostIP",
     "hostPort",
     "protocol"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class PortMapEntry implements Editable<PortMapEntryBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PortMapEntry)) {
+            return false;
+        }
+        PortMapEntry other = (PortMapEntry) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$containerPort = this.getContainerPort();
+        Object other$containerPort = other.getContainerPort();
+        if (this$containerPort == null ? other$containerPort != null : !this$containerPort.equals(other$containerPort)) {
+            return false;
+        }
+        Object this$hostIP = this.getHostIP();
+        Object other$hostIP = other.getHostIP();
+        if (this$hostIP == null ? other$hostIP != null : !this$hostIP.equals(other$hostIP)) {
+            return false;
+        }
+        Object this$hostPort = this.getHostPort();
+        Object other$hostPort = other.getHostPort();
+        if (this$hostPort == null ? other$hostPort != null : !this$hostPort.equals(other$hostPort)) {
+            return false;
+        }
+        Object this$protocol = this.getProtocol();
+        Object other$protocol = other.getProtocol();
+        if (this$protocol == null ? other$protocol != null : !this$protocol.equals(other$protocol)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PortMapEntry;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $containerPort = this.getContainerPort();
+        result = result * prime + ($containerPort == null ? 43 : $containerPort.hashCode());
+        Object $hostIP = this.getHostIP();
+        result = result * prime + ($hostIP == null ? 43 : $hostIP.hashCode());
+        Object $hostPort = this.getHostPort();
+        result = result * prime + ($hostPort == null ? 43 : $hostPort.hashCode());
+        Object $protocol = this.getProtocol();
+        result = result * prime + ($protocol == null ? 43 : $protocol.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PortMapEntry(" + "containerPort=" + this.getContainerPort() + ", hostIP=" + this.getHostIP() + ", hostPort=" + this.getHostPort() + ", protocol=" + this.getProtocol() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

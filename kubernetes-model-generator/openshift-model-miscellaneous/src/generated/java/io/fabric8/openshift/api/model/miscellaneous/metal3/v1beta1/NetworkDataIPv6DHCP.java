@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NetworkDataIPv6DHCP represents an ipv6 DHCP network object.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "id",
     "link",
     "routes"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -164,6 +155,64 @@ public class NetworkDataIPv6DHCP implements Editable<NetworkDataIPv6DHCPBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkDataIPv6DHCP)) {
+            return false;
+        }
+        NetworkDataIPv6DHCP other = (NetworkDataIPv6DHCP) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {
+            return false;
+        }
+        Object this$link = this.getLink();
+        Object other$link = other.getLink();
+        if (this$link == null ? other$link != null : !this$link.equals(other$link)) {
+            return false;
+        }
+        Object this$routes = this.getRoutes();
+        Object other$routes = other.getRoutes();
+        if (this$routes == null ? other$routes != null : !this$routes.equals(other$routes)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkDataIPv6DHCP;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $id = this.getId();
+        result = result * prime + ($id == null ? 43 : $id.hashCode());
+        Object $link = this.getLink();
+        result = result * prime + ($link == null ? 43 : $link.hashCode());
+        Object $routes = this.getRoutes();
+        result = result * prime + ($routes == null ? 43 : $routes.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkDataIPv6DHCP(" + "id=" + this.getId() + ", link=" + this.getLink() + ", routes=" + this.getRoutes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

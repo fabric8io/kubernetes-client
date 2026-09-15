@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * JSON Web Token (JWT) token format for authentication as defined by [RFC 7519](https://tools.ietf.org/html/rfc7519). See [OAuth 2.0](https://tools.ietf.org/html/rfc6749) and [OIDC 1.0](http://openid.net/connect) for how this is used in the whole authentication flow.<br><p> <br><p> Examples:<br><p> <br><p> Spec for a JWT that is issued by `https://example.com`, with the audience claims must be either `bookstore_android.apps.example.com` or `bookstore_web.apps.example.com`. The token should be presented at the `Authorization` header (default). The JSON Web Key Set (JWKS) will be discovered following OpenID Connect protocol.<br><p> <br><p> ```yaml issuer: https://example.com audiences:<br><p>   - bookstore_android.apps.example.com<br><p>     bookstore_web.apps.example.com<br><p> <br><p> ```<br><p> <br><p> This example specifies a token in a non-default location (`x-goog-iap-jwt-assertion` header). It also defines the URI to fetch JWKS explicitly.<br><p> <br><p> ```yaml issuer: https://example.com jwksUri: https://example.com/.secret/jwks.json fromHeaders: - "x-goog-iap-jwt-assertion" ```<br><p> <br><p> This example shows how to configure custom claims to be treated as space-delimited strings. This is useful when JWT tokens contain custom claims with multiple space-separated values that should be available for individual matching in authorization policies.<br><p> <br><p> ```yaml issuer: https://example.com spaceDelimitedClaims: - "custom_scope" - "provider.login.scope" - "roles" ```<br><p> <br><p> With this configuration, a JWT containing `"custom_scope": "read write admin"` will allow authorization policies to match against individual values like "read", "write", or "admin".
@@ -52,12 +49,6 @@ import lombok.experimental.Accessors;
     "outputPayloadToHeader",
     "spaceDelimitedClaims",
     "timeout"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -354,6 +345,127 @@ public class JWTRule implements Editable<JWTRuleBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof JWTRule)) {
+            return false;
+        }
+        JWTRule other = (JWTRule) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$audiences = this.getAudiences();
+        Object other$audiences = other.getAudiences();
+        if (this$audiences == null ? other$audiences != null : !this$audiences.equals(other$audiences)) {
+            return false;
+        }
+        Object this$forwardOriginalToken = this.getForwardOriginalToken();
+        Object other$forwardOriginalToken = other.getForwardOriginalToken();
+        if (this$forwardOriginalToken == null ? other$forwardOriginalToken != null : !this$forwardOriginalToken.equals(other$forwardOriginalToken)) {
+            return false;
+        }
+        Object this$fromCookies = this.getFromCookies();
+        Object other$fromCookies = other.getFromCookies();
+        if (this$fromCookies == null ? other$fromCookies != null : !this$fromCookies.equals(other$fromCookies)) {
+            return false;
+        }
+        Object this$fromHeaders = this.getFromHeaders();
+        Object other$fromHeaders = other.getFromHeaders();
+        if (this$fromHeaders == null ? other$fromHeaders != null : !this$fromHeaders.equals(other$fromHeaders)) {
+            return false;
+        }
+        Object this$fromParams = this.getFromParams();
+        Object other$fromParams = other.getFromParams();
+        if (this$fromParams == null ? other$fromParams != null : !this$fromParams.equals(other$fromParams)) {
+            return false;
+        }
+        Object this$issuer = this.getIssuer();
+        Object other$issuer = other.getIssuer();
+        if (this$issuer == null ? other$issuer != null : !this$issuer.equals(other$issuer)) {
+            return false;
+        }
+        Object this$jwks = this.getJwks();
+        Object other$jwks = other.getJwks();
+        if (this$jwks == null ? other$jwks != null : !this$jwks.equals(other$jwks)) {
+            return false;
+        }
+        Object this$jwksUri = this.getJwksUri();
+        Object other$jwksUri = other.getJwksUri();
+        if (this$jwksUri == null ? other$jwksUri != null : !this$jwksUri.equals(other$jwksUri)) {
+            return false;
+        }
+        Object this$outputClaimToHeaders = this.getOutputClaimToHeaders();
+        Object other$outputClaimToHeaders = other.getOutputClaimToHeaders();
+        if (this$outputClaimToHeaders == null ? other$outputClaimToHeaders != null : !this$outputClaimToHeaders.equals(other$outputClaimToHeaders)) {
+            return false;
+        }
+        Object this$outputPayloadToHeader = this.getOutputPayloadToHeader();
+        Object other$outputPayloadToHeader = other.getOutputPayloadToHeader();
+        if (this$outputPayloadToHeader == null ? other$outputPayloadToHeader != null : !this$outputPayloadToHeader.equals(other$outputPayloadToHeader)) {
+            return false;
+        }
+        Object this$spaceDelimitedClaims = this.getSpaceDelimitedClaims();
+        Object other$spaceDelimitedClaims = other.getSpaceDelimitedClaims();
+        if (this$spaceDelimitedClaims == null ? other$spaceDelimitedClaims != null : !this$spaceDelimitedClaims.equals(other$spaceDelimitedClaims)) {
+            return false;
+        }
+        Object this$timeout = this.getTimeout();
+        Object other$timeout = other.getTimeout();
+        if (this$timeout == null ? other$timeout != null : !this$timeout.equals(other$timeout)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof JWTRule;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $audiences = this.getAudiences();
+        result = result * prime + ($audiences == null ? 43 : $audiences.hashCode());
+        Object $forwardOriginalToken = this.getForwardOriginalToken();
+        result = result * prime + ($forwardOriginalToken == null ? 43 : $forwardOriginalToken.hashCode());
+        Object $fromCookies = this.getFromCookies();
+        result = result * prime + ($fromCookies == null ? 43 : $fromCookies.hashCode());
+        Object $fromHeaders = this.getFromHeaders();
+        result = result * prime + ($fromHeaders == null ? 43 : $fromHeaders.hashCode());
+        Object $fromParams = this.getFromParams();
+        result = result * prime + ($fromParams == null ? 43 : $fromParams.hashCode());
+        Object $issuer = this.getIssuer();
+        result = result * prime + ($issuer == null ? 43 : $issuer.hashCode());
+        Object $jwks = this.getJwks();
+        result = result * prime + ($jwks == null ? 43 : $jwks.hashCode());
+        Object $jwksUri = this.getJwksUri();
+        result = result * prime + ($jwksUri == null ? 43 : $jwksUri.hashCode());
+        Object $outputClaimToHeaders = this.getOutputClaimToHeaders();
+        result = result * prime + ($outputClaimToHeaders == null ? 43 : $outputClaimToHeaders.hashCode());
+        Object $outputPayloadToHeader = this.getOutputPayloadToHeader();
+        result = result * prime + ($outputPayloadToHeader == null ? 43 : $outputPayloadToHeader.hashCode());
+        Object $spaceDelimitedClaims = this.getSpaceDelimitedClaims();
+        result = result * prime + ($spaceDelimitedClaims == null ? 43 : $spaceDelimitedClaims.hashCode());
+        Object $timeout = this.getTimeout();
+        result = result * prime + ($timeout == null ? 43 : $timeout.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "JWTRule(" + "audiences=" + this.getAudiences() + ", forwardOriginalToken=" + this.getForwardOriginalToken() + ", fromCookies=" + this.getFromCookies() + ", fromHeaders=" + this.getFromHeaders() + ", fromParams=" + this.getFromParams() + ", issuer=" + this.getIssuer() + ", jwks=" + this.getJwks() + ", jwksUri=" + this.getJwksUri() + ", outputClaimToHeaders=" + this.getOutputClaimToHeaders() + ", outputPayloadToHeader=" + this.getOutputPayloadToHeader() + ", spaceDelimitedClaims=" + this.getSpaceDelimitedClaims() + ", timeout=" + this.getTimeout() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

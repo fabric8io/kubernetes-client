@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PolicyTemplate is the definition of the policy engine resource to apply to the managed cluster, along with configurations on how it should be applied.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "extraDependencies",
     "ignorePending",
     "objectDefinition"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -166,6 +157,64 @@ public class PolicyTemplate implements Editable<PolicyTemplateBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PolicyTemplate)) {
+            return false;
+        }
+        PolicyTemplate other = (PolicyTemplate) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$extraDependencies = this.getExtraDependencies();
+        Object other$extraDependencies = other.getExtraDependencies();
+        if (this$extraDependencies == null ? other$extraDependencies != null : !this$extraDependencies.equals(other$extraDependencies)) {
+            return false;
+        }
+        Object this$ignorePending = this.getIgnorePending();
+        Object other$ignorePending = other.getIgnorePending();
+        if (this$ignorePending == null ? other$ignorePending != null : !this$ignorePending.equals(other$ignorePending)) {
+            return false;
+        }
+        Object this$objectDefinition = this.getObjectDefinition();
+        Object other$objectDefinition = other.getObjectDefinition();
+        if (this$objectDefinition == null ? other$objectDefinition != null : !this$objectDefinition.equals(other$objectDefinition)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PolicyTemplate;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $extraDependencies = this.getExtraDependencies();
+        result = result * prime + ($extraDependencies == null ? 43 : $extraDependencies.hashCode());
+        Object $ignorePending = this.getIgnorePending();
+        result = result * prime + ($ignorePending == null ? 43 : $ignorePending.hashCode());
+        Object $objectDefinition = this.getObjectDefinition();
+        result = result * prime + ($objectDefinition == null ? 43 : $objectDefinition.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PolicyTemplate(" + "extraDependencies=" + this.getExtraDependencies() + ", ignorePending=" + this.getIgnorePending() + ", objectDefinition=" + this.getObjectDefinition() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

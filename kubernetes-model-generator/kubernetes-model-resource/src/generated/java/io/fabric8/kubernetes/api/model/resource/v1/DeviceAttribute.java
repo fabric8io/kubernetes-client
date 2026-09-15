@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DeviceAttribute must have exactly one field set.
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "strings",
     "version",
     "versions"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -270,6 +261,99 @@ public class DeviceAttribute implements Editable<DeviceAttributeBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DeviceAttribute)) {
+            return false;
+        }
+        DeviceAttribute other = (DeviceAttribute) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bool = this.getBool();
+        Object other$bool = other.getBool();
+        if (this$bool == null ? other$bool != null : !this$bool.equals(other$bool)) {
+            return false;
+        }
+        Object this$bools = this.getBools();
+        Object other$bools = other.getBools();
+        if (this$bools == null ? other$bools != null : !this$bools.equals(other$bools)) {
+            return false;
+        }
+        Object this$_int = this.getInt();
+        Object other$_int = other.getInt();
+        if (this$_int == null ? other$_int != null : !this$_int.equals(other$_int)) {
+            return false;
+        }
+        Object this$ints = this.getInts();
+        Object other$ints = other.getInts();
+        if (this$ints == null ? other$ints != null : !this$ints.equals(other$ints)) {
+            return false;
+        }
+        Object this$string = this.getString();
+        Object other$string = other.getString();
+        if (this$string == null ? other$string != null : !this$string.equals(other$string)) {
+            return false;
+        }
+        Object this$strings = this.getStrings();
+        Object other$strings = other.getStrings();
+        if (this$strings == null ? other$strings != null : !this$strings.equals(other$strings)) {
+            return false;
+        }
+        Object this$version = this.getVersion();
+        Object other$version = other.getVersion();
+        if (this$version == null ? other$version != null : !this$version.equals(other$version)) {
+            return false;
+        }
+        Object this$versions = this.getVersions();
+        Object other$versions = other.getVersions();
+        if (this$versions == null ? other$versions != null : !this$versions.equals(other$versions)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DeviceAttribute;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bool = this.getBool();
+        result = result * prime + ($bool == null ? 43 : $bool.hashCode());
+        Object $bools = this.getBools();
+        result = result * prime + ($bools == null ? 43 : $bools.hashCode());
+        Object $_int = this.getInt();
+        result = result * prime + ($_int == null ? 43 : $_int.hashCode());
+        Object $ints = this.getInts();
+        result = result * prime + ($ints == null ? 43 : $ints.hashCode());
+        Object $string = this.getString();
+        result = result * prime + ($string == null ? 43 : $string.hashCode());
+        Object $strings = this.getStrings();
+        result = result * prime + ($strings == null ? 43 : $strings.hashCode());
+        Object $version = this.getVersion();
+        result = result * prime + ($version == null ? 43 : $version.hashCode());
+        Object $versions = this.getVersions();
+        result = result * prime + ($versions == null ? 43 : $versions.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DeviceAttribute(" + "bool=" + this.getBool() + ", bools=" + this.getBools() + ", _int=" + this.getInt() + ", ints=" + this.getInts() + ", string=" + this.getString() + ", strings=" + this.getStrings() + ", version=" + this.getVersion() + ", versions=" + this.getVersions() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

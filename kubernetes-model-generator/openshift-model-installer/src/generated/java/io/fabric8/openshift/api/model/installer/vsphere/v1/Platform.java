@@ -32,9 +32,6 @@ import io.fabric8.openshift.api.model.config.v1.VSpherePlatformLoadBalancer;
 import io.fabric8.openshift.api.model.config.v1.VSpherePlatformNodeNetworking;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Platform stores any global configuration used for vsphere platforms.
@@ -63,12 +60,6 @@ import lombok.experimental.Accessors;
     "username",
     "vCenter",
     "vcenters"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -534,6 +525,190 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Platform)) {
+            return false;
+        }
+        Platform other = (Platform) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVIP = this.getApiVIP();
+        Object other$apiVIP = other.getApiVIP();
+        if (this$apiVIP == null ? other$apiVIP != null : !this$apiVIP.equals(other$apiVIP)) {
+            return false;
+        }
+        Object this$apiVIPs = this.getApiVIPs();
+        Object other$apiVIPs = other.getApiVIPs();
+        if (this$apiVIPs == null ? other$apiVIPs != null : !this$apiVIPs.equals(other$apiVIPs)) {
+            return false;
+        }
+        Object this$cluster = this.getCluster();
+        Object other$cluster = other.getCluster();
+        if (this$cluster == null ? other$cluster != null : !this$cluster.equals(other$cluster)) {
+            return false;
+        }
+        Object this$clusterOSImage = this.getClusterOSImage();
+        Object other$clusterOSImage = other.getClusterOSImage();
+        if (this$clusterOSImage == null ? other$clusterOSImage != null : !this$clusterOSImage.equals(other$clusterOSImage)) {
+            return false;
+        }
+        Object this$datacenter = this.getDatacenter();
+        Object other$datacenter = other.getDatacenter();
+        if (this$datacenter == null ? other$datacenter != null : !this$datacenter.equals(other$datacenter)) {
+            return false;
+        }
+        Object this$defaultDatastore = this.getDefaultDatastore();
+        Object other$defaultDatastore = other.getDefaultDatastore();
+        if (this$defaultDatastore == null ? other$defaultDatastore != null : !this$defaultDatastore.equals(other$defaultDatastore)) {
+            return false;
+        }
+        Object this$defaultMachinePlatform = this.getDefaultMachinePlatform();
+        Object other$defaultMachinePlatform = other.getDefaultMachinePlatform();
+        if (this$defaultMachinePlatform == null ? other$defaultMachinePlatform != null : !this$defaultMachinePlatform.equals(other$defaultMachinePlatform)) {
+            return false;
+        }
+        Object this$diskType = this.getDiskType();
+        Object other$diskType = other.getDiskType();
+        if (this$diskType == null ? other$diskType != null : !this$diskType.equals(other$diskType)) {
+            return false;
+        }
+        Object this$failureDomains = this.getFailureDomains();
+        Object other$failureDomains = other.getFailureDomains();
+        if (this$failureDomains == null ? other$failureDomains != null : !this$failureDomains.equals(other$failureDomains)) {
+            return false;
+        }
+        Object this$folder = this.getFolder();
+        Object other$folder = other.getFolder();
+        if (this$folder == null ? other$folder != null : !this$folder.equals(other$folder)) {
+            return false;
+        }
+        Object this$hosts = this.getHosts();
+        Object other$hosts = other.getHosts();
+        if (this$hosts == null ? other$hosts != null : !this$hosts.equals(other$hosts)) {
+            return false;
+        }
+        Object this$ingressVIP = this.getIngressVIP();
+        Object other$ingressVIP = other.getIngressVIP();
+        if (this$ingressVIP == null ? other$ingressVIP != null : !this$ingressVIP.equals(other$ingressVIP)) {
+            return false;
+        }
+        Object this$ingressVIPs = this.getIngressVIPs();
+        Object other$ingressVIPs = other.getIngressVIPs();
+        if (this$ingressVIPs == null ? other$ingressVIPs != null : !this$ingressVIPs.equals(other$ingressVIPs)) {
+            return false;
+        }
+        Object this$loadBalancer = this.getLoadBalancer();
+        Object other$loadBalancer = other.getLoadBalancer();
+        if (this$loadBalancer == null ? other$loadBalancer != null : !this$loadBalancer.equals(other$loadBalancer)) {
+            return false;
+        }
+        Object this$network = this.getNetwork();
+        Object other$network = other.getNetwork();
+        if (this$network == null ? other$network != null : !this$network.equals(other$network)) {
+            return false;
+        }
+        Object this$nodeNetworking = this.getNodeNetworking();
+        Object other$nodeNetworking = other.getNodeNetworking();
+        if (this$nodeNetworking == null ? other$nodeNetworking != null : !this$nodeNetworking.equals(other$nodeNetworking)) {
+            return false;
+        }
+        Object this$password = this.getPassword();
+        Object other$password = other.getPassword();
+        if (this$password == null ? other$password != null : !this$password.equals(other$password)) {
+            return false;
+        }
+        Object this$resourcePool = this.getResourcePool();
+        Object other$resourcePool = other.getResourcePool();
+        if (this$resourcePool == null ? other$resourcePool != null : !this$resourcePool.equals(other$resourcePool)) {
+            return false;
+        }
+        Object this$username = this.getUsername();
+        Object other$username = other.getUsername();
+        if (this$username == null ? other$username != null : !this$username.equals(other$username)) {
+            return false;
+        }
+        Object this$vCenter = this.getVCenter();
+        Object other$vCenter = other.getVCenter();
+        if (this$vCenter == null ? other$vCenter != null : !this$vCenter.equals(other$vCenter)) {
+            return false;
+        }
+        Object this$vcenters = this.getVcenters();
+        Object other$vcenters = other.getVcenters();
+        if (this$vcenters == null ? other$vcenters != null : !this$vcenters.equals(other$vcenters)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Platform;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVIP = this.getApiVIP();
+        result = result * prime + ($apiVIP == null ? 43 : $apiVIP.hashCode());
+        Object $apiVIPs = this.getApiVIPs();
+        result = result * prime + ($apiVIPs == null ? 43 : $apiVIPs.hashCode());
+        Object $cluster = this.getCluster();
+        result = result * prime + ($cluster == null ? 43 : $cluster.hashCode());
+        Object $clusterOSImage = this.getClusterOSImage();
+        result = result * prime + ($clusterOSImage == null ? 43 : $clusterOSImage.hashCode());
+        Object $datacenter = this.getDatacenter();
+        result = result * prime + ($datacenter == null ? 43 : $datacenter.hashCode());
+        Object $defaultDatastore = this.getDefaultDatastore();
+        result = result * prime + ($defaultDatastore == null ? 43 : $defaultDatastore.hashCode());
+        Object $defaultMachinePlatform = this.getDefaultMachinePlatform();
+        result = result * prime + ($defaultMachinePlatform == null ? 43 : $defaultMachinePlatform.hashCode());
+        Object $diskType = this.getDiskType();
+        result = result * prime + ($diskType == null ? 43 : $diskType.hashCode());
+        Object $failureDomains = this.getFailureDomains();
+        result = result * prime + ($failureDomains == null ? 43 : $failureDomains.hashCode());
+        Object $folder = this.getFolder();
+        result = result * prime + ($folder == null ? 43 : $folder.hashCode());
+        Object $hosts = this.getHosts();
+        result = result * prime + ($hosts == null ? 43 : $hosts.hashCode());
+        Object $ingressVIP = this.getIngressVIP();
+        result = result * prime + ($ingressVIP == null ? 43 : $ingressVIP.hashCode());
+        Object $ingressVIPs = this.getIngressVIPs();
+        result = result * prime + ($ingressVIPs == null ? 43 : $ingressVIPs.hashCode());
+        Object $loadBalancer = this.getLoadBalancer();
+        result = result * prime + ($loadBalancer == null ? 43 : $loadBalancer.hashCode());
+        Object $network = this.getNetwork();
+        result = result * prime + ($network == null ? 43 : $network.hashCode());
+        Object $nodeNetworking = this.getNodeNetworking();
+        result = result * prime + ($nodeNetworking == null ? 43 : $nodeNetworking.hashCode());
+        Object $password = this.getPassword();
+        result = result * prime + ($password == null ? 43 : $password.hashCode());
+        Object $resourcePool = this.getResourcePool();
+        result = result * prime + ($resourcePool == null ? 43 : $resourcePool.hashCode());
+        Object $username = this.getUsername();
+        result = result * prime + ($username == null ? 43 : $username.hashCode());
+        Object $vCenter = this.getVCenter();
+        result = result * prime + ($vCenter == null ? 43 : $vCenter.hashCode());
+        Object $vcenters = this.getVcenters();
+        result = result * prime + ($vcenters == null ? 43 : $vcenters.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Platform(" + "apiVIP=" + this.getApiVIP() + ", apiVIPs=" + this.getApiVIPs() + ", cluster=" + this.getCluster() + ", clusterOSImage=" + this.getClusterOSImage() + ", datacenter=" + this.getDatacenter() + ", defaultDatastore=" + this.getDefaultDatastore() + ", defaultMachinePlatform=" + this.getDefaultMachinePlatform() + ", diskType=" + this.getDiskType() + ", failureDomains=" + this.getFailureDomains() + ", folder=" + this.getFolder() + ", hosts=" + this.getHosts() + ", ingressVIP=" + this.getIngressVIP() + ", ingressVIPs=" + this.getIngressVIPs() + ", loadBalancer=" + this.getLoadBalancer() + ", network=" + this.getNetwork() + ", nodeNetworking=" + this.getNodeNetworking() + ", password=" + this.getPassword() + ", resourcePool=" + this.getResourcePool() + ", username=" + this.getUsername() + ", vCenter=" + this.getVCenter() + ", vcenters=" + this.getVcenters() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "gitProxy",
     "imageLabels",
     "resources"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,78 @@ public class BuildDefaults implements Editable<BuildDefaultsBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BuildDefaults)) {
+            return false;
+        }
+        BuildDefaults other = (BuildDefaults) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$defaultProxy = this.getDefaultProxy();
+        Object other$defaultProxy = other.getDefaultProxy();
+        if (this$defaultProxy == null ? other$defaultProxy != null : !this$defaultProxy.equals(other$defaultProxy)) {
+            return false;
+        }
+        Object this$env = this.getEnv();
+        Object other$env = other.getEnv();
+        if (this$env == null ? other$env != null : !this$env.equals(other$env)) {
+            return false;
+        }
+        Object this$gitProxy = this.getGitProxy();
+        Object other$gitProxy = other.getGitProxy();
+        if (this$gitProxy == null ? other$gitProxy != null : !this$gitProxy.equals(other$gitProxy)) {
+            return false;
+        }
+        Object this$imageLabels = this.getImageLabels();
+        Object other$imageLabels = other.getImageLabels();
+        if (this$imageLabels == null ? other$imageLabels != null : !this$imageLabels.equals(other$imageLabels)) {
+            return false;
+        }
+        Object this$resources = this.getResources();
+        Object other$resources = other.getResources();
+        if (this$resources == null ? other$resources != null : !this$resources.equals(other$resources)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BuildDefaults;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $defaultProxy = this.getDefaultProxy();
+        result = result * prime + ($defaultProxy == null ? 43 : $defaultProxy.hashCode());
+        Object $env = this.getEnv();
+        result = result * prime + ($env == null ? 43 : $env.hashCode());
+        Object $gitProxy = this.getGitProxy();
+        result = result * prime + ($gitProxy == null ? 43 : $gitProxy.hashCode());
+        Object $imageLabels = this.getImageLabels();
+        result = result * prime + ($imageLabels == null ? 43 : $imageLabels.hashCode());
+        Object $resources = this.getResources();
+        result = result * prime + ($resources == null ? 43 : $resources.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BuildDefaults(" + "defaultProxy=" + this.getDefaultProxy() + ", env=" + this.getEnv() + ", gitProxy=" + this.getGitProxy() + ", imageLabels=" + this.getImageLabels() + ", resources=" + this.getResources() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

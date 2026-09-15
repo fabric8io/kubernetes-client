@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Update represents an administrator update request.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "force",
     "image",
     "version"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -179,6 +170,71 @@ public class Update implements Editable<UpdateBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Update)) {
+            return false;
+        }
+        Update other = (Update) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$architecture = this.getArchitecture();
+        Object other$architecture = other.getArchitecture();
+        if (this$architecture == null ? other$architecture != null : !this$architecture.equals(other$architecture)) {
+            return false;
+        }
+        Object this$force = this.getForce();
+        Object other$force = other.getForce();
+        if (this$force == null ? other$force != null : !this$force.equals(other$force)) {
+            return false;
+        }
+        Object this$image = this.getImage();
+        Object other$image = other.getImage();
+        if (this$image == null ? other$image != null : !this$image.equals(other$image)) {
+            return false;
+        }
+        Object this$version = this.getVersion();
+        Object other$version = other.getVersion();
+        if (this$version == null ? other$version != null : !this$version.equals(other$version)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Update;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $architecture = this.getArchitecture();
+        result = result * prime + ($architecture == null ? 43 : $architecture.hashCode());
+        Object $force = this.getForce();
+        result = result * prime + ($force == null ? 43 : $force.hashCode());
+        Object $image = this.getImage();
+        result = result * prime + ($image == null ? 43 : $image.hashCode());
+        Object $version = this.getVersion();
+        result = result * prime + ($version == null ? 43 : $version.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Update(" + "architecture=" + this.getArchitecture() + ", force=" + this.getForce() + ", image=" + this.getImage() + ", version=" + this.getVersion() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

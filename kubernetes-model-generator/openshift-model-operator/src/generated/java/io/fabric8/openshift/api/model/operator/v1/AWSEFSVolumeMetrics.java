@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AWSEFSVolumeMetrics defines the configuration for volume metrics in the EFS CSI Driver.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "recursiveWalk",
     "state"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class AWSEFSVolumeMetrics implements Editable<AWSEFSVolumeMetricsBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AWSEFSVolumeMetrics)) {
+            return false;
+        }
+        AWSEFSVolumeMetrics other = (AWSEFSVolumeMetrics) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$recursiveWalk = this.getRecursiveWalk();
+        Object other$recursiveWalk = other.getRecursiveWalk();
+        if (this$recursiveWalk == null ? other$recursiveWalk != null : !this$recursiveWalk.equals(other$recursiveWalk)) {
+            return false;
+        }
+        Object this$state = this.getState();
+        Object other$state = other.getState();
+        if (this$state == null ? other$state != null : !this$state.equals(other$state)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AWSEFSVolumeMetrics;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $recursiveWalk = this.getRecursiveWalk();
+        result = result * prime + ($recursiveWalk == null ? 43 : $recursiveWalk.hashCode());
+        Object $state = this.getState();
+        result = result * prime + ($state == null ? 43 : $state.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AWSEFSVolumeMetrics(" + "recursiveWalk=" + this.getRecursiveWalk() + ", state=" + this.getState() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

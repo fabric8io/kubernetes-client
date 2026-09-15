@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PerNodeAPIRequestLog contains logs of requests to a certain node.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "byUser",
     "nodeName",
     "requestCount"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -164,6 +155,64 @@ public class PerNodeAPIRequestLog implements Editable<PerNodeAPIRequestLogBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PerNodeAPIRequestLog)) {
+            return false;
+        }
+        PerNodeAPIRequestLog other = (PerNodeAPIRequestLog) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$byUser = this.getByUser();
+        Object other$byUser = other.getByUser();
+        if (this$byUser == null ? other$byUser != null : !this$byUser.equals(other$byUser)) {
+            return false;
+        }
+        Object this$nodeName = this.getNodeName();
+        Object other$nodeName = other.getNodeName();
+        if (this$nodeName == null ? other$nodeName != null : !this$nodeName.equals(other$nodeName)) {
+            return false;
+        }
+        Object this$requestCount = this.getRequestCount();
+        Object other$requestCount = other.getRequestCount();
+        if (this$requestCount == null ? other$requestCount != null : !this$requestCount.equals(other$requestCount)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PerNodeAPIRequestLog;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $byUser = this.getByUser();
+        result = result * prime + ($byUser == null ? 43 : $byUser.hashCode());
+        Object $nodeName = this.getNodeName();
+        result = result * prime + ($nodeName == null ? 43 : $nodeName.hashCode());
+        Object $requestCount = this.getRequestCount();
+        result = result * prime + ($requestCount == null ? 43 : $requestCount.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PerNodeAPIRequestLog(" + "byUser=" + this.getByUser() + ", nodeName=" + this.getNodeName() + ", requestCount=" + this.getRequestCount() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

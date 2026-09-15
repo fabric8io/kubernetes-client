@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * A BuildPostCommitSpec holds a build post commit hook specification. The hook executes a command in a temporary container running the build output image, immediately after the last layer of the image is committed and before the image is pushed to a registry. The command is executed with the current working directory ($PWD) set to the image's WORKDIR.<br><p> <br><p> The build will be marked as failed if the hook execution fails. It will fail if the script or command return a non-zero exit code, or if there is any other error related to starting the temporary container.<br><p> <br><p> There are five different ways to configure the hook. As an example, all forms below are equivalent and will execute `rake test --verbose`.<br><p> <br><p> 1. Shell script:<br><p> <br><p> 	   "postCommit": {<br><p> 	     "script": "rake test --verbose",<br><p> 	   }<br><p> <br><p> 	The above is a convenient form which is equivalent to:<br><p> <br><p> 	   "postCommit": {<br><p> 	     "command": ["/bin/sh", "-ic"],<br><p> 	     "args":    ["rake test --verbose"]<br><p> 	   }<br><p> <br><p> 2. A command as the image entrypoint:<br><p> <br><p> 	   "postCommit": {<br><p> 	     "commit": ["rake", "test", "--verbose"]<br><p> 	   }<br><p> <br><p> 	Command overrides the image entrypoint in the exec form, as documented in<br><p> 	Docker: https://docs.docker.com/engine/reference/builder/#entrypoint.<br><p> <br><p> 3. Pass arguments to the default entrypoint:<br><p> <br><p> 	       "postCommit": {<br><p> 			      "args": ["rake", "test", "--verbose"]<br><p> 		      }<br><p> <br><p> 	    This form is only useful if the image entrypoint can handle arguments.<br><p> <br><p> 4. Shell script with arguments:<br><p> <br><p> 	   "postCommit": {<br><p> 	     "script": "rake test $1",<br><p> 	     "args":   ["--verbose"]<br><p> 	   }<br><p> <br><p> 	This form is useful if you need to pass arguments that would otherwise be<br><p> 	hard to quote properly in the shell script. In the script, $0 will be<br><p> 	"/bin/sh" and $1, $2, etc, are the positional arguments from Args.<br><p> <br><p> 5. Command with arguments:<br><p> <br><p> 	   "postCommit": {<br><p> 	     "command": ["rake", "test"],<br><p> 	     "args":    ["--verbose"]<br><p> 	   }<br><p> <br><p> 	This form is equivalent to appending the arguments to the Command slice.<br><p> <br><p> It is invalid to provide both Script and Command simultaneously. If none of the fields are specified, the hook is not executed.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "args",
     "command",
     "script"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -165,6 +156,64 @@ public class BuildPostCommitSpec implements Editable<BuildPostCommitSpecBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BuildPostCommitSpec)) {
+            return false;
+        }
+        BuildPostCommitSpec other = (BuildPostCommitSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$args = this.getArgs();
+        Object other$args = other.getArgs();
+        if (this$args == null ? other$args != null : !this$args.equals(other$args)) {
+            return false;
+        }
+        Object this$command = this.getCommand();
+        Object other$command = other.getCommand();
+        if (this$command == null ? other$command != null : !this$command.equals(other$command)) {
+            return false;
+        }
+        Object this$script = this.getScript();
+        Object other$script = other.getScript();
+        if (this$script == null ? other$script != null : !this$script.equals(other$script)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BuildPostCommitSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $args = this.getArgs();
+        result = result * prime + ($args == null ? 43 : $args.hashCode());
+        Object $command = this.getCommand();
+        result = result * prime + ($command == null ? 43 : $command.hashCode());
+        Object $script = this.getScript();
+        result = result * prime + ($script == null ? 43 : $script.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BuildPostCommitSpec(" + "args=" + this.getArgs() + ", command=" + this.getCommand() + ", script=" + this.getScript() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

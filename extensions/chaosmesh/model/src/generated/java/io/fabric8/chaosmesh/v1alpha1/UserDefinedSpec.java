@@ -28,21 +28,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "attackCmd",
     "recoverCmd"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -137,6 +128,57 @@ public class UserDefinedSpec implements Editable<UserDefinedSpecBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof UserDefinedSpec)) {
+            return false;
+        }
+        UserDefinedSpec other = (UserDefinedSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$attackCmd = this.getAttackCmd();
+        Object other$attackCmd = other.getAttackCmd();
+        if (this$attackCmd == null ? other$attackCmd != null : !this$attackCmd.equals(other$attackCmd)) {
+            return false;
+        }
+        Object this$recoverCmd = this.getRecoverCmd();
+        Object other$recoverCmd = other.getRecoverCmd();
+        if (this$recoverCmd == null ? other$recoverCmd != null : !this$recoverCmd.equals(other$recoverCmd)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof UserDefinedSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $attackCmd = this.getAttackCmd();
+        result = result * prime + ($attackCmd == null ? 43 : $attackCmd.hashCode());
+        Object $recoverCmd = this.getRecoverCmd();
+        result = result * prime + ($recoverCmd == null ? 43 : $recoverCmd.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDefinedSpec(" + "attackCmd=" + this.getAttackCmd() + ", recoverCmd=" + this.getRecoverCmd() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

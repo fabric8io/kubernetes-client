@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.tekton.pod.Template;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PipelineTaskRunSpec  can be used to configure specific specs for a concrete Task
@@ -50,12 +47,6 @@ import lombok.experimental.Accessors;
     "sidecarSpecs",
     "stepSpecs",
     "timeout"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -268,6 +259,99 @@ public class PipelineTaskRunSpec implements Editable<PipelineTaskRunSpecBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PipelineTaskRunSpec)) {
+            return false;
+        }
+        PipelineTaskRunSpec other = (PipelineTaskRunSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$computeResources = this.getComputeResources();
+        Object other$computeResources = other.getComputeResources();
+        if (this$computeResources == null ? other$computeResources != null : !this$computeResources.equals(other$computeResources)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$pipelineTaskName = this.getPipelineTaskName();
+        Object other$pipelineTaskName = other.getPipelineTaskName();
+        if (this$pipelineTaskName == null ? other$pipelineTaskName != null : !this$pipelineTaskName.equals(other$pipelineTaskName)) {
+            return false;
+        }
+        Object this$podTemplate = this.getPodTemplate();
+        Object other$podTemplate = other.getPodTemplate();
+        if (this$podTemplate == null ? other$podTemplate != null : !this$podTemplate.equals(other$podTemplate)) {
+            return false;
+        }
+        Object this$serviceAccountName = this.getServiceAccountName();
+        Object other$serviceAccountName = other.getServiceAccountName();
+        if (this$serviceAccountName == null ? other$serviceAccountName != null : !this$serviceAccountName.equals(other$serviceAccountName)) {
+            return false;
+        }
+        Object this$sidecarSpecs = this.getSidecarSpecs();
+        Object other$sidecarSpecs = other.getSidecarSpecs();
+        if (this$sidecarSpecs == null ? other$sidecarSpecs != null : !this$sidecarSpecs.equals(other$sidecarSpecs)) {
+            return false;
+        }
+        Object this$stepSpecs = this.getStepSpecs();
+        Object other$stepSpecs = other.getStepSpecs();
+        if (this$stepSpecs == null ? other$stepSpecs != null : !this$stepSpecs.equals(other$stepSpecs)) {
+            return false;
+        }
+        Object this$timeout = this.getTimeout();
+        Object other$timeout = other.getTimeout();
+        if (this$timeout == null ? other$timeout != null : !this$timeout.equals(other$timeout)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PipelineTaskRunSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $computeResources = this.getComputeResources();
+        result = result * prime + ($computeResources == null ? 43 : $computeResources.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $pipelineTaskName = this.getPipelineTaskName();
+        result = result * prime + ($pipelineTaskName == null ? 43 : $pipelineTaskName.hashCode());
+        Object $podTemplate = this.getPodTemplate();
+        result = result * prime + ($podTemplate == null ? 43 : $podTemplate.hashCode());
+        Object $serviceAccountName = this.getServiceAccountName();
+        result = result * prime + ($serviceAccountName == null ? 43 : $serviceAccountName.hashCode());
+        Object $sidecarSpecs = this.getSidecarSpecs();
+        result = result * prime + ($sidecarSpecs == null ? 43 : $sidecarSpecs.hashCode());
+        Object $stepSpecs = this.getStepSpecs();
+        result = result * prime + ($stepSpecs == null ? 43 : $stepSpecs.hashCode());
+        Object $timeout = this.getTimeout();
+        result = result * prime + ($timeout == null ? 43 : $timeout.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PipelineTaskRunSpec(" + "computeResources=" + this.getComputeResources() + ", metadata=" + this.getMetadata() + ", pipelineTaskName=" + this.getPipelineTaskName() + ", podTemplate=" + this.getPodTemplate() + ", serviceAccountName=" + this.getServiceAccountName() + ", sidecarSpecs=" + this.getSidecarSpecs() + ", stepSpecs=" + this.getStepSpecs() + ", timeout=" + this.getTimeout() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * EventListenerTrigger represents a connection between TriggerBinding, Params, and TriggerTemplate; TriggerBinding provides extracted values for TriggerTemplate to then create resources from. TriggerRef can also be provided instead of TriggerBinding, Interceptors and TriggerTemplate
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "serviceAccountName",
     "template",
     "triggerRef"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -226,6 +217,85 @@ public class EventListenerTrigger implements Editable<EventListenerTriggerBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EventListenerTrigger)) {
+            return false;
+        }
+        EventListenerTrigger other = (EventListenerTrigger) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bindings = this.getBindings();
+        Object other$bindings = other.getBindings();
+        if (this$bindings == null ? other$bindings != null : !this$bindings.equals(other$bindings)) {
+            return false;
+        }
+        Object this$interceptors = this.getInterceptors();
+        Object other$interceptors = other.getInterceptors();
+        if (this$interceptors == null ? other$interceptors != null : !this$interceptors.equals(other$interceptors)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$serviceAccountName = this.getServiceAccountName();
+        Object other$serviceAccountName = other.getServiceAccountName();
+        if (this$serviceAccountName == null ? other$serviceAccountName != null : !this$serviceAccountName.equals(other$serviceAccountName)) {
+            return false;
+        }
+        Object this$template = this.getTemplate();
+        Object other$template = other.getTemplate();
+        if (this$template == null ? other$template != null : !this$template.equals(other$template)) {
+            return false;
+        }
+        Object this$triggerRef = this.getTriggerRef();
+        Object other$triggerRef = other.getTriggerRef();
+        if (this$triggerRef == null ? other$triggerRef != null : !this$triggerRef.equals(other$triggerRef)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EventListenerTrigger;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bindings = this.getBindings();
+        result = result * prime + ($bindings == null ? 43 : $bindings.hashCode());
+        Object $interceptors = this.getInterceptors();
+        result = result * prime + ($interceptors == null ? 43 : $interceptors.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $serviceAccountName = this.getServiceAccountName();
+        result = result * prime + ($serviceAccountName == null ? 43 : $serviceAccountName.hashCode());
+        Object $template = this.getTemplate();
+        result = result * prime + ($template == null ? 43 : $template.hashCode());
+        Object $triggerRef = this.getTriggerRef();
+        result = result * prime + ($triggerRef == null ? 43 : $triggerRef.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EventListenerTrigger(" + "bindings=" + this.getBindings() + ", interceptors=" + this.getInterceptors() + ", name=" + this.getName() + ", serviceAccountName=" + this.getServiceAccountName() + ", template=" + this.getTemplate() + ", triggerRef=" + this.getTriggerRef() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SpreadPolicy defines how the placement decision should be spread among the ManagedClusters.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "spreadConstraints"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -124,6 +115,50 @@ public class SpreadPolicy implements Editable<SpreadPolicyBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SpreadPolicy)) {
+            return false;
+        }
+        SpreadPolicy other = (SpreadPolicy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$spreadConstraints = this.getSpreadConstraints();
+        Object other$spreadConstraints = other.getSpreadConstraints();
+        if (this$spreadConstraints == null ? other$spreadConstraints != null : !this$spreadConstraints.equals(other$spreadConstraints)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SpreadPolicy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $spreadConstraints = this.getSpreadConstraints();
+        result = result * prime + ($spreadConstraints == null ? 43 : $spreadConstraints.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SpreadPolicy(" + "spreadConstraints=" + this.getSpreadConstraints() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

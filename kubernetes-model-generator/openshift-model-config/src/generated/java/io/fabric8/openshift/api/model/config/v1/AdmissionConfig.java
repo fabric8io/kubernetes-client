@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
     "disabledPlugins",
     "enabledPlugins",
     "pluginConfig"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -158,6 +149,64 @@ public class AdmissionConfig implements Editable<AdmissionConfigBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AdmissionConfig)) {
+            return false;
+        }
+        AdmissionConfig other = (AdmissionConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$disabledPlugins = this.getDisabledPlugins();
+        Object other$disabledPlugins = other.getDisabledPlugins();
+        if (this$disabledPlugins == null ? other$disabledPlugins != null : !this$disabledPlugins.equals(other$disabledPlugins)) {
+            return false;
+        }
+        Object this$enabledPlugins = this.getEnabledPlugins();
+        Object other$enabledPlugins = other.getEnabledPlugins();
+        if (this$enabledPlugins == null ? other$enabledPlugins != null : !this$enabledPlugins.equals(other$enabledPlugins)) {
+            return false;
+        }
+        Object this$pluginConfig = this.getPluginConfig();
+        Object other$pluginConfig = other.getPluginConfig();
+        if (this$pluginConfig == null ? other$pluginConfig != null : !this$pluginConfig.equals(other$pluginConfig)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AdmissionConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $disabledPlugins = this.getDisabledPlugins();
+        result = result * prime + ($disabledPlugins == null ? 43 : $disabledPlugins.hashCode());
+        Object $enabledPlugins = this.getEnabledPlugins();
+        result = result * prime + ($enabledPlugins == null ? 43 : $enabledPlugins.hashCode());
+        Object $pluginConfig = this.getPluginConfig();
+        result = result * prime + ($pluginConfig == null ? 43 : $pluginConfig.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AdmissionConfig(" + "disabledPlugins=" + this.getDisabledPlugins() + ", enabledPlugins=" + this.getEnabledPlugins() + ", pluginConfig=" + this.getPluginConfig() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

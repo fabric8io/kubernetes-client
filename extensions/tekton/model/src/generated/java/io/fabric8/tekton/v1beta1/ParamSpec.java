@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ParamSpec defines arbitrary parameters needed beyond typed inputs (such as resources). Parameter values are provided by users as inputs on a TaskRun or PipelineRun.
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "name",
     "properties",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -226,6 +217,85 @@ public class ParamSpec implements Editable<ParamSpecBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ParamSpec)) {
+            return false;
+        }
+        ParamSpec other = (ParamSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$_default = this.getDefault();
+        Object other$_default = other.getDefault();
+        if (this$_default == null ? other$_default != null : !this$_default.equals(other$_default)) {
+            return false;
+        }
+        Object this$description = this.getDescription();
+        Object other$description = other.getDescription();
+        if (this$description == null ? other$description != null : !this$description.equals(other$description)) {
+            return false;
+        }
+        Object this$_enum = this.getEnum();
+        Object other$_enum = other.getEnum();
+        if (this$_enum == null ? other$_enum != null : !this$_enum.equals(other$_enum)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$properties = this.getProperties();
+        Object other$properties = other.getProperties();
+        if (this$properties == null ? other$properties != null : !this$properties.equals(other$properties)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ParamSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $_default = this.getDefault();
+        result = result * prime + ($_default == null ? 43 : $_default.hashCode());
+        Object $description = this.getDescription();
+        result = result * prime + ($description == null ? 43 : $description.hashCode());
+        Object $_enum = this.getEnum();
+        result = result * prime + ($_enum == null ? 43 : $_enum.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $properties = this.getProperties();
+        result = result * prime + ($properties == null ? 43 : $properties.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ParamSpec(" + "_default=" + this.getDefault() + ", description=" + this.getDescription() + ", _enum=" + this.getEnum() + ", name=" + this.getName() + ", properties=" + this.getProperties() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

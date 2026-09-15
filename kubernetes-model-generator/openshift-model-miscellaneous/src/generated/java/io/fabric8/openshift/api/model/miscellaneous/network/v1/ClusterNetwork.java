@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClusterNetwork was used by OpenShift SDN. DEPRECATED: OpenShift SDN is no longer supported and this object is no longer used in any way by OpenShift.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
@@ -52,12 +49,6 @@ import lombok.experimental.Accessors;
     "pluginName",
     "serviceNetwork",
     "vxlanPort"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -308,6 +299,113 @@ public class ClusterNetwork implements Editable<ClusterNetworkBuilder>, HasMetad
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterNetwork)) {
+            return false;
+        }
+        ClusterNetwork other = (ClusterNetwork) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$clusterNetworks = this.getClusterNetworks();
+        Object other$clusterNetworks = other.getClusterNetworks();
+        if (this$clusterNetworks == null ? other$clusterNetworks != null : !this$clusterNetworks.equals(other$clusterNetworks)) {
+            return false;
+        }
+        Object this$hostsubnetlength = this.getHostsubnetlength();
+        Object other$hostsubnetlength = other.getHostsubnetlength();
+        if (this$hostsubnetlength == null ? other$hostsubnetlength != null : !this$hostsubnetlength.equals(other$hostsubnetlength)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$mtu = this.getMtu();
+        Object other$mtu = other.getMtu();
+        if (this$mtu == null ? other$mtu != null : !this$mtu.equals(other$mtu)) {
+            return false;
+        }
+        Object this$network = this.getNetwork();
+        Object other$network = other.getNetwork();
+        if (this$network == null ? other$network != null : !this$network.equals(other$network)) {
+            return false;
+        }
+        Object this$pluginName = this.getPluginName();
+        Object other$pluginName = other.getPluginName();
+        if (this$pluginName == null ? other$pluginName != null : !this$pluginName.equals(other$pluginName)) {
+            return false;
+        }
+        Object this$serviceNetwork = this.getServiceNetwork();
+        Object other$serviceNetwork = other.getServiceNetwork();
+        if (this$serviceNetwork == null ? other$serviceNetwork != null : !this$serviceNetwork.equals(other$serviceNetwork)) {
+            return false;
+        }
+        Object this$vxlanPort = this.getVxlanPort();
+        Object other$vxlanPort = other.getVxlanPort();
+        if (this$vxlanPort == null ? other$vxlanPort != null : !this$vxlanPort.equals(other$vxlanPort)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterNetwork;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $clusterNetworks = this.getClusterNetworks();
+        result = result * prime + ($clusterNetworks == null ? 43 : $clusterNetworks.hashCode());
+        Object $hostsubnetlength = this.getHostsubnetlength();
+        result = result * prime + ($hostsubnetlength == null ? 43 : $hostsubnetlength.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $mtu = this.getMtu();
+        result = result * prime + ($mtu == null ? 43 : $mtu.hashCode());
+        Object $network = this.getNetwork();
+        result = result * prime + ($network == null ? 43 : $network.hashCode());
+        Object $pluginName = this.getPluginName();
+        result = result * prime + ($pluginName == null ? 43 : $pluginName.hashCode());
+        Object $serviceNetwork = this.getServiceNetwork();
+        result = result * prime + ($serviceNetwork == null ? 43 : $serviceNetwork.hashCode());
+        Object $vxlanPort = this.getVxlanPort();
+        result = result * prime + ($vxlanPort == null ? 43 : $vxlanPort.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterNetwork(" + "apiVersion=" + this.getApiVersion() + ", clusterNetworks=" + this.getClusterNetworks() + ", hostsubnetlength=" + this.getHostsubnetlength() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata() + ", mtu=" + this.getMtu() + ", network=" + this.getNetwork() + ", pluginName=" + this.getPluginName() + ", serviceNetwork=" + this.getServiceNetwork() + ", vxlanPort=" + this.getVxlanPort() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

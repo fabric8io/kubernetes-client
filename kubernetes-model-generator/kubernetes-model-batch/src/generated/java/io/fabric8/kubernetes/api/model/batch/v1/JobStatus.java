@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * JobStatus represents the current state of a Job.
@@ -51,12 +48,6 @@ import lombok.experimental.Accessors;
     "succeeded",
     "terminating",
     "uncountedTerminatedPods"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -324,6 +315,120 @@ public class JobStatus implements Editable<JobStatusBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof JobStatus)) {
+            return false;
+        }
+        JobStatus other = (JobStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$active = this.getActive();
+        Object other$active = other.getActive();
+        if (this$active == null ? other$active != null : !this$active.equals(other$active)) {
+            return false;
+        }
+        Object this$completedIndexes = this.getCompletedIndexes();
+        Object other$completedIndexes = other.getCompletedIndexes();
+        if (this$completedIndexes == null ? other$completedIndexes != null : !this$completedIndexes.equals(other$completedIndexes)) {
+            return false;
+        }
+        Object this$completionTime = this.getCompletionTime();
+        Object other$completionTime = other.getCompletionTime();
+        if (this$completionTime == null ? other$completionTime != null : !this$completionTime.equals(other$completionTime)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$failed = this.getFailed();
+        Object other$failed = other.getFailed();
+        if (this$failed == null ? other$failed != null : !this$failed.equals(other$failed)) {
+            return false;
+        }
+        Object this$failedIndexes = this.getFailedIndexes();
+        Object other$failedIndexes = other.getFailedIndexes();
+        if (this$failedIndexes == null ? other$failedIndexes != null : !this$failedIndexes.equals(other$failedIndexes)) {
+            return false;
+        }
+        Object this$ready = this.getReady();
+        Object other$ready = other.getReady();
+        if (this$ready == null ? other$ready != null : !this$ready.equals(other$ready)) {
+            return false;
+        }
+        Object this$startTime = this.getStartTime();
+        Object other$startTime = other.getStartTime();
+        if (this$startTime == null ? other$startTime != null : !this$startTime.equals(other$startTime)) {
+            return false;
+        }
+        Object this$succeeded = this.getSucceeded();
+        Object other$succeeded = other.getSucceeded();
+        if (this$succeeded == null ? other$succeeded != null : !this$succeeded.equals(other$succeeded)) {
+            return false;
+        }
+        Object this$terminating = this.getTerminating();
+        Object other$terminating = other.getTerminating();
+        if (this$terminating == null ? other$terminating != null : !this$terminating.equals(other$terminating)) {
+            return false;
+        }
+        Object this$uncountedTerminatedPods = this.getUncountedTerminatedPods();
+        Object other$uncountedTerminatedPods = other.getUncountedTerminatedPods();
+        if (this$uncountedTerminatedPods == null ? other$uncountedTerminatedPods != null : !this$uncountedTerminatedPods.equals(other$uncountedTerminatedPods)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof JobStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $active = this.getActive();
+        result = result * prime + ($active == null ? 43 : $active.hashCode());
+        Object $completedIndexes = this.getCompletedIndexes();
+        result = result * prime + ($completedIndexes == null ? 43 : $completedIndexes.hashCode());
+        Object $completionTime = this.getCompletionTime();
+        result = result * prime + ($completionTime == null ? 43 : $completionTime.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $failed = this.getFailed();
+        result = result * prime + ($failed == null ? 43 : $failed.hashCode());
+        Object $failedIndexes = this.getFailedIndexes();
+        result = result * prime + ($failedIndexes == null ? 43 : $failedIndexes.hashCode());
+        Object $ready = this.getReady();
+        result = result * prime + ($ready == null ? 43 : $ready.hashCode());
+        Object $startTime = this.getStartTime();
+        result = result * prime + ($startTime == null ? 43 : $startTime.hashCode());
+        Object $succeeded = this.getSucceeded();
+        result = result * prime + ($succeeded == null ? 43 : $succeeded.hashCode());
+        Object $terminating = this.getTerminating();
+        result = result * prime + ($terminating == null ? 43 : $terminating.hashCode());
+        Object $uncountedTerminatedPods = this.getUncountedTerminatedPods();
+        result = result * prime + ($uncountedTerminatedPods == null ? 43 : $uncountedTerminatedPods.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "JobStatus(" + "active=" + this.getActive() + ", completedIndexes=" + this.getCompletedIndexes() + ", completionTime=" + this.getCompletionTime() + ", conditions=" + this.getConditions() + ", failed=" + this.getFailed() + ", failedIndexes=" + this.getFailedIndexes() + ", ready=" + this.getReady() + ", startTime=" + this.getStartTime() + ", succeeded=" + this.getSucceeded() + ", terminating=" + this.getTerminating() + ", uncountedTerminatedPods=" + this.getUncountedTerminatedPods() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

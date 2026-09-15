@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -38,12 +35,6 @@ import lombok.experimental.Accessors;
     "address",
     "lastConnect",
     "lastObservedState"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -139,6 +130,64 @@ public class GRPCConnectionState implements Editable<GRPCConnectionStateBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GRPCConnectionState)) {
+            return false;
+        }
+        GRPCConnectionState other = (GRPCConnectionState) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$address = this.getAddress();
+        Object other$address = other.getAddress();
+        if (this$address == null ? other$address != null : !this$address.equals(other$address)) {
+            return false;
+        }
+        Object this$lastConnect = this.getLastConnect();
+        Object other$lastConnect = other.getLastConnect();
+        if (this$lastConnect == null ? other$lastConnect != null : !this$lastConnect.equals(other$lastConnect)) {
+            return false;
+        }
+        Object this$lastObservedState = this.getLastObservedState();
+        Object other$lastObservedState = other.getLastObservedState();
+        if (this$lastObservedState == null ? other$lastObservedState != null : !this$lastObservedState.equals(other$lastObservedState)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GRPCConnectionState;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $address = this.getAddress();
+        result = result * prime + ($address == null ? 43 : $address.hashCode());
+        Object $lastConnect = this.getLastConnect();
+        result = result * prime + ($lastConnect == null ? 43 : $lastConnect.hashCode());
+        Object $lastObservedState = this.getLastObservedState();
+        result = result * prime + ($lastObservedState == null ? 43 : $lastObservedState.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GRPCConnectionState(" + "address=" + this.getAddress() + ", lastConnect=" + this.getLastConnect() + ", lastObservedState=" + this.getLastObservedState() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

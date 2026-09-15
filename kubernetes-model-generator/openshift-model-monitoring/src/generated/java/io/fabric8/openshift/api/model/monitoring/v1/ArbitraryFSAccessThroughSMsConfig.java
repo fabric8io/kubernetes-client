@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ArbitraryFSAccessThroughSMsConfig enables users to configure, whether a service monitor selected by the Prometheus instance is allowed to use arbitrary files on the file system of the Prometheus container. This is the case when e.g. a service monitor specifies a BearerTokenFile in an endpoint. A malicious user could create a service monitor selecting arbitrary secret files in the Prometheus container. Those secrets would then be sent with a scrape request by Prometheus to a malicious target. Denying the above would prevent the attack, users can instead use the BearerTokenSecret field.
@@ -38,12 +35,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "deny"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -119,6 +110,50 @@ public class ArbitraryFSAccessThroughSMsConfig implements Editable<ArbitraryFSAc
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ArbitraryFSAccessThroughSMsConfig)) {
+            return false;
+        }
+        ArbitraryFSAccessThroughSMsConfig other = (ArbitraryFSAccessThroughSMsConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$deny = this.getDeny();
+        Object other$deny = other.getDeny();
+        if (this$deny == null ? other$deny != null : !this$deny.equals(other$deny)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ArbitraryFSAccessThroughSMsConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $deny = this.getDeny();
+        result = result * prime + ($deny == null ? 43 : $deny.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ArbitraryFSAccessThroughSMsConfig(" + "deny=" + this.getDeny() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

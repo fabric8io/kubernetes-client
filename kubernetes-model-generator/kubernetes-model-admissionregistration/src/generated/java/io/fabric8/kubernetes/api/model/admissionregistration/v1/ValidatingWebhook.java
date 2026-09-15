@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ValidatingWebhook describes an admission webhook and the resources and operations it applies to.
@@ -51,12 +48,6 @@ import lombok.experimental.Accessors;
     "rules",
     "sideEffects",
     "timeoutSeconds"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -328,6 +319,120 @@ public class ValidatingWebhook implements Editable<ValidatingWebhookBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ValidatingWebhook)) {
+            return false;
+        }
+        ValidatingWebhook other = (ValidatingWebhook) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$admissionReviewVersions = this.getAdmissionReviewVersions();
+        Object other$admissionReviewVersions = other.getAdmissionReviewVersions();
+        if (this$admissionReviewVersions == null ? other$admissionReviewVersions != null : !this$admissionReviewVersions.equals(other$admissionReviewVersions)) {
+            return false;
+        }
+        Object this$clientConfig = this.getClientConfig();
+        Object other$clientConfig = other.getClientConfig();
+        if (this$clientConfig == null ? other$clientConfig != null : !this$clientConfig.equals(other$clientConfig)) {
+            return false;
+        }
+        Object this$failurePolicy = this.getFailurePolicy();
+        Object other$failurePolicy = other.getFailurePolicy();
+        if (this$failurePolicy == null ? other$failurePolicy != null : !this$failurePolicy.equals(other$failurePolicy)) {
+            return false;
+        }
+        Object this$matchConditions = this.getMatchConditions();
+        Object other$matchConditions = other.getMatchConditions();
+        if (this$matchConditions == null ? other$matchConditions != null : !this$matchConditions.equals(other$matchConditions)) {
+            return false;
+        }
+        Object this$matchPolicy = this.getMatchPolicy();
+        Object other$matchPolicy = other.getMatchPolicy();
+        if (this$matchPolicy == null ? other$matchPolicy != null : !this$matchPolicy.equals(other$matchPolicy)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$namespaceSelector = this.getNamespaceSelector();
+        Object other$namespaceSelector = other.getNamespaceSelector();
+        if (this$namespaceSelector == null ? other$namespaceSelector != null : !this$namespaceSelector.equals(other$namespaceSelector)) {
+            return false;
+        }
+        Object this$objectSelector = this.getObjectSelector();
+        Object other$objectSelector = other.getObjectSelector();
+        if (this$objectSelector == null ? other$objectSelector != null : !this$objectSelector.equals(other$objectSelector)) {
+            return false;
+        }
+        Object this$rules = this.getRules();
+        Object other$rules = other.getRules();
+        if (this$rules == null ? other$rules != null : !this$rules.equals(other$rules)) {
+            return false;
+        }
+        Object this$sideEffects = this.getSideEffects();
+        Object other$sideEffects = other.getSideEffects();
+        if (this$sideEffects == null ? other$sideEffects != null : !this$sideEffects.equals(other$sideEffects)) {
+            return false;
+        }
+        Object this$timeoutSeconds = this.getTimeoutSeconds();
+        Object other$timeoutSeconds = other.getTimeoutSeconds();
+        if (this$timeoutSeconds == null ? other$timeoutSeconds != null : !this$timeoutSeconds.equals(other$timeoutSeconds)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ValidatingWebhook;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $admissionReviewVersions = this.getAdmissionReviewVersions();
+        result = result * prime + ($admissionReviewVersions == null ? 43 : $admissionReviewVersions.hashCode());
+        Object $clientConfig = this.getClientConfig();
+        result = result * prime + ($clientConfig == null ? 43 : $clientConfig.hashCode());
+        Object $failurePolicy = this.getFailurePolicy();
+        result = result * prime + ($failurePolicy == null ? 43 : $failurePolicy.hashCode());
+        Object $matchConditions = this.getMatchConditions();
+        result = result * prime + ($matchConditions == null ? 43 : $matchConditions.hashCode());
+        Object $matchPolicy = this.getMatchPolicy();
+        result = result * prime + ($matchPolicy == null ? 43 : $matchPolicy.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $namespaceSelector = this.getNamespaceSelector();
+        result = result * prime + ($namespaceSelector == null ? 43 : $namespaceSelector.hashCode());
+        Object $objectSelector = this.getObjectSelector();
+        result = result * prime + ($objectSelector == null ? 43 : $objectSelector.hashCode());
+        Object $rules = this.getRules();
+        result = result * prime + ($rules == null ? 43 : $rules.hashCode());
+        Object $sideEffects = this.getSideEffects();
+        result = result * prime + ($sideEffects == null ? 43 : $sideEffects.hashCode());
+        Object $timeoutSeconds = this.getTimeoutSeconds();
+        result = result * prime + ($timeoutSeconds == null ? 43 : $timeoutSeconds.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ValidatingWebhook(" + "admissionReviewVersions=" + this.getAdmissionReviewVersions() + ", clientConfig=" + this.getClientConfig() + ", failurePolicy=" + this.getFailurePolicy() + ", matchConditions=" + this.getMatchConditions() + ", matchPolicy=" + this.getMatchPolicy() + ", name=" + this.getName() + ", namespaceSelector=" + this.getNamespaceSelector() + ", objectSelector=" + this.getObjectSelector() + ", rules=" + this.getRules() + ", sideEffects=" + this.getSideEffects() + ", timeoutSeconds=" + this.getTimeoutSeconds() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

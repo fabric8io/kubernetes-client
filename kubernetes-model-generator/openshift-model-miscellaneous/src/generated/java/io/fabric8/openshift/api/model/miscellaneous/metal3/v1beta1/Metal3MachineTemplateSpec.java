@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Metal3MachineTemplateSpec defines the desired state of Metal3MachineTemplate.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "nodeReuse",
     "template"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class Metal3MachineTemplateSpec implements Editable<Metal3MachineTemplate
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Metal3MachineTemplateSpec)) {
+            return false;
+        }
+        Metal3MachineTemplateSpec other = (Metal3MachineTemplateSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$nodeReuse = this.getNodeReuse();
+        Object other$nodeReuse = other.getNodeReuse();
+        if (this$nodeReuse == null ? other$nodeReuse != null : !this$nodeReuse.equals(other$nodeReuse)) {
+            return false;
+        }
+        Object this$template = this.getTemplate();
+        Object other$template = other.getTemplate();
+        if (this$template == null ? other$template != null : !this$template.equals(other$template)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Metal3MachineTemplateSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $nodeReuse = this.getNodeReuse();
+        result = result * prime + ($nodeReuse == null ? 43 : $nodeReuse.hashCode());
+        Object $template = this.getTemplate();
+        result = result * prime + ($template == null ? 43 : $template.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Metal3MachineTemplateSpec(" + "nodeReuse=" + this.getNodeReuse() + ", template=" + this.getTemplate() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

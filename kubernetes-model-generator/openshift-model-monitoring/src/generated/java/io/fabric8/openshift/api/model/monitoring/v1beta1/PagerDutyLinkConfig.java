@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PagerDutyLinkConfig attaches text links to an incident
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "alt",
     "href"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class PagerDutyLinkConfig implements Editable<PagerDutyLinkConfigBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PagerDutyLinkConfig)) {
+            return false;
+        }
+        PagerDutyLinkConfig other = (PagerDutyLinkConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$alt = this.getAlt();
+        Object other$alt = other.getAlt();
+        if (this$alt == null ? other$alt != null : !this$alt.equals(other$alt)) {
+            return false;
+        }
+        Object this$href = this.getHref();
+        Object other$href = other.getHref();
+        if (this$href == null ? other$href != null : !this$href.equals(other$href)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PagerDutyLinkConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $alt = this.getAlt();
+        result = result * prime + ($alt == null ? 43 : $alt.hashCode());
+        Object $href = this.getHref();
+        result = result * prime + ($href == null ? 43 : $href.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PagerDutyLinkConfig(" + "alt=" + this.getAlt() + ", href=" + this.getHref() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

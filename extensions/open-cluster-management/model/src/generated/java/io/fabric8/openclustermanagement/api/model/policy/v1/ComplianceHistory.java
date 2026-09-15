@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ComplianceHistory reports a compliance message from a given time and event.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "eventName",
     "lastTimestamp",
     "message"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class ComplianceHistory implements Editable<ComplianceHistoryBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ComplianceHistory)) {
+            return false;
+        }
+        ComplianceHistory other = (ComplianceHistory) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$eventName = this.getEventName();
+        Object other$eventName = other.getEventName();
+        if (this$eventName == null ? other$eventName != null : !this$eventName.equals(other$eventName)) {
+            return false;
+        }
+        Object this$lastTimestamp = this.getLastTimestamp();
+        Object other$lastTimestamp = other.getLastTimestamp();
+        if (this$lastTimestamp == null ? other$lastTimestamp != null : !this$lastTimestamp.equals(other$lastTimestamp)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ComplianceHistory;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $eventName = this.getEventName();
+        result = result * prime + ($eventName == null ? 43 : $eventName.hashCode());
+        Object $lastTimestamp = this.getLastTimestamp();
+        result = result * prime + ($lastTimestamp == null ? 43 : $lastTimestamp.hashCode());
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ComplianceHistory(" + "eventName=" + this.getEventName() + ", lastTimestamp=" + this.getLastTimestamp() + ", message=" + this.getMessage() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

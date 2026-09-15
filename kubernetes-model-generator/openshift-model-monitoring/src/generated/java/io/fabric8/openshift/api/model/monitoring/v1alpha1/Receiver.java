@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Receiver defines one or more notification integrations.
@@ -56,12 +53,6 @@ import lombok.experimental.Accessors;
     "webexConfigs",
     "webhookConfigs",
     "wechatConfigs"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -452,6 +443,155 @@ public class Receiver implements Editable<ReceiverBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Receiver)) {
+            return false;
+        }
+        Receiver other = (Receiver) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$discordConfigs = this.getDiscordConfigs();
+        Object other$discordConfigs = other.getDiscordConfigs();
+        if (this$discordConfigs == null ? other$discordConfigs != null : !this$discordConfigs.equals(other$discordConfigs)) {
+            return false;
+        }
+        Object this$emailConfigs = this.getEmailConfigs();
+        Object other$emailConfigs = other.getEmailConfigs();
+        if (this$emailConfigs == null ? other$emailConfigs != null : !this$emailConfigs.equals(other$emailConfigs)) {
+            return false;
+        }
+        Object this$msteamsConfigs = this.getMsteamsConfigs();
+        Object other$msteamsConfigs = other.getMsteamsConfigs();
+        if (this$msteamsConfigs == null ? other$msteamsConfigs != null : !this$msteamsConfigs.equals(other$msteamsConfigs)) {
+            return false;
+        }
+        Object this$msteamsv2Configs = this.getMsteamsv2Configs();
+        Object other$msteamsv2Configs = other.getMsteamsv2Configs();
+        if (this$msteamsv2Configs == null ? other$msteamsv2Configs != null : !this$msteamsv2Configs.equals(other$msteamsv2Configs)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$opsgenieConfigs = this.getOpsgenieConfigs();
+        Object other$opsgenieConfigs = other.getOpsgenieConfigs();
+        if (this$opsgenieConfigs == null ? other$opsgenieConfigs != null : !this$opsgenieConfigs.equals(other$opsgenieConfigs)) {
+            return false;
+        }
+        Object this$pagerdutyConfigs = this.getPagerdutyConfigs();
+        Object other$pagerdutyConfigs = other.getPagerdutyConfigs();
+        if (this$pagerdutyConfigs == null ? other$pagerdutyConfigs != null : !this$pagerdutyConfigs.equals(other$pagerdutyConfigs)) {
+            return false;
+        }
+        Object this$pushoverConfigs = this.getPushoverConfigs();
+        Object other$pushoverConfigs = other.getPushoverConfigs();
+        if (this$pushoverConfigs == null ? other$pushoverConfigs != null : !this$pushoverConfigs.equals(other$pushoverConfigs)) {
+            return false;
+        }
+        Object this$rocketchatConfigs = this.getRocketchatConfigs();
+        Object other$rocketchatConfigs = other.getRocketchatConfigs();
+        if (this$rocketchatConfigs == null ? other$rocketchatConfigs != null : !this$rocketchatConfigs.equals(other$rocketchatConfigs)) {
+            return false;
+        }
+        Object this$slackConfigs = this.getSlackConfigs();
+        Object other$slackConfigs = other.getSlackConfigs();
+        if (this$slackConfigs == null ? other$slackConfigs != null : !this$slackConfigs.equals(other$slackConfigs)) {
+            return false;
+        }
+        Object this$snsConfigs = this.getSnsConfigs();
+        Object other$snsConfigs = other.getSnsConfigs();
+        if (this$snsConfigs == null ? other$snsConfigs != null : !this$snsConfigs.equals(other$snsConfigs)) {
+            return false;
+        }
+        Object this$telegramConfigs = this.getTelegramConfigs();
+        Object other$telegramConfigs = other.getTelegramConfigs();
+        if (this$telegramConfigs == null ? other$telegramConfigs != null : !this$telegramConfigs.equals(other$telegramConfigs)) {
+            return false;
+        }
+        Object this$victoropsConfigs = this.getVictoropsConfigs();
+        Object other$victoropsConfigs = other.getVictoropsConfigs();
+        if (this$victoropsConfigs == null ? other$victoropsConfigs != null : !this$victoropsConfigs.equals(other$victoropsConfigs)) {
+            return false;
+        }
+        Object this$webexConfigs = this.getWebexConfigs();
+        Object other$webexConfigs = other.getWebexConfigs();
+        if (this$webexConfigs == null ? other$webexConfigs != null : !this$webexConfigs.equals(other$webexConfigs)) {
+            return false;
+        }
+        Object this$webhookConfigs = this.getWebhookConfigs();
+        Object other$webhookConfigs = other.getWebhookConfigs();
+        if (this$webhookConfigs == null ? other$webhookConfigs != null : !this$webhookConfigs.equals(other$webhookConfigs)) {
+            return false;
+        }
+        Object this$wechatConfigs = this.getWechatConfigs();
+        Object other$wechatConfigs = other.getWechatConfigs();
+        if (this$wechatConfigs == null ? other$wechatConfigs != null : !this$wechatConfigs.equals(other$wechatConfigs)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Receiver;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $discordConfigs = this.getDiscordConfigs();
+        result = result * prime + ($discordConfigs == null ? 43 : $discordConfigs.hashCode());
+        Object $emailConfigs = this.getEmailConfigs();
+        result = result * prime + ($emailConfigs == null ? 43 : $emailConfigs.hashCode());
+        Object $msteamsConfigs = this.getMsteamsConfigs();
+        result = result * prime + ($msteamsConfigs == null ? 43 : $msteamsConfigs.hashCode());
+        Object $msteamsv2Configs = this.getMsteamsv2Configs();
+        result = result * prime + ($msteamsv2Configs == null ? 43 : $msteamsv2Configs.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $opsgenieConfigs = this.getOpsgenieConfigs();
+        result = result * prime + ($opsgenieConfigs == null ? 43 : $opsgenieConfigs.hashCode());
+        Object $pagerdutyConfigs = this.getPagerdutyConfigs();
+        result = result * prime + ($pagerdutyConfigs == null ? 43 : $pagerdutyConfigs.hashCode());
+        Object $pushoverConfigs = this.getPushoverConfigs();
+        result = result * prime + ($pushoverConfigs == null ? 43 : $pushoverConfigs.hashCode());
+        Object $rocketchatConfigs = this.getRocketchatConfigs();
+        result = result * prime + ($rocketchatConfigs == null ? 43 : $rocketchatConfigs.hashCode());
+        Object $slackConfigs = this.getSlackConfigs();
+        result = result * prime + ($slackConfigs == null ? 43 : $slackConfigs.hashCode());
+        Object $snsConfigs = this.getSnsConfigs();
+        result = result * prime + ($snsConfigs == null ? 43 : $snsConfigs.hashCode());
+        Object $telegramConfigs = this.getTelegramConfigs();
+        result = result * prime + ($telegramConfigs == null ? 43 : $telegramConfigs.hashCode());
+        Object $victoropsConfigs = this.getVictoropsConfigs();
+        result = result * prime + ($victoropsConfigs == null ? 43 : $victoropsConfigs.hashCode());
+        Object $webexConfigs = this.getWebexConfigs();
+        result = result * prime + ($webexConfigs == null ? 43 : $webexConfigs.hashCode());
+        Object $webhookConfigs = this.getWebhookConfigs();
+        result = result * prime + ($webhookConfigs == null ? 43 : $webhookConfigs.hashCode());
+        Object $wechatConfigs = this.getWechatConfigs();
+        result = result * prime + ($wechatConfigs == null ? 43 : $wechatConfigs.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Receiver(" + "discordConfigs=" + this.getDiscordConfigs() + ", emailConfigs=" + this.getEmailConfigs() + ", msteamsConfigs=" + this.getMsteamsConfigs() + ", msteamsv2Configs=" + this.getMsteamsv2Configs() + ", name=" + this.getName() + ", opsgenieConfigs=" + this.getOpsgenieConfigs() + ", pagerdutyConfigs=" + this.getPagerdutyConfigs() + ", pushoverConfigs=" + this.getPushoverConfigs() + ", rocketchatConfigs=" + this.getRocketchatConfigs() + ", slackConfigs=" + this.getSlackConfigs() + ", snsConfigs=" + this.getSnsConfigs() + ", telegramConfigs=" + this.getTelegramConfigs() + ", victoropsConfigs=" + this.getVictoropsConfigs() + ", webexConfigs=" + this.getWebexConfigs() + ", webhookConfigs=" + this.getWebhookConfigs() + ", wechatConfigs=" + this.getWechatConfigs() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

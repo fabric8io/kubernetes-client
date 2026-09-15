@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CertificateSpec defines the desired state of Certificate.<br><p> <br><p> NOTE: The specification contains a lot of "requested" certificate attributes, it is important to note that the issuer can choose to ignore or change any of these requested attributes. How the issuer maps a certificate request to a signed certificate is the full responsibility of the issuer itself. For example, as an edge case, an issuer that inverts the isCA value is free to do so.<br><p> <br><p> A valid Certificate requires at least one of a CommonName, LiteralSubject, DNSName, or URI to be valid.
@@ -65,12 +62,6 @@ import lombok.experimental.Accessors;
     "subject",
     "uris",
     "usages"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -578,6 +569,204 @@ public class CertificateSpec implements Editable<CertificateSpecBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CertificateSpec)) {
+            return false;
+        }
+        CertificateSpec other = (CertificateSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$additionalOutputFormats = this.getAdditionalOutputFormats();
+        Object other$additionalOutputFormats = other.getAdditionalOutputFormats();
+        if (this$additionalOutputFormats == null ? other$additionalOutputFormats != null : !this$additionalOutputFormats.equals(other$additionalOutputFormats)) {
+            return false;
+        }
+        Object this$commonName = this.getCommonName();
+        Object other$commonName = other.getCommonName();
+        if (this$commonName == null ? other$commonName != null : !this$commonName.equals(other$commonName)) {
+            return false;
+        }
+        Object this$dnsNames = this.getDnsNames();
+        Object other$dnsNames = other.getDnsNames();
+        if (this$dnsNames == null ? other$dnsNames != null : !this$dnsNames.equals(other$dnsNames)) {
+            return false;
+        }
+        Object this$duration = this.getDuration();
+        Object other$duration = other.getDuration();
+        if (this$duration == null ? other$duration != null : !this$duration.equals(other$duration)) {
+            return false;
+        }
+        Object this$emailAddresses = this.getEmailAddresses();
+        Object other$emailAddresses = other.getEmailAddresses();
+        if (this$emailAddresses == null ? other$emailAddresses != null : !this$emailAddresses.equals(other$emailAddresses)) {
+            return false;
+        }
+        Object this$encodeUsagesInRequest = this.getEncodeUsagesInRequest();
+        Object other$encodeUsagesInRequest = other.getEncodeUsagesInRequest();
+        if (this$encodeUsagesInRequest == null ? other$encodeUsagesInRequest != null : !this$encodeUsagesInRequest.equals(other$encodeUsagesInRequest)) {
+            return false;
+        }
+        Object this$ipAddresses = this.getIpAddresses();
+        Object other$ipAddresses = other.getIpAddresses();
+        if (this$ipAddresses == null ? other$ipAddresses != null : !this$ipAddresses.equals(other$ipAddresses)) {
+            return false;
+        }
+        Object this$isCA = this.getIsCA();
+        Object other$isCA = other.getIsCA();
+        if (this$isCA == null ? other$isCA != null : !this$isCA.equals(other$isCA)) {
+            return false;
+        }
+        Object this$issuerRef = this.getIssuerRef();
+        Object other$issuerRef = other.getIssuerRef();
+        if (this$issuerRef == null ? other$issuerRef != null : !this$issuerRef.equals(other$issuerRef)) {
+            return false;
+        }
+        Object this$keystores = this.getKeystores();
+        Object other$keystores = other.getKeystores();
+        if (this$keystores == null ? other$keystores != null : !this$keystores.equals(other$keystores)) {
+            return false;
+        }
+        Object this$literalSubject = this.getLiteralSubject();
+        Object other$literalSubject = other.getLiteralSubject();
+        if (this$literalSubject == null ? other$literalSubject != null : !this$literalSubject.equals(other$literalSubject)) {
+            return false;
+        }
+        Object this$nameConstraints = this.getNameConstraints();
+        Object other$nameConstraints = other.getNameConstraints();
+        if (this$nameConstraints == null ? other$nameConstraints != null : !this$nameConstraints.equals(other$nameConstraints)) {
+            return false;
+        }
+        Object this$otherNames = this.getOtherNames();
+        Object other$otherNames = other.getOtherNames();
+        if (this$otherNames == null ? other$otherNames != null : !this$otherNames.equals(other$otherNames)) {
+            return false;
+        }
+        Object this$privateKey = this.getPrivateKey();
+        Object other$privateKey = other.getPrivateKey();
+        if (this$privateKey == null ? other$privateKey != null : !this$privateKey.equals(other$privateKey)) {
+            return false;
+        }
+        Object this$renewBefore = this.getRenewBefore();
+        Object other$renewBefore = other.getRenewBefore();
+        if (this$renewBefore == null ? other$renewBefore != null : !this$renewBefore.equals(other$renewBefore)) {
+            return false;
+        }
+        Object this$renewBeforePercentage = this.getRenewBeforePercentage();
+        Object other$renewBeforePercentage = other.getRenewBeforePercentage();
+        if (this$renewBeforePercentage == null ? other$renewBeforePercentage != null : !this$renewBeforePercentage.equals(other$renewBeforePercentage)) {
+            return false;
+        }
+        Object this$revisionHistoryLimit = this.getRevisionHistoryLimit();
+        Object other$revisionHistoryLimit = other.getRevisionHistoryLimit();
+        if (this$revisionHistoryLimit == null ? other$revisionHistoryLimit != null : !this$revisionHistoryLimit.equals(other$revisionHistoryLimit)) {
+            return false;
+        }
+        Object this$secretName = this.getSecretName();
+        Object other$secretName = other.getSecretName();
+        if (this$secretName == null ? other$secretName != null : !this$secretName.equals(other$secretName)) {
+            return false;
+        }
+        Object this$secretTemplate = this.getSecretTemplate();
+        Object other$secretTemplate = other.getSecretTemplate();
+        if (this$secretTemplate == null ? other$secretTemplate != null : !this$secretTemplate.equals(other$secretTemplate)) {
+            return false;
+        }
+        Object this$signatureAlgorithm = this.getSignatureAlgorithm();
+        Object other$signatureAlgorithm = other.getSignatureAlgorithm();
+        if (this$signatureAlgorithm == null ? other$signatureAlgorithm != null : !this$signatureAlgorithm.equals(other$signatureAlgorithm)) {
+            return false;
+        }
+        Object this$subject = this.getSubject();
+        Object other$subject = other.getSubject();
+        if (this$subject == null ? other$subject != null : !this$subject.equals(other$subject)) {
+            return false;
+        }
+        Object this$uris = this.getUris();
+        Object other$uris = other.getUris();
+        if (this$uris == null ? other$uris != null : !this$uris.equals(other$uris)) {
+            return false;
+        }
+        Object this$usages = this.getUsages();
+        Object other$usages = other.getUsages();
+        if (this$usages == null ? other$usages != null : !this$usages.equals(other$usages)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CertificateSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $additionalOutputFormats = this.getAdditionalOutputFormats();
+        result = result * prime + ($additionalOutputFormats == null ? 43 : $additionalOutputFormats.hashCode());
+        Object $commonName = this.getCommonName();
+        result = result * prime + ($commonName == null ? 43 : $commonName.hashCode());
+        Object $dnsNames = this.getDnsNames();
+        result = result * prime + ($dnsNames == null ? 43 : $dnsNames.hashCode());
+        Object $duration = this.getDuration();
+        result = result * prime + ($duration == null ? 43 : $duration.hashCode());
+        Object $emailAddresses = this.getEmailAddresses();
+        result = result * prime + ($emailAddresses == null ? 43 : $emailAddresses.hashCode());
+        Object $encodeUsagesInRequest = this.getEncodeUsagesInRequest();
+        result = result * prime + ($encodeUsagesInRequest == null ? 43 : $encodeUsagesInRequest.hashCode());
+        Object $ipAddresses = this.getIpAddresses();
+        result = result * prime + ($ipAddresses == null ? 43 : $ipAddresses.hashCode());
+        Object $isCA = this.getIsCA();
+        result = result * prime + ($isCA == null ? 43 : $isCA.hashCode());
+        Object $issuerRef = this.getIssuerRef();
+        result = result * prime + ($issuerRef == null ? 43 : $issuerRef.hashCode());
+        Object $keystores = this.getKeystores();
+        result = result * prime + ($keystores == null ? 43 : $keystores.hashCode());
+        Object $literalSubject = this.getLiteralSubject();
+        result = result * prime + ($literalSubject == null ? 43 : $literalSubject.hashCode());
+        Object $nameConstraints = this.getNameConstraints();
+        result = result * prime + ($nameConstraints == null ? 43 : $nameConstraints.hashCode());
+        Object $otherNames = this.getOtherNames();
+        result = result * prime + ($otherNames == null ? 43 : $otherNames.hashCode());
+        Object $privateKey = this.getPrivateKey();
+        result = result * prime + ($privateKey == null ? 43 : $privateKey.hashCode());
+        Object $renewBefore = this.getRenewBefore();
+        result = result * prime + ($renewBefore == null ? 43 : $renewBefore.hashCode());
+        Object $renewBeforePercentage = this.getRenewBeforePercentage();
+        result = result * prime + ($renewBeforePercentage == null ? 43 : $renewBeforePercentage.hashCode());
+        Object $revisionHistoryLimit = this.getRevisionHistoryLimit();
+        result = result * prime + ($revisionHistoryLimit == null ? 43 : $revisionHistoryLimit.hashCode());
+        Object $secretName = this.getSecretName();
+        result = result * prime + ($secretName == null ? 43 : $secretName.hashCode());
+        Object $secretTemplate = this.getSecretTemplate();
+        result = result * prime + ($secretTemplate == null ? 43 : $secretTemplate.hashCode());
+        Object $signatureAlgorithm = this.getSignatureAlgorithm();
+        result = result * prime + ($signatureAlgorithm == null ? 43 : $signatureAlgorithm.hashCode());
+        Object $subject = this.getSubject();
+        result = result * prime + ($subject == null ? 43 : $subject.hashCode());
+        Object $uris = this.getUris();
+        result = result * prime + ($uris == null ? 43 : $uris.hashCode());
+        Object $usages = this.getUsages();
+        result = result * prime + ($usages == null ? 43 : $usages.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CertificateSpec(" + "additionalOutputFormats=" + this.getAdditionalOutputFormats() + ", commonName=" + this.getCommonName() + ", dnsNames=" + this.getDnsNames() + ", duration=" + this.getDuration() + ", emailAddresses=" + this.getEmailAddresses() + ", encodeUsagesInRequest=" + this.getEncodeUsagesInRequest() + ", ipAddresses=" + this.getIpAddresses() + ", isCA=" + this.getIsCA() + ", issuerRef=" + this.getIssuerRef() + ", keystores=" + this.getKeystores() + ", literalSubject=" + this.getLiteralSubject() + ", nameConstraints=" + this.getNameConstraints() + ", otherNames=" + this.getOtherNames() + ", privateKey=" + this.getPrivateKey() + ", renewBefore=" + this.getRenewBefore() + ", renewBeforePercentage=" + this.getRenewBeforePercentage() + ", revisionHistoryLimit=" + this.getRevisionHistoryLimit() + ", secretName=" + this.getSecretName() + ", secretTemplate=" + this.getSecretTemplate() + ", signatureAlgorithm=" + this.getSignatureAlgorithm() + ", subject=" + this.getSubject() + ", uris=" + this.getUris() + ", usages=" + this.getUsages() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

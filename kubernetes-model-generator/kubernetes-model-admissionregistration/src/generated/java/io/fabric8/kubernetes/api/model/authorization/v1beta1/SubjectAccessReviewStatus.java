@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SubjectAccessReviewStatus
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "denied",
     "evaluationError",
     "reason"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class SubjectAccessReviewStatus implements Editable<SubjectAccessReviewSt
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SubjectAccessReviewStatus)) {
+            return false;
+        }
+        SubjectAccessReviewStatus other = (SubjectAccessReviewStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allowed = this.getAllowed();
+        Object other$allowed = other.getAllowed();
+        if (this$allowed == null ? other$allowed != null : !this$allowed.equals(other$allowed)) {
+            return false;
+        }
+        Object this$denied = this.getDenied();
+        Object other$denied = other.getDenied();
+        if (this$denied == null ? other$denied != null : !this$denied.equals(other$denied)) {
+            return false;
+        }
+        Object this$evaluationError = this.getEvaluationError();
+        Object other$evaluationError = other.getEvaluationError();
+        if (this$evaluationError == null ? other$evaluationError != null : !this$evaluationError.equals(other$evaluationError)) {
+            return false;
+        }
+        Object this$reason = this.getReason();
+        Object other$reason = other.getReason();
+        if (this$reason == null ? other$reason != null : !this$reason.equals(other$reason)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SubjectAccessReviewStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allowed = this.getAllowed();
+        result = result * prime + ($allowed == null ? 43 : $allowed.hashCode());
+        Object $denied = this.getDenied();
+        result = result * prime + ($denied == null ? 43 : $denied.hashCode());
+        Object $evaluationError = this.getEvaluationError();
+        result = result * prime + ($evaluationError == null ? 43 : $evaluationError.hashCode());
+        Object $reason = this.getReason();
+        result = result * prime + ($reason == null ? 43 : $reason.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SubjectAccessReviewStatus(" + "allowed=" + this.getAllowed() + ", denied=" + this.getDenied() + ", evaluationError=" + this.getEvaluationError() + ", reason=" + this.getReason() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageRegistryBundle contains information for writing image registry certificates
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "data",
     "file"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -139,6 +130,57 @@ public class ImageRegistryBundle implements Editable<ImageRegistryBundleBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageRegistryBundle)) {
+            return false;
+        }
+        ImageRegistryBundle other = (ImageRegistryBundle) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$data = this.getData();
+        Object other$data = other.getData();
+        if (this$data == null ? other$data != null : !this$data.equals(other$data)) {
+            return false;
+        }
+        Object this$file = this.getFile();
+        Object other$file = other.getFile();
+        if (this$file == null ? other$file != null : !this$file.equals(other$file)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageRegistryBundle;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $data = this.getData();
+        result = result * prime + ($data == null ? 43 : $data.hashCode());
+        Object $file = this.getFile();
+        result = result * prime + ($file == null ? 43 : $file.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageRegistryBundle(" + "data=" + this.getData() + ", file=" + this.getFile() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

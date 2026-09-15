@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MachineConfigNodeStatusPinnedImageSet holds information about the current, desired, and failed pinned image sets for the observed machine config node.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "lastFailedGeneration",
     "lastFailedGenerationError",
     "name"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -199,6 +190,78 @@ public class MachineConfigNodeStatusPinnedImageSet implements Editable<MachineCo
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachineConfigNodeStatusPinnedImageSet)) {
+            return false;
+        }
+        MachineConfigNodeStatusPinnedImageSet other = (MachineConfigNodeStatusPinnedImageSet) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$currentGeneration = this.getCurrentGeneration();
+        Object other$currentGeneration = other.getCurrentGeneration();
+        if (this$currentGeneration == null ? other$currentGeneration != null : !this$currentGeneration.equals(other$currentGeneration)) {
+            return false;
+        }
+        Object this$desiredGeneration = this.getDesiredGeneration();
+        Object other$desiredGeneration = other.getDesiredGeneration();
+        if (this$desiredGeneration == null ? other$desiredGeneration != null : !this$desiredGeneration.equals(other$desiredGeneration)) {
+            return false;
+        }
+        Object this$lastFailedGeneration = this.getLastFailedGeneration();
+        Object other$lastFailedGeneration = other.getLastFailedGeneration();
+        if (this$lastFailedGeneration == null ? other$lastFailedGeneration != null : !this$lastFailedGeneration.equals(other$lastFailedGeneration)) {
+            return false;
+        }
+        Object this$lastFailedGenerationError = this.getLastFailedGenerationError();
+        Object other$lastFailedGenerationError = other.getLastFailedGenerationError();
+        if (this$lastFailedGenerationError == null ? other$lastFailedGenerationError != null : !this$lastFailedGenerationError.equals(other$lastFailedGenerationError)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachineConfigNodeStatusPinnedImageSet;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $currentGeneration = this.getCurrentGeneration();
+        result = result * prime + ($currentGeneration == null ? 43 : $currentGeneration.hashCode());
+        Object $desiredGeneration = this.getDesiredGeneration();
+        result = result * prime + ($desiredGeneration == null ? 43 : $desiredGeneration.hashCode());
+        Object $lastFailedGeneration = this.getLastFailedGeneration();
+        result = result * prime + ($lastFailedGeneration == null ? 43 : $lastFailedGeneration.hashCode());
+        Object $lastFailedGenerationError = this.getLastFailedGenerationError();
+        result = result * prime + ($lastFailedGenerationError == null ? 43 : $lastFailedGenerationError.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachineConfigNodeStatusPinnedImageSet(" + "currentGeneration=" + this.getCurrentGeneration() + ", desiredGeneration=" + this.getDesiredGeneration() + ", lastFailedGeneration=" + this.getLastFailedGeneration() + ", lastFailedGenerationError=" + this.getLastFailedGenerationError() + ", name=" + this.getName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ConsoleSampleSpec is the desired sample for the web console. Samples will appear with their title, descriptions and a badge in a samples catalog.
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "tags",
     "title",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -264,6 +255,99 @@ public class ConsoleSampleSpec implements Editable<ConsoleSampleSpecBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConsoleSampleSpec)) {
+            return false;
+        }
+        ConsoleSampleSpec other = (ConsoleSampleSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$_abstract = this.getAbstract();
+        Object other$_abstract = other.getAbstract();
+        if (this$_abstract == null ? other$_abstract != null : !this$_abstract.equals(other$_abstract)) {
+            return false;
+        }
+        Object this$description = this.getDescription();
+        Object other$description = other.getDescription();
+        if (this$description == null ? other$description != null : !this$description.equals(other$description)) {
+            return false;
+        }
+        Object this$icon = this.getIcon();
+        Object other$icon = other.getIcon();
+        if (this$icon == null ? other$icon != null : !this$icon.equals(other$icon)) {
+            return false;
+        }
+        Object this$provider = this.getProvider();
+        Object other$provider = other.getProvider();
+        if (this$provider == null ? other$provider != null : !this$provider.equals(other$provider)) {
+            return false;
+        }
+        Object this$source = this.getSource();
+        Object other$source = other.getSource();
+        if (this$source == null ? other$source != null : !this$source.equals(other$source)) {
+            return false;
+        }
+        Object this$tags = this.getTags();
+        Object other$tags = other.getTags();
+        if (this$tags == null ? other$tags != null : !this$tags.equals(other$tags)) {
+            return false;
+        }
+        Object this$title = this.getTitle();
+        Object other$title = other.getTitle();
+        if (this$title == null ? other$title != null : !this$title.equals(other$title)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConsoleSampleSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $_abstract = this.getAbstract();
+        result = result * prime + ($_abstract == null ? 43 : $_abstract.hashCode());
+        Object $description = this.getDescription();
+        result = result * prime + ($description == null ? 43 : $description.hashCode());
+        Object $icon = this.getIcon();
+        result = result * prime + ($icon == null ? 43 : $icon.hashCode());
+        Object $provider = this.getProvider();
+        result = result * prime + ($provider == null ? 43 : $provider.hashCode());
+        Object $source = this.getSource();
+        result = result * prime + ($source == null ? 43 : $source.hashCode());
+        Object $tags = this.getTags();
+        result = result * prime + ($tags == null ? 43 : $tags.hashCode());
+        Object $title = this.getTitle();
+        result = result * prime + ($title == null ? 43 : $title.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConsoleSampleSpec(" + "_abstract=" + this.getAbstract() + ", description=" + this.getDescription() + ", icon=" + this.getIcon() + ", provider=" + this.getProvider() + ", source=" + this.getSource() + ", tags=" + this.getTags() + ", title=" + this.getTitle() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

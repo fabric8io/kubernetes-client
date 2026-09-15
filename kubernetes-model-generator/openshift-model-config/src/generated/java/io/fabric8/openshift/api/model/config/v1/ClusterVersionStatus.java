@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClusterVersionStatus reports the status of the cluster versioning, including any upgrades that are in progress. The current field will be set to whichever version the cluster is reconciling to, and the conditions array will report whether the update succeeded, is in progress, or is failing.
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "history",
     "observedGeneration",
     "versionHash"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -269,6 +260,99 @@ public class ClusterVersionStatus implements Editable<ClusterVersionStatusBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterVersionStatus)) {
+            return false;
+        }
+        ClusterVersionStatus other = (ClusterVersionStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$availableUpdates = this.getAvailableUpdates();
+        Object other$availableUpdates = other.getAvailableUpdates();
+        if (this$availableUpdates == null ? other$availableUpdates != null : !this$availableUpdates.equals(other$availableUpdates)) {
+            return false;
+        }
+        Object this$capabilities = this.getCapabilities();
+        Object other$capabilities = other.getCapabilities();
+        if (this$capabilities == null ? other$capabilities != null : !this$capabilities.equals(other$capabilities)) {
+            return false;
+        }
+        Object this$conditionalUpdates = this.getConditionalUpdates();
+        Object other$conditionalUpdates = other.getConditionalUpdates();
+        if (this$conditionalUpdates == null ? other$conditionalUpdates != null : !this$conditionalUpdates.equals(other$conditionalUpdates)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$desired = this.getDesired();
+        Object other$desired = other.getDesired();
+        if (this$desired == null ? other$desired != null : !this$desired.equals(other$desired)) {
+            return false;
+        }
+        Object this$history = this.getHistory();
+        Object other$history = other.getHistory();
+        if (this$history == null ? other$history != null : !this$history.equals(other$history)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$versionHash = this.getVersionHash();
+        Object other$versionHash = other.getVersionHash();
+        if (this$versionHash == null ? other$versionHash != null : !this$versionHash.equals(other$versionHash)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterVersionStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $availableUpdates = this.getAvailableUpdates();
+        result = result * prime + ($availableUpdates == null ? 43 : $availableUpdates.hashCode());
+        Object $capabilities = this.getCapabilities();
+        result = result * prime + ($capabilities == null ? 43 : $capabilities.hashCode());
+        Object $conditionalUpdates = this.getConditionalUpdates();
+        result = result * prime + ($conditionalUpdates == null ? 43 : $conditionalUpdates.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $desired = this.getDesired();
+        result = result * prime + ($desired == null ? 43 : $desired.hashCode());
+        Object $history = this.getHistory();
+        result = result * prime + ($history == null ? 43 : $history.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $versionHash = this.getVersionHash();
+        result = result * prime + ($versionHash == null ? 43 : $versionHash.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterVersionStatus(" + "availableUpdates=" + this.getAvailableUpdates() + ", capabilities=" + this.getCapabilities() + ", conditionalUpdates=" + this.getConditionalUpdates() + ", conditions=" + this.getConditions() + ", desired=" + this.getDesired() + ", history=" + this.getHistory() + ", observedGeneration=" + this.getObservedGeneration() + ", versionHash=" + this.getVersionHash() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

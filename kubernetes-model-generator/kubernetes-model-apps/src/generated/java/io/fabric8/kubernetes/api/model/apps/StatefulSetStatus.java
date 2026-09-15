@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * StatefulSetStatus represents the current state of a StatefulSet.
@@ -50,12 +47,6 @@ import lombok.experimental.Accessors;
     "replicas",
     "updateRevision",
     "updatedReplicas"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -304,6 +295,113 @@ public class StatefulSetStatus implements Editable<StatefulSetStatusBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof StatefulSetStatus)) {
+            return false;
+        }
+        StatefulSetStatus other = (StatefulSetStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$availableReplicas = this.getAvailableReplicas();
+        Object other$availableReplicas = other.getAvailableReplicas();
+        if (this$availableReplicas == null ? other$availableReplicas != null : !this$availableReplicas.equals(other$availableReplicas)) {
+            return false;
+        }
+        Object this$collisionCount = this.getCollisionCount();
+        Object other$collisionCount = other.getCollisionCount();
+        if (this$collisionCount == null ? other$collisionCount != null : !this$collisionCount.equals(other$collisionCount)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$currentReplicas = this.getCurrentReplicas();
+        Object other$currentReplicas = other.getCurrentReplicas();
+        if (this$currentReplicas == null ? other$currentReplicas != null : !this$currentReplicas.equals(other$currentReplicas)) {
+            return false;
+        }
+        Object this$currentRevision = this.getCurrentRevision();
+        Object other$currentRevision = other.getCurrentRevision();
+        if (this$currentRevision == null ? other$currentRevision != null : !this$currentRevision.equals(other$currentRevision)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$readyReplicas = this.getReadyReplicas();
+        Object other$readyReplicas = other.getReadyReplicas();
+        if (this$readyReplicas == null ? other$readyReplicas != null : !this$readyReplicas.equals(other$readyReplicas)) {
+            return false;
+        }
+        Object this$replicas = this.getReplicas();
+        Object other$replicas = other.getReplicas();
+        if (this$replicas == null ? other$replicas != null : !this$replicas.equals(other$replicas)) {
+            return false;
+        }
+        Object this$updateRevision = this.getUpdateRevision();
+        Object other$updateRevision = other.getUpdateRevision();
+        if (this$updateRevision == null ? other$updateRevision != null : !this$updateRevision.equals(other$updateRevision)) {
+            return false;
+        }
+        Object this$updatedReplicas = this.getUpdatedReplicas();
+        Object other$updatedReplicas = other.getUpdatedReplicas();
+        if (this$updatedReplicas == null ? other$updatedReplicas != null : !this$updatedReplicas.equals(other$updatedReplicas)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof StatefulSetStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $availableReplicas = this.getAvailableReplicas();
+        result = result * prime + ($availableReplicas == null ? 43 : $availableReplicas.hashCode());
+        Object $collisionCount = this.getCollisionCount();
+        result = result * prime + ($collisionCount == null ? 43 : $collisionCount.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $currentReplicas = this.getCurrentReplicas();
+        result = result * prime + ($currentReplicas == null ? 43 : $currentReplicas.hashCode());
+        Object $currentRevision = this.getCurrentRevision();
+        result = result * prime + ($currentRevision == null ? 43 : $currentRevision.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $readyReplicas = this.getReadyReplicas();
+        result = result * prime + ($readyReplicas == null ? 43 : $readyReplicas.hashCode());
+        Object $replicas = this.getReplicas();
+        result = result * prime + ($replicas == null ? 43 : $replicas.hashCode());
+        Object $updateRevision = this.getUpdateRevision();
+        result = result * prime + ($updateRevision == null ? 43 : $updateRevision.hashCode());
+        Object $updatedReplicas = this.getUpdatedReplicas();
+        result = result * prime + ($updatedReplicas == null ? 43 : $updatedReplicas.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "StatefulSetStatus(" + "availableReplicas=" + this.getAvailableReplicas() + ", collisionCount=" + this.getCollisionCount() + ", conditions=" + this.getConditions() + ", currentReplicas=" + this.getCurrentReplicas() + ", currentRevision=" + this.getCurrentRevision() + ", observedGeneration=" + this.getObservedGeneration() + ", readyReplicas=" + this.getReadyReplicas() + ", replicas=" + this.getReplicas() + ", updateRevision=" + this.getUpdateRevision() + ", updatedReplicas=" + this.getUpdatedReplicas() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

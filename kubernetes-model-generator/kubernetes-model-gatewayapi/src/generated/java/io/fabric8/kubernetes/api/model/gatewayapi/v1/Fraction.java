@@ -26,21 +26,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "denominator",
     "numerator"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -123,6 +114,57 @@ public class Fraction implements Editable<FractionBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Fraction)) {
+            return false;
+        }
+        Fraction other = (Fraction) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$denominator = this.getDenominator();
+        Object other$denominator = other.getDenominator();
+        if (this$denominator == null ? other$denominator != null : !this$denominator.equals(other$denominator)) {
+            return false;
+        }
+        Object this$numerator = this.getNumerator();
+        Object other$numerator = other.getNumerator();
+        if (this$numerator == null ? other$numerator != null : !this$numerator.equals(other$numerator)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Fraction;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $denominator = this.getDenominator();
+        result = result * prime + ($denominator == null ? 43 : $denominator.hashCode());
+        Object $numerator = this.getNumerator();
+        result = result * prime + ($numerator == null ? 43 : $numerator.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Fraction(" + "denominator=" + this.getDenominator() + ", numerator=" + this.getNumerator() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }
