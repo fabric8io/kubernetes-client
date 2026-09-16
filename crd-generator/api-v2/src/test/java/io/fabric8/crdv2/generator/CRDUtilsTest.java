@@ -45,6 +45,14 @@ class CRDUtilsTest {
     }
 
     @Test
+    @DisplayName("An entry with an empty value is rejected, although Kubernetes allows empty label values")
+    void rejectsEntryWithEmptyValue() {
+      assertThatIllegalArgumentException()
+          .isThrownBy(() -> CRDUtils.toMap(new String[] { "key=" }))
+          .withMessageContaining("cannot be parsed as a key-value pair");
+    }
+
+    @Test
     @DisplayName("A null array yields an empty map")
     void nullArrayYieldsEmptyMap() {
       assertThat(CRDUtils.toMap(null)).isEmpty();

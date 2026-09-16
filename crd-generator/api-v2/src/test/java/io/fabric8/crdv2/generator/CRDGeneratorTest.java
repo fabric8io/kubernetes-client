@@ -358,6 +358,20 @@ class CRDGeneratorTest {
   }
 
   @Test
+  void crdInfoShouldMergeDependentClassesOfEveryVersion() {
+    final CRDGenerationInfo generatedInfo = newCRDGenerator()
+        .withOutput(output)
+        .forCRDVersions("v1")
+        .customResourceClasses(Multiple.class, io.fabric8.crdv2.example.multiple.v2.Multiple.class)
+        .detailedGenerate();
+
+    // A single CRD is combined out of both versions, so its dependent classes must cover both of them
+    assertThat(generatedInfo.getCRDInfos(CustomResource.getCRDName(Multiple.class)).get("v1").getDependentClassNames())
+        .contains(io.fabric8.crdv2.example.multiple.v1.MultipleSpec.class.getName(),
+            io.fabric8.crdv2.example.multiple.v2.MultipleSpec.class.getName());
+  }
+
+  @Test
   void mapPropertyShouldHaveCorrectValueType() {
     outputCRDIfFailed(ContainingMaps.class, (customResource) -> {
       final CustomResourceDefinitionVersion version = checkCRD(customResource, "ContainingMaps", "containingmaps",
