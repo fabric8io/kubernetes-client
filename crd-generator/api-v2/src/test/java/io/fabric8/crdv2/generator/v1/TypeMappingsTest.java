@@ -60,7 +60,7 @@ class TypeMappingsTest {
         Arguments.of("instant", "string"),
         Arguments.of("duration", "string"),
         Arguments.of("period", "string"),
-        Arguments.of("timestamp", "string"), // to review
+        Arguments.of("timestamp", "string"), // to review, see #8109
         Arguments.of("aShort", "integer"),
         Arguments.of("aShortObj", "integer"),
         Arguments.of("aInt", "integer"),
@@ -84,7 +84,7 @@ class TypeMappingsTest {
         Arguments.of("aStringArray", "array"),
         Arguments.of("aByte", "integer"),
         Arguments.of("aByteObj", "integer"),
-        Arguments.of("aByteArray", "array"), // to review, should be string (base64)
+        Arguments.of("aByteArray", "array"), // to review, should be string (base64), see #8109
         Arguments.of("uuid", "string"));
   }
 }
