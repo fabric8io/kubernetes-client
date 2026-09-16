@@ -19,18 +19,24 @@
 The deprecated CRD Generator v1 modules have been removed in version 8.0.0:
 - `io.fabric8:crd-generator-api` - CRD Generator API v1
 - `io.fabric8:crd-generator-apt` - CRD Generator annotation processing tool (APT)
-- `io.fabric8:crd-generator-test-apt` - APT integration tests
 
 These modules were deprecated since 7.0.0 in favor of CRD Generator v2.
 
 **Migration:** If you are still using CRD Generator v1, you must migrate to CRD Generator v2 before upgrading to 8.0.0. See the [CRD Generator v2 documentation](CRD-generator.md) for usage instructions.
 
-**Recommended tools:**
+Concretely, remove the `provided`-scope `io.fabric8:crd-generator-apt` dependency (Maven) or the
+`annotationProcessor 'io.fabric8:crd-generator-apt'` entry (Gradle), together with any
+`-Aio.fabric8.crd.generator.*` compiler argument, and adopt one of the following instead:
+
 - [CRD Generator Maven Plugin](../crd-generator/maven-plugin/README.md) - for Maven builds
 - [CRD Generator CLI](../crd-generator/cli/README.md) - command-line tool
-- [CRD Generator Gradle Plugin](../crd-generator/gradle/README.md) - for Gradle builds
+- [CRD Generator with Gradle](../crd-generator/gradle/README.md) - build script recipe for Gradle builds
 
-The annotations remain the same, so you only need to change your build configuration to use the new tooling.
+The annotations themselves are unchanged, but v2 applies some of them more strictly: `@Min`/`@Max` are honored only on numeric fields and `@Pattern` only on string fields. See the [Breaking Changes](CRD-generator-migration-v2.md#breaking-changes) section of the migration guide for the full list.
+
+If you called the generator programmatically, the API moved packages: `io.fabric8.crd.generator.CRDGenerator` is now `io.fabric8.crdv2.generator.CRDGenerator` (likewise `CRDInfo` and `CRDGenerationInfo`).
+
+CRD Generator v2 only emits `apiextensions.k8s.io/v1` CRDs. v1 generated both `v1` and `v1beta1` files when no CRD version was configured, so if your build consumed the `*-v1beta1.yml` output, note that `v1beta1` was removed from Kubernetes in 1.22 and is no longer generated; requesting it is ignored with a warning.
 
 ## Java baseline set to Java 17 <a href="#java-17" id="java-17"/>
 

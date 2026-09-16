@@ -11,9 +11,9 @@
 
 _Deprecated since 7.0.0, removed in 8.0.0_
 
-- **CRD Generator API v1** - `io.fabric8:crd-generator-api` (removed)
+- **CRD Generator API v1** - `io.fabric8:crd-generator-api` (removed)  
   _Core implementation of the old generator, based on [sundrio](https://github.com/sundrio/sundrio)._
-- **CRD Generator annotation processing tool (APT)** - `io.fabric8:crd-generator-apt` (removed)
+- **CRD Generator annotation processing tool (APT)** - `io.fabric8:crd-generator-apt` (removed)  
   _Annotation processor which hooks into the build process to generate CRDs._
 
 ### CRD Generator v2
