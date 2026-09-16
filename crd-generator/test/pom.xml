@@ -77,5 +77,19 @@
       <artifactId>validation-api</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <!-- Keycloak model for testing -->
+    <dependency>
+      <groupId>org.keycloak</groupId>
+      <artifactId>keycloak-core</artifactId>
+      <version>${keycloak.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.logging</groupId>
+      <artifactId>jboss-logging</artifactId>
+      <version>${jboss-logging.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>

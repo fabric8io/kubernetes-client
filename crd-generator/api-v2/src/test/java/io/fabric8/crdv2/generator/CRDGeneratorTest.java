@@ -21,7 +21,11 @@ import io.fabric8.crdv2.example.complex.Complex;
 import io.fabric8.crdv2.example.cyclic.Cyclic;
 import io.fabric8.crdv2.example.cyclic.CyclicList;
 import io.fabric8.crdv2.example.deprecated.v2.DeprecationExample;
+import io.fabric8.crdv2.example.inherited.BaseSpec;
+import io.fabric8.crdv2.example.inherited.BaseStatus;
 import io.fabric8.crdv2.example.inherited.Child;
+import io.fabric8.crdv2.example.inherited.ChildSpec;
+import io.fabric8.crdv2.example.inherited.ChildStatus;
 import io.fabric8.crdv2.example.joke.Joke;
 import io.fabric8.crdv2.example.joke.JokeRequest;
 import io.fabric8.crdv2.example.k8svalidation.K8sValidation;
@@ -338,6 +342,19 @@ class CRDGeneratorTest {
       checkMapProp(specProps, "unsupported2", "object");
       checkMapProp(specProps, "supported", "string");
     });
+  }
+
+  @Test
+  void crdInfoShouldListTheClassesTheSchemaWasDerivedFrom() {
+    final CRDGenerationInfo generatedInfo = newCRDGenerator()
+        .withOutput(output)
+        .forCRDVersions("v1")
+        .customResourceClasses(Child.class)
+        .detailedGenerate();
+
+    assertThat(generatedInfo.getCRDInfos(CustomResource.getCRDName(Child.class)).get("v1").getDependentClassNames())
+        .contains(ChildSpec.class.getName(), ChildStatus.class.getName(),
+            BaseSpec.class.getName(), BaseStatus.class.getName());
   }
 
   @Test
