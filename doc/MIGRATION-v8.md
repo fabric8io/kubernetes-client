@@ -1,6 +1,7 @@
 # Migration from 7.x to 8.x
 
 ## Contents
+- [CRD Generator v1 has been removed](#crd-generator-v1-removed)
 - [Java baseline set to Java 17](#java-17)
   - [Build tooling requires a Java 17 runtime](#java-17-build-tooling)
   - [OSGi bundles require JavaSE 17](#java-17-osgi)
@@ -12,6 +13,35 @@
 >
 > We value your feedback and will work to address your issue promptly.
 > Your contribution is essential to improving our documentation, making our migration process smoother for everyone!
+
+## CRD Generator v1 has been removed <a href="#crd-generator-v1-removed" id="crd-generator-v1-removed"/>
+
+The deprecated CRD Generator v1 modules have been removed in version 8.0.0:
+- `io.fabric8:crd-generator-api` - CRD Generator API v1
+- `io.fabric8:crd-generator-apt` - CRD Generator annotation processing tool (APT)
+
+These modules were deprecated since 7.0.0 in favor of CRD Generator v2.
+
+**Migration:** If you are still using CRD Generator v1, you must migrate to CRD Generator v2 before upgrading to 8.0.0. See the [CRD Generator v2 documentation](CRD-generator.md) for usage instructions.
+
+> [!WARNING]
+> Dropping the dependency without adding a replacement fails silently: an absent annotation
+> processor produces no compiler diagnostic, so the build stays green and `META-INF/fabric8/`
+> is simply empty. Check that your CRDs are still generated after migrating.
+
+Concretely, remove the `provided`-scope `io.fabric8:crd-generator-apt` dependency (Maven) or the
+`annotationProcessor 'io.fabric8:crd-generator-apt'` entry (Gradle), together with any
+`-Aio.fabric8.crd.generator.*` compiler argument, and adopt one of the following instead:
+
+- [CRD Generator Maven Plugin](../crd-generator/maven-plugin/README.md) - for Maven builds
+- [CRD Generator CLI](../crd-generator/cli/README.md) - command-line tool
+- [CRD Generator with Gradle](../crd-generator/gradle/README.md) - build script recipe for Gradle builds
+
+The annotations themselves are unchanged, but v2 applies some of them more strictly: `@Min`/`@Max` are honored only on numeric fields and `@Pattern` only on string fields. See the [Breaking Changes](CRD-generator-migration-v2.md#breaking-changes) section of the migration guide for the full list.
+
+If you called the generator programmatically, the API moved packages: `io.fabric8.crd.generator.CRDGenerator` is now `io.fabric8.crdv2.generator.CRDGenerator` (likewise `CRDInfo` and `CRDGenerationInfo`).
+
+CRD Generator v2 only emits `apiextensions.k8s.io/v1` CRDs. v1 generated both `v1` and `v1beta1` files when no CRD version was configured, so if your build consumed the `*-v1beta1.yml` output, note that `v1beta1` was removed from Kubernetes in 1.22 and is no longer generated; requesting it is ignored with a warning.
 
 ## Java baseline set to Java 17 <a href="#java-17" id="java-17"/>
 
@@ -26,11 +56,10 @@ If you are still on Java 11, you have to upgrade your runtime before upgrading t
 
 This affects you even if your own application targets an older Java release.
 
-The CRD generator and Java generator ship as Maven plugins, a Gradle plugin, and an annotation processor. They are compiled for Java 17, so the JVM that *runs the build* must be Java 17 or newer:
+The CRD generator and Java generator ship as Maven plugins and a Gradle plugin. They are compiled for Java 17, so the JVM that *runs the build* must be Java 17 or newer:
 
 - **Maven plugins** (`crd-generator-maven-plugin`, `java-generator-maven-plugin`): the JVM running Maven.
 - **Gradle plugin** (`io.fabric8.java-generator`): the Gradle daemon. Gradle itself must be a version that supports running on Java 17 (Gradle 7.3+).
-- **Annotation processor** (`crd-generator-apt`): the `javac` that runs annotation processing.
 
 Running any of them on an older JVM fails with `UnsupportedClassVersionError`. Note that your *compilation target* is independent of this: you can still set `maven.compiler.release` (or the Gradle toolchain) to an older version for your own sources, as long as the build tool itself runs on Java 17+.
 
