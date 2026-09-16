@@ -29,6 +29,8 @@ import io.fabric8.crd.generator.approvaltests.replica.Replica;
 import io.fabric8.crd.generator.approvaltests.required.Required;
 import io.fabric8.crd.generator.approvaltests.selectablefield.SelectableField;
 import io.fabric8.crd.generator.approvaltests.validation.Validation;
+import io.fabric8.crdv2.generator.CRDGenerator;
+import io.fabric8.crdv2.generator.CRDInfo;
 import io.fabric8.kubernetes.client.CustomResource;
 import org.approvaltests.Approvals;
 import org.approvaltests.namer.StackTraceNamer;
@@ -51,6 +53,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class CRDGeneratorApprovalTest {
 
+  /**
+   * The CRD Generator only emits {@code apiextensions.k8s.io/v1} CRDs.
+   */
+  private static final String CRD_VERSION = "v1";
+
   @TempDir(cleanup = CleanupMode.ON_SUCCESS)
   File tempDir;
 
@@ -60,12 +67,11 @@ class CRDGeneratorApprovalTest {
   }
 
   @ParameterizedTest(name = "{1}.{2} parallel={3}")
-  @MethodSource("crdApprovalTestsApiV2")
-  @DisplayName("CRD Generator V2 Approval Tests")
-  void apiV2ApprovalTest(
+  @MethodSource("crdApprovalTests")
+  @DisplayName("Generated CRDs match their approved contents")
+  void approvalTest(
       Class<? extends CustomResource<?, ?>>[] crClasses, String expectedCrd, String version, boolean parallel) {
-    Approvals.settings().allowMultipleVerifyCallsForThisMethod();
-    final Map<String, Map<String, io.fabric8.crdv2.generator.CRDInfo>> result = new io.fabric8.crdv2.generator.CRDGenerator()
+    final Map<String, Map<String, CRDInfo>> result = new CRDGenerator()
         .withParallelGenerationEnabled(parallel)
         .inOutputDir(tempDir)
         .customResourceClasses(crClasses)
@@ -85,56 +91,35 @@ class CRDGeneratorApprovalTest {
         new Namer(expectedCrd, version));
   }
 
-  /**
-   * Method source for test cases targeting CRD-Generator api-v2.
-   *
-   * @return the arguments for the test cases
-   */
-  static Stream<Arguments> crdApprovalTestsApiV2() {
-    return Stream.concat(
-        crdApprovalCasesBase("v1"),
-        crdApprovalCasesApiV2("v1"))
+  static Stream<Arguments> crdApprovalTests() {
+    return crdApprovalCases()
         .map(tc -> Arguments.of(tc.crClasses, tc.expectedCrd, tc.version, tc.parallel));
   }
 
   /**
-   * Test cases for CRD-Generator api-v1 and api-v2 which must have the exact same results.
+   * Each case is generated twice, with and without parallel generation, which must produce the same CRD.
    *
-   * @param crdVersion the CRD version
    * @return the test cases
    */
-  static Stream<TestCase> crdApprovalCasesBase(String crdVersion) {
+  static Stream<TestCase> crdApprovalCases() {
     final List<TestCase> cases = new ArrayList<>();
     for (boolean parallel : new boolean[] { false, true }) {
-      cases.add(new TestCase("annotateds.samples.fabric8.io", crdVersion, parallel, Annotated.class));
-      cases.add(new TestCase("complexkinds.samples.fabric8.io", crdVersion, parallel, Complex.class));
-      cases.add(new TestCase("children.sample.fabric8.io", crdVersion, parallel, Child.class));
-      cases.add(new TestCase("containingjsons.sample.fabric8.io", crdVersion, parallel, ContainingJson.class));
-      cases.add(new TestCase("k8svalidations.samples.fabric8.io", crdVersion, parallel, K8sValidation.class));
-      cases.add(new TestCase("containingmaps.sample.fabric8.io", crdVersion, parallel, ContainingMaps.class));
-      cases.add(new TestCase("replicas.samples.fabric8.io", crdVersion, parallel, Replica.class));
-      cases.add(new TestCase("multiples.sample.fabric8.io", crdVersion, parallel,
+      cases.add(new TestCase("annotateds.samples.fabric8.io", CRD_VERSION, parallel, Annotated.class));
+      cases.add(new TestCase("complexkinds.samples.fabric8.io", CRD_VERSION, parallel, Complex.class));
+      cases.add(new TestCase("children.sample.fabric8.io", CRD_VERSION, parallel, Child.class));
+      cases.add(new TestCase("containingjsons.sample.fabric8.io", CRD_VERSION, parallel, ContainingJson.class));
+      cases.add(new TestCase("k8svalidations.samples.fabric8.io", CRD_VERSION, parallel, K8sValidation.class));
+      cases.add(new TestCase("containingmaps.sample.fabric8.io", CRD_VERSION, parallel, ContainingMaps.class));
+      cases.add(new TestCase("replicas.samples.fabric8.io", CRD_VERSION, parallel, Replica.class));
+      cases.add(new TestCase("multiples.sample.fabric8.io", CRD_VERSION, parallel,
           io.fabric8.crd.generator.approvaltests.multipleversions.v1.Multiple.class,
           io.fabric8.crd.generator.approvaltests.multipleversions.v2.Multiple.class));
-      cases.add(new TestCase("nocyclics.sample.fabric8.io", crdVersion, parallel, NoCyclic.class));
-    }
-    return cases.stream();
-  }
-
-  /**
-   * Test cases for CRD-Generator api-v2 only.
-   *
-   * @param crdVersion the CRD version
-   * @return the test cases
-   */
-  static Stream<TestCase> crdApprovalCasesApiV2(String crdVersion) {
-    final List<TestCase> cases = new ArrayList<>();
-    for (boolean parallel : new boolean[] { false, true }) {
-      cases.add(new TestCase("describeds.samples.fabric8.io", crdVersion, parallel, Described.class));
-      cases.add(new TestCase("printercolumns.sample.fabric8.io", crdVersion, parallel, PrinterColumn.class));
-      cases.add(new TestCase("requireds.samples.fabric8.io", crdVersion, parallel, Required.class));
-      cases.add(new TestCase("selectablefields.sample.fabric8.io", crdVersion, parallel, SelectableField.class));
-      cases.add(new TestCase("validations.sample.fabric8.io", crdVersion, parallel, Validation.class));
+      cases.add(new TestCase("nocyclics.sample.fabric8.io", CRD_VERSION, parallel, NoCyclic.class));
+      cases.add(new TestCase("describeds.samples.fabric8.io", CRD_VERSION, parallel, Described.class));
+      cases.add(new TestCase("printercolumns.sample.fabric8.io", CRD_VERSION, parallel, PrinterColumn.class));
+      cases.add(new TestCase("requireds.samples.fabric8.io", CRD_VERSION, parallel, Required.class));
+      cases.add(new TestCase("selectablefields.sample.fabric8.io", CRD_VERSION, parallel, SelectableField.class));
+      cases.add(new TestCase("validations.sample.fabric8.io", CRD_VERSION, parallel, Validation.class));
     }
     return cases.stream();
   }
