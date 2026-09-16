@@ -71,7 +71,7 @@
       "groupName": "jetty"
     },
     {
-      "matchPackageNames": ["org.keycloak:**"],
+      "matchPackageNames": ["org.keycloak:**", "org.jboss.logging:**"],
       "groupName": "keycloak"
     },
     {

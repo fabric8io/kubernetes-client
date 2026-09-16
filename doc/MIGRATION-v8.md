@@ -24,6 +24,11 @@ These modules were deprecated since 7.0.0 in favor of CRD Generator v2.
 
 **Migration:** If you are still using CRD Generator v1, you must migrate to CRD Generator v2 before upgrading to 8.0.0. See the [CRD Generator v2 documentation](CRD-generator.md) for usage instructions.
 
+> [!WARNING]
+> Dropping the dependency without adding a replacement fails silently: an absent annotation
+> processor produces no compiler diagnostic, so the build stays green and `META-INF/fabric8/`
+> is simply empty. Check that your CRDs are still generated after migrating.
+
 Concretely, remove the `provided`-scope `io.fabric8:crd-generator-apt` dependency (Maven) or the
 `annotationProcessor 'io.fabric8:crd-generator-apt'` entry (Gradle), together with any
 `-Aio.fabric8.crd.generator.*` compiler argument, and adopt one of the following instead:
