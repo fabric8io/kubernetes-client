@@ -19,7 +19,9 @@ import io.sundr.builder.annotations.Buildable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "nodeDrainStartTime",
-    "waitForNodeVolumeDetachStartTime"
+    "waitForNodeVolumeDetachStartTime",
+    "waitForPreDrainHookStartTime",
+    "waitForPreTerminateHookStartTime"
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -30,6 +32,10 @@ public class MachineDeletionStatus implements Editable<MachineDeletionStatusBuil
     private String nodeDrainStartTime;
     @JsonProperty("waitForNodeVolumeDetachStartTime")
     private String waitForNodeVolumeDetachStartTime;
+    @JsonProperty("waitForPreDrainHookStartTime")
+    private String waitForPreDrainHookStartTime;
+    @JsonProperty("waitForPreTerminateHookStartTime")
+    private String waitForPreTerminateHookStartTime;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -39,10 +45,12 @@ public class MachineDeletionStatus implements Editable<MachineDeletionStatusBuil
     public MachineDeletionStatus() {
     }
 
-    public MachineDeletionStatus(String nodeDrainStartTime, String waitForNodeVolumeDetachStartTime) {
+    public MachineDeletionStatus(String nodeDrainStartTime, String waitForNodeVolumeDetachStartTime, String waitForPreDrainHookStartTime, String waitForPreTerminateHookStartTime) {
         super();
         this.nodeDrainStartTime = nodeDrainStartTime;
         this.waitForNodeVolumeDetachStartTime = waitForNodeVolumeDetachStartTime;
+        this.waitForPreDrainHookStartTime = waitForPreDrainHookStartTime;
+        this.waitForPreTerminateHookStartTime = waitForPreTerminateHookStartTime;
     }
 
     @JsonProperty("nodeDrainStartTime")
@@ -63,6 +71,26 @@ public class MachineDeletionStatus implements Editable<MachineDeletionStatusBuil
     @JsonProperty("waitForNodeVolumeDetachStartTime")
     public void setWaitForNodeVolumeDetachStartTime(String waitForNodeVolumeDetachStartTime) {
         this.waitForNodeVolumeDetachStartTime = waitForNodeVolumeDetachStartTime;
+    }
+
+    @JsonProperty("waitForPreDrainHookStartTime")
+    public String getWaitForPreDrainHookStartTime() {
+        return waitForPreDrainHookStartTime;
+    }
+
+    @JsonProperty("waitForPreDrainHookStartTime")
+    public void setWaitForPreDrainHookStartTime(String waitForPreDrainHookStartTime) {
+        this.waitForPreDrainHookStartTime = waitForPreDrainHookStartTime;
+    }
+
+    @JsonProperty("waitForPreTerminateHookStartTime")
+    public String getWaitForPreTerminateHookStartTime() {
+        return waitForPreTerminateHookStartTime;
+    }
+
+    @JsonProperty("waitForPreTerminateHookStartTime")
+    public void setWaitForPreTerminateHookStartTime(String waitForPreTerminateHookStartTime) {
+        this.waitForPreTerminateHookStartTime = waitForPreTerminateHookStartTime;
     }
 
     @JsonIgnore

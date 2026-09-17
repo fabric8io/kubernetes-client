@@ -7,10 +7,27 @@
 #### Improvements
 
 #### Dependency Upgrade
+* Fix #8098: bump chaos-mesh api from 4db47f5 to d70b66a
+* Fix #8086: bump cluster-api from 1.12.2 to 1.13.6
+* Fix #8101: bump cluster-api from 1.13.6 to 1.14.2
+* Fix #8101: bump cluster-api-provider-metal3 from 1.13.0 to 1.14.0
+* Fix #8086: bump gateway-api from 1.6.1 to 1.6.2
+* Fix #8086: bump k8s.io/api from 0.35.2 to 0.35.8
+* Fix #8086: bump k8s.io/apiextensions-apiserver from 0.36.1 to 0.37.0
+* Fix #8086: bump k8s.io/apimachinery from 0.36.1 to 0.37.0
+* Fix #8086: bump k8s.io/autoscaler/vertical-pod-autoscaler from 1.7.0 to 1.7.1
+* Fix #8086: bump k8s.io/client-go from 0.35.2 to 0.35.8
+* Fix #8086: bump k8s.io/kube-openapi from 0.0.0-20260501160325-927ab1f70cd6 to 0.0.0-20260821135717-be32def86098
+* Fix #8086: bump k8s.io/metrics from 0.36.1 to 0.37.0
+* Fix #8050: (karaf) The Karaf feature bundles Aries SPI-Fly 1.3.7 (from 1.3.0) and ASM 9.10.1 (from 8.0.1), the versions required to weave Java 17 bytecode
 
 #### New Features
 
 #### _**Note**_: Breaking changes
+* Check detailed migration documentation for breaking changes in [8.0.0](./doc/MIGRATION-v8.md)
+* Fix #8031: (crd-generator) Removed the deprecated CRD Generator v1 (`crd-generator-api` and `crd-generator-apt`). Migrate to `crd-generator-api-v2` with the [Maven plugin](./crd-generator/maven-plugin/README.md), the [CLI tool](./crd-generator/cli/README.md), or the [Gradle build script recipe](./crd-generator/gradle/README.md), see the [migration guide](./doc/CRD-generator-migration-v2.md)
+* Fix #8009: Moved Java baseline from 11 to 17. In addition to the runtime requirement, the Maven plugins, the Gradle plugin and the annotation processor now require a Java 17+ JVM to run the build, and the OSGi bundles declare `osgi.ee=JavaSE 17`
+* Fix #8050: (karaf) The `kubernetes-karaf` feature repository no longer defines its own `scr` feature. `kubernetes-client` now depends on the `scr` feature provided by the Karaf distribution, which supplies the Declarative Services API bundles and the `scr:*` shell commands
 
 ### 7.9.0 (2026-09-04)
 

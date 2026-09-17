@@ -151,7 +151,7 @@ public class HTTPRequestRedirectFilter implements Editable<HTTPRequestRedirectFi
     }
 
     /**
-     * StatusCode is the HTTP status code to be used in response.<br><p> <br><p> Note that values may be added to this enum, implementations must ensure that unknown values will not cause a crash.<br><p> <br><p> Unknown values here must result in the implementation setting the Accepted Condition for the Route to `status: False`, with a Reason of `UnsupportedValue`.<br><p> <br><p> Support: Core
+     * StatusCode is the HTTP status code to be used in response.<br><p> <br><p> Note that values may be added to this enum, implementations must ensure that unknown values will not cause a crash.<br><p> <br><p> Unknown values here must result in the implementation setting the Accepted Condition for the Route to `status: False`, with a Reason of `UnsupportedValue`.<br><p> <br><p> Support: statusCode 301 and 302 are Core; all others are Extended.<br><p> <br><p> &lt;gateway:util:excludeFromCRD&gt; Extended codes have their own features:<br><p>   HTTPRoute303RedirectStatusCode,<br><p>   HTTPRoute307RedirectStatusCode, and<br><p>   HTTPRoute308RedirectStatusCode<br><p> &lt;/gateway:util:excludeFromCRD&gt;
      */
     @JsonProperty("statusCode")
     public Integer getStatusCode() {
@@ -159,7 +159,7 @@ public class HTTPRequestRedirectFilter implements Editable<HTTPRequestRedirectFi
     }
 
     /**
-     * StatusCode is the HTTP status code to be used in response.<br><p> <br><p> Note that values may be added to this enum, implementations must ensure that unknown values will not cause a crash.<br><p> <br><p> Unknown values here must result in the implementation setting the Accepted Condition for the Route to `status: False`, with a Reason of `UnsupportedValue`.<br><p> <br><p> Support: Core
+     * StatusCode is the HTTP status code to be used in response.<br><p> <br><p> Note that values may be added to this enum, implementations must ensure that unknown values will not cause a crash.<br><p> <br><p> Unknown values here must result in the implementation setting the Accepted Condition for the Route to `status: False`, with a Reason of `UnsupportedValue`.<br><p> <br><p> Support: statusCode 301 and 302 are Core; all others are Extended.<br><p> <br><p> &lt;gateway:util:excludeFromCRD&gt; Extended codes have their own features:<br><p>   HTTPRoute303RedirectStatusCode,<br><p>   HTTPRoute307RedirectStatusCode, and<br><p>   HTTPRoute308RedirectStatusCode<br><p> &lt;/gateway:util:excludeFromCRD&gt;
      */
     @JsonProperty("statusCode")
     public void setStatusCode(Integer statusCode) {

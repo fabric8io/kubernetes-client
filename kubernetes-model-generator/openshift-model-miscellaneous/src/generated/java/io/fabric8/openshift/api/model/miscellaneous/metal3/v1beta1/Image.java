@@ -85,7 +85,7 @@ public class Image implements Editable<ImageBuilder>, KubernetesResource
     }
 
     /**
-     * Checksum is a md5sum, sha256sum or sha512sum value or a URL to retrieve one.
+     * Checksum is a md5sum, sha256sum or sha512sum value or a URL to retrieve one. Optional for live-iso and oci:// URLs; required otherwise.
      */
     @JsonProperty("checksum")
     public String getChecksum() {
@@ -93,7 +93,7 @@ public class Image implements Editable<ImageBuilder>, KubernetesResource
     }
 
     /**
-     * Checksum is a md5sum, sha256sum or sha512sum value or a URL to retrieve one.
+     * Checksum is a md5sum, sha256sum or sha512sum value or a URL to retrieve one. Optional for live-iso and oci:// URLs; required otherwise.
      */
     @JsonProperty("checksum")
     public void setChecksum(String checksum) {

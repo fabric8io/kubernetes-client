@@ -16,6 +16,8 @@
 package io.fabric8.java.generator.gradle.plugin;
 
 import org.gradle.testkit.runner.BuildResult;
+import org.junit.jupiter.api.condition.DisabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -25,6 +27,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@DisabledForJreRange(min = JRE.JAVA_22, disabledReason = "The Gradle version these ITs run (gradle-api.version) supports Java 21 at most, see #8104")
 public class BuildWithGradlePluginIT {
   @RegisterExtension
   final ITGradleRunnerExtension gradleRunner = new ITGradleRunnerExtension();

@@ -18,6 +18,8 @@ public class MachineDeletionStatusFluent<A extends io.fabric8.kubernetes.api.mod
   private Map<String,Object> additionalProperties;
   private String nodeDrainStartTime;
   private String waitForNodeVolumeDetachStartTime;
+  private String waitForPreDrainHookStartTime;
+  private String waitForPreTerminateHookStartTime;
 
   public MachineDeletionStatusFluent() {
   }
@@ -51,6 +53,8 @@ public class MachineDeletionStatusFluent<A extends io.fabric8.kubernetes.api.mod
     if (instance != null) {
         this.withNodeDrainStartTime(instance.getNodeDrainStartTime());
         this.withWaitForNodeVolumeDetachStartTime(instance.getWaitForNodeVolumeDetachStartTime());
+        this.withWaitForPreDrainHookStartTime(instance.getWaitForPreDrainHookStartTime());
+        this.withWaitForPreTerminateHookStartTime(instance.getWaitForPreTerminateHookStartTime());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -72,6 +76,12 @@ public class MachineDeletionStatusFluent<A extends io.fabric8.kubernetes.api.mod
     if (!(Objects.equals(waitForNodeVolumeDetachStartTime, that.waitForNodeVolumeDetachStartTime))) {
       return false;
     }
+    if (!(Objects.equals(waitForPreDrainHookStartTime, that.waitForPreDrainHookStartTime))) {
+      return false;
+    }
+    if (!(Objects.equals(waitForPreTerminateHookStartTime, that.waitForPreTerminateHookStartTime))) {
+      return false;
+    }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
       return false;
     }
@@ -90,6 +100,14 @@ public class MachineDeletionStatusFluent<A extends io.fabric8.kubernetes.api.mod
     return this.waitForNodeVolumeDetachStartTime;
   }
   
+  public String getWaitForPreDrainHookStartTime() {
+    return this.waitForPreDrainHookStartTime;
+  }
+  
+  public String getWaitForPreTerminateHookStartTime() {
+    return this.waitForPreTerminateHookStartTime;
+  }
+  
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
   }
@@ -102,8 +120,16 @@ public class MachineDeletionStatusFluent<A extends io.fabric8.kubernetes.api.mod
     return this.waitForNodeVolumeDetachStartTime != null;
   }
   
+  public boolean hasWaitForPreDrainHookStartTime() {
+    return this.waitForPreDrainHookStartTime != null;
+  }
+  
+  public boolean hasWaitForPreTerminateHookStartTime() {
+    return this.waitForPreTerminateHookStartTime != null;
+  }
+  
   public int hashCode() {
-    return Objects.hash(nodeDrainStartTime, waitForNodeVolumeDetachStartTime, additionalProperties);
+    return Objects.hash(nodeDrainStartTime, waitForNodeVolumeDetachStartTime, waitForPreDrainHookStartTime, waitForPreTerminateHookStartTime, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -143,6 +169,16 @@ public class MachineDeletionStatusFluent<A extends io.fabric8.kubernetes.api.mod
         sb.append(waitForNodeVolumeDetachStartTime);
         sb.append(",");
     }
+    if (!(waitForPreDrainHookStartTime == null)) {
+        sb.append("waitForPreDrainHookStartTime:");
+        sb.append(waitForPreDrainHookStartTime);
+        sb.append(",");
+    }
+    if (!(waitForPreTerminateHookStartTime == null)) {
+        sb.append("waitForPreTerminateHookStartTime:");
+        sb.append(waitForPreTerminateHookStartTime);
+        sb.append(",");
+    }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
         sb.append("additionalProperties:");
         sb.append(additionalProperties);
@@ -167,6 +203,16 @@ public class MachineDeletionStatusFluent<A extends io.fabric8.kubernetes.api.mod
   
   public A withWaitForNodeVolumeDetachStartTime(String waitForNodeVolumeDetachStartTime) {
     this.waitForNodeVolumeDetachStartTime = waitForNodeVolumeDetachStartTime;
+    return (A) this;
+  }
+  
+  public A withWaitForPreDrainHookStartTime(String waitForPreDrainHookStartTime) {
+    this.waitForPreDrainHookStartTime = waitForPreDrainHookStartTime;
+    return (A) this;
+  }
+  
+  public A withWaitForPreTerminateHookStartTime(String waitForPreTerminateHookStartTime) {
+    this.waitForPreTerminateHookStartTime = waitForPreTerminateHookStartTime;
     return (A) this;
   }
   

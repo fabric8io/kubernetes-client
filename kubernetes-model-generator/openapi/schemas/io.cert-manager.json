@@ -17,7 +17,6 @@
           "description": "Challenges specifies the challenge types offered by the ACME server. One of these challenge types will be selected when validating the DNS name and an appropriate Challenge resource will be created to perform the ACME challenge process.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.cert-manager.acme.v1.ACMEChallenge"
           },
           "x-kubernetes-list-type": "atomic"
@@ -188,15 +187,13 @@
           "description": "Custom labels that will be applied to HTTPRoutes created by cert-manager while solving HTTP-01 challenges.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "parentRefs": {
           "description": "When solving an HTTP-01 challenge, cert-manager creates an HTTPRoute. cert-manager needs to know which parentRefs should be used when creating the HTTPRoute. Usually, the parentRef references a Gateway. See: https://gateway-api.sigs.k8s.io/api-types/httproute/#attaching-to-gateways",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.networking.gateway.v1.ParentReference"
           },
           "x-kubernetes-list-type": "atomic"
@@ -261,16 +258,14 @@
           "description": "Annotations that should be added to the created ACME HTTP01 solver ingress.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "labels": {
           "description": "Labels that should be added to the created ACME HTTP01 solver ingress.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -289,16 +284,14 @@
           "description": "Annotations that should be added to the created ACME HTTP01 solver pods.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "labels": {
           "description": "Labels that should be added to the created ACME HTTP01 solver pods.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -376,8 +369,7 @@
           "type": "array",
           "items": {
             "type": "integer",
-            "format": "int64",
-            "default": 0
+            "format": "int64"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -385,7 +377,6 @@
           "description": "Sysctls hold a list of namespaced sysctls used for the pod. Pods with unsupported sysctls (by the container runtime) might fail to launch. Note that this field cannot be set when spec.os.name is windows.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Sysctl"
           },
           "x-kubernetes-list-type": "atomic"
@@ -410,7 +401,6 @@
           "description": "If specified, the pod's imagePullSecrets",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
           },
           "x-kubernetes-list-map-keys": [
@@ -424,8 +414,7 @@
           "description": "NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node. More info: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "priorityClassName": {
@@ -448,7 +437,6 @@
           "description": "If specified, the pod's tolerations.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Toleration"
           },
           "x-kubernetes-list-type": "atomic"
@@ -587,7 +575,6 @@
           "description": "Solvers is a list of challenge solvers that will be used to solve ACME challenges for the matching domains. Solver configurations must be provided in order to obtain certificates from an ACME server. For more information, see: https://cert-manager.io/docs/configuration/acme/",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.cert-manager.acme.v1.ACMEChallengeSolver"
           },
           "x-kubernetes-list-type": "atomic"
@@ -956,8 +943,7 @@
           "description": "List of DNSNames that this solver will be used to solve. If specified and a match is found, a dnsNames selector will take precedence over a dnsZones selector. If multiple solvers match with the same dnsNames value, the solver with the most matching labels in matchLabels will be selected. If neither has more matches, the solver defined earlier in the list will be selected.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -965,8 +951,7 @@
           "description": "List of DNSZones that this solver will be used to solve. The most specific DNS zone match specified here will take precedence over other DNS zone matches, so a solver specifying sys.example.com will be selected over one specifying example.com for the domain www.sys.example.com. If multiple solvers match with the same dnsZones value, the solver with the most matching labels in matchLabels will be selected. If neither has more matches, the solver defined earlier in the list will be selected.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -974,8 +959,7 @@
           "description": "A label selector that is used to refine the set of certificate's that this challenge solver will apply to.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -1039,7 +1023,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.cert-manager.acme.v1.Challenge"
           }
         },
@@ -1209,7 +1192,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.cert-manager.acme.v1.Order"
           }
         },
@@ -1245,8 +1227,7 @@
           "description": "DNSNames is a list of DNS names that should be included as part of the Order validation process. This field must match the corresponding field on the DER encoded CSR.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -1258,8 +1239,7 @@
           "description": "IPAddresses is a list of IP addresses that should be included as part of the Order validation process. This field must match the corresponding field on the DER encoded CSR.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -1293,7 +1273,6 @@
           "description": "Authorizations contains data returned from the ACME server on what authorizations must be completed in order to validate the DNS names specified on the Order.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.cert-manager.acme.v1.ACMEAuthorization"
           },
           "x-kubernetes-list-type": "atomic"
@@ -1383,8 +1362,7 @@
           "description": "TokenAudiences is an optional list of audiences to include in the token passed to AWS. The default token consisting of the issuer's namespace and name is always included. If unset the audience defaults to `sts.amazonaws.com`.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -1487,8 +1465,7 @@
           "description": "The CRL distribution points is an X.509 v3 certificate extension which identifies the location of the CRL from which the revocation of this certificate can be checked. If not set, certificates will be issued without distribution points set.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -1496,8 +1473,7 @@
           "description": "IssuingCertificateURLs is a list of URLs which this issuer should embed into certificates it creates. See https://www.rfc-editor.org/rfc/rfc5280#section-4.2.2.1 for more details. As an example, such a URL might be \"http://ca.domain.com/ca.crt\".",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -1505,8 +1481,7 @@
           "description": "The OCSP server list is an X.509 v3 extension that defines a list of URLs of OCSP responders. The OCSP responders can be queried for the revocation status of an issued certificate. If not set, the certificate will be issued with no OCSP servers set. For example, an OCSP server URL could be \"http://ocsp.int-x3.letsencrypt.org\".",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -1661,7 +1636,6 @@
           "description": "List of Certificates",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.cert-manager.v1.Certificate"
           }
         },
@@ -1803,7 +1777,6 @@
           "description": "List of CertificateRequests",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.cert-manager.v1.CertificateRequest"
           }
         },
@@ -1843,8 +1816,7 @@
           "additionalProperties": {
             "type": "array",
             "items": {
-              "type": "string",
-              "default": ""
+              "type": "string"
             }
           }
         },
@@ -1852,8 +1824,7 @@
           "description": "Groups contains group membership of the user that created the CertificateRequest. Populated by the cert-manager webhook on creation and immutable.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -1879,8 +1850,7 @@
           "description": "Requested key usages and extended key usages.\n\nNOTE: If the CSR in the `Request` field has uses the KeyUsage or ExtKeyUsage extension, these extensions must have the same values as specified here without any additional values.\n\nIf unset, defaults to `digital signature` and `key encipherment`.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -1915,7 +1885,6 @@
           "description": "List of status conditions to indicate the status of a CertificateRequest. Known condition types are `Ready`, `InvalidRequest`, `Approved` and `Denied`.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.cert-manager.v1.CertificateRequestCondition"
           },
           "x-kubernetes-list-map-keys": [
@@ -1944,16 +1913,14 @@
           "description": "Annotations is a key value map to be copied to the target Kubernetes Secret.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "labels": {
           "description": "Labels is a key value map to be copied to the target Kubernetes Secret.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -1977,7 +1944,6 @@
           "description": "Defines extra output formats of the private key and signed certificate chain to be written to this Certificate's target Secret.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.cert-manager.v1.CertificateAdditionalOutputFormat"
           },
           "x-kubernetes-list-type": "atomic"
@@ -1990,8 +1956,7 @@
           "description": "Requested DNS subject alternative names.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -2003,8 +1968,7 @@
           "description": "Requested email subject alternative names.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -2016,8 +1980,7 @@
           "description": "Requested IP address subject alternative names.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -2046,7 +2009,6 @@
           "description": "`otherNames` is an escape hatch for SAN that allows any type. We currently restrict the support to string like otherNames, cf RFC 5280 p 37 Any UTF8 String valued otherName can be passed with by setting the keys oid: x.x.x.x and UTF8Value: somevalue for `otherName`. Most commonly this would be UPN set with oid: 1.3.6.1.4.1.311.20.2.3 You should ensure that any OID passed is valid for the UTF8String type as we do not explicitly validate this.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.cert-manager.v1.OtherName"
           },
           "x-kubernetes-list-type": "atomic"
@@ -2090,8 +2052,7 @@
           "description": "Requested URI subject alternative names.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -2099,8 +2060,7 @@
           "description": "Requested key usages and extended key usages. These usages are used to set the `usages` field on the created CertificateRequest resources. If `encodeUsagesInRequest` is unset or set to `true`, the usages will additionally be encoded in the `request` field which contains the CSR blob.\n\nIf unset, defaults to `digital signature` and `key encipherment`.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         }
@@ -2121,7 +2081,6 @@
           "description": "List of status conditions to indicate the status of certificates. Known condition types are `Ready` and `Issuing`.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.cert-manager.v1.CertificateCondition"
           },
           "x-kubernetes-list-map-keys": [
@@ -2221,7 +2180,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.cert-manager.v1.ClusterIssuer"
           }
         },
@@ -2372,7 +2330,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.cert-manager.v1.Issuer"
           }
         },
@@ -2438,7 +2395,6 @@
           "description": "List of status conditions to indicate the status of a CertificateRequest. Known condition types are `Ready`.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.cert-manager.v1.IssuerCondition"
           },
           "x-kubernetes-list-map-keys": [
@@ -2496,8 +2452,7 @@
           "description": "DNSDomains is a list of DNS domains that are permitted or excluded.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -2505,8 +2460,7 @@
           "description": "EmailAddresses is a list of Email Addresses that are permitted or excluded.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -2514,8 +2468,7 @@
           "description": "IPRanges is a list of IP Ranges that are permitted or excluded. This should be a valid CIDR notation.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -2523,8 +2476,7 @@
           "description": "URIDomains is a list of URI domains that are permitted or excluded.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         }
@@ -2624,8 +2576,7 @@
           "description": "The CRL distribution points is an X.509 v3 certificate extension which identifies the location of the CRL from which the revocation of this certificate can be checked. If not set certificate will be issued without CDP. Values are strings.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         }
@@ -2649,8 +2600,7 @@
           "description": "TokenAudiences is an optional list of extra audiences to include in the token passed to Vault. The default audiences are always included in the token.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -2945,8 +2895,7 @@
           "description": "Countries to be used on the Certificate.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -2954,8 +2903,7 @@
           "description": "Cities to be used on the Certificate.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -2963,8 +2911,7 @@
           "description": "Organizational Units to be used on the Certificate.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -2972,8 +2919,7 @@
           "description": "Organizations to be used on the Certificate.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -2981,8 +2927,7 @@
           "description": "Postal codes to be used on the Certificate.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -2990,8 +2935,7 @@
           "description": "State/Provinces to be used on the Certificate.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -3003,8 +2947,7 @@
           "description": "Street addresses to be used on the Certificate.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         }

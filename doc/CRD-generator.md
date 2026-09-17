@@ -1,14 +1,14 @@
 # CRD Generator
 
-The [CRD Generator annotation processing tool (APT)](../crd-generator/apt/README.md) (`io.fabric8:crd-generator-apt`) and its API (`io.fabric8:crd-generator-api`) are being deprecated and will eventually be removed once we offer a complete replacement for all users.
+> [!IMPORTANT]
+> The CRD Generator annotation processing tool (APT) (`io.fabric8:crd-generator-apt`) and its API (`io.fabric8:crd-generator-api`) were deprecated in 7.0.0 and **removed in 8.0.0**.
+> If you are migrating from v1, see the [migration guide](CRD-generator-migration-v2.md).
 
-As a replacement, we're currently providing a new version of the API in `io.fabric8:crd-generator-api-v2` and a few tools to be able to leverage it in your projects.
+The CRD Generator is built on the v2 API (`io.fabric8:crd-generator-api-v2`). The following tooling is available:
 
-A migration guide can be found [here](CRD-generator-migration-v2.md). 
-
-The following list contains the available tooling:
 - [CRD Generator Maven Plugin](../crd-generator/maven-plugin/README.md): A Maven plugin that generates CRDs during the build process.
 - [CRD Generator CLI tool](../crd-generator/cli/README.md): A CLI tool that generates CRDs when executed.
+- [CRD Generator with Gradle](../crd-generator/gradle/README.md): A build script recipe for Gradle users.
 
 ## Quick start
 
@@ -42,7 +42,8 @@ with Gradle:
 > Meanwhile, Gradle users can use the [CRD Generator in a build script](../crd-generator/gradle/README.md).
 
 Now you can define a `class` that extends `io.fabric8.kubernetes.client.CustomResource`
-and the corresponding CRD is generated in the folder: `target/classes/META-INF/fabric8`
+and the corresponding CRD is generated in the plugin's output directory, `target/classes/META-INF/fabric8`
+by default (Gradle users: see the build script recipe for its output location).
 
 For example, for code similar to:
 
@@ -62,12 +63,11 @@ public class ExampleStatus {
 }
 ```
 
-Running the `compile` task will generate 2 files:
+Running a build that reaches the `process-classes` phase (`mvn package`, for example) will generate one file:
 
 - `target/classes/META-INF/fabric8/examples.org.example-v1.yml`
-- `target/classes/META-INF/fabric8/examples.org.example-v1beta1.yml`
 
-The schema `<plural>.<group>-<CRD spec version>.yml` is used to calculate the file names.
+File names follow the pattern `<plural>.<group>-<CRD spec version>.yml`.
 
 The content of the `examples.org.example-v1.yml` looks similar to:
 
@@ -229,8 +229,6 @@ The field will have the `default` property in the generated CRD, such as:
               someValue:
                 default: foo
                 type: string
-            required:
-            - someValue
             type: object
 ```
 
@@ -334,14 +332,14 @@ in the generated CRD depending on the type:
               listValue:
                 items:
                   type: "string"
-                  maxItems: 3
-                  minItems: 1
+                maxItems: 3
+                minItems: 1
                 type: "array"
               mapValue:
                 additionalProperties:
                   type: "string"
-                  maxProperties: 3
-                  minProperties: 1
+                maxProperties: 3
+                minProperties: 1
                 type: "object"
             type: object
 ```
@@ -365,8 +363,6 @@ The field will have the `pattern` property in the generated CRD, such as:
               someValue:
                 pattern: "\\b[1-9]\\b"
                 type: string
-            required:
-            - someValue
             type: object
 ```
 
@@ -389,8 +385,6 @@ The field will have the `nullable` property in the generated CRD, such as:
               someValue:
                 nullable: true
                 type: string
-            required:
-            - someValue
             type: object
 ```
 
@@ -483,13 +477,13 @@ The object will have the `x-kubernetes-validations` property in the generated CR
               - rule: self.someValue.startsWith('start-')
 ```
 
-Note that all occurences will end up in the resulting list if multiple `ValidationRule` annotations are defined on the same field and/or class.
+Note that all occurrences will end up in the resulting list if multiple `ValidationRule` annotations are defined on the same field and/or class.
 The annotation can also be used on the CustomResource class itself, which allows to define CEL rules on the root-level.
-Please look at the [example](crd-generator/api/src/test/java/io/fabric8/crd/example/k8svalidation/K8sValidation.java) and the resulting [CRD](crd-generator/api/src/test/resources/k8svalidations.samples.fabric8.io-v1.yml) to explore all features.
+Please look at the [example](../crd-generator/api-v2/src/test/java/io/fabric8/crdv2/example/k8svalidation/K8sValidation.java) and the resulting [CRD](../crd-generator/api-v2/src/test/resources/k8svalidations.samples.fabric8.io-v1.yml) to explore all features.
 
 ### io.fabric8.crd.generator.annotation.PrinterColumn
 
-If a field or one of its accessors is annotated with `io.fabric8.crd.generator.annotation.PrinterColumn`
+If a field is annotated with `io.fabric8.crd.generator.annotation.PrinterColumn`
 
 ```java
 public class ExampleSpec { 
@@ -504,13 +498,13 @@ The CRD generator will customize columns shown by the `kubectl get` command. Abo
           - additionalPrinterColumns:
             - jsonPath: .spec.someValue
               name: SOME_VALUE
-              type: int
+              type: integer
               priority: 1
 ```
 
 ### io.fabric8.crd.generator.annotation.AdditionalPrinterColumn
 
-_since kubernetes-client 7.0.0 (crd-generator/api-v2)_
+_since kubernetes-client 7.0.0_
 
 If a custom resource class is annotated with `io.fabric8.crd.generator.annotation.AdditionalPrinterColumn`
 
@@ -531,7 +525,7 @@ The CRD generator will add `additionalPrinterColumns`:
 
 ### io.fabric8.crd.generator.annotation.SelectableField
 
-_since kubernetes-client 7.0.0 (crd-generator/api-v2)_
+_since kubernetes-client 7.0.0_
 
 If a field or one of its accessors is annotated with `io.fabric8.crd.generator.annotation.SelectableField`
 
@@ -551,7 +545,7 @@ The CRD generator will add `selectableFields`:
 
 ### io.fabric8.crd.generator.annotation.AdditionalSelectableField
 
-_since kubernetes-client 7.0.0 (crd-generator/api-v2)_
+_since kubernetes-client 7.0.0_
 
 If a custom resource class is annotated with `io.fabric8.crd.generator.annotation.AdditionalSelectableField`
 
@@ -569,16 +563,16 @@ The CRD generator will add `selectableFields`:
 
 ### io.fabric8.crd.generator.annotation.SchemaFrom
 
-If a field or one of its accessors is annotated with `io.fabric8.crd.generator.annotation.SchemaFrom`
+If a field is annotated with `io.fabric8.crd.generator.annotation.SchemaFrom`
 
 ```java
 public class ExampleSpec {
-  @SchemaFrom(ExampleStatus.class)
+  @SchemaFrom(type = ExampleStatus.class)
   int someValue;
 }
 ```
 
-The CRD generator will substitute the default type inferred from the field and replace it by the computed schema associated with the Java class provided as a value of the `SchemaFrom` annotation, as seen below, where `ExampleStatus` is the class defined in the example above:
+The CRD generator will substitute the default type inferred from the field and replace it by the computed schema associated with the Java class provided as the `type` of the `SchemaFrom` annotation, as seen below, where `ExampleStatus` is the class defined in the example above:
 
 ```yaml
           spec:
@@ -602,7 +596,7 @@ If a class is annotated with `io.fabric8.crd.generator.annotation.SchemaSwap`
 public class Example extends CustomResource<ExampleSpec, ExampleStatus> implements Namespaced {}
 ```
 
-The CRD generator will perform the same substitution as a `SchemaFrom` annotation with `value` equal to `targetType` was placed on the field named `fieldName` in the `originalType` class:
+The CRD generator will perform the same substitution as a `SchemaFrom` annotation with `type` equal to `targetType` was placed on the field named `fieldName` in the `originalType` class:
 
 ```yaml
           spec:
@@ -650,7 +644,7 @@ Will generate:
                 x-kubernetes-preserve-unknown-fields: true
 ```
 
-The usage of ObjectNode further restrict the property type to `object`.
+The usage of ObjectNode further restricts the property type to `object`.
 
 If a field or one of its accessors is annotated with
 `com.fasterxml.jackson.annotation.JsonAnyGetter`/`com.fasterxml.jackson.annotation.JsonAnySetter`
@@ -668,7 +662,7 @@ public class ExampleSpec {
 
   @JsonAnySetter
   void setValue(String key, Object value) {
-    this.someValue = value;
+    this.values.put(key, value);
   }
 }
 ```
@@ -697,7 +691,7 @@ public class ExampleSpec {
 
   @JsonAnySetter
   void setValue(String key, Object value) {
-    this.someValue = value;
+    this.values.put(key, value);
   }
 }
 ```
@@ -825,9 +819,9 @@ metadata:
 spec:
   group: "sample.fabric8.io"
   names:
-    kind: "Replica"
-    plural: "replicas"
-    singular: "replica"
+    kind: "WithScaleSubresource"
+    plural: "withscalesubresources"
+    singular: "withscalesubresource"
   scope: "Cluster"
   versions:
   - name: "v1"
@@ -862,7 +856,7 @@ spec:
 The CRD Generator supports multiple versions of the same kind. In this case a schema for each version will be generated and merged into a single CRD. Keep in mind, that only one version can be marked as stored at the same time!
 
 ```java
-package io.fabric8.crd.example.multiple.v2;
+package io.fabric8.crdv2.example.multiple.v2;
 
 @Group("sample.fabric8.io")
 @Version(value = "v2", storage = true, served = true)
@@ -870,7 +864,7 @@ public class Multiple extends CustomResource<MultipleSpec, Void> {}
 ```
 
 ```java
-package io.fabric8.crd.example.multiple.v1;
+package io.fabric8.crdv2.example.multiple.v1;
 
 @Group("sample.fabric8.io")
 @Version(value = "v1", storage = false, served = true, deprecated = true)
@@ -923,6 +917,7 @@ for directly manipulating the JSONSchemaProps of the annotated resource. This an
 | `io.fabric8.crd.generator.annotation.PreserveUnknownFields`     | The field have `x-kubernetes-preserve-unknown-fields: true` defined                                 |
 | `com.fasterxml.jackson.annotation.JsonAnyGetter`                | The corresponding object have `x-kubernetes-preserve-unknown-fields: true` defined                  |
 | `com.fasterxml.jackson.annotation.JsonAnySetter`                | The corresponding object have `x-kubernetes-preserve-unknown-fields: true` defined                  |
+| `io.fabric8.generator.annotation.Default`                       | The field's default value                                                                           |
 | `io.fabric8.generator.annotation.Min`                           | The field's `minimum` value                                                                         |
 | `io.fabric8.generator.annotation.Max`                           | The field's `maximum` value                                                                         |
 | `io.fabric8.generator.annotation.Size`                          | The field (string, list/array, map) has size limits (`minLength`, `minItems`, `minProperties`, ...) |
@@ -938,6 +933,7 @@ for directly manipulating the JSONSchemaProps of the annotated resource. This an
 | `io.fabric8.crd.generator.annotation.AdditionalPrinterColumn`   | Define a PrinterColumn by JSON path, so that it will be shown by the `kubectl get` command.         |
 | `io.fabric8.crd.generator.annotation.SelectableField`           | Define the field as selectable, so that it can be used for filtering.                               |
 | `io.fabric8.crd.generator.annotation.AdditionalSelectableField` | Define a SelectableField by JSON path, so that it can be used for filtering.                        |
+| `io.fabric8.kubernetes.model.annotation.Categories`             | The resource's `categories`, so that `kubectl get <category>` lists it                              |
 | `io.fabric8.kubernetes.model.annotation.SpecReplicas`           | The field is used in scale subresource as `specReplicaPath`                                         |
 | `io.fabric8.kubernetes.model.annotation.StatusReplicas`         | The field is used in scale subresource as `statusReplicaPath`                                       |
 | `io.fabric8.kubernetes.model.annotation.LabelSelector`          | The field is used in scale subresource as `labelSelectorPath`                                       |

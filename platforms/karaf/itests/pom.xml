@@ -155,6 +155,9 @@
                 <feature>openshift-client</feature>
               </features>
               <descriptors>
+                <!-- Karaf's own repository provides the scr feature (and the DS API bundles it
+                     pulls in), which our features depend on but deliberately do not redefine -->
+                <descriptor>mvn:org.apache.karaf.features/standard/${karaf.version}/xml/features</descriptor>
                 <descriptor>file:${project.build.directory}/features.xml</descriptor>
               </descriptors>
             </configuration>
@@ -170,6 +173,9 @@
           <systemPropertyVariables>
             <features.xml>${project.build.directory}/features.xml</features.xml>
             <features.repo>${project.build.directory}/features-repo</features.repo>
+            <!-- TestBase derives the lib/endorsed patch-module paths from this; without it the
+                 paths point at a version that isn't there and the JVM silently ignores them -->
+            <karaf.version>${karaf.version}</karaf.version>
           </systemPropertyVariables>
         </configuration>
       </plugin>

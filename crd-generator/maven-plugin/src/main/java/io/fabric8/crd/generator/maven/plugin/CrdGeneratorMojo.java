@@ -159,8 +159,8 @@ public class CrdGeneratorMojo extends AbstractMojo {
    * If neither is configured, CRD generation runs in-process within the current JVM.
    * <p>
    * Forking is required when the project is compiled with a newer JDK than the one running Maven.
-   * For example, if Maven runs on JDK 11 but the project is compiled with JDK 17, the in-process
-   * classloader cannot load class files compiled for JDK 17 and will throw
+   * For example, if Maven runs on JDK 17 but the project is compiled with JDK 21, the in-process
+   * classloader cannot load class files compiled for JDK 21 and will throw
    * {@code UnsupportedClassVersionError}.
    * </p>
    */

@@ -25,8 +25,7 @@
           "description": "Data contains the configuration data. Each key must consist of alphanumeric characters, '-', '_' or '.'. Values with non-UTF-8 byte sequences must use the BinaryData field. The keys stored in Data must not overlap with the keys in the BinaryData field, this is enforced during validation process.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "immutable": {
@@ -101,7 +100,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.AWSChaos"
           }
         },
@@ -190,7 +188,6 @@
           "description": "Conditions represents the current global condition of the chaos",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.ChaosCondition"
           }
         },
@@ -353,7 +350,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.AzureChaos"
           }
         },
@@ -445,7 +441,6 @@
           "description": "Conditions represents the current global condition of the chaos",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.ChaosCondition"
           }
         },
@@ -607,7 +602,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.BlockChaos"
           }
         },
@@ -647,8 +641,7 @@
           "description": "ContainerNames indicates list of the name of affected container. If not set, the first container will be injected",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "delay": {
@@ -701,7 +694,6 @@
           "description": "Conditions represents the current global condition of the chaos",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.ChaosCondition"
           }
         },
@@ -715,8 +707,7 @@
           "type": "object",
           "additionalProperties": {
             "type": "integer",
-            "format": "int32",
-            "default": 0
+            "format": "int32"
           }
         }
       },
@@ -767,8 +758,7 @@
           "description": "extend stress-ng options",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "workers": {
@@ -913,7 +903,6 @@
           "description": "Conditions represents the current global condition of the chaos",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.ChaosCondition"
           }
         },
@@ -1036,15 +1025,13 @@
         "branches": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.ConditionalBranchStatus"
           }
         },
         "context": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -1069,8 +1056,7 @@
           "description": "ContainerNames indicates list of the name of affected container. If not set, the first container will be injected",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "mode": {
@@ -1111,8 +1097,7 @@
           "description": "ContainerNames indicates list of the name of affected container. If not set, the first container will be injected",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "mode": {
@@ -1213,7 +1198,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.DNSChaos"
           }
         },
@@ -1252,8 +1236,7 @@
           "description": "ContainerNames indicates list of the name of affected container. If not set, the first container will be injected",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "duration": {
@@ -1269,8 +1252,7 @@
           "description": "Choose which domain names to take effect, support the placeholder ? and wildcard *, or the Specified domain name. Note:\n     1. The wildcard * must be at the end of the string. For example, chaos-*.org is invalid.\n     2. if the patterns is empty, will take effect on all the domain names.\nFor example:\n\t\tThe value is [\"google.com\", \"github.*\", \"chaos-mes?.org\"],\n\t\twill take effect on \"google.com\", \"github.com\" and \"chaos-mesh.org\"",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "remoteCluster": {
@@ -1306,7 +1288,6 @@
           "description": "Conditions represents the current global condition of the chaos",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.ChaosCondition"
           }
         },
@@ -1688,7 +1669,6 @@
           "description": "Callchain indicate a special call chain, such as:\n    ext4_mount\n      -\u003e mount_subtree\n         -\u003e ...\n            -\u003e should_failslab\nWith an optional set of predicates and an optional set of parameters, which used with predicates. You can read call chan and predicate examples from https://github.com/chaos-mesh/bpfki/tree/develop/examples to learn more. If no special call chain, just keep Callchain empty, which means it will fail at any call chain with slab alloc (eg: kmalloc).",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.Frame"
           }
         },
@@ -1702,8 +1682,7 @@
           "description": "Headers indicates the appropriate kernel headers you need. Eg: \"linux/mmzone.h\", \"linux/blkdev.h\" and so on",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "probability": {
@@ -1872,8 +1851,7 @@
           "description": "Methods represents the method that the action will inject in",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "path": {
@@ -1971,7 +1949,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.GCPChaos"
           }
         },
@@ -2011,8 +1988,7 @@
           "description": "The device name of disks to detach. Needed in disk-loss.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "duration": {
@@ -2062,15 +2038,13 @@
           "description": "The attached disk info strings. Needed in disk-loss.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions represents the current global condition of the chaos",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.ChaosCondition"
           }
         },
@@ -2100,8 +2074,7 @@
           "description": "The device name of disks to detach. Needed in disk-loss.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "instance": {
@@ -2136,32 +2109,35 @@
           "description": "Map of string keys and values that can be used to select objects. A selector based on annotations.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
+          }
+        },
+        "expressionSelectors": {
+          "description": "a slice of label selector expressions that can be used to select objects. A list of selectors based on set-based label expressions.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelectorRequirement"
           }
         },
         "fieldSelectors": {
           "description": "Map of string keys and values that can be used to select objects. A selector based on fields.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "labelSelectors": {
           "description": "Map of string keys and values that can be used to select objects. A selector based on labels.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "namespaces": {
           "description": "Namespaces is a set of namespace to which objects belong.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -2202,8 +2178,7 @@
           "type": "array",
           "items": {
             "type": "integer",
-            "format": "int32",
-            "default": 0
+            "format": "int32"
           }
         },
         "target": {
@@ -2267,7 +2242,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.HTTPChaos"
           }
         },
@@ -2347,16 +2321,14 @@
           "description": "RequestHeaders is a rule to select target by http headers in request. The key-value pairs represent header name and header value pairs.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "response_headers": {
           "description": "ResponseHeaders is a rule to select target by http headers in response. The key-value pairs represent header name and header value pairs.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "selector": {
@@ -2396,7 +2368,6 @@
           "description": "Conditions represents the current global condition of the chaos",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.ChaosCondition"
           }
         },
@@ -2410,8 +2381,7 @@
           "type": "object",
           "additionalProperties": {
             "type": "integer",
-            "format": "int64",
-            "default": 0
+            "format": "int64"
           }
         }
       },
@@ -2452,8 +2422,7 @@
           "type": "array",
           "items": {
             "type": "integer",
-            "format": "int32",
-            "default": 0
+            "format": "int32"
           }
         },
         "target": {
@@ -2541,8 +2510,7 @@
           "type": "array",
           "items": {
             "type": "integer",
-            "format": "int32",
-            "default": 0
+            "format": "int32"
           }
         },
         "target": {
@@ -2605,8 +2573,7 @@
           "additionalProperties": {
             "type": "array",
             "items": {
-              "type": "string",
-              "default": ""
+              "type": "string"
             }
           }
         },
@@ -2682,7 +2649,6 @@
           "description": "Faults represents the fault to inject",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.IoFault"
           }
         },
@@ -2705,8 +2671,7 @@
           "description": "Methods represents the method that the action will inject in",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "mistake": {
@@ -2778,7 +2743,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.IOChaos"
           }
         },
@@ -2815,15 +2779,14 @@
           "default": ""
         },
         "attr": {
-          "description": "Attr defines the overrided attribution",
+          "description": "Attr defines the overridden attribution",
           "$ref": "#/definitions/org.chaos-mesh.v1alpha1.AttrOverrideSpec"
         },
         "containerNames": {
           "description": "ContainerNames indicates list of the name of affected container. If not set, the first container will be injected",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "delay": {
@@ -2843,8 +2806,7 @@
           "description": "Methods defines the I/O methods for injecting I/O chaos action. default: all I/O methods.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "mistake": {
@@ -2903,7 +2865,6 @@
           "description": "Conditions represents the current global condition of the chaos",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.ChaosCondition"
           }
         },
@@ -2917,8 +2878,7 @@
           "type": "object",
           "additionalProperties": {
             "type": "integer",
-            "format": "int64",
-            "default": 0
+            "format": "int64"
           }
         }
       },
@@ -3004,7 +2964,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.JVMChaos"
           }
         },
@@ -3047,8 +3006,7 @@
           "description": "ContainerNames indicates list of the name of affected container. If not set, the first container will be injected",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "cpuCount": {
@@ -3158,7 +3116,6 @@
           "description": "Conditions represents the current global condition of the chaos",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.ChaosCondition"
           }
         },
@@ -3738,7 +3695,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.KernelChaos"
           }
         },
@@ -3772,8 +3728,7 @@
           "description": "ContainerNames indicates list of the name of affected container. If not set, the first container will be injected",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "duration": {
@@ -3823,7 +3778,6 @@
           "description": "Conditions represents the current global condition of the chaos",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.ChaosCondition"
           }
         },
@@ -3880,8 +3834,7 @@
           "description": "extend stress-ng options",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "size": {
@@ -4030,7 +3983,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.NetworkChaos"
           }
         },
@@ -4097,8 +4049,7 @@
           "description": "ExternalTargets represents network targets outside k8s",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "loss": {
@@ -4109,6 +4060,10 @@
           "description": "Mode defines the mode to run chaos action. Supported mode: one / all / fixed / fixed-percent / random-max-percent",
           "type": "string",
           "default": ""
+        },
+        "partitionBehavior": {
+          "description": "PartitionBehavior defines how matched packets are handled for the partition action. \"drop\" silently discards packets, while \"reject\" resets TCP connections and rejects remaining traffic with the platform-default response.",
+          "type": "string"
         },
         "rate": {
           "description": "Rate represents the detail about rate control action",
@@ -4155,7 +4110,6 @@
           "description": "Conditions represents the current global condition of the chaos",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.ChaosCondition"
           }
         },
@@ -4169,8 +4123,7 @@
           "type": "object",
           "additionalProperties": {
             "type": "integer",
-            "format": "int64",
-            "default": 0
+            "format": "int64"
           }
         }
       },
@@ -4657,7 +4610,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.PhysicalMachineChaos"
           }
         },
@@ -4694,8 +4646,7 @@
           "description": "DEPRECATED: Use Selector instead. Only one of Address and Selector could be specified.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "clock": {
@@ -4869,7 +4820,6 @@
           "description": "Conditions represents the current global condition of the chaos",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.ChaosCondition"
           }
         },
@@ -4901,7 +4851,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.PhysicalMachine"
           }
         },
@@ -4932,8 +4881,7 @@
           "description": "DEPRECATED: Use Selector instead. Only one of Address and Selector could be specified.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "mode": {
@@ -4967,32 +4915,35 @@
           "description": "Map of string keys and values that can be used to select objects. A selector based on annotations.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
+          }
+        },
+        "expressionSelectors": {
+          "description": "a slice of label selector expressions that can be used to select objects. A list of selectors based on set-based label expressions.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelectorRequirement"
           }
         },
         "fieldSelectors": {
           "description": "Map of string keys and values that can be used to select objects. A selector based on fields.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "labelSelectors": {
           "description": "Map of string keys and values that can be used to select objects. A selector based on labels.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "namespaces": {
           "description": "Namespaces is a set of namespace to which objects belong.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "physicalMachines": {
@@ -5001,8 +4952,7 @@
           "additionalProperties": {
             "type": "array",
             "items": {
-              "type": "string",
-              "default": ""
+              "type": "string"
             }
           }
         }
@@ -5088,7 +5038,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.PodChaos"
           }
         },
@@ -5127,8 +5076,7 @@
           "description": "ContainerNames indicates list of the name of affected container. If not set, the first container will be injected",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "duration": {
@@ -5178,7 +5126,6 @@
           "description": "Conditions represents the current global condition of the chaos",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.ChaosCondition"
           }
         },
@@ -5305,7 +5252,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.PodHttpChaos"
           }
         },
@@ -5340,8 +5286,7 @@
           "items": {
             "type": "array",
             "items": {
-              "type": "string",
-              "default": ""
+              "type": "string"
             }
           }
         },
@@ -5351,8 +5296,7 @@
           "items": {
             "type": "array",
             "items": {
-              "type": "string",
-              "default": ""
+              "type": "string"
             }
           }
         }
@@ -5410,8 +5354,7 @@
           "description": "Headers is a rule to replace http headers of target. The key-value pairs represent header name and header value pairs.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "method": {
@@ -5426,8 +5369,7 @@
           "description": "Queries is a rule to replace uri queries in http request. For example, with value `{ \"foo\": \"unknown\" }`, the `/?foo=bar` will be altered to `/?foo=unknown`,",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -5508,16 +5450,14 @@
           "description": "RequestHeaders is a rule to select target by http headers in request. The key-value pairs represent header name and header value pairs.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "response_headers": {
           "description": "ResponseHeaders is a rule to select target by http headers in response. The key-value pairs represent header name and header value pairs.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -5537,7 +5477,6 @@
           "description": "Rules are a list of injection rule for http request.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.PodHttpChaosRule"
           }
         },
@@ -5674,7 +5613,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.PodIOChaos"
           }
         },
@@ -5706,7 +5644,6 @@
           "description": "Actions are a list of IOChaos actions",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.IOChaosAction"
           }
         },
@@ -5808,7 +5745,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.PodNetworkChaos"
           }
         },
@@ -5837,7 +5773,6 @@
           "description": "The ipset on the pod",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.RawIPSet"
           }
         },
@@ -5845,7 +5780,6 @@
           "description": "The iptables rules on the pod",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.RawIptables"
           }
         },
@@ -5853,7 +5787,6 @@
           "description": "The tc rules on the pod",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.RawTrafficControl"
           }
         }
@@ -5924,56 +5857,56 @@
           "description": "Map of string keys and values that can be used to select objects. A selector based on annotations.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
+          }
+        },
+        "expressionSelectors": {
+          "description": "a slice of label selector expressions that can be used to select objects. A list of selectors based on set-based label expressions.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelectorRequirement"
           }
         },
         "fieldSelectors": {
           "description": "Map of string keys and values that can be used to select objects. A selector based on fields.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "labelSelectors": {
           "description": "Map of string keys and values that can be used to select objects. A selector based on labels.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "namespaces": {
           "description": "Namespaces is a set of namespace to which objects belong.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "nodeSelectors": {
           "description": "Map of string keys and values that can be used to select nodes. Selector which must match a node's labels, and objects must belong to these selected nodes.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "nodes": {
           "description": "Nodes is a set of node name and objects must belong to these nodes.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "podPhaseSelectors": {
           "description": "PodPhaseSelectors is a set of condition of a pod at the current time. supported value: Pending / Running / Succeeded / Failed / Unknown",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "pods": {
@@ -5982,8 +5915,7 @@
           "additionalProperties": {
             "type": "array",
             "items": {
-              "type": "string",
-              "default": ""
+              "type": "string"
             }
           }
         }
@@ -6055,7 +5987,6 @@
           "description": "The contents of ipset. Only available when IPSetType is NetPortIPSet.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.CidrAndPort"
           }
         },
@@ -6063,8 +5994,7 @@
           "description": "The contents of ipset. Only available when IPSetType is NetIPSet.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "ipsetType": {
@@ -6080,8 +6010,7 @@
           "description": "The contents of ipset. Only available when IPSetType is SetIPSet.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "source": {
@@ -6119,14 +6048,17 @@
           "description": "The name of related ipset",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "name": {
           "description": "The name of iptables chain",
           "type": "string",
           "default": ""
+        },
+        "partitionBehavior": {
+          "description": "PartitionBehavior defines whether matching packets are dropped or rejected. Reject resets TCP connections and rejects remaining traffic with the platform-default response. An empty value preserves the legacy drop behavior.",
+          "type": "string"
         },
         "source": {
           "type": "string",
@@ -6234,7 +6166,6 @@
           "description": "Events are the essential details about the injections and recoveries",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.RecordEvent"
           }
         },
@@ -6570,7 +6501,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.RemoteCluster"
           }
         },
@@ -6665,7 +6595,6 @@
           "description": "Conditions represents the current condition of the remote cluster",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.RemoteClusterCondition"
           }
         },
@@ -6822,7 +6751,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.Schedule"
           }
         },
@@ -6932,7 +6860,6 @@
         "active": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.ObjectReference"
           }
         },
@@ -7036,7 +6963,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.StatusCheck"
           }
         },
@@ -7147,7 +7073,6 @@
           "description": "Conditions represents the latest available observations of a StatusCheck's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.StatusCheckCondition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -7162,7 +7087,6 @@
           "description": "Records contains the history of the execution of StatusCheck.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.StatusCheckRecord"
           }
         },
@@ -7248,8 +7172,7 @@
           "description": "extend stress-ng options",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "workers": {
@@ -7318,7 +7241,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.StressChaos"
           }
         },
@@ -7351,8 +7273,7 @@
           "description": "ContainerNames indicates list of the name of affected container. If not set, the first container will be injected",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "duration": {
@@ -7405,7 +7326,6 @@
           "description": "Conditions represents the current global condition of the chaos",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.ChaosCondition"
           }
         },
@@ -7418,7 +7338,6 @@
           "description": "Instances always specifies stressing instances",
           "type": "object",
           "additionalProperties": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.StressInstance"
           }
         }
@@ -7467,8 +7386,7 @@
           "description": "extend stress-ng options",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "size": {
@@ -7534,11 +7452,16 @@
           "description": "Container is the main container image to run in the pod",
           "$ref": "#/definitions/io.k8s.api.core.v1.Container"
         },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
         "volumes": {
           "description": "Volumes is a list of volumes that can be mounted by containers in a template.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Volume"
           },
           "x-kubernetes-patch-merge-key": "name",
@@ -7614,15 +7537,13 @@
           "description": "Children describes the children steps of serial or parallel node. Only used when Type is TypeSerial or TypeParallel.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditionalBranches": {
           "description": "ConditionalBranches describes the conditional branches of custom tasks. Only used when Type is TypeTask.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.ConditionalBranch"
           }
         },
@@ -7743,7 +7664,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.TimeChaos"
           }
         },
@@ -7777,16 +7697,14 @@
           "description": "ClockIds defines all affected clock id All available options are [\"CLOCK_REALTIME\",\"CLOCK_MONOTONIC\",\"CLOCK_PROCESS_CPUTIME_ID\",\"CLOCK_THREAD_CPUTIME_ID\", \"CLOCK_MONOTONIC_RAW\",\"CLOCK_REALTIME_COARSE\",\"CLOCK_MONOTONIC_COARSE\",\"CLOCK_BOOTTIME\",\"CLOCK_REALTIME_ALARM\", \"CLOCK_BOOTTIME_ALARM\"] Default value is [\"CLOCK_REALTIME\"]",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "containerNames": {
           "description": "ContainerNames indicates list of the name of affected container. If not set, the first container will be injected",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "duration": {
@@ -7836,7 +7754,6 @@
           "description": "Conditions represents the current global condition of the chaos",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.ChaosCondition"
           }
         },
@@ -7999,7 +7916,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.Workflow"
           }
         },
@@ -8099,7 +8015,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.WorkflowNode"
           }
         },
@@ -8145,14 +8060,12 @@
         "children": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditionalBranches": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.ConditionalBranch"
           }
         },
@@ -8233,7 +8146,6 @@
           "description": "ActiveChildren means the created children node",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
           }
         },
@@ -8249,7 +8161,6 @@
           "description": "Represents the latest available observations of a workflow node's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.WorkflowNodeCondition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -8259,7 +8170,6 @@
           "description": "Children is necessary for representing the order when replicated child template references by parent template.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
           }
         }
@@ -8286,7 +8196,6 @@
         "templates": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.Template"
           }
         }
@@ -8306,7 +8215,6 @@
           "description": "Represents the latest available observations of a workflow's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/org.chaos-mesh.v1alpha1.WorkflowCondition"
           },
           "x-kubernetes-patch-merge-key": "type",
