@@ -6,6 +6,7 @@
   - [Build tooling requires a Java 17 runtime](#java-17-build-tooling)
   - [OSGi bundles require JavaSE 17](#java-17-osgi)
 - [Karaf: the bundled `scr` feature has been removed](#karaf-scr)
+- [Jackson 3](#jackson-3)
 
 
 > [!NOTE]
@@ -83,3 +84,17 @@ Two things change if you were relying on the old behaviour:
 - **If you build a custom Karaf assembly**, make sure the Karaf standard feature repository is on the descriptor list. Our repository no longer carries a `scr` feature to fall back on, so an assembly that registers only the fabric8 repository will now fail to resolve `kubernetes-client` — loudly, at assembly time, rather than silently producing a container where the client cannot activate.
 
 The old definition was not self-contained: Felix SCR 2.0.6 exported the Declarative Services API itself, but 2.2.18 and later import it instead, so a single-bundle `scr` feature no longer carries everything it needs. Because ours was versioned with the project version it also outranked Karaf's, so an unversioned `scr` request selected the incomplete definition.
+
+## Jackson 3 <a href="#jackson-3" id="jackson-3"/>
+
+The client and the model now use Jackson 3. Any code of yours that uses the Jackson types the client exposes, or that configures how your custom resources are (de)serialized, has to move too.
+
+- **Coordinates and packages:** `com.fasterxml.jackson.core` / `com.fasterxml.jackson.dataformat` become `tools.jackson.core` / `tools.jackson.dataformat`, and the `com.fasterxml.jackson.{core,databind,dataformat}` packages become `tools.jackson.*`. Annotations such as `@JsonProperty` are unchanged and still come from `com.fasterxml.jackson.core:jackson-annotations`.
+- **`java.time` support is built in:** drop `jackson-datatype-jsr310` and any `JavaTimeModule` registration.
+- **Databind annotations moved:** `@JsonDeserialize`, `@JsonSerialize` and friends now live in `tools.jackson.databind.annotation`, and `JsonDeserializer`/`JsonSerializer` are `ValueDeserializer`/`ValueSerializer`. The Jackson 2 variants still compile when Jackson 2 is on your classpath, but the client silently ignores them, so check your custom resource classes.
+- **Exposed types:** `Serialization.jsonMapper()`/`yamlMapper()` return Jackson 3 mappers, `unmarshal(..., TypeReference)` takes a `tools.jackson.core.type.TypeReference`, and `JsonNode` model fields (e.g. `JSONSchemaProps` `default`/`example`) are `tools.jackson.databind.JsonNode`.
+- **Mappers are immutable:** `registerModule` and `configure` are gone, use the builder or `mapper.rebuild()`. `new KubernetesSerialization(mapper, ...)` configures and uses a copy, the mapper you pass is left untouched. Subclasses overriding `configureMapper` must return the configured mapper.
+
+The default `KubernetesSerialization` (and therefore `KubernetesClientBuilder`) uses `JsonMapper.builderWithJackson2Defaults()`, so your custom types keep their 2.x wire format. If you pass your own mapper, build it the same way: with plain Jackson 3 defaults, properties are sorted alphabetically, enums go through `toString()`, `null` for a primitive fails and getter-only collections are no longer populated.
+
+One difference can't be restored: getters with an upper-case prefix follow the standard bean naming, so `getURL()` is now `URL` instead of `url`. Annotate them with `@JsonProperty` to keep the old name.

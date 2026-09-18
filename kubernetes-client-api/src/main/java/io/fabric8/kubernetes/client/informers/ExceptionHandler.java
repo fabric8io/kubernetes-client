@@ -15,9 +15,9 @@
  */
 package io.fabric8.kubernetes.client.informers;
 
-import com.fasterxml.jackson.core.JacksonException;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
+import tools.jackson.core.JacksonException;
 
 public interface ExceptionHandler {
 

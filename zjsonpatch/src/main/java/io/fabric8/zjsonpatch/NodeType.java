@@ -15,8 +15,8 @@
  */
 package io.fabric8.zjsonpatch;
 
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.JsonNode;
+import tools.jackson.core.JsonToken;
+import tools.jackson.databind.JsonNode;
 
 import java.util.EnumMap;
 import java.util.Map;

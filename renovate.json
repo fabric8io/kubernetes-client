@@ -13,7 +13,7 @@
   ],
   "customManagers": [
     {
-      "description": "jackson.bundle.version.annotations pins the jackson-annotations OSGi bundle in the Karaf feature. jackson-bom decouples it from jackson.version (2.20+ drops the patch segment), and it is not a dependency declaration, so the maven manager never sees it. Tracking it here keeps it in the same grouped jackson PR",
+      "description": "jackson.bundle.version.annotations pins the jackson-annotations OSGi bundle in the Karaf feature. Jackson 3 keeps using the 2.x jackson-annotations (major.minor only), decoupled from jackson.version, and it is not a dependency declaration, so the maven manager never sees it. Tracking it here keeps it in the same grouped jackson PR",
       "customType": "regex",
       "managerFilePatterns": ["/^pom\\.xml$/"],
       "matchStrings": ["<jackson\\.bundle\\.version\\.annotations>(?<currentValue>.*?)</jackson\\.bundle\\.version\\.annotations>"],
@@ -63,7 +63,7 @@
       "groupName": "bouncycastle"
     },
     {
-      "matchPackageNames": ["com.fasterxml.jackson**"],
+      "matchPackageNames": ["com.fasterxml.jackson**", "tools.jackson**"],
       "groupName": "jackson"
     },
     {

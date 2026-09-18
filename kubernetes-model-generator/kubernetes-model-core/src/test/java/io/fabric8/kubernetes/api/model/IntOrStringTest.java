@@ -15,10 +15,11 @@
  */
 package io.fabric8.kubernetes.api.model;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 
@@ -31,7 +32,7 @@ class IntOrStringTest {
 
   @BeforeEach
   void setUp() {
-    mapper = new ObjectMapper();
+    mapper = new JsonMapper();
   }
 
   @Test
@@ -48,7 +49,7 @@ class IntOrStringTest {
   }
 
   @Test
-  void setValue_whenIntValueProvided_shouldSetIntVal() throws JsonProcessingException {
+  void setValue_whenIntValueProvided_shouldSetIntVal() throws JacksonException {
     // Given
     IntOrString is = new IntOrString();
 
@@ -61,7 +62,7 @@ class IntOrStringTest {
   }
 
   @Test
-  void setValue_whenStringValueProvided_shouldSetStrVal() throws JsonProcessingException {
+  void setValue_whenStringValueProvided_shouldSetStrVal() throws JacksonException {
     // Given
     IntOrString is = new IntOrString();
 

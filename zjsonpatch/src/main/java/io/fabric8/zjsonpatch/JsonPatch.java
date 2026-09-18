@@ -15,8 +15,8 @@
  */
 package io.fabric8.zjsonpatch;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.NullNode;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.NullNode;
 
 import java.util.EnumSet;
 import java.util.Iterator;

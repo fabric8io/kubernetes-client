@@ -15,9 +15,10 @@
  */
 package io.fabric8.openshift.api.model.hive.v1;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.model.util.Helper;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -25,7 +26,7 @@ import java.text.ParseException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ClusterClaimTest {
-  private final ObjectMapper mapper = new ObjectMapper();
+  private final ObjectMapper mapper = new JsonMapper();
 
   @Test
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException, ParseException {

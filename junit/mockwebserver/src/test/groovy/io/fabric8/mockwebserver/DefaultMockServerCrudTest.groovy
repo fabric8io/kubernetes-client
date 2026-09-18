@@ -24,8 +24,16 @@ import io.vertx.ext.web.client.WebClient
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
+import tools.jackson.databind.json.JsonMapper
 
 class DefaultMockServerCrudTest extends Specification {
+
+	@Shared
+	static def mapper = JsonMapper.builderWithJackson2Defaults().build()
+
+	private static Buffer toJsonBuffer(Object obj) {
+		return Buffer.buffer(mapper.writeValueAsString(obj))
+	}
 
 	@Shared
 	static def vertx = Vertx.vertx()
@@ -71,7 +79,7 @@ class DefaultMockServerCrudTest extends Specification {
 		def conditions = new PollingConditions(timeout: 10)
 
 		when: "The request is sent"
-		def requestFuture = request.sendJson(new User(1L, "user", true))
+		def requestFuture = request.sendBuffer(toJsonBuffer(new User(1L, "user", true)))
 		and: "completed"
 		conditions.eventually {
 			assert requestFuture.isComplete()
@@ -87,10 +95,10 @@ class DefaultMockServerCrudTest extends Specification {
 		def request = client.get(server.port, server.getHostName(), "/")
 		and: "Items in the server"
 		def itemsInServer = client.post(server.port, server.getHostName(), "/")
-				.sendJson(new User(1L, "user", true))
+				.sendBuffer(toJsonBuffer(new User(1L, "user", true)))
 				.compose { _ ->
 					client.post(server.port, server.getHostName(), "/")
-							.sendJson(new User(2L, "user-2", true))
+							.sendBuffer(toJsonBuffer(new User(2L, "user-2", true)))
 				}
 		and: "An instance of PollingConditions"
 		def conditions = new PollingConditions(timeout: 10)
@@ -116,9 +124,9 @@ class DefaultMockServerCrudTest extends Specification {
 		and: "Items in the server"
 		def itemsInServer = Future.all(
 				client.post(server.port, server.getHostName(), "/")
-				.sendJson(new User(1L, "user", true)),
+				.sendBuffer(toJsonBuffer(new User(1L, "user", true))),
 				client.post(server.port, server.getHostName(), "/")
-				.sendJson(new User(2L, "user-2", true))
+				.sendBuffer(toJsonBuffer(new User(2L, "user-2", true)))
 				)
 		and: "An instance of PollingConditions"
 		def conditions = new PollingConditions(timeout: 10)
@@ -145,7 +153,7 @@ class DefaultMockServerCrudTest extends Specification {
 		def conditions = new PollingConditions(timeout: 10)
 
 		when: "The request is sent with one JSON item"
-		def requestFuture = request.sendJson(new User(1L, "user-replaced", true))
+		def requestFuture = request.sendBuffer(toJsonBuffer(new User(1L, "user-replaced", true)))
 		and: "completed"
 		conditions.eventually {
 			assert requestFuture.isComplete()
@@ -162,9 +170,9 @@ class DefaultMockServerCrudTest extends Specification {
 		and: "Items in the server"
 		def itemsInServer = Future.all(
 				client.post(server.port, server.getHostName(), "/")
-				.sendJson(new User(1L, "user", true)),
+				.sendBuffer(toJsonBuffer(new User(1L, "user", true))),
 				client.post(server.port, server.getHostName(), "/")
-				.sendJson(new User(2L, "user-2", true))
+				.sendBuffer(toJsonBuffer(new User(2L, "user-2", true)))
 				)
 		and: "An instance of PollingConditions"
 		def conditions = new PollingConditions(timeout: 10)
@@ -172,7 +180,7 @@ class DefaultMockServerCrudTest extends Specification {
 		when: "The request is sent with one JSON item after the initial items have been created"
 		Future<HttpResponse<Buffer>> requestFuture
 		itemsInServer.onComplete { isr ->
-			requestFuture = request.sendJson(new User(1L, "user-replaced", true))
+			requestFuture = request.sendBuffer(toJsonBuffer(new User(1L, "user-replaced", true)))
 		}
 		and: "completed"
 		conditions.eventually {

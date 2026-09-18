@@ -32,7 +32,8 @@
 
   <properties>
     <osgi.import>
-      com.fasterxml.jackson.*,
+      tools.jackson.*,
+      com.fasterxml.jackson.annotation.*,
       io.fabric8.zjsonpatch.internal.collections4
     </osgi.import>
     <osgi.export>
@@ -42,7 +43,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
+      <groupId>tools.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
     </dependency>
 
