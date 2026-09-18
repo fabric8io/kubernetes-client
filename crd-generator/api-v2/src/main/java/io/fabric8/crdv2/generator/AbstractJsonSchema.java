@@ -403,9 +403,10 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         return resolvingContext.objectMapper.convertValue(typedValue, JsonNode.class);
       } catch (Exception e) {
         if (fromDefaultAnnotation) {
-          throw new IllegalArgumentException("Cannot parse default value: '" + value + "' as valid YAML or JSON.", e);
+          throw new IllegalArgumentException("Cannot parse default value: '" + value + "' as valid JSON.", e);
         }
-        // For @JsonProperty(defaultValue), silently ignore invalid values
+        logger.debug("Cannot parse default value: '{}' of @JsonProperty annotation on field '{}'",
+            value, fieldScope.getRawMember().getName());
         return null;
       }
     }
@@ -557,7 +558,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
   }
 
   // Pre-cache field scopes before iterating, because toJsonSchema calls during
-  // schema swaps clear the fieldScopes map in ResolvingContext
+  // schema swaps may overwrite entries in the fieldScopes map in ResolvingContext
   private void cacheFieldScopes(Class<?> rawClass, ObjectNode properties, Map<String, FieldScope> target) {
     for (var entry : nodeToMap(properties).entrySet()) {
       FieldScope fs = resolvingContext.getFieldScope(rawClass, entry.getKey());
@@ -893,13 +894,13 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     }
 
     // Free-form JSON types get x-kubernetes-preserve-unknown-fields
-    if (JsonNode.class.isAssignableFrom(rawClass)) {
-      T schema = singleProperty(null);
+    if (rawClass == ObjectNode.class) {
+      T schema = singleProperty(OBJECT_LITERAL);
       schema.setXKubernetesPreserveUnknownFields(true);
       return schema;
     }
-    if (rawClass == ObjectNode.class) {
-      T schema = singleProperty(OBJECT_LITERAL);
+    if (JsonNode.class.isAssignableFrom(rawClass)) {
+      T schema = singleProperty(null);
       schema.setXKubernetesPreserveUnknownFields(true);
       return schema;
     }

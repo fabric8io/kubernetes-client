@@ -222,7 +222,10 @@ public class ResolvingContext {
     Map<String, ObjectNode> savedDefs = this.defs;
     ObjectNode savedRoot = this.rootSchema;
     ObjectNode schema = toJsonSchema(clazz);
-    this.defs = savedDefs;
+    Map<String, ObjectNode> swapDefs = this.defs;
+    Map<String, ObjectNode> mergedDefs = new ConcurrentHashMap<>(savedDefs);
+    mergedDefs.putAll(swapDefs);
+    this.defs = mergedDefs;
     this.rootSchema = savedRoot;
     return schema;
   }
