@@ -20,8 +20,11 @@ import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
+import io.fabric8.kubernetes.model.jackson.UnmatchedFieldTypeModule;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -30,14 +33,19 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.ValueDeserializer;
 import tools.jackson.databind.annotation.JsonDeserialize;
 import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class KubernetesSerializationTest {
 
@@ -123,6 +131,163 @@ class KubernetesSerializationTest {
           .contains("widgets.test.fabric8.io");
     }
 
+  }
+
+  @Nested
+  @DisplayName("default instance, with user types, keeps the Jackson 2 behavior")
+  class DefaultInstanceUserTypes {
+
+    @BeforeEach
+    void setUp() {
+      kubernetesSerialization = new KubernetesSerialization();
+    }
+
+    @Test
+    @DisplayName("asJson, serializes properties in declaration order")
+    void asJsonKeepsDeclarationOrder() {
+      final UserSpec spec = new UserSpec();
+      spec.setZeta("z");
+      spec.setAlpha("a");
+      assertThat(kubernetesSerialization.asJson(spec))
+          .isEqualTo("{\"zeta\":\"z\",\"replicas\":0,\"items\":[],\"alpha\":\"a\"}");
+    }
+
+    @Test
+    @DisplayName("asJson, serializes enums by name, ignoring toString")
+    void asJsonSerializesEnumName() {
+      final UserSpec spec = new UserSpec();
+      spec.setPhase(Phase.RUNNING);
+      assertThat(kubernetesSerialization.asJson(spec)).contains("\"phase\":\"RUNNING\"");
+    }
+
+    @Test
+    @DisplayName("unmarshal, deserializes enums by name, ignoring toString")
+    void unmarshalDeserializesEnumName() {
+      assertThat(kubernetesSerialization.unmarshal("{\"phase\":\"RUNNING\"}", UserSpec.class))
+          .extracting(UserSpec::getPhase)
+          .isEqualTo(Phase.RUNNING);
+    }
+
+    @Test
+    @DisplayName("unmarshal, with null for a primitive, uses the primitive default")
+    void unmarshalNullPrimitive() {
+      assertThat(kubernetesSerialization.unmarshal("{\"replicas\":null}", UserSpec.class))
+          .extracting(UserSpec::getReplicas)
+          .isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("unmarshal, with getter-only collection, populates it")
+    void unmarshalGetterOnlyCollection() {
+      assertThat(kubernetesSerialization.unmarshal("{\"items\":[\"a\",\"b\"]}", UserSpec.class))
+          .extracting(UserSpec::getItems)
+          .asInstanceOf(InstanceOfAssertFactories.list(String.class))
+          .containsExactly("a", "b");
+    }
+  }
+
+  @Nested
+  @DisplayName("Jackson failures")
+  class JacksonFailures {
+
+    @BeforeEach
+    void setUp() {
+      kubernetesSerialization = new KubernetesSerialization();
+    }
+
+    @Test
+    @DisplayName("asJson, with unserializable object, throws KubernetesClientException")
+    void asJsonThrowsKubernetesClientException() {
+      final SelfReferencing selfReferencing = new SelfReferencing();
+      assertThatThrownBy(() -> kubernetesSerialization.asJson(selfReferencing))
+          .isInstanceOf(KubernetesClientException.class)
+          .hasCauseInstanceOf(JacksonException.class);
+    }
+
+    @Test
+    @DisplayName("mergePatch, with invalid patch, throws KubernetesClientException")
+    void mergePatchThrowsKubernetesClientException() {
+      final UserSpec spec = new UserSpec();
+      assertThatThrownBy(() -> kubernetesSerialization.mergePatch(spec, "{"))
+          .isInstanceOf(KubernetesClientException.class)
+          .hasCauseInstanceOf(JacksonException.class);
+    }
+
+    @Test
+    @DisplayName("convertValue, with incompatible type, throws IllegalArgumentException")
+    void convertValueThrowsIllegalArgumentException() {
+      assertThatThrownBy(() -> kubernetesSerialization.convertValue("not-a-number", Integer.class))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasCauseInstanceOf(JacksonException.class);
+    }
+  }
+
+  @Test
+  @DisplayName("constructor, with provided mapper, configures a copy and leaves the provided mapper untouched")
+  void constructorDoesNotModifyProvidedMapper() {
+    final ObjectMapper mapper = JsonMapper.builder().build();
+    new KubernetesSerialization(mapper, false);
+    assertThat(mapper.registeredModules())
+        .noneMatch(UnmatchedFieldTypeModule.class::isInstance);
+  }
+
+  public enum Phase {
+    RUNNING;
+
+    @Override
+    public String toString() {
+      return "running";
+    }
+  }
+
+  public static class UserSpec {
+    private String zeta;
+    private int replicas;
+    private Phase phase;
+    private final List<String> items = new ArrayList<>();
+    private String alpha;
+
+    public String getZeta() {
+      return zeta;
+    }
+
+    public void setZeta(String zeta) {
+      this.zeta = zeta;
+    }
+
+    public int getReplicas() {
+      return replicas;
+    }
+
+    public void setReplicas(int replicas) {
+      this.replicas = replicas;
+    }
+
+    public Phase getPhase() {
+      return phase;
+    }
+
+    public void setPhase(Phase phase) {
+      this.phase = phase;
+    }
+
+    public List<String> getItems() {
+      return items;
+    }
+
+    public String getAlpha() {
+      return alpha;
+    }
+
+    public void setAlpha(String alpha) {
+      this.alpha = alpha;
+    }
+  }
+
+  public static class SelfReferencing {
+    public SelfReferencing getSelf() {
+      return this;
+    }
   }
 
   @Version("v1")

@@ -90,7 +90,8 @@ public class Serialization {
       synchronized (Serialization.class) {
         if (YAML_MAPPER == null) {
           YAML_MAPPER = YAMLMapper.builder(
-              YAMLFactory.builder().disable(YAMLWriteFeature.USE_NATIVE_TYPE_ID).build())
+              YAMLFactory.builder().configureForJackson2().disable(YAMLWriteFeature.USE_NATIVE_TYPE_ID).build())
+              .configureForJackson2()
               .addModule(new GoCompatibilityModule())
               .addModule(UNMATCHED_FIELD_TYPE_MODULE)
               .build();

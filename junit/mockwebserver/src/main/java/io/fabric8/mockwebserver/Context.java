@@ -23,7 +23,7 @@ public class Context {
   private final ObjectMapper mapper;
 
   public Context() {
-    this(new JsonMapper());
+    this(JsonMapper.builderWithJackson2Defaults().build());
   }
 
   public Context(ObjectMapper mapper) {

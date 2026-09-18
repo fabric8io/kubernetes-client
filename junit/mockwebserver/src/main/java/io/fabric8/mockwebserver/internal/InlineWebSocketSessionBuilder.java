@@ -33,7 +33,7 @@ import java.util.function.Function;
 
 public class InlineWebSocketSessionBuilder<T> implements WebSocketSessionBuilder<T>, EventDoneable<T> {
 
-  private static final ObjectMapper MAPPER = new JsonMapper();
+  private static final ObjectMapper MAPPER = JsonMapper.builderWithJackson2Defaults().build();
 
   private final Function<WebSocketSession, T> function;
   private WebSocketSession session;

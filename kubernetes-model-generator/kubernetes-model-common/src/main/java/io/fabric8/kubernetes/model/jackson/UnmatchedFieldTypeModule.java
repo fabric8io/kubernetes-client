@@ -35,8 +35,9 @@ import java.util.stream.Collectors;
  * target's bean field types.
  *
  * <pre>{@code
- * ObjectMapper mapper = new JsonMapper();
- * mapper.registerModule(new UnmatchedFieldTypeModule());
+ * ObjectMapper mapper = JsonMapper.builder()
+ *     .addModule(new UnmatchedFieldTypeModule())
+ *     .build();
  * }</pre>
  */
 public class UnmatchedFieldTypeModule extends SimpleModule {

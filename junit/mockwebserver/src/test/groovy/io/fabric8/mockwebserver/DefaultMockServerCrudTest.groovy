@@ -29,7 +29,7 @@ import tools.jackson.databind.json.JsonMapper
 class DefaultMockServerCrudTest extends Specification {
 
 	@Shared
-	static def mapper = new JsonMapper()
+	static def mapper = JsonMapper.builderWithJackson2Defaults().build()
 
 	private static Buffer toJsonBuffer(Object obj) {
 		return Buffer.buffer(mapper.writeValueAsString(obj))
@@ -87,7 +87,7 @@ class DefaultMockServerCrudTest extends Specification {
 
 		then: "The response contains the item"
 		requestFuture.result().statusCode() == 202
-		requestFuture.result().body().toString() == "{\"enabled\":true,\"id\":1,\"username\":\"user\"}"
+		requestFuture.result().body().toString() == "{\"id\":1,\"username\":\"user\",\"enabled\":true}"
 	}
 
 	def "GET /, with multiple items, should return array"() {
@@ -115,7 +115,7 @@ class DefaultMockServerCrudTest extends Specification {
 
 		then: "Expect the response to contain the requested items"
 		requestFuture.result().statusCode() == 200
-		requestFuture.result().body().toString() == "[{\"enabled\":true,\"id\":1,\"username\":\"user\"},{\"enabled\":true,\"id\":2,\"username\":\"user-2\"}]"
+		requestFuture.result().body().toString() == "[{\"id\":1,\"username\":\"user\",\"enabled\":true},{\"id\":2,\"username\":\"user-2\",\"enabled\":true}]"
 	}
 
 	def "GET /1, with existent item, should return item"() {
@@ -143,7 +143,7 @@ class DefaultMockServerCrudTest extends Specification {
 
 		then: "Expect the response to contain the requested item"
 		requestFuture.result().statusCode() == 200
-		requestFuture.result().body().toString() == "{\"enabled\":true,\"id\":1,\"username\":\"user\"}"
+		requestFuture.result().body().toString() == "{\"id\":1,\"username\":\"user\",\"enabled\":true}"
 	}
 
 	def "PUT /1, with missing item, should create item"() {
@@ -161,7 +161,7 @@ class DefaultMockServerCrudTest extends Specification {
 
 		then: "Expect the response to contain the created item"
 		requestFuture.result().statusCode() == 201
-		requestFuture.result().body().toString() == "{\"enabled\":true,\"id\":1,\"username\":\"user-replaced\"}"
+		requestFuture.result().body().toString() == "{\"id\":1,\"username\":\"user-replaced\",\"enabled\":true}"
 	}
 
 	def "PUT /1, with existent item, should replace item"() {
@@ -189,6 +189,6 @@ class DefaultMockServerCrudTest extends Specification {
 
 		then: "Expect the response to contain the replaced item"
 		requestFuture.result().statusCode() == 202
-		requestFuture.result().body().toString() == "{\"enabled\":true,\"id\":1,\"username\":\"user-replaced\"}"
+		requestFuture.result().body().toString() == "{\"id\":1,\"username\":\"user-replaced\",\"enabled\":true}"
 	}
 }

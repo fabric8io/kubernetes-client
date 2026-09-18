@@ -94,6 +94,8 @@
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
     <!-- jackson-annotations is shared between Jackson 2.x and 3.x, uses 2.x groupId and major.minor versioning -->
     <jackson.bundle.version.annotations>2.22</jackson.bundle.version.annotations>
+    <!-- Jackson 2 for the internal openapi model generator/validator tooling (swagger-parser, swagger-request-validator) -->
+    <jackson2.version>2.22.2</jackson2.version>
     <!-- TODO: pinned to Jetty 11. Moving to 12 is not an in-place bump: it reorganises the
          artifacts and changes the EE baseline, so it wants its own module next to httpclient-jetty,
          the way httpclient-vertx (4.x) and httpclient-vertx-5 (5.x) coexist. Renovate is configured

@@ -193,6 +193,8 @@ public class ParamValue implements Editable<ParamValueBuilder>, KubernetesResour
           jgen.writeString(value.stringVal);
         } else if (Objects.equals(value.getType(), TYPE_ARRAY)) {
           writeArray(value, jgen);
+        } else if (Objects.equals(value.getType(), TYPE_OBJECT)) {
+          writeObject(value, jgen);
         } else {
           jgen.writeNull();
         }
@@ -209,6 +211,14 @@ public class ParamValue implements Editable<ParamValueBuilder>, KubernetesResour
       jgen.writeEndArray();
     }
 
+    private void writeObject(ParamValue value, JsonGenerator jgen) {
+      jgen.writeStartObject(value);
+      for (Map.Entry<String, String> entry : value.getObjectVal().entrySet()) {
+        jgen.writeStringProperty(entry.getKey(), entry.getValue());
+      }
+      jgen.writeEndObject();
+    }
+
   }
 
   public static class Deserializer extends ValueDeserializer<ParamValue> {
@@ -216,15 +226,22 @@ public class ParamValue implements Editable<ParamValueBuilder>, KubernetesResour
     @Override
     public ParamValue deserialize(JsonParser jsonParser, DeserializationContext ctxt) {
       JsonNode node = jsonParser.readValueAsTree();
-      ParamValue arrayOrString;
       if (node.isArray()) {
         List<String> elements = new ArrayList<>();
-        node.values().forEach(n -> elements.add(n.asText()));
-        arrayOrString = new ParamValue(elements);
-      } else {
-        arrayOrString = new ParamValue(node.asText());
+        node.values().forEach(n -> elements.add(asString(n)));
+        return new ParamValue(elements);
       }
-      return arrayOrString;
+      if (node.isObject()) {
+        Map<String, String> properties = new LinkedHashMap<>();
+        node.properties().forEach(e -> properties.put(e.getKey(), asString(e.getValue())));
+        return new ParamValue(properties);
+      }
+      return new ParamValue(node.asString());
+    }
+
+    // Jackson 3 asString() throws for containers; Tekton values are strings, keep any nested JSON as-is
+    private static String asString(JsonNode node) {
+      return node.isContainer() ? node.toString() : node.asString();
     }
 
   }

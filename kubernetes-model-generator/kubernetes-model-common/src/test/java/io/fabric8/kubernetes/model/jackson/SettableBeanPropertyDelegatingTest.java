@@ -34,6 +34,7 @@ import tools.jackson.databind.DeserializationContext;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.PropertyName;
+import tools.jackson.databind.cfg.MapperConfig;
 import tools.jackson.databind.deser.CreatorProperty;
 import tools.jackson.databind.deser.NullValueProvider;
 import tools.jackson.databind.deser.SettableAnyProperty;
@@ -42,14 +43,17 @@ import tools.jackson.databind.deser.bean.BeanDeserializerBase;
 import tools.jackson.databind.deser.impl.MethodProperty;
 import tools.jackson.databind.deser.jdk.NumberDeserializers;
 import tools.jackson.databind.exc.InvalidFormatException;
+import tools.jackson.databind.introspect.Annotated;
 import tools.jackson.databind.introspect.AnnotatedMember;
 import tools.jackson.databind.introspect.BasicBeanDescription;
 import tools.jackson.databind.introspect.BeanPropertyDefinition;
+import tools.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import tools.jackson.databind.introspect.ObjectIdInfo;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 import tools.jackson.databind.util.SimpleBeanPropertyDefinition;
 
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
@@ -192,15 +196,16 @@ class SettableBeanPropertyDelegatingTest {
         .introspectBeanDescriptionForCreation(testBeanJavaType);
     final BeanPropertyDefinition testPropertyFieldDefinition = (testBeanDescription)
         .findProperty(PropertyName.construct("intField"));
-    final AnnotatedMember setter = testBeanDescription.findAnySetterAccessor();
-    final SettableBeanProperty methodProp = new MethodProperty(testPropertyFieldDefinition, testBeanJavaType, null,
-        testBeanDescription.getClassAnnotations(), setter);
-    final SettableBeanProperty methodPropDelegating = new SettableBeanPropertyDelegating(methodProp, anySetter,
+    // Jackson 3 merged FieldProperty into MethodProperty, which accepts any AnnotatedMember
+    final SettableBeanProperty fieldProperty = new MethodProperty(testPropertyFieldDefinition, testBeanJavaType, null,
+        testBeanDescription.getClassAnnotations(), testPropertyFieldDefinition.getField());
+    final SettableBeanProperty fieldPropertyDelegating = new SettableBeanPropertyDelegating(fieldProperty, anySetter,
         useAnySetter::get);
+    assertThat(((AccessibleObject) fieldProperty.getMember().getMember()).isAccessible()).isFalse();
     // When
-    methodPropDelegating.fixAccess(deserializationContext.getConfig());
-    // Then (fixAccess was invoked on the delegate without error)
-    assertThat(methodProp.getMember()).isNotNull();
+    fieldPropertyDelegating.fixAccess(deserializationContext.getConfig());
+    // Then
+    assertThat(((AccessibleObject) fieldProperty.getMember().getMember()).isAccessible()).isTrue();
   }
 
   @Test
@@ -251,22 +256,30 @@ class SettableBeanPropertyDelegatingTest {
   @Test
   @DisplayName("getWrapperName, should return getWrapperName result in delegate")
   void getWrapperName() {
-    // Given — verify delegation: delegating property returns same wrapperName as delegate
-    final JavaType testBeanJavaType = objectMapper.constructType(TestBean.class);
-    final BasicBeanDescription testBeanDescription = (BasicBeanDescription) deserializationContext
+    // Given
+    final ObjectMapper wrapperNameMapper = JsonMapper.builder()
+        .annotationIntrospector(new JacksonAnnotationIntrospector() {
+          @Override
+          public PropertyName findWrapperName(MapperConfig<?> config, Annotated ann) {
+            return PropertyName.construct("WrapperNameForTest");
+          }
+        })
+        .build();
+    final JavaType testBeanJavaType = wrapperNameMapper.constructType(TestBean.class);
+    final BasicBeanDescription testBeanDescription = (BasicBeanDescription) wrapperNameMapper._deserializationContext()
         .introspectBeanDescriptionForCreation(testBeanJavaType);
     final BeanPropertyDefinition testPropertyFieldDefinition = (testBeanDescription)
         .findProperty(PropertyName.construct("intField"));
-    final AnnotatedMember setter = testBeanDescription.findAnySetterAccessor();
-    final SettableBeanProperty methodProp = new MethodProperty(testPropertyFieldDefinition, testBeanJavaType, null,
-        testBeanDescription.getClassAnnotations(), setter);
-    final SettableBeanProperty methodPropDelegating = new SettableBeanPropertyDelegating(methodProp, anySetter,
+    final SettableBeanProperty fieldProperty = new MethodProperty(testPropertyFieldDefinition, testBeanJavaType, null,
+        testBeanDescription.getClassAnnotations(), testPropertyFieldDefinition.getField());
+    final SettableBeanProperty fieldPropertyDelegating = new SettableBeanPropertyDelegating(fieldProperty, anySetter,
         useAnySetter::get);
     // When
-    final PropertyName result = methodPropDelegating.getWrapperName();
+    final PropertyName result = fieldPropertyDelegating.getWrapperName();
     // Then
     assertThat(result)
-        .isSameAs(methodProp.getWrapperName());
+        .isSameAs(fieldProperty.getWrapperName())
+        .hasFieldOrPropertyWithValue("simpleName", "WrapperNameForTest");
   }
 
   @Test

@@ -73,15 +73,20 @@ public class KubernetesSerialization {
   private final YamlDumpSettings yamlDumpSettings;
 
   /**
-   * Creates a new instance with a fresh ObjectMapper
+   * Creates a new instance with a fresh ObjectMapper using Jackson 2.x compatible defaults
+   * ({@link JsonMapper#builderWithJackson2Defaults()}), so user types keep their 2.x wire format
+   * (property order, enum names, null primitives, getter-only collections...).
    */
   public KubernetesSerialization() {
-    this(new JsonMapper(), true);
+    this(JsonMapper.builderWithJackson2Defaults().build(), true);
   }
 
   /**
-   * Creates a new instance with the given ObjectMapper, which will be configured for use for
-   * kubernetes resource serialization / deserialization.
+   * Creates a new instance configured for kubernetes resource serialization / deserialization based on a copy
+   * of the given ObjectMapper (Jackson 3 mappers are immutable, the given instance is not modified).
+   * <p>
+   * The rest of the mapper settings are preserved, use {@link JsonMapper#builderWithJackson2Defaults()} to match the
+   * defaults of {@link #KubernetesSerialization()}.
    *
    * @param mapper the ObjectMapper to use.
    * @param searchClassloaders if {@link KubernetesResource} should be automatically discovered via {@link ServiceLoader}.
@@ -91,8 +96,11 @@ public class KubernetesSerialization {
   }
 
   /**
-   * Creates a new instance with the given ObjectMapper, which will be configured for use for
-   * kubernetes resource serialization / deserialization.
+   * Creates a new instance configured for kubernetes resource serialization / deserialization based on a copy
+   * of the given ObjectMapper (Jackson 3 mappers are immutable, the given instance is not modified).
+   * <p>
+   * The rest of the mapper settings are preserved, use {@link JsonMapper#builderWithJackson2Defaults()} to match the
+   * defaults of {@link #KubernetesSerialization()}.
    *
    * @param mapper the ObjectMapper to use.
    * @param searchClassloaders if {@link KubernetesResource} should be automatically discovered via {@link ServiceLoader}.
@@ -104,6 +112,9 @@ public class KubernetesSerialization {
     this.mapper = configureMapper(mapper);
   }
 
+  /**
+   * Returns the configured copy of the given mapper, which is the one used by this instance.
+   */
   protected ObjectMapper configureMapper(ObjectMapper mapper) {
     HandlerInstantiator instanciator = mapper.deserializationConfig().getHandlerInstantiator();
     return mapper.rebuild()
@@ -189,7 +200,8 @@ public class KubernetesSerialization {
     try {
       return mapper.writeValueAsString(object);
     } catch (JacksonException e) {
-      throw KubernetesClientException.launderThrowable(e);
+      // JacksonException is unchecked, launderThrowable would rethrow it as-is
+      throw new KubernetesClientException("An error has occurred.", e);
     }
   }
 
@@ -237,7 +249,7 @@ public class KubernetesSerialization {
         return new ScalarNode(tag, value, style);
       }
     });
-    return yaml.dumpToString(mapper.convertValue(object, Object.class));
+    return yaml.dumpToString(convertValue(object, Object.class));
   }
 
   /**
@@ -406,7 +418,12 @@ public class KubernetesSerialization {
   }
 
   public <T> T convertValue(Object value, Class<T> type) {
-    return mapper.convertValue(value, type);
+    try {
+      return mapper.convertValue(value, type);
+    } catch (JacksonException e) {
+      // Jackson 2 wrapped conversion failures in IllegalArgumentException
+      throw new IllegalArgumentException(e.getMessage(), e);
+    }
   }
 
   public Type constructParametricType(Class<?> parameterizedClass, Class<?>... parameterClasses) {
@@ -457,7 +474,7 @@ public class KubernetesSerialization {
     try {
       reader.readValue(patch);
     } catch (JacksonException e) {
-      throw KubernetesClientException.launderThrowable(e);
+      throw new KubernetesClientException("An error has occurred.", e);
     }
   }
 

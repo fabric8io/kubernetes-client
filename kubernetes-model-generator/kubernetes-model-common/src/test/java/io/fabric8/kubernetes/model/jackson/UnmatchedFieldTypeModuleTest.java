@@ -50,7 +50,7 @@ class UnmatchedFieldTypeModuleTest {
   @BeforeEach
   void setUp() {
     unmatchedFieldTypeModule = new UnmatchedFieldTypeModule(false, false);
-    objectMapper = JsonMapper.builder()
+    objectMapper = JsonMapper.builderWithJackson2Defaults()
         .addModule(unmatchedFieldTypeModule)
         .build();
   }
@@ -162,8 +162,8 @@ class UnmatchedFieldTypeModuleTest {
     final String result = objectMapper.writeValueAsString(exampleWithAnySetter);
     // Then
     assertThat(result).isEqualTo("{" +
-        "\"booleanValue\":true," +
         "\"stringValue\":\"the-string\"," +
+        "\"booleanValue\":true," +
         "\"intValue\":\"${intValue}\"," +
         "\"unknownField\":\"unknownValue\"," +
         "\"nested\":\"${nested}\"" +
@@ -200,7 +200,7 @@ class UnmatchedFieldTypeModuleTest {
       // Given
       final UnmatchedFieldTypeModule module = new UnmatchedFieldTypeModule();
       module.setLogWarnings(false);
-      final ObjectMapper om = JsonMapper.builder()
+      final ObjectMapper om = JsonMapper.builderWithJackson2Defaults()
           .addModule(module)
           .build();
       final ExampleWithAnySetter exampleWithAnySetter = new ExampleWithAnySetter();
