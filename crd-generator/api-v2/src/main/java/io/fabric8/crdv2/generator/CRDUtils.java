@@ -19,11 +19,11 @@ import io.fabric8.crd.generator.annotation.Annotations;
 import io.fabric8.crd.generator.annotation.Labels;
 import tools.jackson.databind.BeanDescription;
 import tools.jackson.databind.JavaType;
-import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.SerializationConfig;
 import tools.jackson.databind.introspect.AnnotatedClass;
 import tools.jackson.databind.introspect.BeanPropertyDefinition;
 import tools.jackson.databind.introspect.ClassIntrospector;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,7 +67,7 @@ public class CRDUtils {
    * then this logic will need to change
    */
   public static SpecAndStatus resolveSpecAndStatusTypes(Class<?> definition) {
-    SerializationConfig config = new ObjectMapper().serializationConfig();
+    SerializationConfig config = JsonMapper.builderWithJackson2Defaults().build().serializationConfig();
     JavaType javaType = config.constructType(definition);
     ClassIntrospector ci = config.classIntrospectorInstance().forOperation(config);
     AnnotatedClass ac = ci.introspectClassAnnotations(javaType);

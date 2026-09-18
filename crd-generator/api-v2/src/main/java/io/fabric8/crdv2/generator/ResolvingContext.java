@@ -37,6 +37,7 @@ import io.fabric8.kubernetes.client.utils.YamlDumpSettings;
 import io.fabric8.kubernetes.client.utils.YamlDumpSettingsBuilder;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.node.ObjectNode;
 
 import java.util.Collections;
@@ -72,7 +73,7 @@ public class ResolvingContext {
   public static ResolvingContext defaultResolvingContext(boolean implicitPreserveUnknownFields,
       YamlDumpSettings yamlDumpSettings) {
     if (OBJECT_MAPPER == null) {
-      OBJECT_MAPPER = new ObjectMapper();
+      OBJECT_MAPPER = JsonMapper.builderWithJackson2Defaults().build();
     }
     return new ResolvingContext(
         OBJECT_MAPPER,
@@ -172,6 +173,15 @@ public class ResolvingContext {
     // HasMetadata interfaces are embedded Kubernetes resources
     if (HasMetadata.class.isAssignableFrom(raw) && raw.isInterface()) {
       return inlineDefinition(generatorConfig, "x-kubernetes-embedded-resource", true);
+    }
+    // Java time types should be represented as strings
+    if (raw == java.time.Instant.class || raw == java.time.YearMonth.class || raw == java.time.MonthDay.class
+        || raw == java.sql.Timestamp.class) {
+      return inlineDefinition(generatorConfig, "type", "string");
+    }
+    // Byte types should be represented as integers
+    if (raw == byte.class || raw == Byte.class) {
+      return inlineDefinition(generatorConfig, "type", "integer");
     }
     return null;
   }
