@@ -315,11 +315,22 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         case STRING_LITERAL -> extractStringConstraints(schemaNode, fieldScope);
         case INTEGER_LITERAL, NUMBER_LITERAL -> extractNumericConstraints(schemaNode, fieldScope);
         case "array" -> extractArrayConstraints(schemaNode, fieldScope);
-        // TODO: Could be also applied only on Maps instead of "all the rest"
-        case OBJECT_LITERAL -> extractObjectConstraints(fieldScope);
+        case OBJECT_LITERAL -> {
+          // minProperties/maxProperties only make sense for Maps (dynamic key-value stores),
+          // not for POJOs (which have fixed properties defined by their class structure)
+          if (fieldScope != null && isMapLikeType(fieldScope)) {
+            extractObjectConstraints(fieldScope);
+          }
+        }
         default -> {
+          // No type-specific constraints to extract for other schema types (boolean, null, etc.)
         }
       }
+    }
+
+    private boolean isMapLikeType(FieldScope fieldScope) {
+      Class<?> erasedType = fieldScope.getType().getErasedType();
+      return Map.class.isAssignableFrom(erasedType);
     }
 
     private void extractStringConstraints(ObjectNode schemaNode, FieldScope fieldScope) {

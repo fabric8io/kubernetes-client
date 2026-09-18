@@ -27,6 +27,9 @@ import tools.jackson.databind.node.DoubleNode;
 import tools.jackson.databind.node.FloatNode;
 import tools.jackson.databind.node.IntNode;
 import tools.jackson.databind.node.LongNode;
+import tools.jackson.databind.node.ObjectNode;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -201,4 +204,128 @@ class JsonSchemaDefaultValueTest {
         .extracting("invalidDefaultValueForDouble._default")
         .isNull();
   }
+
+  // --- Edge case test models ---
+
+  private enum Color {
+    RED,
+    GREEN,
+    BLUE
+  }
+
+  private enum RenamedColor {
+    @JsonProperty("rouge")
+    RED,
+    @JsonProperty("vert")
+    GREEN,
+    @JsonProperty("bleu")
+    BLUE
+  }
+
+  private static final class NestedObject {
+    @JsonProperty
+    String name;
+    @JsonProperty
+    int value;
+  }
+
+  private static final class EdgeCaseDefaults {
+    @JsonProperty
+    @Default("RED")
+    Color enumDefault;
+
+    @JsonProperty
+    @Default("rouge")
+    RenamedColor renamedEnumDefault;
+
+    @JsonProperty
+    @Default("{\"name\":\"test\",\"value\":42}")
+    NestedObject complexObjectDefault;
+
+    @JsonProperty
+    @Default("[1.5, 2.5, 3.5]")
+    double[] nonEmptyArrayDefault;
+
+    @JsonProperty
+    @Default("[\"a\", \"b\", \"c\"]")
+    List<String> nonEmptyListDefault;
+
+    @JsonProperty
+    @Default("string with \"quotes\" and \\ backslash")
+    String specialCharsDefault;
+  }
+
+  @Test
+  @DisplayName("Default value for enum should serialize correctly")
+  void defaultValueForEnum() {
+    assertThat(JsonSchema.from(EdgeCaseDefaults.class).getProperties())
+        .extracting("enumDefault._default")
+        .asInstanceOf(InstanceOfAssertFactories.type(JsonNode.class))
+        .extracting(JsonNode::asText)
+        .isEqualTo("RED");
+  }
+
+  @Test
+  @DisplayName("Default value for renamed enum should use serialized name")
+  void defaultValueForRenamedEnum() {
+    assertThat(JsonSchema.from(EdgeCaseDefaults.class).getProperties())
+        .extracting("renamedEnumDefault._default")
+        .asInstanceOf(InstanceOfAssertFactories.type(JsonNode.class))
+        .extracting(JsonNode::asText)
+        .isEqualTo("rouge");
+  }
+
+  @Test
+  @DisplayName("Default value for complex object should serialize as JSON")
+  void defaultValueForComplexObject() {
+    assertThat(JsonSchema.from(EdgeCaseDefaults.class).getProperties())
+        .extracting("complexObjectDefault._default")
+        .asInstanceOf(InstanceOfAssertFactories.type(JsonNode.class))
+        .isInstanceOf(ObjectNode.class)
+        .satisfies(node -> {
+          assertThat(node.get("name").asText()).isEqualTo("test");
+          assertThat(node.get("value").asInt()).isEqualTo(42);
+        });
+  }
+
+  @Test
+  @DisplayName("Default value for non-empty array should contain elements")
+  void defaultValueForNonEmptyArray() {
+    assertThat(JsonSchema.from(EdgeCaseDefaults.class).getProperties())
+        .extracting("nonEmptyArrayDefault._default")
+        .asInstanceOf(InstanceOfAssertFactories.type(JsonNode.class))
+        .isInstanceOf(ArrayNode.class)
+        .satisfies(node -> {
+          assertThat(node.size()).isEqualTo(3);
+          assertThat(node.get(0).asDouble()).isEqualTo(1.5);
+          assertThat(node.get(1).asDouble()).isEqualTo(2.5);
+          assertThat(node.get(2).asDouble()).isEqualTo(3.5);
+        });
+  }
+
+  @Test
+  @DisplayName("Default value for non-empty list should contain elements")
+  void defaultValueForNonEmptyList() {
+    assertThat(JsonSchema.from(EdgeCaseDefaults.class).getProperties())
+        .extracting("nonEmptyListDefault._default")
+        .asInstanceOf(InstanceOfAssertFactories.type(JsonNode.class))
+        .isInstanceOf(ArrayNode.class)
+        .satisfies(node -> {
+          assertThat(node.size()).isEqualTo(3);
+          assertThat(node.get(0).asText()).isEqualTo("a");
+          assertThat(node.get(1).asText()).isEqualTo("b");
+          assertThat(node.get(2).asText()).isEqualTo("c");
+        });
+  }
+
+  @Test
+  @DisplayName("Default value with special characters in string should be preserved")
+  void defaultValueWithSpecialChars() {
+    assertThat(JsonSchema.from(EdgeCaseDefaults.class).getProperties())
+        .extracting("specialCharsDefault._default")
+        .asInstanceOf(InstanceOfAssertFactories.type(JsonNode.class))
+        .extracting(JsonNode::asText)
+        .isEqualTo("string with \"quotes\" and \\ backslash");
+  }
+
 }
