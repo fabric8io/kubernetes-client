@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * StepResource represents the status of a resource to be tracked by an InstallPlan.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "sourceName",
     "sourceNamespace",
     "version"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -240,6 +231,92 @@ public class StepResource implements Editable<StepResourceBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof StepResource)) {
+            return false;
+        }
+        StepResource other = (StepResource) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$group = this.getGroup();
+        Object other$group = other.getGroup();
+        if (this$group == null ? other$group != null : !this$group.equals(other$group)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$manifest = this.getManifest();
+        Object other$manifest = other.getManifest();
+        if (this$manifest == null ? other$manifest != null : !this$manifest.equals(other$manifest)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$sourceName = this.getSourceName();
+        Object other$sourceName = other.getSourceName();
+        if (this$sourceName == null ? other$sourceName != null : !this$sourceName.equals(other$sourceName)) {
+            return false;
+        }
+        Object this$sourceNamespace = this.getSourceNamespace();
+        Object other$sourceNamespace = other.getSourceNamespace();
+        if (this$sourceNamespace == null ? other$sourceNamespace != null : !this$sourceNamespace.equals(other$sourceNamespace)) {
+            return false;
+        }
+        Object this$version = this.getVersion();
+        Object other$version = other.getVersion();
+        if (this$version == null ? other$version != null : !this$version.equals(other$version)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof StepResource;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $group = this.getGroup();
+        result = result * prime + ($group == null ? 43 : $group.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $manifest = this.getManifest();
+        result = result * prime + ($manifest == null ? 43 : $manifest.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $sourceName = this.getSourceName();
+        result = result * prime + ($sourceName == null ? 43 : $sourceName.hashCode());
+        Object $sourceNamespace = this.getSourceNamespace();
+        result = result * prime + ($sourceNamespace == null ? 43 : $sourceNamespace.hashCode());
+        Object $version = this.getVersion();
+        result = result * prime + ($version == null ? 43 : $version.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "StepResource(" + "group=" + this.getGroup() + ", kind=" + this.getKind() + ", manifest=" + this.getManifest() + ", name=" + this.getName() + ", sourceName=" + this.getSourceName() + ", sourceNamespace=" + this.getSourceNamespace() + ", version=" + this.getVersion() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

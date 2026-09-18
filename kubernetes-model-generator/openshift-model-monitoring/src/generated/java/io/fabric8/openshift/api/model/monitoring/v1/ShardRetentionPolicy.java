@@ -27,21 +27,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "retain",
     "whenScaled"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -130,6 +121,57 @@ public class ShardRetentionPolicy implements Editable<ShardRetentionPolicyBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ShardRetentionPolicy)) {
+            return false;
+        }
+        ShardRetentionPolicy other = (ShardRetentionPolicy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$retain = this.getRetain();
+        Object other$retain = other.getRetain();
+        if (this$retain == null ? other$retain != null : !this$retain.equals(other$retain)) {
+            return false;
+        }
+        Object this$whenScaled = this.getWhenScaled();
+        Object other$whenScaled = other.getWhenScaled();
+        if (this$whenScaled == null ? other$whenScaled != null : !this$whenScaled.equals(other$whenScaled)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ShardRetentionPolicy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $retain = this.getRetain();
+        result = result * prime + ($retain == null ? 43 : $retain.hashCode());
+        Object $whenScaled = this.getWhenScaled();
+        result = result * prime + ($whenScaled == null ? 43 : $whenScaled.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ShardRetentionPolicy(" + "retain=" + this.getRetain() + ", whenScaled=" + this.getWhenScaled() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

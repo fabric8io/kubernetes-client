@@ -35,9 +35,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * &lt;!-- crd generation tags --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
@@ -51,12 +48,6 @@ import lombok.experimental.Accessors;
     "priority",
     "selector",
     "targetRefs"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -235,6 +226,85 @@ public class TrafficExtension implements Editable<TrafficExtensionBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TrafficExtension)) {
+            return false;
+        }
+        TrafficExtension other = (TrafficExtension) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$filterConfig = this.getFilterConfig();
+        Object other$filterConfig = other.getFilterConfig();
+        if (this$filterConfig == null ? other$filterConfig != null : !this$filterConfig.equals(other$filterConfig)) {
+            return false;
+        }
+        Object this$match = this.getMatch();
+        Object other$match = other.getMatch();
+        if (this$match == null ? other$match != null : !this$match.equals(other$match)) {
+            return false;
+        }
+        Object this$phase = this.getPhase();
+        Object other$phase = other.getPhase();
+        if (this$phase == null ? other$phase != null : !this$phase.equals(other$phase)) {
+            return false;
+        }
+        Object this$priority = this.getPriority();
+        Object other$priority = other.getPriority();
+        if (this$priority == null ? other$priority != null : !this$priority.equals(other$priority)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$targetRefs = this.getTargetRefs();
+        Object other$targetRefs = other.getTargetRefs();
+        if (this$targetRefs == null ? other$targetRefs != null : !this$targetRefs.equals(other$targetRefs)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TrafficExtension;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $filterConfig = this.getFilterConfig();
+        result = result * prime + ($filterConfig == null ? 43 : $filterConfig.hashCode());
+        Object $match = this.getMatch();
+        result = result * prime + ($match == null ? 43 : $match.hashCode());
+        Object $phase = this.getPhase();
+        result = result * prime + ($phase == null ? 43 : $phase.hashCode());
+        Object $priority = this.getPriority();
+        result = result * prime + ($priority == null ? 43 : $priority.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $targetRefs = this.getTargetRefs();
+        result = result * prime + ($targetRefs == null ? 43 : $targetRefs.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TrafficExtension(" + "filterConfig=" + this.getFilterConfig() + ", match=" + this.getMatch() + ", phase=" + this.getPhase() + ", priority=" + this.getPriority() + ", selector=" + this.getSelector() + ", targetRefs=" + this.getTargetRefs() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

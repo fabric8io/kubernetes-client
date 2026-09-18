@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Filter defines the criteria for discovering clusters based on specific attributes.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "lastActive",
     "openShiftVersions",
     "regions"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -210,6 +201,78 @@ public class Filter implements Editable<FilterBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Filter)) {
+            return false;
+        }
+        Filter other = (Filter) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterTypes = this.getClusterTypes();
+        Object other$clusterTypes = other.getClusterTypes();
+        if (this$clusterTypes == null ? other$clusterTypes != null : !this$clusterTypes.equals(other$clusterTypes)) {
+            return false;
+        }
+        Object this$infrastructureProviders = this.getInfrastructureProviders();
+        Object other$infrastructureProviders = other.getInfrastructureProviders();
+        if (this$infrastructureProviders == null ? other$infrastructureProviders != null : !this$infrastructureProviders.equals(other$infrastructureProviders)) {
+            return false;
+        }
+        Object this$lastActive = this.getLastActive();
+        Object other$lastActive = other.getLastActive();
+        if (this$lastActive == null ? other$lastActive != null : !this$lastActive.equals(other$lastActive)) {
+            return false;
+        }
+        Object this$openShiftVersions = this.getOpenShiftVersions();
+        Object other$openShiftVersions = other.getOpenShiftVersions();
+        if (this$openShiftVersions == null ? other$openShiftVersions != null : !this$openShiftVersions.equals(other$openShiftVersions)) {
+            return false;
+        }
+        Object this$regions = this.getRegions();
+        Object other$regions = other.getRegions();
+        if (this$regions == null ? other$regions != null : !this$regions.equals(other$regions)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Filter;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterTypes = this.getClusterTypes();
+        result = result * prime + ($clusterTypes == null ? 43 : $clusterTypes.hashCode());
+        Object $infrastructureProviders = this.getInfrastructureProviders();
+        result = result * prime + ($infrastructureProviders == null ? 43 : $infrastructureProviders.hashCode());
+        Object $lastActive = this.getLastActive();
+        result = result * prime + ($lastActive == null ? 43 : $lastActive.hashCode());
+        Object $openShiftVersions = this.getOpenShiftVersions();
+        result = result * prime + ($openShiftVersions == null ? 43 : $openShiftVersions.hashCode());
+        Object $regions = this.getRegions();
+        result = result * prime + ($regions == null ? 43 : $regions.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Filter(" + "clusterTypes=" + this.getClusterTypes() + ", infrastructureProviders=" + this.getInfrastructureProviders() + ", lastActive=" + this.getLastActive() + ", openShiftVersions=" + this.getOpenShiftVersions() + ", regions=" + this.getRegions() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

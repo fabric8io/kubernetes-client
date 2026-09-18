@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CronJobSpec describes how the job execution will look like and when it will actually run.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "startingDeadlineSeconds",
     "successfulJobsHistoryLimit",
     "suspend"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -240,6 +231,92 @@ public class CronJobSpec implements Editable<CronJobSpecBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CronJobSpec)) {
+            return false;
+        }
+        CronJobSpec other = (CronJobSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$concurrencyPolicy = this.getConcurrencyPolicy();
+        Object other$concurrencyPolicy = other.getConcurrencyPolicy();
+        if (this$concurrencyPolicy == null ? other$concurrencyPolicy != null : !this$concurrencyPolicy.equals(other$concurrencyPolicy)) {
+            return false;
+        }
+        Object this$failedJobsHistoryLimit = this.getFailedJobsHistoryLimit();
+        Object other$failedJobsHistoryLimit = other.getFailedJobsHistoryLimit();
+        if (this$failedJobsHistoryLimit == null ? other$failedJobsHistoryLimit != null : !this$failedJobsHistoryLimit.equals(other$failedJobsHistoryLimit)) {
+            return false;
+        }
+        Object this$jobTemplate = this.getJobTemplate();
+        Object other$jobTemplate = other.getJobTemplate();
+        if (this$jobTemplate == null ? other$jobTemplate != null : !this$jobTemplate.equals(other$jobTemplate)) {
+            return false;
+        }
+        Object this$schedule = this.getSchedule();
+        Object other$schedule = other.getSchedule();
+        if (this$schedule == null ? other$schedule != null : !this$schedule.equals(other$schedule)) {
+            return false;
+        }
+        Object this$startingDeadlineSeconds = this.getStartingDeadlineSeconds();
+        Object other$startingDeadlineSeconds = other.getStartingDeadlineSeconds();
+        if (this$startingDeadlineSeconds == null ? other$startingDeadlineSeconds != null : !this$startingDeadlineSeconds.equals(other$startingDeadlineSeconds)) {
+            return false;
+        }
+        Object this$successfulJobsHistoryLimit = this.getSuccessfulJobsHistoryLimit();
+        Object other$successfulJobsHistoryLimit = other.getSuccessfulJobsHistoryLimit();
+        if (this$successfulJobsHistoryLimit == null ? other$successfulJobsHistoryLimit != null : !this$successfulJobsHistoryLimit.equals(other$successfulJobsHistoryLimit)) {
+            return false;
+        }
+        Object this$suspend = this.getSuspend();
+        Object other$suspend = other.getSuspend();
+        if (this$suspend == null ? other$suspend != null : !this$suspend.equals(other$suspend)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CronJobSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $concurrencyPolicy = this.getConcurrencyPolicy();
+        result = result * prime + ($concurrencyPolicy == null ? 43 : $concurrencyPolicy.hashCode());
+        Object $failedJobsHistoryLimit = this.getFailedJobsHistoryLimit();
+        result = result * prime + ($failedJobsHistoryLimit == null ? 43 : $failedJobsHistoryLimit.hashCode());
+        Object $jobTemplate = this.getJobTemplate();
+        result = result * prime + ($jobTemplate == null ? 43 : $jobTemplate.hashCode());
+        Object $schedule = this.getSchedule();
+        result = result * prime + ($schedule == null ? 43 : $schedule.hashCode());
+        Object $startingDeadlineSeconds = this.getStartingDeadlineSeconds();
+        result = result * prime + ($startingDeadlineSeconds == null ? 43 : $startingDeadlineSeconds.hashCode());
+        Object $successfulJobsHistoryLimit = this.getSuccessfulJobsHistoryLimit();
+        result = result * prime + ($successfulJobsHistoryLimit == null ? 43 : $successfulJobsHistoryLimit.hashCode());
+        Object $suspend = this.getSuspend();
+        result = result * prime + ($suspend == null ? 43 : $suspend.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CronJobSpec(" + "concurrencyPolicy=" + this.getConcurrencyPolicy() + ", failedJobsHistoryLimit=" + this.getFailedJobsHistoryLimit() + ", jobTemplate=" + this.getJobTemplate() + ", schedule=" + this.getSchedule() + ", startingDeadlineSeconds=" + this.getStartingDeadlineSeconds() + ", successfulJobsHistoryLimit=" + this.getSuccessfulJobsHistoryLimit() + ", suspend=" + this.getSuspend() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

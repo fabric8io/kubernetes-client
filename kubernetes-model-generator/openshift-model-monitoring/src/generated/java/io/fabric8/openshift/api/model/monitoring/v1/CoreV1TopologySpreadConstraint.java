@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "nodeTaintsPolicy",
     "topologyKey",
     "whenUnsatisfiable"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -254,6 +245,99 @@ public class CoreV1TopologySpreadConstraint implements Editable<CoreV1TopologySp
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CoreV1TopologySpreadConstraint)) {
+            return false;
+        }
+        CoreV1TopologySpreadConstraint other = (CoreV1TopologySpreadConstraint) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$labelSelector = this.getLabelSelector();
+        Object other$labelSelector = other.getLabelSelector();
+        if (this$labelSelector == null ? other$labelSelector != null : !this$labelSelector.equals(other$labelSelector)) {
+            return false;
+        }
+        Object this$matchLabelKeys = this.getMatchLabelKeys();
+        Object other$matchLabelKeys = other.getMatchLabelKeys();
+        if (this$matchLabelKeys == null ? other$matchLabelKeys != null : !this$matchLabelKeys.equals(other$matchLabelKeys)) {
+            return false;
+        }
+        Object this$maxSkew = this.getMaxSkew();
+        Object other$maxSkew = other.getMaxSkew();
+        if (this$maxSkew == null ? other$maxSkew != null : !this$maxSkew.equals(other$maxSkew)) {
+            return false;
+        }
+        Object this$minDomains = this.getMinDomains();
+        Object other$minDomains = other.getMinDomains();
+        if (this$minDomains == null ? other$minDomains != null : !this$minDomains.equals(other$minDomains)) {
+            return false;
+        }
+        Object this$nodeAffinityPolicy = this.getNodeAffinityPolicy();
+        Object other$nodeAffinityPolicy = other.getNodeAffinityPolicy();
+        if (this$nodeAffinityPolicy == null ? other$nodeAffinityPolicy != null : !this$nodeAffinityPolicy.equals(other$nodeAffinityPolicy)) {
+            return false;
+        }
+        Object this$nodeTaintsPolicy = this.getNodeTaintsPolicy();
+        Object other$nodeTaintsPolicy = other.getNodeTaintsPolicy();
+        if (this$nodeTaintsPolicy == null ? other$nodeTaintsPolicy != null : !this$nodeTaintsPolicy.equals(other$nodeTaintsPolicy)) {
+            return false;
+        }
+        Object this$topologyKey = this.getTopologyKey();
+        Object other$topologyKey = other.getTopologyKey();
+        if (this$topologyKey == null ? other$topologyKey != null : !this$topologyKey.equals(other$topologyKey)) {
+            return false;
+        }
+        Object this$whenUnsatisfiable = this.getWhenUnsatisfiable();
+        Object other$whenUnsatisfiable = other.getWhenUnsatisfiable();
+        if (this$whenUnsatisfiable == null ? other$whenUnsatisfiable != null : !this$whenUnsatisfiable.equals(other$whenUnsatisfiable)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CoreV1TopologySpreadConstraint;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $labelSelector = this.getLabelSelector();
+        result = result * prime + ($labelSelector == null ? 43 : $labelSelector.hashCode());
+        Object $matchLabelKeys = this.getMatchLabelKeys();
+        result = result * prime + ($matchLabelKeys == null ? 43 : $matchLabelKeys.hashCode());
+        Object $maxSkew = this.getMaxSkew();
+        result = result * prime + ($maxSkew == null ? 43 : $maxSkew.hashCode());
+        Object $minDomains = this.getMinDomains();
+        result = result * prime + ($minDomains == null ? 43 : $minDomains.hashCode());
+        Object $nodeAffinityPolicy = this.getNodeAffinityPolicy();
+        result = result * prime + ($nodeAffinityPolicy == null ? 43 : $nodeAffinityPolicy.hashCode());
+        Object $nodeTaintsPolicy = this.getNodeTaintsPolicy();
+        result = result * prime + ($nodeTaintsPolicy == null ? 43 : $nodeTaintsPolicy.hashCode());
+        Object $topologyKey = this.getTopologyKey();
+        result = result * prime + ($topologyKey == null ? 43 : $topologyKey.hashCode());
+        Object $whenUnsatisfiable = this.getWhenUnsatisfiable();
+        result = result * prime + ($whenUnsatisfiable == null ? 43 : $whenUnsatisfiable.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CoreV1TopologySpreadConstraint(" + "labelSelector=" + this.getLabelSelector() + ", matchLabelKeys=" + this.getMatchLabelKeys() + ", maxSkew=" + this.getMaxSkew() + ", minDomains=" + this.getMinDomains() + ", nodeAffinityPolicy=" + this.getNodeAffinityPolicy() + ", nodeTaintsPolicy=" + this.getNodeTaintsPolicy() + ", topologyKey=" + this.getTopologyKey() + ", whenUnsatisfiable=" + this.getWhenUnsatisfiable() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

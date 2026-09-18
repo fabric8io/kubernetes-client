@@ -35,9 +35,6 @@ import io.fabric8.tekton.v1beta1.TaskRef;
 import io.fabric8.tekton.v1beta1.WorkspaceBinding;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RunSpec defines the desired state of Run
@@ -55,12 +52,6 @@ import lombok.experimental.Accessors;
     "statusMessage",
     "timeout",
     "workspaces"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -311,6 +302,113 @@ public class RunSpec implements Editable<RunSpecBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RunSpec)) {
+            return false;
+        }
+        RunSpec other = (RunSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$params = this.getParams();
+        Object other$params = other.getParams();
+        if (this$params == null ? other$params != null : !this$params.equals(other$params)) {
+            return false;
+        }
+        Object this$podTemplate = this.getPodTemplate();
+        Object other$podTemplate = other.getPodTemplate();
+        if (this$podTemplate == null ? other$podTemplate != null : !this$podTemplate.equals(other$podTemplate)) {
+            return false;
+        }
+        Object this$ref = this.getRef();
+        Object other$ref = other.getRef();
+        if (this$ref == null ? other$ref != null : !this$ref.equals(other$ref)) {
+            return false;
+        }
+        Object this$retries = this.getRetries();
+        Object other$retries = other.getRetries();
+        if (this$retries == null ? other$retries != null : !this$retries.equals(other$retries)) {
+            return false;
+        }
+        Object this$serviceAccountName = this.getServiceAccountName();
+        Object other$serviceAccountName = other.getServiceAccountName();
+        if (this$serviceAccountName == null ? other$serviceAccountName != null : !this$serviceAccountName.equals(other$serviceAccountName)) {
+            return false;
+        }
+        Object this$spec = this.getSpec();
+        Object other$spec = other.getSpec();
+        if (this$spec == null ? other$spec != null : !this$spec.equals(other$spec)) {
+            return false;
+        }
+        Object this$status = this.getStatus();
+        Object other$status = other.getStatus();
+        if (this$status == null ? other$status != null : !this$status.equals(other$status)) {
+            return false;
+        }
+        Object this$statusMessage = this.getStatusMessage();
+        Object other$statusMessage = other.getStatusMessage();
+        if (this$statusMessage == null ? other$statusMessage != null : !this$statusMessage.equals(other$statusMessage)) {
+            return false;
+        }
+        Object this$timeout = this.getTimeout();
+        Object other$timeout = other.getTimeout();
+        if (this$timeout == null ? other$timeout != null : !this$timeout.equals(other$timeout)) {
+            return false;
+        }
+        Object this$workspaces = this.getWorkspaces();
+        Object other$workspaces = other.getWorkspaces();
+        if (this$workspaces == null ? other$workspaces != null : !this$workspaces.equals(other$workspaces)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RunSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $params = this.getParams();
+        result = result * prime + ($params == null ? 43 : $params.hashCode());
+        Object $podTemplate = this.getPodTemplate();
+        result = result * prime + ($podTemplate == null ? 43 : $podTemplate.hashCode());
+        Object $ref = this.getRef();
+        result = result * prime + ($ref == null ? 43 : $ref.hashCode());
+        Object $retries = this.getRetries();
+        result = result * prime + ($retries == null ? 43 : $retries.hashCode());
+        Object $serviceAccountName = this.getServiceAccountName();
+        result = result * prime + ($serviceAccountName == null ? 43 : $serviceAccountName.hashCode());
+        Object $spec = this.getSpec();
+        result = result * prime + ($spec == null ? 43 : $spec.hashCode());
+        Object $status = this.getStatus();
+        result = result * prime + ($status == null ? 43 : $status.hashCode());
+        Object $statusMessage = this.getStatusMessage();
+        result = result * prime + ($statusMessage == null ? 43 : $statusMessage.hashCode());
+        Object $timeout = this.getTimeout();
+        result = result * prime + ($timeout == null ? 43 : $timeout.hashCode());
+        Object $workspaces = this.getWorkspaces();
+        result = result * prime + ($workspaces == null ? 43 : $workspaces.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RunSpec(" + "params=" + this.getParams() + ", podTemplate=" + this.getPodTemplate() + ", ref=" + this.getRef() + ", retries=" + this.getRetries() + ", serviceAccountName=" + this.getServiceAccountName() + ", spec=" + this.getSpec() + ", status=" + this.getStatus() + ", statusMessage=" + this.getStatusMessage() + ", timeout=" + this.getTimeout() + ", workspaces=" + this.getWorkspaces() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClusterPoolReference is a reference to a ClusterPool
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "clusterDeploymentCustomization",
     "namespace",
     "poolName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,78 @@ public class ClusterPoolReference implements Editable<ClusterPoolReferenceBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterPoolReference)) {
+            return false;
+        }
+        ClusterPoolReference other = (ClusterPoolReference) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$claimName = this.getClaimName();
+        Object other$claimName = other.getClaimName();
+        if (this$claimName == null ? other$claimName != null : !this$claimName.equals(other$claimName)) {
+            return false;
+        }
+        Object this$claimedTimestamp = this.getClaimedTimestamp();
+        Object other$claimedTimestamp = other.getClaimedTimestamp();
+        if (this$claimedTimestamp == null ? other$claimedTimestamp != null : !this$claimedTimestamp.equals(other$claimedTimestamp)) {
+            return false;
+        }
+        Object this$clusterDeploymentCustomization = this.getClusterDeploymentCustomization();
+        Object other$clusterDeploymentCustomization = other.getClusterDeploymentCustomization();
+        if (this$clusterDeploymentCustomization == null ? other$clusterDeploymentCustomization != null : !this$clusterDeploymentCustomization.equals(other$clusterDeploymentCustomization)) {
+            return false;
+        }
+        Object this$namespace = this.getNamespace();
+        Object other$namespace = other.getNamespace();
+        if (this$namespace == null ? other$namespace != null : !this$namespace.equals(other$namespace)) {
+            return false;
+        }
+        Object this$poolName = this.getPoolName();
+        Object other$poolName = other.getPoolName();
+        if (this$poolName == null ? other$poolName != null : !this$poolName.equals(other$poolName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterPoolReference;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $claimName = this.getClaimName();
+        result = result * prime + ($claimName == null ? 43 : $claimName.hashCode());
+        Object $claimedTimestamp = this.getClaimedTimestamp();
+        result = result * prime + ($claimedTimestamp == null ? 43 : $claimedTimestamp.hashCode());
+        Object $clusterDeploymentCustomization = this.getClusterDeploymentCustomization();
+        result = result * prime + ($clusterDeploymentCustomization == null ? 43 : $clusterDeploymentCustomization.hashCode());
+        Object $namespace = this.getNamespace();
+        result = result * prime + ($namespace == null ? 43 : $namespace.hashCode());
+        Object $poolName = this.getPoolName();
+        result = result * prime + ($poolName == null ? 43 : $poolName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterPoolReference(" + "claimName=" + this.getClaimName() + ", claimedTimestamp=" + this.getClaimedTimestamp() + ", clusterDeploymentCustomization=" + this.getClusterDeploymentCustomization() + ", namespace=" + this.getNamespace() + ", poolName=" + this.getPoolName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

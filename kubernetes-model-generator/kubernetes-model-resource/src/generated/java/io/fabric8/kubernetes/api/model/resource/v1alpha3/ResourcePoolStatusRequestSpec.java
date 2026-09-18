@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ResourcePoolStatusRequestSpec defines the filters for the pool status request.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "driver",
     "limit",
     "poolName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class ResourcePoolStatusRequestSpec implements Editable<ResourcePoolStatu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ResourcePoolStatusRequestSpec)) {
+            return false;
+        }
+        ResourcePoolStatusRequestSpec other = (ResourcePoolStatusRequestSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$defaultPartitionTypeAttribute = this.getDefaultPartitionTypeAttribute();
+        Object other$defaultPartitionTypeAttribute = other.getDefaultPartitionTypeAttribute();
+        if (this$defaultPartitionTypeAttribute == null ? other$defaultPartitionTypeAttribute != null : !this$defaultPartitionTypeAttribute.equals(other$defaultPartitionTypeAttribute)) {
+            return false;
+        }
+        Object this$driver = this.getDriver();
+        Object other$driver = other.getDriver();
+        if (this$driver == null ? other$driver != null : !this$driver.equals(other$driver)) {
+            return false;
+        }
+        Object this$limit = this.getLimit();
+        Object other$limit = other.getLimit();
+        if (this$limit == null ? other$limit != null : !this$limit.equals(other$limit)) {
+            return false;
+        }
+        Object this$poolName = this.getPoolName();
+        Object other$poolName = other.getPoolName();
+        if (this$poolName == null ? other$poolName != null : !this$poolName.equals(other$poolName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ResourcePoolStatusRequestSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $defaultPartitionTypeAttribute = this.getDefaultPartitionTypeAttribute();
+        result = result * prime + ($defaultPartitionTypeAttribute == null ? 43 : $defaultPartitionTypeAttribute.hashCode());
+        Object $driver = this.getDriver();
+        result = result * prime + ($driver == null ? 43 : $driver.hashCode());
+        Object $limit = this.getLimit();
+        result = result * prime + ($limit == null ? 43 : $limit.hashCode());
+        Object $poolName = this.getPoolName();
+        result = result * prime + ($poolName == null ? 43 : $poolName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ResourcePoolStatusRequestSpec(" + "defaultPartitionTypeAttribute=" + this.getDefaultPartitionTypeAttribute() + ", driver=" + this.getDriver() + ", limit=" + this.getLimit() + ", poolName=" + this.getPoolName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

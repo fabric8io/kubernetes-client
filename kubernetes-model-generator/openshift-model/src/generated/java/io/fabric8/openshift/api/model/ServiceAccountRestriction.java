@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ServiceAccountRestriction matches a service account by a string match on either the service-account name or the name of the service account's namespace.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "namespaces",
     "serviceaccounts"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -145,6 +136,57 @@ public class ServiceAccountRestriction implements Editable<ServiceAccountRestric
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ServiceAccountRestriction)) {
+            return false;
+        }
+        ServiceAccountRestriction other = (ServiceAccountRestriction) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$namespaces = this.getNamespaces();
+        Object other$namespaces = other.getNamespaces();
+        if (this$namespaces == null ? other$namespaces != null : !this$namespaces.equals(other$namespaces)) {
+            return false;
+        }
+        Object this$serviceaccounts = this.getServiceaccounts();
+        Object other$serviceaccounts = other.getServiceaccounts();
+        if (this$serviceaccounts == null ? other$serviceaccounts != null : !this$serviceaccounts.equals(other$serviceaccounts)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ServiceAccountRestriction;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $namespaces = this.getNamespaces();
+        result = result * prime + ($namespaces == null ? 43 : $namespaces.hashCode());
+        Object $serviceaccounts = this.getServiceaccounts();
+        result = result * prime + ($serviceaccounts == null ? 43 : $serviceaccounts.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ServiceAccountRestriction(" + "namespaces=" + this.getNamespaces() + ", serviceaccounts=" + this.getServiceaccounts() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

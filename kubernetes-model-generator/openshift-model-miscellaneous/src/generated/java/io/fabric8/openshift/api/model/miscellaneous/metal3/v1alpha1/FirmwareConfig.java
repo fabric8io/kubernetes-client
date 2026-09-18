@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * FirmwareConfig contains the configuration that you want to configure BIOS settings in Bare metal server.<br><p> <br><p> Deprecated: no longer supported by any driver.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "simultaneousMultithreadingEnabled",
     "sriovEnabled",
     "virtualizationEnabled"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -159,6 +150,64 @@ public class FirmwareConfig implements Editable<FirmwareConfigBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof FirmwareConfig)) {
+            return false;
+        }
+        FirmwareConfig other = (FirmwareConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$simultaneousMultithreadingEnabled = this.getSimultaneousMultithreadingEnabled();
+        Object other$simultaneousMultithreadingEnabled = other.getSimultaneousMultithreadingEnabled();
+        if (this$simultaneousMultithreadingEnabled == null ? other$simultaneousMultithreadingEnabled != null : !this$simultaneousMultithreadingEnabled.equals(other$simultaneousMultithreadingEnabled)) {
+            return false;
+        }
+        Object this$sriovEnabled = this.getSriovEnabled();
+        Object other$sriovEnabled = other.getSriovEnabled();
+        if (this$sriovEnabled == null ? other$sriovEnabled != null : !this$sriovEnabled.equals(other$sriovEnabled)) {
+            return false;
+        }
+        Object this$virtualizationEnabled = this.getVirtualizationEnabled();
+        Object other$virtualizationEnabled = other.getVirtualizationEnabled();
+        if (this$virtualizationEnabled == null ? other$virtualizationEnabled != null : !this$virtualizationEnabled.equals(other$virtualizationEnabled)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof FirmwareConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $simultaneousMultithreadingEnabled = this.getSimultaneousMultithreadingEnabled();
+        result = result * prime + ($simultaneousMultithreadingEnabled == null ? 43 : $simultaneousMultithreadingEnabled.hashCode());
+        Object $sriovEnabled = this.getSriovEnabled();
+        result = result * prime + ($sriovEnabled == null ? 43 : $sriovEnabled.hashCode());
+        Object $virtualizationEnabled = this.getVirtualizationEnabled();
+        result = result * prime + ($virtualizationEnabled == null ? 43 : $virtualizationEnabled.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "FirmwareConfig(" + "simultaneousMultithreadingEnabled=" + this.getSimultaneousMultithreadingEnabled() + ", sriovEnabled=" + this.getSriovEnabled() + ", virtualizationEnabled=" + this.getVirtualizationEnabled() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

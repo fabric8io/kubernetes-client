@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ContainerResizePolicy represents resource resize policy for the container.
@@ -25,12 +22,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "resourceName",
     "restartPolicy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -111,6 +102,57 @@ public class ContainerResizePolicy implements Editable<ContainerResizePolicyBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ContainerResizePolicy)) {
+            return false;
+        }
+        ContainerResizePolicy other = (ContainerResizePolicy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$resourceName = this.getResourceName();
+        Object other$resourceName = other.getResourceName();
+        if (this$resourceName == null ? other$resourceName != null : !this$resourceName.equals(other$resourceName)) {
+            return false;
+        }
+        Object this$restartPolicy = this.getRestartPolicy();
+        Object other$restartPolicy = other.getRestartPolicy();
+        if (this$restartPolicy == null ? other$restartPolicy != null : !this$restartPolicy.equals(other$restartPolicy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ContainerResizePolicy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $resourceName = this.getResourceName();
+        result = result * prime + ($resourceName == null ? 43 : $resourceName.hashCode());
+        Object $restartPolicy = this.getRestartPolicy();
+        result = result * prime + ($restartPolicy == null ? 43 : $restartPolicy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ContainerResizePolicy(" + "resourceName=" + this.getResourceName() + ", restartPolicy=" + this.getRestartPolicy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

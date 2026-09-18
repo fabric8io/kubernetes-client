@@ -30,9 +30,6 @@ import io.fabric8.openshift.api.model.config.v1.CustomFeatureGates;
 import io.fabric8.openshift.api.model.installer.aws.v1.Metadata;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClusterMetadata contains information regarding the cluster that was created by installer.
@@ -56,12 +53,6 @@ import lombok.experimental.Accessors;
     "powervc",
     "powervs",
     "vsphere"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -424,6 +415,155 @@ public class ClusterMetadata implements Editable<ClusterMetadataBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterMetadata)) {
+            return false;
+        }
+        ClusterMetadata other = (ClusterMetadata) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$aws = this.getAws();
+        Object other$aws = other.getAws();
+        if (this$aws == null ? other$aws != null : !this$aws.equals(other$aws)) {
+            return false;
+        }
+        Object this$azure = this.getAzure();
+        Object other$azure = other.getAzure();
+        if (this$azure == null ? other$azure != null : !this$azure.equals(other$azure)) {
+            return false;
+        }
+        Object this$baremetal = this.getBaremetal();
+        Object other$baremetal = other.getBaremetal();
+        if (this$baremetal == null ? other$baremetal != null : !this$baremetal.equals(other$baremetal)) {
+            return false;
+        }
+        Object this$clusterID = this.getClusterID();
+        Object other$clusterID = other.getClusterID();
+        if (this$clusterID == null ? other$clusterID != null : !this$clusterID.equals(other$clusterID)) {
+            return false;
+        }
+        Object this$clusterName = this.getClusterName();
+        Object other$clusterName = other.getClusterName();
+        if (this$clusterName == null ? other$clusterName != null : !this$clusterName.equals(other$clusterName)) {
+            return false;
+        }
+        Object this$customFeatureSet = this.getCustomFeatureSet();
+        Object other$customFeatureSet = other.getCustomFeatureSet();
+        if (this$customFeatureSet == null ? other$customFeatureSet != null : !this$customFeatureSet.equals(other$customFeatureSet)) {
+            return false;
+        }
+        Object this$featureSet = this.getFeatureSet();
+        Object other$featureSet = other.getFeatureSet();
+        if (this$featureSet == null ? other$featureSet != null : !this$featureSet.equals(other$featureSet)) {
+            return false;
+        }
+        Object this$gcp = this.getGcp();
+        Object other$gcp = other.getGcp();
+        if (this$gcp == null ? other$gcp != null : !this$gcp.equals(other$gcp)) {
+            return false;
+        }
+        Object this$ibmcloud = this.getIbmcloud();
+        Object other$ibmcloud = other.getIbmcloud();
+        if (this$ibmcloud == null ? other$ibmcloud != null : !this$ibmcloud.equals(other$ibmcloud)) {
+            return false;
+        }
+        Object this$infraID = this.getInfraID();
+        Object other$infraID = other.getInfraID();
+        if (this$infraID == null ? other$infraID != null : !this$infraID.equals(other$infraID)) {
+            return false;
+        }
+        Object this$nutanix = this.getNutanix();
+        Object other$nutanix = other.getNutanix();
+        if (this$nutanix == null ? other$nutanix != null : !this$nutanix.equals(other$nutanix)) {
+            return false;
+        }
+        Object this$openstack = this.getOpenstack();
+        Object other$openstack = other.getOpenstack();
+        if (this$openstack == null ? other$openstack != null : !this$openstack.equals(other$openstack)) {
+            return false;
+        }
+        Object this$ovirt = this.getOvirt();
+        Object other$ovirt = other.getOvirt();
+        if (this$ovirt == null ? other$ovirt != null : !this$ovirt.equals(other$ovirt)) {
+            return false;
+        }
+        Object this$powervc = this.getPowervc();
+        Object other$powervc = other.getPowervc();
+        if (this$powervc == null ? other$powervc != null : !this$powervc.equals(other$powervc)) {
+            return false;
+        }
+        Object this$powervs = this.getPowervs();
+        Object other$powervs = other.getPowervs();
+        if (this$powervs == null ? other$powervs != null : !this$powervs.equals(other$powervs)) {
+            return false;
+        }
+        Object this$vsphere = this.getVsphere();
+        Object other$vsphere = other.getVsphere();
+        if (this$vsphere == null ? other$vsphere != null : !this$vsphere.equals(other$vsphere)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterMetadata;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $aws = this.getAws();
+        result = result * prime + ($aws == null ? 43 : $aws.hashCode());
+        Object $azure = this.getAzure();
+        result = result * prime + ($azure == null ? 43 : $azure.hashCode());
+        Object $baremetal = this.getBaremetal();
+        result = result * prime + ($baremetal == null ? 43 : $baremetal.hashCode());
+        Object $clusterID = this.getClusterID();
+        result = result * prime + ($clusterID == null ? 43 : $clusterID.hashCode());
+        Object $clusterName = this.getClusterName();
+        result = result * prime + ($clusterName == null ? 43 : $clusterName.hashCode());
+        Object $customFeatureSet = this.getCustomFeatureSet();
+        result = result * prime + ($customFeatureSet == null ? 43 : $customFeatureSet.hashCode());
+        Object $featureSet = this.getFeatureSet();
+        result = result * prime + ($featureSet == null ? 43 : $featureSet.hashCode());
+        Object $gcp = this.getGcp();
+        result = result * prime + ($gcp == null ? 43 : $gcp.hashCode());
+        Object $ibmcloud = this.getIbmcloud();
+        result = result * prime + ($ibmcloud == null ? 43 : $ibmcloud.hashCode());
+        Object $infraID = this.getInfraID();
+        result = result * prime + ($infraID == null ? 43 : $infraID.hashCode());
+        Object $nutanix = this.getNutanix();
+        result = result * prime + ($nutanix == null ? 43 : $nutanix.hashCode());
+        Object $openstack = this.getOpenstack();
+        result = result * prime + ($openstack == null ? 43 : $openstack.hashCode());
+        Object $ovirt = this.getOvirt();
+        result = result * prime + ($ovirt == null ? 43 : $ovirt.hashCode());
+        Object $powervc = this.getPowervc();
+        result = result * prime + ($powervc == null ? 43 : $powervc.hashCode());
+        Object $powervs = this.getPowervs();
+        result = result * prime + ($powervs == null ? 43 : $powervs.hashCode());
+        Object $vsphere = this.getVsphere();
+        result = result * prime + ($vsphere == null ? 43 : $vsphere.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterMetadata(" + "aws=" + this.getAws() + ", azure=" + this.getAzure() + ", baremetal=" + this.getBaremetal() + ", clusterID=" + this.getClusterID() + ", clusterName=" + this.getClusterName() + ", customFeatureSet=" + this.getCustomFeatureSet() + ", featureSet=" + this.getFeatureSet() + ", gcp=" + this.getGcp() + ", ibmcloud=" + this.getIbmcloud() + ", infraID=" + this.getInfraID() + ", nutanix=" + this.getNutanix() + ", openstack=" + this.getOpenstack() + ", ovirt=" + this.getOvirt() + ", powervc=" + this.getPowervc() + ", powervs=" + this.getPowervs() + ", vsphere=" + this.getVsphere() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

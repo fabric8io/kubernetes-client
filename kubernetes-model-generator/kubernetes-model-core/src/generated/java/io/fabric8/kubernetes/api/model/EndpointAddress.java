@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * EndpointAddress is a tuple that describes single IP address. Deprecated: This API is deprecated in v1.33+.
@@ -27,12 +24,6 @@ import lombok.experimental.Accessors;
     "ip",
     "nodeName",
     "targetRef"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -151,6 +142,71 @@ public class EndpointAddress implements Editable<EndpointAddressBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EndpointAddress)) {
+            return false;
+        }
+        EndpointAddress other = (EndpointAddress) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$hostname = this.getHostname();
+        Object other$hostname = other.getHostname();
+        if (this$hostname == null ? other$hostname != null : !this$hostname.equals(other$hostname)) {
+            return false;
+        }
+        Object this$ip = this.getIp();
+        Object other$ip = other.getIp();
+        if (this$ip == null ? other$ip != null : !this$ip.equals(other$ip)) {
+            return false;
+        }
+        Object this$nodeName = this.getNodeName();
+        Object other$nodeName = other.getNodeName();
+        if (this$nodeName == null ? other$nodeName != null : !this$nodeName.equals(other$nodeName)) {
+            return false;
+        }
+        Object this$targetRef = this.getTargetRef();
+        Object other$targetRef = other.getTargetRef();
+        if (this$targetRef == null ? other$targetRef != null : !this$targetRef.equals(other$targetRef)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EndpointAddress;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $hostname = this.getHostname();
+        result = result * prime + ($hostname == null ? 43 : $hostname.hashCode());
+        Object $ip = this.getIp();
+        result = result * prime + ($ip == null ? 43 : $ip.hashCode());
+        Object $nodeName = this.getNodeName();
+        result = result * prime + ($nodeName == null ? 43 : $nodeName.hashCode());
+        Object $targetRef = this.getTargetRef();
+        result = result * prime + ($targetRef == null ? 43 : $targetRef.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EndpointAddress(" + "hostname=" + this.getHostname() + ", ip=" + this.getIp() + ", nodeName=" + this.getNodeName() + ", targetRef=" + this.getTargetRef() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

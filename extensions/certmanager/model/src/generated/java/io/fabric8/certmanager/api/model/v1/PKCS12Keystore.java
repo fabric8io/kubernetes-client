@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PKCS12 configures options for storing a PKCS12 keystore in the `spec.secretName` Secret resource.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "password",
     "passwordSecretRef",
     "profile"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -181,6 +172,71 @@ public class PKCS12Keystore implements Editable<PKCS12KeystoreBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PKCS12Keystore)) {
+            return false;
+        }
+        PKCS12Keystore other = (PKCS12Keystore) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$create = this.getCreate();
+        Object other$create = other.getCreate();
+        if (this$create == null ? other$create != null : !this$create.equals(other$create)) {
+            return false;
+        }
+        Object this$password = this.getPassword();
+        Object other$password = other.getPassword();
+        if (this$password == null ? other$password != null : !this$password.equals(other$password)) {
+            return false;
+        }
+        Object this$passwordSecretRef = this.getPasswordSecretRef();
+        Object other$passwordSecretRef = other.getPasswordSecretRef();
+        if (this$passwordSecretRef == null ? other$passwordSecretRef != null : !this$passwordSecretRef.equals(other$passwordSecretRef)) {
+            return false;
+        }
+        Object this$profile = this.getProfile();
+        Object other$profile = other.getProfile();
+        if (this$profile == null ? other$profile != null : !this$profile.equals(other$profile)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PKCS12Keystore;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $create = this.getCreate();
+        result = result * prime + ($create == null ? 43 : $create.hashCode());
+        Object $password = this.getPassword();
+        result = result * prime + ($password == null ? 43 : $password.hashCode());
+        Object $passwordSecretRef = this.getPasswordSecretRef();
+        result = result * prime + ($passwordSecretRef == null ? 43 : $passwordSecretRef.hashCode());
+        Object $profile = this.getProfile();
+        result = result * prime + ($profile == null ? 43 : $profile.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PKCS12Keystore(" + "create=" + this.getCreate() + ", password=" + this.getPassword() + ", passwordSecretRef=" + this.getPasswordSecretRef() + ", profile=" + this.getProfile() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

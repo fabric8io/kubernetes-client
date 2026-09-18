@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PlatformCapabilitiesSpec defines the observability capabilities managed by the addon for platform components.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "analytics",
     "logs",
     "metrics"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class PlatformCapabilitiesSpec implements Editable<PlatformCapabilitiesSp
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PlatformCapabilitiesSpec)) {
+            return false;
+        }
+        PlatformCapabilitiesSpec other = (PlatformCapabilitiesSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$analytics = this.getAnalytics();
+        Object other$analytics = other.getAnalytics();
+        if (this$analytics == null ? other$analytics != null : !this$analytics.equals(other$analytics)) {
+            return false;
+        }
+        Object this$logs = this.getLogs();
+        Object other$logs = other.getLogs();
+        if (this$logs == null ? other$logs != null : !this$logs.equals(other$logs)) {
+            return false;
+        }
+        Object this$metrics = this.getMetrics();
+        Object other$metrics = other.getMetrics();
+        if (this$metrics == null ? other$metrics != null : !this$metrics.equals(other$metrics)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PlatformCapabilitiesSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $analytics = this.getAnalytics();
+        result = result * prime + ($analytics == null ? 43 : $analytics.hashCode());
+        Object $logs = this.getLogs();
+        result = result * prime + ($logs == null ? 43 : $logs.hashCode());
+        Object $metrics = this.getMetrics();
+        result = result * prime + ($metrics == null ? 43 : $metrics.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PlatformCapabilitiesSpec(" + "analytics=" + this.getAnalytics() + ", logs=" + this.getLogs() + ", metrics=" + this.getMetrics() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

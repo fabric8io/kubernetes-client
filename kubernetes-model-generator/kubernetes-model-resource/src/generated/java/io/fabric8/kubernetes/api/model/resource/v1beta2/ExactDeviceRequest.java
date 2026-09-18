@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ExactDeviceRequest is a request for one or more identical devices.
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "deviceClassName",
     "selectors",
     "tolerations"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -268,6 +259,99 @@ public class ExactDeviceRequest implements Editable<ExactDeviceRequestBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ExactDeviceRequest)) {
+            return false;
+        }
+        ExactDeviceRequest other = (ExactDeviceRequest) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$adminAccess = this.getAdminAccess();
+        Object other$adminAccess = other.getAdminAccess();
+        if (this$adminAccess == null ? other$adminAccess != null : !this$adminAccess.equals(other$adminAccess)) {
+            return false;
+        }
+        Object this$allocationMode = this.getAllocationMode();
+        Object other$allocationMode = other.getAllocationMode();
+        if (this$allocationMode == null ? other$allocationMode != null : !this$allocationMode.equals(other$allocationMode)) {
+            return false;
+        }
+        Object this$capacity = this.getCapacity();
+        Object other$capacity = other.getCapacity();
+        if (this$capacity == null ? other$capacity != null : !this$capacity.equals(other$capacity)) {
+            return false;
+        }
+        Object this$count = this.getCount();
+        Object other$count = other.getCount();
+        if (this$count == null ? other$count != null : !this$count.equals(other$count)) {
+            return false;
+        }
+        Object this$derivedAttributes = this.getDerivedAttributes();
+        Object other$derivedAttributes = other.getDerivedAttributes();
+        if (this$derivedAttributes == null ? other$derivedAttributes != null : !this$derivedAttributes.equals(other$derivedAttributes)) {
+            return false;
+        }
+        Object this$deviceClassName = this.getDeviceClassName();
+        Object other$deviceClassName = other.getDeviceClassName();
+        if (this$deviceClassName == null ? other$deviceClassName != null : !this$deviceClassName.equals(other$deviceClassName)) {
+            return false;
+        }
+        Object this$selectors = this.getSelectors();
+        Object other$selectors = other.getSelectors();
+        if (this$selectors == null ? other$selectors != null : !this$selectors.equals(other$selectors)) {
+            return false;
+        }
+        Object this$tolerations = this.getTolerations();
+        Object other$tolerations = other.getTolerations();
+        if (this$tolerations == null ? other$tolerations != null : !this$tolerations.equals(other$tolerations)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ExactDeviceRequest;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $adminAccess = this.getAdminAccess();
+        result = result * prime + ($adminAccess == null ? 43 : $adminAccess.hashCode());
+        Object $allocationMode = this.getAllocationMode();
+        result = result * prime + ($allocationMode == null ? 43 : $allocationMode.hashCode());
+        Object $capacity = this.getCapacity();
+        result = result * prime + ($capacity == null ? 43 : $capacity.hashCode());
+        Object $count = this.getCount();
+        result = result * prime + ($count == null ? 43 : $count.hashCode());
+        Object $derivedAttributes = this.getDerivedAttributes();
+        result = result * prime + ($derivedAttributes == null ? 43 : $derivedAttributes.hashCode());
+        Object $deviceClassName = this.getDeviceClassName();
+        result = result * prime + ($deviceClassName == null ? 43 : $deviceClassName.hashCode());
+        Object $selectors = this.getSelectors();
+        result = result * prime + ($selectors == null ? 43 : $selectors.hashCode());
+        Object $tolerations = this.getTolerations();
+        result = result * prime + ($tolerations == null ? 43 : $tolerations.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ExactDeviceRequest(" + "adminAccess=" + this.getAdminAccess() + ", allocationMode=" + this.getAllocationMode() + ", capacity=" + this.getCapacity() + ", count=" + this.getCount() + ", derivedAttributes=" + this.getDerivedAttributes() + ", deviceClassName=" + this.getDeviceClassName() + ", selectors=" + this.getSelectors() + ", tolerations=" + this.getTolerations() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

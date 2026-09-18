@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Access logging defines the workload-level overrides for access log generation. It can be used to select provider or enable/disable access log generation for a workload.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "filter",
     "match",
     "providers"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class AccessLogging implements Editable<AccessLoggingBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AccessLogging)) {
+            return false;
+        }
+        AccessLogging other = (AccessLogging) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$disabled = this.getDisabled();
+        Object other$disabled = other.getDisabled();
+        if (this$disabled == null ? other$disabled != null : !this$disabled.equals(other$disabled)) {
+            return false;
+        }
+        Object this$filter = this.getFilter();
+        Object other$filter = other.getFilter();
+        if (this$filter == null ? other$filter != null : !this$filter.equals(other$filter)) {
+            return false;
+        }
+        Object this$match = this.getMatch();
+        Object other$match = other.getMatch();
+        if (this$match == null ? other$match != null : !this$match.equals(other$match)) {
+            return false;
+        }
+        Object this$providers = this.getProviders();
+        Object other$providers = other.getProviders();
+        if (this$providers == null ? other$providers != null : !this$providers.equals(other$providers)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AccessLogging;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $disabled = this.getDisabled();
+        result = result * prime + ($disabled == null ? 43 : $disabled.hashCode());
+        Object $filter = this.getFilter();
+        result = result * prime + ($filter == null ? 43 : $filter.hashCode());
+        Object $match = this.getMatch();
+        result = result * prime + ($match == null ? 43 : $match.hashCode());
+        Object $providers = this.getProviders();
+        result = result * prime + ($providers == null ? 43 : $providers.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AccessLogging(" + "disabled=" + this.getDisabled() + ", filter=" + this.getFilter() + ", match=" + this.getMatch() + ", providers=" + this.getProviders() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

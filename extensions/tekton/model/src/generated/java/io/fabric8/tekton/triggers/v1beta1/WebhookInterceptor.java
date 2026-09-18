@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.tekton.v1beta1.Param;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * WebhookInterceptor provides a webhook to intercept and pre-process events
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "header",
     "objectRef",
     "url"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -165,6 +156,64 @@ public class WebhookInterceptor implements Editable<WebhookInterceptorBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof WebhookInterceptor)) {
+            return false;
+        }
+        WebhookInterceptor other = (WebhookInterceptor) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$header = this.getHeader();
+        Object other$header = other.getHeader();
+        if (this$header == null ? other$header != null : !this$header.equals(other$header)) {
+            return false;
+        }
+        Object this$objectRef = this.getObjectRef();
+        Object other$objectRef = other.getObjectRef();
+        if (this$objectRef == null ? other$objectRef != null : !this$objectRef.equals(other$objectRef)) {
+            return false;
+        }
+        Object this$url = this.getUrl();
+        Object other$url = other.getUrl();
+        if (this$url == null ? other$url != null : !this$url.equals(other$url)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof WebhookInterceptor;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $header = this.getHeader();
+        result = result * prime + ($header == null ? 43 : $header.hashCode());
+        Object $objectRef = this.getObjectRef();
+        result = result * prime + ($objectRef == null ? 43 : $objectRef.hashCode());
+        Object $url = this.getUrl();
+        result = result * prime + ($url == null ? 43 : $url.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WebhookInterceptor(" + "header=" + this.getHeader() + ", objectRef=" + this.getObjectRef() + ", url=" + this.getUrl() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ConfigurationStatus communicates the observed state of the Configuration (from the controller).
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "latestCreatedRevisionName",
     "latestReadyRevisionName",
     "observedGeneration"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -207,6 +198,78 @@ public class ConfigurationStatus implements Editable<ConfigurationStatusBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConfigurationStatus)) {
+            return false;
+        }
+        ConfigurationStatus other = (ConfigurationStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$annotations = this.getAnnotations();
+        Object other$annotations = other.getAnnotations();
+        if (this$annotations == null ? other$annotations != null : !this$annotations.equals(other$annotations)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$latestCreatedRevisionName = this.getLatestCreatedRevisionName();
+        Object other$latestCreatedRevisionName = other.getLatestCreatedRevisionName();
+        if (this$latestCreatedRevisionName == null ? other$latestCreatedRevisionName != null : !this$latestCreatedRevisionName.equals(other$latestCreatedRevisionName)) {
+            return false;
+        }
+        Object this$latestReadyRevisionName = this.getLatestReadyRevisionName();
+        Object other$latestReadyRevisionName = other.getLatestReadyRevisionName();
+        if (this$latestReadyRevisionName == null ? other$latestReadyRevisionName != null : !this$latestReadyRevisionName.equals(other$latestReadyRevisionName)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConfigurationStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $annotations = this.getAnnotations();
+        result = result * prime + ($annotations == null ? 43 : $annotations.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $latestCreatedRevisionName = this.getLatestCreatedRevisionName();
+        result = result * prime + ($latestCreatedRevisionName == null ? 43 : $latestCreatedRevisionName.hashCode());
+        Object $latestReadyRevisionName = this.getLatestReadyRevisionName();
+        result = result * prime + ($latestReadyRevisionName == null ? 43 : $latestReadyRevisionName.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConfigurationStatus(" + "annotations=" + this.getAnnotations() + ", conditions=" + this.getConditions() + ", latestCreatedRevisionName=" + this.getLatestCreatedRevisionName() + ", latestReadyRevisionName=" + this.getLatestReadyRevisionName() + ", observedGeneration=" + this.getObservedGeneration() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

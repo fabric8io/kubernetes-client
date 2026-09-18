@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "type",
     "url",
     "wildcard"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -266,6 +257,106 @@ public class ChallengeSpec implements Editable<ChallengeSpecBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ChallengeSpec)) {
+            return false;
+        }
+        ChallengeSpec other = (ChallengeSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$authorizationURL = this.getAuthorizationURL();
+        Object other$authorizationURL = other.getAuthorizationURL();
+        if (this$authorizationURL == null ? other$authorizationURL != null : !this$authorizationURL.equals(other$authorizationURL)) {
+            return false;
+        }
+        Object this$dnsName = this.getDnsName();
+        Object other$dnsName = other.getDnsName();
+        if (this$dnsName == null ? other$dnsName != null : !this$dnsName.equals(other$dnsName)) {
+            return false;
+        }
+        Object this$issuerRef = this.getIssuerRef();
+        Object other$issuerRef = other.getIssuerRef();
+        if (this$issuerRef == null ? other$issuerRef != null : !this$issuerRef.equals(other$issuerRef)) {
+            return false;
+        }
+        Object this$key = this.getKey();
+        Object other$key = other.getKey();
+        if (this$key == null ? other$key != null : !this$key.equals(other$key)) {
+            return false;
+        }
+        Object this$solver = this.getSolver();
+        Object other$solver = other.getSolver();
+        if (this$solver == null ? other$solver != null : !this$solver.equals(other$solver)) {
+            return false;
+        }
+        Object this$token = this.getToken();
+        Object other$token = other.getToken();
+        if (this$token == null ? other$token != null : !this$token.equals(other$token)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$url = this.getUrl();
+        Object other$url = other.getUrl();
+        if (this$url == null ? other$url != null : !this$url.equals(other$url)) {
+            return false;
+        }
+        Object this$wildcard = this.getWildcard();
+        Object other$wildcard = other.getWildcard();
+        if (this$wildcard == null ? other$wildcard != null : !this$wildcard.equals(other$wildcard)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ChallengeSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $authorizationURL = this.getAuthorizationURL();
+        result = result * prime + ($authorizationURL == null ? 43 : $authorizationURL.hashCode());
+        Object $dnsName = this.getDnsName();
+        result = result * prime + ($dnsName == null ? 43 : $dnsName.hashCode());
+        Object $issuerRef = this.getIssuerRef();
+        result = result * prime + ($issuerRef == null ? 43 : $issuerRef.hashCode());
+        Object $key = this.getKey();
+        result = result * prime + ($key == null ? 43 : $key.hashCode());
+        Object $solver = this.getSolver();
+        result = result * prime + ($solver == null ? 43 : $solver.hashCode());
+        Object $token = this.getToken();
+        result = result * prime + ($token == null ? 43 : $token.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $url = this.getUrl();
+        result = result * prime + ($url == null ? 43 : $url.hashCode());
+        Object $wildcard = this.getWildcard();
+        result = result * prime + ($wildcard == null ? 43 : $wildcard.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ChallengeSpec(" + "authorizationURL=" + this.getAuthorizationURL() + ", dnsName=" + this.getDnsName() + ", issuerRef=" + this.getIssuerRef() + ", key=" + this.getKey() + ", solver=" + this.getSolver() + ", token=" + this.getToken() + ", type=" + this.getType() + ", url=" + this.getUrl() + ", wildcard=" + this.getWildcard() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

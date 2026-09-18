@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NetworkDataLink contains list of different link objects.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "bonds",
     "ethernets",
     "vlans"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -168,6 +159,64 @@ public class NetworkDataLink implements Editable<NetworkDataLinkBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkDataLink)) {
+            return false;
+        }
+        NetworkDataLink other = (NetworkDataLink) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bonds = this.getBonds();
+        Object other$bonds = other.getBonds();
+        if (this$bonds == null ? other$bonds != null : !this$bonds.equals(other$bonds)) {
+            return false;
+        }
+        Object this$ethernets = this.getEthernets();
+        Object other$ethernets = other.getEthernets();
+        if (this$ethernets == null ? other$ethernets != null : !this$ethernets.equals(other$ethernets)) {
+            return false;
+        }
+        Object this$vlans = this.getVlans();
+        Object other$vlans = other.getVlans();
+        if (this$vlans == null ? other$vlans != null : !this$vlans.equals(other$vlans)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkDataLink;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bonds = this.getBonds();
+        result = result * prime + ($bonds == null ? 43 : $bonds.hashCode());
+        Object $ethernets = this.getEthernets();
+        result = result * prime + ($ethernets == null ? 43 : $ethernets.hashCode());
+        Object $vlans = this.getVlans();
+        result = result * prime + ($vlans == null ? 43 : $vlans.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkDataLink(" + "bonds=" + this.getBonds() + ", ethernets=" + this.getEthernets() + ", vlans=" + this.getVlans() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

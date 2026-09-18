@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "branches",
     "channelTemplate",
     "reply"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -151,6 +142,64 @@ public class ParallelSpec implements Editable<ParallelSpecBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ParallelSpec)) {
+            return false;
+        }
+        ParallelSpec other = (ParallelSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$branches = this.getBranches();
+        Object other$branches = other.getBranches();
+        if (this$branches == null ? other$branches != null : !this$branches.equals(other$branches)) {
+            return false;
+        }
+        Object this$channelTemplate = this.getChannelTemplate();
+        Object other$channelTemplate = other.getChannelTemplate();
+        if (this$channelTemplate == null ? other$channelTemplate != null : !this$channelTemplate.equals(other$channelTemplate)) {
+            return false;
+        }
+        Object this$reply = this.getReply();
+        Object other$reply = other.getReply();
+        if (this$reply == null ? other$reply != null : !this$reply.equals(other$reply)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ParallelSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $branches = this.getBranches();
+        result = result * prime + ($branches == null ? 43 : $branches.hashCode());
+        Object $channelTemplate = this.getChannelTemplate();
+        result = result * prime + ($channelTemplate == null ? 43 : $channelTemplate.hashCode());
+        Object $reply = this.getReply();
+        result = result * prime + ($reply == null ? 43 : $reply.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ParallelSpec(" + "branches=" + this.getBranches() + ", channelTemplate=" + this.getChannelTemplate() + ", reply=" + this.getReply() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

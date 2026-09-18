@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * FlexPersistentVolumeSource represents a generic persistent volume resource that is provisioned/attached using an exec based plugin.
@@ -28,12 +25,6 @@ import lombok.experimental.Accessors;
     "options",
     "readOnly",
     "secretRef"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -173,6 +164,78 @@ public class FlexPersistentVolumeSource implements Editable<FlexPersistentVolume
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof FlexPersistentVolumeSource)) {
+            return false;
+        }
+        FlexPersistentVolumeSource other = (FlexPersistentVolumeSource) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$driver = this.getDriver();
+        Object other$driver = other.getDriver();
+        if (this$driver == null ? other$driver != null : !this$driver.equals(other$driver)) {
+            return false;
+        }
+        Object this$fsType = this.getFsType();
+        Object other$fsType = other.getFsType();
+        if (this$fsType == null ? other$fsType != null : !this$fsType.equals(other$fsType)) {
+            return false;
+        }
+        Object this$options = this.getOptions();
+        Object other$options = other.getOptions();
+        if (this$options == null ? other$options != null : !this$options.equals(other$options)) {
+            return false;
+        }
+        Object this$readOnly = this.getReadOnly();
+        Object other$readOnly = other.getReadOnly();
+        if (this$readOnly == null ? other$readOnly != null : !this$readOnly.equals(other$readOnly)) {
+            return false;
+        }
+        Object this$secretRef = this.getSecretRef();
+        Object other$secretRef = other.getSecretRef();
+        if (this$secretRef == null ? other$secretRef != null : !this$secretRef.equals(other$secretRef)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof FlexPersistentVolumeSource;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $driver = this.getDriver();
+        result = result * prime + ($driver == null ? 43 : $driver.hashCode());
+        Object $fsType = this.getFsType();
+        result = result * prime + ($fsType == null ? 43 : $fsType.hashCode());
+        Object $options = this.getOptions();
+        result = result * prime + ($options == null ? 43 : $options.hashCode());
+        Object $readOnly = this.getReadOnly();
+        result = result * prime + ($readOnly == null ? 43 : $readOnly.hashCode());
+        Object $secretRef = this.getSecretRef();
+        result = result * prime + ($secretRef == null ? 43 : $secretRef.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "FlexPersistentVolumeSource(" + "driver=" + this.getDriver() + ", fsType=" + this.getFsType() + ", options=" + this.getOptions() + ", readOnly=" + this.getReadOnly() + ", secretRef=" + this.getSecretRef() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

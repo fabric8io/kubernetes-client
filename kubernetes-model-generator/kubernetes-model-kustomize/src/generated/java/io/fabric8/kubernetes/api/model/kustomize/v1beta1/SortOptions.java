@@ -28,21 +28,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "legacySortOptions",
     "order"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -125,6 +116,57 @@ public class SortOptions implements Editable<SortOptionsBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SortOptions)) {
+            return false;
+        }
+        SortOptions other = (SortOptions) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$legacySortOptions = this.getLegacySortOptions();
+        Object other$legacySortOptions = other.getLegacySortOptions();
+        if (this$legacySortOptions == null ? other$legacySortOptions != null : !this$legacySortOptions.equals(other$legacySortOptions)) {
+            return false;
+        }
+        Object this$order = this.getOrder();
+        Object other$order = other.getOrder();
+        if (this$order == null ? other$order != null : !this$order.equals(other$order)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SortOptions;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $legacySortOptions = this.getLegacySortOptions();
+        result = result * prime + ($legacySortOptions == null ? 43 : $legacySortOptions.hashCode());
+        Object $order = this.getOrder();
+        result = result * prime + ($order == null ? 43 : $order.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SortOptions(" + "legacySortOptions=" + this.getLegacySortOptions() + ", order=" + this.getOrder() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

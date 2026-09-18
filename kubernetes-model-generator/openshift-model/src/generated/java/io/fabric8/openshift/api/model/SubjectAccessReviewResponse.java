@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SubjectAccessReviewResponse describes whether or not a user or group can perform an action<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "evaluationError",
     "namespace",
     "reason"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -224,6 +215,85 @@ public class SubjectAccessReviewResponse implements Editable<SubjectAccessReview
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SubjectAccessReviewResponse)) {
+            return false;
+        }
+        SubjectAccessReviewResponse other = (SubjectAccessReviewResponse) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allowed = this.getAllowed();
+        Object other$allowed = other.getAllowed();
+        if (this$allowed == null ? other$allowed != null : !this$allowed.equals(other$allowed)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$evaluationError = this.getEvaluationError();
+        Object other$evaluationError = other.getEvaluationError();
+        if (this$evaluationError == null ? other$evaluationError != null : !this$evaluationError.equals(other$evaluationError)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$namespace = this.getNamespace();
+        Object other$namespace = other.getNamespace();
+        if (this$namespace == null ? other$namespace != null : !this$namespace.equals(other$namespace)) {
+            return false;
+        }
+        Object this$reason = this.getReason();
+        Object other$reason = other.getReason();
+        if (this$reason == null ? other$reason != null : !this$reason.equals(other$reason)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SubjectAccessReviewResponse;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allowed = this.getAllowed();
+        result = result * prime + ($allowed == null ? 43 : $allowed.hashCode());
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $evaluationError = this.getEvaluationError();
+        result = result * prime + ($evaluationError == null ? 43 : $evaluationError.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $namespace = this.getNamespace();
+        result = result * prime + ($namespace == null ? 43 : $namespace.hashCode());
+        Object $reason = this.getReason();
+        result = result * prime + ($reason == null ? 43 : $reason.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SubjectAccessReviewResponse(" + "allowed=" + this.getAllowed() + ", apiVersion=" + this.getApiVersion() + ", evaluationError=" + this.getEvaluationError() + ", kind=" + this.getKind() + ", namespace=" + this.getNamespace() + ", reason=" + this.getReason() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

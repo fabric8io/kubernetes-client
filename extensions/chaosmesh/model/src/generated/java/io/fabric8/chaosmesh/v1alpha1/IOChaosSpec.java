@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * IOChaosSpec defines the desired state of IOChaos
@@ -55,12 +52,6 @@ import lombok.experimental.Accessors;
     "selector",
     "value",
     "volumePath"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -406,6 +397,148 @@ public class IOChaosSpec implements Editable<IOChaosSpecBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof IOChaosSpec)) {
+            return false;
+        }
+        IOChaosSpec other = (IOChaosSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$action = this.getAction();
+        Object other$action = other.getAction();
+        if (this$action == null ? other$action != null : !this$action.equals(other$action)) {
+            return false;
+        }
+        Object this$attr = this.getAttr();
+        Object other$attr = other.getAttr();
+        if (this$attr == null ? other$attr != null : !this$attr.equals(other$attr)) {
+            return false;
+        }
+        Object this$containerNames = this.getContainerNames();
+        Object other$containerNames = other.getContainerNames();
+        if (this$containerNames == null ? other$containerNames != null : !this$containerNames.equals(other$containerNames)) {
+            return false;
+        }
+        Object this$delay = this.getDelay();
+        Object other$delay = other.getDelay();
+        if (this$delay == null ? other$delay != null : !this$delay.equals(other$delay)) {
+            return false;
+        }
+        Object this$duration = this.getDuration();
+        Object other$duration = other.getDuration();
+        if (this$duration == null ? other$duration != null : !this$duration.equals(other$duration)) {
+            return false;
+        }
+        Object this$errno = this.getErrno();
+        Object other$errno = other.getErrno();
+        if (this$errno == null ? other$errno != null : !this$errno.equals(other$errno)) {
+            return false;
+        }
+        Object this$methods = this.getMethods();
+        Object other$methods = other.getMethods();
+        if (this$methods == null ? other$methods != null : !this$methods.equals(other$methods)) {
+            return false;
+        }
+        Object this$mistake = this.getMistake();
+        Object other$mistake = other.getMistake();
+        if (this$mistake == null ? other$mistake != null : !this$mistake.equals(other$mistake)) {
+            return false;
+        }
+        Object this$mode = this.getMode();
+        Object other$mode = other.getMode();
+        if (this$mode == null ? other$mode != null : !this$mode.equals(other$mode)) {
+            return false;
+        }
+        Object this$path = this.getPath();
+        Object other$path = other.getPath();
+        if (this$path == null ? other$path != null : !this$path.equals(other$path)) {
+            return false;
+        }
+        Object this$percent = this.getPercent();
+        Object other$percent = other.getPercent();
+        if (this$percent == null ? other$percent != null : !this$percent.equals(other$percent)) {
+            return false;
+        }
+        Object this$remoteCluster = this.getRemoteCluster();
+        Object other$remoteCluster = other.getRemoteCluster();
+        if (this$remoteCluster == null ? other$remoteCluster != null : !this$remoteCluster.equals(other$remoteCluster)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$value = this.getValue();
+        Object other$value = other.getValue();
+        if (this$value == null ? other$value != null : !this$value.equals(other$value)) {
+            return false;
+        }
+        Object this$volumePath = this.getVolumePath();
+        Object other$volumePath = other.getVolumePath();
+        if (this$volumePath == null ? other$volumePath != null : !this$volumePath.equals(other$volumePath)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof IOChaosSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $action = this.getAction();
+        result = result * prime + ($action == null ? 43 : $action.hashCode());
+        Object $attr = this.getAttr();
+        result = result * prime + ($attr == null ? 43 : $attr.hashCode());
+        Object $containerNames = this.getContainerNames();
+        result = result * prime + ($containerNames == null ? 43 : $containerNames.hashCode());
+        Object $delay = this.getDelay();
+        result = result * prime + ($delay == null ? 43 : $delay.hashCode());
+        Object $duration = this.getDuration();
+        result = result * prime + ($duration == null ? 43 : $duration.hashCode());
+        Object $errno = this.getErrno();
+        result = result * prime + ($errno == null ? 43 : $errno.hashCode());
+        Object $methods = this.getMethods();
+        result = result * prime + ($methods == null ? 43 : $methods.hashCode());
+        Object $mistake = this.getMistake();
+        result = result * prime + ($mistake == null ? 43 : $mistake.hashCode());
+        Object $mode = this.getMode();
+        result = result * prime + ($mode == null ? 43 : $mode.hashCode());
+        Object $path = this.getPath();
+        result = result * prime + ($path == null ? 43 : $path.hashCode());
+        Object $percent = this.getPercent();
+        result = result * prime + ($percent == null ? 43 : $percent.hashCode());
+        Object $remoteCluster = this.getRemoteCluster();
+        result = result * prime + ($remoteCluster == null ? 43 : $remoteCluster.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $value = this.getValue();
+        result = result * prime + ($value == null ? 43 : $value.hashCode());
+        Object $volumePath = this.getVolumePath();
+        result = result * prime + ($volumePath == null ? 43 : $volumePath.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IOChaosSpec(" + "action=" + this.getAction() + ", attr=" + this.getAttr() + ", containerNames=" + this.getContainerNames() + ", delay=" + this.getDelay() + ", duration=" + this.getDuration() + ", errno=" + this.getErrno() + ", methods=" + this.getMethods() + ", mistake=" + this.getMistake() + ", mode=" + this.getMode() + ", path=" + this.getPath() + ", percent=" + this.getPercent() + ", remoteCluster=" + this.getRemoteCluster() + ", selector=" + this.getSelector() + ", value=" + this.getValue() + ", volumePath=" + this.getVolumePath() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SubscriptionsAPIFilter allows defining a filter expression using CloudEvents Subscriptions API. If multiple filters are specified, then the same semantics of SubscriptionsAPIFilter.All is applied. If no filter dialect or empty object is specified, then the filter always accept the events.
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "not",
     "prefix",
     "suffix"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -252,6 +243,92 @@ public class SubscriptionsAPIFilter implements Editable<SubscriptionsAPIFilterBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SubscriptionsAPIFilter)) {
+            return false;
+        }
+        SubscriptionsAPIFilter other = (SubscriptionsAPIFilter) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$all = this.getAll();
+        Object other$all = other.getAll();
+        if (this$all == null ? other$all != null : !this$all.equals(other$all)) {
+            return false;
+        }
+        Object this$any = this.getAny();
+        Object other$any = other.getAny();
+        if (this$any == null ? other$any != null : !this$any.equals(other$any)) {
+            return false;
+        }
+        Object this$cesql = this.getCesql();
+        Object other$cesql = other.getCesql();
+        if (this$cesql == null ? other$cesql != null : !this$cesql.equals(other$cesql)) {
+            return false;
+        }
+        Object this$exact = this.getExact();
+        Object other$exact = other.getExact();
+        if (this$exact == null ? other$exact != null : !this$exact.equals(other$exact)) {
+            return false;
+        }
+        Object this$not = this.getNot();
+        Object other$not = other.getNot();
+        if (this$not == null ? other$not != null : !this$not.equals(other$not)) {
+            return false;
+        }
+        Object this$prefix = this.getPrefix();
+        Object other$prefix = other.getPrefix();
+        if (this$prefix == null ? other$prefix != null : !this$prefix.equals(other$prefix)) {
+            return false;
+        }
+        Object this$suffix = this.getSuffix();
+        Object other$suffix = other.getSuffix();
+        if (this$suffix == null ? other$suffix != null : !this$suffix.equals(other$suffix)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SubscriptionsAPIFilter;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $all = this.getAll();
+        result = result * prime + ($all == null ? 43 : $all.hashCode());
+        Object $any = this.getAny();
+        result = result * prime + ($any == null ? 43 : $any.hashCode());
+        Object $cesql = this.getCesql();
+        result = result * prime + ($cesql == null ? 43 : $cesql.hashCode());
+        Object $exact = this.getExact();
+        result = result * prime + ($exact == null ? 43 : $exact.hashCode());
+        Object $not = this.getNot();
+        result = result * prime + ($not == null ? 43 : $not.hashCode());
+        Object $prefix = this.getPrefix();
+        result = result * prime + ($prefix == null ? 43 : $prefix.hashCode());
+        Object $suffix = this.getSuffix();
+        result = result * prime + ($suffix == null ? 43 : $suffix.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SubscriptionsAPIFilter(" + "all=" + this.getAll() + ", any=" + this.getAny() + ", cesql=" + this.getCesql() + ", exact=" + this.getExact() + ", not=" + this.getNot() + ", prefix=" + this.getPrefix() + ", suffix=" + this.getSuffix() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

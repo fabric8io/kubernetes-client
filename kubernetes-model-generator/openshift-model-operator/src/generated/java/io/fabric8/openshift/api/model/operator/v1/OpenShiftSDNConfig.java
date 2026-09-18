@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OpenShiftSDNConfig was used to configure the OpenShift SDN plugin. It is no longer used.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "mtu",
     "useExternalOpenvswitch",
     "vxlanPort"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,78 @@ public class OpenShiftSDNConfig implements Editable<OpenShiftSDNConfigBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OpenShiftSDNConfig)) {
+            return false;
+        }
+        OpenShiftSDNConfig other = (OpenShiftSDNConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$enableUnidling = this.getEnableUnidling();
+        Object other$enableUnidling = other.getEnableUnidling();
+        if (this$enableUnidling == null ? other$enableUnidling != null : !this$enableUnidling.equals(other$enableUnidling)) {
+            return false;
+        }
+        Object this$mode = this.getMode();
+        Object other$mode = other.getMode();
+        if (this$mode == null ? other$mode != null : !this$mode.equals(other$mode)) {
+            return false;
+        }
+        Object this$mtu = this.getMtu();
+        Object other$mtu = other.getMtu();
+        if (this$mtu == null ? other$mtu != null : !this$mtu.equals(other$mtu)) {
+            return false;
+        }
+        Object this$useExternalOpenvswitch = this.getUseExternalOpenvswitch();
+        Object other$useExternalOpenvswitch = other.getUseExternalOpenvswitch();
+        if (this$useExternalOpenvswitch == null ? other$useExternalOpenvswitch != null : !this$useExternalOpenvswitch.equals(other$useExternalOpenvswitch)) {
+            return false;
+        }
+        Object this$vxlanPort = this.getVxlanPort();
+        Object other$vxlanPort = other.getVxlanPort();
+        if (this$vxlanPort == null ? other$vxlanPort != null : !this$vxlanPort.equals(other$vxlanPort)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OpenShiftSDNConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $enableUnidling = this.getEnableUnidling();
+        result = result * prime + ($enableUnidling == null ? 43 : $enableUnidling.hashCode());
+        Object $mode = this.getMode();
+        result = result * prime + ($mode == null ? 43 : $mode.hashCode());
+        Object $mtu = this.getMtu();
+        result = result * prime + ($mtu == null ? 43 : $mtu.hashCode());
+        Object $useExternalOpenvswitch = this.getUseExternalOpenvswitch();
+        result = result * prime + ($useExternalOpenvswitch == null ? 43 : $useExternalOpenvswitch.hashCode());
+        Object $vxlanPort = this.getVxlanPort();
+        result = result * prime + ($vxlanPort == null ? 43 : $vxlanPort.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OpenShiftSDNConfig(" + "enableUnidling=" + this.getEnableUnidling() + ", mode=" + this.getMode() + ", mtu=" + this.getMtu() + ", useExternalOpenvswitch=" + this.getUseExternalOpenvswitch() + ", vxlanPort=" + this.getVxlanPort() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SubscriberStatus defines the status of a single subscriber to a Channel.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "observedGeneration",
     "ready",
     "uid"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class SubscriberStatus implements Editable<SubscriberStatusBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SubscriberStatus)) {
+            return false;
+        }
+        SubscriberStatus other = (SubscriberStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$ready = this.getReady();
+        Object other$ready = other.getReady();
+        if (this$ready == null ? other$ready != null : !this$ready.equals(other$ready)) {
+            return false;
+        }
+        Object this$uid = this.getUid();
+        Object other$uid = other.getUid();
+        if (this$uid == null ? other$uid != null : !this$uid.equals(other$uid)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SubscriberStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $ready = this.getReady();
+        result = result * prime + ($ready == null ? 43 : $ready.hashCode());
+        Object $uid = this.getUid();
+        result = result * prime + ($uid == null ? 43 : $uid.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SubscriberStatus(" + "message=" + this.getMessage() + ", observedGeneration=" + this.getObservedGeneration() + ", ready=" + this.getReady() + ", uid=" + this.getUid() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

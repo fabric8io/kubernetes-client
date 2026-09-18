@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PolicyAncestorStatus describes the status of a route with respect to an associated Ancestor.<br><p> <br><p> Ancestors refer to objects that are either the Target of a policy or above it in terms of object hierarchy. For example, if a policy targets a Service, the Policy's Ancestors are, in order, the Service, the HTTPRoute, the Gateway, and the GatewayClass. Almost always, in this hierarchy, the Gateway will be the most useful object to place Policy status on, so we recommend that implementations SHOULD use Gateway as the PolicyAncestorStatus object unless the designers have a _very_ good reason otherwise.<br><p> <br><p> In the context of policy attachment, the Ancestor is used to distinguish which resource results in a distinct application of this policy. For example, if a policy targets a Service, it may have a distinct result per attached Gateway.<br><p> <br><p> Policies targeting the same resource may have different effects depending on the ancestors of those resources. For example, different Gateways targeting the same Service may have different capabilities, especially if they have different underlying implementations.<br><p> <br><p> For example, in BackendTLSPolicy, the Policy attaches to a Service that is used as a backend in a HTTPRoute that is itself attached to a Gateway. In this case, the relevant object for status is the Gateway, and that is the ancestor object referred to in this status.<br><p> <br><p> Note that a parent is also an ancestor, so for objects where the parent is the relevant object for status, this struct SHOULD still be used.<br><p> <br><p> This struct is intended to be used in a slice that's effectively a map, with a composite key made up of the AncestorRef and the ControllerName.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "ancestorRef",
     "conditions",
     "controllerName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -163,6 +154,64 @@ public class PolicyAncestorStatus implements Editable<PolicyAncestorStatusBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PolicyAncestorStatus)) {
+            return false;
+        }
+        PolicyAncestorStatus other = (PolicyAncestorStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ancestorRef = this.getAncestorRef();
+        Object other$ancestorRef = other.getAncestorRef();
+        if (this$ancestorRef == null ? other$ancestorRef != null : !this$ancestorRef.equals(other$ancestorRef)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$controllerName = this.getControllerName();
+        Object other$controllerName = other.getControllerName();
+        if (this$controllerName == null ? other$controllerName != null : !this$controllerName.equals(other$controllerName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PolicyAncestorStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ancestorRef = this.getAncestorRef();
+        result = result * prime + ($ancestorRef == null ? 43 : $ancestorRef.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $controllerName = this.getControllerName();
+        result = result * prime + ($controllerName == null ? 43 : $controllerName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PolicyAncestorStatus(" + "ancestorRef=" + this.getAncestorRef() + ", conditions=" + this.getConditions() + ", controllerName=" + this.getControllerName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

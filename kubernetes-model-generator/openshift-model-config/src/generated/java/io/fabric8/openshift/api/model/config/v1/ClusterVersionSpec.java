@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClusterVersionSpec is the desired version state of the cluster. It includes the version the cluster should be at, how the cluster is identified, and where the cluster should look for version updates.
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "overrides",
     "signatureStores",
     "upstream"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -245,6 +236,92 @@ public class ClusterVersionSpec implements Editable<ClusterVersionSpecBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterVersionSpec)) {
+            return false;
+        }
+        ClusterVersionSpec other = (ClusterVersionSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$capabilities = this.getCapabilities();
+        Object other$capabilities = other.getCapabilities();
+        if (this$capabilities == null ? other$capabilities != null : !this$capabilities.equals(other$capabilities)) {
+            return false;
+        }
+        Object this$channel = this.getChannel();
+        Object other$channel = other.getChannel();
+        if (this$channel == null ? other$channel != null : !this$channel.equals(other$channel)) {
+            return false;
+        }
+        Object this$clusterID = this.getClusterID();
+        Object other$clusterID = other.getClusterID();
+        if (this$clusterID == null ? other$clusterID != null : !this$clusterID.equals(other$clusterID)) {
+            return false;
+        }
+        Object this$desiredUpdate = this.getDesiredUpdate();
+        Object other$desiredUpdate = other.getDesiredUpdate();
+        if (this$desiredUpdate == null ? other$desiredUpdate != null : !this$desiredUpdate.equals(other$desiredUpdate)) {
+            return false;
+        }
+        Object this$overrides = this.getOverrides();
+        Object other$overrides = other.getOverrides();
+        if (this$overrides == null ? other$overrides != null : !this$overrides.equals(other$overrides)) {
+            return false;
+        }
+        Object this$signatureStores = this.getSignatureStores();
+        Object other$signatureStores = other.getSignatureStores();
+        if (this$signatureStores == null ? other$signatureStores != null : !this$signatureStores.equals(other$signatureStores)) {
+            return false;
+        }
+        Object this$upstream = this.getUpstream();
+        Object other$upstream = other.getUpstream();
+        if (this$upstream == null ? other$upstream != null : !this$upstream.equals(other$upstream)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterVersionSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $capabilities = this.getCapabilities();
+        result = result * prime + ($capabilities == null ? 43 : $capabilities.hashCode());
+        Object $channel = this.getChannel();
+        result = result * prime + ($channel == null ? 43 : $channel.hashCode());
+        Object $clusterID = this.getClusterID();
+        result = result * prime + ($clusterID == null ? 43 : $clusterID.hashCode());
+        Object $desiredUpdate = this.getDesiredUpdate();
+        result = result * prime + ($desiredUpdate == null ? 43 : $desiredUpdate.hashCode());
+        Object $overrides = this.getOverrides();
+        result = result * prime + ($overrides == null ? 43 : $overrides.hashCode());
+        Object $signatureStores = this.getSignatureStores();
+        result = result * prime + ($signatureStores == null ? 43 : $signatureStores.hashCode());
+        Object $upstream = this.getUpstream();
+        result = result * prime + ($upstream == null ? 43 : $upstream.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterVersionSpec(" + "capabilities=" + this.getCapabilities() + ", channel=" + this.getChannel() + ", clusterID=" + this.getClusterID() + ", desiredUpdate=" + this.getDesiredUpdate() + ", overrides=" + this.getOverrides() + ", signatureStores=" + this.getSignatureStores() + ", upstream=" + this.getUpstream() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

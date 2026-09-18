@@ -33,9 +33,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * StepState reports the results of running a step in a Task.
@@ -54,12 +51,6 @@ import lombok.experimental.Accessors;
     "terminated",
     "terminationReason",
     "waiting"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -331,6 +322,120 @@ public class StepState implements Editable<StepStateBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof StepState)) {
+            return false;
+        }
+        StepState other = (StepState) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$container = this.getContainer();
+        Object other$container = other.getContainer();
+        if (this$container == null ? other$container != null : !this$container.equals(other$container)) {
+            return false;
+        }
+        Object this$imageID = this.getImageID();
+        Object other$imageID = other.getImageID();
+        if (this$imageID == null ? other$imageID != null : !this$imageID.equals(other$imageID)) {
+            return false;
+        }
+        Object this$inputs = this.getInputs();
+        Object other$inputs = other.getInputs();
+        if (this$inputs == null ? other$inputs != null : !this$inputs.equals(other$inputs)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$outputs = this.getOutputs();
+        Object other$outputs = other.getOutputs();
+        if (this$outputs == null ? other$outputs != null : !this$outputs.equals(other$outputs)) {
+            return false;
+        }
+        Object this$provenance = this.getProvenance();
+        Object other$provenance = other.getProvenance();
+        if (this$provenance == null ? other$provenance != null : !this$provenance.equals(other$provenance)) {
+            return false;
+        }
+        Object this$results = this.getResults();
+        Object other$results = other.getResults();
+        if (this$results == null ? other$results != null : !this$results.equals(other$results)) {
+            return false;
+        }
+        Object this$running = this.getRunning();
+        Object other$running = other.getRunning();
+        if (this$running == null ? other$running != null : !this$running.equals(other$running)) {
+            return false;
+        }
+        Object this$terminated = this.getTerminated();
+        Object other$terminated = other.getTerminated();
+        if (this$terminated == null ? other$terminated != null : !this$terminated.equals(other$terminated)) {
+            return false;
+        }
+        Object this$terminationReason = this.getTerminationReason();
+        Object other$terminationReason = other.getTerminationReason();
+        if (this$terminationReason == null ? other$terminationReason != null : !this$terminationReason.equals(other$terminationReason)) {
+            return false;
+        }
+        Object this$waiting = this.getWaiting();
+        Object other$waiting = other.getWaiting();
+        if (this$waiting == null ? other$waiting != null : !this$waiting.equals(other$waiting)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof StepState;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $container = this.getContainer();
+        result = result * prime + ($container == null ? 43 : $container.hashCode());
+        Object $imageID = this.getImageID();
+        result = result * prime + ($imageID == null ? 43 : $imageID.hashCode());
+        Object $inputs = this.getInputs();
+        result = result * prime + ($inputs == null ? 43 : $inputs.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $outputs = this.getOutputs();
+        result = result * prime + ($outputs == null ? 43 : $outputs.hashCode());
+        Object $provenance = this.getProvenance();
+        result = result * prime + ($provenance == null ? 43 : $provenance.hashCode());
+        Object $results = this.getResults();
+        result = result * prime + ($results == null ? 43 : $results.hashCode());
+        Object $running = this.getRunning();
+        result = result * prime + ($running == null ? 43 : $running.hashCode());
+        Object $terminated = this.getTerminated();
+        result = result * prime + ($terminated == null ? 43 : $terminated.hashCode());
+        Object $terminationReason = this.getTerminationReason();
+        result = result * prime + ($terminationReason == null ? 43 : $terminationReason.hashCode());
+        Object $waiting = this.getWaiting();
+        result = result * prime + ($waiting == null ? 43 : $waiting.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "StepState(" + "container=" + this.getContainer() + ", imageID=" + this.getImageID() + ", inputs=" + this.getInputs() + ", name=" + this.getName() + ", outputs=" + this.getOutputs() + ", provenance=" + this.getProvenance() + ", results=" + this.getResults() + ", running=" + this.getRunning() + ", terminated=" + this.getTerminated() + ", terminationReason=" + this.getTerminationReason() + ", waiting=" + this.getWaiting() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

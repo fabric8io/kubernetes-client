@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MachinePool stores the configuration for a machine pool installed on ovirt.
@@ -51,12 +48,6 @@ import lombok.experimental.Accessors;
     "osDisk",
     "sparse",
     "vmType"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -324,6 +315,120 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachinePool)) {
+            return false;
+        }
+        MachinePool other = (MachinePool) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$affinityGroupsNames = this.getAffinityGroupsNames();
+        Object other$affinityGroupsNames = other.getAffinityGroupsNames();
+        if (this$affinityGroupsNames == null ? other$affinityGroupsNames != null : !this$affinityGroupsNames.equals(other$affinityGroupsNames)) {
+            return false;
+        }
+        Object this$autoPinningPolicy = this.getAutoPinningPolicy();
+        Object other$autoPinningPolicy = other.getAutoPinningPolicy();
+        if (this$autoPinningPolicy == null ? other$autoPinningPolicy != null : !this$autoPinningPolicy.equals(other$autoPinningPolicy)) {
+            return false;
+        }
+        Object this$clone = this.getClone();
+        Object other$clone = other.getClone();
+        if (this$clone == null ? other$clone != null : !this$clone.equals(other$clone)) {
+            return false;
+        }
+        Object this$cpu = this.getCpu();
+        Object other$cpu = other.getCpu();
+        if (this$cpu == null ? other$cpu != null : !this$cpu.equals(other$cpu)) {
+            return false;
+        }
+        Object this$format = this.getFormat();
+        Object other$format = other.getFormat();
+        if (this$format == null ? other$format != null : !this$format.equals(other$format)) {
+            return false;
+        }
+        Object this$hugepages = this.getHugepages();
+        Object other$hugepages = other.getHugepages();
+        if (this$hugepages == null ? other$hugepages != null : !this$hugepages.equals(other$hugepages)) {
+            return false;
+        }
+        Object this$instanceTypeID = this.getInstanceTypeID();
+        Object other$instanceTypeID = other.getInstanceTypeID();
+        if (this$instanceTypeID == null ? other$instanceTypeID != null : !this$instanceTypeID.equals(other$instanceTypeID)) {
+            return false;
+        }
+        Object this$memoryMB = this.getMemoryMB();
+        Object other$memoryMB = other.getMemoryMB();
+        if (this$memoryMB == null ? other$memoryMB != null : !this$memoryMB.equals(other$memoryMB)) {
+            return false;
+        }
+        Object this$osDisk = this.getOsDisk();
+        Object other$osDisk = other.getOsDisk();
+        if (this$osDisk == null ? other$osDisk != null : !this$osDisk.equals(other$osDisk)) {
+            return false;
+        }
+        Object this$sparse = this.getSparse();
+        Object other$sparse = other.getSparse();
+        if (this$sparse == null ? other$sparse != null : !this$sparse.equals(other$sparse)) {
+            return false;
+        }
+        Object this$vmType = this.getVmType();
+        Object other$vmType = other.getVmType();
+        if (this$vmType == null ? other$vmType != null : !this$vmType.equals(other$vmType)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachinePool;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $affinityGroupsNames = this.getAffinityGroupsNames();
+        result = result * prime + ($affinityGroupsNames == null ? 43 : $affinityGroupsNames.hashCode());
+        Object $autoPinningPolicy = this.getAutoPinningPolicy();
+        result = result * prime + ($autoPinningPolicy == null ? 43 : $autoPinningPolicy.hashCode());
+        Object $clone = this.getClone();
+        result = result * prime + ($clone == null ? 43 : $clone.hashCode());
+        Object $cpu = this.getCpu();
+        result = result * prime + ($cpu == null ? 43 : $cpu.hashCode());
+        Object $format = this.getFormat();
+        result = result * prime + ($format == null ? 43 : $format.hashCode());
+        Object $hugepages = this.getHugepages();
+        result = result * prime + ($hugepages == null ? 43 : $hugepages.hashCode());
+        Object $instanceTypeID = this.getInstanceTypeID();
+        result = result * prime + ($instanceTypeID == null ? 43 : $instanceTypeID.hashCode());
+        Object $memoryMB = this.getMemoryMB();
+        result = result * prime + ($memoryMB == null ? 43 : $memoryMB.hashCode());
+        Object $osDisk = this.getOsDisk();
+        result = result * prime + ($osDisk == null ? 43 : $osDisk.hashCode());
+        Object $sparse = this.getSparse();
+        result = result * prime + ($sparse == null ? 43 : $sparse.hashCode());
+        Object $vmType = this.getVmType();
+        result = result * prime + ($vmType == null ? 43 : $vmType.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachinePool(" + "affinityGroupsNames=" + this.getAffinityGroupsNames() + ", autoPinningPolicy=" + this.getAutoPinningPolicy() + ", clone=" + this.getClone() + ", cpu=" + this.getCpu() + ", format=" + this.getFormat() + ", hugepages=" + this.getHugepages() + ", instanceTypeID=" + this.getInstanceTypeID() + ", memoryMB=" + this.getMemoryMB() + ", osDisk=" + this.getOsDisk() + ", sparse=" + this.getSparse() + ", vmType=" + this.getVmType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

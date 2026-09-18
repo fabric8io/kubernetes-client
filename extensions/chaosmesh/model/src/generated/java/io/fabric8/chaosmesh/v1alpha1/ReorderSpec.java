@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ReorderSpec defines details of packet reorder.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "correlation",
     "gap",
     "reorder"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class ReorderSpec implements Editable<ReorderSpecBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ReorderSpec)) {
+            return false;
+        }
+        ReorderSpec other = (ReorderSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$correlation = this.getCorrelation();
+        Object other$correlation = other.getCorrelation();
+        if (this$correlation == null ? other$correlation != null : !this$correlation.equals(other$correlation)) {
+            return false;
+        }
+        Object this$gap = this.getGap();
+        Object other$gap = other.getGap();
+        if (this$gap == null ? other$gap != null : !this$gap.equals(other$gap)) {
+            return false;
+        }
+        Object this$reorder = this.getReorder();
+        Object other$reorder = other.getReorder();
+        if (this$reorder == null ? other$reorder != null : !this$reorder.equals(other$reorder)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ReorderSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $correlation = this.getCorrelation();
+        result = result * prime + ($correlation == null ? 43 : $correlation.hashCode());
+        Object $gap = this.getGap();
+        result = result * prime + ($gap == null ? 43 : $gap.hashCode());
+        Object $reorder = this.getReorder();
+        result = result * prime + ($reorder == null ? 43 : $reorder.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ReorderSpec(" + "correlation=" + this.getCorrelation() + ", gap=" + this.getGap() + ", reorder=" + this.getReorder() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

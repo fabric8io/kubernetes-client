@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VolumeSpec defines the specification of Volume, e.g. PVC.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "mountPath",
     "volumeClaim",
     "volumeClaimName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -161,6 +152,64 @@ public class VolumeSpec implements Editable<VolumeSpecBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VolumeSpec)) {
+            return false;
+        }
+        VolumeSpec other = (VolumeSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$mountPath = this.getMountPath();
+        Object other$mountPath = other.getMountPath();
+        if (this$mountPath == null ? other$mountPath != null : !this$mountPath.equals(other$mountPath)) {
+            return false;
+        }
+        Object this$volumeClaim = this.getVolumeClaim();
+        Object other$volumeClaim = other.getVolumeClaim();
+        if (this$volumeClaim == null ? other$volumeClaim != null : !this$volumeClaim.equals(other$volumeClaim)) {
+            return false;
+        }
+        Object this$volumeClaimName = this.getVolumeClaimName();
+        Object other$volumeClaimName = other.getVolumeClaimName();
+        if (this$volumeClaimName == null ? other$volumeClaimName != null : !this$volumeClaimName.equals(other$volumeClaimName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VolumeSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $mountPath = this.getMountPath();
+        result = result * prime + ($mountPath == null ? 43 : $mountPath.hashCode());
+        Object $volumeClaim = this.getVolumeClaim();
+        result = result * prime + ($volumeClaim == null ? 43 : $volumeClaim.hashCode());
+        Object $volumeClaimName = this.getVolumeClaimName();
+        result = result * prime + ($volumeClaimName == null ? 43 : $volumeClaimName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VolumeSpec(" + "mountPath=" + this.getMountPath() + ", volumeClaim=" + this.getVolumeClaim() + ", volumeClaimName=" + this.getVolumeClaimName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

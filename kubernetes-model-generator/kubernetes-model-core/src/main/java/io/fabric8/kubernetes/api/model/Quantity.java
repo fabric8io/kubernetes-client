@@ -30,8 +30,6 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.sundr.builder.annotations.Buildable;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -45,15 +43,9 @@ import java.util.function.BiFunction;
  * Quantity is fixed point representation of a number.
  * It provides convenient marshalling/unmarshalling in JSON or YAML,
  * in addition to String or getAmountInBytes accessors.
- *
  */
 @JsonDeserialize(using = Quantity.Deserializer.class)
 @JsonSerialize(using = Quantity.Serializer.class)
-@Setter
-@Accessors(prefix = {
-    "_",
-    ""
-})
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 public class Quantity implements Serializable, Comparable<Quantity> {
   private String amount;
@@ -63,7 +55,6 @@ public class Quantity implements Serializable, Comparable<Quantity> {
 
   /**
    * No args constructor for use in serialization
-   *
    */
   public Quantity() {
   }
@@ -136,7 +127,6 @@ public class Quantity implements Serializable, Comparable<Quantity> {
     } else if (quantity.getAmount() != null) {
       value = quantity.getAmount();
     }
-
     if (value == null || value.isEmpty()) {
       throw new IllegalArgumentException("Invalid quantity value passed to parse");
     }
@@ -144,13 +134,10 @@ public class Quantity implements Serializable, Comparable<Quantity> {
     if (!Character.isDigit(value.indexOf(0)) && value.startsWith(".")) {
       value = "0" + value;
     }
-
     Quantity amountFormatPair = parse(value);
     String formatStr = amountFormatPair.getFormat();
-
     BigDecimal digit = new BigDecimal(amountFormatPair.getAmount());
     BigDecimal multiple = getMultiple(formatStr);
-
     return digit.multiply(multiple);
   }
 
@@ -167,9 +154,7 @@ public class Quantity implements Serializable, Comparable<Quantity> {
     if (desiredFormat == null || desiredFormat.isEmpty()) {
       return new Quantity(amountInBytes.stripTrailingZeros().toPlainString());
     }
-
     BigDecimal scaledToDesiredFormat = amountInBytes.divide(getMultiple(desiredFormat), MathContext.DECIMAL64);
-
     return new Quantity(scaledToDesiredFormat.stripTrailingZeros().toPlainString(), desiredFormat);
   }
 
@@ -179,11 +164,9 @@ public class Quantity implements Serializable, Comparable<Quantity> {
       int exponent = Integer.parseInt(formatStr.substring(1));
       return new BigDecimal("10").pow(exponent, MathContext.DECIMAL64);
     }
-
     BigDecimal multiple = new BigDecimal("1");
     BigDecimal binaryFactor = new BigDecimal("2");
     BigDecimal decimalFactor = new BigDecimal("10");
-
     switch (formatStr) {
       case "Ki":
         multiple = binaryFactor.pow(10, MathContext.DECIMAL64);
@@ -256,11 +239,9 @@ public class Quantity implements Serializable, Comparable<Quantity> {
     if (this == o) {
       return true;
     }
-
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-
     Quantity quantity = (Quantity) o;
     return this.compareTo(quantity) == 0;
   }
@@ -294,7 +275,6 @@ public class Quantity implements Serializable, Comparable<Quantity> {
     if (quantityAsString == null || quantityAsString.isEmpty()) {
       throw new IllegalArgumentException("Invalid quantity string format passed.");
     }
-
     int unitIndex = indexOfUnit(quantityAsString);
     String amountStr = quantityAsString.substring(0, unitIndex);
     String formatStr = quantityAsString.substring(unitIndex);
@@ -346,7 +326,6 @@ public class Quantity implements Serializable, Comparable<Quantity> {
   }
 
   public static class Serializer extends JsonSerializer<Quantity> {
-
     @Override
     public void serialize(Quantity value, JsonGenerator jgen, SerializerProvider provider)
         throws IOException, JsonProcessingException {
@@ -366,7 +345,6 @@ public class Quantity implements Serializable, Comparable<Quantity> {
   }
 
   public static class Deserializer extends JsonDeserializer<Quantity> {
-
     @Override
     public Quantity deserialize(JsonParser jsonParser, DeserializationContext ctxt)
         throws IOException, JsonProcessingException {
@@ -382,13 +360,12 @@ public class Quantity implements Serializable, Comparable<Quantity> {
       }
       return quantity;
     }
-
   }
 
   /**
    * Add the provided quantity to the current value. If the current value is zero, the format of the quantity will be the format
    * of y.
-   * 
+   *
    * @param y to add
    * @return a new Quantity after y has been added
    */
@@ -400,7 +377,7 @@ public class Quantity implements Serializable, Comparable<Quantity> {
    * Subtract the provided quantity from the current value. If the current value is zero, the format of the quantity will be the
    * format
    * of y.
-   * 
+   *
    * @param y to subtract
    * @return a new Quantity after y has been subtracted
    */
@@ -430,4 +407,7 @@ public class Quantity implements Serializable, Comparable<Quantity> {
     return fromNumericalAmount(numericalAmount, format);
   }
 
+  public void setAdditionalProperties(final Map<String, Object> additionalProperties) {
+    this.additionalProperties = additionalProperties;
+  }
 }

@@ -34,9 +34,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DestinationRule defines policies that apply to traffic intended for a service after routing has occurred.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. For more information, see [Kubernetes API Conventions](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#metadata)" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "subsets",
     "trafficPolicy",
     "workloadSelector"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -212,6 +203,78 @@ public class DestinationRule implements Editable<DestinationRuleBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DestinationRule)) {
+            return false;
+        }
+        DestinationRule other = (DestinationRule) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$exportTo = this.getExportTo();
+        Object other$exportTo = other.getExportTo();
+        if (this$exportTo == null ? other$exportTo != null : !this$exportTo.equals(other$exportTo)) {
+            return false;
+        }
+        Object this$host = this.getHost();
+        Object other$host = other.getHost();
+        if (this$host == null ? other$host != null : !this$host.equals(other$host)) {
+            return false;
+        }
+        Object this$subsets = this.getSubsets();
+        Object other$subsets = other.getSubsets();
+        if (this$subsets == null ? other$subsets != null : !this$subsets.equals(other$subsets)) {
+            return false;
+        }
+        Object this$trafficPolicy = this.getTrafficPolicy();
+        Object other$trafficPolicy = other.getTrafficPolicy();
+        if (this$trafficPolicy == null ? other$trafficPolicy != null : !this$trafficPolicy.equals(other$trafficPolicy)) {
+            return false;
+        }
+        Object this$workloadSelector = this.getWorkloadSelector();
+        Object other$workloadSelector = other.getWorkloadSelector();
+        if (this$workloadSelector == null ? other$workloadSelector != null : !this$workloadSelector.equals(other$workloadSelector)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DestinationRule;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $exportTo = this.getExportTo();
+        result = result * prime + ($exportTo == null ? 43 : $exportTo.hashCode());
+        Object $host = this.getHost();
+        result = result * prime + ($host == null ? 43 : $host.hashCode());
+        Object $subsets = this.getSubsets();
+        result = result * prime + ($subsets == null ? 43 : $subsets.hashCode());
+        Object $trafficPolicy = this.getTrafficPolicy();
+        result = result * prime + ($trafficPolicy == null ? 43 : $trafficPolicy.hashCode());
+        Object $workloadSelector = this.getWorkloadSelector();
+        result = result * prime + ($workloadSelector == null ? 43 : $workloadSelector.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DestinationRule(" + "exportTo=" + this.getExportTo() + ", host=" + this.getHost() + ", subsets=" + this.getSubsets() + ", trafficPolicy=" + this.getTrafficPolicy() + ", workloadSelector=" + this.getWorkloadSelector() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

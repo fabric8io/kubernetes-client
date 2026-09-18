@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VolumeAttachmentSpec is the specification of a VolumeAttachment request.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "attacher",
     "nodeName",
     "source"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class VolumeAttachmentSpec implements Editable<VolumeAttachmentSpecBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VolumeAttachmentSpec)) {
+            return false;
+        }
+        VolumeAttachmentSpec other = (VolumeAttachmentSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$attacher = this.getAttacher();
+        Object other$attacher = other.getAttacher();
+        if (this$attacher == null ? other$attacher != null : !this$attacher.equals(other$attacher)) {
+            return false;
+        }
+        Object this$nodeName = this.getNodeName();
+        Object other$nodeName = other.getNodeName();
+        if (this$nodeName == null ? other$nodeName != null : !this$nodeName.equals(other$nodeName)) {
+            return false;
+        }
+        Object this$source = this.getSource();
+        Object other$source = other.getSource();
+        if (this$source == null ? other$source != null : !this$source.equals(other$source)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VolumeAttachmentSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $attacher = this.getAttacher();
+        result = result * prime + ($attacher == null ? 43 : $attacher.hashCode());
+        Object $nodeName = this.getNodeName();
+        result = result * prime + ($nodeName == null ? 43 : $nodeName.hashCode());
+        Object $source = this.getSource();
+        result = result * prime + ($source == null ? 43 : $source.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VolumeAttachmentSpec(" + "attacher=" + this.getAttacher() + ", nodeName=" + this.getNodeName() + ", source=" + this.getSource() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

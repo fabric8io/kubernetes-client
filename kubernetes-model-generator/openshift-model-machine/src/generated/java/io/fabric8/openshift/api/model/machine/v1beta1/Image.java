@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Image is a mirror of azure sdk compute.ImageReference
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "sku",
     "type",
     "version"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -219,6 +210,85 @@ public class Image implements Editable<ImageBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Image)) {
+            return false;
+        }
+        Image other = (Image) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$offer = this.getOffer();
+        Object other$offer = other.getOffer();
+        if (this$offer == null ? other$offer != null : !this$offer.equals(other$offer)) {
+            return false;
+        }
+        Object this$publisher = this.getPublisher();
+        Object other$publisher = other.getPublisher();
+        if (this$publisher == null ? other$publisher != null : !this$publisher.equals(other$publisher)) {
+            return false;
+        }
+        Object this$resourceID = this.getResourceID();
+        Object other$resourceID = other.getResourceID();
+        if (this$resourceID == null ? other$resourceID != null : !this$resourceID.equals(other$resourceID)) {
+            return false;
+        }
+        Object this$sku = this.getSku();
+        Object other$sku = other.getSku();
+        if (this$sku == null ? other$sku != null : !this$sku.equals(other$sku)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$version = this.getVersion();
+        Object other$version = other.getVersion();
+        if (this$version == null ? other$version != null : !this$version.equals(other$version)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Image;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $offer = this.getOffer();
+        result = result * prime + ($offer == null ? 43 : $offer.hashCode());
+        Object $publisher = this.getPublisher();
+        result = result * prime + ($publisher == null ? 43 : $publisher.hashCode());
+        Object $resourceID = this.getResourceID();
+        result = result * prime + ($resourceID == null ? 43 : $resourceID.hashCode());
+        Object $sku = this.getSku();
+        result = result * prime + ($sku == null ? 43 : $sku.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $version = this.getVersion();
+        result = result * prime + ($version == null ? 43 : $version.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Image(" + "offer=" + this.getOffer() + ", publisher=" + this.getPublisher() + ", resourceID=" + this.getResourceID() + ", sku=" + this.getSku() + ", type=" + this.getType() + ", version=" + this.getVersion() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -26,9 +26,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HTTPURLRewriteFilter defines a filter that modifies a request during forwarding. At most one of these filters may be used on a Route rule. This MUST NOT be used on the same Route rule as a HTTPRequestRedirect filter.<br><p> <br><p> Support: Extended
@@ -38,12 +35,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "hostname",
     "path"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -138,6 +129,57 @@ public class HTTPURLRewriteFilter implements Editable<HTTPURLRewriteFilterBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HTTPURLRewriteFilter)) {
+            return false;
+        }
+        HTTPURLRewriteFilter other = (HTTPURLRewriteFilter) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$hostname = this.getHostname();
+        Object other$hostname = other.getHostname();
+        if (this$hostname == null ? other$hostname != null : !this$hostname.equals(other$hostname)) {
+            return false;
+        }
+        Object this$path = this.getPath();
+        Object other$path = other.getPath();
+        if (this$path == null ? other$path != null : !this$path.equals(other$path)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HTTPURLRewriteFilter;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $hostname = this.getHostname();
+        result = result * prime + ($hostname == null ? 43 : $hostname.hashCode());
+        Object $path = this.getPath();
+        result = result * prime + ($path == null ? 43 : $path.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HTTPURLRewriteFilter(" + "hostname=" + this.getHostname() + ", path=" + this.getPath() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

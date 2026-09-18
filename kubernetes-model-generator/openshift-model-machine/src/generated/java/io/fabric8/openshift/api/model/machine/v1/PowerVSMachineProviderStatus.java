@@ -34,9 +34,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PowerVSMachineProviderStatus is the type that will be embedded in a Machine.Status.ProviderStatus field. It contains PowerVS-specific status information.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
@@ -50,12 +47,6 @@ import lombok.experimental.Accessors;
     "instanceId",
     "instanceState",
     "serviceInstanceID"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -230,6 +221,85 @@ public class PowerVSMachineProviderStatus implements Editable<PowerVSMachineProv
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PowerVSMachineProviderStatus)) {
+            return false;
+        }
+        PowerVSMachineProviderStatus other = (PowerVSMachineProviderStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$instanceId = this.getInstanceId();
+        Object other$instanceId = other.getInstanceId();
+        if (this$instanceId == null ? other$instanceId != null : !this$instanceId.equals(other$instanceId)) {
+            return false;
+        }
+        Object this$instanceState = this.getInstanceState();
+        Object other$instanceState = other.getInstanceState();
+        if (this$instanceState == null ? other$instanceState != null : !this$instanceState.equals(other$instanceState)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$serviceInstanceID = this.getServiceInstanceID();
+        Object other$serviceInstanceID = other.getServiceInstanceID();
+        if (this$serviceInstanceID == null ? other$serviceInstanceID != null : !this$serviceInstanceID.equals(other$serviceInstanceID)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PowerVSMachineProviderStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $instanceId = this.getInstanceId();
+        result = result * prime + ($instanceId == null ? 43 : $instanceId.hashCode());
+        Object $instanceState = this.getInstanceState();
+        result = result * prime + ($instanceState == null ? 43 : $instanceState.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $serviceInstanceID = this.getServiceInstanceID();
+        result = result * prime + ($serviceInstanceID == null ? 43 : $serviceInstanceID.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PowerVSMachineProviderStatus(" + "apiVersion=" + this.getApiVersion() + ", conditions=" + this.getConditions() + ", instanceId=" + this.getInstanceId() + ", instanceState=" + this.getInstanceState() + ", kind=" + this.getKind() + ", serviceInstanceID=" + this.getServiceInstanceID() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

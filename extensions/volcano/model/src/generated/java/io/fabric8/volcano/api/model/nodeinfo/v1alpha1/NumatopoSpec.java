@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NumatopoSpec defines the desired state of Numatopology
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "numares",
     "policies",
     "resReserved"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -188,6 +179,71 @@ public class NumatopoSpec implements Editable<NumatopoSpecBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NumatopoSpec)) {
+            return false;
+        }
+        NumatopoSpec other = (NumatopoSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cpuDetail = this.getCpuDetail();
+        Object other$cpuDetail = other.getCpuDetail();
+        if (this$cpuDetail == null ? other$cpuDetail != null : !this$cpuDetail.equals(other$cpuDetail)) {
+            return false;
+        }
+        Object this$numares = this.getNumares();
+        Object other$numares = other.getNumares();
+        if (this$numares == null ? other$numares != null : !this$numares.equals(other$numares)) {
+            return false;
+        }
+        Object this$policies = this.getPolicies();
+        Object other$policies = other.getPolicies();
+        if (this$policies == null ? other$policies != null : !this$policies.equals(other$policies)) {
+            return false;
+        }
+        Object this$resReserved = this.getResReserved();
+        Object other$resReserved = other.getResReserved();
+        if (this$resReserved == null ? other$resReserved != null : !this$resReserved.equals(other$resReserved)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NumatopoSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cpuDetail = this.getCpuDetail();
+        result = result * prime + ($cpuDetail == null ? 43 : $cpuDetail.hashCode());
+        Object $numares = this.getNumares();
+        result = result * prime + ($numares == null ? 43 : $numares.hashCode());
+        Object $policies = this.getPolicies();
+        result = result * prime + ($policies == null ? 43 : $policies.hashCode());
+        Object $resReserved = this.getResReserved();
+        result = result * prime + ($resReserved == null ? 43 : $resReserved.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NumatopoSpec(" + "cpuDetail=" + this.getCpuDetail() + ", numares=" + this.getNumares() + ", policies=" + this.getPolicies() + ", resReserved=" + this.getResReserved() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

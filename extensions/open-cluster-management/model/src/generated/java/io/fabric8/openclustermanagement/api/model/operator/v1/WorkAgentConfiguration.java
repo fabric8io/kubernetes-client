@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "kubeAPIBurst",
     "kubeAPIQPS",
     "statusSyncInterval"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -230,6 +221,92 @@ public class WorkAgentConfiguration implements Editable<WorkAgentConfigurationBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof WorkAgentConfiguration)) {
+            return false;
+        }
+        WorkAgentConfiguration other = (WorkAgentConfiguration) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$appliedManifestWorkEvictionGracePeriod = this.getAppliedManifestWorkEvictionGracePeriod();
+        Object other$appliedManifestWorkEvictionGracePeriod = other.getAppliedManifestWorkEvictionGracePeriod();
+        if (this$appliedManifestWorkEvictionGracePeriod == null ? other$appliedManifestWorkEvictionGracePeriod != null : !this$appliedManifestWorkEvictionGracePeriod.equals(other$appliedManifestWorkEvictionGracePeriod)) {
+            return false;
+        }
+        Object this$featureGates = this.getFeatureGates();
+        Object other$featureGates = other.getFeatureGates();
+        if (this$featureGates == null ? other$featureGates != null : !this$featureGates.equals(other$featureGates)) {
+            return false;
+        }
+        Object this$hubKubeAPIBurst = this.getHubKubeAPIBurst();
+        Object other$hubKubeAPIBurst = other.getHubKubeAPIBurst();
+        if (this$hubKubeAPIBurst == null ? other$hubKubeAPIBurst != null : !this$hubKubeAPIBurst.equals(other$hubKubeAPIBurst)) {
+            return false;
+        }
+        Object this$hubKubeAPIQPS = this.getHubKubeAPIQPS();
+        Object other$hubKubeAPIQPS = other.getHubKubeAPIQPS();
+        if (this$hubKubeAPIQPS == null ? other$hubKubeAPIQPS != null : !this$hubKubeAPIQPS.equals(other$hubKubeAPIQPS)) {
+            return false;
+        }
+        Object this$kubeAPIBurst = this.getKubeAPIBurst();
+        Object other$kubeAPIBurst = other.getKubeAPIBurst();
+        if (this$kubeAPIBurst == null ? other$kubeAPIBurst != null : !this$kubeAPIBurst.equals(other$kubeAPIBurst)) {
+            return false;
+        }
+        Object this$kubeAPIQPS = this.getKubeAPIQPS();
+        Object other$kubeAPIQPS = other.getKubeAPIQPS();
+        if (this$kubeAPIQPS == null ? other$kubeAPIQPS != null : !this$kubeAPIQPS.equals(other$kubeAPIQPS)) {
+            return false;
+        }
+        Object this$statusSyncInterval = this.getStatusSyncInterval();
+        Object other$statusSyncInterval = other.getStatusSyncInterval();
+        if (this$statusSyncInterval == null ? other$statusSyncInterval != null : !this$statusSyncInterval.equals(other$statusSyncInterval)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof WorkAgentConfiguration;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $appliedManifestWorkEvictionGracePeriod = this.getAppliedManifestWorkEvictionGracePeriod();
+        result = result * prime + ($appliedManifestWorkEvictionGracePeriod == null ? 43 : $appliedManifestWorkEvictionGracePeriod.hashCode());
+        Object $featureGates = this.getFeatureGates();
+        result = result * prime + ($featureGates == null ? 43 : $featureGates.hashCode());
+        Object $hubKubeAPIBurst = this.getHubKubeAPIBurst();
+        result = result * prime + ($hubKubeAPIBurst == null ? 43 : $hubKubeAPIBurst.hashCode());
+        Object $hubKubeAPIQPS = this.getHubKubeAPIQPS();
+        result = result * prime + ($hubKubeAPIQPS == null ? 43 : $hubKubeAPIQPS.hashCode());
+        Object $kubeAPIBurst = this.getKubeAPIBurst();
+        result = result * prime + ($kubeAPIBurst == null ? 43 : $kubeAPIBurst.hashCode());
+        Object $kubeAPIQPS = this.getKubeAPIQPS();
+        result = result * prime + ($kubeAPIQPS == null ? 43 : $kubeAPIQPS.hashCode());
+        Object $statusSyncInterval = this.getStatusSyncInterval();
+        result = result * prime + ($statusSyncInterval == null ? 43 : $statusSyncInterval.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WorkAgentConfiguration(" + "appliedManifestWorkEvictionGracePeriod=" + this.getAppliedManifestWorkEvictionGracePeriod() + ", featureGates=" + this.getFeatureGates() + ", hubKubeAPIBurst=" + this.getHubKubeAPIBurst() + ", hubKubeAPIQPS=" + this.getHubKubeAPIQPS() + ", kubeAPIBurst=" + this.getKubeAPIBurst() + ", kubeAPIQPS=" + this.getKubeAPIQPS() + ", statusSyncInterval=" + this.getStatusSyncInterval() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

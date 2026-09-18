@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ResourceFilter is a filter for resources from one particular driver.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "driverName",
     "namedResources"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class ResourceFilter implements Editable<ResourceFilterBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ResourceFilter)) {
+            return false;
+        }
+        ResourceFilter other = (ResourceFilter) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$driverName = this.getDriverName();
+        Object other$driverName = other.getDriverName();
+        if (this$driverName == null ? other$driverName != null : !this$driverName.equals(other$driverName)) {
+            return false;
+        }
+        Object this$namedResources = this.getNamedResources();
+        Object other$namedResources = other.getNamedResources();
+        if (this$namedResources == null ? other$namedResources != null : !this$namedResources.equals(other$namedResources)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ResourceFilter;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $driverName = this.getDriverName();
+        result = result * prime + ($driverName == null ? 43 : $driverName.hashCode());
+        Object $namedResources = this.getNamedResources();
+        result = result * prime + ($namedResources == null ? 43 : $namedResources.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ResourceFilter(" + "driverName=" + this.getDriverName() + ", namedResources=" + this.getNamedResources() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

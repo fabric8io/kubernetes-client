@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.config.v1.PowerVSServiceEndpoint;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Metadata contains Power VS metadata (e.g. for uninstalling the cluster).
@@ -52,12 +49,6 @@ import lombok.experimental.Accessors;
     "vpcName",
     "vpcRegion",
     "zone"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -325,6 +316,120 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Metadata)) {
+            return false;
+        }
+        Metadata other = (Metadata) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$baseDomain = this.getBaseDomain();
+        Object other$baseDomain = other.getBaseDomain();
+        if (this$baseDomain == null ? other$baseDomain != null : !this$baseDomain.equals(other$baseDomain)) {
+            return false;
+        }
+        Object this$cisInstanceCRN = this.getCisInstanceCRN();
+        Object other$cisInstanceCRN = other.getCisInstanceCRN();
+        if (this$cisInstanceCRN == null ? other$cisInstanceCRN != null : !this$cisInstanceCRN.equals(other$cisInstanceCRN)) {
+            return false;
+        }
+        Object this$dnsInstanceCRN = this.getDnsInstanceCRN();
+        Object other$dnsInstanceCRN = other.getDnsInstanceCRN();
+        if (this$dnsInstanceCRN == null ? other$dnsInstanceCRN != null : !this$dnsInstanceCRN.equals(other$dnsInstanceCRN)) {
+            return false;
+        }
+        Object this$powerVSResourceGroup = this.getPowerVSResourceGroup();
+        Object other$powerVSResourceGroup = other.getPowerVSResourceGroup();
+        if (this$powerVSResourceGroup == null ? other$powerVSResourceGroup != null : !this$powerVSResourceGroup.equals(other$powerVSResourceGroup)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$serviceEndpoints = this.getServiceEndpoints();
+        Object other$serviceEndpoints = other.getServiceEndpoints();
+        if (this$serviceEndpoints == null ? other$serviceEndpoints != null : !this$serviceEndpoints.equals(other$serviceEndpoints)) {
+            return false;
+        }
+        Object this$serviceInstanceGUID = this.getServiceInstanceGUID();
+        Object other$serviceInstanceGUID = other.getServiceInstanceGUID();
+        if (this$serviceInstanceGUID == null ? other$serviceInstanceGUID != null : !this$serviceInstanceGUID.equals(other$serviceInstanceGUID)) {
+            return false;
+        }
+        Object this$transitGatewayName = this.getTransitGatewayName();
+        Object other$transitGatewayName = other.getTransitGatewayName();
+        if (this$transitGatewayName == null ? other$transitGatewayName != null : !this$transitGatewayName.equals(other$transitGatewayName)) {
+            return false;
+        }
+        Object this$vpcName = this.getVpcName();
+        Object other$vpcName = other.getVpcName();
+        if (this$vpcName == null ? other$vpcName != null : !this$vpcName.equals(other$vpcName)) {
+            return false;
+        }
+        Object this$vpcRegion = this.getVpcRegion();
+        Object other$vpcRegion = other.getVpcRegion();
+        if (this$vpcRegion == null ? other$vpcRegion != null : !this$vpcRegion.equals(other$vpcRegion)) {
+            return false;
+        }
+        Object this$zone = this.getZone();
+        Object other$zone = other.getZone();
+        if (this$zone == null ? other$zone != null : !this$zone.equals(other$zone)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Metadata;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $baseDomain = this.getBaseDomain();
+        result = result * prime + ($baseDomain == null ? 43 : $baseDomain.hashCode());
+        Object $cisInstanceCRN = this.getCisInstanceCRN();
+        result = result * prime + ($cisInstanceCRN == null ? 43 : $cisInstanceCRN.hashCode());
+        Object $dnsInstanceCRN = this.getDnsInstanceCRN();
+        result = result * prime + ($dnsInstanceCRN == null ? 43 : $dnsInstanceCRN.hashCode());
+        Object $powerVSResourceGroup = this.getPowerVSResourceGroup();
+        result = result * prime + ($powerVSResourceGroup == null ? 43 : $powerVSResourceGroup.hashCode());
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $serviceEndpoints = this.getServiceEndpoints();
+        result = result * prime + ($serviceEndpoints == null ? 43 : $serviceEndpoints.hashCode());
+        Object $serviceInstanceGUID = this.getServiceInstanceGUID();
+        result = result * prime + ($serviceInstanceGUID == null ? 43 : $serviceInstanceGUID.hashCode());
+        Object $transitGatewayName = this.getTransitGatewayName();
+        result = result * prime + ($transitGatewayName == null ? 43 : $transitGatewayName.hashCode());
+        Object $vpcName = this.getVpcName();
+        result = result * prime + ($vpcName == null ? 43 : $vpcName.hashCode());
+        Object $vpcRegion = this.getVpcRegion();
+        result = result * prime + ($vpcRegion == null ? 43 : $vpcRegion.hashCode());
+        Object $zone = this.getZone();
+        result = result * prime + ($zone == null ? 43 : $zone.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Metadata(" + "baseDomain=" + this.getBaseDomain() + ", cisInstanceCRN=" + this.getCisInstanceCRN() + ", dnsInstanceCRN=" + this.getDnsInstanceCRN() + ", powerVSResourceGroup=" + this.getPowerVSResourceGroup() + ", region=" + this.getRegion() + ", serviceEndpoints=" + this.getServiceEndpoints() + ", serviceInstanceGUID=" + this.getServiceInstanceGUID() + ", transitGatewayName=" + this.getTransitGatewayName() + ", vpcName=" + this.getVpcName() + ", vpcRegion=" + this.getVpcRegion() + ", zone=" + this.getZone() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "failedProvisionConfig",
     "globalPullSecret",
     "maintenanceMode"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -197,6 +188,85 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HiveConfigSpec)) {
+            return false;
+        }
+        HiveConfigSpec other = (HiveConfigSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$additionalCertificateAuthorities = this.getAdditionalCertificateAuthorities();
+        Object other$additionalCertificateAuthorities = other.getAdditionalCertificateAuthorities();
+        if (this$additionalCertificateAuthorities == null ? other$additionalCertificateAuthorities != null : !this$additionalCertificateAuthorities.equals(other$additionalCertificateAuthorities)) {
+            return false;
+        }
+        Object this$backup = this.getBackup();
+        Object other$backup = other.getBackup();
+        if (this$backup == null ? other$backup != null : !this$backup.equals(other$backup)) {
+            return false;
+        }
+        Object this$externalDNS = this.getExternalDNS();
+        Object other$externalDNS = other.getExternalDNS();
+        if (this$externalDNS == null ? other$externalDNS != null : !this$externalDNS.equals(other$externalDNS)) {
+            return false;
+        }
+        Object this$failedProvisionConfig = this.getFailedProvisionConfig();
+        Object other$failedProvisionConfig = other.getFailedProvisionConfig();
+        if (this$failedProvisionConfig == null ? other$failedProvisionConfig != null : !this$failedProvisionConfig.equals(other$failedProvisionConfig)) {
+            return false;
+        }
+        Object this$globalPullSecret = this.getGlobalPullSecret();
+        Object other$globalPullSecret = other.getGlobalPullSecret();
+        if (this$globalPullSecret == null ? other$globalPullSecret != null : !this$globalPullSecret.equals(other$globalPullSecret)) {
+            return false;
+        }
+        Object this$maintenanceMode = this.getMaintenanceMode();
+        Object other$maintenanceMode = other.getMaintenanceMode();
+        if (this$maintenanceMode == null ? other$maintenanceMode != null : !this$maintenanceMode.equals(other$maintenanceMode)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HiveConfigSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $additionalCertificateAuthorities = this.getAdditionalCertificateAuthorities();
+        result = result * prime + ($additionalCertificateAuthorities == null ? 43 : $additionalCertificateAuthorities.hashCode());
+        Object $backup = this.getBackup();
+        result = result * prime + ($backup == null ? 43 : $backup.hashCode());
+        Object $externalDNS = this.getExternalDNS();
+        result = result * prime + ($externalDNS == null ? 43 : $externalDNS.hashCode());
+        Object $failedProvisionConfig = this.getFailedProvisionConfig();
+        result = result * prime + ($failedProvisionConfig == null ? 43 : $failedProvisionConfig.hashCode());
+        Object $globalPullSecret = this.getGlobalPullSecret();
+        result = result * prime + ($globalPullSecret == null ? 43 : $globalPullSecret.hashCode());
+        Object $maintenanceMode = this.getMaintenanceMode();
+        result = result * prime + ($maintenanceMode == null ? 43 : $maintenanceMode.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HiveConfigSpec(" + "additionalCertificateAuthorities=" + this.getAdditionalCertificateAuthorities() + ", backup=" + this.getBackup() + ", externalDNS=" + this.getExternalDNS() + ", failedProvisionConfig=" + this.getFailedProvisionConfig() + ", globalPullSecret=" + this.getGlobalPullSecret() + ", maintenanceMode=" + this.getMaintenanceMode() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

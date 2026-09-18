@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TimeoutFields allows granular specification of pipeline, task, and finally timeouts
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "finally",
     "pipeline",
     "tasks"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -161,6 +152,64 @@ public class TimeoutFields implements Editable<TimeoutFieldsBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TimeoutFields)) {
+            return false;
+        }
+        TimeoutFields other = (TimeoutFields) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$_finally = this.getFinally();
+        Object other$_finally = other.getFinally();
+        if (this$_finally == null ? other$_finally != null : !this$_finally.equals(other$_finally)) {
+            return false;
+        }
+        Object this$pipeline = this.getPipeline();
+        Object other$pipeline = other.getPipeline();
+        if (this$pipeline == null ? other$pipeline != null : !this$pipeline.equals(other$pipeline)) {
+            return false;
+        }
+        Object this$tasks = this.getTasks();
+        Object other$tasks = other.getTasks();
+        if (this$tasks == null ? other$tasks != null : !this$tasks.equals(other$tasks)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TimeoutFields;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $_finally = this.getFinally();
+        result = result * prime + ($_finally == null ? 43 : $_finally.hashCode());
+        Object $pipeline = this.getPipeline();
+        result = result * prime + ($pipeline == null ? 43 : $pipeline.hashCode());
+        Object $tasks = this.getTasks();
+        result = result * prime + ($tasks == null ? 43 : $tasks.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TimeoutFields(" + "_finally=" + this.getFinally() + ", pipeline=" + this.getPipeline() + ", tasks=" + this.getTasks() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "endpointsExposure",
     "featureGates",
     "imagePullSpec"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -163,6 +154,64 @@ public class ServerConfiguration implements Editable<ServerConfigurationBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ServerConfiguration)) {
+            return false;
+        }
+        ServerConfiguration other = (ServerConfiguration) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$endpointsExposure = this.getEndpointsExposure();
+        Object other$endpointsExposure = other.getEndpointsExposure();
+        if (this$endpointsExposure == null ? other$endpointsExposure != null : !this$endpointsExposure.equals(other$endpointsExposure)) {
+            return false;
+        }
+        Object this$featureGates = this.getFeatureGates();
+        Object other$featureGates = other.getFeatureGates();
+        if (this$featureGates == null ? other$featureGates != null : !this$featureGates.equals(other$featureGates)) {
+            return false;
+        }
+        Object this$imagePullSpec = this.getImagePullSpec();
+        Object other$imagePullSpec = other.getImagePullSpec();
+        if (this$imagePullSpec == null ? other$imagePullSpec != null : !this$imagePullSpec.equals(other$imagePullSpec)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ServerConfiguration;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $endpointsExposure = this.getEndpointsExposure();
+        result = result * prime + ($endpointsExposure == null ? 43 : $endpointsExposure.hashCode());
+        Object $featureGates = this.getFeatureGates();
+        result = result * prime + ($featureGates == null ? 43 : $featureGates.hashCode());
+        Object $imagePullSpec = this.getImagePullSpec();
+        result = result * prime + ($imagePullSpec == null ? 43 : $imagePullSpec.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ServerConfiguration(" + "endpointsExposure=" + this.getEndpointsExposure() + ", featureGates=" + this.getFeatureGates() + ", imagePullSpec=" + this.getImagePullSpec() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Image is an immutable representation of a container image and its metadata at a point in time. Images are named by taking a hash of their contents (metadata and content) and any change in format, content, or metadata results in a new name. The images resource is primarily for use by cluster administrators and integrations like the cluster image registry - end users, instead, access images via the imagestreamtags or imagestreamimages resources. While image metadata is stored in the API, any integration that implements the container image registry API must provide its own storage for the raw manifest data, image config, and layer contents.<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
@@ -54,12 +51,6 @@ import lombok.experimental.Accessors;
     "dockerImageReference",
     "dockerImageSignatures",
     "signatures"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -375,6 +366,134 @@ public class Image implements Editable<ImageBuilder>, HasMetadata
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Image)) {
+            return false;
+        }
+        Image other = (Image) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$dockerImageConfig = this.getDockerImageConfig();
+        Object other$dockerImageConfig = other.getDockerImageConfig();
+        if (this$dockerImageConfig == null ? other$dockerImageConfig != null : !this$dockerImageConfig.equals(other$dockerImageConfig)) {
+            return false;
+        }
+        Object this$dockerImageLayers = this.getDockerImageLayers();
+        Object other$dockerImageLayers = other.getDockerImageLayers();
+        if (this$dockerImageLayers == null ? other$dockerImageLayers != null : !this$dockerImageLayers.equals(other$dockerImageLayers)) {
+            return false;
+        }
+        Object this$dockerImageManifest = this.getDockerImageManifest();
+        Object other$dockerImageManifest = other.getDockerImageManifest();
+        if (this$dockerImageManifest == null ? other$dockerImageManifest != null : !this$dockerImageManifest.equals(other$dockerImageManifest)) {
+            return false;
+        }
+        Object this$dockerImageManifestMediaType = this.getDockerImageManifestMediaType();
+        Object other$dockerImageManifestMediaType = other.getDockerImageManifestMediaType();
+        if (this$dockerImageManifestMediaType == null ? other$dockerImageManifestMediaType != null : !this$dockerImageManifestMediaType.equals(other$dockerImageManifestMediaType)) {
+            return false;
+        }
+        Object this$dockerImageManifests = this.getDockerImageManifests();
+        Object other$dockerImageManifests = other.getDockerImageManifests();
+        if (this$dockerImageManifests == null ? other$dockerImageManifests != null : !this$dockerImageManifests.equals(other$dockerImageManifests)) {
+            return false;
+        }
+        Object this$dockerImageMetadata = this.getDockerImageMetadata();
+        Object other$dockerImageMetadata = other.getDockerImageMetadata();
+        if (this$dockerImageMetadata == null ? other$dockerImageMetadata != null : !this$dockerImageMetadata.equals(other$dockerImageMetadata)) {
+            return false;
+        }
+        Object this$dockerImageMetadataVersion = this.getDockerImageMetadataVersion();
+        Object other$dockerImageMetadataVersion = other.getDockerImageMetadataVersion();
+        if (this$dockerImageMetadataVersion == null ? other$dockerImageMetadataVersion != null : !this$dockerImageMetadataVersion.equals(other$dockerImageMetadataVersion)) {
+            return false;
+        }
+        Object this$dockerImageReference = this.getDockerImageReference();
+        Object other$dockerImageReference = other.getDockerImageReference();
+        if (this$dockerImageReference == null ? other$dockerImageReference != null : !this$dockerImageReference.equals(other$dockerImageReference)) {
+            return false;
+        }
+        Object this$dockerImageSignatures = this.getDockerImageSignatures();
+        Object other$dockerImageSignatures = other.getDockerImageSignatures();
+        if (this$dockerImageSignatures == null ? other$dockerImageSignatures != null : !this$dockerImageSignatures.equals(other$dockerImageSignatures)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$signatures = this.getSignatures();
+        Object other$signatures = other.getSignatures();
+        if (this$signatures == null ? other$signatures != null : !this$signatures.equals(other$signatures)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Image;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $dockerImageConfig = this.getDockerImageConfig();
+        result = result * prime + ($dockerImageConfig == null ? 43 : $dockerImageConfig.hashCode());
+        Object $dockerImageLayers = this.getDockerImageLayers();
+        result = result * prime + ($dockerImageLayers == null ? 43 : $dockerImageLayers.hashCode());
+        Object $dockerImageManifest = this.getDockerImageManifest();
+        result = result * prime + ($dockerImageManifest == null ? 43 : $dockerImageManifest.hashCode());
+        Object $dockerImageManifestMediaType = this.getDockerImageManifestMediaType();
+        result = result * prime + ($dockerImageManifestMediaType == null ? 43 : $dockerImageManifestMediaType.hashCode());
+        Object $dockerImageManifests = this.getDockerImageManifests();
+        result = result * prime + ($dockerImageManifests == null ? 43 : $dockerImageManifests.hashCode());
+        Object $dockerImageMetadata = this.getDockerImageMetadata();
+        result = result * prime + ($dockerImageMetadata == null ? 43 : $dockerImageMetadata.hashCode());
+        Object $dockerImageMetadataVersion = this.getDockerImageMetadataVersion();
+        result = result * prime + ($dockerImageMetadataVersion == null ? 43 : $dockerImageMetadataVersion.hashCode());
+        Object $dockerImageReference = this.getDockerImageReference();
+        result = result * prime + ($dockerImageReference == null ? 43 : $dockerImageReference.hashCode());
+        Object $dockerImageSignatures = this.getDockerImageSignatures();
+        result = result * prime + ($dockerImageSignatures == null ? 43 : $dockerImageSignatures.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $signatures = this.getSignatures();
+        result = result * prime + ($signatures == null ? 43 : $signatures.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Image(" + "apiVersion=" + this.getApiVersion() + ", dockerImageConfig=" + this.getDockerImageConfig() + ", dockerImageLayers=" + this.getDockerImageLayers() + ", dockerImageManifest=" + this.getDockerImageManifest() + ", dockerImageManifestMediaType=" + this.getDockerImageManifestMediaType() + ", dockerImageManifests=" + this.getDockerImageManifests() + ", dockerImageMetadata=" + this.getDockerImageMetadata() + ", dockerImageMetadataVersion=" + this.getDockerImageMetadataVersion() + ", dockerImageReference=" + this.getDockerImageReference() + ", dockerImageSignatures=" + this.getDockerImageSignatures() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata() + ", signatures=" + this.getSignatures() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

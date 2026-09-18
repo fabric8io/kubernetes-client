@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RuntimeClass defines a class of container runtime supported in the cluster. The RuntimeClass is used to determine which container runtime is used to run all containers in a pod. RuntimeClasses are (currently) manually defined by a user or cluster provisioner, and referenced in the PodSpec. The Kubelet is responsible for resolving the RuntimeClassName reference before running the pod.  For more details, see https://git.k8s.io/enhancements/keps/sig-node/runtime-class.md
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "handler",
     "overhead",
     "scheduling"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -224,6 +215,85 @@ public class RuntimeClass implements Editable<RuntimeClassBuilder>, HasMetadata
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RuntimeClass)) {
+            return false;
+        }
+        RuntimeClass other = (RuntimeClass) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$handler = this.getHandler();
+        Object other$handler = other.getHandler();
+        if (this$handler == null ? other$handler != null : !this$handler.equals(other$handler)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$overhead = this.getOverhead();
+        Object other$overhead = other.getOverhead();
+        if (this$overhead == null ? other$overhead != null : !this$overhead.equals(other$overhead)) {
+            return false;
+        }
+        Object this$scheduling = this.getScheduling();
+        Object other$scheduling = other.getScheduling();
+        if (this$scheduling == null ? other$scheduling != null : !this$scheduling.equals(other$scheduling)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RuntimeClass;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $handler = this.getHandler();
+        result = result * prime + ($handler == null ? 43 : $handler.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $overhead = this.getOverhead();
+        result = result * prime + ($overhead == null ? 43 : $overhead.hashCode());
+        Object $scheduling = this.getScheduling();
+        result = result * prime + ($scheduling == null ? 43 : $scheduling.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RuntimeClass(" + "apiVersion=" + this.getApiVersion() + ", handler=" + this.getHandler() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata() + ", overhead=" + this.getOverhead() + ", scheduling=" + this.getScheduling() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

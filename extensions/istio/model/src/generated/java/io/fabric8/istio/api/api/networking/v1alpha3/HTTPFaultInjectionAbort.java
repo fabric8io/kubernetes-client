@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Abort specification is used to prematurely abort a request with a pre-specified error code. The following example will return an HTTP 400 error code for 1 out of every 1000 requests to the "ratings" service "v1".<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- route:<br><p> 	  - destination:<br><p> 	      host: ratings.prod.svc.cluster.local<br><p> 	      subset: v1<br><p> 	  fault:<br><p> 	    abort:<br><p> 	      percentage:<br><p> 	        value: 0.1<br><p> 	      httpStatus: 400<br><p> <br><p> ```<br><p> <br><p> The _httpStatus_ field is used to indicate the HTTP status code to return to the caller. The optional _percentage_ field can be used to only abort a certain percentage of requests. If not specified, no request will be aborted.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "ErrorType",
     "percentage"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -143,6 +134,57 @@ public class HTTPFaultInjectionAbort implements Editable<HTTPFaultInjectionAbort
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HTTPFaultInjectionAbort)) {
+            return false;
+        }
+        HTTPFaultInjectionAbort other = (HTTPFaultInjectionAbort) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$errorType = this.getErrorType();
+        Object other$errorType = other.getErrorType();
+        if (this$errorType == null ? other$errorType != null : !this$errorType.equals(other$errorType)) {
+            return false;
+        }
+        Object this$percentage = this.getPercentage();
+        Object other$percentage = other.getPercentage();
+        if (this$percentage == null ? other$percentage != null : !this$percentage.equals(other$percentage)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HTTPFaultInjectionAbort;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $errorType = this.getErrorType();
+        result = result * prime + ($errorType == null ? 43 : $errorType.hashCode());
+        Object $percentage = this.getPercentage();
+        result = result * prime + ($percentage == null ? 43 : $percentage.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HTTPFaultInjectionAbort(" + "errorType=" + this.getErrorType() + ", percentage=" + this.getPercentage() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

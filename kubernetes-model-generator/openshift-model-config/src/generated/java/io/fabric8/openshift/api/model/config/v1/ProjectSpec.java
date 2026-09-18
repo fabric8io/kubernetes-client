@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ProjectSpec holds the project creation configuration.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "projectRequestMessage",
     "projectRequestTemplate"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -139,6 +130,57 @@ public class ProjectSpec implements Editable<ProjectSpecBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ProjectSpec)) {
+            return false;
+        }
+        ProjectSpec other = (ProjectSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$projectRequestMessage = this.getProjectRequestMessage();
+        Object other$projectRequestMessage = other.getProjectRequestMessage();
+        if (this$projectRequestMessage == null ? other$projectRequestMessage != null : !this$projectRequestMessage.equals(other$projectRequestMessage)) {
+            return false;
+        }
+        Object this$projectRequestTemplate = this.getProjectRequestTemplate();
+        Object other$projectRequestTemplate = other.getProjectRequestTemplate();
+        if (this$projectRequestTemplate == null ? other$projectRequestTemplate != null : !this$projectRequestTemplate.equals(other$projectRequestTemplate)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ProjectSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $projectRequestMessage = this.getProjectRequestMessage();
+        result = result * prime + ($projectRequestMessage == null ? 43 : $projectRequestMessage.hashCode());
+        Object $projectRequestTemplate = this.getProjectRequestTemplate();
+        result = result * prime + ($projectRequestTemplate == null ? 43 : $projectRequestTemplate.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ProjectSpec(" + "projectRequestMessage=" + this.getProjectRequestMessage() + ", projectRequestTemplate=" + this.getProjectRequestTemplate() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

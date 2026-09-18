@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PodHttpChaosReplaceActions defines possible replace-actions of HttpChaos.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "method",
     "path",
     "queries"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -224,6 +215,85 @@ public class PodHttpChaosReplaceActions implements Editable<PodHttpChaosReplaceA
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodHttpChaosReplaceActions)) {
+            return false;
+        }
+        PodHttpChaosReplaceActions other = (PodHttpChaosReplaceActions) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$body = this.getBody();
+        Object other$body = other.getBody();
+        if (this$body == null ? other$body != null : !this$body.equals(other$body)) {
+            return false;
+        }
+        Object this$code = this.getCode();
+        Object other$code = other.getCode();
+        if (this$code == null ? other$code != null : !this$code.equals(other$code)) {
+            return false;
+        }
+        Object this$headers = this.getHeaders();
+        Object other$headers = other.getHeaders();
+        if (this$headers == null ? other$headers != null : !this$headers.equals(other$headers)) {
+            return false;
+        }
+        Object this$method = this.getMethod();
+        Object other$method = other.getMethod();
+        if (this$method == null ? other$method != null : !this$method.equals(other$method)) {
+            return false;
+        }
+        Object this$path = this.getPath();
+        Object other$path = other.getPath();
+        if (this$path == null ? other$path != null : !this$path.equals(other$path)) {
+            return false;
+        }
+        Object this$queries = this.getQueries();
+        Object other$queries = other.getQueries();
+        if (this$queries == null ? other$queries != null : !this$queries.equals(other$queries)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodHttpChaosReplaceActions;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $body = this.getBody();
+        result = result * prime + ($body == null ? 43 : $body.hashCode());
+        Object $code = this.getCode();
+        result = result * prime + ($code == null ? 43 : $code.hashCode());
+        Object $headers = this.getHeaders();
+        result = result * prime + ($headers == null ? 43 : $headers.hashCode());
+        Object $method = this.getMethod();
+        result = result * prime + ($method == null ? 43 : $method.hashCode());
+        Object $path = this.getPath();
+        result = result * prime + ($path == null ? 43 : $path.hashCode());
+        Object $queries = this.getQueries();
+        result = result * prime + ($queries == null ? 43 : $queries.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodHttpChaosReplaceActions(" + "body=" + this.getBody() + ", code=" + this.getCode() + ", headers=" + this.getHeaders() + ", method=" + this.getMethod() + ", path=" + this.getPath() + ", queries=" + this.getQueries() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

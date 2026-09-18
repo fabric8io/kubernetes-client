@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * IngressClassSpec provides information about the class of an Ingress.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "controller",
     "parameters"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class IngressClassSpec implements Editable<IngressClassSpecBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof IngressClassSpec)) {
+            return false;
+        }
+        IngressClassSpec other = (IngressClassSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$controller = this.getController();
+        Object other$controller = other.getController();
+        if (this$controller == null ? other$controller != null : !this$controller.equals(other$controller)) {
+            return false;
+        }
+        Object this$parameters = this.getParameters();
+        Object other$parameters = other.getParameters();
+        if (this$parameters == null ? other$parameters != null : !this$parameters.equals(other$parameters)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof IngressClassSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $controller = this.getController();
+        result = result * prime + ($controller == null ? 43 : $controller.hashCode());
+        Object $parameters = this.getParameters();
+        result = result * prime + ($parameters == null ? 43 : $parameters.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IngressClassSpec(" + "controller=" + this.getController() + ", parameters=" + this.getParameters() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

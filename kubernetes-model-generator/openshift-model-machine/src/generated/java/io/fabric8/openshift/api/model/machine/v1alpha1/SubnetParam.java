@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "portSecurity",
     "portTags",
     "uuid"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -175,6 +166,71 @@ public class SubnetParam implements Editable<SubnetParamBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SubnetParam)) {
+            return false;
+        }
+        SubnetParam other = (SubnetParam) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$filter = this.getFilter();
+        Object other$filter = other.getFilter();
+        if (this$filter == null ? other$filter != null : !this$filter.equals(other$filter)) {
+            return false;
+        }
+        Object this$portSecurity = this.getPortSecurity();
+        Object other$portSecurity = other.getPortSecurity();
+        if (this$portSecurity == null ? other$portSecurity != null : !this$portSecurity.equals(other$portSecurity)) {
+            return false;
+        }
+        Object this$portTags = this.getPortTags();
+        Object other$portTags = other.getPortTags();
+        if (this$portTags == null ? other$portTags != null : !this$portTags.equals(other$portTags)) {
+            return false;
+        }
+        Object this$uuid = this.getUuid();
+        Object other$uuid = other.getUuid();
+        if (this$uuid == null ? other$uuid != null : !this$uuid.equals(other$uuid)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SubnetParam;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $filter = this.getFilter();
+        result = result * prime + ($filter == null ? 43 : $filter.hashCode());
+        Object $portSecurity = this.getPortSecurity();
+        result = result * prime + ($portSecurity == null ? 43 : $portSecurity.hashCode());
+        Object $portTags = this.getPortTags();
+        result = result * prime + ($portTags == null ? 43 : $portTags.hashCode());
+        Object $uuid = this.getUuid();
+        result = result * prime + ($uuid == null ? 43 : $uuid.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SubnetParam(" + "filter=" + this.getFilter() + ", portSecurity=" + this.getPortSecurity() + ", portTags=" + this.getPortTags() + ", uuid=" + this.getUuid() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

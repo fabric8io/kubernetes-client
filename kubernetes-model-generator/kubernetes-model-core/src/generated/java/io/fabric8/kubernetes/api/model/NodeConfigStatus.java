@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NodeConfigStatus describes the status of the config assigned by Node.Spec.ConfigSource.
@@ -27,12 +24,6 @@ import lombok.experimental.Accessors;
     "assigned",
     "error",
     "lastKnownGood"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -151,6 +142,71 @@ public class NodeConfigStatus implements Editable<NodeConfigStatusBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NodeConfigStatus)) {
+            return false;
+        }
+        NodeConfigStatus other = (NodeConfigStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$active = this.getActive();
+        Object other$active = other.getActive();
+        if (this$active == null ? other$active != null : !this$active.equals(other$active)) {
+            return false;
+        }
+        Object this$assigned = this.getAssigned();
+        Object other$assigned = other.getAssigned();
+        if (this$assigned == null ? other$assigned != null : !this$assigned.equals(other$assigned)) {
+            return false;
+        }
+        Object this$error = this.getError();
+        Object other$error = other.getError();
+        if (this$error == null ? other$error != null : !this$error.equals(other$error)) {
+            return false;
+        }
+        Object this$lastKnownGood = this.getLastKnownGood();
+        Object other$lastKnownGood = other.getLastKnownGood();
+        if (this$lastKnownGood == null ? other$lastKnownGood != null : !this$lastKnownGood.equals(other$lastKnownGood)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NodeConfigStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $active = this.getActive();
+        result = result * prime + ($active == null ? 43 : $active.hashCode());
+        Object $assigned = this.getAssigned();
+        result = result * prime + ($assigned == null ? 43 : $assigned.hashCode());
+        Object $error = this.getError();
+        result = result * prime + ($error == null ? 43 : $error.hashCode());
+        Object $lastKnownGood = this.getLastKnownGood();
+        result = result * prime + ($lastKnownGood == null ? 43 : $lastKnownGood.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NodeConfigStatus(" + "active=" + this.getActive() + ", assigned=" + this.getAssigned() + ", error=" + this.getError() + ", lastKnownGood=" + this.getLastKnownGood() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

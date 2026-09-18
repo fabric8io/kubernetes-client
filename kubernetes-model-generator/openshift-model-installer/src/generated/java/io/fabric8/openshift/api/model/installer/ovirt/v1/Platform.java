@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.config.v1.OvirtPlatformLoadBalancer;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Platform stores all the global configuration that all machinesets use.
@@ -52,12 +49,6 @@ import lombok.experimental.Accessors;
     "ovirt_network_name",
     "ovirt_storage_domain_id",
     "vnicProfileID"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -329,6 +320,120 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Platform)) {
+            return false;
+        }
+        Platform other = (Platform) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$affinityGroups = this.getAffinityGroups();
+        Object other$affinityGroups = other.getAffinityGroups();
+        if (this$affinityGroups == null ? other$affinityGroups != null : !this$affinityGroups.equals(other$affinityGroups)) {
+            return false;
+        }
+        Object this$apiVip = this.getApiVip();
+        Object other$apiVip = other.getApiVip();
+        if (this$apiVip == null ? other$apiVip != null : !this$apiVip.equals(other$apiVip)) {
+            return false;
+        }
+        Object this$apiVips = this.getApiVips();
+        Object other$apiVips = other.getApiVips();
+        if (this$apiVips == null ? other$apiVips != null : !this$apiVips.equals(other$apiVips)) {
+            return false;
+        }
+        Object this$defaultMachinePlatform = this.getDefaultMachinePlatform();
+        Object other$defaultMachinePlatform = other.getDefaultMachinePlatform();
+        if (this$defaultMachinePlatform == null ? other$defaultMachinePlatform != null : !this$defaultMachinePlatform.equals(other$defaultMachinePlatform)) {
+            return false;
+        }
+        Object this$ingressVip = this.getIngressVip();
+        Object other$ingressVip = other.getIngressVip();
+        if (this$ingressVip == null ? other$ingressVip != null : !this$ingressVip.equals(other$ingressVip)) {
+            return false;
+        }
+        Object this$ingressVips = this.getIngressVips();
+        Object other$ingressVips = other.getIngressVips();
+        if (this$ingressVips == null ? other$ingressVips != null : !this$ingressVips.equals(other$ingressVips)) {
+            return false;
+        }
+        Object this$loadBalancer = this.getLoadBalancer();
+        Object other$loadBalancer = other.getLoadBalancer();
+        if (this$loadBalancer == null ? other$loadBalancer != null : !this$loadBalancer.equals(other$loadBalancer)) {
+            return false;
+        }
+        Object this$ovirtClusterId = this.getOvirtClusterId();
+        Object other$ovirtClusterId = other.getOvirtClusterId();
+        if (this$ovirtClusterId == null ? other$ovirtClusterId != null : !this$ovirtClusterId.equals(other$ovirtClusterId)) {
+            return false;
+        }
+        Object this$ovirtNetworkName = this.getOvirtNetworkName();
+        Object other$ovirtNetworkName = other.getOvirtNetworkName();
+        if (this$ovirtNetworkName == null ? other$ovirtNetworkName != null : !this$ovirtNetworkName.equals(other$ovirtNetworkName)) {
+            return false;
+        }
+        Object this$ovirtStorageDomainId = this.getOvirtStorageDomainId();
+        Object other$ovirtStorageDomainId = other.getOvirtStorageDomainId();
+        if (this$ovirtStorageDomainId == null ? other$ovirtStorageDomainId != null : !this$ovirtStorageDomainId.equals(other$ovirtStorageDomainId)) {
+            return false;
+        }
+        Object this$vnicProfileID = this.getVnicProfileID();
+        Object other$vnicProfileID = other.getVnicProfileID();
+        if (this$vnicProfileID == null ? other$vnicProfileID != null : !this$vnicProfileID.equals(other$vnicProfileID)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Platform;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $affinityGroups = this.getAffinityGroups();
+        result = result * prime + ($affinityGroups == null ? 43 : $affinityGroups.hashCode());
+        Object $apiVip = this.getApiVip();
+        result = result * prime + ($apiVip == null ? 43 : $apiVip.hashCode());
+        Object $apiVips = this.getApiVips();
+        result = result * prime + ($apiVips == null ? 43 : $apiVips.hashCode());
+        Object $defaultMachinePlatform = this.getDefaultMachinePlatform();
+        result = result * prime + ($defaultMachinePlatform == null ? 43 : $defaultMachinePlatform.hashCode());
+        Object $ingressVip = this.getIngressVip();
+        result = result * prime + ($ingressVip == null ? 43 : $ingressVip.hashCode());
+        Object $ingressVips = this.getIngressVips();
+        result = result * prime + ($ingressVips == null ? 43 : $ingressVips.hashCode());
+        Object $loadBalancer = this.getLoadBalancer();
+        result = result * prime + ($loadBalancer == null ? 43 : $loadBalancer.hashCode());
+        Object $ovirtClusterId = this.getOvirtClusterId();
+        result = result * prime + ($ovirtClusterId == null ? 43 : $ovirtClusterId.hashCode());
+        Object $ovirtNetworkName = this.getOvirtNetworkName();
+        result = result * prime + ($ovirtNetworkName == null ? 43 : $ovirtNetworkName.hashCode());
+        Object $ovirtStorageDomainId = this.getOvirtStorageDomainId();
+        result = result * prime + ($ovirtStorageDomainId == null ? 43 : $ovirtStorageDomainId.hashCode());
+        Object $vnicProfileID = this.getVnicProfileID();
+        result = result * prime + ($vnicProfileID == null ? 43 : $vnicProfileID.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Platform(" + "affinityGroups=" + this.getAffinityGroups() + ", apiVip=" + this.getApiVip() + ", apiVips=" + this.getApiVips() + ", defaultMachinePlatform=" + this.getDefaultMachinePlatform() + ", ingressVip=" + this.getIngressVip() + ", ingressVips=" + this.getIngressVips() + ", loadBalancer=" + this.getLoadBalancer() + ", ovirtClusterId=" + this.getOvirtClusterId() + ", ovirtNetworkName=" + this.getOvirtNetworkName() + ", ovirtStorageDomainId=" + this.getOvirtStorageDomainId() + ", vnicProfileID=" + this.getVnicProfileID() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

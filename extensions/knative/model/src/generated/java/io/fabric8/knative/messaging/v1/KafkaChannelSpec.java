@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * KafkaChannelSpec defines the specification for a KafkaChannel.
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "replicationFactor",
     "retentionDuration",
     "subscribers"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -206,6 +197,78 @@ public class KafkaChannelSpec implements Editable<KafkaChannelSpecBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof KafkaChannelSpec)) {
+            return false;
+        }
+        KafkaChannelSpec other = (KafkaChannelSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$delivery = this.getDelivery();
+        Object other$delivery = other.getDelivery();
+        if (this$delivery == null ? other$delivery != null : !this$delivery.equals(other$delivery)) {
+            return false;
+        }
+        Object this$numPartitions = this.getNumPartitions();
+        Object other$numPartitions = other.getNumPartitions();
+        if (this$numPartitions == null ? other$numPartitions != null : !this$numPartitions.equals(other$numPartitions)) {
+            return false;
+        }
+        Object this$replicationFactor = this.getReplicationFactor();
+        Object other$replicationFactor = other.getReplicationFactor();
+        if (this$replicationFactor == null ? other$replicationFactor != null : !this$replicationFactor.equals(other$replicationFactor)) {
+            return false;
+        }
+        Object this$retentionDuration = this.getRetentionDuration();
+        Object other$retentionDuration = other.getRetentionDuration();
+        if (this$retentionDuration == null ? other$retentionDuration != null : !this$retentionDuration.equals(other$retentionDuration)) {
+            return false;
+        }
+        Object this$subscribers = this.getSubscribers();
+        Object other$subscribers = other.getSubscribers();
+        if (this$subscribers == null ? other$subscribers != null : !this$subscribers.equals(other$subscribers)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof KafkaChannelSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $delivery = this.getDelivery();
+        result = result * prime + ($delivery == null ? 43 : $delivery.hashCode());
+        Object $numPartitions = this.getNumPartitions();
+        result = result * prime + ($numPartitions == null ? 43 : $numPartitions.hashCode());
+        Object $replicationFactor = this.getReplicationFactor();
+        result = result * prime + ($replicationFactor == null ? 43 : $replicationFactor.hashCode());
+        Object $retentionDuration = this.getRetentionDuration();
+        result = result * prime + ($retentionDuration == null ? 43 : $retentionDuration.hashCode());
+        Object $subscribers = this.getSubscribers();
+        result = result * prime + ($subscribers == null ? 43 : $subscribers.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "KafkaChannelSpec(" + "delivery=" + this.getDelivery() + ", numPartitions=" + this.getNumPartitions() + ", replicationFactor=" + this.getReplicationFactor() + ", retentionDuration=" + this.getRetentionDuration() + ", subscribers=" + this.getSubscribers() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

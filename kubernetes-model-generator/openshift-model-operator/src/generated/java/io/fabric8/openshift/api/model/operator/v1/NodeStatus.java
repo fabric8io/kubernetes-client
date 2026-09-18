@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NodeStatus provides information about the current state of a particular node managed by this operator.
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "lastFallbackCount",
     "nodeName",
     "targetRevision"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -284,6 +275,106 @@ public class NodeStatus implements Editable<NodeStatusBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NodeStatus)) {
+            return false;
+        }
+        NodeStatus other = (NodeStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$currentRevision = this.getCurrentRevision();
+        Object other$currentRevision = other.getCurrentRevision();
+        if (this$currentRevision == null ? other$currentRevision != null : !this$currentRevision.equals(other$currentRevision)) {
+            return false;
+        }
+        Object this$lastFailedCount = this.getLastFailedCount();
+        Object other$lastFailedCount = other.getLastFailedCount();
+        if (this$lastFailedCount == null ? other$lastFailedCount != null : !this$lastFailedCount.equals(other$lastFailedCount)) {
+            return false;
+        }
+        Object this$lastFailedReason = this.getLastFailedReason();
+        Object other$lastFailedReason = other.getLastFailedReason();
+        if (this$lastFailedReason == null ? other$lastFailedReason != null : !this$lastFailedReason.equals(other$lastFailedReason)) {
+            return false;
+        }
+        Object this$lastFailedRevision = this.getLastFailedRevision();
+        Object other$lastFailedRevision = other.getLastFailedRevision();
+        if (this$lastFailedRevision == null ? other$lastFailedRevision != null : !this$lastFailedRevision.equals(other$lastFailedRevision)) {
+            return false;
+        }
+        Object this$lastFailedRevisionErrors = this.getLastFailedRevisionErrors();
+        Object other$lastFailedRevisionErrors = other.getLastFailedRevisionErrors();
+        if (this$lastFailedRevisionErrors == null ? other$lastFailedRevisionErrors != null : !this$lastFailedRevisionErrors.equals(other$lastFailedRevisionErrors)) {
+            return false;
+        }
+        Object this$lastFailedTime = this.getLastFailedTime();
+        Object other$lastFailedTime = other.getLastFailedTime();
+        if (this$lastFailedTime == null ? other$lastFailedTime != null : !this$lastFailedTime.equals(other$lastFailedTime)) {
+            return false;
+        }
+        Object this$lastFallbackCount = this.getLastFallbackCount();
+        Object other$lastFallbackCount = other.getLastFallbackCount();
+        if (this$lastFallbackCount == null ? other$lastFallbackCount != null : !this$lastFallbackCount.equals(other$lastFallbackCount)) {
+            return false;
+        }
+        Object this$nodeName = this.getNodeName();
+        Object other$nodeName = other.getNodeName();
+        if (this$nodeName == null ? other$nodeName != null : !this$nodeName.equals(other$nodeName)) {
+            return false;
+        }
+        Object this$targetRevision = this.getTargetRevision();
+        Object other$targetRevision = other.getTargetRevision();
+        if (this$targetRevision == null ? other$targetRevision != null : !this$targetRevision.equals(other$targetRevision)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NodeStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $currentRevision = this.getCurrentRevision();
+        result = result * prime + ($currentRevision == null ? 43 : $currentRevision.hashCode());
+        Object $lastFailedCount = this.getLastFailedCount();
+        result = result * prime + ($lastFailedCount == null ? 43 : $lastFailedCount.hashCode());
+        Object $lastFailedReason = this.getLastFailedReason();
+        result = result * prime + ($lastFailedReason == null ? 43 : $lastFailedReason.hashCode());
+        Object $lastFailedRevision = this.getLastFailedRevision();
+        result = result * prime + ($lastFailedRevision == null ? 43 : $lastFailedRevision.hashCode());
+        Object $lastFailedRevisionErrors = this.getLastFailedRevisionErrors();
+        result = result * prime + ($lastFailedRevisionErrors == null ? 43 : $lastFailedRevisionErrors.hashCode());
+        Object $lastFailedTime = this.getLastFailedTime();
+        result = result * prime + ($lastFailedTime == null ? 43 : $lastFailedTime.hashCode());
+        Object $lastFallbackCount = this.getLastFallbackCount();
+        result = result * prime + ($lastFallbackCount == null ? 43 : $lastFallbackCount.hashCode());
+        Object $nodeName = this.getNodeName();
+        result = result * prime + ($nodeName == null ? 43 : $nodeName.hashCode());
+        Object $targetRevision = this.getTargetRevision();
+        result = result * prime + ($targetRevision == null ? 43 : $targetRevision.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NodeStatus(" + "currentRevision=" + this.getCurrentRevision() + ", lastFailedCount=" + this.getLastFailedCount() + ", lastFailedReason=" + this.getLastFailedReason() + ", lastFailedRevision=" + this.getLastFailedRevision() + ", lastFailedRevisionErrors=" + this.getLastFailedRevisionErrors() + ", lastFailedTime=" + this.getLastFailedTime() + ", lastFallbackCount=" + this.getLastFallbackCount() + ", nodeName=" + this.getNodeName() + ", targetRevision=" + this.getTargetRevision() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

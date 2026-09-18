@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageBlobReferences describes the blob references within an image.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "imageMissing",
     "layers",
     "manifests"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -185,6 +176,71 @@ public class ImageBlobReferences implements Editable<ImageBlobReferencesBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageBlobReferences)) {
+            return false;
+        }
+        ImageBlobReferences other = (ImageBlobReferences) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$config = this.getConfig();
+        Object other$config = other.getConfig();
+        if (this$config == null ? other$config != null : !this$config.equals(other$config)) {
+            return false;
+        }
+        Object this$imageMissing = this.getImageMissing();
+        Object other$imageMissing = other.getImageMissing();
+        if (this$imageMissing == null ? other$imageMissing != null : !this$imageMissing.equals(other$imageMissing)) {
+            return false;
+        }
+        Object this$layers = this.getLayers();
+        Object other$layers = other.getLayers();
+        if (this$layers == null ? other$layers != null : !this$layers.equals(other$layers)) {
+            return false;
+        }
+        Object this$manifests = this.getManifests();
+        Object other$manifests = other.getManifests();
+        if (this$manifests == null ? other$manifests != null : !this$manifests.equals(other$manifests)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageBlobReferences;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $config = this.getConfig();
+        result = result * prime + ($config == null ? 43 : $config.hashCode());
+        Object $imageMissing = this.getImageMissing();
+        result = result * prime + ($imageMissing == null ? 43 : $imageMissing.hashCode());
+        Object $layers = this.getLayers();
+        result = result * prime + ($layers == null ? 43 : $layers.hashCode());
+        Object $manifests = this.getManifests();
+        result = result * prime + ($manifests == null ? 43 : $manifests.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageBlobReferences(" + "config=" + this.getConfig() + ", imageMissing=" + this.getImageMissing() + ", layers=" + this.getLayers() + ", manifests=" + this.getManifests() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

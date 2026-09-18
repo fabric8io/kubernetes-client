@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.config.v1.SecretNameReference;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ConsoleConfigRoute holds information on external route access to console. DEPRECATED
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "hostname",
     "secret"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -141,6 +132,57 @@ public class ConsoleConfigRoute implements Editable<ConsoleConfigRouteBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConsoleConfigRoute)) {
+            return false;
+        }
+        ConsoleConfigRoute other = (ConsoleConfigRoute) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$hostname = this.getHostname();
+        Object other$hostname = other.getHostname();
+        if (this$hostname == null ? other$hostname != null : !this$hostname.equals(other$hostname)) {
+            return false;
+        }
+        Object this$secret = this.getSecret();
+        Object other$secret = other.getSecret();
+        if (this$secret == null ? other$secret != null : !this$secret.equals(other$secret)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConsoleConfigRoute;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $hostname = this.getHostname();
+        result = result * prime + ($hostname == null ? 43 : $hostname.hashCode());
+        Object $secret = this.getSecret();
+        result = result * prime + ($secret == null ? 43 : $secret.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConsoleConfigRoute(" + "hostname=" + this.getHostname() + ", secret=" + this.getSecret() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

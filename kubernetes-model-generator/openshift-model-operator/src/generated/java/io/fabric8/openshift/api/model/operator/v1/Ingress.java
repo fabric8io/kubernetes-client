@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Ingress allows cluster admin to configure alternative ingress for the console.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "clientDownloadsURL",
     "consoleURL"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class Ingress implements Editable<IngressBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Ingress)) {
+            return false;
+        }
+        Ingress other = (Ingress) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clientDownloadsURL = this.getClientDownloadsURL();
+        Object other$clientDownloadsURL = other.getClientDownloadsURL();
+        if (this$clientDownloadsURL == null ? other$clientDownloadsURL != null : !this$clientDownloadsURL.equals(other$clientDownloadsURL)) {
+            return false;
+        }
+        Object this$consoleURL = this.getConsoleURL();
+        Object other$consoleURL = other.getConsoleURL();
+        if (this$consoleURL == null ? other$consoleURL != null : !this$consoleURL.equals(other$consoleURL)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Ingress;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clientDownloadsURL = this.getClientDownloadsURL();
+        result = result * prime + ($clientDownloadsURL == null ? 43 : $clientDownloadsURL.hashCode());
+        Object $consoleURL = this.getConsoleURL();
+        result = result * prime + ($consoleURL == null ? 43 : $consoleURL.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Ingress(" + "clientDownloadsURL=" + this.getClientDownloadsURL() + ", consoleURL=" + this.getConsoleURL() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

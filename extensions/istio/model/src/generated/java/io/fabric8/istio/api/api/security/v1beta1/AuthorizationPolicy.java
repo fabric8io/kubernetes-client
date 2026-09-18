@@ -36,9 +36,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AuthorizationPolicy enables access control on workloads.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
@@ -52,12 +49,6 @@ import lombok.experimental.Accessors;
     "selector",
     "targetRef",
     "targetRefs"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -236,6 +227,85 @@ public class AuthorizationPolicy implements Editable<AuthorizationPolicyBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AuthorizationPolicy)) {
+            return false;
+        }
+        AuthorizationPolicy other = (AuthorizationPolicy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$actionDetail = this.getActionDetail();
+        Object other$actionDetail = other.getActionDetail();
+        if (this$actionDetail == null ? other$actionDetail != null : !this$actionDetail.equals(other$actionDetail)) {
+            return false;
+        }
+        Object this$action = this.getAction();
+        Object other$action = other.getAction();
+        if (this$action == null ? other$action != null : !this$action.equals(other$action)) {
+            return false;
+        }
+        Object this$rules = this.getRules();
+        Object other$rules = other.getRules();
+        if (this$rules == null ? other$rules != null : !this$rules.equals(other$rules)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$targetRef = this.getTargetRef();
+        Object other$targetRef = other.getTargetRef();
+        if (this$targetRef == null ? other$targetRef != null : !this$targetRef.equals(other$targetRef)) {
+            return false;
+        }
+        Object this$targetRefs = this.getTargetRefs();
+        Object other$targetRefs = other.getTargetRefs();
+        if (this$targetRefs == null ? other$targetRefs != null : !this$targetRefs.equals(other$targetRefs)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AuthorizationPolicy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $actionDetail = this.getActionDetail();
+        result = result * prime + ($actionDetail == null ? 43 : $actionDetail.hashCode());
+        Object $action = this.getAction();
+        result = result * prime + ($action == null ? 43 : $action.hashCode());
+        Object $rules = this.getRules();
+        result = result * prime + ($rules == null ? 43 : $rules.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $targetRef = this.getTargetRef();
+        result = result * prime + ($targetRef == null ? 43 : $targetRef.hashCode());
+        Object $targetRefs = this.getTargetRefs();
+        result = result * prime + ($targetRefs == null ? 43 : $targetRefs.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AuthorizationPolicy(" + "actionDetail=" + this.getActionDetail() + ", action=" + this.getAction() + ", rules=" + this.getRules() + ", selector=" + this.getSelector() + ", targetRef=" + this.getTargetRef() + ", targetRefs=" + this.getTargetRefs() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

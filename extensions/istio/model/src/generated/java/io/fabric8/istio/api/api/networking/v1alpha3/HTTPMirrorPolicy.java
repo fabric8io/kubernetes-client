@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HTTPMirrorPolicy can be used to specify the destinations to mirror HTTP traffic in addition to the original destination. Mirrored traffic is on a best effort basis where the sidecar/gateway will not wait for the mirrored destinations to respond before returning the response from the original destination. Statistics will be generated for the mirrored destination.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "destination",
     "percentage"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class HTTPMirrorPolicy implements Editable<HTTPMirrorPolicyBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HTTPMirrorPolicy)) {
+            return false;
+        }
+        HTTPMirrorPolicy other = (HTTPMirrorPolicy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$destination = this.getDestination();
+        Object other$destination = other.getDestination();
+        if (this$destination == null ? other$destination != null : !this$destination.equals(other$destination)) {
+            return false;
+        }
+        Object this$percentage = this.getPercentage();
+        Object other$percentage = other.getPercentage();
+        if (this$percentage == null ? other$percentage != null : !this$percentage.equals(other$percentage)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HTTPMirrorPolicy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $destination = this.getDestination();
+        result = result * prime + ($destination == null ? 43 : $destination.hashCode());
+        Object $percentage = this.getPercentage();
+        result = result * prime + ($percentage == null ? 43 : $percentage.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HTTPMirrorPolicy(" + "destination=" + this.getDestination() + ", percentage=" + this.getPercentage() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

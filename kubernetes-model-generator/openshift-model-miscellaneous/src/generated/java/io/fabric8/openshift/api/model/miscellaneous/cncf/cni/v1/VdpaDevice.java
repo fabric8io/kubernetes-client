@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "pci-address",
     "pf-pci-address",
     "representor-device"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -181,6 +172,85 @@ public class VdpaDevice implements Editable<VdpaDeviceBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VdpaDevice)) {
+            return false;
+        }
+        VdpaDevice other = (VdpaDevice) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$driver = this.getDriver();
+        Object other$driver = other.getDriver();
+        if (this$driver == null ? other$driver != null : !this$driver.equals(other$driver)) {
+            return false;
+        }
+        Object this$parentDevice = this.getParentDevice();
+        Object other$parentDevice = other.getParentDevice();
+        if (this$parentDevice == null ? other$parentDevice != null : !this$parentDevice.equals(other$parentDevice)) {
+            return false;
+        }
+        Object this$path = this.getPath();
+        Object other$path = other.getPath();
+        if (this$path == null ? other$path != null : !this$path.equals(other$path)) {
+            return false;
+        }
+        Object this$pciAddress = this.getPciAddress();
+        Object other$pciAddress = other.getPciAddress();
+        if (this$pciAddress == null ? other$pciAddress != null : !this$pciAddress.equals(other$pciAddress)) {
+            return false;
+        }
+        Object this$pfPciAddress = this.getPfPciAddress();
+        Object other$pfPciAddress = other.getPfPciAddress();
+        if (this$pfPciAddress == null ? other$pfPciAddress != null : !this$pfPciAddress.equals(other$pfPciAddress)) {
+            return false;
+        }
+        Object this$representorDevice = this.getRepresentorDevice();
+        Object other$representorDevice = other.getRepresentorDevice();
+        if (this$representorDevice == null ? other$representorDevice != null : !this$representorDevice.equals(other$representorDevice)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VdpaDevice;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $driver = this.getDriver();
+        result = result * prime + ($driver == null ? 43 : $driver.hashCode());
+        Object $parentDevice = this.getParentDevice();
+        result = result * prime + ($parentDevice == null ? 43 : $parentDevice.hashCode());
+        Object $path = this.getPath();
+        result = result * prime + ($path == null ? 43 : $path.hashCode());
+        Object $pciAddress = this.getPciAddress();
+        result = result * prime + ($pciAddress == null ? 43 : $pciAddress.hashCode());
+        Object $pfPciAddress = this.getPfPciAddress();
+        result = result * prime + ($pfPciAddress == null ? 43 : $pfPciAddress.hashCode());
+        Object $representorDevice = this.getRepresentorDevice();
+        result = result * prime + ($representorDevice == null ? 43 : $representorDevice.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VdpaDevice(" + "driver=" + this.getDriver() + ", parentDevice=" + this.getParentDevice() + ", path=" + this.getPath() + ", pciAddress=" + this.getPciAddress() + ", pfPciAddress=" + this.getPfPciAddress() + ", representorDevice=" + this.getRepresentorDevice() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

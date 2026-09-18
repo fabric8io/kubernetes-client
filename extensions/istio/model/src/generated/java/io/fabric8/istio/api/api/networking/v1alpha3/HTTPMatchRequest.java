@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HttpMatchRequest specifies a set of criteria to be met in order for the rule to be applied to the HTTP request. For example, the following restricts the rule to match only requests where the URL path starts with /ratings/v2/ and the request contains a custom `end-user` header with value `jason`.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - headers:<br><p> 	      end-user:<br><p> 	        exact: jason<br><p> 	    uri:<br><p> 	      prefix: "/ratings/v2/"<br><p> 	    ignoreUriCase: true<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: ratings.prod.svc.cluster.local<br><p> <br><p> ```<br><p> <br><p> HTTPMatchRequest CANNOT be empty. &#42;&#42;Note:&#42;&#42; 1. If a root VirtualService have matched any property (path, header etc.) by regex, delegate VirtualServices should not have any other matches on the same property. 2. If a delegate VirtualService have matched any property (path, header etc.) by regex, root VirtualServices should not have any other matches on the same property.
@@ -54,12 +51,6 @@ import lombok.experimental.Accessors;
     "statPrefix",
     "uri",
     "withoutHeaders"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -392,6 +383,141 @@ public class HTTPMatchRequest implements Editable<HTTPMatchRequestBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HTTPMatchRequest)) {
+            return false;
+        }
+        HTTPMatchRequest other = (HTTPMatchRequest) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$authority = this.getAuthority();
+        Object other$authority = other.getAuthority();
+        if (this$authority == null ? other$authority != null : !this$authority.equals(other$authority)) {
+            return false;
+        }
+        Object this$gateways = this.getGateways();
+        Object other$gateways = other.getGateways();
+        if (this$gateways == null ? other$gateways != null : !this$gateways.equals(other$gateways)) {
+            return false;
+        }
+        Object this$headers = this.getHeaders();
+        Object other$headers = other.getHeaders();
+        if (this$headers == null ? other$headers != null : !this$headers.equals(other$headers)) {
+            return false;
+        }
+        Object this$ignoreUriCase = this.getIgnoreUriCase();
+        Object other$ignoreUriCase = other.getIgnoreUriCase();
+        if (this$ignoreUriCase == null ? other$ignoreUriCase != null : !this$ignoreUriCase.equals(other$ignoreUriCase)) {
+            return false;
+        }
+        Object this$method = this.getMethod();
+        Object other$method = other.getMethod();
+        if (this$method == null ? other$method != null : !this$method.equals(other$method)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$port = this.getPort();
+        Object other$port = other.getPort();
+        if (this$port == null ? other$port != null : !this$port.equals(other$port)) {
+            return false;
+        }
+        Object this$queryParams = this.getQueryParams();
+        Object other$queryParams = other.getQueryParams();
+        if (this$queryParams == null ? other$queryParams != null : !this$queryParams.equals(other$queryParams)) {
+            return false;
+        }
+        Object this$scheme = this.getScheme();
+        Object other$scheme = other.getScheme();
+        if (this$scheme == null ? other$scheme != null : !this$scheme.equals(other$scheme)) {
+            return false;
+        }
+        Object this$sourceLabels = this.getSourceLabels();
+        Object other$sourceLabels = other.getSourceLabels();
+        if (this$sourceLabels == null ? other$sourceLabels != null : !this$sourceLabels.equals(other$sourceLabels)) {
+            return false;
+        }
+        Object this$sourceNamespace = this.getSourceNamespace();
+        Object other$sourceNamespace = other.getSourceNamespace();
+        if (this$sourceNamespace == null ? other$sourceNamespace != null : !this$sourceNamespace.equals(other$sourceNamespace)) {
+            return false;
+        }
+        Object this$statPrefix = this.getStatPrefix();
+        Object other$statPrefix = other.getStatPrefix();
+        if (this$statPrefix == null ? other$statPrefix != null : !this$statPrefix.equals(other$statPrefix)) {
+            return false;
+        }
+        Object this$uri = this.getUri();
+        Object other$uri = other.getUri();
+        if (this$uri == null ? other$uri != null : !this$uri.equals(other$uri)) {
+            return false;
+        }
+        Object this$withoutHeaders = this.getWithoutHeaders();
+        Object other$withoutHeaders = other.getWithoutHeaders();
+        if (this$withoutHeaders == null ? other$withoutHeaders != null : !this$withoutHeaders.equals(other$withoutHeaders)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HTTPMatchRequest;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $authority = this.getAuthority();
+        result = result * prime + ($authority == null ? 43 : $authority.hashCode());
+        Object $gateways = this.getGateways();
+        result = result * prime + ($gateways == null ? 43 : $gateways.hashCode());
+        Object $headers = this.getHeaders();
+        result = result * prime + ($headers == null ? 43 : $headers.hashCode());
+        Object $ignoreUriCase = this.getIgnoreUriCase();
+        result = result * prime + ($ignoreUriCase == null ? 43 : $ignoreUriCase.hashCode());
+        Object $method = this.getMethod();
+        result = result * prime + ($method == null ? 43 : $method.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $port = this.getPort();
+        result = result * prime + ($port == null ? 43 : $port.hashCode());
+        Object $queryParams = this.getQueryParams();
+        result = result * prime + ($queryParams == null ? 43 : $queryParams.hashCode());
+        Object $scheme = this.getScheme();
+        result = result * prime + ($scheme == null ? 43 : $scheme.hashCode());
+        Object $sourceLabels = this.getSourceLabels();
+        result = result * prime + ($sourceLabels == null ? 43 : $sourceLabels.hashCode());
+        Object $sourceNamespace = this.getSourceNamespace();
+        result = result * prime + ($sourceNamespace == null ? 43 : $sourceNamespace.hashCode());
+        Object $statPrefix = this.getStatPrefix();
+        result = result * prime + ($statPrefix == null ? 43 : $statPrefix.hashCode());
+        Object $uri = this.getUri();
+        result = result * prime + ($uri == null ? 43 : $uri.hashCode());
+        Object $withoutHeaders = this.getWithoutHeaders();
+        result = result * prime + ($withoutHeaders == null ? 43 : $withoutHeaders.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HTTPMatchRequest(" + "authority=" + this.getAuthority() + ", gateways=" + this.getGateways() + ", headers=" + this.getHeaders() + ", ignoreUriCase=" + this.getIgnoreUriCase() + ", method=" + this.getMethod() + ", name=" + this.getName() + ", port=" + this.getPort() + ", queryParams=" + this.getQueryParams() + ", scheme=" + this.getScheme() + ", sourceLabels=" + this.getSourceLabels() + ", sourceNamespace=" + this.getSourceNamespace() + ", statPrefix=" + this.getStatPrefix() + ", uri=" + this.getUri() + ", withoutHeaders=" + this.getWithoutHeaders() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

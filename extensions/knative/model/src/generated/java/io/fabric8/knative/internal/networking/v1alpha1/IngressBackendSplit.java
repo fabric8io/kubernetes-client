@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * IngressBackendSplit describes all endpoints for a given service and port.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "serviceName",
     "serviceNamespace",
     "servicePort"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -202,6 +193,78 @@ public class IngressBackendSplit implements Editable<IngressBackendSplitBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof IngressBackendSplit)) {
+            return false;
+        }
+        IngressBackendSplit other = (IngressBackendSplit) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$appendHeaders = this.getAppendHeaders();
+        Object other$appendHeaders = other.getAppendHeaders();
+        if (this$appendHeaders == null ? other$appendHeaders != null : !this$appendHeaders.equals(other$appendHeaders)) {
+            return false;
+        }
+        Object this$percent = this.getPercent();
+        Object other$percent = other.getPercent();
+        if (this$percent == null ? other$percent != null : !this$percent.equals(other$percent)) {
+            return false;
+        }
+        Object this$serviceName = this.getServiceName();
+        Object other$serviceName = other.getServiceName();
+        if (this$serviceName == null ? other$serviceName != null : !this$serviceName.equals(other$serviceName)) {
+            return false;
+        }
+        Object this$serviceNamespace = this.getServiceNamespace();
+        Object other$serviceNamespace = other.getServiceNamespace();
+        if (this$serviceNamespace == null ? other$serviceNamespace != null : !this$serviceNamespace.equals(other$serviceNamespace)) {
+            return false;
+        }
+        Object this$servicePort = this.getServicePort();
+        Object other$servicePort = other.getServicePort();
+        if (this$servicePort == null ? other$servicePort != null : !this$servicePort.equals(other$servicePort)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof IngressBackendSplit;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $appendHeaders = this.getAppendHeaders();
+        result = result * prime + ($appendHeaders == null ? 43 : $appendHeaders.hashCode());
+        Object $percent = this.getPercent();
+        result = result * prime + ($percent == null ? 43 : $percent.hashCode());
+        Object $serviceName = this.getServiceName();
+        result = result * prime + ($serviceName == null ? 43 : $serviceName.hashCode());
+        Object $serviceNamespace = this.getServiceNamespace();
+        result = result * prime + ($serviceNamespace == null ? 43 : $serviceNamespace.hashCode());
+        Object $servicePort = this.getServicePort();
+        result = result * prime + ($servicePort == null ? 43 : $servicePort.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IngressBackendSplit(" + "appendHeaders=" + this.getAppendHeaders() + ", percent=" + this.getPercent() + ", serviceName=" + this.getServiceName() + ", serviceNamespace=" + this.getServiceNamespace() + ", servicePort=" + this.getServicePort() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

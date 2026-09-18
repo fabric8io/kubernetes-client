@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "key",
     "option",
     "password"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -197,6 +188,78 @@ public class RedisExpirationSpec implements Editable<RedisExpirationSpecBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RedisExpirationSpec)) {
+            return false;
+        }
+        RedisExpirationSpec other = (RedisExpirationSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$addr = this.getAddr();
+        Object other$addr = other.getAddr();
+        if (this$addr == null ? other$addr != null : !this$addr.equals(other$addr)) {
+            return false;
+        }
+        Object this$expiration = this.getExpiration();
+        Object other$expiration = other.getExpiration();
+        if (this$expiration == null ? other$expiration != null : !this$expiration.equals(other$expiration)) {
+            return false;
+        }
+        Object this$key = this.getKey();
+        Object other$key = other.getKey();
+        if (this$key == null ? other$key != null : !this$key.equals(other$key)) {
+            return false;
+        }
+        Object this$option = this.getOption();
+        Object other$option = other.getOption();
+        if (this$option == null ? other$option != null : !this$option.equals(other$option)) {
+            return false;
+        }
+        Object this$password = this.getPassword();
+        Object other$password = other.getPassword();
+        if (this$password == null ? other$password != null : !this$password.equals(other$password)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RedisExpirationSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $addr = this.getAddr();
+        result = result * prime + ($addr == null ? 43 : $addr.hashCode());
+        Object $expiration = this.getExpiration();
+        result = result * prime + ($expiration == null ? 43 : $expiration.hashCode());
+        Object $key = this.getKey();
+        result = result * prime + ($key == null ? 43 : $key.hashCode());
+        Object $option = this.getOption();
+        result = result * prime + ($option == null ? 43 : $option.hashCode());
+        Object $password = this.getPassword();
+        result = result * prime + ($password == null ? 43 : $password.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RedisExpirationSpec(" + "addr=" + this.getAddr() + ", expiration=" + this.getExpiration() + ", key=" + this.getKey() + ", option=" + this.getOption() + ", password=" + this.getPassword() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

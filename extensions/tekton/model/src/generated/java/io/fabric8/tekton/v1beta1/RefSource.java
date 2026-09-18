@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RefSource contains the information that can uniquely identify where a remote built definition came from i.e. Git repositories, Tekton Bundles in OCI registry and hub.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "digest",
     "entryPoint",
     "uri"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -162,6 +153,64 @@ public class RefSource implements Editable<RefSourceBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RefSource)) {
+            return false;
+        }
+        RefSource other = (RefSource) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$digest = this.getDigest();
+        Object other$digest = other.getDigest();
+        if (this$digest == null ? other$digest != null : !this$digest.equals(other$digest)) {
+            return false;
+        }
+        Object this$entryPoint = this.getEntryPoint();
+        Object other$entryPoint = other.getEntryPoint();
+        if (this$entryPoint == null ? other$entryPoint != null : !this$entryPoint.equals(other$entryPoint)) {
+            return false;
+        }
+        Object this$uri = this.getUri();
+        Object other$uri = other.getUri();
+        if (this$uri == null ? other$uri != null : !this$uri.equals(other$uri)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RefSource;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $digest = this.getDigest();
+        result = result * prime + ($digest == null ? 43 : $digest.hashCode());
+        Object $entryPoint = this.getEntryPoint();
+        result = result * prime + ($entryPoint == null ? 43 : $entryPoint.hashCode());
+        Object $uri = this.getUri();
+        result = result * prime + ($uri == null ? 43 : $uri.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RefSource(" + "digest=" + this.getDigest() + ", entryPoint=" + this.getEntryPoint() + ", uri=" + this.getUri() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

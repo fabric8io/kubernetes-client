@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MachineConfigNodeSpec describes the MachineConfigNode we are managing.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "configVersion",
     "node",
     "pool"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -159,6 +150,64 @@ public class MachineConfigNodeSpec implements Editable<MachineConfigNodeSpecBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachineConfigNodeSpec)) {
+            return false;
+        }
+        MachineConfigNodeSpec other = (MachineConfigNodeSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$configVersion = this.getConfigVersion();
+        Object other$configVersion = other.getConfigVersion();
+        if (this$configVersion == null ? other$configVersion != null : !this$configVersion.equals(other$configVersion)) {
+            return false;
+        }
+        Object this$node = this.getNode();
+        Object other$node = other.getNode();
+        if (this$node == null ? other$node != null : !this$node.equals(other$node)) {
+            return false;
+        }
+        Object this$pool = this.getPool();
+        Object other$pool = other.getPool();
+        if (this$pool == null ? other$pool != null : !this$pool.equals(other$pool)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachineConfigNodeSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $configVersion = this.getConfigVersion();
+        result = result * prime + ($configVersion == null ? 43 : $configVersion.hashCode());
+        Object $node = this.getNode();
+        result = result * prime + ($node == null ? 43 : $node.hashCode());
+        Object $pool = this.getPool();
+        result = result * prime + ($pool == null ? 43 : $pool.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachineConfigNodeSpec(" + "configVersion=" + this.getConfigVersion() + ", node=" + this.getNode() + ", pool=" + this.getPool() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

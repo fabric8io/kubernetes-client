@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "proxyConnectHeader",
     "proxyFromEnvironment",
     "proxyUrl"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class ProxyConfig implements Editable<ProxyConfigBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ProxyConfig)) {
+            return false;
+        }
+        ProxyConfig other = (ProxyConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$noProxy = this.getNoProxy();
+        Object other$noProxy = other.getNoProxy();
+        if (this$noProxy == null ? other$noProxy != null : !this$noProxy.equals(other$noProxy)) {
+            return false;
+        }
+        Object this$proxyConnectHeader = this.getProxyConnectHeader();
+        Object other$proxyConnectHeader = other.getProxyConnectHeader();
+        if (this$proxyConnectHeader == null ? other$proxyConnectHeader != null : !this$proxyConnectHeader.equals(other$proxyConnectHeader)) {
+            return false;
+        }
+        Object this$proxyFromEnvironment = this.getProxyFromEnvironment();
+        Object other$proxyFromEnvironment = other.getProxyFromEnvironment();
+        if (this$proxyFromEnvironment == null ? other$proxyFromEnvironment != null : !this$proxyFromEnvironment.equals(other$proxyFromEnvironment)) {
+            return false;
+        }
+        Object this$proxyUrl = this.getProxyUrl();
+        Object other$proxyUrl = other.getProxyUrl();
+        if (this$proxyUrl == null ? other$proxyUrl != null : !this$proxyUrl.equals(other$proxyUrl)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ProxyConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $noProxy = this.getNoProxy();
+        result = result * prime + ($noProxy == null ? 43 : $noProxy.hashCode());
+        Object $proxyConnectHeader = this.getProxyConnectHeader();
+        result = result * prime + ($proxyConnectHeader == null ? 43 : $proxyConnectHeader.hashCode());
+        Object $proxyFromEnvironment = this.getProxyFromEnvironment();
+        result = result * prime + ($proxyFromEnvironment == null ? 43 : $proxyFromEnvironment.hashCode());
+        Object $proxyUrl = this.getProxyUrl();
+        result = result * prime + ($proxyUrl == null ? 43 : $proxyUrl.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ProxyConfig(" + "noProxy=" + this.getNoProxy() + ", proxyConnectHeader=" + this.getProxyConnectHeader() + ", proxyFromEnvironment=" + this.getProxyFromEnvironment() + ", proxyUrl=" + this.getProxyUrl() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

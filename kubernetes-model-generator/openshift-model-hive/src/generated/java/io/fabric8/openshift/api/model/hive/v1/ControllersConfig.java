@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ControllersConfig contains default as well as controller specific configurations
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "controllers",
     "default"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -144,6 +135,57 @@ public class ControllersConfig implements Editable<ControllersConfigBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ControllersConfig)) {
+            return false;
+        }
+        ControllersConfig other = (ControllersConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$controllers = this.getControllers();
+        Object other$controllers = other.getControllers();
+        if (this$controllers == null ? other$controllers != null : !this$controllers.equals(other$controllers)) {
+            return false;
+        }
+        Object this$_default = this.getDefault();
+        Object other$_default = other.getDefault();
+        if (this$_default == null ? other$_default != null : !this$_default.equals(other$_default)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ControllersConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $controllers = this.getControllers();
+        result = result * prime + ($controllers == null ? 43 : $controllers.hashCode());
+        Object $_default = this.getDefault();
+        result = result * prime + ($_default == null ? 43 : $_default.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ControllersConfig(" + "controllers=" + this.getControllers() + ", _default=" + this.getDefault() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

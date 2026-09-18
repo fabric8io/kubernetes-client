@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "samplingFraction",
     "timeout",
     "tlsConfig"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -247,6 +238,99 @@ public class TracingConfig implements Editable<TracingConfigBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TracingConfig)) {
+            return false;
+        }
+        TracingConfig other = (TracingConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clientType = this.getClientType();
+        Object other$clientType = other.getClientType();
+        if (this$clientType == null ? other$clientType != null : !this$clientType.equals(other$clientType)) {
+            return false;
+        }
+        Object this$compression = this.getCompression();
+        Object other$compression = other.getCompression();
+        if (this$compression == null ? other$compression != null : !this$compression.equals(other$compression)) {
+            return false;
+        }
+        Object this$endpoint = this.getEndpoint();
+        Object other$endpoint = other.getEndpoint();
+        if (this$endpoint == null ? other$endpoint != null : !this$endpoint.equals(other$endpoint)) {
+            return false;
+        }
+        Object this$headers = this.getHeaders();
+        Object other$headers = other.getHeaders();
+        if (this$headers == null ? other$headers != null : !this$headers.equals(other$headers)) {
+            return false;
+        }
+        Object this$insecure = this.getInsecure();
+        Object other$insecure = other.getInsecure();
+        if (this$insecure == null ? other$insecure != null : !this$insecure.equals(other$insecure)) {
+            return false;
+        }
+        Object this$samplingFraction = this.getSamplingFraction();
+        Object other$samplingFraction = other.getSamplingFraction();
+        if (this$samplingFraction == null ? other$samplingFraction != null : !this$samplingFraction.equals(other$samplingFraction)) {
+            return false;
+        }
+        Object this$timeout = this.getTimeout();
+        Object other$timeout = other.getTimeout();
+        if (this$timeout == null ? other$timeout != null : !this$timeout.equals(other$timeout)) {
+            return false;
+        }
+        Object this$tlsConfig = this.getTlsConfig();
+        Object other$tlsConfig = other.getTlsConfig();
+        if (this$tlsConfig == null ? other$tlsConfig != null : !this$tlsConfig.equals(other$tlsConfig)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TracingConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clientType = this.getClientType();
+        result = result * prime + ($clientType == null ? 43 : $clientType.hashCode());
+        Object $compression = this.getCompression();
+        result = result * prime + ($compression == null ? 43 : $compression.hashCode());
+        Object $endpoint = this.getEndpoint();
+        result = result * prime + ($endpoint == null ? 43 : $endpoint.hashCode());
+        Object $headers = this.getHeaders();
+        result = result * prime + ($headers == null ? 43 : $headers.hashCode());
+        Object $insecure = this.getInsecure();
+        result = result * prime + ($insecure == null ? 43 : $insecure.hashCode());
+        Object $samplingFraction = this.getSamplingFraction();
+        result = result * prime + ($samplingFraction == null ? 43 : $samplingFraction.hashCode());
+        Object $timeout = this.getTimeout();
+        result = result * prime + ($timeout == null ? 43 : $timeout.hashCode());
+        Object $tlsConfig = this.getTlsConfig();
+        result = result * prime + ($tlsConfig == null ? 43 : $tlsConfig.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TracingConfig(" + "clientType=" + this.getClientType() + ", compression=" + this.getCompression() + ", endpoint=" + this.getEndpoint() + ", headers=" + this.getHeaders() + ", insecure=" + this.getInsecure() + ", samplingFraction=" + this.getSamplingFraction() + ", timeout=" + this.getTimeout() + ", tlsConfig=" + this.getTlsConfig() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

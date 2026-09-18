@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NodeStatus is information about the current status of a node.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
     "runtimeHandlers",
     "volumesAttached",
     "volumesInUse"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -371,6 +362,141 @@ public class NodeStatus implements Editable<NodeStatusBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NodeStatus)) {
+            return false;
+        }
+        NodeStatus other = (NodeStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$addresses = this.getAddresses();
+        Object other$addresses = other.getAddresses();
+        if (this$addresses == null ? other$addresses != null : !this$addresses.equals(other$addresses)) {
+            return false;
+        }
+        Object this$allocatable = this.getAllocatable();
+        Object other$allocatable = other.getAllocatable();
+        if (this$allocatable == null ? other$allocatable != null : !this$allocatable.equals(other$allocatable)) {
+            return false;
+        }
+        Object this$capacity = this.getCapacity();
+        Object other$capacity = other.getCapacity();
+        if (this$capacity == null ? other$capacity != null : !this$capacity.equals(other$capacity)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$config = this.getConfig();
+        Object other$config = other.getConfig();
+        if (this$config == null ? other$config != null : !this$config.equals(other$config)) {
+            return false;
+        }
+        Object this$daemonEndpoints = this.getDaemonEndpoints();
+        Object other$daemonEndpoints = other.getDaemonEndpoints();
+        if (this$daemonEndpoints == null ? other$daemonEndpoints != null : !this$daemonEndpoints.equals(other$daemonEndpoints)) {
+            return false;
+        }
+        Object this$declaredFeatures = this.getDeclaredFeatures();
+        Object other$declaredFeatures = other.getDeclaredFeatures();
+        if (this$declaredFeatures == null ? other$declaredFeatures != null : !this$declaredFeatures.equals(other$declaredFeatures)) {
+            return false;
+        }
+        Object this$features = this.getFeatures();
+        Object other$features = other.getFeatures();
+        if (this$features == null ? other$features != null : !this$features.equals(other$features)) {
+            return false;
+        }
+        Object this$images = this.getImages();
+        Object other$images = other.getImages();
+        if (this$images == null ? other$images != null : !this$images.equals(other$images)) {
+            return false;
+        }
+        Object this$nodeInfo = this.getNodeInfo();
+        Object other$nodeInfo = other.getNodeInfo();
+        if (this$nodeInfo == null ? other$nodeInfo != null : !this$nodeInfo.equals(other$nodeInfo)) {
+            return false;
+        }
+        Object this$phase = this.getPhase();
+        Object other$phase = other.getPhase();
+        if (this$phase == null ? other$phase != null : !this$phase.equals(other$phase)) {
+            return false;
+        }
+        Object this$runtimeHandlers = this.getRuntimeHandlers();
+        Object other$runtimeHandlers = other.getRuntimeHandlers();
+        if (this$runtimeHandlers == null ? other$runtimeHandlers != null : !this$runtimeHandlers.equals(other$runtimeHandlers)) {
+            return false;
+        }
+        Object this$volumesAttached = this.getVolumesAttached();
+        Object other$volumesAttached = other.getVolumesAttached();
+        if (this$volumesAttached == null ? other$volumesAttached != null : !this$volumesAttached.equals(other$volumesAttached)) {
+            return false;
+        }
+        Object this$volumesInUse = this.getVolumesInUse();
+        Object other$volumesInUse = other.getVolumesInUse();
+        if (this$volumesInUse == null ? other$volumesInUse != null : !this$volumesInUse.equals(other$volumesInUse)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NodeStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $addresses = this.getAddresses();
+        result = result * prime + ($addresses == null ? 43 : $addresses.hashCode());
+        Object $allocatable = this.getAllocatable();
+        result = result * prime + ($allocatable == null ? 43 : $allocatable.hashCode());
+        Object $capacity = this.getCapacity();
+        result = result * prime + ($capacity == null ? 43 : $capacity.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $config = this.getConfig();
+        result = result * prime + ($config == null ? 43 : $config.hashCode());
+        Object $daemonEndpoints = this.getDaemonEndpoints();
+        result = result * prime + ($daemonEndpoints == null ? 43 : $daemonEndpoints.hashCode());
+        Object $declaredFeatures = this.getDeclaredFeatures();
+        result = result * prime + ($declaredFeatures == null ? 43 : $declaredFeatures.hashCode());
+        Object $features = this.getFeatures();
+        result = result * prime + ($features == null ? 43 : $features.hashCode());
+        Object $images = this.getImages();
+        result = result * prime + ($images == null ? 43 : $images.hashCode());
+        Object $nodeInfo = this.getNodeInfo();
+        result = result * prime + ($nodeInfo == null ? 43 : $nodeInfo.hashCode());
+        Object $phase = this.getPhase();
+        result = result * prime + ($phase == null ? 43 : $phase.hashCode());
+        Object $runtimeHandlers = this.getRuntimeHandlers();
+        result = result * prime + ($runtimeHandlers == null ? 43 : $runtimeHandlers.hashCode());
+        Object $volumesAttached = this.getVolumesAttached();
+        result = result * prime + ($volumesAttached == null ? 43 : $volumesAttached.hashCode());
+        Object $volumesInUse = this.getVolumesInUse();
+        result = result * prime + ($volumesInUse == null ? 43 : $volumesInUse.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NodeStatus(" + "addresses=" + this.getAddresses() + ", allocatable=" + this.getAllocatable() + ", capacity=" + this.getCapacity() + ", conditions=" + this.getConditions() + ", config=" + this.getConfig() + ", daemonEndpoints=" + this.getDaemonEndpoints() + ", declaredFeatures=" + this.getDeclaredFeatures() + ", features=" + this.getFeatures() + ", images=" + this.getImages() + ", nodeInfo=" + this.getNodeInfo() + ", phase=" + this.getPhase() + ", runtimeHandlers=" + this.getRuntimeHandlers() + ", volumesAttached=" + this.getVolumesAttached() + ", volumesInUse=" + this.getVolumesInUse() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

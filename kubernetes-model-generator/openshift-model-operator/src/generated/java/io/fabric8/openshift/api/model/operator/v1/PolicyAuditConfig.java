@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "maxLogFiles",
     "rateLimit",
     "syslogFacility"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -197,6 +188,78 @@ public class PolicyAuditConfig implements Editable<PolicyAuditConfigBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PolicyAuditConfig)) {
+            return false;
+        }
+        PolicyAuditConfig other = (PolicyAuditConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$destination = this.getDestination();
+        Object other$destination = other.getDestination();
+        if (this$destination == null ? other$destination != null : !this$destination.equals(other$destination)) {
+            return false;
+        }
+        Object this$maxFileSize = this.getMaxFileSize();
+        Object other$maxFileSize = other.getMaxFileSize();
+        if (this$maxFileSize == null ? other$maxFileSize != null : !this$maxFileSize.equals(other$maxFileSize)) {
+            return false;
+        }
+        Object this$maxLogFiles = this.getMaxLogFiles();
+        Object other$maxLogFiles = other.getMaxLogFiles();
+        if (this$maxLogFiles == null ? other$maxLogFiles != null : !this$maxLogFiles.equals(other$maxLogFiles)) {
+            return false;
+        }
+        Object this$rateLimit = this.getRateLimit();
+        Object other$rateLimit = other.getRateLimit();
+        if (this$rateLimit == null ? other$rateLimit != null : !this$rateLimit.equals(other$rateLimit)) {
+            return false;
+        }
+        Object this$syslogFacility = this.getSyslogFacility();
+        Object other$syslogFacility = other.getSyslogFacility();
+        if (this$syslogFacility == null ? other$syslogFacility != null : !this$syslogFacility.equals(other$syslogFacility)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PolicyAuditConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $destination = this.getDestination();
+        result = result * prime + ($destination == null ? 43 : $destination.hashCode());
+        Object $maxFileSize = this.getMaxFileSize();
+        result = result * prime + ($maxFileSize == null ? 43 : $maxFileSize.hashCode());
+        Object $maxLogFiles = this.getMaxLogFiles();
+        result = result * prime + ($maxLogFiles == null ? 43 : $maxLogFiles.hashCode());
+        Object $rateLimit = this.getRateLimit();
+        result = result * prime + ($rateLimit == null ? 43 : $rateLimit.hashCode());
+        Object $syslogFacility = this.getSyslogFacility();
+        result = result * prime + ($syslogFacility == null ? 43 : $syslogFacility.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PolicyAuditConfig(" + "destination=" + this.getDestination() + ", maxFileSize=" + this.getMaxFileSize() + ", maxLogFiles=" + this.getMaxLogFiles() + ", rateLimit=" + this.getRateLimit() + ", syslogFacility=" + this.getSyslogFacility() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

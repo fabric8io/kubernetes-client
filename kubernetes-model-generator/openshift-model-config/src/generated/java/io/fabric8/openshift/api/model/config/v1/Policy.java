@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Policy defines the verification policy for the items in the scopes list.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "rootOfTrust",
     "signedIdentity"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -139,6 +130,57 @@ public class Policy implements Editable<PolicyBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Policy)) {
+            return false;
+        }
+        Policy other = (Policy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$rootOfTrust = this.getRootOfTrust();
+        Object other$rootOfTrust = other.getRootOfTrust();
+        if (this$rootOfTrust == null ? other$rootOfTrust != null : !this$rootOfTrust.equals(other$rootOfTrust)) {
+            return false;
+        }
+        Object this$signedIdentity = this.getSignedIdentity();
+        Object other$signedIdentity = other.getSignedIdentity();
+        if (this$signedIdentity == null ? other$signedIdentity != null : !this$signedIdentity.equals(other$signedIdentity)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Policy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $rootOfTrust = this.getRootOfTrust();
+        result = result * prime + ($rootOfTrust == null ? 43 : $rootOfTrust.hashCode());
+        Object $signedIdentity = this.getSignedIdentity();
+        result = result * prime + ($signedIdentity == null ? 43 : $signedIdentity.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Policy(" + "rootOfTrust=" + this.getRootOfTrust() + ", signedIdentity=" + this.getSignedIdentity() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

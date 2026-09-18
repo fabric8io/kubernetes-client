@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HeaderOperations Describes the header manipulations to apply
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "add",
     "remove",
     "set"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -168,6 +159,64 @@ public class HeadersHeaderOperations implements Editable<HeadersHeaderOperations
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HeadersHeaderOperations)) {
+            return false;
+        }
+        HeadersHeaderOperations other = (HeadersHeaderOperations) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$add = this.getAdd();
+        Object other$add = other.getAdd();
+        if (this$add == null ? other$add != null : !this$add.equals(other$add)) {
+            return false;
+        }
+        Object this$remove = this.getRemove();
+        Object other$remove = other.getRemove();
+        if (this$remove == null ? other$remove != null : !this$remove.equals(other$remove)) {
+            return false;
+        }
+        Object this$set = this.getSet();
+        Object other$set = other.getSet();
+        if (this$set == null ? other$set != null : !this$set.equals(other$set)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HeadersHeaderOperations;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $add = this.getAdd();
+        result = result * prime + ($add == null ? 43 : $add.hashCode());
+        Object $remove = this.getRemove();
+        result = result * prime + ($remove == null ? 43 : $remove.hashCode());
+        Object $set = this.getSet();
+        result = result * prime + ($set == null ? 43 : $set.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HeadersHeaderOperations(" + "add=" + this.getAdd() + ", remove=" + this.getRemove() + ", set=" + this.getSet() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

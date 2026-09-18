@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HostedClusterManagerConfiguration represents customized configurations we need to set for clustermanager in the Hosted mode.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "registrationWebhookConfiguration",
     "workWebhookConfiguration"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class HostedClusterManagerConfiguration implements Editable<HostedCluster
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HostedClusterManagerConfiguration)) {
+            return false;
+        }
+        HostedClusterManagerConfiguration other = (HostedClusterManagerConfiguration) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$registrationWebhookConfiguration = this.getRegistrationWebhookConfiguration();
+        Object other$registrationWebhookConfiguration = other.getRegistrationWebhookConfiguration();
+        if (this$registrationWebhookConfiguration == null ? other$registrationWebhookConfiguration != null : !this$registrationWebhookConfiguration.equals(other$registrationWebhookConfiguration)) {
+            return false;
+        }
+        Object this$workWebhookConfiguration = this.getWorkWebhookConfiguration();
+        Object other$workWebhookConfiguration = other.getWorkWebhookConfiguration();
+        if (this$workWebhookConfiguration == null ? other$workWebhookConfiguration != null : !this$workWebhookConfiguration.equals(other$workWebhookConfiguration)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HostedClusterManagerConfiguration;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $registrationWebhookConfiguration = this.getRegistrationWebhookConfiguration();
+        result = result * prime + ($registrationWebhookConfiguration == null ? 43 : $registrationWebhookConfiguration.hashCode());
+        Object $workWebhookConfiguration = this.getWorkWebhookConfiguration();
+        result = result * prime + ($workWebhookConfiguration == null ? 43 : $workWebhookConfiguration.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HostedClusterManagerConfiguration(" + "registrationWebhookConfiguration=" + this.getRegistrationWebhookConfiguration() + ", workWebhookConfiguration=" + this.getWorkWebhookConfiguration() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

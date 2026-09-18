@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -38,12 +35,6 @@ import lombok.experimental.Accessors;
     "clock-ids-slice",
     "pid",
     "time-offset"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -157,6 +148,64 @@ public class ClockSpec implements Editable<ClockSpecBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClockSpec)) {
+            return false;
+        }
+        ClockSpec other = (ClockSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clockIdsSlice = this.getClockIdsSlice();
+        Object other$clockIdsSlice = other.getClockIdsSlice();
+        if (this$clockIdsSlice == null ? other$clockIdsSlice != null : !this$clockIdsSlice.equals(other$clockIdsSlice)) {
+            return false;
+        }
+        Object this$pid = this.getPid();
+        Object other$pid = other.getPid();
+        if (this$pid == null ? other$pid != null : !this$pid.equals(other$pid)) {
+            return false;
+        }
+        Object this$timeOffset = this.getTimeOffset();
+        Object other$timeOffset = other.getTimeOffset();
+        if (this$timeOffset == null ? other$timeOffset != null : !this$timeOffset.equals(other$timeOffset)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClockSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clockIdsSlice = this.getClockIdsSlice();
+        result = result * prime + ($clockIdsSlice == null ? 43 : $clockIdsSlice.hashCode());
+        Object $pid = this.getPid();
+        result = result * prime + ($pid == null ? 43 : $pid.hashCode());
+        Object $timeOffset = this.getTimeOffset();
+        result = result * prime + ($timeOffset == null ? 43 : $timeOffset.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClockSpec(" + "clockIdsSlice=" + this.getClockIdsSlice() + ", pid=" + this.getPid() + ", timeOffset=" + this.getTimeOffset() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

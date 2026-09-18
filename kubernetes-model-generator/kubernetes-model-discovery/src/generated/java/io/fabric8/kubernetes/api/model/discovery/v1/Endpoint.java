@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Endpoint represents a single logical "backend" implementing a service.
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "nodeName",
     "targetRef",
     "zone"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -266,6 +257,99 @@ public class Endpoint implements Editable<EndpointBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Endpoint)) {
+            return false;
+        }
+        Endpoint other = (Endpoint) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$addresses = this.getAddresses();
+        Object other$addresses = other.getAddresses();
+        if (this$addresses == null ? other$addresses != null : !this$addresses.equals(other$addresses)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$deprecatedTopology = this.getDeprecatedTopology();
+        Object other$deprecatedTopology = other.getDeprecatedTopology();
+        if (this$deprecatedTopology == null ? other$deprecatedTopology != null : !this$deprecatedTopology.equals(other$deprecatedTopology)) {
+            return false;
+        }
+        Object this$hints = this.getHints();
+        Object other$hints = other.getHints();
+        if (this$hints == null ? other$hints != null : !this$hints.equals(other$hints)) {
+            return false;
+        }
+        Object this$hostname = this.getHostname();
+        Object other$hostname = other.getHostname();
+        if (this$hostname == null ? other$hostname != null : !this$hostname.equals(other$hostname)) {
+            return false;
+        }
+        Object this$nodeName = this.getNodeName();
+        Object other$nodeName = other.getNodeName();
+        if (this$nodeName == null ? other$nodeName != null : !this$nodeName.equals(other$nodeName)) {
+            return false;
+        }
+        Object this$targetRef = this.getTargetRef();
+        Object other$targetRef = other.getTargetRef();
+        if (this$targetRef == null ? other$targetRef != null : !this$targetRef.equals(other$targetRef)) {
+            return false;
+        }
+        Object this$zone = this.getZone();
+        Object other$zone = other.getZone();
+        if (this$zone == null ? other$zone != null : !this$zone.equals(other$zone)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Endpoint;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $addresses = this.getAddresses();
+        result = result * prime + ($addresses == null ? 43 : $addresses.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $deprecatedTopology = this.getDeprecatedTopology();
+        result = result * prime + ($deprecatedTopology == null ? 43 : $deprecatedTopology.hashCode());
+        Object $hints = this.getHints();
+        result = result * prime + ($hints == null ? 43 : $hints.hashCode());
+        Object $hostname = this.getHostname();
+        result = result * prime + ($hostname == null ? 43 : $hostname.hashCode());
+        Object $nodeName = this.getNodeName();
+        result = result * prime + ($nodeName == null ? 43 : $nodeName.hashCode());
+        Object $targetRef = this.getTargetRef();
+        result = result * prime + ($targetRef == null ? 43 : $targetRef.hashCode());
+        Object $zone = this.getZone();
+        result = result * prime + ($zone == null ? 43 : $zone.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Endpoint(" + "addresses=" + this.getAddresses() + ", conditions=" + this.getConditions() + ", deprecatedTopology=" + this.getDeprecatedTopology() + ", hints=" + this.getHints() + ", hostname=" + this.getHostname() + ", nodeName=" + this.getNodeName() + ", targetRef=" + this.getTargetRef() + ", zone=" + this.getZone() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

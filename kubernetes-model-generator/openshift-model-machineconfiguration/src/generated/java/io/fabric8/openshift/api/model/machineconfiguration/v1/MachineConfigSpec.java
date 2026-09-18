@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MachineConfigSpec is the spec for MachineConfig
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "kernelArguments",
     "kernelType",
     "osImageURL"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -247,6 +238,92 @@ public class MachineConfigSpec implements Editable<MachineConfigSpecBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachineConfigSpec)) {
+            return false;
+        }
+        MachineConfigSpec other = (MachineConfigSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$baseOSExtensionsContainerImage = this.getBaseOSExtensionsContainerImage();
+        Object other$baseOSExtensionsContainerImage = other.getBaseOSExtensionsContainerImage();
+        if (this$baseOSExtensionsContainerImage == null ? other$baseOSExtensionsContainerImage != null : !this$baseOSExtensionsContainerImage.equals(other$baseOSExtensionsContainerImage)) {
+            return false;
+        }
+        Object this$config = this.getConfig();
+        Object other$config = other.getConfig();
+        if (this$config == null ? other$config != null : !this$config.equals(other$config)) {
+            return false;
+        }
+        Object this$extensions = this.getExtensions();
+        Object other$extensions = other.getExtensions();
+        if (this$extensions == null ? other$extensions != null : !this$extensions.equals(other$extensions)) {
+            return false;
+        }
+        Object this$fips = this.getFips();
+        Object other$fips = other.getFips();
+        if (this$fips == null ? other$fips != null : !this$fips.equals(other$fips)) {
+            return false;
+        }
+        Object this$kernelArguments = this.getKernelArguments();
+        Object other$kernelArguments = other.getKernelArguments();
+        if (this$kernelArguments == null ? other$kernelArguments != null : !this$kernelArguments.equals(other$kernelArguments)) {
+            return false;
+        }
+        Object this$kernelType = this.getKernelType();
+        Object other$kernelType = other.getKernelType();
+        if (this$kernelType == null ? other$kernelType != null : !this$kernelType.equals(other$kernelType)) {
+            return false;
+        }
+        Object this$osImageURL = this.getOsImageURL();
+        Object other$osImageURL = other.getOsImageURL();
+        if (this$osImageURL == null ? other$osImageURL != null : !this$osImageURL.equals(other$osImageURL)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachineConfigSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $baseOSExtensionsContainerImage = this.getBaseOSExtensionsContainerImage();
+        result = result * prime + ($baseOSExtensionsContainerImage == null ? 43 : $baseOSExtensionsContainerImage.hashCode());
+        Object $config = this.getConfig();
+        result = result * prime + ($config == null ? 43 : $config.hashCode());
+        Object $extensions = this.getExtensions();
+        result = result * prime + ($extensions == null ? 43 : $extensions.hashCode());
+        Object $fips = this.getFips();
+        result = result * prime + ($fips == null ? 43 : $fips.hashCode());
+        Object $kernelArguments = this.getKernelArguments();
+        result = result * prime + ($kernelArguments == null ? 43 : $kernelArguments.hashCode());
+        Object $kernelType = this.getKernelType();
+        result = result * prime + ($kernelType == null ? 43 : $kernelType.hashCode());
+        Object $osImageURL = this.getOsImageURL();
+        result = result * prime + ($osImageURL == null ? 43 : $osImageURL.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachineConfigSpec(" + "baseOSExtensionsContainerImage=" + this.getBaseOSExtensionsContainerImage() + ", config=" + this.getConfig() + ", extensions=" + this.getExtensions() + ", fips=" + this.getFips() + ", kernelArguments=" + this.getKernelArguments() + ", kernelType=" + this.getKernelType() + ", osImageURL=" + this.getOsImageURL() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

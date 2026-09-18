@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NutanixVMDiskDeviceProperties specifies the disk device properties.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "adapterType",
     "deviceIndex",
     "deviceType"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class NutanixVMDiskDeviceProperties implements Editable<NutanixVMDiskDevi
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NutanixVMDiskDeviceProperties)) {
+            return false;
+        }
+        NutanixVMDiskDeviceProperties other = (NutanixVMDiskDeviceProperties) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$adapterType = this.getAdapterType();
+        Object other$adapterType = other.getAdapterType();
+        if (this$adapterType == null ? other$adapterType != null : !this$adapterType.equals(other$adapterType)) {
+            return false;
+        }
+        Object this$deviceIndex = this.getDeviceIndex();
+        Object other$deviceIndex = other.getDeviceIndex();
+        if (this$deviceIndex == null ? other$deviceIndex != null : !this$deviceIndex.equals(other$deviceIndex)) {
+            return false;
+        }
+        Object this$deviceType = this.getDeviceType();
+        Object other$deviceType = other.getDeviceType();
+        if (this$deviceType == null ? other$deviceType != null : !this$deviceType.equals(other$deviceType)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NutanixVMDiskDeviceProperties;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $adapterType = this.getAdapterType();
+        result = result * prime + ($adapterType == null ? 43 : $adapterType.hashCode());
+        Object $deviceIndex = this.getDeviceIndex();
+        result = result * prime + ($deviceIndex == null ? 43 : $deviceIndex.hashCode());
+        Object $deviceType = this.getDeviceType();
+        result = result * prime + ($deviceType == null ? 43 : $deviceType.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NutanixVMDiskDeviceProperties(" + "adapterType=" + this.getAdapterType() + ", deviceIndex=" + this.getDeviceIndex() + ", deviceType=" + this.getDeviceType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PodDisruptionBudgetSpec is a description of a PodDisruptionBudget.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "minAvailable",
     "selector",
     "unhealthyPodEvictionPolicy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class PodDisruptionBudgetSpec implements Editable<PodDisruptionBudgetSpec
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodDisruptionBudgetSpec)) {
+            return false;
+        }
+        PodDisruptionBudgetSpec other = (PodDisruptionBudgetSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$maxUnavailable = this.getMaxUnavailable();
+        Object other$maxUnavailable = other.getMaxUnavailable();
+        if (this$maxUnavailable == null ? other$maxUnavailable != null : !this$maxUnavailable.equals(other$maxUnavailable)) {
+            return false;
+        }
+        Object this$minAvailable = this.getMinAvailable();
+        Object other$minAvailable = other.getMinAvailable();
+        if (this$minAvailable == null ? other$minAvailable != null : !this$minAvailable.equals(other$minAvailable)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$unhealthyPodEvictionPolicy = this.getUnhealthyPodEvictionPolicy();
+        Object other$unhealthyPodEvictionPolicy = other.getUnhealthyPodEvictionPolicy();
+        if (this$unhealthyPodEvictionPolicy == null ? other$unhealthyPodEvictionPolicy != null : !this$unhealthyPodEvictionPolicy.equals(other$unhealthyPodEvictionPolicy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodDisruptionBudgetSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $maxUnavailable = this.getMaxUnavailable();
+        result = result * prime + ($maxUnavailable == null ? 43 : $maxUnavailable.hashCode());
+        Object $minAvailable = this.getMinAvailable();
+        result = result * prime + ($minAvailable == null ? 43 : $minAvailable.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $unhealthyPodEvictionPolicy = this.getUnhealthyPodEvictionPolicy();
+        result = result * prime + ($unhealthyPodEvictionPolicy == null ? 43 : $unhealthyPodEvictionPolicy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodDisruptionBudgetSpec(" + "maxUnavailable=" + this.getMaxUnavailable() + ", minAvailable=" + this.getMinAvailable() + ", selector=" + this.getSelector() + ", unhealthyPodEvictionPolicy=" + this.getUnhealthyPodEvictionPolicy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

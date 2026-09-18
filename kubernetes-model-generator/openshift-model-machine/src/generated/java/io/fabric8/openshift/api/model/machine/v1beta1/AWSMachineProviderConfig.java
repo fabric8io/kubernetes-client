@@ -33,9 +33,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AWSMachineProviderConfig is the Schema for the awsmachineproviderconfigs API Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
@@ -67,12 +64,6 @@ import lombok.experimental.Accessors;
     "subnet",
     "tags",
     "userDataSecret"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -595,6 +586,211 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AWSMachineProviderConfig)) {
+            return false;
+        }
+        AWSMachineProviderConfig other = (AWSMachineProviderConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ami = this.getAmi();
+        Object other$ami = other.getAmi();
+        if (this$ami == null ? other$ami != null : !this$ami.equals(other$ami)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$blockDevices = this.getBlockDevices();
+        Object other$blockDevices = other.getBlockDevices();
+        if (this$blockDevices == null ? other$blockDevices != null : !this$blockDevices.equals(other$blockDevices)) {
+            return false;
+        }
+        Object this$capacityReservationId = this.getCapacityReservationId();
+        Object other$capacityReservationId = other.getCapacityReservationId();
+        if (this$capacityReservationId == null ? other$capacityReservationId != null : !this$capacityReservationId.equals(other$capacityReservationId)) {
+            return false;
+        }
+        Object this$credentialsSecret = this.getCredentialsSecret();
+        Object other$credentialsSecret = other.getCredentialsSecret();
+        if (this$credentialsSecret == null ? other$credentialsSecret != null : !this$credentialsSecret.equals(other$credentialsSecret)) {
+            return false;
+        }
+        Object this$deviceIndex = this.getDeviceIndex();
+        Object other$deviceIndex = other.getDeviceIndex();
+        if (this$deviceIndex == null ? other$deviceIndex != null : !this$deviceIndex.equals(other$deviceIndex)) {
+            return false;
+        }
+        Object this$iamInstanceProfile = this.getIamInstanceProfile();
+        Object other$iamInstanceProfile = other.getIamInstanceProfile();
+        if (this$iamInstanceProfile == null ? other$iamInstanceProfile != null : !this$iamInstanceProfile.equals(other$iamInstanceProfile)) {
+            return false;
+        }
+        Object this$instanceType = this.getInstanceType();
+        Object other$instanceType = other.getInstanceType();
+        if (this$instanceType == null ? other$instanceType != null : !this$instanceType.equals(other$instanceType)) {
+            return false;
+        }
+        Object this$keyName = this.getKeyName();
+        Object other$keyName = other.getKeyName();
+        if (this$keyName == null ? other$keyName != null : !this$keyName.equals(other$keyName)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$loadBalancers = this.getLoadBalancers();
+        Object other$loadBalancers = other.getLoadBalancers();
+        if (this$loadBalancers == null ? other$loadBalancers != null : !this$loadBalancers.equals(other$loadBalancers)) {
+            return false;
+        }
+        Object this$marketType = this.getMarketType();
+        Object other$marketType = other.getMarketType();
+        if (this$marketType == null ? other$marketType != null : !this$marketType.equals(other$marketType)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$metadataServiceOptions = this.getMetadataServiceOptions();
+        Object other$metadataServiceOptions = other.getMetadataServiceOptions();
+        if (this$metadataServiceOptions == null ? other$metadataServiceOptions != null : !this$metadataServiceOptions.equals(other$metadataServiceOptions)) {
+            return false;
+        }
+        Object this$networkInterfaceType = this.getNetworkInterfaceType();
+        Object other$networkInterfaceType = other.getNetworkInterfaceType();
+        if (this$networkInterfaceType == null ? other$networkInterfaceType != null : !this$networkInterfaceType.equals(other$networkInterfaceType)) {
+            return false;
+        }
+        Object this$placement = this.getPlacement();
+        Object other$placement = other.getPlacement();
+        if (this$placement == null ? other$placement != null : !this$placement.equals(other$placement)) {
+            return false;
+        }
+        Object this$placementGroupName = this.getPlacementGroupName();
+        Object other$placementGroupName = other.getPlacementGroupName();
+        if (this$placementGroupName == null ? other$placementGroupName != null : !this$placementGroupName.equals(other$placementGroupName)) {
+            return false;
+        }
+        Object this$placementGroupPartition = this.getPlacementGroupPartition();
+        Object other$placementGroupPartition = other.getPlacementGroupPartition();
+        if (this$placementGroupPartition == null ? other$placementGroupPartition != null : !this$placementGroupPartition.equals(other$placementGroupPartition)) {
+            return false;
+        }
+        Object this$publicIp = this.getPublicIp();
+        Object other$publicIp = other.getPublicIp();
+        if (this$publicIp == null ? other$publicIp != null : !this$publicIp.equals(other$publicIp)) {
+            return false;
+        }
+        Object this$securityGroups = this.getSecurityGroups();
+        Object other$securityGroups = other.getSecurityGroups();
+        if (this$securityGroups == null ? other$securityGroups != null : !this$securityGroups.equals(other$securityGroups)) {
+            return false;
+        }
+        Object this$spotMarketOptions = this.getSpotMarketOptions();
+        Object other$spotMarketOptions = other.getSpotMarketOptions();
+        if (this$spotMarketOptions == null ? other$spotMarketOptions != null : !this$spotMarketOptions.equals(other$spotMarketOptions)) {
+            return false;
+        }
+        Object this$subnet = this.getSubnet();
+        Object other$subnet = other.getSubnet();
+        if (this$subnet == null ? other$subnet != null : !this$subnet.equals(other$subnet)) {
+            return false;
+        }
+        Object this$tags = this.getTags();
+        Object other$tags = other.getTags();
+        if (this$tags == null ? other$tags != null : !this$tags.equals(other$tags)) {
+            return false;
+        }
+        Object this$userDataSecret = this.getUserDataSecret();
+        Object other$userDataSecret = other.getUserDataSecret();
+        if (this$userDataSecret == null ? other$userDataSecret != null : !this$userDataSecret.equals(other$userDataSecret)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AWSMachineProviderConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ami = this.getAmi();
+        result = result * prime + ($ami == null ? 43 : $ami.hashCode());
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $blockDevices = this.getBlockDevices();
+        result = result * prime + ($blockDevices == null ? 43 : $blockDevices.hashCode());
+        Object $capacityReservationId = this.getCapacityReservationId();
+        result = result * prime + ($capacityReservationId == null ? 43 : $capacityReservationId.hashCode());
+        Object $credentialsSecret = this.getCredentialsSecret();
+        result = result * prime + ($credentialsSecret == null ? 43 : $credentialsSecret.hashCode());
+        Object $deviceIndex = this.getDeviceIndex();
+        result = result * prime + ($deviceIndex == null ? 43 : $deviceIndex.hashCode());
+        Object $iamInstanceProfile = this.getIamInstanceProfile();
+        result = result * prime + ($iamInstanceProfile == null ? 43 : $iamInstanceProfile.hashCode());
+        Object $instanceType = this.getInstanceType();
+        result = result * prime + ($instanceType == null ? 43 : $instanceType.hashCode());
+        Object $keyName = this.getKeyName();
+        result = result * prime + ($keyName == null ? 43 : $keyName.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $loadBalancers = this.getLoadBalancers();
+        result = result * prime + ($loadBalancers == null ? 43 : $loadBalancers.hashCode());
+        Object $marketType = this.getMarketType();
+        result = result * prime + ($marketType == null ? 43 : $marketType.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $metadataServiceOptions = this.getMetadataServiceOptions();
+        result = result * prime + ($metadataServiceOptions == null ? 43 : $metadataServiceOptions.hashCode());
+        Object $networkInterfaceType = this.getNetworkInterfaceType();
+        result = result * prime + ($networkInterfaceType == null ? 43 : $networkInterfaceType.hashCode());
+        Object $placement = this.getPlacement();
+        result = result * prime + ($placement == null ? 43 : $placement.hashCode());
+        Object $placementGroupName = this.getPlacementGroupName();
+        result = result * prime + ($placementGroupName == null ? 43 : $placementGroupName.hashCode());
+        Object $placementGroupPartition = this.getPlacementGroupPartition();
+        result = result * prime + ($placementGroupPartition == null ? 43 : $placementGroupPartition.hashCode());
+        Object $publicIp = this.getPublicIp();
+        result = result * prime + ($publicIp == null ? 43 : $publicIp.hashCode());
+        Object $securityGroups = this.getSecurityGroups();
+        result = result * prime + ($securityGroups == null ? 43 : $securityGroups.hashCode());
+        Object $spotMarketOptions = this.getSpotMarketOptions();
+        result = result * prime + ($spotMarketOptions == null ? 43 : $spotMarketOptions.hashCode());
+        Object $subnet = this.getSubnet();
+        result = result * prime + ($subnet == null ? 43 : $subnet.hashCode());
+        Object $tags = this.getTags();
+        result = result * prime + ($tags == null ? 43 : $tags.hashCode());
+        Object $userDataSecret = this.getUserDataSecret();
+        result = result * prime + ($userDataSecret == null ? 43 : $userDataSecret.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AWSMachineProviderConfig(" + "ami=" + this.getAmi() + ", apiVersion=" + this.getApiVersion() + ", blockDevices=" + this.getBlockDevices() + ", capacityReservationId=" + this.getCapacityReservationId() + ", credentialsSecret=" + this.getCredentialsSecret() + ", deviceIndex=" + this.getDeviceIndex() + ", iamInstanceProfile=" + this.getIamInstanceProfile() + ", instanceType=" + this.getInstanceType() + ", keyName=" + this.getKeyName() + ", kind=" + this.getKind() + ", loadBalancers=" + this.getLoadBalancers() + ", marketType=" + this.getMarketType() + ", metadata=" + this.getMetadata() + ", metadataServiceOptions=" + this.getMetadataServiceOptions() + ", networkInterfaceType=" + this.getNetworkInterfaceType() + ", placement=" + this.getPlacement() + ", placementGroupName=" + this.getPlacementGroupName() + ", placementGroupPartition=" + this.getPlacementGroupPartition() + ", publicIp=" + this.getPublicIp() + ", securityGroups=" + this.getSecurityGroups() + ", spotMarketOptions=" + this.getSpotMarketOptions() + ", subnet=" + this.getSubnet() + ", tags=" + this.getTags() + ", userDataSecret=" + this.getUserDataSecret() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

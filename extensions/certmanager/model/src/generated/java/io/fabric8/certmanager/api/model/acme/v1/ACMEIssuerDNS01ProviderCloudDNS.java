@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ACMEIssuerDNS01ProviderCloudDNS is a structure containing the DNS configuration for Google Cloud DNS
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "hostedZoneName",
     "project",
     "serviceAccountSecretRef"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -161,6 +152,64 @@ public class ACMEIssuerDNS01ProviderCloudDNS implements Editable<ACMEIssuerDNS01
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ACMEIssuerDNS01ProviderCloudDNS)) {
+            return false;
+        }
+        ACMEIssuerDNS01ProviderCloudDNS other = (ACMEIssuerDNS01ProviderCloudDNS) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$hostedZoneName = this.getHostedZoneName();
+        Object other$hostedZoneName = other.getHostedZoneName();
+        if (this$hostedZoneName == null ? other$hostedZoneName != null : !this$hostedZoneName.equals(other$hostedZoneName)) {
+            return false;
+        }
+        Object this$project = this.getProject();
+        Object other$project = other.getProject();
+        if (this$project == null ? other$project != null : !this$project.equals(other$project)) {
+            return false;
+        }
+        Object this$serviceAccountSecretRef = this.getServiceAccountSecretRef();
+        Object other$serviceAccountSecretRef = other.getServiceAccountSecretRef();
+        if (this$serviceAccountSecretRef == null ? other$serviceAccountSecretRef != null : !this$serviceAccountSecretRef.equals(other$serviceAccountSecretRef)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ACMEIssuerDNS01ProviderCloudDNS;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $hostedZoneName = this.getHostedZoneName();
+        result = result * prime + ($hostedZoneName == null ? 43 : $hostedZoneName.hashCode());
+        Object $project = this.getProject();
+        result = result * prime + ($project == null ? 43 : $project.hashCode());
+        Object $serviceAccountSecretRef = this.getServiceAccountSecretRef();
+        result = result * prime + ($serviceAccountSecretRef == null ? 43 : $serviceAccountSecretRef.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ACMEIssuerDNS01ProviderCloudDNS(" + "hostedZoneName=" + this.getHostedZoneName() + ", project=" + this.getProject() + ", serviceAccountSecretRef=" + this.getServiceAccountSecretRef() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

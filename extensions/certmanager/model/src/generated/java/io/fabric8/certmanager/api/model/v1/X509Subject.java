@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * X509Subject Full X509 name specification
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "provinces",
     "serialNumber",
     "streetAddresses"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -276,6 +267,99 @@ public class X509Subject implements Editable<X509SubjectBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof X509Subject)) {
+            return false;
+        }
+        X509Subject other = (X509Subject) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$countries = this.getCountries();
+        Object other$countries = other.getCountries();
+        if (this$countries == null ? other$countries != null : !this$countries.equals(other$countries)) {
+            return false;
+        }
+        Object this$localities = this.getLocalities();
+        Object other$localities = other.getLocalities();
+        if (this$localities == null ? other$localities != null : !this$localities.equals(other$localities)) {
+            return false;
+        }
+        Object this$organizationalUnits = this.getOrganizationalUnits();
+        Object other$organizationalUnits = other.getOrganizationalUnits();
+        if (this$organizationalUnits == null ? other$organizationalUnits != null : !this$organizationalUnits.equals(other$organizationalUnits)) {
+            return false;
+        }
+        Object this$organizations = this.getOrganizations();
+        Object other$organizations = other.getOrganizations();
+        if (this$organizations == null ? other$organizations != null : !this$organizations.equals(other$organizations)) {
+            return false;
+        }
+        Object this$postalCodes = this.getPostalCodes();
+        Object other$postalCodes = other.getPostalCodes();
+        if (this$postalCodes == null ? other$postalCodes != null : !this$postalCodes.equals(other$postalCodes)) {
+            return false;
+        }
+        Object this$provinces = this.getProvinces();
+        Object other$provinces = other.getProvinces();
+        if (this$provinces == null ? other$provinces != null : !this$provinces.equals(other$provinces)) {
+            return false;
+        }
+        Object this$serialNumber = this.getSerialNumber();
+        Object other$serialNumber = other.getSerialNumber();
+        if (this$serialNumber == null ? other$serialNumber != null : !this$serialNumber.equals(other$serialNumber)) {
+            return false;
+        }
+        Object this$streetAddresses = this.getStreetAddresses();
+        Object other$streetAddresses = other.getStreetAddresses();
+        if (this$streetAddresses == null ? other$streetAddresses != null : !this$streetAddresses.equals(other$streetAddresses)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof X509Subject;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $countries = this.getCountries();
+        result = result * prime + ($countries == null ? 43 : $countries.hashCode());
+        Object $localities = this.getLocalities();
+        result = result * prime + ($localities == null ? 43 : $localities.hashCode());
+        Object $organizationalUnits = this.getOrganizationalUnits();
+        result = result * prime + ($organizationalUnits == null ? 43 : $organizationalUnits.hashCode());
+        Object $organizations = this.getOrganizations();
+        result = result * prime + ($organizations == null ? 43 : $organizations.hashCode());
+        Object $postalCodes = this.getPostalCodes();
+        result = result * prime + ($postalCodes == null ? 43 : $postalCodes.hashCode());
+        Object $provinces = this.getProvinces();
+        result = result * prime + ($provinces == null ? 43 : $provinces.hashCode());
+        Object $serialNumber = this.getSerialNumber();
+        result = result * prime + ($serialNumber == null ? 43 : $serialNumber.hashCode());
+        Object $streetAddresses = this.getStreetAddresses();
+        result = result * prime + ($streetAddresses == null ? 43 : $streetAddresses.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "X509Subject(" + "countries=" + this.getCountries() + ", localities=" + this.getLocalities() + ", organizationalUnits=" + this.getOrganizationalUnits() + ", organizations=" + this.getOrganizations() + ", postalCodes=" + this.getPostalCodes() + ", provinces=" + this.getProvinces() + ", serialNumber=" + this.getSerialNumber() + ", streetAddresses=" + this.getStreetAddresses() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

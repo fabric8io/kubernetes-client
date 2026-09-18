@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VSpherePlatformNodeNetworking holds the external and internal node networking spec.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "external",
     "internal"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -139,6 +130,57 @@ public class VSpherePlatformNodeNetworking implements Editable<VSpherePlatformNo
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VSpherePlatformNodeNetworking)) {
+            return false;
+        }
+        VSpherePlatformNodeNetworking other = (VSpherePlatformNodeNetworking) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$external = this.getExternal();
+        Object other$external = other.getExternal();
+        if (this$external == null ? other$external != null : !this$external.equals(other$external)) {
+            return false;
+        }
+        Object this$internal = this.getInternal();
+        Object other$internal = other.getInternal();
+        if (this$internal == null ? other$internal != null : !this$internal.equals(other$internal)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VSpherePlatformNodeNetworking;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $external = this.getExternal();
+        result = result * prime + ($external == null ? 43 : $external.hashCode());
+        Object $internal = this.getInternal();
+        result = result * prime + ($internal == null ? 43 : $internal.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VSpherePlatformNodeNetworking(" + "external=" + this.getExternal() + ", internal=" + this.getInternal() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

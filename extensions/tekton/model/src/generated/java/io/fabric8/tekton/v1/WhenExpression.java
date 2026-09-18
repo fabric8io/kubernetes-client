@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * WhenExpression allows a PipelineTask to declare expressions to be evaluated before the Task is run to determine whether the Task should be executed or skipped
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "input",
     "operator",
     "values"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class WhenExpression implements Editable<WhenExpressionBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof WhenExpression)) {
+            return false;
+        }
+        WhenExpression other = (WhenExpression) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cel = this.getCel();
+        Object other$cel = other.getCel();
+        if (this$cel == null ? other$cel != null : !this$cel.equals(other$cel)) {
+            return false;
+        }
+        Object this$input = this.getInput();
+        Object other$input = other.getInput();
+        if (this$input == null ? other$input != null : !this$input.equals(other$input)) {
+            return false;
+        }
+        Object this$operator = this.getOperator();
+        Object other$operator = other.getOperator();
+        if (this$operator == null ? other$operator != null : !this$operator.equals(other$operator)) {
+            return false;
+        }
+        Object this$values = this.getValues();
+        Object other$values = other.getValues();
+        if (this$values == null ? other$values != null : !this$values.equals(other$values)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof WhenExpression;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cel = this.getCel();
+        result = result * prime + ($cel == null ? 43 : $cel.hashCode());
+        Object $input = this.getInput();
+        result = result * prime + ($input == null ? 43 : $input.hashCode());
+        Object $operator = this.getOperator();
+        result = result * prime + ($operator == null ? 43 : $operator.hashCode());
+        Object $values = this.getValues();
+        result = result * prime + ($values == null ? 43 : $values.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WhenExpression(" + "cel=" + this.getCel() + ", input=" + this.getInput() + ", operator=" + this.getOperator() + ", values=" + this.getValues() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

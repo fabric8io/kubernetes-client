@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * IPPoolSpec defines the desired state of IPPool
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "allocations",
     "range"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -142,6 +133,57 @@ public class IPPoolSpec implements Editable<IPPoolSpecBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof IPPoolSpec)) {
+            return false;
+        }
+        IPPoolSpec other = (IPPoolSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allocations = this.getAllocations();
+        Object other$allocations = other.getAllocations();
+        if (this$allocations == null ? other$allocations != null : !this$allocations.equals(other$allocations)) {
+            return false;
+        }
+        Object this$range = this.getRange();
+        Object other$range = other.getRange();
+        if (this$range == null ? other$range != null : !this$range.equals(other$range)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof IPPoolSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allocations = this.getAllocations();
+        result = result * prime + ($allocations == null ? 43 : $allocations.hashCode());
+        Object $range = this.getRange();
+        result = result * prime + ($range == null ? 43 : $range.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IPPoolSpec(" + "allocations=" + this.getAllocations() + ", range=" + this.getRange() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

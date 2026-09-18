@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ACMEAuthorization contains data returned from the ACME server on an authorization that must be completed in order validate a DNS name on an ACME Order resource.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "initialState",
     "url",
     "wildcard"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -204,6 +195,78 @@ public class ACMEAuthorization implements Editable<ACMEAuthorizationBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ACMEAuthorization)) {
+            return false;
+        }
+        ACMEAuthorization other = (ACMEAuthorization) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$challenges = this.getChallenges();
+        Object other$challenges = other.getChallenges();
+        if (this$challenges == null ? other$challenges != null : !this$challenges.equals(other$challenges)) {
+            return false;
+        }
+        Object this$identifier = this.getIdentifier();
+        Object other$identifier = other.getIdentifier();
+        if (this$identifier == null ? other$identifier != null : !this$identifier.equals(other$identifier)) {
+            return false;
+        }
+        Object this$initialState = this.getInitialState();
+        Object other$initialState = other.getInitialState();
+        if (this$initialState == null ? other$initialState != null : !this$initialState.equals(other$initialState)) {
+            return false;
+        }
+        Object this$url = this.getUrl();
+        Object other$url = other.getUrl();
+        if (this$url == null ? other$url != null : !this$url.equals(other$url)) {
+            return false;
+        }
+        Object this$wildcard = this.getWildcard();
+        Object other$wildcard = other.getWildcard();
+        if (this$wildcard == null ? other$wildcard != null : !this$wildcard.equals(other$wildcard)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ACMEAuthorization;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $challenges = this.getChallenges();
+        result = result * prime + ($challenges == null ? 43 : $challenges.hashCode());
+        Object $identifier = this.getIdentifier();
+        result = result * prime + ($identifier == null ? 43 : $identifier.hashCode());
+        Object $initialState = this.getInitialState();
+        result = result * prime + ($initialState == null ? 43 : $initialState.hashCode());
+        Object $url = this.getUrl();
+        result = result * prime + ($url == null ? 43 : $url.hashCode());
+        Object $wildcard = this.getWildcard();
+        result = result * prime + ($wildcard == null ? 43 : $wildcard.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ACMEAuthorization(" + "challenges=" + this.getChallenges() + ", identifier=" + this.getIdentifier() + ", initialState=" + this.getInitialState() + ", url=" + this.getUrl() + ", wildcard=" + this.getWildcard() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

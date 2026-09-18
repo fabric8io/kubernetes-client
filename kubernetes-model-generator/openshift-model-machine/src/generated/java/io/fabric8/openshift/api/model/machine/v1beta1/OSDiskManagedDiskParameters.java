@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OSDiskManagedDiskParameters is the parameters of a OSDisk managed disk.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "diskEncryptionSet",
     "securityProfile",
     "storageAccountType"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -159,6 +150,64 @@ public class OSDiskManagedDiskParameters implements Editable<OSDiskManagedDiskPa
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OSDiskManagedDiskParameters)) {
+            return false;
+        }
+        OSDiskManagedDiskParameters other = (OSDiskManagedDiskParameters) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$diskEncryptionSet = this.getDiskEncryptionSet();
+        Object other$diskEncryptionSet = other.getDiskEncryptionSet();
+        if (this$diskEncryptionSet == null ? other$diskEncryptionSet != null : !this$diskEncryptionSet.equals(other$diskEncryptionSet)) {
+            return false;
+        }
+        Object this$securityProfile = this.getSecurityProfile();
+        Object other$securityProfile = other.getSecurityProfile();
+        if (this$securityProfile == null ? other$securityProfile != null : !this$securityProfile.equals(other$securityProfile)) {
+            return false;
+        }
+        Object this$storageAccountType = this.getStorageAccountType();
+        Object other$storageAccountType = other.getStorageAccountType();
+        if (this$storageAccountType == null ? other$storageAccountType != null : !this$storageAccountType.equals(other$storageAccountType)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OSDiskManagedDiskParameters;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $diskEncryptionSet = this.getDiskEncryptionSet();
+        result = result * prime + ($diskEncryptionSet == null ? 43 : $diskEncryptionSet.hashCode());
+        Object $securityProfile = this.getSecurityProfile();
+        result = result * prime + ($securityProfile == null ? 43 : $securityProfile.hashCode());
+        Object $storageAccountType = this.getStorageAccountType();
+        result = result * prime + ($storageAccountType == null ? 43 : $storageAccountType.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OSDiskManagedDiskParameters(" + "diskEncryptionSet=" + this.getDiskEncryptionSet() + ", securityProfile=" + this.getSecurityProfile() + ", storageAccountType=" + this.getStorageAccountType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

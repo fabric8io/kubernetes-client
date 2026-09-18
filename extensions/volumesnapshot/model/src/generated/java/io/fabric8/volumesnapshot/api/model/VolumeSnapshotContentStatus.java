@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VolumeSnapshotContentStatus is the status of a VolumeSnapshotContent object Note that CreationTime, RestoreSize, ReadyToUse, and Error are in both VolumeSnapshotStatus and VolumeSnapshotContentStatus. Fields in VolumeSnapshotStatus are updated based on fields in VolumeSnapshotContentStatus. They are eventual consistency. These fields are duplicate in both objects due to the following reasons:<br><p>   - Fields in VolumeSnapshotContentStatus can be used for filtering when importing a<br><p>     volumesnapshot.<br><p>   - VolumsnapshotStatus is used by end users because they cannot see VolumeSnapshotContent.<br><p>   - CSI snapshotter sidecar is light weight as it only watches VolumeSnapshotContent<br><p>     object, not VolumeSnapshot object.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "restoreSize",
     "snapshotHandle",
     "volumeGroupSnapshotHandle"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -220,6 +211,85 @@ public class VolumeSnapshotContentStatus implements Editable<VolumeSnapshotConte
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VolumeSnapshotContentStatus)) {
+            return false;
+        }
+        VolumeSnapshotContentStatus other = (VolumeSnapshotContentStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$creationTime = this.getCreationTime();
+        Object other$creationTime = other.getCreationTime();
+        if (this$creationTime == null ? other$creationTime != null : !this$creationTime.equals(other$creationTime)) {
+            return false;
+        }
+        Object this$error = this.getError();
+        Object other$error = other.getError();
+        if (this$error == null ? other$error != null : !this$error.equals(other$error)) {
+            return false;
+        }
+        Object this$readyToUse = this.getReadyToUse();
+        Object other$readyToUse = other.getReadyToUse();
+        if (this$readyToUse == null ? other$readyToUse != null : !this$readyToUse.equals(other$readyToUse)) {
+            return false;
+        }
+        Object this$restoreSize = this.getRestoreSize();
+        Object other$restoreSize = other.getRestoreSize();
+        if (this$restoreSize == null ? other$restoreSize != null : !this$restoreSize.equals(other$restoreSize)) {
+            return false;
+        }
+        Object this$snapshotHandle = this.getSnapshotHandle();
+        Object other$snapshotHandle = other.getSnapshotHandle();
+        if (this$snapshotHandle == null ? other$snapshotHandle != null : !this$snapshotHandle.equals(other$snapshotHandle)) {
+            return false;
+        }
+        Object this$volumeGroupSnapshotHandle = this.getVolumeGroupSnapshotHandle();
+        Object other$volumeGroupSnapshotHandle = other.getVolumeGroupSnapshotHandle();
+        if (this$volumeGroupSnapshotHandle == null ? other$volumeGroupSnapshotHandle != null : !this$volumeGroupSnapshotHandle.equals(other$volumeGroupSnapshotHandle)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VolumeSnapshotContentStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $creationTime = this.getCreationTime();
+        result = result * prime + ($creationTime == null ? 43 : $creationTime.hashCode());
+        Object $error = this.getError();
+        result = result * prime + ($error == null ? 43 : $error.hashCode());
+        Object $readyToUse = this.getReadyToUse();
+        result = result * prime + ($readyToUse == null ? 43 : $readyToUse.hashCode());
+        Object $restoreSize = this.getRestoreSize();
+        result = result * prime + ($restoreSize == null ? 43 : $restoreSize.hashCode());
+        Object $snapshotHandle = this.getSnapshotHandle();
+        result = result * prime + ($snapshotHandle == null ? 43 : $snapshotHandle.hashCode());
+        Object $volumeGroupSnapshotHandle = this.getVolumeGroupSnapshotHandle();
+        result = result * prime + ($volumeGroupSnapshotHandle == null ? 43 : $volumeGroupSnapshotHandle.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VolumeSnapshotContentStatus(" + "creationTime=" + this.getCreationTime() + ", error=" + this.getError() + ", readyToUse=" + this.getReadyToUse() + ", restoreSize=" + this.getRestoreSize() + ", snapshotHandle=" + this.getSnapshotHandle() + ", volumeGroupSnapshotHandle=" + this.getVolumeGroupSnapshotHandle() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

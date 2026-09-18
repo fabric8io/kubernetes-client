@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * InfrastructureStatus describes the infrastructure the cluster is leveraging.
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "infrastructureTopology",
     "platform",
     "platformStatus"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -279,6 +270,106 @@ public class InfrastructureStatus implements Editable<InfrastructureStatusBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof InfrastructureStatus)) {
+            return false;
+        }
+        InfrastructureStatus other = (InfrastructureStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiServerInternalURI = this.getApiServerInternalURI();
+        Object other$apiServerInternalURI = other.getApiServerInternalURI();
+        if (this$apiServerInternalURI == null ? other$apiServerInternalURI != null : !this$apiServerInternalURI.equals(other$apiServerInternalURI)) {
+            return false;
+        }
+        Object this$apiServerURL = this.getApiServerURL();
+        Object other$apiServerURL = other.getApiServerURL();
+        if (this$apiServerURL == null ? other$apiServerURL != null : !this$apiServerURL.equals(other$apiServerURL)) {
+            return false;
+        }
+        Object this$controlPlaneTopology = this.getControlPlaneTopology();
+        Object other$controlPlaneTopology = other.getControlPlaneTopology();
+        if (this$controlPlaneTopology == null ? other$controlPlaneTopology != null : !this$controlPlaneTopology.equals(other$controlPlaneTopology)) {
+            return false;
+        }
+        Object this$cpuPartitioning = this.getCpuPartitioning();
+        Object other$cpuPartitioning = other.getCpuPartitioning();
+        if (this$cpuPartitioning == null ? other$cpuPartitioning != null : !this$cpuPartitioning.equals(other$cpuPartitioning)) {
+            return false;
+        }
+        Object this$etcdDiscoveryDomain = this.getEtcdDiscoveryDomain();
+        Object other$etcdDiscoveryDomain = other.getEtcdDiscoveryDomain();
+        if (this$etcdDiscoveryDomain == null ? other$etcdDiscoveryDomain != null : !this$etcdDiscoveryDomain.equals(other$etcdDiscoveryDomain)) {
+            return false;
+        }
+        Object this$infrastructureName = this.getInfrastructureName();
+        Object other$infrastructureName = other.getInfrastructureName();
+        if (this$infrastructureName == null ? other$infrastructureName != null : !this$infrastructureName.equals(other$infrastructureName)) {
+            return false;
+        }
+        Object this$infrastructureTopology = this.getInfrastructureTopology();
+        Object other$infrastructureTopology = other.getInfrastructureTopology();
+        if (this$infrastructureTopology == null ? other$infrastructureTopology != null : !this$infrastructureTopology.equals(other$infrastructureTopology)) {
+            return false;
+        }
+        Object this$platform = this.getPlatform();
+        Object other$platform = other.getPlatform();
+        if (this$platform == null ? other$platform != null : !this$platform.equals(other$platform)) {
+            return false;
+        }
+        Object this$platformStatus = this.getPlatformStatus();
+        Object other$platformStatus = other.getPlatformStatus();
+        if (this$platformStatus == null ? other$platformStatus != null : !this$platformStatus.equals(other$platformStatus)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof InfrastructureStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiServerInternalURI = this.getApiServerInternalURI();
+        result = result * prime + ($apiServerInternalURI == null ? 43 : $apiServerInternalURI.hashCode());
+        Object $apiServerURL = this.getApiServerURL();
+        result = result * prime + ($apiServerURL == null ? 43 : $apiServerURL.hashCode());
+        Object $controlPlaneTopology = this.getControlPlaneTopology();
+        result = result * prime + ($controlPlaneTopology == null ? 43 : $controlPlaneTopology.hashCode());
+        Object $cpuPartitioning = this.getCpuPartitioning();
+        result = result * prime + ($cpuPartitioning == null ? 43 : $cpuPartitioning.hashCode());
+        Object $etcdDiscoveryDomain = this.getEtcdDiscoveryDomain();
+        result = result * prime + ($etcdDiscoveryDomain == null ? 43 : $etcdDiscoveryDomain.hashCode());
+        Object $infrastructureName = this.getInfrastructureName();
+        result = result * prime + ($infrastructureName == null ? 43 : $infrastructureName.hashCode());
+        Object $infrastructureTopology = this.getInfrastructureTopology();
+        result = result * prime + ($infrastructureTopology == null ? 43 : $infrastructureTopology.hashCode());
+        Object $platform = this.getPlatform();
+        result = result * prime + ($platform == null ? 43 : $platform.hashCode());
+        Object $platformStatus = this.getPlatformStatus();
+        result = result * prime + ($platformStatus == null ? 43 : $platformStatus.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "InfrastructureStatus(" + "apiServerInternalURI=" + this.getApiServerInternalURI() + ", apiServerURL=" + this.getApiServerURL() + ", controlPlaneTopology=" + this.getControlPlaneTopology() + ", cpuPartitioning=" + this.getCpuPartitioning() + ", etcdDiscoveryDomain=" + this.getEtcdDiscoveryDomain() + ", infrastructureName=" + this.getInfrastructureName() + ", infrastructureTopology=" + this.getInfrastructureTopology() + ", platform=" + this.getPlatform() + ", platformStatus=" + this.getPlatformStatus() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

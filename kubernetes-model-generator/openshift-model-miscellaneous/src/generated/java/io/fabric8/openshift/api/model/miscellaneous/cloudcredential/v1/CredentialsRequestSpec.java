@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CredentialsRequestSpec defines the desired state of CredentialsRequest
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "providerSpec",
     "secretRef",
     "serviceAccountNames"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -186,6 +177,71 @@ public class CredentialsRequestSpec implements Editable<CredentialsRequestSpecBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CredentialsRequestSpec)) {
+            return false;
+        }
+        CredentialsRequestSpec other = (CredentialsRequestSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cloudTokenPath = this.getCloudTokenPath();
+        Object other$cloudTokenPath = other.getCloudTokenPath();
+        if (this$cloudTokenPath == null ? other$cloudTokenPath != null : !this$cloudTokenPath.equals(other$cloudTokenPath)) {
+            return false;
+        }
+        Object this$providerSpec = this.getProviderSpec();
+        Object other$providerSpec = other.getProviderSpec();
+        if (this$providerSpec == null ? other$providerSpec != null : !this$providerSpec.equals(other$providerSpec)) {
+            return false;
+        }
+        Object this$secretRef = this.getSecretRef();
+        Object other$secretRef = other.getSecretRef();
+        if (this$secretRef == null ? other$secretRef != null : !this$secretRef.equals(other$secretRef)) {
+            return false;
+        }
+        Object this$serviceAccountNames = this.getServiceAccountNames();
+        Object other$serviceAccountNames = other.getServiceAccountNames();
+        if (this$serviceAccountNames == null ? other$serviceAccountNames != null : !this$serviceAccountNames.equals(other$serviceAccountNames)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CredentialsRequestSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cloudTokenPath = this.getCloudTokenPath();
+        result = result * prime + ($cloudTokenPath == null ? 43 : $cloudTokenPath.hashCode());
+        Object $providerSpec = this.getProviderSpec();
+        result = result * prime + ($providerSpec == null ? 43 : $providerSpec.hashCode());
+        Object $secretRef = this.getSecretRef();
+        result = result * prime + ($secretRef == null ? 43 : $secretRef.hashCode());
+        Object $serviceAccountNames = this.getServiceAccountNames();
+        result = result * prime + ($serviceAccountNames == null ? 43 : $serviceAccountNames.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CredentialsRequestSpec(" + "cloudTokenPath=" + this.getCloudTokenPath() + ", providerSpec=" + this.getProviderSpec() + ", secretRef=" + this.getSecretRef() + ", serviceAccountNames=" + this.getServiceAccountNames() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

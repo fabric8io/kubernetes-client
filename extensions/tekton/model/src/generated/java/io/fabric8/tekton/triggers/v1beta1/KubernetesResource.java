@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "servicePort",
     "serviceType",
     "spec"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -167,6 +158,78 @@ public class KubernetesResource implements Editable<KubernetesResourceBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof KubernetesResource)) {
+            return false;
+        }
+        KubernetesResource other = (KubernetesResource) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$replicas = this.getReplicas();
+        Object other$replicas = other.getReplicas();
+        if (this$replicas == null ? other$replicas != null : !this$replicas.equals(other$replicas)) {
+            return false;
+        }
+        Object this$serviceLoadBalancerClass = this.getServiceLoadBalancerClass();
+        Object other$serviceLoadBalancerClass = other.getServiceLoadBalancerClass();
+        if (this$serviceLoadBalancerClass == null ? other$serviceLoadBalancerClass != null : !this$serviceLoadBalancerClass.equals(other$serviceLoadBalancerClass)) {
+            return false;
+        }
+        Object this$servicePort = this.getServicePort();
+        Object other$servicePort = other.getServicePort();
+        if (this$servicePort == null ? other$servicePort != null : !this$servicePort.equals(other$servicePort)) {
+            return false;
+        }
+        Object this$serviceType = this.getServiceType();
+        Object other$serviceType = other.getServiceType();
+        if (this$serviceType == null ? other$serviceType != null : !this$serviceType.equals(other$serviceType)) {
+            return false;
+        }
+        Object this$spec = this.getSpec();
+        Object other$spec = other.getSpec();
+        if (this$spec == null ? other$spec != null : !this$spec.equals(other$spec)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof KubernetesResource;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $replicas = this.getReplicas();
+        result = result * prime + ($replicas == null ? 43 : $replicas.hashCode());
+        Object $serviceLoadBalancerClass = this.getServiceLoadBalancerClass();
+        result = result * prime + ($serviceLoadBalancerClass == null ? 43 : $serviceLoadBalancerClass.hashCode());
+        Object $servicePort = this.getServicePort();
+        result = result * prime + ($servicePort == null ? 43 : $servicePort.hashCode());
+        Object $serviceType = this.getServiceType();
+        result = result * prime + ($serviceType == null ? 43 : $serviceType.hashCode());
+        Object $spec = this.getSpec();
+        result = result * prime + ($spec == null ? 43 : $spec.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "KubernetesResource(" + "replicas=" + this.getReplicas() + ", serviceLoadBalancerClass=" + this.getServiceLoadBalancerClass() + ", servicePort=" + this.getServicePort() + ", serviceType=" + this.getServiceType() + ", spec=" + this.getSpec() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

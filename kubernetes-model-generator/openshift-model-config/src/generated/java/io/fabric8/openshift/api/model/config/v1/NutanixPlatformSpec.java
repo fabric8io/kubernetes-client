@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NutanixPlatformSpec holds the desired state of the Nutanix infrastructure provider. This only includes fields that can be modified in the cluster.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "failureDomains",
     "prismCentral",
     "prismElements"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -165,6 +156,64 @@ public class NutanixPlatformSpec implements Editable<NutanixPlatformSpecBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NutanixPlatformSpec)) {
+            return false;
+        }
+        NutanixPlatformSpec other = (NutanixPlatformSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$failureDomains = this.getFailureDomains();
+        Object other$failureDomains = other.getFailureDomains();
+        if (this$failureDomains == null ? other$failureDomains != null : !this$failureDomains.equals(other$failureDomains)) {
+            return false;
+        }
+        Object this$prismCentral = this.getPrismCentral();
+        Object other$prismCentral = other.getPrismCentral();
+        if (this$prismCentral == null ? other$prismCentral != null : !this$prismCentral.equals(other$prismCentral)) {
+            return false;
+        }
+        Object this$prismElements = this.getPrismElements();
+        Object other$prismElements = other.getPrismElements();
+        if (this$prismElements == null ? other$prismElements != null : !this$prismElements.equals(other$prismElements)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NutanixPlatformSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $failureDomains = this.getFailureDomains();
+        result = result * prime + ($failureDomains == null ? 43 : $failureDomains.hashCode());
+        Object $prismCentral = this.getPrismCentral();
+        result = result * prime + ($prismCentral == null ? 43 : $prismCentral.hashCode());
+        Object $prismElements = this.getPrismElements();
+        result = result * prime + ($prismElements == null ? 43 : $prismElements.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NutanixPlatformSpec(" + "failureDomains=" + this.getFailureDomains() + ", prismCentral=" + this.getPrismCentral() + ", prismElements=" + this.getPrismElements() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

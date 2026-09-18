@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SystemDiskProperties contains the information regarding the system disk including performance, size, name, and category
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "name",
     "performanceLevel",
     "size"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class SystemDiskProperties implements Editable<SystemDiskPropertiesBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SystemDiskProperties)) {
+            return false;
+        }
+        SystemDiskProperties other = (SystemDiskProperties) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$category = this.getCategory();
+        Object other$category = other.getCategory();
+        if (this$category == null ? other$category != null : !this$category.equals(other$category)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$performanceLevel = this.getPerformanceLevel();
+        Object other$performanceLevel = other.getPerformanceLevel();
+        if (this$performanceLevel == null ? other$performanceLevel != null : !this$performanceLevel.equals(other$performanceLevel)) {
+            return false;
+        }
+        Object this$size = this.getSize();
+        Object other$size = other.getSize();
+        if (this$size == null ? other$size != null : !this$size.equals(other$size)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SystemDiskProperties;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $category = this.getCategory();
+        result = result * prime + ($category == null ? 43 : $category.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $performanceLevel = this.getPerformanceLevel();
+        result = result * prime + ($performanceLevel == null ? 43 : $performanceLevel.hashCode());
+        Object $size = this.getSize();
+        result = result * prime + ($size == null ? 43 : $size.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SystemDiskProperties(" + "category=" + this.getCategory() + ", name=" + this.getName() + ", performanceLevel=" + this.getPerformanceLevel() + ", size=" + this.getSize() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

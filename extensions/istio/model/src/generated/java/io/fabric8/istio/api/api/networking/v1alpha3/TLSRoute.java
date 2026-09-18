@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Describes match conditions and actions for routing unterminated TLS traffic (TLS/HTTPS) The following routing rule forwards unterminated TLS traffic arriving at port 443 of gateway called "mygateway" to internal services in the mesh based on the SNI value.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: bookinfo-sni<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- "&#42;.bookinfo.com"<br><p> 	gateways:<br><p> 	- mygateway<br><p> 	tls:<br><p> 	- match:<br><p> 	  - port: 443<br><p> 	    sniHosts:<br><p> 	    - login.bookinfo.com<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: login.prod.svc.cluster.local<br><p> 	- match:<br><p> 	  - port: 443<br><p> 	    sniHosts:<br><p> 	    - reviews.bookinfo.com<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: reviews.prod.svc.cluster.local<br><p> <br><p> ```
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "match",
     "route"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -146,6 +137,57 @@ public class TLSRoute implements Editable<TLSRouteBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TLSRoute)) {
+            return false;
+        }
+        TLSRoute other = (TLSRoute) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$match = this.getMatch();
+        Object other$match = other.getMatch();
+        if (this$match == null ? other$match != null : !this$match.equals(other$match)) {
+            return false;
+        }
+        Object this$route = this.getRoute();
+        Object other$route = other.getRoute();
+        if (this$route == null ? other$route != null : !this$route.equals(other$route)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TLSRoute;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $match = this.getMatch();
+        result = result * prime + ($match == null ? 43 : $match.hashCode());
+        Object $route = this.getRoute();
+        result = result * prime + ($route == null ? 43 : $route.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TLSRoute(" + "match=" + this.getMatch() + ", route=" + this.getRoute() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

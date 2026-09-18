@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.api.model.clusterapi.core.v1beta1.Condition;
 import io.fabric8.kubernetes.api.model.clusterapi.core.v1beta1.FailureDomainSpec;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Metal3ClusterStatus defines the observed state of Metal3Cluster.
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "lastUpdated",
     "ready",
     "v1beta2"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -248,6 +239,92 @@ public class Metal3ClusterStatus implements Editable<Metal3ClusterStatusBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Metal3ClusterStatus)) {
+            return false;
+        }
+        Metal3ClusterStatus other = (Metal3ClusterStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$failureDomains = this.getFailureDomains();
+        Object other$failureDomains = other.getFailureDomains();
+        if (this$failureDomains == null ? other$failureDomains != null : !this$failureDomains.equals(other$failureDomains)) {
+            return false;
+        }
+        Object this$failureMessage = this.getFailureMessage();
+        Object other$failureMessage = other.getFailureMessage();
+        if (this$failureMessage == null ? other$failureMessage != null : !this$failureMessage.equals(other$failureMessage)) {
+            return false;
+        }
+        Object this$failureReason = this.getFailureReason();
+        Object other$failureReason = other.getFailureReason();
+        if (this$failureReason == null ? other$failureReason != null : !this$failureReason.equals(other$failureReason)) {
+            return false;
+        }
+        Object this$lastUpdated = this.getLastUpdated();
+        Object other$lastUpdated = other.getLastUpdated();
+        if (this$lastUpdated == null ? other$lastUpdated != null : !this$lastUpdated.equals(other$lastUpdated)) {
+            return false;
+        }
+        Object this$ready = this.getReady();
+        Object other$ready = other.getReady();
+        if (this$ready == null ? other$ready != null : !this$ready.equals(other$ready)) {
+            return false;
+        }
+        Object this$v1beta2 = this.getV1beta2();
+        Object other$v1beta2 = other.getV1beta2();
+        if (this$v1beta2 == null ? other$v1beta2 != null : !this$v1beta2.equals(other$v1beta2)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Metal3ClusterStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $failureDomains = this.getFailureDomains();
+        result = result * prime + ($failureDomains == null ? 43 : $failureDomains.hashCode());
+        Object $failureMessage = this.getFailureMessage();
+        result = result * prime + ($failureMessage == null ? 43 : $failureMessage.hashCode());
+        Object $failureReason = this.getFailureReason();
+        result = result * prime + ($failureReason == null ? 43 : $failureReason.hashCode());
+        Object $lastUpdated = this.getLastUpdated();
+        result = result * prime + ($lastUpdated == null ? 43 : $lastUpdated.hashCode());
+        Object $ready = this.getReady();
+        result = result * prime + ($ready == null ? 43 : $ready.hashCode());
+        Object $v1beta2 = this.getV1beta2();
+        result = result * prime + ($v1beta2 == null ? 43 : $v1beta2.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Metal3ClusterStatus(" + "conditions=" + this.getConditions() + ", failureDomains=" + this.getFailureDomains() + ", failureMessage=" + this.getFailureMessage() + ", failureReason=" + this.getFailureReason() + ", lastUpdated=" + this.getLastUpdated() + ", ready=" + this.getReady() + ", v1beta2=" + this.getV1beta2() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

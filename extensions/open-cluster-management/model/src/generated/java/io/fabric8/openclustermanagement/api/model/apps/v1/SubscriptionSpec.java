@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SubscriptionSpec defines the desired state of Subscription
@@ -52,12 +49,6 @@ import lombok.experimental.Accessors;
     "secondaryChannel",
     "timewindow",
     "watchHelmNamespaceScopedResources"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -350,6 +341,127 @@ public class SubscriptionSpec implements Editable<SubscriptionSpecBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SubscriptionSpec)) {
+            return false;
+        }
+        SubscriptionSpec other = (SubscriptionSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allow = this.getAllow();
+        Object other$allow = other.getAllow();
+        if (this$allow == null ? other$allow != null : !this$allow.equals(other$allow)) {
+            return false;
+        }
+        Object this$channel = this.getChannel();
+        Object other$channel = other.getChannel();
+        if (this$channel == null ? other$channel != null : !this$channel.equals(other$channel)) {
+            return false;
+        }
+        Object this$deny = this.getDeny();
+        Object other$deny = other.getDeny();
+        if (this$deny == null ? other$deny != null : !this$deny.equals(other$deny)) {
+            return false;
+        }
+        Object this$hooksecretref = this.getHooksecretref();
+        Object other$hooksecretref = other.getHooksecretref();
+        if (this$hooksecretref == null ? other$hooksecretref != null : !this$hooksecretref.equals(other$hooksecretref)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$overrides = this.getOverrides();
+        Object other$overrides = other.getOverrides();
+        if (this$overrides == null ? other$overrides != null : !this$overrides.equals(other$overrides)) {
+            return false;
+        }
+        Object this$packageFilter = this.getPackageFilter();
+        Object other$packageFilter = other.getPackageFilter();
+        if (this$packageFilter == null ? other$packageFilter != null : !this$packageFilter.equals(other$packageFilter)) {
+            return false;
+        }
+        Object this$packageOverrides = this.getPackageOverrides();
+        Object other$packageOverrides = other.getPackageOverrides();
+        if (this$packageOverrides == null ? other$packageOverrides != null : !this$packageOverrides.equals(other$packageOverrides)) {
+            return false;
+        }
+        Object this$placement = this.getPlacement();
+        Object other$placement = other.getPlacement();
+        if (this$placement == null ? other$placement != null : !this$placement.equals(other$placement)) {
+            return false;
+        }
+        Object this$secondaryChannel = this.getSecondaryChannel();
+        Object other$secondaryChannel = other.getSecondaryChannel();
+        if (this$secondaryChannel == null ? other$secondaryChannel != null : !this$secondaryChannel.equals(other$secondaryChannel)) {
+            return false;
+        }
+        Object this$timewindow = this.getTimewindow();
+        Object other$timewindow = other.getTimewindow();
+        if (this$timewindow == null ? other$timewindow != null : !this$timewindow.equals(other$timewindow)) {
+            return false;
+        }
+        Object this$watchHelmNamespaceScopedResources = this.getWatchHelmNamespaceScopedResources();
+        Object other$watchHelmNamespaceScopedResources = other.getWatchHelmNamespaceScopedResources();
+        if (this$watchHelmNamespaceScopedResources == null ? other$watchHelmNamespaceScopedResources != null : !this$watchHelmNamespaceScopedResources.equals(other$watchHelmNamespaceScopedResources)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SubscriptionSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allow = this.getAllow();
+        result = result * prime + ($allow == null ? 43 : $allow.hashCode());
+        Object $channel = this.getChannel();
+        result = result * prime + ($channel == null ? 43 : $channel.hashCode());
+        Object $deny = this.getDeny();
+        result = result * prime + ($deny == null ? 43 : $deny.hashCode());
+        Object $hooksecretref = this.getHooksecretref();
+        result = result * prime + ($hooksecretref == null ? 43 : $hooksecretref.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $overrides = this.getOverrides();
+        result = result * prime + ($overrides == null ? 43 : $overrides.hashCode());
+        Object $packageFilter = this.getPackageFilter();
+        result = result * prime + ($packageFilter == null ? 43 : $packageFilter.hashCode());
+        Object $packageOverrides = this.getPackageOverrides();
+        result = result * prime + ($packageOverrides == null ? 43 : $packageOverrides.hashCode());
+        Object $placement = this.getPlacement();
+        result = result * prime + ($placement == null ? 43 : $placement.hashCode());
+        Object $secondaryChannel = this.getSecondaryChannel();
+        result = result * prime + ($secondaryChannel == null ? 43 : $secondaryChannel.hashCode());
+        Object $timewindow = this.getTimewindow();
+        result = result * prime + ($timewindow == null ? 43 : $timewindow.hashCode());
+        Object $watchHelmNamespaceScopedResources = this.getWatchHelmNamespaceScopedResources();
+        result = result * prime + ($watchHelmNamespaceScopedResources == null ? 43 : $watchHelmNamespaceScopedResources.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SubscriptionSpec(" + "allow=" + this.getAllow() + ", channel=" + this.getChannel() + ", deny=" + this.getDeny() + ", hooksecretref=" + this.getHooksecretref() + ", name=" + this.getName() + ", overrides=" + this.getOverrides() + ", packageFilter=" + this.getPackageFilter() + ", packageOverrides=" + this.getPackageOverrides() + ", placement=" + this.getPlacement() + ", secondaryChannel=" + this.getSecondaryChannel() + ", timewindow=" + this.getTimewindow() + ", watchHelmNamespaceScopedResources=" + this.getWatchHelmNamespaceScopedResources() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

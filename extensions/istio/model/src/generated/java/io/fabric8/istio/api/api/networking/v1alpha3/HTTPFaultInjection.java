@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HTTPFaultInjection can be used to specify one or more faults to inject while forwarding HTTP requests to the destination specified in a route. Fault specification is part of a VirtualService rule. Faults include aborting the Http request from downstream service, and/or delaying proxying of requests. A fault rule MUST HAVE delay or abort or both.<br><p> <br><p> &#42;Note:&#42; Delay and abort faults are independent of one another, even if both are specified simultaneously.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "abort",
     "delay"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class HTTPFaultInjection implements Editable<HTTPFaultInjectionBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HTTPFaultInjection)) {
+            return false;
+        }
+        HTTPFaultInjection other = (HTTPFaultInjection) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$abort = this.getAbort();
+        Object other$abort = other.getAbort();
+        if (this$abort == null ? other$abort != null : !this$abort.equals(other$abort)) {
+            return false;
+        }
+        Object this$delay = this.getDelay();
+        Object other$delay = other.getDelay();
+        if (this$delay == null ? other$delay != null : !this$delay.equals(other$delay)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HTTPFaultInjection;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $abort = this.getAbort();
+        result = result * prime + ($abort == null ? 43 : $abort.hashCode());
+        Object $delay = this.getDelay();
+        result = result * prime + ($delay == null ? 43 : $delay.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HTTPFaultInjection(" + "abort=" + this.getAbort() + ", delay=" + this.getDelay() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RuleGroup is a list of sequentially evaluated alerting rules.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "interval",
     "name",
     "rules"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -163,6 +154,64 @@ public class RuleGroup implements Editable<RuleGroupBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RuleGroup)) {
+            return false;
+        }
+        RuleGroup other = (RuleGroup) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$interval = this.getInterval();
+        Object other$interval = other.getInterval();
+        if (this$interval == null ? other$interval != null : !this$interval.equals(other$interval)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$rules = this.getRules();
+        Object other$rules = other.getRules();
+        if (this$rules == null ? other$rules != null : !this$rules.equals(other$rules)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RuleGroup;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $interval = this.getInterval();
+        result = result * prime + ($interval == null ? 43 : $interval.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $rules = this.getRules();
+        result = result * prime + ($rules == null ? 43 : $rules.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RuleGroup(" + "interval=" + this.getInterval() + ", name=" + this.getName() + ", rules=" + this.getRules() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

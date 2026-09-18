@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * EventListenerTriggerGroup defines a group of Triggers that share a common set of interceptors
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "interceptors",
     "name",
     "triggerSelector"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -164,6 +155,64 @@ public class EventListenerTriggerGroup implements Editable<EventListenerTriggerG
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EventListenerTriggerGroup)) {
+            return false;
+        }
+        EventListenerTriggerGroup other = (EventListenerTriggerGroup) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$interceptors = this.getInterceptors();
+        Object other$interceptors = other.getInterceptors();
+        if (this$interceptors == null ? other$interceptors != null : !this$interceptors.equals(other$interceptors)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$triggerSelector = this.getTriggerSelector();
+        Object other$triggerSelector = other.getTriggerSelector();
+        if (this$triggerSelector == null ? other$triggerSelector != null : !this$triggerSelector.equals(other$triggerSelector)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EventListenerTriggerGroup;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $interceptors = this.getInterceptors();
+        result = result * prime + ($interceptors == null ? 43 : $interceptors.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $triggerSelector = this.getTriggerSelector();
+        result = result * prime + ($triggerSelector == null ? 43 : $triggerSelector.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EventListenerTriggerGroup(" + "interceptors=" + this.getInterceptors() + ", name=" + this.getName() + ", triggerSelector=" + this.getTriggerSelector() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

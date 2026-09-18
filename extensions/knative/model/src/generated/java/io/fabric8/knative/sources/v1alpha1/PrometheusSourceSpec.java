@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PrometheusSourceSpec defines the desired state of PrometheusSource
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "serviceAccountName",
     "sink",
     "step"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -261,6 +252,99 @@ public class PrometheusSourceSpec implements Editable<PrometheusSourceSpecBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PrometheusSourceSpec)) {
+            return false;
+        }
+        PrometheusSourceSpec other = (PrometheusSourceSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$authTokenFile = this.getAuthTokenFile();
+        Object other$authTokenFile = other.getAuthTokenFile();
+        if (this$authTokenFile == null ? other$authTokenFile != null : !this$authTokenFile.equals(other$authTokenFile)) {
+            return false;
+        }
+        Object this$caCertConfigMap = this.getCaCertConfigMap();
+        Object other$caCertConfigMap = other.getCaCertConfigMap();
+        if (this$caCertConfigMap == null ? other$caCertConfigMap != null : !this$caCertConfigMap.equals(other$caCertConfigMap)) {
+            return false;
+        }
+        Object this$promQL = this.getPromQL();
+        Object other$promQL = other.getPromQL();
+        if (this$promQL == null ? other$promQL != null : !this$promQL.equals(other$promQL)) {
+            return false;
+        }
+        Object this$schedule = this.getSchedule();
+        Object other$schedule = other.getSchedule();
+        if (this$schedule == null ? other$schedule != null : !this$schedule.equals(other$schedule)) {
+            return false;
+        }
+        Object this$serverURL = this.getServerURL();
+        Object other$serverURL = other.getServerURL();
+        if (this$serverURL == null ? other$serverURL != null : !this$serverURL.equals(other$serverURL)) {
+            return false;
+        }
+        Object this$serviceAccountName = this.getServiceAccountName();
+        Object other$serviceAccountName = other.getServiceAccountName();
+        if (this$serviceAccountName == null ? other$serviceAccountName != null : !this$serviceAccountName.equals(other$serviceAccountName)) {
+            return false;
+        }
+        Object this$sink = this.getSink();
+        Object other$sink = other.getSink();
+        if (this$sink == null ? other$sink != null : !this$sink.equals(other$sink)) {
+            return false;
+        }
+        Object this$step = this.getStep();
+        Object other$step = other.getStep();
+        if (this$step == null ? other$step != null : !this$step.equals(other$step)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PrometheusSourceSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $authTokenFile = this.getAuthTokenFile();
+        result = result * prime + ($authTokenFile == null ? 43 : $authTokenFile.hashCode());
+        Object $caCertConfigMap = this.getCaCertConfigMap();
+        result = result * prime + ($caCertConfigMap == null ? 43 : $caCertConfigMap.hashCode());
+        Object $promQL = this.getPromQL();
+        result = result * prime + ($promQL == null ? 43 : $promQL.hashCode());
+        Object $schedule = this.getSchedule();
+        result = result * prime + ($schedule == null ? 43 : $schedule.hashCode());
+        Object $serverURL = this.getServerURL();
+        result = result * prime + ($serverURL == null ? 43 : $serverURL.hashCode());
+        Object $serviceAccountName = this.getServiceAccountName();
+        result = result * prime + ($serviceAccountName == null ? 43 : $serviceAccountName.hashCode());
+        Object $sink = this.getSink();
+        result = result * prime + ($sink == null ? 43 : $sink.hashCode());
+        Object $step = this.getStep();
+        result = result * prime + ($step == null ? 43 : $step.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PrometheusSourceSpec(" + "authTokenFile=" + this.getAuthTokenFile() + ", caCertConfigMap=" + this.getCaCertConfigMap() + ", promQL=" + this.getPromQL() + ", schedule=" + this.getSchedule() + ", serverURL=" + this.getServerURL() + ", serviceAccountName=" + this.getServiceAccountName() + ", sink=" + this.getSink() + ", step=" + this.getStep() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

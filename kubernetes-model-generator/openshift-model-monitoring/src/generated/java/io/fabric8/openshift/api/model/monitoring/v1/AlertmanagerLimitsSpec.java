@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AlertmanagerLimitsSpec defines the limits command line flags when starting Alertmanager.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "maxPerSilenceBytes",
     "maxSilences"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -139,6 +130,57 @@ public class AlertmanagerLimitsSpec implements Editable<AlertmanagerLimitsSpecBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AlertmanagerLimitsSpec)) {
+            return false;
+        }
+        AlertmanagerLimitsSpec other = (AlertmanagerLimitsSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$maxPerSilenceBytes = this.getMaxPerSilenceBytes();
+        Object other$maxPerSilenceBytes = other.getMaxPerSilenceBytes();
+        if (this$maxPerSilenceBytes == null ? other$maxPerSilenceBytes != null : !this$maxPerSilenceBytes.equals(other$maxPerSilenceBytes)) {
+            return false;
+        }
+        Object this$maxSilences = this.getMaxSilences();
+        Object other$maxSilences = other.getMaxSilences();
+        if (this$maxSilences == null ? other$maxSilences != null : !this$maxSilences.equals(other$maxSilences)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AlertmanagerLimitsSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $maxPerSilenceBytes = this.getMaxPerSilenceBytes();
+        result = result * prime + ($maxPerSilenceBytes == null ? 43 : $maxPerSilenceBytes.hashCode());
+        Object $maxSilences = this.getMaxSilences();
+        result = result * prime + ($maxSilences == null ? 43 : $maxSilences.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AlertmanagerLimitsSpec(" + "maxPerSilenceBytes=" + this.getMaxPerSilenceBytes() + ", maxSilences=" + this.getMaxSilences() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

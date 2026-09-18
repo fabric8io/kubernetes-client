@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ServingInfo holds information about serving web pages
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "keyFile",
     "minTLSVersion",
     "namedCertificates"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -265,6 +256,99 @@ public class ServingInfo implements Editable<ServingInfoBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ServingInfo)) {
+            return false;
+        }
+        ServingInfo other = (ServingInfo) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bindAddress = this.getBindAddress();
+        Object other$bindAddress = other.getBindAddress();
+        if (this$bindAddress == null ? other$bindAddress != null : !this$bindAddress.equals(other$bindAddress)) {
+            return false;
+        }
+        Object this$bindNetwork = this.getBindNetwork();
+        Object other$bindNetwork = other.getBindNetwork();
+        if (this$bindNetwork == null ? other$bindNetwork != null : !this$bindNetwork.equals(other$bindNetwork)) {
+            return false;
+        }
+        Object this$certFile = this.getCertFile();
+        Object other$certFile = other.getCertFile();
+        if (this$certFile == null ? other$certFile != null : !this$certFile.equals(other$certFile)) {
+            return false;
+        }
+        Object this$cipherSuites = this.getCipherSuites();
+        Object other$cipherSuites = other.getCipherSuites();
+        if (this$cipherSuites == null ? other$cipherSuites != null : !this$cipherSuites.equals(other$cipherSuites)) {
+            return false;
+        }
+        Object this$clientCA = this.getClientCA();
+        Object other$clientCA = other.getClientCA();
+        if (this$clientCA == null ? other$clientCA != null : !this$clientCA.equals(other$clientCA)) {
+            return false;
+        }
+        Object this$keyFile = this.getKeyFile();
+        Object other$keyFile = other.getKeyFile();
+        if (this$keyFile == null ? other$keyFile != null : !this$keyFile.equals(other$keyFile)) {
+            return false;
+        }
+        Object this$minTLSVersion = this.getMinTLSVersion();
+        Object other$minTLSVersion = other.getMinTLSVersion();
+        if (this$minTLSVersion == null ? other$minTLSVersion != null : !this$minTLSVersion.equals(other$minTLSVersion)) {
+            return false;
+        }
+        Object this$namedCertificates = this.getNamedCertificates();
+        Object other$namedCertificates = other.getNamedCertificates();
+        if (this$namedCertificates == null ? other$namedCertificates != null : !this$namedCertificates.equals(other$namedCertificates)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ServingInfo;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bindAddress = this.getBindAddress();
+        result = result * prime + ($bindAddress == null ? 43 : $bindAddress.hashCode());
+        Object $bindNetwork = this.getBindNetwork();
+        result = result * prime + ($bindNetwork == null ? 43 : $bindNetwork.hashCode());
+        Object $certFile = this.getCertFile();
+        result = result * prime + ($certFile == null ? 43 : $certFile.hashCode());
+        Object $cipherSuites = this.getCipherSuites();
+        result = result * prime + ($cipherSuites == null ? 43 : $cipherSuites.hashCode());
+        Object $clientCA = this.getClientCA();
+        result = result * prime + ($clientCA == null ? 43 : $clientCA.hashCode());
+        Object $keyFile = this.getKeyFile();
+        result = result * prime + ($keyFile == null ? 43 : $keyFile.hashCode());
+        Object $minTLSVersion = this.getMinTLSVersion();
+        result = result * prime + ($minTLSVersion == null ? 43 : $minTLSVersion.hashCode());
+        Object $namedCertificates = this.getNamedCertificates();
+        result = result * prime + ($namedCertificates == null ? 43 : $namedCertificates.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ServingInfo(" + "bindAddress=" + this.getBindAddress() + ", bindNetwork=" + this.getBindNetwork() + ", certFile=" + this.getCertFile() + ", cipherSuites=" + this.getCipherSuites() + ", clientCA=" + this.getClientCA() + ", keyFile=" + this.getKeyFile() + ", minTLSVersion=" + this.getMinTLSVersion() + ", namedCertificates=" + this.getNamedCertificates() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

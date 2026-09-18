@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Represents a volume that is populated with the contents of a git repository. Git repo volumes do not support ownership management. Git repo volumes support SELinux relabeling.<br><p> <br><p> DEPRECATED: GitRepo is deprecated. To provision a container with a git repo, mount an EmptyDir into an InitContainer that clones the repo using git, then mount the EmptyDir into the Pod's container.
@@ -26,12 +23,6 @@ import lombok.experimental.Accessors;
     "directory",
     "repository",
     "revision"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -131,6 +122,64 @@ public class GitRepoVolumeSource implements Editable<GitRepoVolumeSourceBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GitRepoVolumeSource)) {
+            return false;
+        }
+        GitRepoVolumeSource other = (GitRepoVolumeSource) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$directory = this.getDirectory();
+        Object other$directory = other.getDirectory();
+        if (this$directory == null ? other$directory != null : !this$directory.equals(other$directory)) {
+            return false;
+        }
+        Object this$repository = this.getRepository();
+        Object other$repository = other.getRepository();
+        if (this$repository == null ? other$repository != null : !this$repository.equals(other$repository)) {
+            return false;
+        }
+        Object this$revision = this.getRevision();
+        Object other$revision = other.getRevision();
+        if (this$revision == null ? other$revision != null : !this$revision.equals(other$revision)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GitRepoVolumeSource;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $directory = this.getDirectory();
+        result = result * prime + ($directory == null ? 43 : $directory.hashCode());
+        Object $repository = this.getRepository();
+        result = result * prime + ($repository == null ? 43 : $repository.hashCode());
+        Object $revision = this.getRevision();
+        result = result * prime + ($revision == null ? 43 : $revision.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GitRepoVolumeSource(" + "directory=" + this.getDirectory() + ", repository=" + this.getRepository() + ", revision=" + this.getRevision() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

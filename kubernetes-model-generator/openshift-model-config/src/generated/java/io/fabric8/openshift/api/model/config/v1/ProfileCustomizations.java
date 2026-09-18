@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ProfileCustomizations contains various parameters for modifying the default behavior of certain profiles
@@ -38,12 +35,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "dynamicResourceAllocation"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -119,6 +110,50 @@ public class ProfileCustomizations implements Editable<ProfileCustomizationsBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ProfileCustomizations)) {
+            return false;
+        }
+        ProfileCustomizations other = (ProfileCustomizations) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$dynamicResourceAllocation = this.getDynamicResourceAllocation();
+        Object other$dynamicResourceAllocation = other.getDynamicResourceAllocation();
+        if (this$dynamicResourceAllocation == null ? other$dynamicResourceAllocation != null : !this$dynamicResourceAllocation.equals(other$dynamicResourceAllocation)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ProfileCustomizations;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $dynamicResourceAllocation = this.getDynamicResourceAllocation();
+        result = result * prime + ($dynamicResourceAllocation == null ? 43 : $dynamicResourceAllocation.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ProfileCustomizations(" + "dynamicResourceAllocation=" + this.getDynamicResourceAllocation() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

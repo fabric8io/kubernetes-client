@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -38,12 +35,6 @@ import lombok.experimental.Accessors;
     "ipfix",
     "netFlow",
     "sFlow"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -139,6 +130,64 @@ public class ExportNetworkFlows implements Editable<ExportNetworkFlowsBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ExportNetworkFlows)) {
+            return false;
+        }
+        ExportNetworkFlows other = (ExportNetworkFlows) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ipfix = this.getIpfix();
+        Object other$ipfix = other.getIpfix();
+        if (this$ipfix == null ? other$ipfix != null : !this$ipfix.equals(other$ipfix)) {
+            return false;
+        }
+        Object this$netFlow = this.getNetFlow();
+        Object other$netFlow = other.getNetFlow();
+        if (this$netFlow == null ? other$netFlow != null : !this$netFlow.equals(other$netFlow)) {
+            return false;
+        }
+        Object this$sFlow = this.getSFlow();
+        Object other$sFlow = other.getSFlow();
+        if (this$sFlow == null ? other$sFlow != null : !this$sFlow.equals(other$sFlow)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ExportNetworkFlows;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ipfix = this.getIpfix();
+        result = result * prime + ($ipfix == null ? 43 : $ipfix.hashCode());
+        Object $netFlow = this.getNetFlow();
+        result = result * prime + ($netFlow == null ? 43 : $netFlow.hashCode());
+        Object $sFlow = this.getSFlow();
+        result = result * prime + ($sFlow == null ? 43 : $sFlow.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ExportNetworkFlows(" + "ipfix=" + this.getIpfix() + ", netFlow=" + this.getNetFlow() + ", sFlow=" + this.getSFlow() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

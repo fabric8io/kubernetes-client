@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * UpdateHistory is a single attempted update to the cluster.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "state",
     "verified",
     "version"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -239,6 +230,92 @@ public class UpdateHistory implements Editable<UpdateHistoryBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof UpdateHistory)) {
+            return false;
+        }
+        UpdateHistory other = (UpdateHistory) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$acceptedRisks = this.getAcceptedRisks();
+        Object other$acceptedRisks = other.getAcceptedRisks();
+        if (this$acceptedRisks == null ? other$acceptedRisks != null : !this$acceptedRisks.equals(other$acceptedRisks)) {
+            return false;
+        }
+        Object this$completionTime = this.getCompletionTime();
+        Object other$completionTime = other.getCompletionTime();
+        if (this$completionTime == null ? other$completionTime != null : !this$completionTime.equals(other$completionTime)) {
+            return false;
+        }
+        Object this$image = this.getImage();
+        Object other$image = other.getImage();
+        if (this$image == null ? other$image != null : !this$image.equals(other$image)) {
+            return false;
+        }
+        Object this$startedTime = this.getStartedTime();
+        Object other$startedTime = other.getStartedTime();
+        if (this$startedTime == null ? other$startedTime != null : !this$startedTime.equals(other$startedTime)) {
+            return false;
+        }
+        Object this$state = this.getState();
+        Object other$state = other.getState();
+        if (this$state == null ? other$state != null : !this$state.equals(other$state)) {
+            return false;
+        }
+        Object this$verified = this.getVerified();
+        Object other$verified = other.getVerified();
+        if (this$verified == null ? other$verified != null : !this$verified.equals(other$verified)) {
+            return false;
+        }
+        Object this$version = this.getVersion();
+        Object other$version = other.getVersion();
+        if (this$version == null ? other$version != null : !this$version.equals(other$version)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof UpdateHistory;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $acceptedRisks = this.getAcceptedRisks();
+        result = result * prime + ($acceptedRisks == null ? 43 : $acceptedRisks.hashCode());
+        Object $completionTime = this.getCompletionTime();
+        result = result * prime + ($completionTime == null ? 43 : $completionTime.hashCode());
+        Object $image = this.getImage();
+        result = result * prime + ($image == null ? 43 : $image.hashCode());
+        Object $startedTime = this.getStartedTime();
+        result = result * prime + ($startedTime == null ? 43 : $startedTime.hashCode());
+        Object $state = this.getState();
+        result = result * prime + ($state == null ? 43 : $state.hashCode());
+        Object $verified = this.getVerified();
+        result = result * prime + ($verified == null ? 43 : $verified.hashCode());
+        Object $version = this.getVersion();
+        result = result * prime + ($version == null ? 43 : $version.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "UpdateHistory(" + "acceptedRisks=" + this.getAcceptedRisks() + ", completionTime=" + this.getCompletionTime() + ", image=" + this.getImage() + ", startedTime=" + this.getStartedTime() + ", state=" + this.getState() + ", verified=" + this.getVerified() + ", version=" + this.getVersion() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

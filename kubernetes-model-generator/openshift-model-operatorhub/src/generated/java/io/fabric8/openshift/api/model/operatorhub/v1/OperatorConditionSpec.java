@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OperatorConditionSpec allows a cluster admin to convey information about the state of an operator to OLM, potentially overriding state reported by the operator.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "deployments",
     "overrides",
     "serviceAccounts"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -169,6 +160,64 @@ public class OperatorConditionSpec implements Editable<OperatorConditionSpecBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OperatorConditionSpec)) {
+            return false;
+        }
+        OperatorConditionSpec other = (OperatorConditionSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$deployments = this.getDeployments();
+        Object other$deployments = other.getDeployments();
+        if (this$deployments == null ? other$deployments != null : !this$deployments.equals(other$deployments)) {
+            return false;
+        }
+        Object this$overrides = this.getOverrides();
+        Object other$overrides = other.getOverrides();
+        if (this$overrides == null ? other$overrides != null : !this$overrides.equals(other$overrides)) {
+            return false;
+        }
+        Object this$serviceAccounts = this.getServiceAccounts();
+        Object other$serviceAccounts = other.getServiceAccounts();
+        if (this$serviceAccounts == null ? other$serviceAccounts != null : !this$serviceAccounts.equals(other$serviceAccounts)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OperatorConditionSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $deployments = this.getDeployments();
+        result = result * prime + ($deployments == null ? 43 : $deployments.hashCode());
+        Object $overrides = this.getOverrides();
+        result = result * prime + ($overrides == null ? 43 : $overrides.hashCode());
+        Object $serviceAccounts = this.getServiceAccounts();
+        result = result * prime + ($serviceAccounts == null ? 43 : $serviceAccounts.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OperatorConditionSpec(" + "deployments=" + this.getDeployments() + ", overrides=" + this.getOverrides() + ", serviceAccounts=" + this.getServiceAccounts() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

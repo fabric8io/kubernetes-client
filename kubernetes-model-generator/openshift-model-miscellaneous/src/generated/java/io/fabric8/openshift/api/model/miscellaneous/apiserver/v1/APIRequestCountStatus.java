@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "last24h",
     "removedInRelease",
     "requestCount"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -198,6 +189,78 @@ public class APIRequestCountStatus implements Editable<APIRequestCountStatusBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof APIRequestCountStatus)) {
+            return false;
+        }
+        APIRequestCountStatus other = (APIRequestCountStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$currentHour = this.getCurrentHour();
+        Object other$currentHour = other.getCurrentHour();
+        if (this$currentHour == null ? other$currentHour != null : !this$currentHour.equals(other$currentHour)) {
+            return false;
+        }
+        Object this$last24h = this.getLast24h();
+        Object other$last24h = other.getLast24h();
+        if (this$last24h == null ? other$last24h != null : !this$last24h.equals(other$last24h)) {
+            return false;
+        }
+        Object this$removedInRelease = this.getRemovedInRelease();
+        Object other$removedInRelease = other.getRemovedInRelease();
+        if (this$removedInRelease == null ? other$removedInRelease != null : !this$removedInRelease.equals(other$removedInRelease)) {
+            return false;
+        }
+        Object this$requestCount = this.getRequestCount();
+        Object other$requestCount = other.getRequestCount();
+        if (this$requestCount == null ? other$requestCount != null : !this$requestCount.equals(other$requestCount)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof APIRequestCountStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $currentHour = this.getCurrentHour();
+        result = result * prime + ($currentHour == null ? 43 : $currentHour.hashCode());
+        Object $last24h = this.getLast24h();
+        result = result * prime + ($last24h == null ? 43 : $last24h.hashCode());
+        Object $removedInRelease = this.getRemovedInRelease();
+        result = result * prime + ($removedInRelease == null ? 43 : $removedInRelease.hashCode());
+        Object $requestCount = this.getRequestCount();
+        result = result * prime + ($requestCount == null ? 43 : $requestCount.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "APIRequestCountStatus(" + "conditions=" + this.getConditions() + ", currentHour=" + this.getCurrentHour() + ", last24h=" + this.getLast24h() + ", removedInRelease=" + this.getRemovedInRelease() + ", requestCount=" + this.getRequestCount() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

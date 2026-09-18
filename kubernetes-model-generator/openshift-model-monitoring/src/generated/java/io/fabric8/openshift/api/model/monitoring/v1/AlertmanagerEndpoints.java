@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AlertmanagerEndpoints defines a selection of a single Endpoints object containing Alertmanager IPs to fire alerts against.
@@ -59,12 +56,6 @@ import lombok.experimental.Accessors;
     "sigv4",
     "timeout",
     "tlsConfig"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -488,6 +479,176 @@ public class AlertmanagerEndpoints implements Editable<AlertmanagerEndpointsBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AlertmanagerEndpoints)) {
+            return false;
+        }
+        AlertmanagerEndpoints other = (AlertmanagerEndpoints) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$alertRelabelings = this.getAlertRelabelings();
+        Object other$alertRelabelings = other.getAlertRelabelings();
+        if (this$alertRelabelings == null ? other$alertRelabelings != null : !this$alertRelabelings.equals(other$alertRelabelings)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$authorization = this.getAuthorization();
+        Object other$authorization = other.getAuthorization();
+        if (this$authorization == null ? other$authorization != null : !this$authorization.equals(other$authorization)) {
+            return false;
+        }
+        Object this$basicAuth = this.getBasicAuth();
+        Object other$basicAuth = other.getBasicAuth();
+        if (this$basicAuth == null ? other$basicAuth != null : !this$basicAuth.equals(other$basicAuth)) {
+            return false;
+        }
+        Object this$bearerTokenFile = this.getBearerTokenFile();
+        Object other$bearerTokenFile = other.getBearerTokenFile();
+        if (this$bearerTokenFile == null ? other$bearerTokenFile != null : !this$bearerTokenFile.equals(other$bearerTokenFile)) {
+            return false;
+        }
+        Object this$enableHttp2 = this.getEnableHttp2();
+        Object other$enableHttp2 = other.getEnableHttp2();
+        if (this$enableHttp2 == null ? other$enableHttp2 != null : !this$enableHttp2.equals(other$enableHttp2)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$namespace = this.getNamespace();
+        Object other$namespace = other.getNamespace();
+        if (this$namespace == null ? other$namespace != null : !this$namespace.equals(other$namespace)) {
+            return false;
+        }
+        Object this$noProxy = this.getNoProxy();
+        Object other$noProxy = other.getNoProxy();
+        if (this$noProxy == null ? other$noProxy != null : !this$noProxy.equals(other$noProxy)) {
+            return false;
+        }
+        Object this$pathPrefix = this.getPathPrefix();
+        Object other$pathPrefix = other.getPathPrefix();
+        if (this$pathPrefix == null ? other$pathPrefix != null : !this$pathPrefix.equals(other$pathPrefix)) {
+            return false;
+        }
+        Object this$port = this.getPort();
+        Object other$port = other.getPort();
+        if (this$port == null ? other$port != null : !this$port.equals(other$port)) {
+            return false;
+        }
+        Object this$proxyConnectHeader = this.getProxyConnectHeader();
+        Object other$proxyConnectHeader = other.getProxyConnectHeader();
+        if (this$proxyConnectHeader == null ? other$proxyConnectHeader != null : !this$proxyConnectHeader.equals(other$proxyConnectHeader)) {
+            return false;
+        }
+        Object this$proxyFromEnvironment = this.getProxyFromEnvironment();
+        Object other$proxyFromEnvironment = other.getProxyFromEnvironment();
+        if (this$proxyFromEnvironment == null ? other$proxyFromEnvironment != null : !this$proxyFromEnvironment.equals(other$proxyFromEnvironment)) {
+            return false;
+        }
+        Object this$proxyUrl = this.getProxyUrl();
+        Object other$proxyUrl = other.getProxyUrl();
+        if (this$proxyUrl == null ? other$proxyUrl != null : !this$proxyUrl.equals(other$proxyUrl)) {
+            return false;
+        }
+        Object this$relabelings = this.getRelabelings();
+        Object other$relabelings = other.getRelabelings();
+        if (this$relabelings == null ? other$relabelings != null : !this$relabelings.equals(other$relabelings)) {
+            return false;
+        }
+        Object this$scheme = this.getScheme();
+        Object other$scheme = other.getScheme();
+        if (this$scheme == null ? other$scheme != null : !this$scheme.equals(other$scheme)) {
+            return false;
+        }
+        Object this$sigv4 = this.getSigv4();
+        Object other$sigv4 = other.getSigv4();
+        if (this$sigv4 == null ? other$sigv4 != null : !this$sigv4.equals(other$sigv4)) {
+            return false;
+        }
+        Object this$timeout = this.getTimeout();
+        Object other$timeout = other.getTimeout();
+        if (this$timeout == null ? other$timeout != null : !this$timeout.equals(other$timeout)) {
+            return false;
+        }
+        Object this$tlsConfig = this.getTlsConfig();
+        Object other$tlsConfig = other.getTlsConfig();
+        if (this$tlsConfig == null ? other$tlsConfig != null : !this$tlsConfig.equals(other$tlsConfig)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AlertmanagerEndpoints;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $alertRelabelings = this.getAlertRelabelings();
+        result = result * prime + ($alertRelabelings == null ? 43 : $alertRelabelings.hashCode());
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $authorization = this.getAuthorization();
+        result = result * prime + ($authorization == null ? 43 : $authorization.hashCode());
+        Object $basicAuth = this.getBasicAuth();
+        result = result * prime + ($basicAuth == null ? 43 : $basicAuth.hashCode());
+        Object $bearerTokenFile = this.getBearerTokenFile();
+        result = result * prime + ($bearerTokenFile == null ? 43 : $bearerTokenFile.hashCode());
+        Object $enableHttp2 = this.getEnableHttp2();
+        result = result * prime + ($enableHttp2 == null ? 43 : $enableHttp2.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $namespace = this.getNamespace();
+        result = result * prime + ($namespace == null ? 43 : $namespace.hashCode());
+        Object $noProxy = this.getNoProxy();
+        result = result * prime + ($noProxy == null ? 43 : $noProxy.hashCode());
+        Object $pathPrefix = this.getPathPrefix();
+        result = result * prime + ($pathPrefix == null ? 43 : $pathPrefix.hashCode());
+        Object $port = this.getPort();
+        result = result * prime + ($port == null ? 43 : $port.hashCode());
+        Object $proxyConnectHeader = this.getProxyConnectHeader();
+        result = result * prime + ($proxyConnectHeader == null ? 43 : $proxyConnectHeader.hashCode());
+        Object $proxyFromEnvironment = this.getProxyFromEnvironment();
+        result = result * prime + ($proxyFromEnvironment == null ? 43 : $proxyFromEnvironment.hashCode());
+        Object $proxyUrl = this.getProxyUrl();
+        result = result * prime + ($proxyUrl == null ? 43 : $proxyUrl.hashCode());
+        Object $relabelings = this.getRelabelings();
+        result = result * prime + ($relabelings == null ? 43 : $relabelings.hashCode());
+        Object $scheme = this.getScheme();
+        result = result * prime + ($scheme == null ? 43 : $scheme.hashCode());
+        Object $sigv4 = this.getSigv4();
+        result = result * prime + ($sigv4 == null ? 43 : $sigv4.hashCode());
+        Object $timeout = this.getTimeout();
+        result = result * prime + ($timeout == null ? 43 : $timeout.hashCode());
+        Object $tlsConfig = this.getTlsConfig();
+        result = result * prime + ($tlsConfig == null ? 43 : $tlsConfig.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AlertmanagerEndpoints(" + "alertRelabelings=" + this.getAlertRelabelings() + ", apiVersion=" + this.getApiVersion() + ", authorization=" + this.getAuthorization() + ", basicAuth=" + this.getBasicAuth() + ", bearerTokenFile=" + this.getBearerTokenFile() + ", enableHttp2=" + this.getEnableHttp2() + ", name=" + this.getName() + ", namespace=" + this.getNamespace() + ", noProxy=" + this.getNoProxy() + ", pathPrefix=" + this.getPathPrefix() + ", port=" + this.getPort() + ", proxyConnectHeader=" + this.getProxyConnectHeader() + ", proxyFromEnvironment=" + this.getProxyFromEnvironment() + ", proxyUrl=" + this.getProxyUrl() + ", relabelings=" + this.getRelabelings() + ", scheme=" + this.getScheme() + ", sigv4=" + this.getSigv4() + ", timeout=" + this.getTimeout() + ", tlsConfig=" + this.getTlsConfig() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

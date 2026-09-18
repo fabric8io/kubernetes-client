@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.tekton.v1.RefSource;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ResolutionRequestStatus are all the fields in a ResolutionRequest's status subresource.
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "observedGeneration",
     "refSource",
     "source"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -228,6 +219,85 @@ public class ResolutionRequestStatus implements Editable<ResolutionRequestStatus
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ResolutionRequestStatus)) {
+            return false;
+        }
+        ResolutionRequestStatus other = (ResolutionRequestStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$annotations = this.getAnnotations();
+        Object other$annotations = other.getAnnotations();
+        if (this$annotations == null ? other$annotations != null : !this$annotations.equals(other$annotations)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$data = this.getData();
+        Object other$data = other.getData();
+        if (this$data == null ? other$data != null : !this$data.equals(other$data)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$refSource = this.getRefSource();
+        Object other$refSource = other.getRefSource();
+        if (this$refSource == null ? other$refSource != null : !this$refSource.equals(other$refSource)) {
+            return false;
+        }
+        Object this$source = this.getSource();
+        Object other$source = other.getSource();
+        if (this$source == null ? other$source != null : !this$source.equals(other$source)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ResolutionRequestStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $annotations = this.getAnnotations();
+        result = result * prime + ($annotations == null ? 43 : $annotations.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $data = this.getData();
+        result = result * prime + ($data == null ? 43 : $data.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $refSource = this.getRefSource();
+        result = result * prime + ($refSource == null ? 43 : $refSource.hashCode());
+        Object $source = this.getSource();
+        result = result * prime + ($source == null ? 43 : $source.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ResolutionRequestStatus(" + "annotations=" + this.getAnnotations() + ", conditions=" + this.getConditions() + ", data=" + this.getData() + ", observedGeneration=" + this.getObservedGeneration() + ", refSource=" + this.getRefSource() + ", source=" + this.getSource() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CustomResourceDefinitionVersion describes a version for CRD.
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "served",
     "storage",
     "subresources"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -264,6 +255,99 @@ public class CustomResourceDefinitionVersion implements Editable<CustomResourceD
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CustomResourceDefinitionVersion)) {
+            return false;
+        }
+        CustomResourceDefinitionVersion other = (CustomResourceDefinitionVersion) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$additionalPrinterColumns = this.getAdditionalPrinterColumns();
+        Object other$additionalPrinterColumns = other.getAdditionalPrinterColumns();
+        if (this$additionalPrinterColumns == null ? other$additionalPrinterColumns != null : !this$additionalPrinterColumns.equals(other$additionalPrinterColumns)) {
+            return false;
+        }
+        Object this$deprecated = this.getDeprecated();
+        Object other$deprecated = other.getDeprecated();
+        if (this$deprecated == null ? other$deprecated != null : !this$deprecated.equals(other$deprecated)) {
+            return false;
+        }
+        Object this$deprecationWarning = this.getDeprecationWarning();
+        Object other$deprecationWarning = other.getDeprecationWarning();
+        if (this$deprecationWarning == null ? other$deprecationWarning != null : !this$deprecationWarning.equals(other$deprecationWarning)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$schema = this.getSchema();
+        Object other$schema = other.getSchema();
+        if (this$schema == null ? other$schema != null : !this$schema.equals(other$schema)) {
+            return false;
+        }
+        Object this$served = this.getServed();
+        Object other$served = other.getServed();
+        if (this$served == null ? other$served != null : !this$served.equals(other$served)) {
+            return false;
+        }
+        Object this$storage = this.getStorage();
+        Object other$storage = other.getStorage();
+        if (this$storage == null ? other$storage != null : !this$storage.equals(other$storage)) {
+            return false;
+        }
+        Object this$subresources = this.getSubresources();
+        Object other$subresources = other.getSubresources();
+        if (this$subresources == null ? other$subresources != null : !this$subresources.equals(other$subresources)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CustomResourceDefinitionVersion;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $additionalPrinterColumns = this.getAdditionalPrinterColumns();
+        result = result * prime + ($additionalPrinterColumns == null ? 43 : $additionalPrinterColumns.hashCode());
+        Object $deprecated = this.getDeprecated();
+        result = result * prime + ($deprecated == null ? 43 : $deprecated.hashCode());
+        Object $deprecationWarning = this.getDeprecationWarning();
+        result = result * prime + ($deprecationWarning == null ? 43 : $deprecationWarning.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $schema = this.getSchema();
+        result = result * prime + ($schema == null ? 43 : $schema.hashCode());
+        Object $served = this.getServed();
+        result = result * prime + ($served == null ? 43 : $served.hashCode());
+        Object $storage = this.getStorage();
+        result = result * prime + ($storage == null ? 43 : $storage.hashCode());
+        Object $subresources = this.getSubresources();
+        result = result * prime + ($subresources == null ? 43 : $subresources.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CustomResourceDefinitionVersion(" + "additionalPrinterColumns=" + this.getAdditionalPrinterColumns() + ", deprecated=" + this.getDeprecated() + ", deprecationWarning=" + this.getDeprecationWarning() + ", name=" + this.getName() + ", schema=" + this.getSchema() + ", served=" + this.getServed() + ", storage=" + this.getStorage() + ", subresources=" + this.getSubresources() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

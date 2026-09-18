@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClusterDeploymentCustomizationSpec defines the desired state of ClusterDeploymentCustomization.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "installConfigPatches"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -124,6 +115,50 @@ public class ClusterDeploymentCustomizationSpec implements Editable<ClusterDeplo
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterDeploymentCustomizationSpec)) {
+            return false;
+        }
+        ClusterDeploymentCustomizationSpec other = (ClusterDeploymentCustomizationSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$installConfigPatches = this.getInstallConfigPatches();
+        Object other$installConfigPatches = other.getInstallConfigPatches();
+        if (this$installConfigPatches == null ? other$installConfigPatches != null : !this$installConfigPatches.equals(other$installConfigPatches)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterDeploymentCustomizationSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $installConfigPatches = this.getInstallConfigPatches();
+        result = result * prime + ($installConfigPatches == null ? 43 : $installConfigPatches.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterDeploymentCustomizationSpec(" + "installConfigPatches=" + this.getInstallConfigPatches() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

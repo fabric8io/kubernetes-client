@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ViolationContext defines the noncompliant replicated policy information that is sent to the AnsibleJob through the extra_vars parameter.
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "policySets",
     "policyViolations",
     "targetClusters"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -228,6 +219,85 @@ public class ViolationContext implements Editable<ViolationContextBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ViolationContext)) {
+            return false;
+        }
+        ViolationContext other = (ViolationContext) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$hubCluster = this.getHubCluster();
+        Object other$hubCluster = other.getHubCluster();
+        if (this$hubCluster == null ? other$hubCluster != null : !this$hubCluster.equals(other$hubCluster)) {
+            return false;
+        }
+        Object this$policyName = this.getPolicyName();
+        Object other$policyName = other.getPolicyName();
+        if (this$policyName == null ? other$policyName != null : !this$policyName.equals(other$policyName)) {
+            return false;
+        }
+        Object this$policyNamespace = this.getPolicyNamespace();
+        Object other$policyNamespace = other.getPolicyNamespace();
+        if (this$policyNamespace == null ? other$policyNamespace != null : !this$policyNamespace.equals(other$policyNamespace)) {
+            return false;
+        }
+        Object this$policySets = this.getPolicySets();
+        Object other$policySets = other.getPolicySets();
+        if (this$policySets == null ? other$policySets != null : !this$policySets.equals(other$policySets)) {
+            return false;
+        }
+        Object this$policyViolations = this.getPolicyViolations();
+        Object other$policyViolations = other.getPolicyViolations();
+        if (this$policyViolations == null ? other$policyViolations != null : !this$policyViolations.equals(other$policyViolations)) {
+            return false;
+        }
+        Object this$targetClusters = this.getTargetClusters();
+        Object other$targetClusters = other.getTargetClusters();
+        if (this$targetClusters == null ? other$targetClusters != null : !this$targetClusters.equals(other$targetClusters)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ViolationContext;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $hubCluster = this.getHubCluster();
+        result = result * prime + ($hubCluster == null ? 43 : $hubCluster.hashCode());
+        Object $policyName = this.getPolicyName();
+        result = result * prime + ($policyName == null ? 43 : $policyName.hashCode());
+        Object $policyNamespace = this.getPolicyNamespace();
+        result = result * prime + ($policyNamespace == null ? 43 : $policyNamespace.hashCode());
+        Object $policySets = this.getPolicySets();
+        result = result * prime + ($policySets == null ? 43 : $policySets.hashCode());
+        Object $policyViolations = this.getPolicyViolations();
+        result = result * prime + ($policyViolations == null ? 43 : $policyViolations.hashCode());
+        Object $targetClusters = this.getTargetClusters();
+        result = result * prime + ($targetClusters == null ? 43 : $targetClusters.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ViolationContext(" + "hubCluster=" + this.getHubCluster() + ", policyName=" + this.getPolicyName() + ", policyNamespace=" + this.getPolicyNamespace() + ", policySets=" + this.getPolicySets() + ", policyViolations=" + this.getPolicyViolations() + ", targetClusters=" + this.getTargetClusters() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

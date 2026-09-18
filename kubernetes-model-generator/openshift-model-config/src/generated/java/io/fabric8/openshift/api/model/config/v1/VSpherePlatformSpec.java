@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VSpherePlatformSpec holds the desired state of the vSphere infrastructure provider. In the future the cloud provider operator, storage operator and machine operator will use these fields for configuration.
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "machineNetworks",
     "nodeNetworking",
     "vcenters"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -231,6 +222,85 @@ public class VSpherePlatformSpec implements Editable<VSpherePlatformSpecBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VSpherePlatformSpec)) {
+            return false;
+        }
+        VSpherePlatformSpec other = (VSpherePlatformSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiServerInternalIPs = this.getApiServerInternalIPs();
+        Object other$apiServerInternalIPs = other.getApiServerInternalIPs();
+        if (this$apiServerInternalIPs == null ? other$apiServerInternalIPs != null : !this$apiServerInternalIPs.equals(other$apiServerInternalIPs)) {
+            return false;
+        }
+        Object this$failureDomains = this.getFailureDomains();
+        Object other$failureDomains = other.getFailureDomains();
+        if (this$failureDomains == null ? other$failureDomains != null : !this$failureDomains.equals(other$failureDomains)) {
+            return false;
+        }
+        Object this$ingressIPs = this.getIngressIPs();
+        Object other$ingressIPs = other.getIngressIPs();
+        if (this$ingressIPs == null ? other$ingressIPs != null : !this$ingressIPs.equals(other$ingressIPs)) {
+            return false;
+        }
+        Object this$machineNetworks = this.getMachineNetworks();
+        Object other$machineNetworks = other.getMachineNetworks();
+        if (this$machineNetworks == null ? other$machineNetworks != null : !this$machineNetworks.equals(other$machineNetworks)) {
+            return false;
+        }
+        Object this$nodeNetworking = this.getNodeNetworking();
+        Object other$nodeNetworking = other.getNodeNetworking();
+        if (this$nodeNetworking == null ? other$nodeNetworking != null : !this$nodeNetworking.equals(other$nodeNetworking)) {
+            return false;
+        }
+        Object this$vcenters = this.getVcenters();
+        Object other$vcenters = other.getVcenters();
+        if (this$vcenters == null ? other$vcenters != null : !this$vcenters.equals(other$vcenters)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VSpherePlatformSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiServerInternalIPs = this.getApiServerInternalIPs();
+        result = result * prime + ($apiServerInternalIPs == null ? 43 : $apiServerInternalIPs.hashCode());
+        Object $failureDomains = this.getFailureDomains();
+        result = result * prime + ($failureDomains == null ? 43 : $failureDomains.hashCode());
+        Object $ingressIPs = this.getIngressIPs();
+        result = result * prime + ($ingressIPs == null ? 43 : $ingressIPs.hashCode());
+        Object $machineNetworks = this.getMachineNetworks();
+        result = result * prime + ($machineNetworks == null ? 43 : $machineNetworks.hashCode());
+        Object $nodeNetworking = this.getNodeNetworking();
+        result = result * prime + ($nodeNetworking == null ? 43 : $nodeNetworking.hashCode());
+        Object $vcenters = this.getVcenters();
+        result = result * prime + ($vcenters == null ? 43 : $vcenters.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VSpherePlatformSpec(" + "apiServerInternalIPs=" + this.getApiServerInternalIPs() + ", failureDomains=" + this.getFailureDomains() + ", ingressIPs=" + this.getIngressIPs() + ", machineNetworks=" + this.getMachineNetworks() + ", nodeNetworking=" + this.getNodeNetworking() + ", vcenters=" + this.getVcenters() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

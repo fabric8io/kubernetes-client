@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ACMEIssuerDNS01ProviderAkamai is a structure containing the DNS configuration for Akamai DNS—Zone Record Management API
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "clientSecretSecretRef",
     "clientTokenSecretRef",
     "serviceConsumerDomain"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -181,6 +172,71 @@ public class ACMEIssuerDNS01ProviderAkamai implements Editable<ACMEIssuerDNS01Pr
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ACMEIssuerDNS01ProviderAkamai)) {
+            return false;
+        }
+        ACMEIssuerDNS01ProviderAkamai other = (ACMEIssuerDNS01ProviderAkamai) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$accessTokenSecretRef = this.getAccessTokenSecretRef();
+        Object other$accessTokenSecretRef = other.getAccessTokenSecretRef();
+        if (this$accessTokenSecretRef == null ? other$accessTokenSecretRef != null : !this$accessTokenSecretRef.equals(other$accessTokenSecretRef)) {
+            return false;
+        }
+        Object this$clientSecretSecretRef = this.getClientSecretSecretRef();
+        Object other$clientSecretSecretRef = other.getClientSecretSecretRef();
+        if (this$clientSecretSecretRef == null ? other$clientSecretSecretRef != null : !this$clientSecretSecretRef.equals(other$clientSecretSecretRef)) {
+            return false;
+        }
+        Object this$clientTokenSecretRef = this.getClientTokenSecretRef();
+        Object other$clientTokenSecretRef = other.getClientTokenSecretRef();
+        if (this$clientTokenSecretRef == null ? other$clientTokenSecretRef != null : !this$clientTokenSecretRef.equals(other$clientTokenSecretRef)) {
+            return false;
+        }
+        Object this$serviceConsumerDomain = this.getServiceConsumerDomain();
+        Object other$serviceConsumerDomain = other.getServiceConsumerDomain();
+        if (this$serviceConsumerDomain == null ? other$serviceConsumerDomain != null : !this$serviceConsumerDomain.equals(other$serviceConsumerDomain)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ACMEIssuerDNS01ProviderAkamai;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $accessTokenSecretRef = this.getAccessTokenSecretRef();
+        result = result * prime + ($accessTokenSecretRef == null ? 43 : $accessTokenSecretRef.hashCode());
+        Object $clientSecretSecretRef = this.getClientSecretSecretRef();
+        result = result * prime + ($clientSecretSecretRef == null ? 43 : $clientSecretSecretRef.hashCode());
+        Object $clientTokenSecretRef = this.getClientTokenSecretRef();
+        result = result * prime + ($clientTokenSecretRef == null ? 43 : $clientTokenSecretRef.hashCode());
+        Object $serviceConsumerDomain = this.getServiceConsumerDomain();
+        result = result * prime + ($serviceConsumerDomain == null ? 43 : $serviceConsumerDomain.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ACMEIssuerDNS01ProviderAkamai(" + "accessTokenSecretRef=" + this.getAccessTokenSecretRef() + ", clientSecretSecretRef=" + this.getClientSecretSecretRef() + ", clientTokenSecretRef=" + this.getClientTokenSecretRef() + ", serviceConsumerDomain=" + this.getServiceConsumerDomain() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

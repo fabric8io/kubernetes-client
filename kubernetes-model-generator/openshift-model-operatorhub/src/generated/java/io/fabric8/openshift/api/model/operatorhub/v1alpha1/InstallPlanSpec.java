@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * InstallPlanSpec defines a set of Application resources to be installed
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "generation",
     "source",
     "sourceNamespace"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -224,6 +215,85 @@ public class InstallPlanSpec implements Editable<InstallPlanSpecBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof InstallPlanSpec)) {
+            return false;
+        }
+        InstallPlanSpec other = (InstallPlanSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$approval = this.getApproval();
+        Object other$approval = other.getApproval();
+        if (this$approval == null ? other$approval != null : !this$approval.equals(other$approval)) {
+            return false;
+        }
+        Object this$approved = this.getApproved();
+        Object other$approved = other.getApproved();
+        if (this$approved == null ? other$approved != null : !this$approved.equals(other$approved)) {
+            return false;
+        }
+        Object this$clusterServiceVersionNames = this.getClusterServiceVersionNames();
+        Object other$clusterServiceVersionNames = other.getClusterServiceVersionNames();
+        if (this$clusterServiceVersionNames == null ? other$clusterServiceVersionNames != null : !this$clusterServiceVersionNames.equals(other$clusterServiceVersionNames)) {
+            return false;
+        }
+        Object this$generation = this.getGeneration();
+        Object other$generation = other.getGeneration();
+        if (this$generation == null ? other$generation != null : !this$generation.equals(other$generation)) {
+            return false;
+        }
+        Object this$source = this.getSource();
+        Object other$source = other.getSource();
+        if (this$source == null ? other$source != null : !this$source.equals(other$source)) {
+            return false;
+        }
+        Object this$sourceNamespace = this.getSourceNamespace();
+        Object other$sourceNamespace = other.getSourceNamespace();
+        if (this$sourceNamespace == null ? other$sourceNamespace != null : !this$sourceNamespace.equals(other$sourceNamespace)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof InstallPlanSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $approval = this.getApproval();
+        result = result * prime + ($approval == null ? 43 : $approval.hashCode());
+        Object $approved = this.getApproved();
+        result = result * prime + ($approved == null ? 43 : $approved.hashCode());
+        Object $clusterServiceVersionNames = this.getClusterServiceVersionNames();
+        result = result * prime + ($clusterServiceVersionNames == null ? 43 : $clusterServiceVersionNames.hashCode());
+        Object $generation = this.getGeneration();
+        result = result * prime + ($generation == null ? 43 : $generation.hashCode());
+        Object $source = this.getSource();
+        result = result * prime + ($source == null ? 43 : $source.hashCode());
+        Object $sourceNamespace = this.getSourceNamespace();
+        result = result * prime + ($sourceNamespace == null ? 43 : $sourceNamespace.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "InstallPlanSpec(" + "approval=" + this.getApproval() + ", approved=" + this.getApproved() + ", clusterServiceVersionNames=" + this.getClusterServiceVersionNames() + ", generation=" + this.getGeneration() + ", source=" + this.getSource() + ", sourceNamespace=" + this.getSourceNamespace() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

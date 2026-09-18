@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Action describes a request to the API server
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "resourceAPIVersion",
     "resourceName",
     "verb"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -281,6 +272,106 @@ public class Action implements Editable<ActionBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Action)) {
+            return false;
+        }
+        Action other = (Action) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$content = this.getContent();
+        Object other$content = other.getContent();
+        if (this$content == null ? other$content != null : !this$content.equals(other$content)) {
+            return false;
+        }
+        Object this$isNonResourceURL = this.getIsNonResourceURL();
+        Object other$isNonResourceURL = other.getIsNonResourceURL();
+        if (this$isNonResourceURL == null ? other$isNonResourceURL != null : !this$isNonResourceURL.equals(other$isNonResourceURL)) {
+            return false;
+        }
+        Object this$namespace = this.getNamespace();
+        Object other$namespace = other.getNamespace();
+        if (this$namespace == null ? other$namespace != null : !this$namespace.equals(other$namespace)) {
+            return false;
+        }
+        Object this$path = this.getPath();
+        Object other$path = other.getPath();
+        if (this$path == null ? other$path != null : !this$path.equals(other$path)) {
+            return false;
+        }
+        Object this$resource = this.getResource();
+        Object other$resource = other.getResource();
+        if (this$resource == null ? other$resource != null : !this$resource.equals(other$resource)) {
+            return false;
+        }
+        Object this$resourceAPIGroup = this.getResourceAPIGroup();
+        Object other$resourceAPIGroup = other.getResourceAPIGroup();
+        if (this$resourceAPIGroup == null ? other$resourceAPIGroup != null : !this$resourceAPIGroup.equals(other$resourceAPIGroup)) {
+            return false;
+        }
+        Object this$resourceAPIVersion = this.getResourceAPIVersion();
+        Object other$resourceAPIVersion = other.getResourceAPIVersion();
+        if (this$resourceAPIVersion == null ? other$resourceAPIVersion != null : !this$resourceAPIVersion.equals(other$resourceAPIVersion)) {
+            return false;
+        }
+        Object this$resourceName = this.getResourceName();
+        Object other$resourceName = other.getResourceName();
+        if (this$resourceName == null ? other$resourceName != null : !this$resourceName.equals(other$resourceName)) {
+            return false;
+        }
+        Object this$verb = this.getVerb();
+        Object other$verb = other.getVerb();
+        if (this$verb == null ? other$verb != null : !this$verb.equals(other$verb)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Action;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $content = this.getContent();
+        result = result * prime + ($content == null ? 43 : $content.hashCode());
+        Object $isNonResourceURL = this.getIsNonResourceURL();
+        result = result * prime + ($isNonResourceURL == null ? 43 : $isNonResourceURL.hashCode());
+        Object $namespace = this.getNamespace();
+        result = result * prime + ($namespace == null ? 43 : $namespace.hashCode());
+        Object $path = this.getPath();
+        result = result * prime + ($path == null ? 43 : $path.hashCode());
+        Object $resource = this.getResource();
+        result = result * prime + ($resource == null ? 43 : $resource.hashCode());
+        Object $resourceAPIGroup = this.getResourceAPIGroup();
+        result = result * prime + ($resourceAPIGroup == null ? 43 : $resourceAPIGroup.hashCode());
+        Object $resourceAPIVersion = this.getResourceAPIVersion();
+        result = result * prime + ($resourceAPIVersion == null ? 43 : $resourceAPIVersion.hashCode());
+        Object $resourceName = this.getResourceName();
+        result = result * prime + ($resourceName == null ? 43 : $resourceName.hashCode());
+        Object $verb = this.getVerb();
+        result = result * prime + ($verb == null ? 43 : $verb.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Action(" + "content=" + this.getContent() + ", isNonResourceURL=" + this.getIsNonResourceURL() + ", namespace=" + this.getNamespace() + ", path=" + this.getPath() + ", resource=" + this.getResource() + ", resourceAPIGroup=" + this.getResourceAPIGroup() + ", resourceAPIVersion=" + this.getResourceAPIVersion() + ", resourceName=" + this.getResourceName() + ", verb=" + this.getVerb() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

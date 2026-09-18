@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * A scope selector represents the AND of the selectors represented by the scoped-resource selector requirements.
@@ -26,12 +23,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "matchExpressions"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -95,6 +86,50 @@ public class ScopeSelector implements Editable<ScopeSelectorBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ScopeSelector)) {
+            return false;
+        }
+        ScopeSelector other = (ScopeSelector) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$matchExpressions = this.getMatchExpressions();
+        Object other$matchExpressions = other.getMatchExpressions();
+        if (this$matchExpressions == null ? other$matchExpressions != null : !this$matchExpressions.equals(other$matchExpressions)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ScopeSelector;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $matchExpressions = this.getMatchExpressions();
+        result = result * prime + ($matchExpressions == null ? 43 : $matchExpressions.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ScopeSelector(" + "matchExpressions=" + this.getMatchExpressions() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

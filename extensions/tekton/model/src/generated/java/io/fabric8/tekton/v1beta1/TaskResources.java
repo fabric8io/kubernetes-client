@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TaskResources allows a Pipeline to declare how its DeclaredPipelineResources should be provided to a Task as its inputs and outputs.<br><p> <br><p> Deprecated: Unused, preserved only for backwards compatibility
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "inputs",
     "outputs"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -146,6 +137,57 @@ public class TaskResources implements Editable<TaskResourcesBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TaskResources)) {
+            return false;
+        }
+        TaskResources other = (TaskResources) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$inputs = this.getInputs();
+        Object other$inputs = other.getInputs();
+        if (this$inputs == null ? other$inputs != null : !this$inputs.equals(other$inputs)) {
+            return false;
+        }
+        Object this$outputs = this.getOutputs();
+        Object other$outputs = other.getOutputs();
+        if (this$outputs == null ? other$outputs != null : !this$outputs.equals(other$outputs)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TaskResources;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $inputs = this.getInputs();
+        result = result * prime + ($inputs == null ? 43 : $inputs.hashCode());
+        Object $outputs = this.getOutputs();
+        result = result * prime + ($outputs == null ? 43 : $outputs.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TaskResources(" + "inputs=" + this.getInputs() + ", outputs=" + this.getOutputs() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

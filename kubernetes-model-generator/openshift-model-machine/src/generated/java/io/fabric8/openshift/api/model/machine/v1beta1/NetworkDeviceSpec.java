@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NetworkDeviceSpec defines the network configuration for a virtual machine's network device.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "ipAddrs",
     "nameservers",
     "networkName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -207,6 +198,78 @@ public class NetworkDeviceSpec implements Editable<NetworkDeviceSpecBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkDeviceSpec)) {
+            return false;
+        }
+        NetworkDeviceSpec other = (NetworkDeviceSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$addressesFromPools = this.getAddressesFromPools();
+        Object other$addressesFromPools = other.getAddressesFromPools();
+        if (this$addressesFromPools == null ? other$addressesFromPools != null : !this$addressesFromPools.equals(other$addressesFromPools)) {
+            return false;
+        }
+        Object this$gateway = this.getGateway();
+        Object other$gateway = other.getGateway();
+        if (this$gateway == null ? other$gateway != null : !this$gateway.equals(other$gateway)) {
+            return false;
+        }
+        Object this$ipAddrs = this.getIpAddrs();
+        Object other$ipAddrs = other.getIpAddrs();
+        if (this$ipAddrs == null ? other$ipAddrs != null : !this$ipAddrs.equals(other$ipAddrs)) {
+            return false;
+        }
+        Object this$nameservers = this.getNameservers();
+        Object other$nameservers = other.getNameservers();
+        if (this$nameservers == null ? other$nameservers != null : !this$nameservers.equals(other$nameservers)) {
+            return false;
+        }
+        Object this$networkName = this.getNetworkName();
+        Object other$networkName = other.getNetworkName();
+        if (this$networkName == null ? other$networkName != null : !this$networkName.equals(other$networkName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkDeviceSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $addressesFromPools = this.getAddressesFromPools();
+        result = result * prime + ($addressesFromPools == null ? 43 : $addressesFromPools.hashCode());
+        Object $gateway = this.getGateway();
+        result = result * prime + ($gateway == null ? 43 : $gateway.hashCode());
+        Object $ipAddrs = this.getIpAddrs();
+        result = result * prime + ($ipAddrs == null ? 43 : $ipAddrs.hashCode());
+        Object $nameservers = this.getNameservers();
+        result = result * prime + ($nameservers == null ? 43 : $nameservers.hashCode());
+        Object $networkName = this.getNetworkName();
+        result = result * prime + ($networkName == null ? 43 : $networkName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkDeviceSpec(" + "addressesFromPools=" + this.getAddressesFromPools() + ", gateway=" + this.getGateway() + ", ipAddrs=" + this.getIpAddrs() + ", nameservers=" + this.getNameservers() + ", networkName=" + this.getNetworkName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

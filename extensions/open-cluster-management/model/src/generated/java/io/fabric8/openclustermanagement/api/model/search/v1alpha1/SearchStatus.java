@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SearchStatus defines the observed state of Search.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "conditions",
     "db",
     "storage"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -165,6 +156,64 @@ public class SearchStatus implements Editable<SearchStatusBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SearchStatus)) {
+            return false;
+        }
+        SearchStatus other = (SearchStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$db = this.getDb();
+        Object other$db = other.getDb();
+        if (this$db == null ? other$db != null : !this$db.equals(other$db)) {
+            return false;
+        }
+        Object this$storage = this.getStorage();
+        Object other$storage = other.getStorage();
+        if (this$storage == null ? other$storage != null : !this$storage.equals(other$storage)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SearchStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $db = this.getDb();
+        result = result * prime + ($db == null ? 43 : $db.hashCode());
+        Object $storage = this.getStorage();
+        result = result * prime + ($storage == null ? 43 : $storage.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SearchStatus(" + "conditions=" + this.getConditions() + ", db=" + this.getDb() + ", storage=" + this.getStorage() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

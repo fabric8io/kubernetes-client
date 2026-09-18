@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Adapts a ConfigMap into a volume.<br><p> <br><p> The contents of the target ConfigMap's Data field will be presented in a volume as files using the keys in the Data field as the file names, unless the items element is populated with specific mappings of keys to paths. ConfigMap volumes support ownership management and SELinux relabeling.
@@ -30,12 +27,6 @@ import lombok.experimental.Accessors;
     "items",
     "name",
     "optional"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -175,6 +166,78 @@ public class ConfigMapVolumeSource implements Editable<ConfigMapVolumeSourceBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConfigMapVolumeSource)) {
+            return false;
+        }
+        ConfigMapVolumeSource other = (ConfigMapVolumeSource) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$defaultMode = this.getDefaultMode();
+        Object other$defaultMode = other.getDefaultMode();
+        if (this$defaultMode == null ? other$defaultMode != null : !this$defaultMode.equals(other$defaultMode)) {
+            return false;
+        }
+        Object this$defaultUser = this.getDefaultUser();
+        Object other$defaultUser = other.getDefaultUser();
+        if (this$defaultUser == null ? other$defaultUser != null : !this$defaultUser.equals(other$defaultUser)) {
+            return false;
+        }
+        Object this$items = this.getItems();
+        Object other$items = other.getItems();
+        if (this$items == null ? other$items != null : !this$items.equals(other$items)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$optional = this.getOptional();
+        Object other$optional = other.getOptional();
+        if (this$optional == null ? other$optional != null : !this$optional.equals(other$optional)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConfigMapVolumeSource;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $defaultMode = this.getDefaultMode();
+        result = result * prime + ($defaultMode == null ? 43 : $defaultMode.hashCode());
+        Object $defaultUser = this.getDefaultUser();
+        result = result * prime + ($defaultUser == null ? 43 : $defaultUser.hashCode());
+        Object $items = this.getItems();
+        result = result * prime + ($items == null ? 43 : $items.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $optional = this.getOptional();
+        result = result * prime + ($optional == null ? 43 : $optional.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConfigMapVolumeSource(" + "defaultMode=" + this.getDefaultMode() + ", defaultUser=" + this.getDefaultUser() + ", items=" + this.getItems() + ", name=" + this.getName() + ", optional=" + this.getOptional() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

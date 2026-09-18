@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SimpleMacvlanConfig contains configurations for macvlan interface.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "master",
     "mode",
     "mtu"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class SimpleMacvlanConfig implements Editable<SimpleMacvlanConfigBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SimpleMacvlanConfig)) {
+            return false;
+        }
+        SimpleMacvlanConfig other = (SimpleMacvlanConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ipamConfig = this.getIpamConfig();
+        Object other$ipamConfig = other.getIpamConfig();
+        if (this$ipamConfig == null ? other$ipamConfig != null : !this$ipamConfig.equals(other$ipamConfig)) {
+            return false;
+        }
+        Object this$master = this.getMaster();
+        Object other$master = other.getMaster();
+        if (this$master == null ? other$master != null : !this$master.equals(other$master)) {
+            return false;
+        }
+        Object this$mode = this.getMode();
+        Object other$mode = other.getMode();
+        if (this$mode == null ? other$mode != null : !this$mode.equals(other$mode)) {
+            return false;
+        }
+        Object this$mtu = this.getMtu();
+        Object other$mtu = other.getMtu();
+        if (this$mtu == null ? other$mtu != null : !this$mtu.equals(other$mtu)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SimpleMacvlanConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ipamConfig = this.getIpamConfig();
+        result = result * prime + ($ipamConfig == null ? 43 : $ipamConfig.hashCode());
+        Object $master = this.getMaster();
+        result = result * prime + ($master == null ? 43 : $master.hashCode());
+        Object $mode = this.getMode();
+        result = result * prime + ($mode == null ? 43 : $mode.hashCode());
+        Object $mtu = this.getMtu();
+        result = result * prime + ($mtu == null ? 43 : $mtu.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SimpleMacvlanConfig(" + "ipamConfig=" + this.getIpamConfig() + ", master=" + this.getMaster() + ", mode=" + this.getMode() + ", mtu=" + this.getMtu() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -38,12 +35,6 @@ import lombok.experimental.Accessors;
     "apiCorpID",
     "apiSecret",
     "apiURL"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -151,6 +142,64 @@ public class GlobalWeChatConfig implements Editable<GlobalWeChatConfigBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GlobalWeChatConfig)) {
+            return false;
+        }
+        GlobalWeChatConfig other = (GlobalWeChatConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiCorpID = this.getApiCorpID();
+        Object other$apiCorpID = other.getApiCorpID();
+        if (this$apiCorpID == null ? other$apiCorpID != null : !this$apiCorpID.equals(other$apiCorpID)) {
+            return false;
+        }
+        Object this$apiSecret = this.getApiSecret();
+        Object other$apiSecret = other.getApiSecret();
+        if (this$apiSecret == null ? other$apiSecret != null : !this$apiSecret.equals(other$apiSecret)) {
+            return false;
+        }
+        Object this$apiURL = this.getApiURL();
+        Object other$apiURL = other.getApiURL();
+        if (this$apiURL == null ? other$apiURL != null : !this$apiURL.equals(other$apiURL)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GlobalWeChatConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiCorpID = this.getApiCorpID();
+        result = result * prime + ($apiCorpID == null ? 43 : $apiCorpID.hashCode());
+        Object $apiSecret = this.getApiSecret();
+        result = result * prime + ($apiSecret == null ? 43 : $apiSecret.hashCode());
+        Object $apiURL = this.getApiURL();
+        result = result * prime + ($apiURL == null ? 43 : $apiURL.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GlobalWeChatConfig(" + "apiCorpID=" + this.getApiCorpID() + ", apiSecret=" + this.getApiSecret() + ", apiURL=" + this.getApiURL() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

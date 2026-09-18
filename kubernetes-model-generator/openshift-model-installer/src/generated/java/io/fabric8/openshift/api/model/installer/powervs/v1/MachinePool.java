@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MachinePool stores the configuration for a machine pool installed on IBM Power VS.
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "smtLevel",
     "sysType",
     "volumeIDs"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -224,6 +215,85 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachinePool)) {
+            return false;
+        }
+        MachinePool other = (MachinePool) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$memoryGiB = this.getMemoryGiB();
+        Object other$memoryGiB = other.getMemoryGiB();
+        if (this$memoryGiB == null ? other$memoryGiB != null : !this$memoryGiB.equals(other$memoryGiB)) {
+            return false;
+        }
+        Object this$procType = this.getProcType();
+        Object other$procType = other.getProcType();
+        if (this$procType == null ? other$procType != null : !this$procType.equals(other$procType)) {
+            return false;
+        }
+        Object this$processors = this.getProcessors();
+        Object other$processors = other.getProcessors();
+        if (this$processors == null ? other$processors != null : !this$processors.equals(other$processors)) {
+            return false;
+        }
+        Object this$smtLevel = this.getSmtLevel();
+        Object other$smtLevel = other.getSmtLevel();
+        if (this$smtLevel == null ? other$smtLevel != null : !this$smtLevel.equals(other$smtLevel)) {
+            return false;
+        }
+        Object this$sysType = this.getSysType();
+        Object other$sysType = other.getSysType();
+        if (this$sysType == null ? other$sysType != null : !this$sysType.equals(other$sysType)) {
+            return false;
+        }
+        Object this$volumeIDs = this.getVolumeIDs();
+        Object other$volumeIDs = other.getVolumeIDs();
+        if (this$volumeIDs == null ? other$volumeIDs != null : !this$volumeIDs.equals(other$volumeIDs)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachinePool;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $memoryGiB = this.getMemoryGiB();
+        result = result * prime + ($memoryGiB == null ? 43 : $memoryGiB.hashCode());
+        Object $procType = this.getProcType();
+        result = result * prime + ($procType == null ? 43 : $procType.hashCode());
+        Object $processors = this.getProcessors();
+        result = result * prime + ($processors == null ? 43 : $processors.hashCode());
+        Object $smtLevel = this.getSmtLevel();
+        result = result * prime + ($smtLevel == null ? 43 : $smtLevel.hashCode());
+        Object $sysType = this.getSysType();
+        result = result * prime + ($sysType == null ? 43 : $sysType.hashCode());
+        Object $volumeIDs = this.getVolumeIDs();
+        result = result * prime + ($volumeIDs == null ? 43 : $volumeIDs.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachinePool(" + "memoryGiB=" + this.getMemoryGiB() + ", procType=" + this.getProcType() + ", processors=" + this.getProcessors() + ", smtLevel=" + this.getSmtLevel() + ", sysType=" + this.getSysType() + ", volumeIDs=" + this.getVolumeIDs() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DeliveryStatus contains the Status of an object supporting delivery options. This type is intended to be embedded into a status struct.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "deadLetterSinkAudience",
     "deadLetterSinkCACerts",
     "deadLetterSinkUri"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class DeliveryStatus implements Editable<DeliveryStatusBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DeliveryStatus)) {
+            return false;
+        }
+        DeliveryStatus other = (DeliveryStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$deadLetterSinkAudience = this.getDeadLetterSinkAudience();
+        Object other$deadLetterSinkAudience = other.getDeadLetterSinkAudience();
+        if (this$deadLetterSinkAudience == null ? other$deadLetterSinkAudience != null : !this$deadLetterSinkAudience.equals(other$deadLetterSinkAudience)) {
+            return false;
+        }
+        Object this$deadLetterSinkCACerts = this.getDeadLetterSinkCACerts();
+        Object other$deadLetterSinkCACerts = other.getDeadLetterSinkCACerts();
+        if (this$deadLetterSinkCACerts == null ? other$deadLetterSinkCACerts != null : !this$deadLetterSinkCACerts.equals(other$deadLetterSinkCACerts)) {
+            return false;
+        }
+        Object this$deadLetterSinkUri = this.getDeadLetterSinkUri();
+        Object other$deadLetterSinkUri = other.getDeadLetterSinkUri();
+        if (this$deadLetterSinkUri == null ? other$deadLetterSinkUri != null : !this$deadLetterSinkUri.equals(other$deadLetterSinkUri)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DeliveryStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $deadLetterSinkAudience = this.getDeadLetterSinkAudience();
+        result = result * prime + ($deadLetterSinkAudience == null ? 43 : $deadLetterSinkAudience.hashCode());
+        Object $deadLetterSinkCACerts = this.getDeadLetterSinkCACerts();
+        result = result * prime + ($deadLetterSinkCACerts == null ? 43 : $deadLetterSinkCACerts.hashCode());
+        Object $deadLetterSinkUri = this.getDeadLetterSinkUri();
+        result = result * prime + ($deadLetterSinkUri == null ? 43 : $deadLetterSinkUri.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DeliveryStatus(" + "deadLetterSinkAudience=" + this.getDeadLetterSinkAudience() + ", deadLetterSinkCACerts=" + this.getDeadLetterSinkCACerts() + ", deadLetterSinkUri=" + this.getDeadLetterSinkUri() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

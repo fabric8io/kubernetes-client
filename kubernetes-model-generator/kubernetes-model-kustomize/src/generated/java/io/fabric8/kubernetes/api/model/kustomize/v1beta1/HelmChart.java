@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -54,12 +51,6 @@ import lombok.experimental.Accessors;
     "valuesInline",
     "valuesMerge",
     "version"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -345,6 +336,162 @@ public class HelmChart implements Editable<HelmChartBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HelmChart)) {
+            return false;
+        }
+        HelmChart other = (HelmChart) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$additionalValuesFiles = this.getAdditionalValuesFiles();
+        Object other$additionalValuesFiles = other.getAdditionalValuesFiles();
+        if (this$additionalValuesFiles == null ? other$additionalValuesFiles != null : !this$additionalValuesFiles.equals(other$additionalValuesFiles)) {
+            return false;
+        }
+        Object this$apiVersions = this.getApiVersions();
+        Object other$apiVersions = other.getApiVersions();
+        if (this$apiVersions == null ? other$apiVersions != null : !this$apiVersions.equals(other$apiVersions)) {
+            return false;
+        }
+        Object this$debug = this.getDebug();
+        Object other$debug = other.getDebug();
+        if (this$debug == null ? other$debug != null : !this$debug.equals(other$debug)) {
+            return false;
+        }
+        Object this$devel = this.getDevel();
+        Object other$devel = other.getDevel();
+        if (this$devel == null ? other$devel != null : !this$devel.equals(other$devel)) {
+            return false;
+        }
+        Object this$includeCRDs = this.getIncludeCRDs();
+        Object other$includeCRDs = other.getIncludeCRDs();
+        if (this$includeCRDs == null ? other$includeCRDs != null : !this$includeCRDs.equals(other$includeCRDs)) {
+            return false;
+        }
+        Object this$kubeVersion = this.getKubeVersion();
+        Object other$kubeVersion = other.getKubeVersion();
+        if (this$kubeVersion == null ? other$kubeVersion != null : !this$kubeVersion.equals(other$kubeVersion)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$nameTemplate = this.getNameTemplate();
+        Object other$nameTemplate = other.getNameTemplate();
+        if (this$nameTemplate == null ? other$nameTemplate != null : !this$nameTemplate.equals(other$nameTemplate)) {
+            return false;
+        }
+        Object this$namespace = this.getNamespace();
+        Object other$namespace = other.getNamespace();
+        if (this$namespace == null ? other$namespace != null : !this$namespace.equals(other$namespace)) {
+            return false;
+        }
+        Object this$releaseName = this.getReleaseName();
+        Object other$releaseName = other.getReleaseName();
+        if (this$releaseName == null ? other$releaseName != null : !this$releaseName.equals(other$releaseName)) {
+            return false;
+        }
+        Object this$repo = this.getRepo();
+        Object other$repo = other.getRepo();
+        if (this$repo == null ? other$repo != null : !this$repo.equals(other$repo)) {
+            return false;
+        }
+        Object this$skipHooks = this.getSkipHooks();
+        Object other$skipHooks = other.getSkipHooks();
+        if (this$skipHooks == null ? other$skipHooks != null : !this$skipHooks.equals(other$skipHooks)) {
+            return false;
+        }
+        Object this$skipTests = this.getSkipTests();
+        Object other$skipTests = other.getSkipTests();
+        if (this$skipTests == null ? other$skipTests != null : !this$skipTests.equals(other$skipTests)) {
+            return false;
+        }
+        Object this$valuesFile = this.getValuesFile();
+        Object other$valuesFile = other.getValuesFile();
+        if (this$valuesFile == null ? other$valuesFile != null : !this$valuesFile.equals(other$valuesFile)) {
+            return false;
+        }
+        Object this$valuesInline = this.getValuesInline();
+        Object other$valuesInline = other.getValuesInline();
+        if (this$valuesInline == null ? other$valuesInline != null : !this$valuesInline.equals(other$valuesInline)) {
+            return false;
+        }
+        Object this$valuesMerge = this.getValuesMerge();
+        Object other$valuesMerge = other.getValuesMerge();
+        if (this$valuesMerge == null ? other$valuesMerge != null : !this$valuesMerge.equals(other$valuesMerge)) {
+            return false;
+        }
+        Object this$version = this.getVersion();
+        Object other$version = other.getVersion();
+        if (this$version == null ? other$version != null : !this$version.equals(other$version)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HelmChart;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $additionalValuesFiles = this.getAdditionalValuesFiles();
+        result = result * prime + ($additionalValuesFiles == null ? 43 : $additionalValuesFiles.hashCode());
+        Object $apiVersions = this.getApiVersions();
+        result = result * prime + ($apiVersions == null ? 43 : $apiVersions.hashCode());
+        Object $debug = this.getDebug();
+        result = result * prime + ($debug == null ? 43 : $debug.hashCode());
+        Object $devel = this.getDevel();
+        result = result * prime + ($devel == null ? 43 : $devel.hashCode());
+        Object $includeCRDs = this.getIncludeCRDs();
+        result = result * prime + ($includeCRDs == null ? 43 : $includeCRDs.hashCode());
+        Object $kubeVersion = this.getKubeVersion();
+        result = result * prime + ($kubeVersion == null ? 43 : $kubeVersion.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $nameTemplate = this.getNameTemplate();
+        result = result * prime + ($nameTemplate == null ? 43 : $nameTemplate.hashCode());
+        Object $namespace = this.getNamespace();
+        result = result * prime + ($namespace == null ? 43 : $namespace.hashCode());
+        Object $releaseName = this.getReleaseName();
+        result = result * prime + ($releaseName == null ? 43 : $releaseName.hashCode());
+        Object $repo = this.getRepo();
+        result = result * prime + ($repo == null ? 43 : $repo.hashCode());
+        Object $skipHooks = this.getSkipHooks();
+        result = result * prime + ($skipHooks == null ? 43 : $skipHooks.hashCode());
+        Object $skipTests = this.getSkipTests();
+        result = result * prime + ($skipTests == null ? 43 : $skipTests.hashCode());
+        Object $valuesFile = this.getValuesFile();
+        result = result * prime + ($valuesFile == null ? 43 : $valuesFile.hashCode());
+        Object $valuesInline = this.getValuesInline();
+        result = result * prime + ($valuesInline == null ? 43 : $valuesInline.hashCode());
+        Object $valuesMerge = this.getValuesMerge();
+        result = result * prime + ($valuesMerge == null ? 43 : $valuesMerge.hashCode());
+        Object $version = this.getVersion();
+        result = result * prime + ($version == null ? 43 : $version.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HelmChart(" + "additionalValuesFiles=" + this.getAdditionalValuesFiles() + ", apiVersions=" + this.getApiVersions() + ", debug=" + this.getDebug() + ", devel=" + this.getDevel() + ", includeCRDs=" + this.getIncludeCRDs() + ", kubeVersion=" + this.getKubeVersion() + ", name=" + this.getName() + ", nameTemplate=" + this.getNameTemplate() + ", namespace=" + this.getNamespace() + ", releaseName=" + this.getReleaseName() + ", repo=" + this.getRepo() + ", skipHooks=" + this.getSkipHooks() + ", skipTests=" + this.getSkipTests() + ", valuesFile=" + this.getValuesFile() + ", valuesInline=" + this.getValuesInline() + ", valuesMerge=" + this.getValuesMerge() + ", version=" + this.getVersion() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

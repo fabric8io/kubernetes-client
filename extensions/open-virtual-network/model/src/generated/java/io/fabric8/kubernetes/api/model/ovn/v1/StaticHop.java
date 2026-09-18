@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * StaticHop defines the configuration of a static IP that acts as an external Gateway Interface. IP field is mandatory.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "bfdEnabled",
     "ip"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class StaticHop implements Editable<StaticHopBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof StaticHop)) {
+            return false;
+        }
+        StaticHop other = (StaticHop) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bfdEnabled = this.getBfdEnabled();
+        Object other$bfdEnabled = other.getBfdEnabled();
+        if (this$bfdEnabled == null ? other$bfdEnabled != null : !this$bfdEnabled.equals(other$bfdEnabled)) {
+            return false;
+        }
+        Object this$ip = this.getIp();
+        Object other$ip = other.getIp();
+        if (this$ip == null ? other$ip != null : !this$ip.equals(other$ip)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof StaticHop;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bfdEnabled = this.getBfdEnabled();
+        result = result * prime + ($bfdEnabled == null ? 43 : $bfdEnabled.hashCode());
+        Object $ip = this.getIp();
+        result = result * prime + ($ip == null ? 43 : $ip.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "StaticHop(" + "bfdEnabled=" + this.getBfdEnabled() + ", ip=" + this.getIp() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

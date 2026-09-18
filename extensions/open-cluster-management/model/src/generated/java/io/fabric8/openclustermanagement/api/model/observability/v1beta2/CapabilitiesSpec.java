@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CapabilitiesSpec defines the platform and user workload observabilities capabilities managed exclusively by the multicluster-observability-addon. Enabling any of these capabilities will result in deploying the following resources:<br><p>   - The addon Deployment, ServiceAccount and RBAC.<br><p>   - A ClusterManagementAddon managing placement for capability related custom resources.<br><p>   - An AddonDeploymentConfig managing the addon feature gates for activated capabilities.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "platform",
     "userWorkloads"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class CapabilitiesSpec implements Editable<CapabilitiesSpecBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CapabilitiesSpec)) {
+            return false;
+        }
+        CapabilitiesSpec other = (CapabilitiesSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$platform = this.getPlatform();
+        Object other$platform = other.getPlatform();
+        if (this$platform == null ? other$platform != null : !this$platform.equals(other$platform)) {
+            return false;
+        }
+        Object this$userWorkloads = this.getUserWorkloads();
+        Object other$userWorkloads = other.getUserWorkloads();
+        if (this$userWorkloads == null ? other$userWorkloads != null : !this$userWorkloads.equals(other$userWorkloads)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CapabilitiesSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $platform = this.getPlatform();
+        result = result * prime + ($platform == null ? 43 : $platform.hashCode());
+        Object $userWorkloads = this.getUserWorkloads();
+        result = result * prime + ($userWorkloads == null ? 43 : $userWorkloads.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CapabilitiesSpec(" + "platform=" + this.getPlatform() + ", userWorkloads=" + this.getUserWorkloads() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

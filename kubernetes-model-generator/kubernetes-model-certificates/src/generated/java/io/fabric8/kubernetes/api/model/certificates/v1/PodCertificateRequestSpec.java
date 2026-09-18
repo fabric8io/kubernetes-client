@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PodCertificateRequestSpec describes the certificate request.  All fields are immutable after creation.
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "signerName",
     "stubPKCS10Request",
     "unverifiedUserAnnotations"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -302,6 +293,113 @@ public class PodCertificateRequestSpec implements Editable<PodCertificateRequest
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodCertificateRequestSpec)) {
+            return false;
+        }
+        PodCertificateRequestSpec other = (PodCertificateRequestSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$maxExpirationSeconds = this.getMaxExpirationSeconds();
+        Object other$maxExpirationSeconds = other.getMaxExpirationSeconds();
+        if (this$maxExpirationSeconds == null ? other$maxExpirationSeconds != null : !this$maxExpirationSeconds.equals(other$maxExpirationSeconds)) {
+            return false;
+        }
+        Object this$nodeName = this.getNodeName();
+        Object other$nodeName = other.getNodeName();
+        if (this$nodeName == null ? other$nodeName != null : !this$nodeName.equals(other$nodeName)) {
+            return false;
+        }
+        Object this$nodeUID = this.getNodeUID();
+        Object other$nodeUID = other.getNodeUID();
+        if (this$nodeUID == null ? other$nodeUID != null : !this$nodeUID.equals(other$nodeUID)) {
+            return false;
+        }
+        Object this$podName = this.getPodName();
+        Object other$podName = other.getPodName();
+        if (this$podName == null ? other$podName != null : !this$podName.equals(other$podName)) {
+            return false;
+        }
+        Object this$podUID = this.getPodUID();
+        Object other$podUID = other.getPodUID();
+        if (this$podUID == null ? other$podUID != null : !this$podUID.equals(other$podUID)) {
+            return false;
+        }
+        Object this$serviceAccountName = this.getServiceAccountName();
+        Object other$serviceAccountName = other.getServiceAccountName();
+        if (this$serviceAccountName == null ? other$serviceAccountName != null : !this$serviceAccountName.equals(other$serviceAccountName)) {
+            return false;
+        }
+        Object this$serviceAccountUID = this.getServiceAccountUID();
+        Object other$serviceAccountUID = other.getServiceAccountUID();
+        if (this$serviceAccountUID == null ? other$serviceAccountUID != null : !this$serviceAccountUID.equals(other$serviceAccountUID)) {
+            return false;
+        }
+        Object this$signerName = this.getSignerName();
+        Object other$signerName = other.getSignerName();
+        if (this$signerName == null ? other$signerName != null : !this$signerName.equals(other$signerName)) {
+            return false;
+        }
+        Object this$stubPKCS10Request = this.getStubPKCS10Request();
+        Object other$stubPKCS10Request = other.getStubPKCS10Request();
+        if (this$stubPKCS10Request == null ? other$stubPKCS10Request != null : !this$stubPKCS10Request.equals(other$stubPKCS10Request)) {
+            return false;
+        }
+        Object this$unverifiedUserAnnotations = this.getUnverifiedUserAnnotations();
+        Object other$unverifiedUserAnnotations = other.getUnverifiedUserAnnotations();
+        if (this$unverifiedUserAnnotations == null ? other$unverifiedUserAnnotations != null : !this$unverifiedUserAnnotations.equals(other$unverifiedUserAnnotations)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodCertificateRequestSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $maxExpirationSeconds = this.getMaxExpirationSeconds();
+        result = result * prime + ($maxExpirationSeconds == null ? 43 : $maxExpirationSeconds.hashCode());
+        Object $nodeName = this.getNodeName();
+        result = result * prime + ($nodeName == null ? 43 : $nodeName.hashCode());
+        Object $nodeUID = this.getNodeUID();
+        result = result * prime + ($nodeUID == null ? 43 : $nodeUID.hashCode());
+        Object $podName = this.getPodName();
+        result = result * prime + ($podName == null ? 43 : $podName.hashCode());
+        Object $podUID = this.getPodUID();
+        result = result * prime + ($podUID == null ? 43 : $podUID.hashCode());
+        Object $serviceAccountName = this.getServiceAccountName();
+        result = result * prime + ($serviceAccountName == null ? 43 : $serviceAccountName.hashCode());
+        Object $serviceAccountUID = this.getServiceAccountUID();
+        result = result * prime + ($serviceAccountUID == null ? 43 : $serviceAccountUID.hashCode());
+        Object $signerName = this.getSignerName();
+        result = result * prime + ($signerName == null ? 43 : $signerName.hashCode());
+        Object $stubPKCS10Request = this.getStubPKCS10Request();
+        result = result * prime + ($stubPKCS10Request == null ? 43 : $stubPKCS10Request.hashCode());
+        Object $unverifiedUserAnnotations = this.getUnverifiedUserAnnotations();
+        result = result * prime + ($unverifiedUserAnnotations == null ? 43 : $unverifiedUserAnnotations.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodCertificateRequestSpec(" + "maxExpirationSeconds=" + this.getMaxExpirationSeconds() + ", nodeName=" + this.getNodeName() + ", nodeUID=" + this.getNodeUID() + ", podName=" + this.getPodName() + ", podUID=" + this.getPodUID() + ", serviceAccountName=" + this.getServiceAccountName() + ", serviceAccountUID=" + this.getServiceAccountUID() + ", signerName=" + this.getSignerName() + ", stubPKCS10Request=" + this.getStubPKCS10Request() + ", unverifiedUserAnnotations=" + this.getUnverifiedUserAnnotations() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

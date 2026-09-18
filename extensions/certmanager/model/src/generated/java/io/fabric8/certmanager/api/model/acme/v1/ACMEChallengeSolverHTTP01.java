@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ACMEChallengeSolverHTTP01 contains configuration detailing how to solve HTTP01 challenges within a Kubernetes cluster. Typically this is accomplished through creating 'routes' of some description that configure ingress controllers to direct traffic to 'solver pods', which are responsible for responding to the ACME server's HTTP requests. Only one of Ingress / Gateway can be specified.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "gatewayHTTPRoute",
     "ingress"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class ACMEChallengeSolverHTTP01 implements Editable<ACMEChallengeSolverHT
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ACMEChallengeSolverHTTP01)) {
+            return false;
+        }
+        ACMEChallengeSolverHTTP01 other = (ACMEChallengeSolverHTTP01) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$gatewayHTTPRoute = this.getGatewayHTTPRoute();
+        Object other$gatewayHTTPRoute = other.getGatewayHTTPRoute();
+        if (this$gatewayHTTPRoute == null ? other$gatewayHTTPRoute != null : !this$gatewayHTTPRoute.equals(other$gatewayHTTPRoute)) {
+            return false;
+        }
+        Object this$ingress = this.getIngress();
+        Object other$ingress = other.getIngress();
+        if (this$ingress == null ? other$ingress != null : !this$ingress.equals(other$ingress)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ACMEChallengeSolverHTTP01;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $gatewayHTTPRoute = this.getGatewayHTTPRoute();
+        result = result * prime + ($gatewayHTTPRoute == null ? 43 : $gatewayHTTPRoute.hashCode());
+        Object $ingress = this.getIngress();
+        result = result * prime + ($ingress == null ? 43 : $ingress.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ACMEChallengeSolverHTTP01(" + "gatewayHTTPRoute=" + this.getGatewayHTTPRoute() + ", ingress=" + this.getIngress() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

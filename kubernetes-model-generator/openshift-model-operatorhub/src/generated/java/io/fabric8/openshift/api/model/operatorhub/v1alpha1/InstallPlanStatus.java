@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * InstallPlanStatus represents the information about the status of steps required to complete installation.<br><p> <br><p> Status may trail the actual state of a system.
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "phase",
     "plan",
     "startTime"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -270,6 +261,99 @@ public class InstallPlanStatus implements Editable<InstallPlanStatusBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof InstallPlanStatus)) {
+            return false;
+        }
+        InstallPlanStatus other = (InstallPlanStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$attenuatedServiceAccountRef = this.getAttenuatedServiceAccountRef();
+        Object other$attenuatedServiceAccountRef = other.getAttenuatedServiceAccountRef();
+        if (this$attenuatedServiceAccountRef == null ? other$attenuatedServiceAccountRef != null : !this$attenuatedServiceAccountRef.equals(other$attenuatedServiceAccountRef)) {
+            return false;
+        }
+        Object this$bundleLookups = this.getBundleLookups();
+        Object other$bundleLookups = other.getBundleLookups();
+        if (this$bundleLookups == null ? other$bundleLookups != null : !this$bundleLookups.equals(other$bundleLookups)) {
+            return false;
+        }
+        Object this$catalogSources = this.getCatalogSources();
+        Object other$catalogSources = other.getCatalogSources();
+        if (this$catalogSources == null ? other$catalogSources != null : !this$catalogSources.equals(other$catalogSources)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$phase = this.getPhase();
+        Object other$phase = other.getPhase();
+        if (this$phase == null ? other$phase != null : !this$phase.equals(other$phase)) {
+            return false;
+        }
+        Object this$plan = this.getPlan();
+        Object other$plan = other.getPlan();
+        if (this$plan == null ? other$plan != null : !this$plan.equals(other$plan)) {
+            return false;
+        }
+        Object this$startTime = this.getStartTime();
+        Object other$startTime = other.getStartTime();
+        if (this$startTime == null ? other$startTime != null : !this$startTime.equals(other$startTime)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof InstallPlanStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $attenuatedServiceAccountRef = this.getAttenuatedServiceAccountRef();
+        result = result * prime + ($attenuatedServiceAccountRef == null ? 43 : $attenuatedServiceAccountRef.hashCode());
+        Object $bundleLookups = this.getBundleLookups();
+        result = result * prime + ($bundleLookups == null ? 43 : $bundleLookups.hashCode());
+        Object $catalogSources = this.getCatalogSources();
+        result = result * prime + ($catalogSources == null ? 43 : $catalogSources.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $phase = this.getPhase();
+        result = result * prime + ($phase == null ? 43 : $phase.hashCode());
+        Object $plan = this.getPlan();
+        result = result * prime + ($plan == null ? 43 : $plan.hashCode());
+        Object $startTime = this.getStartTime();
+        result = result * prime + ($startTime == null ? 43 : $startTime.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "InstallPlanStatus(" + "attenuatedServiceAccountRef=" + this.getAttenuatedServiceAccountRef() + ", bundleLookups=" + this.getBundleLookups() + ", catalogSources=" + this.getCatalogSources() + ", conditions=" + this.getConditions() + ", message=" + this.getMessage() + ", phase=" + this.getPhase() + ", plan=" + this.getPlan() + ", startTime=" + this.getStartTime() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NutanixDataDisk specifies the VM data disk configuration parameters.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "deviceProperties",
     "diskSize",
     "storageConfig"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -181,6 +172,71 @@ public class NutanixVMDisk implements Editable<NutanixVMDiskBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NutanixVMDisk)) {
+            return false;
+        }
+        NutanixVMDisk other = (NutanixVMDisk) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$dataSource = this.getDataSource();
+        Object other$dataSource = other.getDataSource();
+        if (this$dataSource == null ? other$dataSource != null : !this$dataSource.equals(other$dataSource)) {
+            return false;
+        }
+        Object this$deviceProperties = this.getDeviceProperties();
+        Object other$deviceProperties = other.getDeviceProperties();
+        if (this$deviceProperties == null ? other$deviceProperties != null : !this$deviceProperties.equals(other$deviceProperties)) {
+            return false;
+        }
+        Object this$diskSize = this.getDiskSize();
+        Object other$diskSize = other.getDiskSize();
+        if (this$diskSize == null ? other$diskSize != null : !this$diskSize.equals(other$diskSize)) {
+            return false;
+        }
+        Object this$storageConfig = this.getStorageConfig();
+        Object other$storageConfig = other.getStorageConfig();
+        if (this$storageConfig == null ? other$storageConfig != null : !this$storageConfig.equals(other$storageConfig)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NutanixVMDisk;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $dataSource = this.getDataSource();
+        result = result * prime + ($dataSource == null ? 43 : $dataSource.hashCode());
+        Object $deviceProperties = this.getDeviceProperties();
+        result = result * prime + ($deviceProperties == null ? 43 : $deviceProperties.hashCode());
+        Object $diskSize = this.getDiskSize();
+        result = result * prime + ($diskSize == null ? 43 : $diskSize.hashCode());
+        Object $storageConfig = this.getStorageConfig();
+        result = result * prime + ($storageConfig == null ? 43 : $storageConfig.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NutanixVMDisk(" + "dataSource=" + this.getDataSource() + ", deviceProperties=" + this.getDeviceProperties() + ", diskSize=" + this.getDiskSize() + ", storageConfig=" + this.getStorageConfig() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

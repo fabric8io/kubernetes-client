@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * LifecycleHooks allow users to pause operations on the machine at certain prefedined points within the machine lifecycle.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "preDrain",
     "preTerminate"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -145,6 +136,57 @@ public class LifecycleHooks implements Editable<LifecycleHooksBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof LifecycleHooks)) {
+            return false;
+        }
+        LifecycleHooks other = (LifecycleHooks) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$preDrain = this.getPreDrain();
+        Object other$preDrain = other.getPreDrain();
+        if (this$preDrain == null ? other$preDrain != null : !this$preDrain.equals(other$preDrain)) {
+            return false;
+        }
+        Object this$preTerminate = this.getPreTerminate();
+        Object other$preTerminate = other.getPreTerminate();
+        if (this$preTerminate == null ? other$preTerminate != null : !this$preTerminate.equals(other$preTerminate)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof LifecycleHooks;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $preDrain = this.getPreDrain();
+        result = result * prime + ($preDrain == null ? 43 : $preDrain.hashCode());
+        Object $preTerminate = this.getPreTerminate();
+        result = result * prime + ($preTerminate == null ? 43 : $preTerminate.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "LifecycleHooks(" + "preDrain=" + this.getPreDrain() + ", preTerminate=" + this.getPreTerminate() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

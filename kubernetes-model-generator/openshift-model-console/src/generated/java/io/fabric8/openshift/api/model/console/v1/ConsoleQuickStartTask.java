@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ConsoleQuickStartTask is a single step in a Quick Start.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "review",
     "summary",
     "title"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class ConsoleQuickStartTask implements Editable<ConsoleQuickStartTaskBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConsoleQuickStartTask)) {
+            return false;
+        }
+        ConsoleQuickStartTask other = (ConsoleQuickStartTask) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$description = this.getDescription();
+        Object other$description = other.getDescription();
+        if (this$description == null ? other$description != null : !this$description.equals(other$description)) {
+            return false;
+        }
+        Object this$review = this.getReview();
+        Object other$review = other.getReview();
+        if (this$review == null ? other$review != null : !this$review.equals(other$review)) {
+            return false;
+        }
+        Object this$summary = this.getSummary();
+        Object other$summary = other.getSummary();
+        if (this$summary == null ? other$summary != null : !this$summary.equals(other$summary)) {
+            return false;
+        }
+        Object this$title = this.getTitle();
+        Object other$title = other.getTitle();
+        if (this$title == null ? other$title != null : !this$title.equals(other$title)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConsoleQuickStartTask;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $description = this.getDescription();
+        result = result * prime + ($description == null ? 43 : $description.hashCode());
+        Object $review = this.getReview();
+        result = result * prime + ($review == null ? 43 : $review.hashCode());
+        Object $summary = this.getSummary();
+        result = result * prime + ($summary == null ? 43 : $summary.hashCode());
+        Object $title = this.getTitle();
+        result = result * prime + ($title == null ? 43 : $title.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConsoleQuickStartTask(" + "description=" + this.getDescription() + ", review=" + this.getReview() + ", summary=" + this.getSummary() + ", title=" + this.getTitle() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

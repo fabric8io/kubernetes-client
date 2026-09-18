@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AlibabaCloudPlatformStatus holds the current status of the Alibaba Cloud infrastructure provider.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "region",
     "resourceGroupID",
     "resourceTags"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -163,6 +154,64 @@ public class AlibabaCloudPlatformStatus implements Editable<AlibabaCloudPlatform
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AlibabaCloudPlatformStatus)) {
+            return false;
+        }
+        AlibabaCloudPlatformStatus other = (AlibabaCloudPlatformStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$resourceGroupID = this.getResourceGroupID();
+        Object other$resourceGroupID = other.getResourceGroupID();
+        if (this$resourceGroupID == null ? other$resourceGroupID != null : !this$resourceGroupID.equals(other$resourceGroupID)) {
+            return false;
+        }
+        Object this$resourceTags = this.getResourceTags();
+        Object other$resourceTags = other.getResourceTags();
+        if (this$resourceTags == null ? other$resourceTags != null : !this$resourceTags.equals(other$resourceTags)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AlibabaCloudPlatformStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $resourceGroupID = this.getResourceGroupID();
+        result = result * prime + ($resourceGroupID == null ? 43 : $resourceGroupID.hashCode());
+        Object $resourceTags = this.getResourceTags();
+        result = result * prime + ($resourceTags == null ? 43 : $resourceTags.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AlibabaCloudPlatformStatus(" + "region=" + this.getRegion() + ", resourceGroupID=" + this.getResourceGroupID() + ", resourceTags=" + this.getResourceTags() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

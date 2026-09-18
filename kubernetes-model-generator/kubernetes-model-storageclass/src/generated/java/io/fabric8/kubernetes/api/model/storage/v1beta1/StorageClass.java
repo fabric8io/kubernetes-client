@@ -33,9 +33,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * StorageClass describes the parameters for a class of storage for which PersistentVolumes can be dynamically provisioned.<br><p> <br><p> StorageClasses are non-namespaced; the name of the storage class according to etcd is in ObjectMeta.Name.
@@ -53,12 +50,6 @@ import lombok.experimental.Accessors;
     "provisioner",
     "reclaimPolicy",
     "volumeBindingMode"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -313,6 +304,113 @@ public class StorageClass implements Editable<StorageClassBuilder>, HasMetadata
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof StorageClass)) {
+            return false;
+        }
+        StorageClass other = (StorageClass) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allowVolumeExpansion = this.getAllowVolumeExpansion();
+        Object other$allowVolumeExpansion = other.getAllowVolumeExpansion();
+        if (this$allowVolumeExpansion == null ? other$allowVolumeExpansion != null : !this$allowVolumeExpansion.equals(other$allowVolumeExpansion)) {
+            return false;
+        }
+        Object this$allowedTopologies = this.getAllowedTopologies();
+        Object other$allowedTopologies = other.getAllowedTopologies();
+        if (this$allowedTopologies == null ? other$allowedTopologies != null : !this$allowedTopologies.equals(other$allowedTopologies)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$mountOptions = this.getMountOptions();
+        Object other$mountOptions = other.getMountOptions();
+        if (this$mountOptions == null ? other$mountOptions != null : !this$mountOptions.equals(other$mountOptions)) {
+            return false;
+        }
+        Object this$parameters = this.getParameters();
+        Object other$parameters = other.getParameters();
+        if (this$parameters == null ? other$parameters != null : !this$parameters.equals(other$parameters)) {
+            return false;
+        }
+        Object this$provisioner = this.getProvisioner();
+        Object other$provisioner = other.getProvisioner();
+        if (this$provisioner == null ? other$provisioner != null : !this$provisioner.equals(other$provisioner)) {
+            return false;
+        }
+        Object this$reclaimPolicy = this.getReclaimPolicy();
+        Object other$reclaimPolicy = other.getReclaimPolicy();
+        if (this$reclaimPolicy == null ? other$reclaimPolicy != null : !this$reclaimPolicy.equals(other$reclaimPolicy)) {
+            return false;
+        }
+        Object this$volumeBindingMode = this.getVolumeBindingMode();
+        Object other$volumeBindingMode = other.getVolumeBindingMode();
+        if (this$volumeBindingMode == null ? other$volumeBindingMode != null : !this$volumeBindingMode.equals(other$volumeBindingMode)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof StorageClass;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allowVolumeExpansion = this.getAllowVolumeExpansion();
+        result = result * prime + ($allowVolumeExpansion == null ? 43 : $allowVolumeExpansion.hashCode());
+        Object $allowedTopologies = this.getAllowedTopologies();
+        result = result * prime + ($allowedTopologies == null ? 43 : $allowedTopologies.hashCode());
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $mountOptions = this.getMountOptions();
+        result = result * prime + ($mountOptions == null ? 43 : $mountOptions.hashCode());
+        Object $parameters = this.getParameters();
+        result = result * prime + ($parameters == null ? 43 : $parameters.hashCode());
+        Object $provisioner = this.getProvisioner();
+        result = result * prime + ($provisioner == null ? 43 : $provisioner.hashCode());
+        Object $reclaimPolicy = this.getReclaimPolicy();
+        result = result * prime + ($reclaimPolicy == null ? 43 : $reclaimPolicy.hashCode());
+        Object $volumeBindingMode = this.getVolumeBindingMode();
+        result = result * prime + ($volumeBindingMode == null ? 43 : $volumeBindingMode.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "StorageClass(" + "allowVolumeExpansion=" + this.getAllowVolumeExpansion() + ", allowedTopologies=" + this.getAllowedTopologies() + ", apiVersion=" + this.getApiVersion() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata() + ", mountOptions=" + this.getMountOptions() + ", parameters=" + this.getParameters() + ", provisioner=" + this.getProvisioner() + ", reclaimPolicy=" + this.getReclaimPolicy() + ", volumeBindingMode=" + this.getVolumeBindingMode() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TaskSpec specifies the task specification of Job.
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "replicas",
     "template",
     "topologyPolicy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -264,6 +255,99 @@ public class TaskSpec implements Editable<TaskSpecBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TaskSpec)) {
+            return false;
+        }
+        TaskSpec other = (TaskSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$dependsOn = this.getDependsOn();
+        Object other$dependsOn = other.getDependsOn();
+        if (this$dependsOn == null ? other$dependsOn != null : !this$dependsOn.equals(other$dependsOn)) {
+            return false;
+        }
+        Object this$maxRetry = this.getMaxRetry();
+        Object other$maxRetry = other.getMaxRetry();
+        if (this$maxRetry == null ? other$maxRetry != null : !this$maxRetry.equals(other$maxRetry)) {
+            return false;
+        }
+        Object this$minAvailable = this.getMinAvailable();
+        Object other$minAvailable = other.getMinAvailable();
+        if (this$minAvailable == null ? other$minAvailable != null : !this$minAvailable.equals(other$minAvailable)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$policies = this.getPolicies();
+        Object other$policies = other.getPolicies();
+        if (this$policies == null ? other$policies != null : !this$policies.equals(other$policies)) {
+            return false;
+        }
+        Object this$replicas = this.getReplicas();
+        Object other$replicas = other.getReplicas();
+        if (this$replicas == null ? other$replicas != null : !this$replicas.equals(other$replicas)) {
+            return false;
+        }
+        Object this$template = this.getTemplate();
+        Object other$template = other.getTemplate();
+        if (this$template == null ? other$template != null : !this$template.equals(other$template)) {
+            return false;
+        }
+        Object this$topologyPolicy = this.getTopologyPolicy();
+        Object other$topologyPolicy = other.getTopologyPolicy();
+        if (this$topologyPolicy == null ? other$topologyPolicy != null : !this$topologyPolicy.equals(other$topologyPolicy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TaskSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $dependsOn = this.getDependsOn();
+        result = result * prime + ($dependsOn == null ? 43 : $dependsOn.hashCode());
+        Object $maxRetry = this.getMaxRetry();
+        result = result * prime + ($maxRetry == null ? 43 : $maxRetry.hashCode());
+        Object $minAvailable = this.getMinAvailable();
+        result = result * prime + ($minAvailable == null ? 43 : $minAvailable.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $policies = this.getPolicies();
+        result = result * prime + ($policies == null ? 43 : $policies.hashCode());
+        Object $replicas = this.getReplicas();
+        result = result * prime + ($replicas == null ? 43 : $replicas.hashCode());
+        Object $template = this.getTemplate();
+        result = result * prime + ($template == null ? 43 : $template.hashCode());
+        Object $topologyPolicy = this.getTopologyPolicy();
+        result = result * prime + ($topologyPolicy == null ? 43 : $topologyPolicy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TaskSpec(" + "dependsOn=" + this.getDependsOn() + ", maxRetry=" + this.getMaxRetry() + ", minAvailable=" + this.getMinAvailable() + ", name=" + this.getName() + ", policies=" + this.getPolicies() + ", replicas=" + this.getReplicas() + ", template=" + this.getTemplate() + ", topologyPolicy=" + this.getTopologyPolicy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

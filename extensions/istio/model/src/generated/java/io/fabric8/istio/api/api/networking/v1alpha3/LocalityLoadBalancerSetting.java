@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Locality-weighted load balancing allows administrators to control the distribution of traffic to endpoints based on the localities of where the traffic originates and where it will terminate. These localities are specified using arbitrary labels that designate a hierarchy of localities in {region}/{zone}/{sub-zone} form. For additional detail refer to [Locality Weight](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/locality_weight) The following example shows how to setup locality weights mesh-wide.<br><p> <br><p> Given a mesh with workloads and their service deployed to "us-west/zone1/\&#42;" and "us-west/zone2/\&#42;". This example specifies that when traffic accessing a service originates from workloads in "us-west/zone1/\&#42;", 80% of the traffic will be sent to endpoints in "us-west/zone1/\&#42;", i.e the same zone, and the remaining 20% will go to endpoints in "us-west/zone2/\&#42;". This setup is intended to favor routing traffic to endpoints in the same locality. A similar setting is specified for traffic originating in "us-west/zone2/\&#42;".<br><p> <br><p> ```yaml<br><p> <br><p> 	distribute:<br><p> 	  - from: us-west/zone1/&#42;<br><p> 	    to:<br><p> 	      "us-west/zone1/&#42;": 80<br><p> 	      "us-west/zone2/&#42;": 20<br><p> 	  - from: us-west/zone2/&#42;<br><p> 	    to:<br><p> 	      "us-west/zone1/&#42;": 20<br><p> 	      "us-west/zone2/&#42;": 80<br><p> <br><p> ```<br><p> <br><p> If the goal of the operator is not to distribute load across zones and regions but rather to restrict the regionality of failover to meet other operational requirements an operator can set a 'failover' policy instead of a 'distribute' policy.<br><p> <br><p> The following example sets up a locality failover policy for regions. Assume a service resides in zones within us-east, us-west &amp; eu-west this example specifies that when endpoints within us-east become unhealthy traffic should failover to endpoints in any zone or sub-zone within eu-west and similarly us-west should failover to us-east.<br><p> <br><p> ```yaml<br><p> <br><p> 	failover:<br><p> 	  - from: us-east<br><p> 	    to: eu-west<br><p> 	  - from: us-west<br><p> 	    to: us-east<br><p> <br><p> ```
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "enabled",
     "failover",
     "failoverPriority"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -188,6 +179,71 @@ public class LocalityLoadBalancerSetting implements Editable<LocalityLoadBalance
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof LocalityLoadBalancerSetting)) {
+            return false;
+        }
+        LocalityLoadBalancerSetting other = (LocalityLoadBalancerSetting) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$distribute = this.getDistribute();
+        Object other$distribute = other.getDistribute();
+        if (this$distribute == null ? other$distribute != null : !this$distribute.equals(other$distribute)) {
+            return false;
+        }
+        Object this$enabled = this.getEnabled();
+        Object other$enabled = other.getEnabled();
+        if (this$enabled == null ? other$enabled != null : !this$enabled.equals(other$enabled)) {
+            return false;
+        }
+        Object this$failover = this.getFailover();
+        Object other$failover = other.getFailover();
+        if (this$failover == null ? other$failover != null : !this$failover.equals(other$failover)) {
+            return false;
+        }
+        Object this$failoverPriority = this.getFailoverPriority();
+        Object other$failoverPriority = other.getFailoverPriority();
+        if (this$failoverPriority == null ? other$failoverPriority != null : !this$failoverPriority.equals(other$failoverPriority)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof LocalityLoadBalancerSetting;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $distribute = this.getDistribute();
+        result = result * prime + ($distribute == null ? 43 : $distribute.hashCode());
+        Object $enabled = this.getEnabled();
+        result = result * prime + ($enabled == null ? 43 : $enabled.hashCode());
+        Object $failover = this.getFailover();
+        result = result * prime + ($failover == null ? 43 : $failover.hashCode());
+        Object $failoverPriority = this.getFailoverPriority();
+        result = result * prime + ($failoverPriority == null ? 43 : $failoverPriority.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "LocalityLoadBalancerSetting(" + "distribute=" + this.getDistribute() + ", enabled=" + this.getEnabled() + ", failover=" + this.getFailover() + ", failoverPriority=" + this.getFailoverPriority() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

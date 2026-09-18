@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ServerAddressByClientCIDR helps the client to determine the server address that they should use, depending on the clientCIDR that they match.
@@ -25,12 +22,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "clientCIDR",
     "serverAddress"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -111,6 +102,57 @@ public class ServerAddressByClientCIDR implements Editable<ServerAddressByClient
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ServerAddressByClientCIDR)) {
+            return false;
+        }
+        ServerAddressByClientCIDR other = (ServerAddressByClientCIDR) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clientCIDR = this.getClientCIDR();
+        Object other$clientCIDR = other.getClientCIDR();
+        if (this$clientCIDR == null ? other$clientCIDR != null : !this$clientCIDR.equals(other$clientCIDR)) {
+            return false;
+        }
+        Object this$serverAddress = this.getServerAddress();
+        Object other$serverAddress = other.getServerAddress();
+        if (this$serverAddress == null ? other$serverAddress != null : !this$serverAddress.equals(other$serverAddress)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ServerAddressByClientCIDR;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clientCIDR = this.getClientCIDR();
+        result = result * prime + ($clientCIDR == null ? 43 : $clientCIDR.hashCode());
+        Object $serverAddress = this.getServerAddress();
+        result = result * prime + ($serverAddress == null ? 43 : $serverAddress.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ServerAddressByClientCIDR(" + "clientCIDR=" + this.getClientCIDR() + ", serverAddress=" + this.getServerAddress() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

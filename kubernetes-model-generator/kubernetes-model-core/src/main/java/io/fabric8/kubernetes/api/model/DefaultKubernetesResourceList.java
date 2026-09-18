@@ -17,28 +17,56 @@ package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@Getter
-@Setter
-@ToString
 public class DefaultKubernetesResourceList<T extends HasMetadata> implements KubernetesResource, KubernetesResourceList<T> {
-
   @JsonProperty("apiVersion")
   private String apiVersion;
-
   @JsonProperty("items")
   private List<T> items = new ArrayList<>();
-
   @JsonProperty("kind")
   private String kind;
-
   @JsonProperty("metadata")
   private ListMeta metadata;
+
+  public String getApiVersion() {
+    return this.apiVersion;
+  }
+
+  public List<T> getItems() {
+    return this.items;
+  }
+
+  public String getKind() {
+    return this.kind;
+  }
+
+  public ListMeta getMetadata() {
+    return this.metadata;
+  }
+
+  public void setApiVersion(final String apiVersion) {
+    this.apiVersion = apiVersion;
+  }
+
+  public void setItems(final List<T> items) {
+    this.items = items;
+  }
+
+  public void setKind(final String kind) {
+    this.kind = kind;
+  }
+
+  public void setMetadata(final ListMeta metadata) {
+    this.metadata = metadata;
+  }
+
+  @java.lang.Override
+  public java.lang.String toString() {
+    return "DefaultKubernetesResourceList(apiVersion=" + this.getApiVersion() + ", items=" + this.getItems() + ", kind="
+        + this.getKind() + ", metadata=" + this.getMetadata() + ")";
+  }
 }

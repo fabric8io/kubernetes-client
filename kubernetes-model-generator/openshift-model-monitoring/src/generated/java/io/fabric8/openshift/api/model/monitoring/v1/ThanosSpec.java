@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ThanosSpec defines the configuration of the Thanos sidecar.
@@ -63,12 +60,6 @@ import lombok.experimental.Accessors;
     "tracingConfigFile",
     "version",
     "volumeMounts"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -566,6 +557,204 @@ public class ThanosSpec implements Editable<ThanosSpecBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ThanosSpec)) {
+            return false;
+        }
+        ThanosSpec other = (ThanosSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$additionalArgs = this.getAdditionalArgs();
+        Object other$additionalArgs = other.getAdditionalArgs();
+        if (this$additionalArgs == null ? other$additionalArgs != null : !this$additionalArgs.equals(other$additionalArgs)) {
+            return false;
+        }
+        Object this$baseImage = this.getBaseImage();
+        Object other$baseImage = other.getBaseImage();
+        if (this$baseImage == null ? other$baseImage != null : !this$baseImage.equals(other$baseImage)) {
+            return false;
+        }
+        Object this$blockSize = this.getBlockSize();
+        Object other$blockSize = other.getBlockSize();
+        if (this$blockSize == null ? other$blockSize != null : !this$blockSize.equals(other$blockSize)) {
+            return false;
+        }
+        Object this$getConfigInterval = this.getGetConfigInterval();
+        Object other$getConfigInterval = other.getGetConfigInterval();
+        if (this$getConfigInterval == null ? other$getConfigInterval != null : !this$getConfigInterval.equals(other$getConfigInterval)) {
+            return false;
+        }
+        Object this$getConfigTimeout = this.getGetConfigTimeout();
+        Object other$getConfigTimeout = other.getGetConfigTimeout();
+        if (this$getConfigTimeout == null ? other$getConfigTimeout != null : !this$getConfigTimeout.equals(other$getConfigTimeout)) {
+            return false;
+        }
+        Object this$grpcListenLocal = this.getGrpcListenLocal();
+        Object other$grpcListenLocal = other.getGrpcListenLocal();
+        if (this$grpcListenLocal == null ? other$grpcListenLocal != null : !this$grpcListenLocal.equals(other$grpcListenLocal)) {
+            return false;
+        }
+        Object this$grpcServerTlsConfig = this.getGrpcServerTlsConfig();
+        Object other$grpcServerTlsConfig = other.getGrpcServerTlsConfig();
+        if (this$grpcServerTlsConfig == null ? other$grpcServerTlsConfig != null : !this$grpcServerTlsConfig.equals(other$grpcServerTlsConfig)) {
+            return false;
+        }
+        Object this$httpListenLocal = this.getHttpListenLocal();
+        Object other$httpListenLocal = other.getHttpListenLocal();
+        if (this$httpListenLocal == null ? other$httpListenLocal != null : !this$httpListenLocal.equals(other$httpListenLocal)) {
+            return false;
+        }
+        Object this$image = this.getImage();
+        Object other$image = other.getImage();
+        if (this$image == null ? other$image != null : !this$image.equals(other$image)) {
+            return false;
+        }
+        Object this$listenLocal = this.getListenLocal();
+        Object other$listenLocal = other.getListenLocal();
+        if (this$listenLocal == null ? other$listenLocal != null : !this$listenLocal.equals(other$listenLocal)) {
+            return false;
+        }
+        Object this$logFormat = this.getLogFormat();
+        Object other$logFormat = other.getLogFormat();
+        if (this$logFormat == null ? other$logFormat != null : !this$logFormat.equals(other$logFormat)) {
+            return false;
+        }
+        Object this$logLevel = this.getLogLevel();
+        Object other$logLevel = other.getLogLevel();
+        if (this$logLevel == null ? other$logLevel != null : !this$logLevel.equals(other$logLevel)) {
+            return false;
+        }
+        Object this$minTime = this.getMinTime();
+        Object other$minTime = other.getMinTime();
+        if (this$minTime == null ? other$minTime != null : !this$minTime.equals(other$minTime)) {
+            return false;
+        }
+        Object this$objectStorageConfig = this.getObjectStorageConfig();
+        Object other$objectStorageConfig = other.getObjectStorageConfig();
+        if (this$objectStorageConfig == null ? other$objectStorageConfig != null : !this$objectStorageConfig.equals(other$objectStorageConfig)) {
+            return false;
+        }
+        Object this$objectStorageConfigFile = this.getObjectStorageConfigFile();
+        Object other$objectStorageConfigFile = other.getObjectStorageConfigFile();
+        if (this$objectStorageConfigFile == null ? other$objectStorageConfigFile != null : !this$objectStorageConfigFile.equals(other$objectStorageConfigFile)) {
+            return false;
+        }
+        Object this$readyTimeout = this.getReadyTimeout();
+        Object other$readyTimeout = other.getReadyTimeout();
+        if (this$readyTimeout == null ? other$readyTimeout != null : !this$readyTimeout.equals(other$readyTimeout)) {
+            return false;
+        }
+        Object this$resources = this.getResources();
+        Object other$resources = other.getResources();
+        if (this$resources == null ? other$resources != null : !this$resources.equals(other$resources)) {
+            return false;
+        }
+        Object this$sha = this.getSha();
+        Object other$sha = other.getSha();
+        if (this$sha == null ? other$sha != null : !this$sha.equals(other$sha)) {
+            return false;
+        }
+        Object this$tag = this.getTag();
+        Object other$tag = other.getTag();
+        if (this$tag == null ? other$tag != null : !this$tag.equals(other$tag)) {
+            return false;
+        }
+        Object this$tracingConfig = this.getTracingConfig();
+        Object other$tracingConfig = other.getTracingConfig();
+        if (this$tracingConfig == null ? other$tracingConfig != null : !this$tracingConfig.equals(other$tracingConfig)) {
+            return false;
+        }
+        Object this$tracingConfigFile = this.getTracingConfigFile();
+        Object other$tracingConfigFile = other.getTracingConfigFile();
+        if (this$tracingConfigFile == null ? other$tracingConfigFile != null : !this$tracingConfigFile.equals(other$tracingConfigFile)) {
+            return false;
+        }
+        Object this$version = this.getVersion();
+        Object other$version = other.getVersion();
+        if (this$version == null ? other$version != null : !this$version.equals(other$version)) {
+            return false;
+        }
+        Object this$volumeMounts = this.getVolumeMounts();
+        Object other$volumeMounts = other.getVolumeMounts();
+        if (this$volumeMounts == null ? other$volumeMounts != null : !this$volumeMounts.equals(other$volumeMounts)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ThanosSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $additionalArgs = this.getAdditionalArgs();
+        result = result * prime + ($additionalArgs == null ? 43 : $additionalArgs.hashCode());
+        Object $baseImage = this.getBaseImage();
+        result = result * prime + ($baseImage == null ? 43 : $baseImage.hashCode());
+        Object $blockSize = this.getBlockSize();
+        result = result * prime + ($blockSize == null ? 43 : $blockSize.hashCode());
+        Object $getConfigInterval = this.getGetConfigInterval();
+        result = result * prime + ($getConfigInterval == null ? 43 : $getConfigInterval.hashCode());
+        Object $getConfigTimeout = this.getGetConfigTimeout();
+        result = result * prime + ($getConfigTimeout == null ? 43 : $getConfigTimeout.hashCode());
+        Object $grpcListenLocal = this.getGrpcListenLocal();
+        result = result * prime + ($grpcListenLocal == null ? 43 : $grpcListenLocal.hashCode());
+        Object $grpcServerTlsConfig = this.getGrpcServerTlsConfig();
+        result = result * prime + ($grpcServerTlsConfig == null ? 43 : $grpcServerTlsConfig.hashCode());
+        Object $httpListenLocal = this.getHttpListenLocal();
+        result = result * prime + ($httpListenLocal == null ? 43 : $httpListenLocal.hashCode());
+        Object $image = this.getImage();
+        result = result * prime + ($image == null ? 43 : $image.hashCode());
+        Object $listenLocal = this.getListenLocal();
+        result = result * prime + ($listenLocal == null ? 43 : $listenLocal.hashCode());
+        Object $logFormat = this.getLogFormat();
+        result = result * prime + ($logFormat == null ? 43 : $logFormat.hashCode());
+        Object $logLevel = this.getLogLevel();
+        result = result * prime + ($logLevel == null ? 43 : $logLevel.hashCode());
+        Object $minTime = this.getMinTime();
+        result = result * prime + ($minTime == null ? 43 : $minTime.hashCode());
+        Object $objectStorageConfig = this.getObjectStorageConfig();
+        result = result * prime + ($objectStorageConfig == null ? 43 : $objectStorageConfig.hashCode());
+        Object $objectStorageConfigFile = this.getObjectStorageConfigFile();
+        result = result * prime + ($objectStorageConfigFile == null ? 43 : $objectStorageConfigFile.hashCode());
+        Object $readyTimeout = this.getReadyTimeout();
+        result = result * prime + ($readyTimeout == null ? 43 : $readyTimeout.hashCode());
+        Object $resources = this.getResources();
+        result = result * prime + ($resources == null ? 43 : $resources.hashCode());
+        Object $sha = this.getSha();
+        result = result * prime + ($sha == null ? 43 : $sha.hashCode());
+        Object $tag = this.getTag();
+        result = result * prime + ($tag == null ? 43 : $tag.hashCode());
+        Object $tracingConfig = this.getTracingConfig();
+        result = result * prime + ($tracingConfig == null ? 43 : $tracingConfig.hashCode());
+        Object $tracingConfigFile = this.getTracingConfigFile();
+        result = result * prime + ($tracingConfigFile == null ? 43 : $tracingConfigFile.hashCode());
+        Object $version = this.getVersion();
+        result = result * prime + ($version == null ? 43 : $version.hashCode());
+        Object $volumeMounts = this.getVolumeMounts();
+        result = result * prime + ($volumeMounts == null ? 43 : $volumeMounts.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ThanosSpec(" + "additionalArgs=" + this.getAdditionalArgs() + ", baseImage=" + this.getBaseImage() + ", blockSize=" + this.getBlockSize() + ", getConfigInterval=" + this.getGetConfigInterval() + ", getConfigTimeout=" + this.getGetConfigTimeout() + ", grpcListenLocal=" + this.getGrpcListenLocal() + ", grpcServerTlsConfig=" + this.getGrpcServerTlsConfig() + ", httpListenLocal=" + this.getHttpListenLocal() + ", image=" + this.getImage() + ", listenLocal=" + this.getListenLocal() + ", logFormat=" + this.getLogFormat() + ", logLevel=" + this.getLogLevel() + ", minTime=" + this.getMinTime() + ", objectStorageConfig=" + this.getObjectStorageConfig() + ", objectStorageConfigFile=" + this.getObjectStorageConfigFile() + ", readyTimeout=" + this.getReadyTimeout() + ", resources=" + this.getResources() + ", sha=" + this.getSha() + ", tag=" + this.getTag() + ", tracingConfig=" + this.getTracingConfig() + ", tracingConfigFile=" + this.getTracingConfigFile() + ", version=" + this.getVersion() + ", volumeMounts=" + this.getVolumeMounts() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

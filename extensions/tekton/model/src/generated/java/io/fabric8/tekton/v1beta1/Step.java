@@ -37,9 +37,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.tekton.v1.StepResult;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Step runs a subcomponent of a Task
@@ -80,12 +77,6 @@ import lombok.experimental.Accessors;
     "when",
     "workingDir",
     "workspaces"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -791,6 +782,274 @@ public class Step implements Editable<StepBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Step)) {
+            return false;
+        }
+        Step other = (Step) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$args = this.getArgs();
+        Object other$args = other.getArgs();
+        if (this$args == null ? other$args != null : !this$args.equals(other$args)) {
+            return false;
+        }
+        Object this$command = this.getCommand();
+        Object other$command = other.getCommand();
+        if (this$command == null ? other$command != null : !this$command.equals(other$command)) {
+            return false;
+        }
+        Object this$displayName = this.getDisplayName();
+        Object other$displayName = other.getDisplayName();
+        if (this$displayName == null ? other$displayName != null : !this$displayName.equals(other$displayName)) {
+            return false;
+        }
+        Object this$env = this.getEnv();
+        Object other$env = other.getEnv();
+        if (this$env == null ? other$env != null : !this$env.equals(other$env)) {
+            return false;
+        }
+        Object this$envFrom = this.getEnvFrom();
+        Object other$envFrom = other.getEnvFrom();
+        if (this$envFrom == null ? other$envFrom != null : !this$envFrom.equals(other$envFrom)) {
+            return false;
+        }
+        Object this$image = this.getImage();
+        Object other$image = other.getImage();
+        if (this$image == null ? other$image != null : !this$image.equals(other$image)) {
+            return false;
+        }
+        Object this$imagePullPolicy = this.getImagePullPolicy();
+        Object other$imagePullPolicy = other.getImagePullPolicy();
+        if (this$imagePullPolicy == null ? other$imagePullPolicy != null : !this$imagePullPolicy.equals(other$imagePullPolicy)) {
+            return false;
+        }
+        Object this$lifecycle = this.getLifecycle();
+        Object other$lifecycle = other.getLifecycle();
+        if (this$lifecycle == null ? other$lifecycle != null : !this$lifecycle.equals(other$lifecycle)) {
+            return false;
+        }
+        Object this$livenessProbe = this.getLivenessProbe();
+        Object other$livenessProbe = other.getLivenessProbe();
+        if (this$livenessProbe == null ? other$livenessProbe != null : !this$livenessProbe.equals(other$livenessProbe)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$onError = this.getOnError();
+        Object other$onError = other.getOnError();
+        if (this$onError == null ? other$onError != null : !this$onError.equals(other$onError)) {
+            return false;
+        }
+        Object this$params = this.getParams();
+        Object other$params = other.getParams();
+        if (this$params == null ? other$params != null : !this$params.equals(other$params)) {
+            return false;
+        }
+        Object this$ports = this.getPorts();
+        Object other$ports = other.getPorts();
+        if (this$ports == null ? other$ports != null : !this$ports.equals(other$ports)) {
+            return false;
+        }
+        Object this$readinessProbe = this.getReadinessProbe();
+        Object other$readinessProbe = other.getReadinessProbe();
+        if (this$readinessProbe == null ? other$readinessProbe != null : !this$readinessProbe.equals(other$readinessProbe)) {
+            return false;
+        }
+        Object this$ref = this.getRef();
+        Object other$ref = other.getRef();
+        if (this$ref == null ? other$ref != null : !this$ref.equals(other$ref)) {
+            return false;
+        }
+        Object this$resources = this.getResources();
+        Object other$resources = other.getResources();
+        if (this$resources == null ? other$resources != null : !this$resources.equals(other$resources)) {
+            return false;
+        }
+        Object this$results = this.getResults();
+        Object other$results = other.getResults();
+        if (this$results == null ? other$results != null : !this$results.equals(other$results)) {
+            return false;
+        }
+        Object this$script = this.getScript();
+        Object other$script = other.getScript();
+        if (this$script == null ? other$script != null : !this$script.equals(other$script)) {
+            return false;
+        }
+        Object this$securityContext = this.getSecurityContext();
+        Object other$securityContext = other.getSecurityContext();
+        if (this$securityContext == null ? other$securityContext != null : !this$securityContext.equals(other$securityContext)) {
+            return false;
+        }
+        Object this$startupProbe = this.getStartupProbe();
+        Object other$startupProbe = other.getStartupProbe();
+        if (this$startupProbe == null ? other$startupProbe != null : !this$startupProbe.equals(other$startupProbe)) {
+            return false;
+        }
+        Object this$stderrConfig = this.getStderrConfig();
+        Object other$stderrConfig = other.getStderrConfig();
+        if (this$stderrConfig == null ? other$stderrConfig != null : !this$stderrConfig.equals(other$stderrConfig)) {
+            return false;
+        }
+        Object this$stdin = this.getStdin();
+        Object other$stdin = other.getStdin();
+        if (this$stdin == null ? other$stdin != null : !this$stdin.equals(other$stdin)) {
+            return false;
+        }
+        Object this$stdinOnce = this.getStdinOnce();
+        Object other$stdinOnce = other.getStdinOnce();
+        if (this$stdinOnce == null ? other$stdinOnce != null : !this$stdinOnce.equals(other$stdinOnce)) {
+            return false;
+        }
+        Object this$stdoutConfig = this.getStdoutConfig();
+        Object other$stdoutConfig = other.getStdoutConfig();
+        if (this$stdoutConfig == null ? other$stdoutConfig != null : !this$stdoutConfig.equals(other$stdoutConfig)) {
+            return false;
+        }
+        Object this$terminationMessagePath = this.getTerminationMessagePath();
+        Object other$terminationMessagePath = other.getTerminationMessagePath();
+        if (this$terminationMessagePath == null ? other$terminationMessagePath != null : !this$terminationMessagePath.equals(other$terminationMessagePath)) {
+            return false;
+        }
+        Object this$terminationMessagePolicy = this.getTerminationMessagePolicy();
+        Object other$terminationMessagePolicy = other.getTerminationMessagePolicy();
+        if (this$terminationMessagePolicy == null ? other$terminationMessagePolicy != null : !this$terminationMessagePolicy.equals(other$terminationMessagePolicy)) {
+            return false;
+        }
+        Object this$timeout = this.getTimeout();
+        Object other$timeout = other.getTimeout();
+        if (this$timeout == null ? other$timeout != null : !this$timeout.equals(other$timeout)) {
+            return false;
+        }
+        Object this$tty = this.getTty();
+        Object other$tty = other.getTty();
+        if (this$tty == null ? other$tty != null : !this$tty.equals(other$tty)) {
+            return false;
+        }
+        Object this$volumeDevices = this.getVolumeDevices();
+        Object other$volumeDevices = other.getVolumeDevices();
+        if (this$volumeDevices == null ? other$volumeDevices != null : !this$volumeDevices.equals(other$volumeDevices)) {
+            return false;
+        }
+        Object this$volumeMounts = this.getVolumeMounts();
+        Object other$volumeMounts = other.getVolumeMounts();
+        if (this$volumeMounts == null ? other$volumeMounts != null : !this$volumeMounts.equals(other$volumeMounts)) {
+            return false;
+        }
+        Object this$when = this.getWhen();
+        Object other$when = other.getWhen();
+        if (this$when == null ? other$when != null : !this$when.equals(other$when)) {
+            return false;
+        }
+        Object this$workingDir = this.getWorkingDir();
+        Object other$workingDir = other.getWorkingDir();
+        if (this$workingDir == null ? other$workingDir != null : !this$workingDir.equals(other$workingDir)) {
+            return false;
+        }
+        Object this$workspaces = this.getWorkspaces();
+        Object other$workspaces = other.getWorkspaces();
+        if (this$workspaces == null ? other$workspaces != null : !this$workspaces.equals(other$workspaces)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Step;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $args = this.getArgs();
+        result = result * prime + ($args == null ? 43 : $args.hashCode());
+        Object $command = this.getCommand();
+        result = result * prime + ($command == null ? 43 : $command.hashCode());
+        Object $displayName = this.getDisplayName();
+        result = result * prime + ($displayName == null ? 43 : $displayName.hashCode());
+        Object $env = this.getEnv();
+        result = result * prime + ($env == null ? 43 : $env.hashCode());
+        Object $envFrom = this.getEnvFrom();
+        result = result * prime + ($envFrom == null ? 43 : $envFrom.hashCode());
+        Object $image = this.getImage();
+        result = result * prime + ($image == null ? 43 : $image.hashCode());
+        Object $imagePullPolicy = this.getImagePullPolicy();
+        result = result * prime + ($imagePullPolicy == null ? 43 : $imagePullPolicy.hashCode());
+        Object $lifecycle = this.getLifecycle();
+        result = result * prime + ($lifecycle == null ? 43 : $lifecycle.hashCode());
+        Object $livenessProbe = this.getLivenessProbe();
+        result = result * prime + ($livenessProbe == null ? 43 : $livenessProbe.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $onError = this.getOnError();
+        result = result * prime + ($onError == null ? 43 : $onError.hashCode());
+        Object $params = this.getParams();
+        result = result * prime + ($params == null ? 43 : $params.hashCode());
+        Object $ports = this.getPorts();
+        result = result * prime + ($ports == null ? 43 : $ports.hashCode());
+        Object $readinessProbe = this.getReadinessProbe();
+        result = result * prime + ($readinessProbe == null ? 43 : $readinessProbe.hashCode());
+        Object $ref = this.getRef();
+        result = result * prime + ($ref == null ? 43 : $ref.hashCode());
+        Object $resources = this.getResources();
+        result = result * prime + ($resources == null ? 43 : $resources.hashCode());
+        Object $results = this.getResults();
+        result = result * prime + ($results == null ? 43 : $results.hashCode());
+        Object $script = this.getScript();
+        result = result * prime + ($script == null ? 43 : $script.hashCode());
+        Object $securityContext = this.getSecurityContext();
+        result = result * prime + ($securityContext == null ? 43 : $securityContext.hashCode());
+        Object $startupProbe = this.getStartupProbe();
+        result = result * prime + ($startupProbe == null ? 43 : $startupProbe.hashCode());
+        Object $stderrConfig = this.getStderrConfig();
+        result = result * prime + ($stderrConfig == null ? 43 : $stderrConfig.hashCode());
+        Object $stdin = this.getStdin();
+        result = result * prime + ($stdin == null ? 43 : $stdin.hashCode());
+        Object $stdinOnce = this.getStdinOnce();
+        result = result * prime + ($stdinOnce == null ? 43 : $stdinOnce.hashCode());
+        Object $stdoutConfig = this.getStdoutConfig();
+        result = result * prime + ($stdoutConfig == null ? 43 : $stdoutConfig.hashCode());
+        Object $terminationMessagePath = this.getTerminationMessagePath();
+        result = result * prime + ($terminationMessagePath == null ? 43 : $terminationMessagePath.hashCode());
+        Object $terminationMessagePolicy = this.getTerminationMessagePolicy();
+        result = result * prime + ($terminationMessagePolicy == null ? 43 : $terminationMessagePolicy.hashCode());
+        Object $timeout = this.getTimeout();
+        result = result * prime + ($timeout == null ? 43 : $timeout.hashCode());
+        Object $tty = this.getTty();
+        result = result * prime + ($tty == null ? 43 : $tty.hashCode());
+        Object $volumeDevices = this.getVolumeDevices();
+        result = result * prime + ($volumeDevices == null ? 43 : $volumeDevices.hashCode());
+        Object $volumeMounts = this.getVolumeMounts();
+        result = result * prime + ($volumeMounts == null ? 43 : $volumeMounts.hashCode());
+        Object $when = this.getWhen();
+        result = result * prime + ($when == null ? 43 : $when.hashCode());
+        Object $workingDir = this.getWorkingDir();
+        result = result * prime + ($workingDir == null ? 43 : $workingDir.hashCode());
+        Object $workspaces = this.getWorkspaces();
+        result = result * prime + ($workspaces == null ? 43 : $workspaces.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Step(" + "args=" + this.getArgs() + ", command=" + this.getCommand() + ", displayName=" + this.getDisplayName() + ", env=" + this.getEnv() + ", envFrom=" + this.getEnvFrom() + ", image=" + this.getImage() + ", imagePullPolicy=" + this.getImagePullPolicy() + ", lifecycle=" + this.getLifecycle() + ", livenessProbe=" + this.getLivenessProbe() + ", name=" + this.getName() + ", onError=" + this.getOnError() + ", params=" + this.getParams() + ", ports=" + this.getPorts() + ", readinessProbe=" + this.getReadinessProbe() + ", ref=" + this.getRef() + ", resources=" + this.getResources() + ", results=" + this.getResults() + ", script=" + this.getScript() + ", securityContext=" + this.getSecurityContext() + ", startupProbe=" + this.getStartupProbe() + ", stderrConfig=" + this.getStderrConfig() + ", stdin=" + this.getStdin() + ", stdinOnce=" + this.getStdinOnce() + ", stdoutConfig=" + this.getStdoutConfig() + ", terminationMessagePath=" + this.getTerminationMessagePath() + ", terminationMessagePolicy=" + this.getTerminationMessagePolicy() + ", timeout=" + this.getTimeout() + ", tty=" + this.getTty() + ", volumeDevices=" + this.getVolumeDevices() + ", volumeMounts=" + this.getVolumeMounts() + ", when=" + this.getWhen() + ", workingDir=" + this.getWorkingDir() + ", workspaces=" + this.getWorkspaces() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

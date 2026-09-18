@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TokenConfig holds the necessary configuration options for authorization and access tokens
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "accessTokenInactivityTimeout",
     "accessTokenInactivityTimeoutSeconds",
     "accessTokenMaxAgeSeconds"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -159,6 +150,64 @@ public class TokenConfig implements Editable<TokenConfigBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TokenConfig)) {
+            return false;
+        }
+        TokenConfig other = (TokenConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$accessTokenInactivityTimeout = this.getAccessTokenInactivityTimeout();
+        Object other$accessTokenInactivityTimeout = other.getAccessTokenInactivityTimeout();
+        if (this$accessTokenInactivityTimeout == null ? other$accessTokenInactivityTimeout != null : !this$accessTokenInactivityTimeout.equals(other$accessTokenInactivityTimeout)) {
+            return false;
+        }
+        Object this$accessTokenInactivityTimeoutSeconds = this.getAccessTokenInactivityTimeoutSeconds();
+        Object other$accessTokenInactivityTimeoutSeconds = other.getAccessTokenInactivityTimeoutSeconds();
+        if (this$accessTokenInactivityTimeoutSeconds == null ? other$accessTokenInactivityTimeoutSeconds != null : !this$accessTokenInactivityTimeoutSeconds.equals(other$accessTokenInactivityTimeoutSeconds)) {
+            return false;
+        }
+        Object this$accessTokenMaxAgeSeconds = this.getAccessTokenMaxAgeSeconds();
+        Object other$accessTokenMaxAgeSeconds = other.getAccessTokenMaxAgeSeconds();
+        if (this$accessTokenMaxAgeSeconds == null ? other$accessTokenMaxAgeSeconds != null : !this$accessTokenMaxAgeSeconds.equals(other$accessTokenMaxAgeSeconds)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TokenConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $accessTokenInactivityTimeout = this.getAccessTokenInactivityTimeout();
+        result = result * prime + ($accessTokenInactivityTimeout == null ? 43 : $accessTokenInactivityTimeout.hashCode());
+        Object $accessTokenInactivityTimeoutSeconds = this.getAccessTokenInactivityTimeoutSeconds();
+        result = result * prime + ($accessTokenInactivityTimeoutSeconds == null ? 43 : $accessTokenInactivityTimeoutSeconds.hashCode());
+        Object $accessTokenMaxAgeSeconds = this.getAccessTokenMaxAgeSeconds();
+        result = result * prime + ($accessTokenMaxAgeSeconds == null ? 43 : $accessTokenMaxAgeSeconds.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TokenConfig(" + "accessTokenInactivityTimeout=" + this.getAccessTokenInactivityTimeout() + ", accessTokenInactivityTimeoutSeconds=" + this.getAccessTokenInactivityTimeoutSeconds() + ", accessTokenMaxAgeSeconds=" + this.getAccessTokenMaxAgeSeconds() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

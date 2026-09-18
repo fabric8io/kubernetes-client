@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AzureBootDiagnostics configures the boot diagnostics settings for the virtual machine. This allows you to configure capturing serial output from the virtual machine on boot. This is useful for debugging software based launch issues.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "customerManaged",
     "storageAccountType"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -139,6 +130,57 @@ public class AzureBootDiagnostics implements Editable<AzureBootDiagnosticsBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AzureBootDiagnostics)) {
+            return false;
+        }
+        AzureBootDiagnostics other = (AzureBootDiagnostics) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$customerManaged = this.getCustomerManaged();
+        Object other$customerManaged = other.getCustomerManaged();
+        if (this$customerManaged == null ? other$customerManaged != null : !this$customerManaged.equals(other$customerManaged)) {
+            return false;
+        }
+        Object this$storageAccountType = this.getStorageAccountType();
+        Object other$storageAccountType = other.getStorageAccountType();
+        if (this$storageAccountType == null ? other$storageAccountType != null : !this$storageAccountType.equals(other$storageAccountType)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AzureBootDiagnostics;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $customerManaged = this.getCustomerManaged();
+        result = result * prime + ($customerManaged == null ? 43 : $customerManaged.hashCode());
+        Object $storageAccountType = this.getStorageAccountType();
+        result = result * prime + ($storageAccountType == null ? 43 : $storageAccountType.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AzureBootDiagnostics(" + "customerManaged=" + this.getCustomerManaged() + ", storageAccountType=" + this.getStorageAccountType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

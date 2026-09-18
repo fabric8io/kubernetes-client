@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * LifecycleHandler defines a specific action that should be taken in a lifecycle hook. One and only one of the fields, except TCPSocket must be specified.
@@ -27,12 +24,6 @@ import lombok.experimental.Accessors;
     "httpGet",
     "sleep",
     "tcpSocket"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -151,6 +142,71 @@ public class LifecycleHandler implements Editable<LifecycleHandlerBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof LifecycleHandler)) {
+            return false;
+        }
+        LifecycleHandler other = (LifecycleHandler) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$exec = this.getExec();
+        Object other$exec = other.getExec();
+        if (this$exec == null ? other$exec != null : !this$exec.equals(other$exec)) {
+            return false;
+        }
+        Object this$httpGet = this.getHttpGet();
+        Object other$httpGet = other.getHttpGet();
+        if (this$httpGet == null ? other$httpGet != null : !this$httpGet.equals(other$httpGet)) {
+            return false;
+        }
+        Object this$sleep = this.getSleep();
+        Object other$sleep = other.getSleep();
+        if (this$sleep == null ? other$sleep != null : !this$sleep.equals(other$sleep)) {
+            return false;
+        }
+        Object this$tcpSocket = this.getTcpSocket();
+        Object other$tcpSocket = other.getTcpSocket();
+        if (this$tcpSocket == null ? other$tcpSocket != null : !this$tcpSocket.equals(other$tcpSocket)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof LifecycleHandler;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $exec = this.getExec();
+        result = result * prime + ($exec == null ? 43 : $exec.hashCode());
+        Object $httpGet = this.getHttpGet();
+        result = result * prime + ($httpGet == null ? 43 : $httpGet.hashCode());
+        Object $sleep = this.getSleep();
+        result = result * prime + ($sleep == null ? 43 : $sleep.hashCode());
+        Object $tcpSocket = this.getTcpSocket();
+        result = result * prime + ($tcpSocket == null ? 43 : $tcpSocket.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "LifecycleHandler(" + "exec=" + this.getExec() + ", httpGet=" + this.getHttpGet() + ", sleep=" + this.getSleep() + ", tcpSocket=" + this.getTcpSocket() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

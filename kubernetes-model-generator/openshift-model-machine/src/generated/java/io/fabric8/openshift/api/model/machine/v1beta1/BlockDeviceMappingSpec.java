@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * BlockDeviceMappingSpec describes a block device mapping
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "ebs",
     "noDevice",
     "virtualName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -179,6 +170,71 @@ public class BlockDeviceMappingSpec implements Editable<BlockDeviceMappingSpecBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BlockDeviceMappingSpec)) {
+            return false;
+        }
+        BlockDeviceMappingSpec other = (BlockDeviceMappingSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$deviceName = this.getDeviceName();
+        Object other$deviceName = other.getDeviceName();
+        if (this$deviceName == null ? other$deviceName != null : !this$deviceName.equals(other$deviceName)) {
+            return false;
+        }
+        Object this$ebs = this.getEbs();
+        Object other$ebs = other.getEbs();
+        if (this$ebs == null ? other$ebs != null : !this$ebs.equals(other$ebs)) {
+            return false;
+        }
+        Object this$noDevice = this.getNoDevice();
+        Object other$noDevice = other.getNoDevice();
+        if (this$noDevice == null ? other$noDevice != null : !this$noDevice.equals(other$noDevice)) {
+            return false;
+        }
+        Object this$virtualName = this.getVirtualName();
+        Object other$virtualName = other.getVirtualName();
+        if (this$virtualName == null ? other$virtualName != null : !this$virtualName.equals(other$virtualName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BlockDeviceMappingSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $deviceName = this.getDeviceName();
+        result = result * prime + ($deviceName == null ? 43 : $deviceName.hashCode());
+        Object $ebs = this.getEbs();
+        result = result * prime + ($ebs == null ? 43 : $ebs.hashCode());
+        Object $noDevice = this.getNoDevice();
+        result = result * prime + ($noDevice == null ? 43 : $noDevice.hashCode());
+        Object $virtualName = this.getVirtualName();
+        result = result * prime + ($virtualName == null ? 43 : $virtualName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BlockDeviceMappingSpec(" + "deviceName=" + this.getDeviceName() + ", ebs=" + this.getEbs() + ", noDevice=" + this.getNoDevice() + ", virtualName=" + this.getVirtualName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

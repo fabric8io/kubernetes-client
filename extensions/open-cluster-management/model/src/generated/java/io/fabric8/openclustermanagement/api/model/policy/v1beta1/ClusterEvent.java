@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClusterEvent shows the PolicyAutomation event on each target cluster.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "automationStartTime",
     "eventTime"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class ClusterEvent implements Editable<ClusterEventBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterEvent)) {
+            return false;
+        }
+        ClusterEvent other = (ClusterEvent) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$automationStartTime = this.getAutomationStartTime();
+        Object other$automationStartTime = other.getAutomationStartTime();
+        if (this$automationStartTime == null ? other$automationStartTime != null : !this$automationStartTime.equals(other$automationStartTime)) {
+            return false;
+        }
+        Object this$eventTime = this.getEventTime();
+        Object other$eventTime = other.getEventTime();
+        if (this$eventTime == null ? other$eventTime != null : !this$eventTime.equals(other$eventTime)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterEvent;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $automationStartTime = this.getAutomationStartTime();
+        result = result * prime + ($automationStartTime == null ? 43 : $automationStartTime.hashCode());
+        Object $eventTime = this.getEventTime();
+        result = result * prime + ($eventTime == null ? 43 : $eventTime.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterEvent(" + "automationStartTime=" + this.getAutomationStartTime() + ", eventTime=" + this.getEventTime() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * GlobalSMTPConfig configures global SMTP parameters. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "requireTLS",
     "smartHost",
     "tlsConfig"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -300,6 +291,113 @@ public class GlobalSMTPConfig implements Editable<GlobalSMTPConfigBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GlobalSMTPConfig)) {
+            return false;
+        }
+        GlobalSMTPConfig other = (GlobalSMTPConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$authIdentity = this.getAuthIdentity();
+        Object other$authIdentity = other.getAuthIdentity();
+        if (this$authIdentity == null ? other$authIdentity != null : !this$authIdentity.equals(other$authIdentity)) {
+            return false;
+        }
+        Object this$authPassword = this.getAuthPassword();
+        Object other$authPassword = other.getAuthPassword();
+        if (this$authPassword == null ? other$authPassword != null : !this$authPassword.equals(other$authPassword)) {
+            return false;
+        }
+        Object this$authSecret = this.getAuthSecret();
+        Object other$authSecret = other.getAuthSecret();
+        if (this$authSecret == null ? other$authSecret != null : !this$authSecret.equals(other$authSecret)) {
+            return false;
+        }
+        Object this$authUsername = this.getAuthUsername();
+        Object other$authUsername = other.getAuthUsername();
+        if (this$authUsername == null ? other$authUsername != null : !this$authUsername.equals(other$authUsername)) {
+            return false;
+        }
+        Object this$forceImplicitTLS = this.getForceImplicitTLS();
+        Object other$forceImplicitTLS = other.getForceImplicitTLS();
+        if (this$forceImplicitTLS == null ? other$forceImplicitTLS != null : !this$forceImplicitTLS.equals(other$forceImplicitTLS)) {
+            return false;
+        }
+        Object this$from = this.getFrom();
+        Object other$from = other.getFrom();
+        if (this$from == null ? other$from != null : !this$from.equals(other$from)) {
+            return false;
+        }
+        Object this$hello = this.getHello();
+        Object other$hello = other.getHello();
+        if (this$hello == null ? other$hello != null : !this$hello.equals(other$hello)) {
+            return false;
+        }
+        Object this$requireTLS = this.getRequireTLS();
+        Object other$requireTLS = other.getRequireTLS();
+        if (this$requireTLS == null ? other$requireTLS != null : !this$requireTLS.equals(other$requireTLS)) {
+            return false;
+        }
+        Object this$smartHost = this.getSmartHost();
+        Object other$smartHost = other.getSmartHost();
+        if (this$smartHost == null ? other$smartHost != null : !this$smartHost.equals(other$smartHost)) {
+            return false;
+        }
+        Object this$tlsConfig = this.getTlsConfig();
+        Object other$tlsConfig = other.getTlsConfig();
+        if (this$tlsConfig == null ? other$tlsConfig != null : !this$tlsConfig.equals(other$tlsConfig)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GlobalSMTPConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $authIdentity = this.getAuthIdentity();
+        result = result * prime + ($authIdentity == null ? 43 : $authIdentity.hashCode());
+        Object $authPassword = this.getAuthPassword();
+        result = result * prime + ($authPassword == null ? 43 : $authPassword.hashCode());
+        Object $authSecret = this.getAuthSecret();
+        result = result * prime + ($authSecret == null ? 43 : $authSecret.hashCode());
+        Object $authUsername = this.getAuthUsername();
+        result = result * prime + ($authUsername == null ? 43 : $authUsername.hashCode());
+        Object $forceImplicitTLS = this.getForceImplicitTLS();
+        result = result * prime + ($forceImplicitTLS == null ? 43 : $forceImplicitTLS.hashCode());
+        Object $from = this.getFrom();
+        result = result * prime + ($from == null ? 43 : $from.hashCode());
+        Object $hello = this.getHello();
+        result = result * prime + ($hello == null ? 43 : $hello.hashCode());
+        Object $requireTLS = this.getRequireTLS();
+        result = result * prime + ($requireTLS == null ? 43 : $requireTLS.hashCode());
+        Object $smartHost = this.getSmartHost();
+        result = result * prime + ($smartHost == null ? 43 : $smartHost.hashCode());
+        Object $tlsConfig = this.getTlsConfig();
+        result = result * prime + ($tlsConfig == null ? 43 : $tlsConfig.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GlobalSMTPConfig(" + "authIdentity=" + this.getAuthIdentity() + ", authPassword=" + this.getAuthPassword() + ", authSecret=" + this.getAuthSecret() + ", authUsername=" + this.getAuthUsername() + ", forceImplicitTLS=" + this.getForceImplicitTLS() + ", from=" + this.getFrom() + ", hello=" + this.getHello() + ", requireTLS=" + this.getRequireTLS() + ", smartHost=" + this.getSmartHost() + ", tlsConfig=" + this.getTlsConfig() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

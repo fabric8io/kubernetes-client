@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ConsoleYAMLSampleSpec is the desired YAML sample configuration. Samples will appear with their descriptions in a samples sidebar when creating a resources in the web console.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "targetResource",
     "title",
     "yaml"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -201,6 +192,78 @@ public class ConsoleYAMLSampleSpec implements Editable<ConsoleYAMLSampleSpecBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConsoleYAMLSampleSpec)) {
+            return false;
+        }
+        ConsoleYAMLSampleSpec other = (ConsoleYAMLSampleSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$description = this.getDescription();
+        Object other$description = other.getDescription();
+        if (this$description == null ? other$description != null : !this$description.equals(other$description)) {
+            return false;
+        }
+        Object this$snippet = this.getSnippet();
+        Object other$snippet = other.getSnippet();
+        if (this$snippet == null ? other$snippet != null : !this$snippet.equals(other$snippet)) {
+            return false;
+        }
+        Object this$targetResource = this.getTargetResource();
+        Object other$targetResource = other.getTargetResource();
+        if (this$targetResource == null ? other$targetResource != null : !this$targetResource.equals(other$targetResource)) {
+            return false;
+        }
+        Object this$title = this.getTitle();
+        Object other$title = other.getTitle();
+        if (this$title == null ? other$title != null : !this$title.equals(other$title)) {
+            return false;
+        }
+        Object this$yaml = this.getYaml();
+        Object other$yaml = other.getYaml();
+        if (this$yaml == null ? other$yaml != null : !this$yaml.equals(other$yaml)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConsoleYAMLSampleSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $description = this.getDescription();
+        result = result * prime + ($description == null ? 43 : $description.hashCode());
+        Object $snippet = this.getSnippet();
+        result = result * prime + ($snippet == null ? 43 : $snippet.hashCode());
+        Object $targetResource = this.getTargetResource();
+        result = result * prime + ($targetResource == null ? 43 : $targetResource.hashCode());
+        Object $title = this.getTitle();
+        result = result * prime + ($title == null ? 43 : $title.hashCode());
+        Object $yaml = this.getYaml();
+        result = result * prime + ($yaml == null ? 43 : $yaml.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConsoleYAMLSampleSpec(" + "description=" + this.getDescription() + ", snippet=" + this.getSnippet() + ", targetResource=" + this.getTargetResource() + ", title=" + this.getTitle() + ", yaml=" + this.getYaml() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

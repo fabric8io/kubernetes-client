@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Bandwidth describes the bandwidth strategy for the network of the instance
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "internetMaxBandwidthIn",
     "internetMaxBandwidthOut"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class BandwidthProperties implements Editable<BandwidthPropertiesBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BandwidthProperties)) {
+            return false;
+        }
+        BandwidthProperties other = (BandwidthProperties) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$internetMaxBandwidthIn = this.getInternetMaxBandwidthIn();
+        Object other$internetMaxBandwidthIn = other.getInternetMaxBandwidthIn();
+        if (this$internetMaxBandwidthIn == null ? other$internetMaxBandwidthIn != null : !this$internetMaxBandwidthIn.equals(other$internetMaxBandwidthIn)) {
+            return false;
+        }
+        Object this$internetMaxBandwidthOut = this.getInternetMaxBandwidthOut();
+        Object other$internetMaxBandwidthOut = other.getInternetMaxBandwidthOut();
+        if (this$internetMaxBandwidthOut == null ? other$internetMaxBandwidthOut != null : !this$internetMaxBandwidthOut.equals(other$internetMaxBandwidthOut)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BandwidthProperties;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $internetMaxBandwidthIn = this.getInternetMaxBandwidthIn();
+        result = result * prime + ($internetMaxBandwidthIn == null ? 43 : $internetMaxBandwidthIn.hashCode());
+        Object $internetMaxBandwidthOut = this.getInternetMaxBandwidthOut();
+        result = result * prime + ($internetMaxBandwidthOut == null ? 43 : $internetMaxBandwidthOut.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BandwidthProperties(" + "internetMaxBandwidthIn=" + this.getInternetMaxBandwidthIn() + ", internetMaxBandwidthOut=" + this.getInternetMaxBandwidthOut() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

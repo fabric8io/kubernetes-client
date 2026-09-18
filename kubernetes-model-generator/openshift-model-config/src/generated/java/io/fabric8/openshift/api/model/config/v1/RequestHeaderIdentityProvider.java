@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RequestHeaderIdentityProvider provides identities for users authenticating using request header credentials
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "loginURL",
     "nameHeaders",
     "preferredUsernameHeaders"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -271,6 +262,99 @@ public class RequestHeaderIdentityProvider implements Editable<RequestHeaderIden
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RequestHeaderIdentityProvider)) {
+            return false;
+        }
+        RequestHeaderIdentityProvider other = (RequestHeaderIdentityProvider) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ca = this.getCa();
+        Object other$ca = other.getCa();
+        if (this$ca == null ? other$ca != null : !this$ca.equals(other$ca)) {
+            return false;
+        }
+        Object this$challengeURL = this.getChallengeURL();
+        Object other$challengeURL = other.getChallengeURL();
+        if (this$challengeURL == null ? other$challengeURL != null : !this$challengeURL.equals(other$challengeURL)) {
+            return false;
+        }
+        Object this$clientCommonNames = this.getClientCommonNames();
+        Object other$clientCommonNames = other.getClientCommonNames();
+        if (this$clientCommonNames == null ? other$clientCommonNames != null : !this$clientCommonNames.equals(other$clientCommonNames)) {
+            return false;
+        }
+        Object this$emailHeaders = this.getEmailHeaders();
+        Object other$emailHeaders = other.getEmailHeaders();
+        if (this$emailHeaders == null ? other$emailHeaders != null : !this$emailHeaders.equals(other$emailHeaders)) {
+            return false;
+        }
+        Object this$headers = this.getHeaders();
+        Object other$headers = other.getHeaders();
+        if (this$headers == null ? other$headers != null : !this$headers.equals(other$headers)) {
+            return false;
+        }
+        Object this$loginURL = this.getLoginURL();
+        Object other$loginURL = other.getLoginURL();
+        if (this$loginURL == null ? other$loginURL != null : !this$loginURL.equals(other$loginURL)) {
+            return false;
+        }
+        Object this$nameHeaders = this.getNameHeaders();
+        Object other$nameHeaders = other.getNameHeaders();
+        if (this$nameHeaders == null ? other$nameHeaders != null : !this$nameHeaders.equals(other$nameHeaders)) {
+            return false;
+        }
+        Object this$preferredUsernameHeaders = this.getPreferredUsernameHeaders();
+        Object other$preferredUsernameHeaders = other.getPreferredUsernameHeaders();
+        if (this$preferredUsernameHeaders == null ? other$preferredUsernameHeaders != null : !this$preferredUsernameHeaders.equals(other$preferredUsernameHeaders)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RequestHeaderIdentityProvider;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ca = this.getCa();
+        result = result * prime + ($ca == null ? 43 : $ca.hashCode());
+        Object $challengeURL = this.getChallengeURL();
+        result = result * prime + ($challengeURL == null ? 43 : $challengeURL.hashCode());
+        Object $clientCommonNames = this.getClientCommonNames();
+        result = result * prime + ($clientCommonNames == null ? 43 : $clientCommonNames.hashCode());
+        Object $emailHeaders = this.getEmailHeaders();
+        result = result * prime + ($emailHeaders == null ? 43 : $emailHeaders.hashCode());
+        Object $headers = this.getHeaders();
+        result = result * prime + ($headers == null ? 43 : $headers.hashCode());
+        Object $loginURL = this.getLoginURL();
+        result = result * prime + ($loginURL == null ? 43 : $loginURL.hashCode());
+        Object $nameHeaders = this.getNameHeaders();
+        result = result * prime + ($nameHeaders == null ? 43 : $nameHeaders.hashCode());
+        Object $preferredUsernameHeaders = this.getPreferredUsernameHeaders();
+        result = result * prime + ($preferredUsernameHeaders == null ? 43 : $preferredUsernameHeaders.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RequestHeaderIdentityProvider(" + "ca=" + this.getCa() + ", challengeURL=" + this.getChallengeURL() + ", clientCommonNames=" + this.getClientCommonNames() + ", emailHeaders=" + this.getEmailHeaders() + ", headers=" + this.getHeaders() + ", loginURL=" + this.getLoginURL() + ", nameHeaders=" + this.getNameHeaders() + ", preferredUsernameHeaders=" + this.getPreferredUsernameHeaders() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

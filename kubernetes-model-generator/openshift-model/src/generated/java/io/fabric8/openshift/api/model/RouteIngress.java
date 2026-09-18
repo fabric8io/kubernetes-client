@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RouteIngress holds information about the places where a route is exposed.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "routerCanonicalHostname",
     "routerName",
     "wildcardPolicy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -203,6 +194,78 @@ public class RouteIngress implements Editable<RouteIngressBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RouteIngress)) {
+            return false;
+        }
+        RouteIngress other = (RouteIngress) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$host = this.getHost();
+        Object other$host = other.getHost();
+        if (this$host == null ? other$host != null : !this$host.equals(other$host)) {
+            return false;
+        }
+        Object this$routerCanonicalHostname = this.getRouterCanonicalHostname();
+        Object other$routerCanonicalHostname = other.getRouterCanonicalHostname();
+        if (this$routerCanonicalHostname == null ? other$routerCanonicalHostname != null : !this$routerCanonicalHostname.equals(other$routerCanonicalHostname)) {
+            return false;
+        }
+        Object this$routerName = this.getRouterName();
+        Object other$routerName = other.getRouterName();
+        if (this$routerName == null ? other$routerName != null : !this$routerName.equals(other$routerName)) {
+            return false;
+        }
+        Object this$wildcardPolicy = this.getWildcardPolicy();
+        Object other$wildcardPolicy = other.getWildcardPolicy();
+        if (this$wildcardPolicy == null ? other$wildcardPolicy != null : !this$wildcardPolicy.equals(other$wildcardPolicy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RouteIngress;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $host = this.getHost();
+        result = result * prime + ($host == null ? 43 : $host.hashCode());
+        Object $routerCanonicalHostname = this.getRouterCanonicalHostname();
+        result = result * prime + ($routerCanonicalHostname == null ? 43 : $routerCanonicalHostname.hashCode());
+        Object $routerName = this.getRouterName();
+        result = result * prime + ($routerName == null ? 43 : $routerName.hashCode());
+        Object $wildcardPolicy = this.getWildcardPolicy();
+        result = result * prime + ($wildcardPolicy == null ? 43 : $wildcardPolicy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RouteIngress(" + "conditions=" + this.getConditions() + ", host=" + this.getHost() + ", routerCanonicalHostname=" + this.getRouterCanonicalHostname() + ", routerName=" + this.getRouterName() + ", wildcardPolicy=" + this.getWildcardPolicy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

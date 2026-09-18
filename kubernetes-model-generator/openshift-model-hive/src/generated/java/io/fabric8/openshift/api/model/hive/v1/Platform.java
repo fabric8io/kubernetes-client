@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.hive.agent.v1.BareMetalPlatform;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "openstack",
     "ovirt",
     "vsphere"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -301,6 +292,113 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Platform)) {
+            return false;
+        }
+        Platform other = (Platform) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$agentBareMetal = this.getAgentBareMetal();
+        Object other$agentBareMetal = other.getAgentBareMetal();
+        if (this$agentBareMetal == null ? other$agentBareMetal != null : !this$agentBareMetal.equals(other$agentBareMetal)) {
+            return false;
+        }
+        Object this$aws = this.getAws();
+        Object other$aws = other.getAws();
+        if (this$aws == null ? other$aws != null : !this$aws.equals(other$aws)) {
+            return false;
+        }
+        Object this$azure = this.getAzure();
+        Object other$azure = other.getAzure();
+        if (this$azure == null ? other$azure != null : !this$azure.equals(other$azure)) {
+            return false;
+        }
+        Object this$baremetal = this.getBaremetal();
+        Object other$baremetal = other.getBaremetal();
+        if (this$baremetal == null ? other$baremetal != null : !this$baremetal.equals(other$baremetal)) {
+            return false;
+        }
+        Object this$gcp = this.getGcp();
+        Object other$gcp = other.getGcp();
+        if (this$gcp == null ? other$gcp != null : !this$gcp.equals(other$gcp)) {
+            return false;
+        }
+        Object this$ibmcloud = this.getIbmcloud();
+        Object other$ibmcloud = other.getIbmcloud();
+        if (this$ibmcloud == null ? other$ibmcloud != null : !this$ibmcloud.equals(other$ibmcloud)) {
+            return false;
+        }
+        Object this$none = this.getNone();
+        Object other$none = other.getNone();
+        if (this$none == null ? other$none != null : !this$none.equals(other$none)) {
+            return false;
+        }
+        Object this$openstack = this.getOpenstack();
+        Object other$openstack = other.getOpenstack();
+        if (this$openstack == null ? other$openstack != null : !this$openstack.equals(other$openstack)) {
+            return false;
+        }
+        Object this$ovirt = this.getOvirt();
+        Object other$ovirt = other.getOvirt();
+        if (this$ovirt == null ? other$ovirt != null : !this$ovirt.equals(other$ovirt)) {
+            return false;
+        }
+        Object this$vsphere = this.getVsphere();
+        Object other$vsphere = other.getVsphere();
+        if (this$vsphere == null ? other$vsphere != null : !this$vsphere.equals(other$vsphere)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Platform;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $agentBareMetal = this.getAgentBareMetal();
+        result = result * prime + ($agentBareMetal == null ? 43 : $agentBareMetal.hashCode());
+        Object $aws = this.getAws();
+        result = result * prime + ($aws == null ? 43 : $aws.hashCode());
+        Object $azure = this.getAzure();
+        result = result * prime + ($azure == null ? 43 : $azure.hashCode());
+        Object $baremetal = this.getBaremetal();
+        result = result * prime + ($baremetal == null ? 43 : $baremetal.hashCode());
+        Object $gcp = this.getGcp();
+        result = result * prime + ($gcp == null ? 43 : $gcp.hashCode());
+        Object $ibmcloud = this.getIbmcloud();
+        result = result * prime + ($ibmcloud == null ? 43 : $ibmcloud.hashCode());
+        Object $none = this.getNone();
+        result = result * prime + ($none == null ? 43 : $none.hashCode());
+        Object $openstack = this.getOpenstack();
+        result = result * prime + ($openstack == null ? 43 : $openstack.hashCode());
+        Object $ovirt = this.getOvirt();
+        result = result * prime + ($ovirt == null ? 43 : $ovirt.hashCode());
+        Object $vsphere = this.getVsphere();
+        result = result * prime + ($vsphere == null ? 43 : $vsphere.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Platform(" + "agentBareMetal=" + this.getAgentBareMetal() + ", aws=" + this.getAws() + ", azure=" + this.getAzure() + ", baremetal=" + this.getBaremetal() + ", gcp=" + this.getGcp() + ", ibmcloud=" + this.getIbmcloud() + ", none=" + this.getNone() + ", openstack=" + this.getOpenstack() + ", ovirt=" + this.getOvirt() + ", vsphere=" + this.getVsphere() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

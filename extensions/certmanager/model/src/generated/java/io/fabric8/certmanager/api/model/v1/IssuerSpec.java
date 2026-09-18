@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * IssuerSpec is the specification of an Issuer. This includes any configuration required for the issuer.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "selfSigned",
     "vault",
     "venafi"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -201,6 +192,78 @@ public class IssuerSpec implements Editable<IssuerSpecBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof IssuerSpec)) {
+            return false;
+        }
+        IssuerSpec other = (IssuerSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$acme = this.getAcme();
+        Object other$acme = other.getAcme();
+        if (this$acme == null ? other$acme != null : !this$acme.equals(other$acme)) {
+            return false;
+        }
+        Object this$ca = this.getCa();
+        Object other$ca = other.getCa();
+        if (this$ca == null ? other$ca != null : !this$ca.equals(other$ca)) {
+            return false;
+        }
+        Object this$selfSigned = this.getSelfSigned();
+        Object other$selfSigned = other.getSelfSigned();
+        if (this$selfSigned == null ? other$selfSigned != null : !this$selfSigned.equals(other$selfSigned)) {
+            return false;
+        }
+        Object this$vault = this.getVault();
+        Object other$vault = other.getVault();
+        if (this$vault == null ? other$vault != null : !this$vault.equals(other$vault)) {
+            return false;
+        }
+        Object this$venafi = this.getVenafi();
+        Object other$venafi = other.getVenafi();
+        if (this$venafi == null ? other$venafi != null : !this$venafi.equals(other$venafi)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof IssuerSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $acme = this.getAcme();
+        result = result * prime + ($acme == null ? 43 : $acme.hashCode());
+        Object $ca = this.getCa();
+        result = result * prime + ($ca == null ? 43 : $ca.hashCode());
+        Object $selfSigned = this.getSelfSigned();
+        result = result * prime + ($selfSigned == null ? 43 : $selfSigned.hashCode());
+        Object $vault = this.getVault();
+        result = result * prime + ($vault == null ? 43 : $vault.hashCode());
+        Object $venafi = this.getVenafi();
+        result = result * prime + ($venafi == null ? 43 : $venafi.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IssuerSpec(" + "acme=" + this.getAcme() + ", ca=" + this.getCa() + ", selfSigned=" + this.getSelfSigned() + ", vault=" + this.getVault() + ", venafi=" + this.getVenafi() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

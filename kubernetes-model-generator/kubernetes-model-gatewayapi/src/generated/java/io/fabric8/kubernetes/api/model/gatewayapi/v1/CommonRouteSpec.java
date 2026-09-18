@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CommonRouteSpec defines the common attributes that all Routes MUST include within their spec.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "parentRefs",
     "useDefaultGateways"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -142,6 +133,57 @@ public class CommonRouteSpec implements Editable<CommonRouteSpecBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CommonRouteSpec)) {
+            return false;
+        }
+        CommonRouteSpec other = (CommonRouteSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$parentRefs = this.getParentRefs();
+        Object other$parentRefs = other.getParentRefs();
+        if (this$parentRefs == null ? other$parentRefs != null : !this$parentRefs.equals(other$parentRefs)) {
+            return false;
+        }
+        Object this$useDefaultGateways = this.getUseDefaultGateways();
+        Object other$useDefaultGateways = other.getUseDefaultGateways();
+        if (this$useDefaultGateways == null ? other$useDefaultGateways != null : !this$useDefaultGateways.equals(other$useDefaultGateways)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CommonRouteSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $parentRefs = this.getParentRefs();
+        result = result * prime + ($parentRefs == null ? 43 : $parentRefs.hashCode());
+        Object $useDefaultGateways = this.getUseDefaultGateways();
+        result = result * prime + ($useDefaultGateways == null ? 43 : $useDefaultGateways.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CommonRouteSpec(" + "parentRefs=" + this.getParentRefs() + ", useDefaultGateways=" + this.getUseDefaultGateways() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

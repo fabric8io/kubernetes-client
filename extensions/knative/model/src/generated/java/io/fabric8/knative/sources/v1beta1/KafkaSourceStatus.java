@@ -34,9 +34,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * KafkaSourceStatus defines the observed state of KafkaSource.
@@ -57,12 +54,6 @@ import lombok.experimental.Accessors;
     "sinkAudience",
     "sinkCACerts",
     "sinkUri"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -374,6 +365,134 @@ public class KafkaSourceStatus implements Editable<KafkaSourceStatusBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof KafkaSourceStatus)) {
+            return false;
+        }
+        KafkaSourceStatus other = (KafkaSourceStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$annotations = this.getAnnotations();
+        Object other$annotations = other.getAnnotations();
+        if (this$annotations == null ? other$annotations != null : !this$annotations.equals(other$annotations)) {
+            return false;
+        }
+        Object this$auth = this.getAuth();
+        Object other$auth = other.getAuth();
+        if (this$auth == null ? other$auth != null : !this$auth.equals(other$auth)) {
+            return false;
+        }
+        Object this$ceAttributes = this.getCeAttributes();
+        Object other$ceAttributes = other.getCeAttributes();
+        if (this$ceAttributes == null ? other$ceAttributes != null : !this$ceAttributes.equals(other$ceAttributes)) {
+            return false;
+        }
+        Object this$claims = this.getClaims();
+        Object other$claims = other.getClaims();
+        if (this$claims == null ? other$claims != null : !this$claims.equals(other$claims)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$consumers = this.getConsumers();
+        Object other$consumers = other.getConsumers();
+        if (this$consumers == null ? other$consumers != null : !this$consumers.equals(other$consumers)) {
+            return false;
+        }
+        Object this$maxAllowedVReplicas = this.getMaxAllowedVReplicas();
+        Object other$maxAllowedVReplicas = other.getMaxAllowedVReplicas();
+        if (this$maxAllowedVReplicas == null ? other$maxAllowedVReplicas != null : !this$maxAllowedVReplicas.equals(other$maxAllowedVReplicas)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$placements = this.getPlacements();
+        Object other$placements = other.getPlacements();
+        if (this$placements == null ? other$placements != null : !this$placements.equals(other$placements)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$sinkAudience = this.getSinkAudience();
+        Object other$sinkAudience = other.getSinkAudience();
+        if (this$sinkAudience == null ? other$sinkAudience != null : !this$sinkAudience.equals(other$sinkAudience)) {
+            return false;
+        }
+        Object this$sinkCACerts = this.getSinkCACerts();
+        Object other$sinkCACerts = other.getSinkCACerts();
+        if (this$sinkCACerts == null ? other$sinkCACerts != null : !this$sinkCACerts.equals(other$sinkCACerts)) {
+            return false;
+        }
+        Object this$sinkUri = this.getSinkUri();
+        Object other$sinkUri = other.getSinkUri();
+        if (this$sinkUri == null ? other$sinkUri != null : !this$sinkUri.equals(other$sinkUri)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof KafkaSourceStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $annotations = this.getAnnotations();
+        result = result * prime + ($annotations == null ? 43 : $annotations.hashCode());
+        Object $auth = this.getAuth();
+        result = result * prime + ($auth == null ? 43 : $auth.hashCode());
+        Object $ceAttributes = this.getCeAttributes();
+        result = result * prime + ($ceAttributes == null ? 43 : $ceAttributes.hashCode());
+        Object $claims = this.getClaims();
+        result = result * prime + ($claims == null ? 43 : $claims.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $consumers = this.getConsumers();
+        result = result * prime + ($consumers == null ? 43 : $consumers.hashCode());
+        Object $maxAllowedVReplicas = this.getMaxAllowedVReplicas();
+        result = result * prime + ($maxAllowedVReplicas == null ? 43 : $maxAllowedVReplicas.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $placements = this.getPlacements();
+        result = result * prime + ($placements == null ? 43 : $placements.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $sinkAudience = this.getSinkAudience();
+        result = result * prime + ($sinkAudience == null ? 43 : $sinkAudience.hashCode());
+        Object $sinkCACerts = this.getSinkCACerts();
+        result = result * prime + ($sinkCACerts == null ? 43 : $sinkCACerts.hashCode());
+        Object $sinkUri = this.getSinkUri();
+        result = result * prime + ($sinkUri == null ? 43 : $sinkUri.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "KafkaSourceStatus(" + "annotations=" + this.getAnnotations() + ", auth=" + this.getAuth() + ", ceAttributes=" + this.getCeAttributes() + ", claims=" + this.getClaims() + ", conditions=" + this.getConditions() + ", consumers=" + this.getConsumers() + ", maxAllowedVReplicas=" + this.getMaxAllowedVReplicas() + ", observedGeneration=" + this.getObservedGeneration() + ", placements=" + this.getPlacements() + ", selector=" + this.getSelector() + ", sinkAudience=" + this.getSinkAudience() + ", sinkCACerts=" + this.getSinkCACerts() + ", sinkUri=" + this.getSinkUri() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

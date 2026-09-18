@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Affinity is a group of affinity scheduling rules.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "nodeGroupAffinity",
     "nodeGroupAntiAffinity"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class Affinity implements Editable<AffinityBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Affinity)) {
+            return false;
+        }
+        Affinity other = (Affinity) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$nodeGroupAffinity = this.getNodeGroupAffinity();
+        Object other$nodeGroupAffinity = other.getNodeGroupAffinity();
+        if (this$nodeGroupAffinity == null ? other$nodeGroupAffinity != null : !this$nodeGroupAffinity.equals(other$nodeGroupAffinity)) {
+            return false;
+        }
+        Object this$nodeGroupAntiAffinity = this.getNodeGroupAntiAffinity();
+        Object other$nodeGroupAntiAffinity = other.getNodeGroupAntiAffinity();
+        if (this$nodeGroupAntiAffinity == null ? other$nodeGroupAntiAffinity != null : !this$nodeGroupAntiAffinity.equals(other$nodeGroupAntiAffinity)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Affinity;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $nodeGroupAffinity = this.getNodeGroupAffinity();
+        result = result * prime + ($nodeGroupAffinity == null ? 43 : $nodeGroupAffinity.hashCode());
+        Object $nodeGroupAntiAffinity = this.getNodeGroupAntiAffinity();
+        result = result * prime + ($nodeGroupAntiAffinity == null ? 43 : $nodeGroupAntiAffinity.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Affinity(" + "nodeGroupAffinity=" + this.getNodeGroupAffinity() + ", nodeGroupAntiAffinity=" + this.getNodeGroupAntiAffinity() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

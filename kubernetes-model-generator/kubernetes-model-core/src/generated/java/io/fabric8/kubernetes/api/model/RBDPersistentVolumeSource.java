@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Represents a Rados Block Device mount that lasts the lifetime of a pod. RBD volumes support ownership management and SELinux relabeling.
@@ -33,12 +30,6 @@ import lombok.experimental.Accessors;
     "readOnly",
     "secretRef",
     "user"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -235,6 +226,99 @@ public class RBDPersistentVolumeSource implements Editable<RBDPersistentVolumeSo
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RBDPersistentVolumeSource)) {
+            return false;
+        }
+        RBDPersistentVolumeSource other = (RBDPersistentVolumeSource) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$fsType = this.getFsType();
+        Object other$fsType = other.getFsType();
+        if (this$fsType == null ? other$fsType != null : !this$fsType.equals(other$fsType)) {
+            return false;
+        }
+        Object this$image = this.getImage();
+        Object other$image = other.getImage();
+        if (this$image == null ? other$image != null : !this$image.equals(other$image)) {
+            return false;
+        }
+        Object this$keyring = this.getKeyring();
+        Object other$keyring = other.getKeyring();
+        if (this$keyring == null ? other$keyring != null : !this$keyring.equals(other$keyring)) {
+            return false;
+        }
+        Object this$monitors = this.getMonitors();
+        Object other$monitors = other.getMonitors();
+        if (this$monitors == null ? other$monitors != null : !this$monitors.equals(other$monitors)) {
+            return false;
+        }
+        Object this$pool = this.getPool();
+        Object other$pool = other.getPool();
+        if (this$pool == null ? other$pool != null : !this$pool.equals(other$pool)) {
+            return false;
+        }
+        Object this$readOnly = this.getReadOnly();
+        Object other$readOnly = other.getReadOnly();
+        if (this$readOnly == null ? other$readOnly != null : !this$readOnly.equals(other$readOnly)) {
+            return false;
+        }
+        Object this$secretRef = this.getSecretRef();
+        Object other$secretRef = other.getSecretRef();
+        if (this$secretRef == null ? other$secretRef != null : !this$secretRef.equals(other$secretRef)) {
+            return false;
+        }
+        Object this$user = this.getUser();
+        Object other$user = other.getUser();
+        if (this$user == null ? other$user != null : !this$user.equals(other$user)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RBDPersistentVolumeSource;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $fsType = this.getFsType();
+        result = result * prime + ($fsType == null ? 43 : $fsType.hashCode());
+        Object $image = this.getImage();
+        result = result * prime + ($image == null ? 43 : $image.hashCode());
+        Object $keyring = this.getKeyring();
+        result = result * prime + ($keyring == null ? 43 : $keyring.hashCode());
+        Object $monitors = this.getMonitors();
+        result = result * prime + ($monitors == null ? 43 : $monitors.hashCode());
+        Object $pool = this.getPool();
+        result = result * prime + ($pool == null ? 43 : $pool.hashCode());
+        Object $readOnly = this.getReadOnly();
+        result = result * prime + ($readOnly == null ? 43 : $readOnly.hashCode());
+        Object $secretRef = this.getSecretRef();
+        result = result * prime + ($secretRef == null ? 43 : $secretRef.hashCode());
+        Object $user = this.getUser();
+        result = result * prime + ($user == null ? 43 : $user.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RBDPersistentVolumeSource(" + "fsType=" + this.getFsType() + ", image=" + this.getImage() + ", keyring=" + this.getKeyring() + ", monitors=" + this.getMonitors() + ", pool=" + this.getPool() + ", readOnly=" + this.getReadOnly() + ", secretRef=" + this.getSecretRef() + ", user=" + this.getUser() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

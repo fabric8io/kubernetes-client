@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CPU defines the VM cpu, made of (Sockets &#42; Cores).
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "cores",
     "sockets",
     "threads"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class CPU implements Editable<CPUBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CPU)) {
+            return false;
+        }
+        CPU other = (CPU) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cores = this.getCores();
+        Object other$cores = other.getCores();
+        if (this$cores == null ? other$cores != null : !this$cores.equals(other$cores)) {
+            return false;
+        }
+        Object this$sockets = this.getSockets();
+        Object other$sockets = other.getSockets();
+        if (this$sockets == null ? other$sockets != null : !this$sockets.equals(other$sockets)) {
+            return false;
+        }
+        Object this$threads = this.getThreads();
+        Object other$threads = other.getThreads();
+        if (this$threads == null ? other$threads != null : !this$threads.equals(other$threads)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CPU;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cores = this.getCores();
+        result = result * prime + ($cores == null ? 43 : $cores.hashCode());
+        Object $sockets = this.getSockets();
+        result = result * prime + ($sockets == null ? 43 : $sockets.hashCode());
+        Object $threads = this.getThreads();
+        result = result * prime + ($threads == null ? 43 : $threads.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CPU(" + "cores=" + this.getCores() + ", sockets=" + this.getSockets() + ", threads=" + this.getThreads() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

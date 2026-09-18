@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SoftwareRAIDVolume defines the desired configuration of volume in software RAID.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "level",
     "physicalDisks",
     "sizeGibibytes"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -163,6 +154,64 @@ public class SoftwareRAIDVolume implements Editable<SoftwareRAIDVolumeBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SoftwareRAIDVolume)) {
+            return false;
+        }
+        SoftwareRAIDVolume other = (SoftwareRAIDVolume) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$level = this.getLevel();
+        Object other$level = other.getLevel();
+        if (this$level == null ? other$level != null : !this$level.equals(other$level)) {
+            return false;
+        }
+        Object this$physicalDisks = this.getPhysicalDisks();
+        Object other$physicalDisks = other.getPhysicalDisks();
+        if (this$physicalDisks == null ? other$physicalDisks != null : !this$physicalDisks.equals(other$physicalDisks)) {
+            return false;
+        }
+        Object this$sizeGibibytes = this.getSizeGibibytes();
+        Object other$sizeGibibytes = other.getSizeGibibytes();
+        if (this$sizeGibibytes == null ? other$sizeGibibytes != null : !this$sizeGibibytes.equals(other$sizeGibibytes)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SoftwareRAIDVolume;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $level = this.getLevel();
+        result = result * prime + ($level == null ? 43 : $level.hashCode());
+        Object $physicalDisks = this.getPhysicalDisks();
+        result = result * prime + ($physicalDisks == null ? 43 : $physicalDisks.hashCode());
+        Object $sizeGibibytes = this.getSizeGibibytes();
+        result = result * prime + ($sizeGibibytes == null ? 43 : $sizeGibibytes.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SoftwareRAIDVolume(" + "level=" + this.getLevel() + ", physicalDisks=" + this.getPhysicalDisks() + ", sizeGibibytes=" + this.getSizeGibibytes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

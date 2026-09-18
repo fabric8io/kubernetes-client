@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * FailKernRequest defines the injection conditions
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "headers",
     "probability",
     "times"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -206,6 +197,78 @@ public class FailKernRequest implements Editable<FailKernRequestBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof FailKernRequest)) {
+            return false;
+        }
+        FailKernRequest other = (FailKernRequest) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$callchain = this.getCallchain();
+        Object other$callchain = other.getCallchain();
+        if (this$callchain == null ? other$callchain != null : !this$callchain.equals(other$callchain)) {
+            return false;
+        }
+        Object this$failtype = this.getFailtype();
+        Object other$failtype = other.getFailtype();
+        if (this$failtype == null ? other$failtype != null : !this$failtype.equals(other$failtype)) {
+            return false;
+        }
+        Object this$headers = this.getHeaders();
+        Object other$headers = other.getHeaders();
+        if (this$headers == null ? other$headers != null : !this$headers.equals(other$headers)) {
+            return false;
+        }
+        Object this$probability = this.getProbability();
+        Object other$probability = other.getProbability();
+        if (this$probability == null ? other$probability != null : !this$probability.equals(other$probability)) {
+            return false;
+        }
+        Object this$times = this.getTimes();
+        Object other$times = other.getTimes();
+        if (this$times == null ? other$times != null : !this$times.equals(other$times)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof FailKernRequest;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $callchain = this.getCallchain();
+        result = result * prime + ($callchain == null ? 43 : $callchain.hashCode());
+        Object $failtype = this.getFailtype();
+        result = result * prime + ($failtype == null ? 43 : $failtype.hashCode());
+        Object $headers = this.getHeaders();
+        result = result * prime + ($headers == null ? 43 : $headers.hashCode());
+        Object $probability = this.getProbability();
+        result = result * prime + ($probability == null ? 43 : $probability.hashCode());
+        Object $times = this.getTimes();
+        result = result * prime + ($times == null ? 43 : $times.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "FailKernRequest(" + "callchain=" + this.getCallchain() + ", failtype=" + this.getFailtype() + ", headers=" + this.getHeaders() + ", probability=" + this.getProbability() + ", times=" + this.getTimes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

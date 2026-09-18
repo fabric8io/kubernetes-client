@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NamespaceDashboardSpec is a specification of namespaces in which the dashboard link should appear. If both namespaces and namespaceSelector are specified, the link will appear in namespaces that match either
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "namespaceSelector",
     "namespaces"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -144,6 +135,57 @@ public class NamespaceDashboardSpec implements Editable<NamespaceDashboardSpecBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NamespaceDashboardSpec)) {
+            return false;
+        }
+        NamespaceDashboardSpec other = (NamespaceDashboardSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$namespaceSelector = this.getNamespaceSelector();
+        Object other$namespaceSelector = other.getNamespaceSelector();
+        if (this$namespaceSelector == null ? other$namespaceSelector != null : !this$namespaceSelector.equals(other$namespaceSelector)) {
+            return false;
+        }
+        Object this$namespaces = this.getNamespaces();
+        Object other$namespaces = other.getNamespaces();
+        if (this$namespaces == null ? other$namespaces != null : !this$namespaces.equals(other$namespaces)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NamespaceDashboardSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $namespaceSelector = this.getNamespaceSelector();
+        result = result * prime + ($namespaceSelector == null ? 43 : $namespaceSelector.hashCode());
+        Object $namespaces = this.getNamespaces();
+        result = result * prime + ($namespaces == null ? 43 : $namespaces.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NamespaceDashboardSpec(" + "namespaceSelector=" + this.getNamespaceSelector() + ", namespaces=" + this.getNamespaces() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

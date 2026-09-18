@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * EndpointSubset is a group of addresses with a common set of ports. The expanded set of endpoints is the Cartesian product of Addresses x Ports. For example, given:<br><p> <br><p> 	{<br><p> 	  Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],<br><p> 	  Ports:     [{"name": "a", "port": 8675}, {"name": "b", "port": 309}]<br><p> 	}<br><p> <br><p> The resulting set of endpoints can be viewed as:<br><p> <br><p> 	a: [ 10.10.1.1:8675, 10.10.2.2:8675 ],<br><p> 	b: [ 10.10.1.1:309, 10.10.2.2:309 ]<br><p> <br><p> Deprecated: This API is deprecated in v1.33+.
@@ -28,12 +25,6 @@ import lombok.experimental.Accessors;
     "addresses",
     "notReadyAddresses",
     "ports"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -139,6 +130,64 @@ public class EndpointSubset implements Editable<EndpointSubsetBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EndpointSubset)) {
+            return false;
+        }
+        EndpointSubset other = (EndpointSubset) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$addresses = this.getAddresses();
+        Object other$addresses = other.getAddresses();
+        if (this$addresses == null ? other$addresses != null : !this$addresses.equals(other$addresses)) {
+            return false;
+        }
+        Object this$notReadyAddresses = this.getNotReadyAddresses();
+        Object other$notReadyAddresses = other.getNotReadyAddresses();
+        if (this$notReadyAddresses == null ? other$notReadyAddresses != null : !this$notReadyAddresses.equals(other$notReadyAddresses)) {
+            return false;
+        }
+        Object this$ports = this.getPorts();
+        Object other$ports = other.getPorts();
+        if (this$ports == null ? other$ports != null : !this$ports.equals(other$ports)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EndpointSubset;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $addresses = this.getAddresses();
+        result = result * prime + ($addresses == null ? 43 : $addresses.hashCode());
+        Object $notReadyAddresses = this.getNotReadyAddresses();
+        result = result * prime + ($notReadyAddresses == null ? 43 : $notReadyAddresses.hashCode());
+        Object $ports = this.getPorts();
+        result = result * prime + ($ports == null ? 43 : $ports.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EndpointSubset(" + "addresses=" + this.getAddresses() + ", notReadyAddresses=" + this.getNotReadyAddresses() + ", ports=" + this.getPorts() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

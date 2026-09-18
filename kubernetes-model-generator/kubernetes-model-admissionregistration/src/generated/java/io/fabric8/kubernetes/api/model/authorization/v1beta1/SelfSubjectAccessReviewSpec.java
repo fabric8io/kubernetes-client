@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SelfSubjectAccessReviewSpec is a description of the access request.  Exactly one of ResourceAuthorizationAttributes and NonResourceAuthorizationAttributes must be set
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "nonResourceAttributes",
     "resourceAttributes"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class SelfSubjectAccessReviewSpec implements Editable<SelfSubjectAccessRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SelfSubjectAccessReviewSpec)) {
+            return false;
+        }
+        SelfSubjectAccessReviewSpec other = (SelfSubjectAccessReviewSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$nonResourceAttributes = this.getNonResourceAttributes();
+        Object other$nonResourceAttributes = other.getNonResourceAttributes();
+        if (this$nonResourceAttributes == null ? other$nonResourceAttributes != null : !this$nonResourceAttributes.equals(other$nonResourceAttributes)) {
+            return false;
+        }
+        Object this$resourceAttributes = this.getResourceAttributes();
+        Object other$resourceAttributes = other.getResourceAttributes();
+        if (this$resourceAttributes == null ? other$resourceAttributes != null : !this$resourceAttributes.equals(other$resourceAttributes)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SelfSubjectAccessReviewSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $nonResourceAttributes = this.getNonResourceAttributes();
+        result = result * prime + ($nonResourceAttributes == null ? 43 : $nonResourceAttributes.hashCode());
+        Object $resourceAttributes = this.getResourceAttributes();
+        result = result * prime + ($resourceAttributes == null ? 43 : $resourceAttributes.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SelfSubjectAccessReviewSpec(" + "nonResourceAttributes=" + this.getNonResourceAttributes() + ", resourceAttributes=" + this.getResourceAttributes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

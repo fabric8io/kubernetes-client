@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * FeatureGateSelection allows selecting feature gates for the controller.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "custom",
     "featureSet"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class FeatureGateSelection implements Editable<FeatureGateSelectionBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof FeatureGateSelection)) {
+            return false;
+        }
+        FeatureGateSelection other = (FeatureGateSelection) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$custom = this.getCustom();
+        Object other$custom = other.getCustom();
+        if (this$custom == null ? other$custom != null : !this$custom.equals(other$custom)) {
+            return false;
+        }
+        Object this$featureSet = this.getFeatureSet();
+        Object other$featureSet = other.getFeatureSet();
+        if (this$featureSet == null ? other$featureSet != null : !this$featureSet.equals(other$featureSet)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof FeatureGateSelection;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $custom = this.getCustom();
+        result = result * prime + ($custom == null ? 43 : $custom.hashCode());
+        Object $featureSet = this.getFeatureSet();
+        result = result * prime + ($featureSet == null ? 43 : $featureSet.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "FeatureGateSelection(" + "custom=" + this.getCustom() + ", featureSet=" + this.getFeatureSet() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

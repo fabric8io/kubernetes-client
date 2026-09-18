@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ContainerResourcePolicy controls how autoscaler computes the recommended resources for a specific container.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "maxAllowed",
     "minAllowed",
     "mode"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -185,6 +176,71 @@ public class ContainerResourcePolicy implements Editable<ContainerResourcePolicy
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ContainerResourcePolicy)) {
+            return false;
+        }
+        ContainerResourcePolicy other = (ContainerResourcePolicy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$containerName = this.getContainerName();
+        Object other$containerName = other.getContainerName();
+        if (this$containerName == null ? other$containerName != null : !this$containerName.equals(other$containerName)) {
+            return false;
+        }
+        Object this$maxAllowed = this.getMaxAllowed();
+        Object other$maxAllowed = other.getMaxAllowed();
+        if (this$maxAllowed == null ? other$maxAllowed != null : !this$maxAllowed.equals(other$maxAllowed)) {
+            return false;
+        }
+        Object this$minAllowed = this.getMinAllowed();
+        Object other$minAllowed = other.getMinAllowed();
+        if (this$minAllowed == null ? other$minAllowed != null : !this$minAllowed.equals(other$minAllowed)) {
+            return false;
+        }
+        Object this$mode = this.getMode();
+        Object other$mode = other.getMode();
+        if (this$mode == null ? other$mode != null : !this$mode.equals(other$mode)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ContainerResourcePolicy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $containerName = this.getContainerName();
+        result = result * prime + ($containerName == null ? 43 : $containerName.hashCode());
+        Object $maxAllowed = this.getMaxAllowed();
+        result = result * prime + ($maxAllowed == null ? 43 : $maxAllowed.hashCode());
+        Object $minAllowed = this.getMinAllowed();
+        result = result * prime + ($minAllowed == null ? 43 : $minAllowed.hashCode());
+        Object $mode = this.getMode();
+        result = result * prime + ($mode == null ? 43 : $mode.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ContainerResourcePolicy(" + "containerName=" + this.getContainerName() + ", maxAllowed=" + this.getMaxAllowed() + ", minAllowed=" + this.getMinAllowed() + ", mode=" + this.getMode() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

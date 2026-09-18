@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Rule describes an alerting or recording rule See Prometheus documentation: [alerting](https://www.prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) or [recording](https://www.prometheus.io/docs/prometheus/latest/configuration/recording_rules/#recording-rules) rule
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "keep_firing_for",
     "labels",
     "record"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -243,6 +234,92 @@ public class Rule implements Editable<RuleBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Rule)) {
+            return false;
+        }
+        Rule other = (Rule) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$alert = this.getAlert();
+        Object other$alert = other.getAlert();
+        if (this$alert == null ? other$alert != null : !this$alert.equals(other$alert)) {
+            return false;
+        }
+        Object this$annotations = this.getAnnotations();
+        Object other$annotations = other.getAnnotations();
+        if (this$annotations == null ? other$annotations != null : !this$annotations.equals(other$annotations)) {
+            return false;
+        }
+        Object this$expr = this.getExpr();
+        Object other$expr = other.getExpr();
+        if (this$expr == null ? other$expr != null : !this$expr.equals(other$expr)) {
+            return false;
+        }
+        Object this$_for = this.getFor();
+        Object other$_for = other.getFor();
+        if (this$_for == null ? other$_for != null : !this$_for.equals(other$_for)) {
+            return false;
+        }
+        Object this$keepFiringFor = this.getKeepFiringFor();
+        Object other$keepFiringFor = other.getKeepFiringFor();
+        if (this$keepFiringFor == null ? other$keepFiringFor != null : !this$keepFiringFor.equals(other$keepFiringFor)) {
+            return false;
+        }
+        Object this$labels = this.getLabels();
+        Object other$labels = other.getLabels();
+        if (this$labels == null ? other$labels != null : !this$labels.equals(other$labels)) {
+            return false;
+        }
+        Object this$record = this.getRecord();
+        Object other$record = other.getRecord();
+        if (this$record == null ? other$record != null : !this$record.equals(other$record)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Rule;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $alert = this.getAlert();
+        result = result * prime + ($alert == null ? 43 : $alert.hashCode());
+        Object $annotations = this.getAnnotations();
+        result = result * prime + ($annotations == null ? 43 : $annotations.hashCode());
+        Object $expr = this.getExpr();
+        result = result * prime + ($expr == null ? 43 : $expr.hashCode());
+        Object $_for = this.getFor();
+        result = result * prime + ($_for == null ? 43 : $_for.hashCode());
+        Object $keepFiringFor = this.getKeepFiringFor();
+        result = result * prime + ($keepFiringFor == null ? 43 : $keepFiringFor.hashCode());
+        Object $labels = this.getLabels();
+        result = result * prime + ($labels == null ? 43 : $labels.hashCode());
+        Object $record = this.getRecord();
+        result = result * prime + ($record == null ? 43 : $record.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Rule(" + "alert=" + this.getAlert() + ", annotations=" + this.getAnnotations() + ", expr=" + this.getExpr() + ", _for=" + this.getFor() + ", keepFiringFor=" + this.getKeepFiringFor() + ", labels=" + this.getLabels() + ", record=" + this.getRecord() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

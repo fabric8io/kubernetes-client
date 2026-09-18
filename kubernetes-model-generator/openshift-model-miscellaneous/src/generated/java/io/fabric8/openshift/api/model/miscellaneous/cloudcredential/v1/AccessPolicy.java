@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AccessPolicy is a definition of an IAM access policy
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "attributes",
     "roles"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -146,6 +137,57 @@ public class AccessPolicy implements Editable<AccessPolicyBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AccessPolicy)) {
+            return false;
+        }
+        AccessPolicy other = (AccessPolicy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$attributes = this.getAttributes();
+        Object other$attributes = other.getAttributes();
+        if (this$attributes == null ? other$attributes != null : !this$attributes.equals(other$attributes)) {
+            return false;
+        }
+        Object this$roles = this.getRoles();
+        Object other$roles = other.getRoles();
+        if (this$roles == null ? other$roles != null : !this$roles.equals(other$roles)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AccessPolicy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $attributes = this.getAttributes();
+        result = result * prime + ($attributes == null ? 43 : $attributes.hashCode());
+        Object $roles = this.getRoles();
+        result = result * prime + ($roles == null ? 43 : $roles.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AccessPolicy(" + "attributes=" + this.getAttributes() + ", roles=" + this.getRoles() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "imageOverride",
     "replicaCount",
     "resources"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -197,6 +188,78 @@ public class DeploymentConfig implements Editable<DeploymentConfigBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DeploymentConfig)) {
+            return false;
+        }
+        DeploymentConfig other = (DeploymentConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$arguments = this.getArguments();
+        Object other$arguments = other.getArguments();
+        if (this$arguments == null ? other$arguments != null : !this$arguments.equals(other$arguments)) {
+            return false;
+        }
+        Object this$envVar = this.getEnvVar();
+        Object other$envVar = other.getEnvVar();
+        if (this$envVar == null ? other$envVar != null : !this$envVar.equals(other$envVar)) {
+            return false;
+        }
+        Object this$imageOverride = this.getImageOverride();
+        Object other$imageOverride = other.getImageOverride();
+        if (this$imageOverride == null ? other$imageOverride != null : !this$imageOverride.equals(other$imageOverride)) {
+            return false;
+        }
+        Object this$replicaCount = this.getReplicaCount();
+        Object other$replicaCount = other.getReplicaCount();
+        if (this$replicaCount == null ? other$replicaCount != null : !this$replicaCount.equals(other$replicaCount)) {
+            return false;
+        }
+        Object this$resources = this.getResources();
+        Object other$resources = other.getResources();
+        if (this$resources == null ? other$resources != null : !this$resources.equals(other$resources)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DeploymentConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $arguments = this.getArguments();
+        result = result * prime + ($arguments == null ? 43 : $arguments.hashCode());
+        Object $envVar = this.getEnvVar();
+        result = result * prime + ($envVar == null ? 43 : $envVar.hashCode());
+        Object $imageOverride = this.getImageOverride();
+        result = result * prime + ($imageOverride == null ? 43 : $imageOverride.hashCode());
+        Object $replicaCount = this.getReplicaCount();
+        result = result * prime + ($replicaCount == null ? 43 : $replicaCount.hashCode());
+        Object $resources = this.getResources();
+        result = result * prime + ($resources == null ? 43 : $resources.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DeploymentConfig(" + "arguments=" + this.getArguments() + ", envVar=" + this.getEnvVar() + ", imageOverride=" + this.getImageOverride() + ", replicaCount=" + this.getReplicaCount() + ", resources=" + this.getResources() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

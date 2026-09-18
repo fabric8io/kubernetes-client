@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * insightsReport provides Insights health check report based on the most recently sent Insights data.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "downloadedAt",
     "healthChecks",
     "uri"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -163,6 +154,64 @@ public class InsightsReport implements Editable<InsightsReportBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof InsightsReport)) {
+            return false;
+        }
+        InsightsReport other = (InsightsReport) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$downloadedAt = this.getDownloadedAt();
+        Object other$downloadedAt = other.getDownloadedAt();
+        if (this$downloadedAt == null ? other$downloadedAt != null : !this$downloadedAt.equals(other$downloadedAt)) {
+            return false;
+        }
+        Object this$healthChecks = this.getHealthChecks();
+        Object other$healthChecks = other.getHealthChecks();
+        if (this$healthChecks == null ? other$healthChecks != null : !this$healthChecks.equals(other$healthChecks)) {
+            return false;
+        }
+        Object this$uri = this.getUri();
+        Object other$uri = other.getUri();
+        if (this$uri == null ? other$uri != null : !this$uri.equals(other$uri)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof InsightsReport;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $downloadedAt = this.getDownloadedAt();
+        result = result * prime + ($downloadedAt == null ? 43 : $downloadedAt.hashCode());
+        Object $healthChecks = this.getHealthChecks();
+        result = result * prime + ($healthChecks == null ? 43 : $healthChecks.hashCode());
+        Object $uri = this.getUri();
+        result = result * prime + ($uri == null ? 43 : $uri.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "InsightsReport(" + "downloadedAt=" + this.getDownloadedAt() + ", healthChecks=" + this.getHealthChecks() + ", uri=" + this.getUri() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

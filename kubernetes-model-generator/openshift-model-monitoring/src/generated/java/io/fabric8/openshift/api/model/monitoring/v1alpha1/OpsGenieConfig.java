@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OpsGenieConfig configures notifications via OpsGenie. See https://prometheus.io/docs/alerting/latest/configuration/#opsgenie_config
@@ -56,12 +53,6 @@ import lombok.experimental.Accessors;
     "source",
     "tags",
     "updateAlerts"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -407,6 +398,148 @@ public class OpsGenieConfig implements Editable<OpsGenieConfigBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OpsGenieConfig)) {
+            return false;
+        }
+        OpsGenieConfig other = (OpsGenieConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$actions = this.getActions();
+        Object other$actions = other.getActions();
+        if (this$actions == null ? other$actions != null : !this$actions.equals(other$actions)) {
+            return false;
+        }
+        Object this$apiKey = this.getApiKey();
+        Object other$apiKey = other.getApiKey();
+        if (this$apiKey == null ? other$apiKey != null : !this$apiKey.equals(other$apiKey)) {
+            return false;
+        }
+        Object this$apiURL = this.getApiURL();
+        Object other$apiURL = other.getApiURL();
+        if (this$apiURL == null ? other$apiURL != null : !this$apiURL.equals(other$apiURL)) {
+            return false;
+        }
+        Object this$description = this.getDescription();
+        Object other$description = other.getDescription();
+        if (this$description == null ? other$description != null : !this$description.equals(other$description)) {
+            return false;
+        }
+        Object this$details = this.getDetails();
+        Object other$details = other.getDetails();
+        if (this$details == null ? other$details != null : !this$details.equals(other$details)) {
+            return false;
+        }
+        Object this$entity = this.getEntity();
+        Object other$entity = other.getEntity();
+        if (this$entity == null ? other$entity != null : !this$entity.equals(other$entity)) {
+            return false;
+        }
+        Object this$httpConfig = this.getHttpConfig();
+        Object other$httpConfig = other.getHttpConfig();
+        if (this$httpConfig == null ? other$httpConfig != null : !this$httpConfig.equals(other$httpConfig)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$note = this.getNote();
+        Object other$note = other.getNote();
+        if (this$note == null ? other$note != null : !this$note.equals(other$note)) {
+            return false;
+        }
+        Object this$priority = this.getPriority();
+        Object other$priority = other.getPriority();
+        if (this$priority == null ? other$priority != null : !this$priority.equals(other$priority)) {
+            return false;
+        }
+        Object this$responders = this.getResponders();
+        Object other$responders = other.getResponders();
+        if (this$responders == null ? other$responders != null : !this$responders.equals(other$responders)) {
+            return false;
+        }
+        Object this$sendResolved = this.getSendResolved();
+        Object other$sendResolved = other.getSendResolved();
+        if (this$sendResolved == null ? other$sendResolved != null : !this$sendResolved.equals(other$sendResolved)) {
+            return false;
+        }
+        Object this$source = this.getSource();
+        Object other$source = other.getSource();
+        if (this$source == null ? other$source != null : !this$source.equals(other$source)) {
+            return false;
+        }
+        Object this$tags = this.getTags();
+        Object other$tags = other.getTags();
+        if (this$tags == null ? other$tags != null : !this$tags.equals(other$tags)) {
+            return false;
+        }
+        Object this$updateAlerts = this.getUpdateAlerts();
+        Object other$updateAlerts = other.getUpdateAlerts();
+        if (this$updateAlerts == null ? other$updateAlerts != null : !this$updateAlerts.equals(other$updateAlerts)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OpsGenieConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $actions = this.getActions();
+        result = result * prime + ($actions == null ? 43 : $actions.hashCode());
+        Object $apiKey = this.getApiKey();
+        result = result * prime + ($apiKey == null ? 43 : $apiKey.hashCode());
+        Object $apiURL = this.getApiURL();
+        result = result * prime + ($apiURL == null ? 43 : $apiURL.hashCode());
+        Object $description = this.getDescription();
+        result = result * prime + ($description == null ? 43 : $description.hashCode());
+        Object $details = this.getDetails();
+        result = result * prime + ($details == null ? 43 : $details.hashCode());
+        Object $entity = this.getEntity();
+        result = result * prime + ($entity == null ? 43 : $entity.hashCode());
+        Object $httpConfig = this.getHttpConfig();
+        result = result * prime + ($httpConfig == null ? 43 : $httpConfig.hashCode());
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $note = this.getNote();
+        result = result * prime + ($note == null ? 43 : $note.hashCode());
+        Object $priority = this.getPriority();
+        result = result * prime + ($priority == null ? 43 : $priority.hashCode());
+        Object $responders = this.getResponders();
+        result = result * prime + ($responders == null ? 43 : $responders.hashCode());
+        Object $sendResolved = this.getSendResolved();
+        result = result * prime + ($sendResolved == null ? 43 : $sendResolved.hashCode());
+        Object $source = this.getSource();
+        result = result * prime + ($source == null ? 43 : $source.hashCode());
+        Object $tags = this.getTags();
+        result = result * prime + ($tags == null ? 43 : $tags.hashCode());
+        Object $updateAlerts = this.getUpdateAlerts();
+        result = result * prime + ($updateAlerts == null ? 43 : $updateAlerts.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OpsGenieConfig(" + "actions=" + this.getActions() + ", apiKey=" + this.getApiKey() + ", apiURL=" + this.getApiURL() + ", description=" + this.getDescription() + ", details=" + this.getDetails() + ", entity=" + this.getEntity() + ", httpConfig=" + this.getHttpConfig() + ", message=" + this.getMessage() + ", note=" + this.getNote() + ", priority=" + this.getPriority() + ", responders=" + this.getResponders() + ", sendResolved=" + this.getSendResolved() + ", source=" + this.getSource() + ", tags=" + this.getTags() + ", updateAlerts=" + this.getUpdateAlerts() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -38,12 +35,6 @@ import lombok.experimental.Accessors;
     "count",
     "data",
     "file-name"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -157,6 +148,64 @@ public class FileAppendSpec implements Editable<FileAppendSpecBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof FileAppendSpec)) {
+            return false;
+        }
+        FileAppendSpec other = (FileAppendSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$count = this.getCount();
+        Object other$count = other.getCount();
+        if (this$count == null ? other$count != null : !this$count.equals(other$count)) {
+            return false;
+        }
+        Object this$data = this.getData();
+        Object other$data = other.getData();
+        if (this$data == null ? other$data != null : !this$data.equals(other$data)) {
+            return false;
+        }
+        Object this$fileName = this.getFileName();
+        Object other$fileName = other.getFileName();
+        if (this$fileName == null ? other$fileName != null : !this$fileName.equals(other$fileName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof FileAppendSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $count = this.getCount();
+        result = result * prime + ($count == null ? 43 : $count.hashCode());
+        Object $data = this.getData();
+        result = result * prime + ($data == null ? 43 : $data.hashCode());
+        Object $fileName = this.getFileName();
+        result = result * prime + ($fileName == null ? 43 : $fileName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "FileAppendSpec(" + "count=" + this.getCount() + ", data=" + this.getData() + ", fileName=" + this.getFileName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

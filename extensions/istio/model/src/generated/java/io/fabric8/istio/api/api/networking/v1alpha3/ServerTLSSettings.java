@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -53,12 +50,6 @@ import lombok.experimental.Accessors;
     "tlsCertificates",
     "verifyCertificateHash",
     "verifyCertificateSpki"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -413,6 +404,155 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ServerTLSSettings)) {
+            return false;
+        }
+        ServerTLSSettings other = (ServerTLSSettings) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$caCertCredentialName = this.getCaCertCredentialName();
+        Object other$caCertCredentialName = other.getCaCertCredentialName();
+        if (this$caCertCredentialName == null ? other$caCertCredentialName != null : !this$caCertCredentialName.equals(other$caCertCredentialName)) {
+            return false;
+        }
+        Object this$caCertificates = this.getCaCertificates();
+        Object other$caCertificates = other.getCaCertificates();
+        if (this$caCertificates == null ? other$caCertificates != null : !this$caCertificates.equals(other$caCertificates)) {
+            return false;
+        }
+        Object this$caCrl = this.getCaCrl();
+        Object other$caCrl = other.getCaCrl();
+        if (this$caCrl == null ? other$caCrl != null : !this$caCrl.equals(other$caCrl)) {
+            return false;
+        }
+        Object this$cipherSuites = this.getCipherSuites();
+        Object other$cipherSuites = other.getCipherSuites();
+        if (this$cipherSuites == null ? other$cipherSuites != null : !this$cipherSuites.equals(other$cipherSuites)) {
+            return false;
+        }
+        Object this$credentialName = this.getCredentialName();
+        Object other$credentialName = other.getCredentialName();
+        if (this$credentialName == null ? other$credentialName != null : !this$credentialName.equals(other$credentialName)) {
+            return false;
+        }
+        Object this$credentialNames = this.getCredentialNames();
+        Object other$credentialNames = other.getCredentialNames();
+        if (this$credentialNames == null ? other$credentialNames != null : !this$credentialNames.equals(other$credentialNames)) {
+            return false;
+        }
+        Object this$httpsRedirect = this.getHttpsRedirect();
+        Object other$httpsRedirect = other.getHttpsRedirect();
+        if (this$httpsRedirect == null ? other$httpsRedirect != null : !this$httpsRedirect.equals(other$httpsRedirect)) {
+            return false;
+        }
+        Object this$maxProtocolVersion = this.getMaxProtocolVersion();
+        Object other$maxProtocolVersion = other.getMaxProtocolVersion();
+        if (this$maxProtocolVersion == null ? other$maxProtocolVersion != null : !this$maxProtocolVersion.equals(other$maxProtocolVersion)) {
+            return false;
+        }
+        Object this$minProtocolVersion = this.getMinProtocolVersion();
+        Object other$minProtocolVersion = other.getMinProtocolVersion();
+        if (this$minProtocolVersion == null ? other$minProtocolVersion != null : !this$minProtocolVersion.equals(other$minProtocolVersion)) {
+            return false;
+        }
+        Object this$mode = this.getMode();
+        Object other$mode = other.getMode();
+        if (this$mode == null ? other$mode != null : !this$mode.equals(other$mode)) {
+            return false;
+        }
+        Object this$privateKey = this.getPrivateKey();
+        Object other$privateKey = other.getPrivateKey();
+        if (this$privateKey == null ? other$privateKey != null : !this$privateKey.equals(other$privateKey)) {
+            return false;
+        }
+        Object this$serverCertificate = this.getServerCertificate();
+        Object other$serverCertificate = other.getServerCertificate();
+        if (this$serverCertificate == null ? other$serverCertificate != null : !this$serverCertificate.equals(other$serverCertificate)) {
+            return false;
+        }
+        Object this$subjectAltNames = this.getSubjectAltNames();
+        Object other$subjectAltNames = other.getSubjectAltNames();
+        if (this$subjectAltNames == null ? other$subjectAltNames != null : !this$subjectAltNames.equals(other$subjectAltNames)) {
+            return false;
+        }
+        Object this$tlsCertificates = this.getTlsCertificates();
+        Object other$tlsCertificates = other.getTlsCertificates();
+        if (this$tlsCertificates == null ? other$tlsCertificates != null : !this$tlsCertificates.equals(other$tlsCertificates)) {
+            return false;
+        }
+        Object this$verifyCertificateHash = this.getVerifyCertificateHash();
+        Object other$verifyCertificateHash = other.getVerifyCertificateHash();
+        if (this$verifyCertificateHash == null ? other$verifyCertificateHash != null : !this$verifyCertificateHash.equals(other$verifyCertificateHash)) {
+            return false;
+        }
+        Object this$verifyCertificateSpki = this.getVerifyCertificateSpki();
+        Object other$verifyCertificateSpki = other.getVerifyCertificateSpki();
+        if (this$verifyCertificateSpki == null ? other$verifyCertificateSpki != null : !this$verifyCertificateSpki.equals(other$verifyCertificateSpki)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ServerTLSSettings;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $caCertCredentialName = this.getCaCertCredentialName();
+        result = result * prime + ($caCertCredentialName == null ? 43 : $caCertCredentialName.hashCode());
+        Object $caCertificates = this.getCaCertificates();
+        result = result * prime + ($caCertificates == null ? 43 : $caCertificates.hashCode());
+        Object $caCrl = this.getCaCrl();
+        result = result * prime + ($caCrl == null ? 43 : $caCrl.hashCode());
+        Object $cipherSuites = this.getCipherSuites();
+        result = result * prime + ($cipherSuites == null ? 43 : $cipherSuites.hashCode());
+        Object $credentialName = this.getCredentialName();
+        result = result * prime + ($credentialName == null ? 43 : $credentialName.hashCode());
+        Object $credentialNames = this.getCredentialNames();
+        result = result * prime + ($credentialNames == null ? 43 : $credentialNames.hashCode());
+        Object $httpsRedirect = this.getHttpsRedirect();
+        result = result * prime + ($httpsRedirect == null ? 43 : $httpsRedirect.hashCode());
+        Object $maxProtocolVersion = this.getMaxProtocolVersion();
+        result = result * prime + ($maxProtocolVersion == null ? 43 : $maxProtocolVersion.hashCode());
+        Object $minProtocolVersion = this.getMinProtocolVersion();
+        result = result * prime + ($minProtocolVersion == null ? 43 : $minProtocolVersion.hashCode());
+        Object $mode = this.getMode();
+        result = result * prime + ($mode == null ? 43 : $mode.hashCode());
+        Object $privateKey = this.getPrivateKey();
+        result = result * prime + ($privateKey == null ? 43 : $privateKey.hashCode());
+        Object $serverCertificate = this.getServerCertificate();
+        result = result * prime + ($serverCertificate == null ? 43 : $serverCertificate.hashCode());
+        Object $subjectAltNames = this.getSubjectAltNames();
+        result = result * prime + ($subjectAltNames == null ? 43 : $subjectAltNames.hashCode());
+        Object $tlsCertificates = this.getTlsCertificates();
+        result = result * prime + ($tlsCertificates == null ? 43 : $tlsCertificates.hashCode());
+        Object $verifyCertificateHash = this.getVerifyCertificateHash();
+        result = result * prime + ($verifyCertificateHash == null ? 43 : $verifyCertificateHash.hashCode());
+        Object $verifyCertificateSpki = this.getVerifyCertificateSpki();
+        result = result * prime + ($verifyCertificateSpki == null ? 43 : $verifyCertificateSpki.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ServerTLSSettings(" + "caCertCredentialName=" + this.getCaCertCredentialName() + ", caCertificates=" + this.getCaCertificates() + ", caCrl=" + this.getCaCrl() + ", cipherSuites=" + this.getCipherSuites() + ", credentialName=" + this.getCredentialName() + ", credentialNames=" + this.getCredentialNames() + ", httpsRedirect=" + this.getHttpsRedirect() + ", maxProtocolVersion=" + this.getMaxProtocolVersion() + ", minProtocolVersion=" + this.getMinProtocolVersion() + ", mode=" + this.getMode() + ", privateKey=" + this.getPrivateKey() + ", serverCertificate=" + this.getServerCertificate() + ", subjectAltNames=" + this.getSubjectAltNames() + ", tlsCertificates=" + this.getTlsCertificates() + ", verifyCertificateHash=" + this.getVerifyCertificateHash() + ", verifyCertificateSpki=" + this.getVerifyCertificateSpki() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

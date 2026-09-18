@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
     "nonReadable",
     "nonWritable",
     "topic"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -177,6 +168,71 @@ public class KafkaIOSpec implements Editable<KafkaIOSpecBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof KafkaIOSpec)) {
+            return false;
+        }
+        KafkaIOSpec other = (KafkaIOSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$configFile = this.getConfigFile();
+        Object other$configFile = other.getConfigFile();
+        if (this$configFile == null ? other$configFile != null : !this$configFile.equals(other$configFile)) {
+            return false;
+        }
+        Object this$nonReadable = this.getNonReadable();
+        Object other$nonReadable = other.getNonReadable();
+        if (this$nonReadable == null ? other$nonReadable != null : !this$nonReadable.equals(other$nonReadable)) {
+            return false;
+        }
+        Object this$nonWritable = this.getNonWritable();
+        Object other$nonWritable = other.getNonWritable();
+        if (this$nonWritable == null ? other$nonWritable != null : !this$nonWritable.equals(other$nonWritable)) {
+            return false;
+        }
+        Object this$topic = this.getTopic();
+        Object other$topic = other.getTopic();
+        if (this$topic == null ? other$topic != null : !this$topic.equals(other$topic)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof KafkaIOSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $configFile = this.getConfigFile();
+        result = result * prime + ($configFile == null ? 43 : $configFile.hashCode());
+        Object $nonReadable = this.getNonReadable();
+        result = result * prime + ($nonReadable == null ? 43 : $nonReadable.hashCode());
+        Object $nonWritable = this.getNonWritable();
+        result = result * prime + ($nonWritable == null ? 43 : $nonWritable.hashCode());
+        Object $topic = this.getTopic();
+        result = result * prime + ($topic == null ? 43 : $topic.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "KafkaIOSpec(" + "configFile=" + this.getConfigFile() + ", nonReadable=" + this.getNonReadable() + ", nonWritable=" + this.getNonWritable() + ", topic=" + this.getTopic() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

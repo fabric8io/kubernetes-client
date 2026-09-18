@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * BareMetalPlatformSpec holds the desired state of the BareMetal infrastructure provider. This only includes fields that can be modified in the cluster.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "apiServerInternalIPs",
     "ingressIPs",
     "machineNetworks"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -167,6 +158,64 @@ public class BareMetalPlatformSpec implements Editable<BareMetalPlatformSpecBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof BareMetalPlatformSpec)) {
+            return false;
+        }
+        BareMetalPlatformSpec other = (BareMetalPlatformSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiServerInternalIPs = this.getApiServerInternalIPs();
+        Object other$apiServerInternalIPs = other.getApiServerInternalIPs();
+        if (this$apiServerInternalIPs == null ? other$apiServerInternalIPs != null : !this$apiServerInternalIPs.equals(other$apiServerInternalIPs)) {
+            return false;
+        }
+        Object this$ingressIPs = this.getIngressIPs();
+        Object other$ingressIPs = other.getIngressIPs();
+        if (this$ingressIPs == null ? other$ingressIPs != null : !this$ingressIPs.equals(other$ingressIPs)) {
+            return false;
+        }
+        Object this$machineNetworks = this.getMachineNetworks();
+        Object other$machineNetworks = other.getMachineNetworks();
+        if (this$machineNetworks == null ? other$machineNetworks != null : !this$machineNetworks.equals(other$machineNetworks)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof BareMetalPlatformSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiServerInternalIPs = this.getApiServerInternalIPs();
+        result = result * prime + ($apiServerInternalIPs == null ? 43 : $apiServerInternalIPs.hashCode());
+        Object $ingressIPs = this.getIngressIPs();
+        result = result * prime + ($ingressIPs == null ? 43 : $ingressIPs.hashCode());
+        Object $machineNetworks = this.getMachineNetworks();
+        result = result * prime + ($machineNetworks == null ? 43 : $machineNetworks.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BareMetalPlatformSpec(" + "apiServerInternalIPs=" + this.getApiServerInternalIPs() + ", ingressIPs=" + this.getIngressIPs() + ", machineNetworks=" + this.getMachineNetworks() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

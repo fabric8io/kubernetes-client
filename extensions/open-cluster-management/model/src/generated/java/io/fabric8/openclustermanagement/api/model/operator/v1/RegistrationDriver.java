@@ -28,21 +28,12 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "authType",
     "awsIrsa"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -131,6 +122,57 @@ public class RegistrationDriver implements Editable<RegistrationDriverBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RegistrationDriver)) {
+            return false;
+        }
+        RegistrationDriver other = (RegistrationDriver) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$authType = this.getAuthType();
+        Object other$authType = other.getAuthType();
+        if (this$authType == null ? other$authType != null : !this$authType.equals(other$authType)) {
+            return false;
+        }
+        Object this$awsIrsa = this.getAwsIrsa();
+        Object other$awsIrsa = other.getAwsIrsa();
+        if (this$awsIrsa == null ? other$awsIrsa != null : !this$awsIrsa.equals(other$awsIrsa)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RegistrationDriver;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $authType = this.getAuthType();
+        result = result * prime + ($authType == null ? 43 : $authType.hashCode());
+        Object $awsIrsa = this.getAwsIrsa();
+        result = result * prime + ($awsIrsa == null ? 43 : $awsIrsa.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RegistrationDriver(" + "authType=" + this.getAuthType() + ", awsIrsa=" + this.getAwsIrsa() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

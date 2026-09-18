@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * JenkinsPipelineBuildStrategy holds parameters specific to a Jenkins Pipeline build. Deprecated: use OpenShift Pipelines
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "env",
     "jenkinsfile",
     "jenkinsfilePath"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -163,6 +154,64 @@ public class JenkinsPipelineBuildStrategy implements Editable<JenkinsPipelineBui
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof JenkinsPipelineBuildStrategy)) {
+            return false;
+        }
+        JenkinsPipelineBuildStrategy other = (JenkinsPipelineBuildStrategy) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$env = this.getEnv();
+        Object other$env = other.getEnv();
+        if (this$env == null ? other$env != null : !this$env.equals(other$env)) {
+            return false;
+        }
+        Object this$jenkinsfile = this.getJenkinsfile();
+        Object other$jenkinsfile = other.getJenkinsfile();
+        if (this$jenkinsfile == null ? other$jenkinsfile != null : !this$jenkinsfile.equals(other$jenkinsfile)) {
+            return false;
+        }
+        Object this$jenkinsfilePath = this.getJenkinsfilePath();
+        Object other$jenkinsfilePath = other.getJenkinsfilePath();
+        if (this$jenkinsfilePath == null ? other$jenkinsfilePath != null : !this$jenkinsfilePath.equals(other$jenkinsfilePath)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof JenkinsPipelineBuildStrategy;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $env = this.getEnv();
+        result = result * prime + ($env == null ? 43 : $env.hashCode());
+        Object $jenkinsfile = this.getJenkinsfile();
+        result = result * prime + ($jenkinsfile == null ? 43 : $jenkinsfile.hashCode());
+        Object $jenkinsfilePath = this.getJenkinsfilePath();
+        result = result * prime + ($jenkinsfilePath == null ? 43 : $jenkinsfilePath.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "JenkinsPipelineBuildStrategy(" + "env=" + this.getEnv() + ", jenkinsfile=" + this.getJenkinsfile() + ", jenkinsfilePath=" + this.getJenkinsfilePath() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

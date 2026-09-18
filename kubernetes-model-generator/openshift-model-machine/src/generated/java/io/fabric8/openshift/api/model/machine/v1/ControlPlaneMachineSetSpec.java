@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ControlPlaneMachineSet represents the configuration of the ControlPlaneMachineSet.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "state",
     "strategy",
     "template"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -220,6 +211,85 @@ public class ControlPlaneMachineSetSpec implements Editable<ControlPlaneMachineS
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ControlPlaneMachineSetSpec)) {
+            return false;
+        }
+        ControlPlaneMachineSetSpec other = (ControlPlaneMachineSetSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$machineNamePrefix = this.getMachineNamePrefix();
+        Object other$machineNamePrefix = other.getMachineNamePrefix();
+        if (this$machineNamePrefix == null ? other$machineNamePrefix != null : !this$machineNamePrefix.equals(other$machineNamePrefix)) {
+            return false;
+        }
+        Object this$replicas = this.getReplicas();
+        Object other$replicas = other.getReplicas();
+        if (this$replicas == null ? other$replicas != null : !this$replicas.equals(other$replicas)) {
+            return false;
+        }
+        Object this$selector = this.getSelector();
+        Object other$selector = other.getSelector();
+        if (this$selector == null ? other$selector != null : !this$selector.equals(other$selector)) {
+            return false;
+        }
+        Object this$state = this.getState();
+        Object other$state = other.getState();
+        if (this$state == null ? other$state != null : !this$state.equals(other$state)) {
+            return false;
+        }
+        Object this$strategy = this.getStrategy();
+        Object other$strategy = other.getStrategy();
+        if (this$strategy == null ? other$strategy != null : !this$strategy.equals(other$strategy)) {
+            return false;
+        }
+        Object this$template = this.getTemplate();
+        Object other$template = other.getTemplate();
+        if (this$template == null ? other$template != null : !this$template.equals(other$template)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ControlPlaneMachineSetSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $machineNamePrefix = this.getMachineNamePrefix();
+        result = result * prime + ($machineNamePrefix == null ? 43 : $machineNamePrefix.hashCode());
+        Object $replicas = this.getReplicas();
+        result = result * prime + ($replicas == null ? 43 : $replicas.hashCode());
+        Object $selector = this.getSelector();
+        result = result * prime + ($selector == null ? 43 : $selector.hashCode());
+        Object $state = this.getState();
+        result = result * prime + ($state == null ? 43 : $state.hashCode());
+        Object $strategy = this.getStrategy();
+        result = result * prime + ($strategy == null ? 43 : $strategy.hashCode());
+        Object $template = this.getTemplate();
+        result = result * prime + ($template == null ? 43 : $template.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ControlPlaneMachineSetSpec(" + "machineNamePrefix=" + this.getMachineNamePrefix() + ", replicas=" + this.getReplicas() + ", selector=" + this.getSelector() + ", state=" + this.getState() + ", strategy=" + this.getStrategy() + ", template=" + this.getTemplate() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

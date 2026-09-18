@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * CustomResourceConversion describes how to convert different versions of a CR.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "conversionReviewVersions",
     "strategy",
     "webhookClientConfig"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -164,6 +155,64 @@ public class CustomResourceConversion implements Editable<CustomResourceConversi
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CustomResourceConversion)) {
+            return false;
+        }
+        CustomResourceConversion other = (CustomResourceConversion) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conversionReviewVersions = this.getConversionReviewVersions();
+        Object other$conversionReviewVersions = other.getConversionReviewVersions();
+        if (this$conversionReviewVersions == null ? other$conversionReviewVersions != null : !this$conversionReviewVersions.equals(other$conversionReviewVersions)) {
+            return false;
+        }
+        Object this$strategy = this.getStrategy();
+        Object other$strategy = other.getStrategy();
+        if (this$strategy == null ? other$strategy != null : !this$strategy.equals(other$strategy)) {
+            return false;
+        }
+        Object this$webhookClientConfig = this.getWebhookClientConfig();
+        Object other$webhookClientConfig = other.getWebhookClientConfig();
+        if (this$webhookClientConfig == null ? other$webhookClientConfig != null : !this$webhookClientConfig.equals(other$webhookClientConfig)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CustomResourceConversion;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conversionReviewVersions = this.getConversionReviewVersions();
+        result = result * prime + ($conversionReviewVersions == null ? 43 : $conversionReviewVersions.hashCode());
+        Object $strategy = this.getStrategy();
+        result = result * prime + ($strategy == null ? 43 : $strategy.hashCode());
+        Object $webhookClientConfig = this.getWebhookClientConfig();
+        result = result * prime + ($webhookClientConfig == null ? 43 : $webhookClientConfig.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CustomResourceConversion(" + "conversionReviewVersions=" + this.getConversionReviewVersions() + ", strategy=" + this.getStrategy() + ", webhookClientConfig=" + this.getWebhookClientConfig() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

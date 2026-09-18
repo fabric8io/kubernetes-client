@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ResourceQuotaSpec defines the desired hard limits to enforce for Quota.
@@ -28,12 +25,6 @@ import lombok.experimental.Accessors;
     "hard",
     "scopeSelector",
     "scopes"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -137,6 +128,64 @@ public class ResourceQuotaSpec implements Editable<ResourceQuotaSpecBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ResourceQuotaSpec)) {
+            return false;
+        }
+        ResourceQuotaSpec other = (ResourceQuotaSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$hard = this.getHard();
+        Object other$hard = other.getHard();
+        if (this$hard == null ? other$hard != null : !this$hard.equals(other$hard)) {
+            return false;
+        }
+        Object this$scopeSelector = this.getScopeSelector();
+        Object other$scopeSelector = other.getScopeSelector();
+        if (this$scopeSelector == null ? other$scopeSelector != null : !this$scopeSelector.equals(other$scopeSelector)) {
+            return false;
+        }
+        Object this$scopes = this.getScopes();
+        Object other$scopes = other.getScopes();
+        if (this$scopes == null ? other$scopes != null : !this$scopes.equals(other$scopes)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ResourceQuotaSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $hard = this.getHard();
+        result = result * prime + ($hard == null ? 43 : $hard.hashCode());
+        Object $scopeSelector = this.getScopeSelector();
+        result = result * prime + ($scopeSelector == null ? 43 : $scopeSelector.hashCode());
+        Object $scopes = this.getScopes();
+        result = result * prime + ($scopes == null ? 43 : $scopes.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ResourceQuotaSpec(" + "hard=" + this.getHard() + ", scopeSelector=" + this.getScopeSelector() + ", scopes=" + this.getScopes() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

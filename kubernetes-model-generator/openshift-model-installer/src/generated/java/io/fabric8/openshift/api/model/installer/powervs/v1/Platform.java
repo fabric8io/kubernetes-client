@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.config.v1.PowerVSServiceEndpoint;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Platform stores all the global configuration that all machinesets use.
@@ -53,12 +50,6 @@ import lombok.experimental.Accessors;
     "vpcRegion",
     "vpcSubnets",
     "zone"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -347,6 +338,127 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Platform)) {
+            return false;
+        }
+        Platform other = (Platform) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterOSImage = this.getClusterOSImage();
+        Object other$clusterOSImage = other.getClusterOSImage();
+        if (this$clusterOSImage == null ? other$clusterOSImage != null : !this$clusterOSImage.equals(other$clusterOSImage)) {
+            return false;
+        }
+        Object this$defaultMachinePlatform = this.getDefaultMachinePlatform();
+        Object other$defaultMachinePlatform = other.getDefaultMachinePlatform();
+        if (this$defaultMachinePlatform == null ? other$defaultMachinePlatform != null : !this$defaultMachinePlatform.equals(other$defaultMachinePlatform)) {
+            return false;
+        }
+        Object this$powervsResourceGroup = this.getPowervsResourceGroup();
+        Object other$powervsResourceGroup = other.getPowervsResourceGroup();
+        if (this$powervsResourceGroup == null ? other$powervsResourceGroup != null : !this$powervsResourceGroup.equals(other$powervsResourceGroup)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$serviceEndpoints = this.getServiceEndpoints();
+        Object other$serviceEndpoints = other.getServiceEndpoints();
+        if (this$serviceEndpoints == null ? other$serviceEndpoints != null : !this$serviceEndpoints.equals(other$serviceEndpoints)) {
+            return false;
+        }
+        Object this$serviceInstanceGUID = this.getServiceInstanceGUID();
+        Object other$serviceInstanceGUID = other.getServiceInstanceGUID();
+        if (this$serviceInstanceGUID == null ? other$serviceInstanceGUID != null : !this$serviceInstanceGUID.equals(other$serviceInstanceGUID)) {
+            return false;
+        }
+        Object this$tgName = this.getTgName();
+        Object other$tgName = other.getTgName();
+        if (this$tgName == null ? other$tgName != null : !this$tgName.equals(other$tgName)) {
+            return false;
+        }
+        Object this$userID = this.getUserID();
+        Object other$userID = other.getUserID();
+        if (this$userID == null ? other$userID != null : !this$userID.equals(other$userID)) {
+            return false;
+        }
+        Object this$vpcName = this.getVpcName();
+        Object other$vpcName = other.getVpcName();
+        if (this$vpcName == null ? other$vpcName != null : !this$vpcName.equals(other$vpcName)) {
+            return false;
+        }
+        Object this$vpcRegion = this.getVpcRegion();
+        Object other$vpcRegion = other.getVpcRegion();
+        if (this$vpcRegion == null ? other$vpcRegion != null : !this$vpcRegion.equals(other$vpcRegion)) {
+            return false;
+        }
+        Object this$vpcSubnets = this.getVpcSubnets();
+        Object other$vpcSubnets = other.getVpcSubnets();
+        if (this$vpcSubnets == null ? other$vpcSubnets != null : !this$vpcSubnets.equals(other$vpcSubnets)) {
+            return false;
+        }
+        Object this$zone = this.getZone();
+        Object other$zone = other.getZone();
+        if (this$zone == null ? other$zone != null : !this$zone.equals(other$zone)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Platform;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterOSImage = this.getClusterOSImage();
+        result = result * prime + ($clusterOSImage == null ? 43 : $clusterOSImage.hashCode());
+        Object $defaultMachinePlatform = this.getDefaultMachinePlatform();
+        result = result * prime + ($defaultMachinePlatform == null ? 43 : $defaultMachinePlatform.hashCode());
+        Object $powervsResourceGroup = this.getPowervsResourceGroup();
+        result = result * prime + ($powervsResourceGroup == null ? 43 : $powervsResourceGroup.hashCode());
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $serviceEndpoints = this.getServiceEndpoints();
+        result = result * prime + ($serviceEndpoints == null ? 43 : $serviceEndpoints.hashCode());
+        Object $serviceInstanceGUID = this.getServiceInstanceGUID();
+        result = result * prime + ($serviceInstanceGUID == null ? 43 : $serviceInstanceGUID.hashCode());
+        Object $tgName = this.getTgName();
+        result = result * prime + ($tgName == null ? 43 : $tgName.hashCode());
+        Object $userID = this.getUserID();
+        result = result * prime + ($userID == null ? 43 : $userID.hashCode());
+        Object $vpcName = this.getVpcName();
+        result = result * prime + ($vpcName == null ? 43 : $vpcName.hashCode());
+        Object $vpcRegion = this.getVpcRegion();
+        result = result * prime + ($vpcRegion == null ? 43 : $vpcRegion.hashCode());
+        Object $vpcSubnets = this.getVpcSubnets();
+        result = result * prime + ($vpcSubnets == null ? 43 : $vpcSubnets.hashCode());
+        Object $zone = this.getZone();
+        result = result * prime + ($zone == null ? 43 : $zone.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Platform(" + "clusterOSImage=" + this.getClusterOSImage() + ", defaultMachinePlatform=" + this.getDefaultMachinePlatform() + ", powervsResourceGroup=" + this.getPowervsResourceGroup() + ", region=" + this.getRegion() + ", serviceEndpoints=" + this.getServiceEndpoints() + ", serviceInstanceGUID=" + this.getServiceInstanceGUID() + ", tgName=" + this.getTgName() + ", userID=" + this.getUserID() + ", vpcName=" + this.getVpcName() + ", vpcRegion=" + this.getVpcRegion() + ", vpcSubnets=" + this.getVpcSubnets() + ", zone=" + this.getZone() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

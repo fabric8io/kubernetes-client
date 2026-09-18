@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * FieldSelectorAttributes indicates a field limited access. Webhook authors are encouraged to &#42; ensure rawSelector and requirements are not both set &#42; consider the requirements field if set &#42; not try to parse or consider the rawSelector field if set. This is to avoid another CVE-2022-2880 (i.e. getting different systems to agree on how exactly to parse a query is not something we want), see https://www.oxeye.io/resources/golang-parameter-smuggling-attack for more details. For the &#42;SubjectAccessReview endpoints of the kube-apiserver: &#42; If rawSelector is empty and requirements are empty, the request is not limited. &#42; If rawSelector is present and requirements are empty, the rawSelector will be parsed and limited if the parsing succeeds. &#42; If rawSelector is empty and requirements are present, the requirements should be honored &#42; If rawSelector is present and requirements are present, the request is invalid.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "rawSelector",
     "requirements"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -145,6 +136,57 @@ public class FieldSelectorAttributes implements Editable<FieldSelectorAttributes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof FieldSelectorAttributes)) {
+            return false;
+        }
+        FieldSelectorAttributes other = (FieldSelectorAttributes) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$rawSelector = this.getRawSelector();
+        Object other$rawSelector = other.getRawSelector();
+        if (this$rawSelector == null ? other$rawSelector != null : !this$rawSelector.equals(other$rawSelector)) {
+            return false;
+        }
+        Object this$requirements = this.getRequirements();
+        Object other$requirements = other.getRequirements();
+        if (this$requirements == null ? other$requirements != null : !this$requirements.equals(other$requirements)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof FieldSelectorAttributes;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $rawSelector = this.getRawSelector();
+        result = result * prime + ($rawSelector == null ? 43 : $rawSelector.hashCode());
+        Object $requirements = this.getRequirements();
+        result = result * prime + ($requirements == null ? 43 : $requirements.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "FieldSelectorAttributes(" + "rawSelector=" + this.getRawSelector() + ", requirements=" + this.getRequirements() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

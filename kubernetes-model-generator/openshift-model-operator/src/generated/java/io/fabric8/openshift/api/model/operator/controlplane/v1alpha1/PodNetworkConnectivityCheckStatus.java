@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "failures",
     "outages",
     "successes"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -187,6 +178,71 @@ public class PodNetworkConnectivityCheckStatus implements Editable<PodNetworkCon
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodNetworkConnectivityCheckStatus)) {
+            return false;
+        }
+        PodNetworkConnectivityCheckStatus other = (PodNetworkConnectivityCheckStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$failures = this.getFailures();
+        Object other$failures = other.getFailures();
+        if (this$failures == null ? other$failures != null : !this$failures.equals(other$failures)) {
+            return false;
+        }
+        Object this$outages = this.getOutages();
+        Object other$outages = other.getOutages();
+        if (this$outages == null ? other$outages != null : !this$outages.equals(other$outages)) {
+            return false;
+        }
+        Object this$successes = this.getSuccesses();
+        Object other$successes = other.getSuccesses();
+        if (this$successes == null ? other$successes != null : !this$successes.equals(other$successes)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodNetworkConnectivityCheckStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $failures = this.getFailures();
+        result = result * prime + ($failures == null ? 43 : $failures.hashCode());
+        Object $outages = this.getOutages();
+        result = result * prime + ($outages == null ? 43 : $outages.hashCode());
+        Object $successes = this.getSuccesses();
+        result = result * prime + ($successes == null ? 43 : $successes.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodNetworkConnectivityCheckStatus(" + "conditions=" + this.getConditions() + ", failures=" + this.getFailures() + ", outages=" + this.getOutages() + ", successes=" + this.getSuccesses() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

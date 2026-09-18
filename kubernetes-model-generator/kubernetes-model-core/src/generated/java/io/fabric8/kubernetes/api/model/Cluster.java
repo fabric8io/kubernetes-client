@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -30,12 +27,6 @@ import lombok.experimental.Accessors;
     "proxy-url",
     "server",
     "tls-server-name"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -184,6 +175,99 @@ public class Cluster implements Editable<ClusterBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Cluster)) {
+            return false;
+        }
+        Cluster other = (Cluster) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$certificateAuthority = this.getCertificateAuthority();
+        Object other$certificateAuthority = other.getCertificateAuthority();
+        if (this$certificateAuthority == null ? other$certificateAuthority != null : !this$certificateAuthority.equals(other$certificateAuthority)) {
+            return false;
+        }
+        Object this$certificateAuthorityData = this.getCertificateAuthorityData();
+        Object other$certificateAuthorityData = other.getCertificateAuthorityData();
+        if (this$certificateAuthorityData == null ? other$certificateAuthorityData != null : !this$certificateAuthorityData.equals(other$certificateAuthorityData)) {
+            return false;
+        }
+        Object this$disableCompression = this.getDisableCompression();
+        Object other$disableCompression = other.getDisableCompression();
+        if (this$disableCompression == null ? other$disableCompression != null : !this$disableCompression.equals(other$disableCompression)) {
+            return false;
+        }
+        Object this$extensions = this.getExtensions();
+        Object other$extensions = other.getExtensions();
+        if (this$extensions == null ? other$extensions != null : !this$extensions.equals(other$extensions)) {
+            return false;
+        }
+        Object this$insecureSkipTlsVerify = this.getInsecureSkipTlsVerify();
+        Object other$insecureSkipTlsVerify = other.getInsecureSkipTlsVerify();
+        if (this$insecureSkipTlsVerify == null ? other$insecureSkipTlsVerify != null : !this$insecureSkipTlsVerify.equals(other$insecureSkipTlsVerify)) {
+            return false;
+        }
+        Object this$proxyUrl = this.getProxyUrl();
+        Object other$proxyUrl = other.getProxyUrl();
+        if (this$proxyUrl == null ? other$proxyUrl != null : !this$proxyUrl.equals(other$proxyUrl)) {
+            return false;
+        }
+        Object this$server = this.getServer();
+        Object other$server = other.getServer();
+        if (this$server == null ? other$server != null : !this$server.equals(other$server)) {
+            return false;
+        }
+        Object this$tlsServerName = this.getTlsServerName();
+        Object other$tlsServerName = other.getTlsServerName();
+        if (this$tlsServerName == null ? other$tlsServerName != null : !this$tlsServerName.equals(other$tlsServerName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Cluster;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $certificateAuthority = this.getCertificateAuthority();
+        result = result * prime + ($certificateAuthority == null ? 43 : $certificateAuthority.hashCode());
+        Object $certificateAuthorityData = this.getCertificateAuthorityData();
+        result = result * prime + ($certificateAuthorityData == null ? 43 : $certificateAuthorityData.hashCode());
+        Object $disableCompression = this.getDisableCompression();
+        result = result * prime + ($disableCompression == null ? 43 : $disableCompression.hashCode());
+        Object $extensions = this.getExtensions();
+        result = result * prime + ($extensions == null ? 43 : $extensions.hashCode());
+        Object $insecureSkipTlsVerify = this.getInsecureSkipTlsVerify();
+        result = result * prime + ($insecureSkipTlsVerify == null ? 43 : $insecureSkipTlsVerify.hashCode());
+        Object $proxyUrl = this.getProxyUrl();
+        result = result * prime + ($proxyUrl == null ? 43 : $proxyUrl.hashCode());
+        Object $server = this.getServer();
+        result = result * prime + ($server == null ? 43 : $server.hashCode());
+        Object $tlsServerName = this.getTlsServerName();
+        result = result * prime + ($tlsServerName == null ? 43 : $tlsServerName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Cluster(" + "certificateAuthority=" + this.getCertificateAuthority() + ", certificateAuthorityData=" + this.getCertificateAuthorityData() + ", disableCompression=" + this.getDisableCompression() + ", extensions=" + this.getExtensions() + ", insecureSkipTlsVerify=" + this.getInsecureSkipTlsVerify() + ", proxyUrl=" + this.getProxyUrl() + ", server=" + this.getServer() + ", tlsServerName=" + this.getTlsServerName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

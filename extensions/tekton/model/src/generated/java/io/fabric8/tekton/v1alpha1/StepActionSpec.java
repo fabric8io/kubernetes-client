@@ -33,9 +33,6 @@ import io.fabric8.tekton.v1.ParamSpec;
 import io.fabric8.tekton.v1.StepResult;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * StepActionSpec contains the actionable components of a step.
@@ -54,12 +51,6 @@ import lombok.experimental.Accessors;
     "securityContext",
     "volumeMounts",
     "workingDir"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -337,6 +328,120 @@ public class StepActionSpec implements Editable<StepActionSpecBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof StepActionSpec)) {
+            return false;
+        }
+        StepActionSpec other = (StepActionSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$args = this.getArgs();
+        Object other$args = other.getArgs();
+        if (this$args == null ? other$args != null : !this$args.equals(other$args)) {
+            return false;
+        }
+        Object this$command = this.getCommand();
+        Object other$command = other.getCommand();
+        if (this$command == null ? other$command != null : !this$command.equals(other$command)) {
+            return false;
+        }
+        Object this$description = this.getDescription();
+        Object other$description = other.getDescription();
+        if (this$description == null ? other$description != null : !this$description.equals(other$description)) {
+            return false;
+        }
+        Object this$env = this.getEnv();
+        Object other$env = other.getEnv();
+        if (this$env == null ? other$env != null : !this$env.equals(other$env)) {
+            return false;
+        }
+        Object this$image = this.getImage();
+        Object other$image = other.getImage();
+        if (this$image == null ? other$image != null : !this$image.equals(other$image)) {
+            return false;
+        }
+        Object this$params = this.getParams();
+        Object other$params = other.getParams();
+        if (this$params == null ? other$params != null : !this$params.equals(other$params)) {
+            return false;
+        }
+        Object this$results = this.getResults();
+        Object other$results = other.getResults();
+        if (this$results == null ? other$results != null : !this$results.equals(other$results)) {
+            return false;
+        }
+        Object this$script = this.getScript();
+        Object other$script = other.getScript();
+        if (this$script == null ? other$script != null : !this$script.equals(other$script)) {
+            return false;
+        }
+        Object this$securityContext = this.getSecurityContext();
+        Object other$securityContext = other.getSecurityContext();
+        if (this$securityContext == null ? other$securityContext != null : !this$securityContext.equals(other$securityContext)) {
+            return false;
+        }
+        Object this$volumeMounts = this.getVolumeMounts();
+        Object other$volumeMounts = other.getVolumeMounts();
+        if (this$volumeMounts == null ? other$volumeMounts != null : !this$volumeMounts.equals(other$volumeMounts)) {
+            return false;
+        }
+        Object this$workingDir = this.getWorkingDir();
+        Object other$workingDir = other.getWorkingDir();
+        if (this$workingDir == null ? other$workingDir != null : !this$workingDir.equals(other$workingDir)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof StepActionSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $args = this.getArgs();
+        result = result * prime + ($args == null ? 43 : $args.hashCode());
+        Object $command = this.getCommand();
+        result = result * prime + ($command == null ? 43 : $command.hashCode());
+        Object $description = this.getDescription();
+        result = result * prime + ($description == null ? 43 : $description.hashCode());
+        Object $env = this.getEnv();
+        result = result * prime + ($env == null ? 43 : $env.hashCode());
+        Object $image = this.getImage();
+        result = result * prime + ($image == null ? 43 : $image.hashCode());
+        Object $params = this.getParams();
+        result = result * prime + ($params == null ? 43 : $params.hashCode());
+        Object $results = this.getResults();
+        result = result * prime + ($results == null ? 43 : $results.hashCode());
+        Object $script = this.getScript();
+        result = result * prime + ($script == null ? 43 : $script.hashCode());
+        Object $securityContext = this.getSecurityContext();
+        result = result * prime + ($securityContext == null ? 43 : $securityContext.hashCode());
+        Object $volumeMounts = this.getVolumeMounts();
+        result = result * prime + ($volumeMounts == null ? 43 : $volumeMounts.hashCode());
+        Object $workingDir = this.getWorkingDir();
+        result = result * prime + ($workingDir == null ? 43 : $workingDir.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "StepActionSpec(" + "args=" + this.getArgs() + ", command=" + this.getCommand() + ", description=" + this.getDescription() + ", env=" + this.getEnv() + ", image=" + this.getImage() + ", params=" + this.getParams() + ", results=" + this.getResults() + ", script=" + this.getScript() + ", securityContext=" + this.getSecurityContext() + ", volumeMounts=" + this.getVolumeMounts() + ", workingDir=" + this.getWorkingDir() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

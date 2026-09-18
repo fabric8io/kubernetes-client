@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PodCertificateRequestStatus describes the status of the request, and holds the certificate data if the request is issued.
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "conditions",
     "notAfter",
     "notBefore"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -205,6 +196,78 @@ public class PodCertificateRequestStatus implements Editable<PodCertificateReque
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PodCertificateRequestStatus)) {
+            return false;
+        }
+        PodCertificateRequestStatus other = (PodCertificateRequestStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$beginRefreshAt = this.getBeginRefreshAt();
+        Object other$beginRefreshAt = other.getBeginRefreshAt();
+        if (this$beginRefreshAt == null ? other$beginRefreshAt != null : !this$beginRefreshAt.equals(other$beginRefreshAt)) {
+            return false;
+        }
+        Object this$certificateChain = this.getCertificateChain();
+        Object other$certificateChain = other.getCertificateChain();
+        if (this$certificateChain == null ? other$certificateChain != null : !this$certificateChain.equals(other$certificateChain)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$notAfter = this.getNotAfter();
+        Object other$notAfter = other.getNotAfter();
+        if (this$notAfter == null ? other$notAfter != null : !this$notAfter.equals(other$notAfter)) {
+            return false;
+        }
+        Object this$notBefore = this.getNotBefore();
+        Object other$notBefore = other.getNotBefore();
+        if (this$notBefore == null ? other$notBefore != null : !this$notBefore.equals(other$notBefore)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PodCertificateRequestStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $beginRefreshAt = this.getBeginRefreshAt();
+        result = result * prime + ($beginRefreshAt == null ? 43 : $beginRefreshAt.hashCode());
+        Object $certificateChain = this.getCertificateChain();
+        result = result * prime + ($certificateChain == null ? 43 : $certificateChain.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $notAfter = this.getNotAfter();
+        result = result * prime + ($notAfter == null ? 43 : $notAfter.hashCode());
+        Object $notBefore = this.getNotBefore();
+        result = result * prime + ($notBefore == null ? 43 : $notBefore.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PodCertificateRequestStatus(" + "beginRefreshAt=" + this.getBeginRefreshAt() + ", certificateChain=" + this.getCertificateChain() + ", conditions=" + this.getConditions() + ", notAfter=" + this.getNotAfter() + ", notBefore=" + this.getNotBefore() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

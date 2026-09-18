@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HostUpdatePolicySpec defines the desired state of HostUpdatePolicy.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "firmwareSettings",
     "firmwareUpdates"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -139,6 +130,57 @@ public class HostUpdatePolicySpec implements Editable<HostUpdatePolicySpecBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HostUpdatePolicySpec)) {
+            return false;
+        }
+        HostUpdatePolicySpec other = (HostUpdatePolicySpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$firmwareSettings = this.getFirmwareSettings();
+        Object other$firmwareSettings = other.getFirmwareSettings();
+        if (this$firmwareSettings == null ? other$firmwareSettings != null : !this$firmwareSettings.equals(other$firmwareSettings)) {
+            return false;
+        }
+        Object this$firmwareUpdates = this.getFirmwareUpdates();
+        Object other$firmwareUpdates = other.getFirmwareUpdates();
+        if (this$firmwareUpdates == null ? other$firmwareUpdates != null : !this$firmwareUpdates.equals(other$firmwareUpdates)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HostUpdatePolicySpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $firmwareSettings = this.getFirmwareSettings();
+        result = result * prime + ($firmwareSettings == null ? 43 : $firmwareSettings.hashCode());
+        Object $firmwareUpdates = this.getFirmwareUpdates();
+        result = result * prime + ($firmwareUpdates == null ? 43 : $firmwareUpdates.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HostUpdatePolicySpec(" + "firmwareSettings=" + this.getFirmwareSettings() + ", firmwareUpdates=" + this.getFirmwareUpdates() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

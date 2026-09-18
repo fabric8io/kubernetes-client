@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NodeSpec describes the attributes that a node is created with.
@@ -33,12 +30,6 @@ import lombok.experimental.Accessors;
     "providerID",
     "taints",
     "unschedulable"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -237,6 +228,99 @@ public class NodeSpec implements Editable<NodeSpecBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NodeSpec)) {
+            return false;
+        }
+        NodeSpec other = (NodeSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$configSource = this.getConfigSource();
+        Object other$configSource = other.getConfigSource();
+        if (this$configSource == null ? other$configSource != null : !this$configSource.equals(other$configSource)) {
+            return false;
+        }
+        Object this$externalID = this.getExternalID();
+        Object other$externalID = other.getExternalID();
+        if (this$externalID == null ? other$externalID != null : !this$externalID.equals(other$externalID)) {
+            return false;
+        }
+        Object this$podCIDR = this.getPodCIDR();
+        Object other$podCIDR = other.getPodCIDR();
+        if (this$podCIDR == null ? other$podCIDR != null : !this$podCIDR.equals(other$podCIDR)) {
+            return false;
+        }
+        Object this$podCIDRs = this.getPodCIDRs();
+        Object other$podCIDRs = other.getPodCIDRs();
+        if (this$podCIDRs == null ? other$podCIDRs != null : !this$podCIDRs.equals(other$podCIDRs)) {
+            return false;
+        }
+        Object this$podPreemptionPolicy = this.getPodPreemptionPolicy();
+        Object other$podPreemptionPolicy = other.getPodPreemptionPolicy();
+        if (this$podPreemptionPolicy == null ? other$podPreemptionPolicy != null : !this$podPreemptionPolicy.equals(other$podPreemptionPolicy)) {
+            return false;
+        }
+        Object this$providerID = this.getProviderID();
+        Object other$providerID = other.getProviderID();
+        if (this$providerID == null ? other$providerID != null : !this$providerID.equals(other$providerID)) {
+            return false;
+        }
+        Object this$taints = this.getTaints();
+        Object other$taints = other.getTaints();
+        if (this$taints == null ? other$taints != null : !this$taints.equals(other$taints)) {
+            return false;
+        }
+        Object this$unschedulable = this.getUnschedulable();
+        Object other$unschedulable = other.getUnschedulable();
+        if (this$unschedulable == null ? other$unschedulable != null : !this$unschedulable.equals(other$unschedulable)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NodeSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $configSource = this.getConfigSource();
+        result = result * prime + ($configSource == null ? 43 : $configSource.hashCode());
+        Object $externalID = this.getExternalID();
+        result = result * prime + ($externalID == null ? 43 : $externalID.hashCode());
+        Object $podCIDR = this.getPodCIDR();
+        result = result * prime + ($podCIDR == null ? 43 : $podCIDR.hashCode());
+        Object $podCIDRs = this.getPodCIDRs();
+        result = result * prime + ($podCIDRs == null ? 43 : $podCIDRs.hashCode());
+        Object $podPreemptionPolicy = this.getPodPreemptionPolicy();
+        result = result * prime + ($podPreemptionPolicy == null ? 43 : $podPreemptionPolicy.hashCode());
+        Object $providerID = this.getProviderID();
+        result = result * prime + ($providerID == null ? 43 : $providerID.hashCode());
+        Object $taints = this.getTaints();
+        result = result * prime + ($taints == null ? 43 : $taints.hashCode());
+        Object $unschedulable = this.getUnschedulable();
+        result = result * prime + ($unschedulable == null ? 43 : $unschedulable.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NodeSpec(" + "configSource=" + this.getConfigSource() + ", externalID=" + this.getExternalID() + ", podCIDR=" + this.getPodCIDR() + ", podCIDRs=" + this.getPodCIDRs() + ", podPreemptionPolicy=" + this.getPodPreemptionPolicy() + ", providerID=" + this.getProviderID() + ", taints=" + this.getTaints() + ", unschedulable=" + this.getUnschedulable() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

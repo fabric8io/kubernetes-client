@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NamedCertificate specifies a certificate/key, and the names it should be served for
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "certFile",
     "keyFile",
     "names"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -163,6 +154,64 @@ public class NamedCertificate implements Editable<NamedCertificateBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NamedCertificate)) {
+            return false;
+        }
+        NamedCertificate other = (NamedCertificate) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$certFile = this.getCertFile();
+        Object other$certFile = other.getCertFile();
+        if (this$certFile == null ? other$certFile != null : !this$certFile.equals(other$certFile)) {
+            return false;
+        }
+        Object this$keyFile = this.getKeyFile();
+        Object other$keyFile = other.getKeyFile();
+        if (this$keyFile == null ? other$keyFile != null : !this$keyFile.equals(other$keyFile)) {
+            return false;
+        }
+        Object this$names = this.getNames();
+        Object other$names = other.getNames();
+        if (this$names == null ? other$names != null : !this$names.equals(other$names)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NamedCertificate;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $certFile = this.getCertFile();
+        result = result * prime + ($certFile == null ? 43 : $certFile.hashCode());
+        Object $keyFile = this.getKeyFile();
+        result = result * prime + ($keyFile == null ? 43 : $keyFile.hashCode());
+        Object $names = this.getNames();
+        result = result * prime + ($names == null ? 43 : $names.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NamedCertificate(" + "certFile=" + this.getCertFile() + ", keyFile=" + this.getKeyFile() + ", names=" + this.getNames() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

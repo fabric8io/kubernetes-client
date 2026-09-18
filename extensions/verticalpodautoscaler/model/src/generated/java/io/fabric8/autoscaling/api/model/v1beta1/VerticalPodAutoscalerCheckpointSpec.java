@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VerticalPodAutoscalerCheckpointSpec is the specification of the checkpoint object.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "containerName",
     "vpaObjectName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class VerticalPodAutoscalerCheckpointSpec implements Editable<VerticalPod
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VerticalPodAutoscalerCheckpointSpec)) {
+            return false;
+        }
+        VerticalPodAutoscalerCheckpointSpec other = (VerticalPodAutoscalerCheckpointSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$containerName = this.getContainerName();
+        Object other$containerName = other.getContainerName();
+        if (this$containerName == null ? other$containerName != null : !this$containerName.equals(other$containerName)) {
+            return false;
+        }
+        Object this$vpaObjectName = this.getVpaObjectName();
+        Object other$vpaObjectName = other.getVpaObjectName();
+        if (this$vpaObjectName == null ? other$vpaObjectName != null : !this$vpaObjectName.equals(other$vpaObjectName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VerticalPodAutoscalerCheckpointSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $containerName = this.getContainerName();
+        result = result * prime + ($containerName == null ? 43 : $containerName.hashCode());
+        Object $vpaObjectName = this.getVpaObjectName();
+        result = result * prime + ($vpaObjectName == null ? 43 : $vpaObjectName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VerticalPodAutoscalerCheckpointSpec(" + "containerName=" + this.getContainerName() + ", vpaObjectName=" + this.getVpaObjectName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

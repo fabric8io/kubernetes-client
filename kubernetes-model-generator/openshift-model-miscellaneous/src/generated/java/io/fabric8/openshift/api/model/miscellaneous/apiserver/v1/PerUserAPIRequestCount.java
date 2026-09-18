@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PerUserAPIRequestCount contains logs of a user's requests.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "requestCount",
     "userAgent",
     "username"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class PerUserAPIRequestCount implements Editable<PerUserAPIRequestCountBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PerUserAPIRequestCount)) {
+            return false;
+        }
+        PerUserAPIRequestCount other = (PerUserAPIRequestCount) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$byVerb = this.getByVerb();
+        Object other$byVerb = other.getByVerb();
+        if (this$byVerb == null ? other$byVerb != null : !this$byVerb.equals(other$byVerb)) {
+            return false;
+        }
+        Object this$requestCount = this.getRequestCount();
+        Object other$requestCount = other.getRequestCount();
+        if (this$requestCount == null ? other$requestCount != null : !this$requestCount.equals(other$requestCount)) {
+            return false;
+        }
+        Object this$userAgent = this.getUserAgent();
+        Object other$userAgent = other.getUserAgent();
+        if (this$userAgent == null ? other$userAgent != null : !this$userAgent.equals(other$userAgent)) {
+            return false;
+        }
+        Object this$username = this.getUsername();
+        Object other$username = other.getUsername();
+        if (this$username == null ? other$username != null : !this$username.equals(other$username)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PerUserAPIRequestCount;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $byVerb = this.getByVerb();
+        result = result * prime + ($byVerb == null ? 43 : $byVerb.hashCode());
+        Object $requestCount = this.getRequestCount();
+        result = result * prime + ($requestCount == null ? 43 : $requestCount.hashCode());
+        Object $userAgent = this.getUserAgent();
+        result = result * prime + ($userAgent == null ? 43 : $userAgent.hashCode());
+        Object $username = this.getUsername();
+        result = result * prime + ($username == null ? 43 : $username.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PerUserAPIRequestCount(" + "byVerb=" + this.getByVerb() + ", requestCount=" + this.getRequestCount() + ", userAgent=" + this.getUserAgent() + ", username=" + this.getUsername() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

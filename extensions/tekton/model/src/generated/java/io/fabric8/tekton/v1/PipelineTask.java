@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PipelineTask defines a task in a Pipeline, passing inputs from both Params and from the output of previous tasks.
@@ -56,12 +53,6 @@ import lombok.experimental.Accessors;
     "timeout",
     "when",
     "workspaces"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -411,6 +402,148 @@ public class PipelineTask implements Editable<PipelineTaskBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PipelineTask)) {
+            return false;
+        }
+        PipelineTask other = (PipelineTask) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$description = this.getDescription();
+        Object other$description = other.getDescription();
+        if (this$description == null ? other$description != null : !this$description.equals(other$description)) {
+            return false;
+        }
+        Object this$displayName = this.getDisplayName();
+        Object other$displayName = other.getDisplayName();
+        if (this$displayName == null ? other$displayName != null : !this$displayName.equals(other$displayName)) {
+            return false;
+        }
+        Object this$matrix = this.getMatrix();
+        Object other$matrix = other.getMatrix();
+        if (this$matrix == null ? other$matrix != null : !this$matrix.equals(other$matrix)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$onError = this.getOnError();
+        Object other$onError = other.getOnError();
+        if (this$onError == null ? other$onError != null : !this$onError.equals(other$onError)) {
+            return false;
+        }
+        Object this$params = this.getParams();
+        Object other$params = other.getParams();
+        if (this$params == null ? other$params != null : !this$params.equals(other$params)) {
+            return false;
+        }
+        Object this$pipelineRef = this.getPipelineRef();
+        Object other$pipelineRef = other.getPipelineRef();
+        if (this$pipelineRef == null ? other$pipelineRef != null : !this$pipelineRef.equals(other$pipelineRef)) {
+            return false;
+        }
+        Object this$pipelineSpec = this.getPipelineSpec();
+        Object other$pipelineSpec = other.getPipelineSpec();
+        if (this$pipelineSpec == null ? other$pipelineSpec != null : !this$pipelineSpec.equals(other$pipelineSpec)) {
+            return false;
+        }
+        Object this$retries = this.getRetries();
+        Object other$retries = other.getRetries();
+        if (this$retries == null ? other$retries != null : !this$retries.equals(other$retries)) {
+            return false;
+        }
+        Object this$runAfter = this.getRunAfter();
+        Object other$runAfter = other.getRunAfter();
+        if (this$runAfter == null ? other$runAfter != null : !this$runAfter.equals(other$runAfter)) {
+            return false;
+        }
+        Object this$taskRef = this.getTaskRef();
+        Object other$taskRef = other.getTaskRef();
+        if (this$taskRef == null ? other$taskRef != null : !this$taskRef.equals(other$taskRef)) {
+            return false;
+        }
+        Object this$taskSpec = this.getTaskSpec();
+        Object other$taskSpec = other.getTaskSpec();
+        if (this$taskSpec == null ? other$taskSpec != null : !this$taskSpec.equals(other$taskSpec)) {
+            return false;
+        }
+        Object this$timeout = this.getTimeout();
+        Object other$timeout = other.getTimeout();
+        if (this$timeout == null ? other$timeout != null : !this$timeout.equals(other$timeout)) {
+            return false;
+        }
+        Object this$when = this.getWhen();
+        Object other$when = other.getWhen();
+        if (this$when == null ? other$when != null : !this$when.equals(other$when)) {
+            return false;
+        }
+        Object this$workspaces = this.getWorkspaces();
+        Object other$workspaces = other.getWorkspaces();
+        if (this$workspaces == null ? other$workspaces != null : !this$workspaces.equals(other$workspaces)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PipelineTask;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $description = this.getDescription();
+        result = result * prime + ($description == null ? 43 : $description.hashCode());
+        Object $displayName = this.getDisplayName();
+        result = result * prime + ($displayName == null ? 43 : $displayName.hashCode());
+        Object $matrix = this.getMatrix();
+        result = result * prime + ($matrix == null ? 43 : $matrix.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $onError = this.getOnError();
+        result = result * prime + ($onError == null ? 43 : $onError.hashCode());
+        Object $params = this.getParams();
+        result = result * prime + ($params == null ? 43 : $params.hashCode());
+        Object $pipelineRef = this.getPipelineRef();
+        result = result * prime + ($pipelineRef == null ? 43 : $pipelineRef.hashCode());
+        Object $pipelineSpec = this.getPipelineSpec();
+        result = result * prime + ($pipelineSpec == null ? 43 : $pipelineSpec.hashCode());
+        Object $retries = this.getRetries();
+        result = result * prime + ($retries == null ? 43 : $retries.hashCode());
+        Object $runAfter = this.getRunAfter();
+        result = result * prime + ($runAfter == null ? 43 : $runAfter.hashCode());
+        Object $taskRef = this.getTaskRef();
+        result = result * prime + ($taskRef == null ? 43 : $taskRef.hashCode());
+        Object $taskSpec = this.getTaskSpec();
+        result = result * prime + ($taskSpec == null ? 43 : $taskSpec.hashCode());
+        Object $timeout = this.getTimeout();
+        result = result * prime + ($timeout == null ? 43 : $timeout.hashCode());
+        Object $when = this.getWhen();
+        result = result * prime + ($when == null ? 43 : $when.hashCode());
+        Object $workspaces = this.getWorkspaces();
+        result = result * prime + ($workspaces == null ? 43 : $workspaces.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PipelineTask(" + "description=" + this.getDescription() + ", displayName=" + this.getDisplayName() + ", matrix=" + this.getMatrix() + ", name=" + this.getName() + ", onError=" + this.getOnError() + ", params=" + this.getParams() + ", pipelineRef=" + this.getPipelineRef() + ", pipelineSpec=" + this.getPipelineSpec() + ", retries=" + this.getRetries() + ", runAfter=" + this.getRunAfter() + ", taskRef=" + this.getTaskRef() + ", taskSpec=" + this.getTaskSpec() + ", timeout=" + this.getTimeout() + ", when=" + this.getWhen() + ", workspaces=" + this.getWorkspaces() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

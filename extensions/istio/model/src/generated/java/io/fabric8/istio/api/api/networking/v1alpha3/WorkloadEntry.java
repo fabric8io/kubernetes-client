@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * WorkloadEntry enables specifying the properties of a single non-Kubernetes workload such a VM or a bare metal services that can be referred to by service entries.<br><p> <br><p> &lt;!-- crd generation tags representing the server time when this object was created. It is not guaranteed to be set in happens-before order across separate operations. Clients may not set this value. It is represented in RFC3339 form and is in UTC. Populated by the system. Read-only. Null for lists. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata" --&gt;<br><p> <br><p> &lt;!-- go code generation tags --&gt;
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "ports",
     "serviceAccount",
     "weight"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -249,6 +240,92 @@ public class WorkloadEntry implements Editable<WorkloadEntryBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof WorkloadEntry)) {
+            return false;
+        }
+        WorkloadEntry other = (WorkloadEntry) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$address = this.getAddress();
+        Object other$address = other.getAddress();
+        if (this$address == null ? other$address != null : !this$address.equals(other$address)) {
+            return false;
+        }
+        Object this$labels = this.getLabels();
+        Object other$labels = other.getLabels();
+        if (this$labels == null ? other$labels != null : !this$labels.equals(other$labels)) {
+            return false;
+        }
+        Object this$locality = this.getLocality();
+        Object other$locality = other.getLocality();
+        if (this$locality == null ? other$locality != null : !this$locality.equals(other$locality)) {
+            return false;
+        }
+        Object this$network = this.getNetwork();
+        Object other$network = other.getNetwork();
+        if (this$network == null ? other$network != null : !this$network.equals(other$network)) {
+            return false;
+        }
+        Object this$ports = this.getPorts();
+        Object other$ports = other.getPorts();
+        if (this$ports == null ? other$ports != null : !this$ports.equals(other$ports)) {
+            return false;
+        }
+        Object this$serviceAccount = this.getServiceAccount();
+        Object other$serviceAccount = other.getServiceAccount();
+        if (this$serviceAccount == null ? other$serviceAccount != null : !this$serviceAccount.equals(other$serviceAccount)) {
+            return false;
+        }
+        Object this$weight = this.getWeight();
+        Object other$weight = other.getWeight();
+        if (this$weight == null ? other$weight != null : !this$weight.equals(other$weight)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof WorkloadEntry;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $address = this.getAddress();
+        result = result * prime + ($address == null ? 43 : $address.hashCode());
+        Object $labels = this.getLabels();
+        result = result * prime + ($labels == null ? 43 : $labels.hashCode());
+        Object $locality = this.getLocality();
+        result = result * prime + ($locality == null ? 43 : $locality.hashCode());
+        Object $network = this.getNetwork();
+        result = result * prime + ($network == null ? 43 : $network.hashCode());
+        Object $ports = this.getPorts();
+        result = result * prime + ($ports == null ? 43 : $ports.hashCode());
+        Object $serviceAccount = this.getServiceAccount();
+        result = result * prime + ($serviceAccount == null ? 43 : $serviceAccount.hashCode());
+        Object $weight = this.getWeight();
+        result = result * prime + ($weight == null ? 43 : $weight.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WorkloadEntry(" + "address=" + this.getAddress() + ", labels=" + this.getLabels() + ", locality=" + this.getLocality() + ", network=" + this.getNetwork() + ", ports=" + this.getPorts() + ", serviceAccount=" + this.getServiceAccount() + ", weight=" + this.getWeight() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

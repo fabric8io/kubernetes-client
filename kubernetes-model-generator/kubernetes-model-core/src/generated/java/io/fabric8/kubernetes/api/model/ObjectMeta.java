@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ObjectMeta is metadata that all persisted resources must have, which includes all objects users must create.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "resourceVersion",
     "selfLink",
     "uid"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -383,6 +374,148 @@ public class ObjectMeta implements Editable<ObjectMetaBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ObjectMeta)) {
+            return false;
+        }
+        ObjectMeta other = (ObjectMeta) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$annotations = this.getAnnotations();
+        Object other$annotations = other.getAnnotations();
+        if (this$annotations == null ? other$annotations != null : !this$annotations.equals(other$annotations)) {
+            return false;
+        }
+        Object this$creationTimestamp = this.getCreationTimestamp();
+        Object other$creationTimestamp = other.getCreationTimestamp();
+        if (this$creationTimestamp == null ? other$creationTimestamp != null : !this$creationTimestamp.equals(other$creationTimestamp)) {
+            return false;
+        }
+        Object this$deletionGracePeriodSeconds = this.getDeletionGracePeriodSeconds();
+        Object other$deletionGracePeriodSeconds = other.getDeletionGracePeriodSeconds();
+        if (this$deletionGracePeriodSeconds == null ? other$deletionGracePeriodSeconds != null : !this$deletionGracePeriodSeconds.equals(other$deletionGracePeriodSeconds)) {
+            return false;
+        }
+        Object this$deletionTimestamp = this.getDeletionTimestamp();
+        Object other$deletionTimestamp = other.getDeletionTimestamp();
+        if (this$deletionTimestamp == null ? other$deletionTimestamp != null : !this$deletionTimestamp.equals(other$deletionTimestamp)) {
+            return false;
+        }
+        Object this$finalizers = this.getFinalizers();
+        Object other$finalizers = other.getFinalizers();
+        if (this$finalizers == null ? other$finalizers != null : !this$finalizers.equals(other$finalizers)) {
+            return false;
+        }
+        Object this$generateName = this.getGenerateName();
+        Object other$generateName = other.getGenerateName();
+        if (this$generateName == null ? other$generateName != null : !this$generateName.equals(other$generateName)) {
+            return false;
+        }
+        Object this$generation = this.getGeneration();
+        Object other$generation = other.getGeneration();
+        if (this$generation == null ? other$generation != null : !this$generation.equals(other$generation)) {
+            return false;
+        }
+        Object this$labels = this.getLabels();
+        Object other$labels = other.getLabels();
+        if (this$labels == null ? other$labels != null : !this$labels.equals(other$labels)) {
+            return false;
+        }
+        Object this$managedFields = this.getManagedFields();
+        Object other$managedFields = other.getManagedFields();
+        if (this$managedFields == null ? other$managedFields != null : !this$managedFields.equals(other$managedFields)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$namespace = this.getNamespace();
+        Object other$namespace = other.getNamespace();
+        if (this$namespace == null ? other$namespace != null : !this$namespace.equals(other$namespace)) {
+            return false;
+        }
+        Object this$ownerReferences = this.getOwnerReferences();
+        Object other$ownerReferences = other.getOwnerReferences();
+        if (this$ownerReferences == null ? other$ownerReferences != null : !this$ownerReferences.equals(other$ownerReferences)) {
+            return false;
+        }
+        Object this$resourceVersion = this.getResourceVersion();
+        Object other$resourceVersion = other.getResourceVersion();
+        if (this$resourceVersion == null ? other$resourceVersion != null : !this$resourceVersion.equals(other$resourceVersion)) {
+            return false;
+        }
+        Object this$selfLink = this.getSelfLink();
+        Object other$selfLink = other.getSelfLink();
+        if (this$selfLink == null ? other$selfLink != null : !this$selfLink.equals(other$selfLink)) {
+            return false;
+        }
+        Object this$uid = this.getUid();
+        Object other$uid = other.getUid();
+        if (this$uid == null ? other$uid != null : !this$uid.equals(other$uid)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ObjectMeta;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $annotations = this.getAnnotations();
+        result = result * prime + ($annotations == null ? 43 : $annotations.hashCode());
+        Object $creationTimestamp = this.getCreationTimestamp();
+        result = result * prime + ($creationTimestamp == null ? 43 : $creationTimestamp.hashCode());
+        Object $deletionGracePeriodSeconds = this.getDeletionGracePeriodSeconds();
+        result = result * prime + ($deletionGracePeriodSeconds == null ? 43 : $deletionGracePeriodSeconds.hashCode());
+        Object $deletionTimestamp = this.getDeletionTimestamp();
+        result = result * prime + ($deletionTimestamp == null ? 43 : $deletionTimestamp.hashCode());
+        Object $finalizers = this.getFinalizers();
+        result = result * prime + ($finalizers == null ? 43 : $finalizers.hashCode());
+        Object $generateName = this.getGenerateName();
+        result = result * prime + ($generateName == null ? 43 : $generateName.hashCode());
+        Object $generation = this.getGeneration();
+        result = result * prime + ($generation == null ? 43 : $generation.hashCode());
+        Object $labels = this.getLabels();
+        result = result * prime + ($labels == null ? 43 : $labels.hashCode());
+        Object $managedFields = this.getManagedFields();
+        result = result * prime + ($managedFields == null ? 43 : $managedFields.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $namespace = this.getNamespace();
+        result = result * prime + ($namespace == null ? 43 : $namespace.hashCode());
+        Object $ownerReferences = this.getOwnerReferences();
+        result = result * prime + ($ownerReferences == null ? 43 : $ownerReferences.hashCode());
+        Object $resourceVersion = this.getResourceVersion();
+        result = result * prime + ($resourceVersion == null ? 43 : $resourceVersion.hashCode());
+        Object $selfLink = this.getSelfLink();
+        result = result * prime + ($selfLink == null ? 43 : $selfLink.hashCode());
+        Object $uid = this.getUid();
+        result = result * prime + ($uid == null ? 43 : $uid.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ObjectMeta(" + "annotations=" + this.getAnnotations() + ", creationTimestamp=" + this.getCreationTimestamp() + ", deletionGracePeriodSeconds=" + this.getDeletionGracePeriodSeconds() + ", deletionTimestamp=" + this.getDeletionTimestamp() + ", finalizers=" + this.getFinalizers() + ", generateName=" + this.getGenerateName() + ", generation=" + this.getGeneration() + ", labels=" + this.getLabels() + ", managedFields=" + this.getManagedFields() + ", name=" + this.getName() + ", namespace=" + this.getNamespace() + ", ownerReferences=" + this.getOwnerReferences() + ", resourceVersion=" + this.getResourceVersion() + ", selfLink=" + this.getSelfLink() + ", uid=" + this.getUid() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

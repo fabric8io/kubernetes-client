@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HostSelector specifies matching criteria for labels on BareMetalHosts. This is used to limit the set of BareMetalHost objects considered for claiming for a Machine.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "inNamespace",
     "matchExpressions",
     "matchLabels"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -165,6 +156,64 @@ public class HostSelector implements Editable<HostSelectorBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HostSelector)) {
+            return false;
+        }
+        HostSelector other = (HostSelector) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$inNamespace = this.getInNamespace();
+        Object other$inNamespace = other.getInNamespace();
+        if (this$inNamespace == null ? other$inNamespace != null : !this$inNamespace.equals(other$inNamespace)) {
+            return false;
+        }
+        Object this$matchExpressions = this.getMatchExpressions();
+        Object other$matchExpressions = other.getMatchExpressions();
+        if (this$matchExpressions == null ? other$matchExpressions != null : !this$matchExpressions.equals(other$matchExpressions)) {
+            return false;
+        }
+        Object this$matchLabels = this.getMatchLabels();
+        Object other$matchLabels = other.getMatchLabels();
+        if (this$matchLabels == null ? other$matchLabels != null : !this$matchLabels.equals(other$matchLabels)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HostSelector;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $inNamespace = this.getInNamespace();
+        result = result * prime + ($inNamespace == null ? 43 : $inNamespace.hashCode());
+        Object $matchExpressions = this.getMatchExpressions();
+        result = result * prime + ($matchExpressions == null ? 43 : $matchExpressions.hashCode());
+        Object $matchLabels = this.getMatchLabels();
+        result = result * prime + ($matchLabels == null ? 43 : $matchLabels.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HostSelector(" + "inNamespace=" + this.getInNamespace() + ", matchExpressions=" + this.getMatchExpressions() + ", matchLabels=" + this.getMatchLabels() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

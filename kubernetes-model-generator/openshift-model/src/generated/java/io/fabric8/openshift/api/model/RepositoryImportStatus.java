@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * RepositoryImportStatus describes the result of an image repository import
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "additionalTags",
     "images",
     "status"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -166,6 +157,64 @@ public class RepositoryImportStatus implements Editable<RepositoryImportStatusBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RepositoryImportStatus)) {
+            return false;
+        }
+        RepositoryImportStatus other = (RepositoryImportStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$additionalTags = this.getAdditionalTags();
+        Object other$additionalTags = other.getAdditionalTags();
+        if (this$additionalTags == null ? other$additionalTags != null : !this$additionalTags.equals(other$additionalTags)) {
+            return false;
+        }
+        Object this$images = this.getImages();
+        Object other$images = other.getImages();
+        if (this$images == null ? other$images != null : !this$images.equals(other$images)) {
+            return false;
+        }
+        Object this$status = this.getStatus();
+        Object other$status = other.getStatus();
+        if (this$status == null ? other$status != null : !this$status.equals(other$status)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RepositoryImportStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $additionalTags = this.getAdditionalTags();
+        result = result * prime + ($additionalTags == null ? 43 : $additionalTags.hashCode());
+        Object $images = this.getImages();
+        result = result * prime + ($images == null ? 43 : $images.hashCode());
+        Object $status = this.getStatus();
+        result = result * prime + ($status == null ? 43 : $status.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RepositoryImportStatus(" + "additionalTags=" + this.getAdditionalTags() + ", images=" + this.getImages() + ", status=" + this.getStatus() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

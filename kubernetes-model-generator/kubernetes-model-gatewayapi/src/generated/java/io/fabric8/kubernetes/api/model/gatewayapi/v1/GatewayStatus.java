@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * GatewayStatus defines the observed state of Gateway.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "attachedListenerSets",
     "conditions",
     "listeners"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -187,6 +178,71 @@ public class GatewayStatus implements Editable<GatewayStatusBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GatewayStatus)) {
+            return false;
+        }
+        GatewayStatus other = (GatewayStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$addresses = this.getAddresses();
+        Object other$addresses = other.getAddresses();
+        if (this$addresses == null ? other$addresses != null : !this$addresses.equals(other$addresses)) {
+            return false;
+        }
+        Object this$attachedListenerSets = this.getAttachedListenerSets();
+        Object other$attachedListenerSets = other.getAttachedListenerSets();
+        if (this$attachedListenerSets == null ? other$attachedListenerSets != null : !this$attachedListenerSets.equals(other$attachedListenerSets)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$listeners = this.getListeners();
+        Object other$listeners = other.getListeners();
+        if (this$listeners == null ? other$listeners != null : !this$listeners.equals(other$listeners)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GatewayStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $addresses = this.getAddresses();
+        result = result * prime + ($addresses == null ? 43 : $addresses.hashCode());
+        Object $attachedListenerSets = this.getAttachedListenerSets();
+        result = result * prime + ($attachedListenerSets == null ? 43 : $attachedListenerSets.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $listeners = this.getListeners();
+        result = result * prime + ($listeners == null ? 43 : $listeners.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GatewayStatus(" + "addresses=" + this.getAddresses() + ", attachedListenerSets=" + this.getAttachedListenerSets() + ", conditions=" + this.getConditions() + ", listeners=" + this.getListeners() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OperationHistory holds information about operations performed on a host.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "inspect",
     "provision",
     "register"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -179,6 +170,71 @@ public class OperationHistory implements Editable<OperationHistoryBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OperationHistory)) {
+            return false;
+        }
+        OperationHistory other = (OperationHistory) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$deprovision = this.getDeprovision();
+        Object other$deprovision = other.getDeprovision();
+        if (this$deprovision == null ? other$deprovision != null : !this$deprovision.equals(other$deprovision)) {
+            return false;
+        }
+        Object this$inspect = this.getInspect();
+        Object other$inspect = other.getInspect();
+        if (this$inspect == null ? other$inspect != null : !this$inspect.equals(other$inspect)) {
+            return false;
+        }
+        Object this$provision = this.getProvision();
+        Object other$provision = other.getProvision();
+        if (this$provision == null ? other$provision != null : !this$provision.equals(other$provision)) {
+            return false;
+        }
+        Object this$register = this.getRegister();
+        Object other$register = other.getRegister();
+        if (this$register == null ? other$register != null : !this$register.equals(other$register)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OperationHistory;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $deprovision = this.getDeprovision();
+        result = result * prime + ($deprovision == null ? 43 : $deprovision.hashCode());
+        Object $inspect = this.getInspect();
+        result = result * prime + ($inspect == null ? 43 : $inspect.hashCode());
+        Object $provision = this.getProvision();
+        result = result * prime + ($provision == null ? 43 : $provision.hashCode());
+        Object $register = this.getRegister();
+        result = result * prime + ($register == null ? 43 : $register.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OperationHistory(" + "deprovision=" + this.getDeprovision() + ", inspect=" + this.getInspect() + ", provision=" + this.getProvision() + ", register=" + this.getRegister() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

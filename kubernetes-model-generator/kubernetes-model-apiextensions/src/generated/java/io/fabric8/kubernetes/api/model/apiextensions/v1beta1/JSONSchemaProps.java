@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -80,12 +77,6 @@ import lombok.experimental.Accessors;
     "x-kubernetes-map-type",
     "x-kubernetes-preserve-unknown-fields",
     "x-kubernetes-validations"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -721,5 +712,343 @@ public class JSONSchemaProps implements Editable<JSONSchemaPropsBuilder>, Kubern
         return edit();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof JSONSchemaProps)) {
+            return false;
+        }
+        JSONSchemaProps other = (JSONSchemaProps) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$$ref = this.get$ref();
+        Object other$$ref = other.get$ref();
+        if (this$$ref == null ? other$$ref != null : !this$$ref.equals(other$$ref)) {
+            return false;
+        }
+        Object this$$schema = this.get$schema();
+        Object other$$schema = other.get$schema();
+        if (this$$schema == null ? other$$schema != null : !this$$schema.equals(other$$schema)) {
+            return false;
+        }
+        Object this$additionalItems = this.getAdditionalItems();
+        Object other$additionalItems = other.getAdditionalItems();
+        if (this$additionalItems == null ? other$additionalItems != null : !this$additionalItems.equals(other$additionalItems)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        Object this$allOf = this.getAllOf();
+        Object other$allOf = other.getAllOf();
+        if (this$allOf == null ? other$allOf != null : !this$allOf.equals(other$allOf)) {
+            return false;
+        }
+        Object this$anyOf = this.getAnyOf();
+        Object other$anyOf = other.getAnyOf();
+        if (this$anyOf == null ? other$anyOf != null : !this$anyOf.equals(other$anyOf)) {
+            return false;
+        }
+        Object this$_default = this.getDefault();
+        Object other$_default = other.getDefault();
+        if (this$_default == null ? other$_default != null : !this$_default.equals(other$_default)) {
+            return false;
+        }
+        Object this$definitions = this.getDefinitions();
+        Object other$definitions = other.getDefinitions();
+        if (this$definitions == null ? other$definitions != null : !this$definitions.equals(other$definitions)) {
+            return false;
+        }
+        Object this$dependencies = this.getDependencies();
+        Object other$dependencies = other.getDependencies();
+        if (this$dependencies == null ? other$dependencies != null : !this$dependencies.equals(other$dependencies)) {
+            return false;
+        }
+        Object this$description = this.getDescription();
+        Object other$description = other.getDescription();
+        if (this$description == null ? other$description != null : !this$description.equals(other$description)) {
+            return false;
+        }
+        Object this$_enum = this.getEnum();
+        Object other$_enum = other.getEnum();
+        if (this$_enum == null ? other$_enum != null : !this$_enum.equals(other$_enum)) {
+            return false;
+        }
+        Object this$example = this.getExample();
+        Object other$example = other.getExample();
+        if (this$example == null ? other$example != null : !this$example.equals(other$example)) {
+            return false;
+        }
+        Object this$exclusiveMaximum = this.getExclusiveMaximum();
+        Object other$exclusiveMaximum = other.getExclusiveMaximum();
+        if (this$exclusiveMaximum == null ? other$exclusiveMaximum != null : !this$exclusiveMaximum.equals(other$exclusiveMaximum)) {
+            return false;
+        }
+        Object this$exclusiveMinimum = this.getExclusiveMinimum();
+        Object other$exclusiveMinimum = other.getExclusiveMinimum();
+        if (this$exclusiveMinimum == null ? other$exclusiveMinimum != null : !this$exclusiveMinimum.equals(other$exclusiveMinimum)) {
+            return false;
+        }
+        Object this$externalDocs = this.getExternalDocs();
+        Object other$externalDocs = other.getExternalDocs();
+        if (this$externalDocs == null ? other$externalDocs != null : !this$externalDocs.equals(other$externalDocs)) {
+            return false;
+        }
+        Object this$format = this.getFormat();
+        Object other$format = other.getFormat();
+        if (this$format == null ? other$format != null : !this$format.equals(other$format)) {
+            return false;
+        }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {
+            return false;
+        }
+        Object this$items = this.getItems();
+        Object other$items = other.getItems();
+        if (this$items == null ? other$items != null : !this$items.equals(other$items)) {
+            return false;
+        }
+        Object this$maxItems = this.getMaxItems();
+        Object other$maxItems = other.getMaxItems();
+        if (this$maxItems == null ? other$maxItems != null : !this$maxItems.equals(other$maxItems)) {
+            return false;
+        }
+        Object this$maxLength = this.getMaxLength();
+        Object other$maxLength = other.getMaxLength();
+        if (this$maxLength == null ? other$maxLength != null : !this$maxLength.equals(other$maxLength)) {
+            return false;
+        }
+        Object this$maxProperties = this.getMaxProperties();
+        Object other$maxProperties = other.getMaxProperties();
+        if (this$maxProperties == null ? other$maxProperties != null : !this$maxProperties.equals(other$maxProperties)) {
+            return false;
+        }
+        Object this$maximum = this.getMaximum();
+        Object other$maximum = other.getMaximum();
+        if (this$maximum == null ? other$maximum != null : !this$maximum.equals(other$maximum)) {
+            return false;
+        }
+        Object this$minItems = this.getMinItems();
+        Object other$minItems = other.getMinItems();
+        if (this$minItems == null ? other$minItems != null : !this$minItems.equals(other$minItems)) {
+            return false;
+        }
+        Object this$minLength = this.getMinLength();
+        Object other$minLength = other.getMinLength();
+        if (this$minLength == null ? other$minLength != null : !this$minLength.equals(other$minLength)) {
+            return false;
+        }
+        Object this$minProperties = this.getMinProperties();
+        Object other$minProperties = other.getMinProperties();
+        if (this$minProperties == null ? other$minProperties != null : !this$minProperties.equals(other$minProperties)) {
+            return false;
+        }
+        Object this$minimum = this.getMinimum();
+        Object other$minimum = other.getMinimum();
+        if (this$minimum == null ? other$minimum != null : !this$minimum.equals(other$minimum)) {
+            return false;
+        }
+        Object this$multipleOf = this.getMultipleOf();
+        Object other$multipleOf = other.getMultipleOf();
+        if (this$multipleOf == null ? other$multipleOf != null : !this$multipleOf.equals(other$multipleOf)) {
+            return false;
+        }
+        Object this$not = this.getNot();
+        Object other$not = other.getNot();
+        if (this$not == null ? other$not != null : !this$not.equals(other$not)) {
+            return false;
+        }
+        Object this$nullable = this.getNullable();
+        Object other$nullable = other.getNullable();
+        if (this$nullable == null ? other$nullable != null : !this$nullable.equals(other$nullable)) {
+            return false;
+        }
+        Object this$oneOf = this.getOneOf();
+        Object other$oneOf = other.getOneOf();
+        if (this$oneOf == null ? other$oneOf != null : !this$oneOf.equals(other$oneOf)) {
+            return false;
+        }
+        Object this$pattern = this.getPattern();
+        Object other$pattern = other.getPattern();
+        if (this$pattern == null ? other$pattern != null : !this$pattern.equals(other$pattern)) {
+            return false;
+        }
+        Object this$patternProperties = this.getPatternProperties();
+        Object other$patternProperties = other.getPatternProperties();
+        if (this$patternProperties == null ? other$patternProperties != null : !this$patternProperties.equals(other$patternProperties)) {
+            return false;
+        }
+        Object this$properties = this.getProperties();
+        Object other$properties = other.getProperties();
+        if (this$properties == null ? other$properties != null : !this$properties.equals(other$properties)) {
+            return false;
+        }
+        Object this$required = this.getRequired();
+        Object other$required = other.getRequired();
+        if (this$required == null ? other$required != null : !this$required.equals(other$required)) {
+            return false;
+        }
+        Object this$title = this.getTitle();
+        Object other$title = other.getTitle();
+        if (this$title == null ? other$title != null : !this$title.equals(other$title)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$uniqueItems = this.getUniqueItems();
+        Object other$uniqueItems = other.getUniqueItems();
+        if (this$uniqueItems == null ? other$uniqueItems != null : !this$uniqueItems.equals(other$uniqueItems)) {
+            return false;
+        }
+        Object this$xKubernetesEmbeddedResource = this.getXKubernetesEmbeddedResource();
+        Object other$xKubernetesEmbeddedResource = other.getXKubernetesEmbeddedResource();
+        if (this$xKubernetesEmbeddedResource == null ? other$xKubernetesEmbeddedResource != null : !this$xKubernetesEmbeddedResource.equals(other$xKubernetesEmbeddedResource)) {
+            return false;
+        }
+        Object this$xKubernetesIntOrString = this.getXKubernetesIntOrString();
+        Object other$xKubernetesIntOrString = other.getXKubernetesIntOrString();
+        if (this$xKubernetesIntOrString == null ? other$xKubernetesIntOrString != null : !this$xKubernetesIntOrString.equals(other$xKubernetesIntOrString)) {
+            return false;
+        }
+        Object this$xKubernetesListMapKeys = this.getXKubernetesListMapKeys();
+        Object other$xKubernetesListMapKeys = other.getXKubernetesListMapKeys();
+        if (this$xKubernetesListMapKeys == null ? other$xKubernetesListMapKeys != null : !this$xKubernetesListMapKeys.equals(other$xKubernetesListMapKeys)) {
+            return false;
+        }
+        Object this$xKubernetesListType = this.getXKubernetesListType();
+        Object other$xKubernetesListType = other.getXKubernetesListType();
+        if (this$xKubernetesListType == null ? other$xKubernetesListType != null : !this$xKubernetesListType.equals(other$xKubernetesListType)) {
+            return false;
+        }
+        Object this$xKubernetesMapType = this.getXKubernetesMapType();
+        Object other$xKubernetesMapType = other.getXKubernetesMapType();
+        if (this$xKubernetesMapType == null ? other$xKubernetesMapType != null : !this$xKubernetesMapType.equals(other$xKubernetesMapType)) {
+            return false;
+        }
+        Object this$xKubernetesPreserveUnknownFields = this.getXKubernetesPreserveUnknownFields();
+        Object other$xKubernetesPreserveUnknownFields = other.getXKubernetesPreserveUnknownFields();
+        if (this$xKubernetesPreserveUnknownFields == null ? other$xKubernetesPreserveUnknownFields != null : !this$xKubernetesPreserveUnknownFields.equals(other$xKubernetesPreserveUnknownFields)) {
+            return false;
+        }
+        Object this$xKubernetesValidations = this.getXKubernetesValidations();
+        Object other$xKubernetesValidations = other.getXKubernetesValidations();
+        if (this$xKubernetesValidations == null ? other$xKubernetesValidations != null : !this$xKubernetesValidations.equals(other$xKubernetesValidations)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof JSONSchemaProps;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $$ref = this.get$ref();
+        result = result * prime + ($$ref == null ? 43 : $$ref.hashCode());
+        Object $$schema = this.get$schema();
+        result = result * prime + ($$schema == null ? 43 : $$schema.hashCode());
+        Object $additionalItems = this.getAdditionalItems();
+        result = result * prime + ($additionalItems == null ? 43 : $additionalItems.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        Object $allOf = this.getAllOf();
+        result = result * prime + ($allOf == null ? 43 : $allOf.hashCode());
+        Object $anyOf = this.getAnyOf();
+        result = result * prime + ($anyOf == null ? 43 : $anyOf.hashCode());
+        Object $_default = this.getDefault();
+        result = result * prime + ($_default == null ? 43 : $_default.hashCode());
+        Object $definitions = this.getDefinitions();
+        result = result * prime + ($definitions == null ? 43 : $definitions.hashCode());
+        Object $dependencies = this.getDependencies();
+        result = result * prime + ($dependencies == null ? 43 : $dependencies.hashCode());
+        Object $description = this.getDescription();
+        result = result * prime + ($description == null ? 43 : $description.hashCode());
+        Object $_enum = this.getEnum();
+        result = result * prime + ($_enum == null ? 43 : $_enum.hashCode());
+        Object $example = this.getExample();
+        result = result * prime + ($example == null ? 43 : $example.hashCode());
+        Object $exclusiveMaximum = this.getExclusiveMaximum();
+        result = result * prime + ($exclusiveMaximum == null ? 43 : $exclusiveMaximum.hashCode());
+        Object $exclusiveMinimum = this.getExclusiveMinimum();
+        result = result * prime + ($exclusiveMinimum == null ? 43 : $exclusiveMinimum.hashCode());
+        Object $externalDocs = this.getExternalDocs();
+        result = result * prime + ($externalDocs == null ? 43 : $externalDocs.hashCode());
+        Object $format = this.getFormat();
+        result = result * prime + ($format == null ? 43 : $format.hashCode());
+        Object $id = this.getId();
+        result = result * prime + ($id == null ? 43 : $id.hashCode());
+        Object $items = this.getItems();
+        result = result * prime + ($items == null ? 43 : $items.hashCode());
+        Object $maxItems = this.getMaxItems();
+        result = result * prime + ($maxItems == null ? 43 : $maxItems.hashCode());
+        Object $maxLength = this.getMaxLength();
+        result = result * prime + ($maxLength == null ? 43 : $maxLength.hashCode());
+        Object $maxProperties = this.getMaxProperties();
+        result = result * prime + ($maxProperties == null ? 43 : $maxProperties.hashCode());
+        Object $maximum = this.getMaximum();
+        result = result * prime + ($maximum == null ? 43 : $maximum.hashCode());
+        Object $minItems = this.getMinItems();
+        result = result * prime + ($minItems == null ? 43 : $minItems.hashCode());
+        Object $minLength = this.getMinLength();
+        result = result * prime + ($minLength == null ? 43 : $minLength.hashCode());
+        Object $minProperties = this.getMinProperties();
+        result = result * prime + ($minProperties == null ? 43 : $minProperties.hashCode());
+        Object $minimum = this.getMinimum();
+        result = result * prime + ($minimum == null ? 43 : $minimum.hashCode());
+        Object $multipleOf = this.getMultipleOf();
+        result = result * prime + ($multipleOf == null ? 43 : $multipleOf.hashCode());
+        Object $not = this.getNot();
+        result = result * prime + ($not == null ? 43 : $not.hashCode());
+        Object $nullable = this.getNullable();
+        result = result * prime + ($nullable == null ? 43 : $nullable.hashCode());
+        Object $oneOf = this.getOneOf();
+        result = result * prime + ($oneOf == null ? 43 : $oneOf.hashCode());
+        Object $pattern = this.getPattern();
+        result = result * prime + ($pattern == null ? 43 : $pattern.hashCode());
+        Object $patternProperties = this.getPatternProperties();
+        result = result * prime + ($patternProperties == null ? 43 : $patternProperties.hashCode());
+        Object $properties = this.getProperties();
+        result = result * prime + ($properties == null ? 43 : $properties.hashCode());
+        Object $required = this.getRequired();
+        result = result * prime + ($required == null ? 43 : $required.hashCode());
+        Object $title = this.getTitle();
+        result = result * prime + ($title == null ? 43 : $title.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $uniqueItems = this.getUniqueItems();
+        result = result * prime + ($uniqueItems == null ? 43 : $uniqueItems.hashCode());
+        Object $xKubernetesEmbeddedResource = this.getXKubernetesEmbeddedResource();
+        result = result * prime + ($xKubernetesEmbeddedResource == null ? 43 : $xKubernetesEmbeddedResource.hashCode());
+        Object $xKubernetesIntOrString = this.getXKubernetesIntOrString();
+        result = result * prime + ($xKubernetesIntOrString == null ? 43 : $xKubernetesIntOrString.hashCode());
+        Object $xKubernetesListMapKeys = this.getXKubernetesListMapKeys();
+        result = result * prime + ($xKubernetesListMapKeys == null ? 43 : $xKubernetesListMapKeys.hashCode());
+        Object $xKubernetesListType = this.getXKubernetesListType();
+        result = result * prime + ($xKubernetesListType == null ? 43 : $xKubernetesListType.hashCode());
+        Object $xKubernetesMapType = this.getXKubernetesMapType();
+        result = result * prime + ($xKubernetesMapType == null ? 43 : $xKubernetesMapType.hashCode());
+        Object $xKubernetesPreserveUnknownFields = this.getXKubernetesPreserveUnknownFields();
+        result = result * prime + ($xKubernetesPreserveUnknownFields == null ? 43 : $xKubernetesPreserveUnknownFields.hashCode());
+        Object $xKubernetesValidations = this.getXKubernetesValidations();
+        result = result * prime + ($xKubernetesValidations == null ? 43 : $xKubernetesValidations.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "JSONSchemaProps(" + "$ref=" + this.get$ref() + ", $schema=" + this.get$schema() + ", additionalItems=" + this.getAdditionalItems() + ", additionalProperties=" + this.getAdditionalProperties() + ", allOf=" + this.getAllOf() + ", anyOf=" + this.getAnyOf() + ", _default=" + this.getDefault() + ", definitions=" + this.getDefinitions() + ", dependencies=" + this.getDependencies() + ", description=" + this.getDescription() + ", _enum=" + this.getEnum() + ", example=" + this.getExample() + ", exclusiveMaximum=" + this.getExclusiveMaximum() + ", exclusiveMinimum=" + this.getExclusiveMinimum() + ", externalDocs=" + this.getExternalDocs() + ", format=" + this.getFormat() + ", id=" + this.getId() + ", items=" + this.getItems() + ", maxItems=" + this.getMaxItems() + ", maxLength=" + this.getMaxLength() + ", maxProperties=" + this.getMaxProperties() + ", maximum=" + this.getMaximum() + ", minItems=" + this.getMinItems() + ", minLength=" + this.getMinLength() + ", minProperties=" + this.getMinProperties() + ", minimum=" + this.getMinimum() + ", multipleOf=" + this.getMultipleOf() + ", not=" + this.getNot() + ", nullable=" + this.getNullable() + ", oneOf=" + this.getOneOf() + ", pattern=" + this.getPattern() + ", patternProperties=" + this.getPatternProperties() + ", properties=" + this.getProperties() + ", required=" + this.getRequired() + ", title=" + this.getTitle() + ", type=" + this.getType() + ", uniqueItems=" + this.getUniqueItems() + ", xKubernetesEmbeddedResource=" + this.getXKubernetesEmbeddedResource() + ", xKubernetesIntOrString=" + this.getXKubernetesIntOrString() + ", xKubernetesListMapKeys=" + this.getXKubernetesListMapKeys() + ", xKubernetesListType=" + this.getXKubernetesListType() + ", xKubernetesMapType=" + this.getXKubernetesMapType() + ", xKubernetesPreserveUnknownFields=" + this.getXKubernetesPreserveUnknownFields() + ", xKubernetesValidations=" + this.getXKubernetesValidations() + ")";
+    }
 
 }

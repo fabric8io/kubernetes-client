@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * StaticPodOperatorStatus is status for controllers that manage static pods.  There are different needs because individual node status must be tracked. DEPRECATED: Use v1.StaticPodOperatorStatus instead
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "state",
     "targetVersionAvailability",
     "taskSummary"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -266,6 +257,99 @@ public class StaticPodOperatorStatus implements Editable<StaticPodOperatorStatus
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof StaticPodOperatorStatus)) {
+            return false;
+        }
+        StaticPodOperatorStatus other = (StaticPodOperatorStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$currentVersionAvailability = this.getCurrentVersionAvailability();
+        Object other$currentVersionAvailability = other.getCurrentVersionAvailability();
+        if (this$currentVersionAvailability == null ? other$currentVersionAvailability != null : !this$currentVersionAvailability.equals(other$currentVersionAvailability)) {
+            return false;
+        }
+        Object this$latestAvailableDeploymentGeneration = this.getLatestAvailableDeploymentGeneration();
+        Object other$latestAvailableDeploymentGeneration = other.getLatestAvailableDeploymentGeneration();
+        if (this$latestAvailableDeploymentGeneration == null ? other$latestAvailableDeploymentGeneration != null : !this$latestAvailableDeploymentGeneration.equals(other$latestAvailableDeploymentGeneration)) {
+            return false;
+        }
+        Object this$nodeStatuses = this.getNodeStatuses();
+        Object other$nodeStatuses = other.getNodeStatuses();
+        if (this$nodeStatuses == null ? other$nodeStatuses != null : !this$nodeStatuses.equals(other$nodeStatuses)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$state = this.getState();
+        Object other$state = other.getState();
+        if (this$state == null ? other$state != null : !this$state.equals(other$state)) {
+            return false;
+        }
+        Object this$targetVersionAvailability = this.getTargetVersionAvailability();
+        Object other$targetVersionAvailability = other.getTargetVersionAvailability();
+        if (this$targetVersionAvailability == null ? other$targetVersionAvailability != null : !this$targetVersionAvailability.equals(other$targetVersionAvailability)) {
+            return false;
+        }
+        Object this$taskSummary = this.getTaskSummary();
+        Object other$taskSummary = other.getTaskSummary();
+        if (this$taskSummary == null ? other$taskSummary != null : !this$taskSummary.equals(other$taskSummary)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof StaticPodOperatorStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $currentVersionAvailability = this.getCurrentVersionAvailability();
+        result = result * prime + ($currentVersionAvailability == null ? 43 : $currentVersionAvailability.hashCode());
+        Object $latestAvailableDeploymentGeneration = this.getLatestAvailableDeploymentGeneration();
+        result = result * prime + ($latestAvailableDeploymentGeneration == null ? 43 : $latestAvailableDeploymentGeneration.hashCode());
+        Object $nodeStatuses = this.getNodeStatuses();
+        result = result * prime + ($nodeStatuses == null ? 43 : $nodeStatuses.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $state = this.getState();
+        result = result * prime + ($state == null ? 43 : $state.hashCode());
+        Object $targetVersionAvailability = this.getTargetVersionAvailability();
+        result = result * prime + ($targetVersionAvailability == null ? 43 : $targetVersionAvailability.hashCode());
+        Object $taskSummary = this.getTaskSummary();
+        result = result * prime + ($taskSummary == null ? 43 : $taskSummary.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "StaticPodOperatorStatus(" + "conditions=" + this.getConditions() + ", currentVersionAvailability=" + this.getCurrentVersionAvailability() + ", latestAvailableDeploymentGeneration=" + this.getLatestAvailableDeploymentGeneration() + ", nodeStatuses=" + this.getNodeStatuses() + ", observedGeneration=" + this.getObservedGeneration() + ", state=" + this.getState() + ", targetVersionAvailability=" + this.getTargetVersionAvailability() + ", taskSummary=" + this.getTaskSummary() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

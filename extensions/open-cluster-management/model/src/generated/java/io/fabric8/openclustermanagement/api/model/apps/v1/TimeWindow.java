@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * TimeWindow defines a time window for the subscription to run or be blocked
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "hours",
     "location",
     "windowtype"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -186,6 +177,71 @@ public class TimeWindow implements Editable<TimeWindowBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TimeWindow)) {
+            return false;
+        }
+        TimeWindow other = (TimeWindow) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$daysofweek = this.getDaysofweek();
+        Object other$daysofweek = other.getDaysofweek();
+        if (this$daysofweek == null ? other$daysofweek != null : !this$daysofweek.equals(other$daysofweek)) {
+            return false;
+        }
+        Object this$hours = this.getHours();
+        Object other$hours = other.getHours();
+        if (this$hours == null ? other$hours != null : !this$hours.equals(other$hours)) {
+            return false;
+        }
+        Object this$location = this.getLocation();
+        Object other$location = other.getLocation();
+        if (this$location == null ? other$location != null : !this$location.equals(other$location)) {
+            return false;
+        }
+        Object this$windowtype = this.getWindowtype();
+        Object other$windowtype = other.getWindowtype();
+        if (this$windowtype == null ? other$windowtype != null : !this$windowtype.equals(other$windowtype)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TimeWindow;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $daysofweek = this.getDaysofweek();
+        result = result * prime + ($daysofweek == null ? 43 : $daysofweek.hashCode());
+        Object $hours = this.getHours();
+        result = result * prime + ($hours == null ? 43 : $hours.hashCode());
+        Object $location = this.getLocation();
+        result = result * prime + ($location == null ? 43 : $location.hashCode());
+        Object $windowtype = this.getWindowtype();
+        result = result * prime + ($windowtype == null ? 43 : $windowtype.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TimeWindow(" + "daysofweek=" + this.getDaysofweek() + ", hours=" + this.getHours() + ", location=" + this.getLocation() + ", windowtype=" + this.getWindowtype() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * QueueStatus represents the status of Queue.
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "running",
     "state",
     "unknown"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -263,6 +254,99 @@ public class QueueStatus implements Editable<QueueStatusBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof QueueStatus)) {
+            return false;
+        }
+        QueueStatus other = (QueueStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allocated = this.getAllocated();
+        Object other$allocated = other.getAllocated();
+        if (this$allocated == null ? other$allocated != null : !this$allocated.equals(other$allocated)) {
+            return false;
+        }
+        Object this$completed = this.getCompleted();
+        Object other$completed = other.getCompleted();
+        if (this$completed == null ? other$completed != null : !this$completed.equals(other$completed)) {
+            return false;
+        }
+        Object this$inqueue = this.getInqueue();
+        Object other$inqueue = other.getInqueue();
+        if (this$inqueue == null ? other$inqueue != null : !this$inqueue.equals(other$inqueue)) {
+            return false;
+        }
+        Object this$pending = this.getPending();
+        Object other$pending = other.getPending();
+        if (this$pending == null ? other$pending != null : !this$pending.equals(other$pending)) {
+            return false;
+        }
+        Object this$reservation = this.getReservation();
+        Object other$reservation = other.getReservation();
+        if (this$reservation == null ? other$reservation != null : !this$reservation.equals(other$reservation)) {
+            return false;
+        }
+        Object this$running = this.getRunning();
+        Object other$running = other.getRunning();
+        if (this$running == null ? other$running != null : !this$running.equals(other$running)) {
+            return false;
+        }
+        Object this$state = this.getState();
+        Object other$state = other.getState();
+        if (this$state == null ? other$state != null : !this$state.equals(other$state)) {
+            return false;
+        }
+        Object this$unknown = this.getUnknown();
+        Object other$unknown = other.getUnknown();
+        if (this$unknown == null ? other$unknown != null : !this$unknown.equals(other$unknown)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof QueueStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allocated = this.getAllocated();
+        result = result * prime + ($allocated == null ? 43 : $allocated.hashCode());
+        Object $completed = this.getCompleted();
+        result = result * prime + ($completed == null ? 43 : $completed.hashCode());
+        Object $inqueue = this.getInqueue();
+        result = result * prime + ($inqueue == null ? 43 : $inqueue.hashCode());
+        Object $pending = this.getPending();
+        result = result * prime + ($pending == null ? 43 : $pending.hashCode());
+        Object $reservation = this.getReservation();
+        result = result * prime + ($reservation == null ? 43 : $reservation.hashCode());
+        Object $running = this.getRunning();
+        result = result * prime + ($running == null ? 43 : $running.hashCode());
+        Object $state = this.getState();
+        result = result * prime + ($state == null ? 43 : $state.hashCode());
+        Object $unknown = this.getUnknown();
+        result = result * prime + ($unknown == null ? 43 : $unknown.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "QueueStatus(" + "allocated=" + this.getAllocated() + ", completed=" + this.getCompleted() + ", inqueue=" + this.getInqueue() + ", pending=" + this.getPending() + ", reservation=" + this.getReservation() + ", running=" + this.getRunning() + ", state=" + this.getState() + ", unknown=" + this.getUnknown() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

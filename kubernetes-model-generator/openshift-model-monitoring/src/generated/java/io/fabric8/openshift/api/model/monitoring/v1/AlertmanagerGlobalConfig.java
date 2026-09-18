@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AlertmanagerGlobalConfig configures parameters that are valid in all other configuration contexts. See https://prometheus.io/docs/alerting/latest/configuration/#configuration-file
@@ -52,12 +49,6 @@ import lombok.experimental.Accessors;
     "victorops",
     "webex",
     "wechat"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -380,6 +371,141 @@ public class AlertmanagerGlobalConfig implements Editable<AlertmanagerGlobalConf
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AlertmanagerGlobalConfig)) {
+            return false;
+        }
+        AlertmanagerGlobalConfig other = (AlertmanagerGlobalConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$httpConfig = this.getHttpConfig();
+        Object other$httpConfig = other.getHttpConfig();
+        if (this$httpConfig == null ? other$httpConfig != null : !this$httpConfig.equals(other$httpConfig)) {
+            return false;
+        }
+        Object this$jira = this.getJira();
+        Object other$jira = other.getJira();
+        if (this$jira == null ? other$jira != null : !this$jira.equals(other$jira)) {
+            return false;
+        }
+        Object this$mattermost = this.getMattermost();
+        Object other$mattermost = other.getMattermost();
+        if (this$mattermost == null ? other$mattermost != null : !this$mattermost.equals(other$mattermost)) {
+            return false;
+        }
+        Object this$opsGenieApiKey = this.getOpsGenieApiKey();
+        Object other$opsGenieApiKey = other.getOpsGenieApiKey();
+        if (this$opsGenieApiKey == null ? other$opsGenieApiKey != null : !this$opsGenieApiKey.equals(other$opsGenieApiKey)) {
+            return false;
+        }
+        Object this$opsGenieApiUrl = this.getOpsGenieApiUrl();
+        Object other$opsGenieApiUrl = other.getOpsGenieApiUrl();
+        if (this$opsGenieApiUrl == null ? other$opsGenieApiUrl != null : !this$opsGenieApiUrl.equals(other$opsGenieApiUrl)) {
+            return false;
+        }
+        Object this$pagerdutyUrl = this.getPagerdutyUrl();
+        Object other$pagerdutyUrl = other.getPagerdutyUrl();
+        if (this$pagerdutyUrl == null ? other$pagerdutyUrl != null : !this$pagerdutyUrl.equals(other$pagerdutyUrl)) {
+            return false;
+        }
+        Object this$resolveTimeout = this.getResolveTimeout();
+        Object other$resolveTimeout = other.getResolveTimeout();
+        if (this$resolveTimeout == null ? other$resolveTimeout != null : !this$resolveTimeout.equals(other$resolveTimeout)) {
+            return false;
+        }
+        Object this$rocketChat = this.getRocketChat();
+        Object other$rocketChat = other.getRocketChat();
+        if (this$rocketChat == null ? other$rocketChat != null : !this$rocketChat.equals(other$rocketChat)) {
+            return false;
+        }
+        Object this$slackApiUrl = this.getSlackApiUrl();
+        Object other$slackApiUrl = other.getSlackApiUrl();
+        if (this$slackApiUrl == null ? other$slackApiUrl != null : !this$slackApiUrl.equals(other$slackApiUrl)) {
+            return false;
+        }
+        Object this$smtp = this.getSmtp();
+        Object other$smtp = other.getSmtp();
+        if (this$smtp == null ? other$smtp != null : !this$smtp.equals(other$smtp)) {
+            return false;
+        }
+        Object this$telegram = this.getTelegram();
+        Object other$telegram = other.getTelegram();
+        if (this$telegram == null ? other$telegram != null : !this$telegram.equals(other$telegram)) {
+            return false;
+        }
+        Object this$victorops = this.getVictorops();
+        Object other$victorops = other.getVictorops();
+        if (this$victorops == null ? other$victorops != null : !this$victorops.equals(other$victorops)) {
+            return false;
+        }
+        Object this$webex = this.getWebex();
+        Object other$webex = other.getWebex();
+        if (this$webex == null ? other$webex != null : !this$webex.equals(other$webex)) {
+            return false;
+        }
+        Object this$wechat = this.getWechat();
+        Object other$wechat = other.getWechat();
+        if (this$wechat == null ? other$wechat != null : !this$wechat.equals(other$wechat)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AlertmanagerGlobalConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $httpConfig = this.getHttpConfig();
+        result = result * prime + ($httpConfig == null ? 43 : $httpConfig.hashCode());
+        Object $jira = this.getJira();
+        result = result * prime + ($jira == null ? 43 : $jira.hashCode());
+        Object $mattermost = this.getMattermost();
+        result = result * prime + ($mattermost == null ? 43 : $mattermost.hashCode());
+        Object $opsGenieApiKey = this.getOpsGenieApiKey();
+        result = result * prime + ($opsGenieApiKey == null ? 43 : $opsGenieApiKey.hashCode());
+        Object $opsGenieApiUrl = this.getOpsGenieApiUrl();
+        result = result * prime + ($opsGenieApiUrl == null ? 43 : $opsGenieApiUrl.hashCode());
+        Object $pagerdutyUrl = this.getPagerdutyUrl();
+        result = result * prime + ($pagerdutyUrl == null ? 43 : $pagerdutyUrl.hashCode());
+        Object $resolveTimeout = this.getResolveTimeout();
+        result = result * prime + ($resolveTimeout == null ? 43 : $resolveTimeout.hashCode());
+        Object $rocketChat = this.getRocketChat();
+        result = result * prime + ($rocketChat == null ? 43 : $rocketChat.hashCode());
+        Object $slackApiUrl = this.getSlackApiUrl();
+        result = result * prime + ($slackApiUrl == null ? 43 : $slackApiUrl.hashCode());
+        Object $smtp = this.getSmtp();
+        result = result * prime + ($smtp == null ? 43 : $smtp.hashCode());
+        Object $telegram = this.getTelegram();
+        result = result * prime + ($telegram == null ? 43 : $telegram.hashCode());
+        Object $victorops = this.getVictorops();
+        result = result * prime + ($victorops == null ? 43 : $victorops.hashCode());
+        Object $webex = this.getWebex();
+        result = result * prime + ($webex == null ? 43 : $webex.hashCode());
+        Object $wechat = this.getWechat();
+        result = result * prime + ($wechat == null ? 43 : $wechat.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AlertmanagerGlobalConfig(" + "httpConfig=" + this.getHttpConfig() + ", jira=" + this.getJira() + ", mattermost=" + this.getMattermost() + ", opsGenieApiKey=" + this.getOpsGenieApiKey() + ", opsGenieApiUrl=" + this.getOpsGenieApiUrl() + ", pagerdutyUrl=" + this.getPagerdutyUrl() + ", resolveTimeout=" + this.getResolveTimeout() + ", rocketChat=" + this.getRocketChat() + ", slackApiUrl=" + this.getSlackApiUrl() + ", smtp=" + this.getSmtp() + ", telegram=" + this.getTelegram() + ", victorops=" + this.getVictorops() + ", webex=" + this.getWebex() + ", wechat=" + this.getWechat() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

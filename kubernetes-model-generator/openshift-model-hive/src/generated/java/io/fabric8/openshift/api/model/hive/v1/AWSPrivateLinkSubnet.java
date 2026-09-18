@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AWSPrivateLinkSubnet defines a subnet in the an AWS VPC.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "availabilityZone",
     "subnetID"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class AWSPrivateLinkSubnet implements Editable<AWSPrivateLinkSubnetBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AWSPrivateLinkSubnet)) {
+            return false;
+        }
+        AWSPrivateLinkSubnet other = (AWSPrivateLinkSubnet) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$availabilityZone = this.getAvailabilityZone();
+        Object other$availabilityZone = other.getAvailabilityZone();
+        if (this$availabilityZone == null ? other$availabilityZone != null : !this$availabilityZone.equals(other$availabilityZone)) {
+            return false;
+        }
+        Object this$subnetID = this.getSubnetID();
+        Object other$subnetID = other.getSubnetID();
+        if (this$subnetID == null ? other$subnetID != null : !this$subnetID.equals(other$subnetID)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AWSPrivateLinkSubnet;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $availabilityZone = this.getAvailabilityZone();
+        result = result * prime + ($availabilityZone == null ? 43 : $availabilityZone.hashCode());
+        Object $subnetID = this.getSubnetID();
+        result = result * prime + ($subnetID == null ? 43 : $subnetID.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AWSPrivateLinkSubnet(" + "availabilityZone=" + this.getAvailabilityZone() + ", subnetID=" + this.getSubnetID() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

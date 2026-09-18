@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HTTPRewrite can be used to rewrite specific parts of a HTTP request before forwarding the request to the destination. Rewrite primitive can be used only with HTTPRouteDestination. The following example demonstrates how to rewrite the URL prefix for api call (/ratings) to ratings service before making the actual API call.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      prefix: /ratings<br><p> 	  rewrite:<br><p> 	    uri: /v1/bookRatings<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: ratings.prod.svc.cluster.local<br><p> 	      subset: v1<br><p> <br><p> ```
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "authority",
     "uri",
     "uriRegexRewrite"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class HTTPRewrite implements Editable<HTTPRewriteBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HTTPRewrite)) {
+            return false;
+        }
+        HTTPRewrite other = (HTTPRewrite) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$authority = this.getAuthority();
+        Object other$authority = other.getAuthority();
+        if (this$authority == null ? other$authority != null : !this$authority.equals(other$authority)) {
+            return false;
+        }
+        Object this$uri = this.getUri();
+        Object other$uri = other.getUri();
+        if (this$uri == null ? other$uri != null : !this$uri.equals(other$uri)) {
+            return false;
+        }
+        Object this$uriRegexRewrite = this.getUriRegexRewrite();
+        Object other$uriRegexRewrite = other.getUriRegexRewrite();
+        if (this$uriRegexRewrite == null ? other$uriRegexRewrite != null : !this$uriRegexRewrite.equals(other$uriRegexRewrite)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HTTPRewrite;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $authority = this.getAuthority();
+        result = result * prime + ($authority == null ? 43 : $authority.hashCode());
+        Object $uri = this.getUri();
+        result = result * prime + ($uri == null ? 43 : $uri.hashCode());
+        Object $uriRegexRewrite = this.getUriRegexRewrite();
+        result = result * prime + ($uriRegexRewrite == null ? 43 : $uriRegexRewrite.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HTTPRewrite(" + "authority=" + this.getAuthority() + ", uri=" + this.getUri() + ", uriRegexRewrite=" + this.getUriRegexRewrite() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

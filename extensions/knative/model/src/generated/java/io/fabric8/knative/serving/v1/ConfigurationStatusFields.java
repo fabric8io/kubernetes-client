@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ConfigurationStatusFields holds the fields of Configuration's status that are not generally shared.  This is defined separately and inlined so that other types can readily consume these fields via duck typing.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "latestCreatedRevisionName",
     "latestReadyRevisionName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class ConfigurationStatusFields implements Editable<ConfigurationStatusFi
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ConfigurationStatusFields)) {
+            return false;
+        }
+        ConfigurationStatusFields other = (ConfigurationStatusFields) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$latestCreatedRevisionName = this.getLatestCreatedRevisionName();
+        Object other$latestCreatedRevisionName = other.getLatestCreatedRevisionName();
+        if (this$latestCreatedRevisionName == null ? other$latestCreatedRevisionName != null : !this$latestCreatedRevisionName.equals(other$latestCreatedRevisionName)) {
+            return false;
+        }
+        Object this$latestReadyRevisionName = this.getLatestReadyRevisionName();
+        Object other$latestReadyRevisionName = other.getLatestReadyRevisionName();
+        if (this$latestReadyRevisionName == null ? other$latestReadyRevisionName != null : !this$latestReadyRevisionName.equals(other$latestReadyRevisionName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ConfigurationStatusFields;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $latestCreatedRevisionName = this.getLatestCreatedRevisionName();
+        result = result * prime + ($latestCreatedRevisionName == null ? 43 : $latestCreatedRevisionName.hashCode());
+        Object $latestReadyRevisionName = this.getLatestReadyRevisionName();
+        result = result * prime + ($latestReadyRevisionName == null ? 43 : $latestReadyRevisionName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ConfigurationStatusFields(" + "latestCreatedRevisionName=" + this.getLatestCreatedRevisionName() + ", latestReadyRevisionName=" + this.getLatestReadyRevisionName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

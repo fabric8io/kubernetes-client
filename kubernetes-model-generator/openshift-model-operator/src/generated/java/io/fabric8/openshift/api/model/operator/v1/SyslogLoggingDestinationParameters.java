@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SyslogLoggingDestinationParameters describes parameters for the Syslog logging destination type.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "facility",
     "maxLength",
     "port"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class SyslogLoggingDestinationParameters implements Editable<SyslogLoggin
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SyslogLoggingDestinationParameters)) {
+            return false;
+        }
+        SyslogLoggingDestinationParameters other = (SyslogLoggingDestinationParameters) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$address = this.getAddress();
+        Object other$address = other.getAddress();
+        if (this$address == null ? other$address != null : !this$address.equals(other$address)) {
+            return false;
+        }
+        Object this$facility = this.getFacility();
+        Object other$facility = other.getFacility();
+        if (this$facility == null ? other$facility != null : !this$facility.equals(other$facility)) {
+            return false;
+        }
+        Object this$maxLength = this.getMaxLength();
+        Object other$maxLength = other.getMaxLength();
+        if (this$maxLength == null ? other$maxLength != null : !this$maxLength.equals(other$maxLength)) {
+            return false;
+        }
+        Object this$port = this.getPort();
+        Object other$port = other.getPort();
+        if (this$port == null ? other$port != null : !this$port.equals(other$port)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SyslogLoggingDestinationParameters;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $address = this.getAddress();
+        result = result * prime + ($address == null ? 43 : $address.hashCode());
+        Object $facility = this.getFacility();
+        result = result * prime + ($facility == null ? 43 : $facility.hashCode());
+        Object $maxLength = this.getMaxLength();
+        result = result * prime + ($maxLength == null ? 43 : $maxLength.hashCode());
+        Object $port = this.getPort();
+        result = result * prime + ($port == null ? 43 : $port.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SyslogLoggingDestinationParameters(" + "address=" + this.getAddress() + ", facility=" + this.getFacility() + ", maxLength=" + this.getMaxLength() + ", port=" + this.getPort() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * SelectorSyncSetSpec defines the SyncSetCommonSpec resources and patches to sync along with a ClusterDeploymentSelector indicating which clusters the SelectorSyncSet applies to in any namespace.
@@ -47,12 +44,6 @@ import lombok.experimental.Accessors;
     "resourceApplyMode",
     "resources",
     "secretMappings"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -250,6 +241,92 @@ public class SelectorSyncSetSpec implements Editable<SelectorSyncSetSpecBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SelectorSyncSetSpec)) {
+            return false;
+        }
+        SelectorSyncSetSpec other = (SelectorSyncSetSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$applyBehavior = this.getApplyBehavior();
+        Object other$applyBehavior = other.getApplyBehavior();
+        if (this$applyBehavior == null ? other$applyBehavior != null : !this$applyBehavior.equals(other$applyBehavior)) {
+            return false;
+        }
+        Object this$clusterDeploymentSelector = this.getClusterDeploymentSelector();
+        Object other$clusterDeploymentSelector = other.getClusterDeploymentSelector();
+        if (this$clusterDeploymentSelector == null ? other$clusterDeploymentSelector != null : !this$clusterDeploymentSelector.equals(other$clusterDeploymentSelector)) {
+            return false;
+        }
+        Object this$enableResourceTemplates = this.getEnableResourceTemplates();
+        Object other$enableResourceTemplates = other.getEnableResourceTemplates();
+        if (this$enableResourceTemplates == null ? other$enableResourceTemplates != null : !this$enableResourceTemplates.equals(other$enableResourceTemplates)) {
+            return false;
+        }
+        Object this$patches = this.getPatches();
+        Object other$patches = other.getPatches();
+        if (this$patches == null ? other$patches != null : !this$patches.equals(other$patches)) {
+            return false;
+        }
+        Object this$resourceApplyMode = this.getResourceApplyMode();
+        Object other$resourceApplyMode = other.getResourceApplyMode();
+        if (this$resourceApplyMode == null ? other$resourceApplyMode != null : !this$resourceApplyMode.equals(other$resourceApplyMode)) {
+            return false;
+        }
+        Object this$resources = this.getResources();
+        Object other$resources = other.getResources();
+        if (this$resources == null ? other$resources != null : !this$resources.equals(other$resources)) {
+            return false;
+        }
+        Object this$secretMappings = this.getSecretMappings();
+        Object other$secretMappings = other.getSecretMappings();
+        if (this$secretMappings == null ? other$secretMappings != null : !this$secretMappings.equals(other$secretMappings)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SelectorSyncSetSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $applyBehavior = this.getApplyBehavior();
+        result = result * prime + ($applyBehavior == null ? 43 : $applyBehavior.hashCode());
+        Object $clusterDeploymentSelector = this.getClusterDeploymentSelector();
+        result = result * prime + ($clusterDeploymentSelector == null ? 43 : $clusterDeploymentSelector.hashCode());
+        Object $enableResourceTemplates = this.getEnableResourceTemplates();
+        result = result * prime + ($enableResourceTemplates == null ? 43 : $enableResourceTemplates.hashCode());
+        Object $patches = this.getPatches();
+        result = result * prime + ($patches == null ? 43 : $patches.hashCode());
+        Object $resourceApplyMode = this.getResourceApplyMode();
+        result = result * prime + ($resourceApplyMode == null ? 43 : $resourceApplyMode.hashCode());
+        Object $resources = this.getResources();
+        result = result * prime + ($resources == null ? 43 : $resources.hashCode());
+        Object $secretMappings = this.getSecretMappings();
+        result = result * prime + ($secretMappings == null ? 43 : $secretMappings.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SelectorSyncSetSpec(" + "applyBehavior=" + this.getApplyBehavior() + ", clusterDeploymentSelector=" + this.getClusterDeploymentSelector() + ", enableResourceTemplates=" + this.getEnableResourceTemplates() + ", patches=" + this.getPatches() + ", resourceApplyMode=" + this.getResourceApplyMode() + ", resources=" + this.getResources() + ", secretMappings=" + this.getSecretMappings() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

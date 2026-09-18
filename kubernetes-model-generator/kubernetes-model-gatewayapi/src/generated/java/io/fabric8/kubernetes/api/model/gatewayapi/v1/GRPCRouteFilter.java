@@ -26,9 +26,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * GRPCRouteFilter defines processing steps that must be completed during the request or response lifecycle. GRPCRouteFilters are meant as an extension point to express processing that may be done in Gateway implementations. Some examples include request or response modification, implementing authentication strategies, rate-limiting, and traffic shaping. API guarantee/conformance is defined based on the type of the filter.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "requestMirror",
     "responseHeaderModifier",
     "type"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -198,6 +189,78 @@ public class GRPCRouteFilter implements Editable<GRPCRouteFilterBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GRPCRouteFilter)) {
+            return false;
+        }
+        GRPCRouteFilter other = (GRPCRouteFilter) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$extensionRef = this.getExtensionRef();
+        Object other$extensionRef = other.getExtensionRef();
+        if (this$extensionRef == null ? other$extensionRef != null : !this$extensionRef.equals(other$extensionRef)) {
+            return false;
+        }
+        Object this$requestHeaderModifier = this.getRequestHeaderModifier();
+        Object other$requestHeaderModifier = other.getRequestHeaderModifier();
+        if (this$requestHeaderModifier == null ? other$requestHeaderModifier != null : !this$requestHeaderModifier.equals(other$requestHeaderModifier)) {
+            return false;
+        }
+        Object this$requestMirror = this.getRequestMirror();
+        Object other$requestMirror = other.getRequestMirror();
+        if (this$requestMirror == null ? other$requestMirror != null : !this$requestMirror.equals(other$requestMirror)) {
+            return false;
+        }
+        Object this$responseHeaderModifier = this.getResponseHeaderModifier();
+        Object other$responseHeaderModifier = other.getResponseHeaderModifier();
+        if (this$responseHeaderModifier == null ? other$responseHeaderModifier != null : !this$responseHeaderModifier.equals(other$responseHeaderModifier)) {
+            return false;
+        }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (this$type == null ? other$type != null : !this$type.equals(other$type)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GRPCRouteFilter;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $extensionRef = this.getExtensionRef();
+        result = result * prime + ($extensionRef == null ? 43 : $extensionRef.hashCode());
+        Object $requestHeaderModifier = this.getRequestHeaderModifier();
+        result = result * prime + ($requestHeaderModifier == null ? 43 : $requestHeaderModifier.hashCode());
+        Object $requestMirror = this.getRequestMirror();
+        result = result * prime + ($requestMirror == null ? 43 : $requestMirror.hashCode());
+        Object $responseHeaderModifier = this.getResponseHeaderModifier();
+        result = result * prime + ($responseHeaderModifier == null ? 43 : $responseHeaderModifier.hashCode());
+        Object $type = this.getType();
+        result = result * prime + ($type == null ? 43 : $type.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GRPCRouteFilter(" + "extensionRef=" + this.getExtensionRef() + ", requestHeaderModifier=" + this.getRequestHeaderModifier() + ", requestMirror=" + this.getRequestMirror() + ", responseHeaderModifier=" + this.getResponseHeaderModifier() + ", type=" + this.getType() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

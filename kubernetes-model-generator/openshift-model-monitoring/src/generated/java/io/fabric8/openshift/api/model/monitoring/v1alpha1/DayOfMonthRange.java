@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DayOfMonthRange is an inclusive range of days of the month beginning at 1
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "end",
     "start"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class DayOfMonthRange implements Editable<DayOfMonthRangeBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DayOfMonthRange)) {
+            return false;
+        }
+        DayOfMonthRange other = (DayOfMonthRange) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$end = this.getEnd();
+        Object other$end = other.getEnd();
+        if (this$end == null ? other$end != null : !this$end.equals(other$end)) {
+            return false;
+        }
+        Object this$start = this.getStart();
+        Object other$start = other.getStart();
+        if (this$start == null ? other$start != null : !this$start.equals(other$start)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DayOfMonthRange;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $end = this.getEnd();
+        result = result * prime + ($end == null ? 43 : $end.hashCode());
+        Object $start = this.getStart();
+        result = result * prime + ($start == null ? 43 : $start.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DayOfMonthRange(" + "end=" + this.getEnd() + ", start=" + this.getStart() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

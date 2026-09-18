@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageRegistryConfigStorageS3CloudFront holds the configuration to use Amazon Cloudfront as the storage middleware in a registry. https://docs.docker.com/registry/configuration/#cloudfront
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "duration",
     "keypairID",
     "privateKey"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -181,6 +172,71 @@ public class ImageRegistryConfigStorageS3CloudFront implements Editable<ImageReg
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageRegistryConfigStorageS3CloudFront)) {
+            return false;
+        }
+        ImageRegistryConfigStorageS3CloudFront other = (ImageRegistryConfigStorageS3CloudFront) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$baseURL = this.getBaseURL();
+        Object other$baseURL = other.getBaseURL();
+        if (this$baseURL == null ? other$baseURL != null : !this$baseURL.equals(other$baseURL)) {
+            return false;
+        }
+        Object this$duration = this.getDuration();
+        Object other$duration = other.getDuration();
+        if (this$duration == null ? other$duration != null : !this$duration.equals(other$duration)) {
+            return false;
+        }
+        Object this$keypairID = this.getKeypairID();
+        Object other$keypairID = other.getKeypairID();
+        if (this$keypairID == null ? other$keypairID != null : !this$keypairID.equals(other$keypairID)) {
+            return false;
+        }
+        Object this$privateKey = this.getPrivateKey();
+        Object other$privateKey = other.getPrivateKey();
+        if (this$privateKey == null ? other$privateKey != null : !this$privateKey.equals(other$privateKey)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageRegistryConfigStorageS3CloudFront;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $baseURL = this.getBaseURL();
+        result = result * prime + ($baseURL == null ? 43 : $baseURL.hashCode());
+        Object $duration = this.getDuration();
+        result = result * prime + ($duration == null ? 43 : $duration.hashCode());
+        Object $keypairID = this.getKeypairID();
+        result = result * prime + ($keypairID == null ? 43 : $keypairID.hashCode());
+        Object $privateKey = this.getPrivateKey();
+        result = result * prime + ($privateKey == null ? 43 : $privateKey.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageRegistryConfigStorageS3CloudFront(" + "baseURL=" + this.getBaseURL() + ", duration=" + this.getDuration() + ", keypairID=" + this.getKeypairID() + ", privateKey=" + this.getPrivateKey() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

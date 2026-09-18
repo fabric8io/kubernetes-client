@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ProbeSpec contains specification parameters for a Probe.
@@ -70,12 +67,6 @@ import lombok.experimental.Accessors;
     "targetLimit",
     "targets",
     "tlsConfig"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -689,6 +680,246 @@ public class ProbeSpec implements Editable<ProbeSpecBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ProbeSpec)) {
+            return false;
+        }
+        ProbeSpec other = (ProbeSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$authorization = this.getAuthorization();
+        Object other$authorization = other.getAuthorization();
+        if (this$authorization == null ? other$authorization != null : !this$authorization.equals(other$authorization)) {
+            return false;
+        }
+        Object this$basicAuth = this.getBasicAuth();
+        Object other$basicAuth = other.getBasicAuth();
+        if (this$basicAuth == null ? other$basicAuth != null : !this$basicAuth.equals(other$basicAuth)) {
+            return false;
+        }
+        Object this$bearerTokenSecret = this.getBearerTokenSecret();
+        Object other$bearerTokenSecret = other.getBearerTokenSecret();
+        if (this$bearerTokenSecret == null ? other$bearerTokenSecret != null : !this$bearerTokenSecret.equals(other$bearerTokenSecret)) {
+            return false;
+        }
+        Object this$convertClassicHistogramsToNHCB = this.getConvertClassicHistogramsToNHCB();
+        Object other$convertClassicHistogramsToNHCB = other.getConvertClassicHistogramsToNHCB();
+        if (this$convertClassicHistogramsToNHCB == null ? other$convertClassicHistogramsToNHCB != null : !this$convertClassicHistogramsToNHCB.equals(other$convertClassicHistogramsToNHCB)) {
+            return false;
+        }
+        Object this$enableHttp2 = this.getEnableHttp2();
+        Object other$enableHttp2 = other.getEnableHttp2();
+        if (this$enableHttp2 == null ? other$enableHttp2 != null : !this$enableHttp2.equals(other$enableHttp2)) {
+            return false;
+        }
+        Object this$fallbackScrapeProtocol = this.getFallbackScrapeProtocol();
+        Object other$fallbackScrapeProtocol = other.getFallbackScrapeProtocol();
+        if (this$fallbackScrapeProtocol == null ? other$fallbackScrapeProtocol != null : !this$fallbackScrapeProtocol.equals(other$fallbackScrapeProtocol)) {
+            return false;
+        }
+        Object this$followRedirects = this.getFollowRedirects();
+        Object other$followRedirects = other.getFollowRedirects();
+        if (this$followRedirects == null ? other$followRedirects != null : !this$followRedirects.equals(other$followRedirects)) {
+            return false;
+        }
+        Object this$interval = this.getInterval();
+        Object other$interval = other.getInterval();
+        if (this$interval == null ? other$interval != null : !this$interval.equals(other$interval)) {
+            return false;
+        }
+        Object this$jobName = this.getJobName();
+        Object other$jobName = other.getJobName();
+        if (this$jobName == null ? other$jobName != null : !this$jobName.equals(other$jobName)) {
+            return false;
+        }
+        Object this$keepDroppedTargets = this.getKeepDroppedTargets();
+        Object other$keepDroppedTargets = other.getKeepDroppedTargets();
+        if (this$keepDroppedTargets == null ? other$keepDroppedTargets != null : !this$keepDroppedTargets.equals(other$keepDroppedTargets)) {
+            return false;
+        }
+        Object this$labelLimit = this.getLabelLimit();
+        Object other$labelLimit = other.getLabelLimit();
+        if (this$labelLimit == null ? other$labelLimit != null : !this$labelLimit.equals(other$labelLimit)) {
+            return false;
+        }
+        Object this$labelNameLengthLimit = this.getLabelNameLengthLimit();
+        Object other$labelNameLengthLimit = other.getLabelNameLengthLimit();
+        if (this$labelNameLengthLimit == null ? other$labelNameLengthLimit != null : !this$labelNameLengthLimit.equals(other$labelNameLengthLimit)) {
+            return false;
+        }
+        Object this$labelValueLengthLimit = this.getLabelValueLengthLimit();
+        Object other$labelValueLengthLimit = other.getLabelValueLengthLimit();
+        if (this$labelValueLengthLimit == null ? other$labelValueLengthLimit != null : !this$labelValueLengthLimit.equals(other$labelValueLengthLimit)) {
+            return false;
+        }
+        Object this$metricRelabelings = this.getMetricRelabelings();
+        Object other$metricRelabelings = other.getMetricRelabelings();
+        if (this$metricRelabelings == null ? other$metricRelabelings != null : !this$metricRelabelings.equals(other$metricRelabelings)) {
+            return false;
+        }
+        Object this$module = this.getModule();
+        Object other$module = other.getModule();
+        if (this$module == null ? other$module != null : !this$module.equals(other$module)) {
+            return false;
+        }
+        Object this$nativeHistogramBucketLimit = this.getNativeHistogramBucketLimit();
+        Object other$nativeHistogramBucketLimit = other.getNativeHistogramBucketLimit();
+        if (this$nativeHistogramBucketLimit == null ? other$nativeHistogramBucketLimit != null : !this$nativeHistogramBucketLimit.equals(other$nativeHistogramBucketLimit)) {
+            return false;
+        }
+        Object this$nativeHistogramMinBucketFactor = this.getNativeHistogramMinBucketFactor();
+        Object other$nativeHistogramMinBucketFactor = other.getNativeHistogramMinBucketFactor();
+        if (this$nativeHistogramMinBucketFactor == null ? other$nativeHistogramMinBucketFactor != null : !this$nativeHistogramMinBucketFactor.equals(other$nativeHistogramMinBucketFactor)) {
+            return false;
+        }
+        Object this$oauth2 = this.getOauth2();
+        Object other$oauth2 = other.getOauth2();
+        if (this$oauth2 == null ? other$oauth2 != null : !this$oauth2.equals(other$oauth2)) {
+            return false;
+        }
+        Object this$params = this.getParams();
+        Object other$params = other.getParams();
+        if (this$params == null ? other$params != null : !this$params.equals(other$params)) {
+            return false;
+        }
+        Object this$prober = this.getProber();
+        Object other$prober = other.getProber();
+        if (this$prober == null ? other$prober != null : !this$prober.equals(other$prober)) {
+            return false;
+        }
+        Object this$sampleLimit = this.getSampleLimit();
+        Object other$sampleLimit = other.getSampleLimit();
+        if (this$sampleLimit == null ? other$sampleLimit != null : !this$sampleLimit.equals(other$sampleLimit)) {
+            return false;
+        }
+        Object this$scrapeClass = this.getScrapeClass();
+        Object other$scrapeClass = other.getScrapeClass();
+        if (this$scrapeClass == null ? other$scrapeClass != null : !this$scrapeClass.equals(other$scrapeClass)) {
+            return false;
+        }
+        Object this$scrapeClassicHistograms = this.getScrapeClassicHistograms();
+        Object other$scrapeClassicHistograms = other.getScrapeClassicHistograms();
+        if (this$scrapeClassicHistograms == null ? other$scrapeClassicHistograms != null : !this$scrapeClassicHistograms.equals(other$scrapeClassicHistograms)) {
+            return false;
+        }
+        Object this$scrapeNativeHistograms = this.getScrapeNativeHistograms();
+        Object other$scrapeNativeHistograms = other.getScrapeNativeHistograms();
+        if (this$scrapeNativeHistograms == null ? other$scrapeNativeHistograms != null : !this$scrapeNativeHistograms.equals(other$scrapeNativeHistograms)) {
+            return false;
+        }
+        Object this$scrapeProtocols = this.getScrapeProtocols();
+        Object other$scrapeProtocols = other.getScrapeProtocols();
+        if (this$scrapeProtocols == null ? other$scrapeProtocols != null : !this$scrapeProtocols.equals(other$scrapeProtocols)) {
+            return false;
+        }
+        Object this$scrapeTimeout = this.getScrapeTimeout();
+        Object other$scrapeTimeout = other.getScrapeTimeout();
+        if (this$scrapeTimeout == null ? other$scrapeTimeout != null : !this$scrapeTimeout.equals(other$scrapeTimeout)) {
+            return false;
+        }
+        Object this$targetLimit = this.getTargetLimit();
+        Object other$targetLimit = other.getTargetLimit();
+        if (this$targetLimit == null ? other$targetLimit != null : !this$targetLimit.equals(other$targetLimit)) {
+            return false;
+        }
+        Object this$targets = this.getTargets();
+        Object other$targets = other.getTargets();
+        if (this$targets == null ? other$targets != null : !this$targets.equals(other$targets)) {
+            return false;
+        }
+        Object this$tlsConfig = this.getTlsConfig();
+        Object other$tlsConfig = other.getTlsConfig();
+        if (this$tlsConfig == null ? other$tlsConfig != null : !this$tlsConfig.equals(other$tlsConfig)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ProbeSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $authorization = this.getAuthorization();
+        result = result * prime + ($authorization == null ? 43 : $authorization.hashCode());
+        Object $basicAuth = this.getBasicAuth();
+        result = result * prime + ($basicAuth == null ? 43 : $basicAuth.hashCode());
+        Object $bearerTokenSecret = this.getBearerTokenSecret();
+        result = result * prime + ($bearerTokenSecret == null ? 43 : $bearerTokenSecret.hashCode());
+        Object $convertClassicHistogramsToNHCB = this.getConvertClassicHistogramsToNHCB();
+        result = result * prime + ($convertClassicHistogramsToNHCB == null ? 43 : $convertClassicHistogramsToNHCB.hashCode());
+        Object $enableHttp2 = this.getEnableHttp2();
+        result = result * prime + ($enableHttp2 == null ? 43 : $enableHttp2.hashCode());
+        Object $fallbackScrapeProtocol = this.getFallbackScrapeProtocol();
+        result = result * prime + ($fallbackScrapeProtocol == null ? 43 : $fallbackScrapeProtocol.hashCode());
+        Object $followRedirects = this.getFollowRedirects();
+        result = result * prime + ($followRedirects == null ? 43 : $followRedirects.hashCode());
+        Object $interval = this.getInterval();
+        result = result * prime + ($interval == null ? 43 : $interval.hashCode());
+        Object $jobName = this.getJobName();
+        result = result * prime + ($jobName == null ? 43 : $jobName.hashCode());
+        Object $keepDroppedTargets = this.getKeepDroppedTargets();
+        result = result * prime + ($keepDroppedTargets == null ? 43 : $keepDroppedTargets.hashCode());
+        Object $labelLimit = this.getLabelLimit();
+        result = result * prime + ($labelLimit == null ? 43 : $labelLimit.hashCode());
+        Object $labelNameLengthLimit = this.getLabelNameLengthLimit();
+        result = result * prime + ($labelNameLengthLimit == null ? 43 : $labelNameLengthLimit.hashCode());
+        Object $labelValueLengthLimit = this.getLabelValueLengthLimit();
+        result = result * prime + ($labelValueLengthLimit == null ? 43 : $labelValueLengthLimit.hashCode());
+        Object $metricRelabelings = this.getMetricRelabelings();
+        result = result * prime + ($metricRelabelings == null ? 43 : $metricRelabelings.hashCode());
+        Object $module = this.getModule();
+        result = result * prime + ($module == null ? 43 : $module.hashCode());
+        Object $nativeHistogramBucketLimit = this.getNativeHistogramBucketLimit();
+        result = result * prime + ($nativeHistogramBucketLimit == null ? 43 : $nativeHistogramBucketLimit.hashCode());
+        Object $nativeHistogramMinBucketFactor = this.getNativeHistogramMinBucketFactor();
+        result = result * prime + ($nativeHistogramMinBucketFactor == null ? 43 : $nativeHistogramMinBucketFactor.hashCode());
+        Object $oauth2 = this.getOauth2();
+        result = result * prime + ($oauth2 == null ? 43 : $oauth2.hashCode());
+        Object $params = this.getParams();
+        result = result * prime + ($params == null ? 43 : $params.hashCode());
+        Object $prober = this.getProber();
+        result = result * prime + ($prober == null ? 43 : $prober.hashCode());
+        Object $sampleLimit = this.getSampleLimit();
+        result = result * prime + ($sampleLimit == null ? 43 : $sampleLimit.hashCode());
+        Object $scrapeClass = this.getScrapeClass();
+        result = result * prime + ($scrapeClass == null ? 43 : $scrapeClass.hashCode());
+        Object $scrapeClassicHistograms = this.getScrapeClassicHistograms();
+        result = result * prime + ($scrapeClassicHistograms == null ? 43 : $scrapeClassicHistograms.hashCode());
+        Object $scrapeNativeHistograms = this.getScrapeNativeHistograms();
+        result = result * prime + ($scrapeNativeHistograms == null ? 43 : $scrapeNativeHistograms.hashCode());
+        Object $scrapeProtocols = this.getScrapeProtocols();
+        result = result * prime + ($scrapeProtocols == null ? 43 : $scrapeProtocols.hashCode());
+        Object $scrapeTimeout = this.getScrapeTimeout();
+        result = result * prime + ($scrapeTimeout == null ? 43 : $scrapeTimeout.hashCode());
+        Object $targetLimit = this.getTargetLimit();
+        result = result * prime + ($targetLimit == null ? 43 : $targetLimit.hashCode());
+        Object $targets = this.getTargets();
+        result = result * prime + ($targets == null ? 43 : $targets.hashCode());
+        Object $tlsConfig = this.getTlsConfig();
+        result = result * prime + ($tlsConfig == null ? 43 : $tlsConfig.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ProbeSpec(" + "authorization=" + this.getAuthorization() + ", basicAuth=" + this.getBasicAuth() + ", bearerTokenSecret=" + this.getBearerTokenSecret() + ", convertClassicHistogramsToNHCB=" + this.getConvertClassicHistogramsToNHCB() + ", enableHttp2=" + this.getEnableHttp2() + ", fallbackScrapeProtocol=" + this.getFallbackScrapeProtocol() + ", followRedirects=" + this.getFollowRedirects() + ", interval=" + this.getInterval() + ", jobName=" + this.getJobName() + ", keepDroppedTargets=" + this.getKeepDroppedTargets() + ", labelLimit=" + this.getLabelLimit() + ", labelNameLengthLimit=" + this.getLabelNameLengthLimit() + ", labelValueLengthLimit=" + this.getLabelValueLengthLimit() + ", metricRelabelings=" + this.getMetricRelabelings() + ", module=" + this.getModule() + ", nativeHistogramBucketLimit=" + this.getNativeHistogramBucketLimit() + ", nativeHistogramMinBucketFactor=" + this.getNativeHistogramMinBucketFactor() + ", oauth2=" + this.getOauth2() + ", params=" + this.getParams() + ", prober=" + this.getProber() + ", sampleLimit=" + this.getSampleLimit() + ", scrapeClass=" + this.getScrapeClass() + ", scrapeClassicHistograms=" + this.getScrapeClassicHistograms() + ", scrapeNativeHistograms=" + this.getScrapeNativeHistograms() + ", scrapeProtocols=" + this.getScrapeProtocols() + ", scrapeTimeout=" + this.getScrapeTimeout() + ", targetLimit=" + this.getTargetLimit() + ", targets=" + this.getTargets() + ", tlsConfig=" + this.getTlsConfig() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

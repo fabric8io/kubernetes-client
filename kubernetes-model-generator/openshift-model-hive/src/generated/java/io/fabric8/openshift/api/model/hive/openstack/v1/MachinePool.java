@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MachinePool stores the configuration for a machine pool installed on OpenStack.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "flavor",
     "rootVolume"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachinePool)) {
+            return false;
+        }
+        MachinePool other = (MachinePool) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$flavor = this.getFlavor();
+        Object other$flavor = other.getFlavor();
+        if (this$flavor == null ? other$flavor != null : !this$flavor.equals(other$flavor)) {
+            return false;
+        }
+        Object this$rootVolume = this.getRootVolume();
+        Object other$rootVolume = other.getRootVolume();
+        if (this$rootVolume == null ? other$rootVolume != null : !this$rootVolume.equals(other$rootVolume)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachinePool;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $flavor = this.getFlavor();
+        result = result * prime + ($flavor == null ? 43 : $flavor.hashCode());
+        Object $rootVolume = this.getRootVolume();
+        result = result * prime + ($rootVolume == null ? 43 : $rootVolume.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachinePool(" + "flavor=" + this.getFlavor() + ", rootVolume=" + this.getRootVolume() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VSphereFailureDomainHostGroup holds the vmGroup and the hostGroup names in vCenter corresponds to a vm-host group of type Virtual Machine and Host respectively. Is also contains the vmHostRule which is an affinity vm-host rule in vCenter.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "hostGroup",
     "vmGroup",
     "vmHostRule"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -159,6 +150,64 @@ public class VSphereFailureDomainHostGroup implements Editable<VSphereFailureDom
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VSphereFailureDomainHostGroup)) {
+            return false;
+        }
+        VSphereFailureDomainHostGroup other = (VSphereFailureDomainHostGroup) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$hostGroup = this.getHostGroup();
+        Object other$hostGroup = other.getHostGroup();
+        if (this$hostGroup == null ? other$hostGroup != null : !this$hostGroup.equals(other$hostGroup)) {
+            return false;
+        }
+        Object this$vmGroup = this.getVmGroup();
+        Object other$vmGroup = other.getVmGroup();
+        if (this$vmGroup == null ? other$vmGroup != null : !this$vmGroup.equals(other$vmGroup)) {
+            return false;
+        }
+        Object this$vmHostRule = this.getVmHostRule();
+        Object other$vmHostRule = other.getVmHostRule();
+        if (this$vmHostRule == null ? other$vmHostRule != null : !this$vmHostRule.equals(other$vmHostRule)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VSphereFailureDomainHostGroup;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $hostGroup = this.getHostGroup();
+        result = result * prime + ($hostGroup == null ? 43 : $hostGroup.hashCode());
+        Object $vmGroup = this.getVmGroup();
+        result = result * prime + ($vmGroup == null ? 43 : $vmGroup.hashCode());
+        Object $vmHostRule = this.getVmHostRule();
+        result = result * prime + ($vmHostRule == null ? 43 : $vmHostRule.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VSphereFailureDomainHostGroup(" + "hostGroup=" + this.getHostGroup() + ", vmGroup=" + this.getVmGroup() + ", vmHostRule=" + this.getVmHostRule() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

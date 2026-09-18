@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * NetworkDataServicev6 represents a service object.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "dns",
     "dnsFromIPPool"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -144,6 +135,57 @@ public class NetworkDataServicev6 implements Editable<NetworkDataServicev6Builde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NetworkDataServicev6)) {
+            return false;
+        }
+        NetworkDataServicev6 other = (NetworkDataServicev6) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$dns = this.getDns();
+        Object other$dns = other.getDns();
+        if (this$dns == null ? other$dns != null : !this$dns.equals(other$dns)) {
+            return false;
+        }
+        Object this$dnsFromIPPool = this.getDnsFromIPPool();
+        Object other$dnsFromIPPool = other.getDnsFromIPPool();
+        if (this$dnsFromIPPool == null ? other$dnsFromIPPool != null : !this$dnsFromIPPool.equals(other$dnsFromIPPool)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NetworkDataServicev6;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $dns = this.getDns();
+        result = result * prime + ($dns == null ? 43 : $dns.hashCode());
+        Object $dnsFromIPPool = this.getDnsFromIPPool();
+        result = result * prime + ($dnsFromIPPool == null ? 43 : $dnsFromIPPool.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NetworkDataServicev6(" + "dns=" + this.getDns() + ", dnsFromIPPool=" + this.getDnsFromIPPool() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

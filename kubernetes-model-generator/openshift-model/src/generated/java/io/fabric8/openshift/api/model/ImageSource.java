@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageSource is used to describe build source that will be extracted from an image or used during a multi stage build. A reference of type ImageStreamTag, ImageStreamImage or DockerImage may be used. A pull secret can be specified to pull the image from an external registry or override the default service account secret if pulling from the internal registry. Image sources can either be used to extract content from an image and place it into the build context along with the repository source, or used directly during a multi-stage container image build to allow content to be copied without overwriting the contents of the repository source (see the 'paths' and 'as' fields).
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "from",
     "paths",
     "pullSecret"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -186,6 +177,71 @@ public class ImageSource implements Editable<ImageSourceBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageSource)) {
+            return false;
+        }
+        ImageSource other = (ImageSource) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$as = this.getAs();
+        Object other$as = other.getAs();
+        if (this$as == null ? other$as != null : !this$as.equals(other$as)) {
+            return false;
+        }
+        Object this$from = this.getFrom();
+        Object other$from = other.getFrom();
+        if (this$from == null ? other$from != null : !this$from.equals(other$from)) {
+            return false;
+        }
+        Object this$paths = this.getPaths();
+        Object other$paths = other.getPaths();
+        if (this$paths == null ? other$paths != null : !this$paths.equals(other$paths)) {
+            return false;
+        }
+        Object this$pullSecret = this.getPullSecret();
+        Object other$pullSecret = other.getPullSecret();
+        if (this$pullSecret == null ? other$pullSecret != null : !this$pullSecret.equals(other$pullSecret)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageSource;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $as = this.getAs();
+        result = result * prime + ($as == null ? 43 : $as.hashCode());
+        Object $from = this.getFrom();
+        result = result * prime + ($from == null ? 43 : $from.hashCode());
+        Object $paths = this.getPaths();
+        result = result * prime + ($paths == null ? 43 : $paths.hashCode());
+        Object $pullSecret = this.getPullSecret();
+        result = result * prime + ($pullSecret == null ? 43 : $pullSecret.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageSource(" + "as=" + this.getAs() + ", from=" + this.getFrom() + ", paths=" + this.getPaths() + ", pullSecret=" + this.getPullSecret() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

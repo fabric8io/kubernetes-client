@@ -34,9 +34,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ChannelStatus represents the current state of a Channel.
@@ -54,12 +51,6 @@ import lombok.experimental.Accessors;
     "observedGeneration",
     "policies",
     "subscribers"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -316,6 +307,113 @@ public class InMemoryChannelStatus implements Editable<InMemoryChannelStatusBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof InMemoryChannelStatus)) {
+            return false;
+        }
+        InMemoryChannelStatus other = (InMemoryChannelStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$address = this.getAddress();
+        Object other$address = other.getAddress();
+        if (this$address == null ? other$address != null : !this$address.equals(other$address)) {
+            return false;
+        }
+        Object this$addresses = this.getAddresses();
+        Object other$addresses = other.getAddresses();
+        if (this$addresses == null ? other$addresses != null : !this$addresses.equals(other$addresses)) {
+            return false;
+        }
+        Object this$annotations = this.getAnnotations();
+        Object other$annotations = other.getAnnotations();
+        if (this$annotations == null ? other$annotations != null : !this$annotations.equals(other$annotations)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$deadLetterSinkAudience = this.getDeadLetterSinkAudience();
+        Object other$deadLetterSinkAudience = other.getDeadLetterSinkAudience();
+        if (this$deadLetterSinkAudience == null ? other$deadLetterSinkAudience != null : !this$deadLetterSinkAudience.equals(other$deadLetterSinkAudience)) {
+            return false;
+        }
+        Object this$deadLetterSinkCACerts = this.getDeadLetterSinkCACerts();
+        Object other$deadLetterSinkCACerts = other.getDeadLetterSinkCACerts();
+        if (this$deadLetterSinkCACerts == null ? other$deadLetterSinkCACerts != null : !this$deadLetterSinkCACerts.equals(other$deadLetterSinkCACerts)) {
+            return false;
+        }
+        Object this$deadLetterSinkUri = this.getDeadLetterSinkUri();
+        Object other$deadLetterSinkUri = other.getDeadLetterSinkUri();
+        if (this$deadLetterSinkUri == null ? other$deadLetterSinkUri != null : !this$deadLetterSinkUri.equals(other$deadLetterSinkUri)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$policies = this.getPolicies();
+        Object other$policies = other.getPolicies();
+        if (this$policies == null ? other$policies != null : !this$policies.equals(other$policies)) {
+            return false;
+        }
+        Object this$subscribers = this.getSubscribers();
+        Object other$subscribers = other.getSubscribers();
+        if (this$subscribers == null ? other$subscribers != null : !this$subscribers.equals(other$subscribers)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof InMemoryChannelStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $address = this.getAddress();
+        result = result * prime + ($address == null ? 43 : $address.hashCode());
+        Object $addresses = this.getAddresses();
+        result = result * prime + ($addresses == null ? 43 : $addresses.hashCode());
+        Object $annotations = this.getAnnotations();
+        result = result * prime + ($annotations == null ? 43 : $annotations.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $deadLetterSinkAudience = this.getDeadLetterSinkAudience();
+        result = result * prime + ($deadLetterSinkAudience == null ? 43 : $deadLetterSinkAudience.hashCode());
+        Object $deadLetterSinkCACerts = this.getDeadLetterSinkCACerts();
+        result = result * prime + ($deadLetterSinkCACerts == null ? 43 : $deadLetterSinkCACerts.hashCode());
+        Object $deadLetterSinkUri = this.getDeadLetterSinkUri();
+        result = result * prime + ($deadLetterSinkUri == null ? 43 : $deadLetterSinkUri.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $policies = this.getPolicies();
+        result = result * prime + ($policies == null ? 43 : $policies.hashCode());
+        Object $subscribers = this.getSubscribers();
+        result = result * prime + ($subscribers == null ? 43 : $subscribers.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "InMemoryChannelStatus(" + "address=" + this.getAddress() + ", addresses=" + this.getAddresses() + ", annotations=" + this.getAnnotations() + ", conditions=" + this.getConditions() + ", deadLetterSinkAudience=" + this.getDeadLetterSinkAudience() + ", deadLetterSinkCACerts=" + this.getDeadLetterSinkCACerts() + ", deadLetterSinkUri=" + this.getDeadLetterSinkUri() + ", observedGeneration=" + this.getObservedGeneration() + ", policies=" + this.getPolicies() + ", subscribers=" + this.getSubscribers() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

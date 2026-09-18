@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * $hide_from_docs
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "filter",
     "portNumber",
     "route"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class EnvoyFilterWaypointMatch implements Editable<EnvoyFilterWaypointMat
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EnvoyFilterWaypointMatch)) {
+            return false;
+        }
+        EnvoyFilterWaypointMatch other = (EnvoyFilterWaypointMatch) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$filter = this.getFilter();
+        Object other$filter = other.getFilter();
+        if (this$filter == null ? other$filter != null : !this$filter.equals(other$filter)) {
+            return false;
+        }
+        Object this$portNumber = this.getPortNumber();
+        Object other$portNumber = other.getPortNumber();
+        if (this$portNumber == null ? other$portNumber != null : !this$portNumber.equals(other$portNumber)) {
+            return false;
+        }
+        Object this$route = this.getRoute();
+        Object other$route = other.getRoute();
+        if (this$route == null ? other$route != null : !this$route.equals(other$route)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EnvoyFilterWaypointMatch;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $filter = this.getFilter();
+        result = result * prime + ($filter == null ? 43 : $filter.hashCode());
+        Object $portNumber = this.getPortNumber();
+        result = result * prime + ($portNumber == null ? 43 : $portNumber.hashCode());
+        Object $route = this.getRoute();
+        result = result * prime + ($route == null ? 43 : $route.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EnvoyFilterWaypointMatch(" + "filter=" + this.getFilter() + ", portNumber=" + this.getPortNumber() + ", route=" + this.getRoute() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

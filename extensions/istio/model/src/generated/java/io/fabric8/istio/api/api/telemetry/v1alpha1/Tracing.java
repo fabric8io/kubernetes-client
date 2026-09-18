@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Tracing configures tracing behavior for workloads within a mesh. It can be used to enable/disable tracing, as well as to set sampling rates and custom tag extraction.<br><p> <br><p> Tracing configuration support overrides of the fields `providers`, `random_sampling_percentage`, `disable_span_reporting`, and `custom_tags` at each level in the configuration hierarchy, with missing values filled in from parent resources. However, when specified, `custom_tags` will fully replace any values provided by parent configuration.
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "providers",
     "randomSamplingPercentage",
     "useRequestIdForTraceSampling"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -266,6 +257,99 @@ public class Tracing implements Editable<TracingBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Tracing)) {
+            return false;
+        }
+        Tracing other = (Tracing) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$customTags = this.getCustomTags();
+        Object other$customTags = other.getCustomTags();
+        if (this$customTags == null ? other$customTags != null : !this$customTags.equals(other$customTags)) {
+            return false;
+        }
+        Object this$disableContextPropagation = this.getDisableContextPropagation();
+        Object other$disableContextPropagation = other.getDisableContextPropagation();
+        if (this$disableContextPropagation == null ? other$disableContextPropagation != null : !this$disableContextPropagation.equals(other$disableContextPropagation)) {
+            return false;
+        }
+        Object this$disableSpanReporting = this.getDisableSpanReporting();
+        Object other$disableSpanReporting = other.getDisableSpanReporting();
+        if (this$disableSpanReporting == null ? other$disableSpanReporting != null : !this$disableSpanReporting.equals(other$disableSpanReporting)) {
+            return false;
+        }
+        Object this$enableIstioTags = this.getEnableIstioTags();
+        Object other$enableIstioTags = other.getEnableIstioTags();
+        if (this$enableIstioTags == null ? other$enableIstioTags != null : !this$enableIstioTags.equals(other$enableIstioTags)) {
+            return false;
+        }
+        Object this$match = this.getMatch();
+        Object other$match = other.getMatch();
+        if (this$match == null ? other$match != null : !this$match.equals(other$match)) {
+            return false;
+        }
+        Object this$providers = this.getProviders();
+        Object other$providers = other.getProviders();
+        if (this$providers == null ? other$providers != null : !this$providers.equals(other$providers)) {
+            return false;
+        }
+        Object this$randomSamplingPercentage = this.getRandomSamplingPercentage();
+        Object other$randomSamplingPercentage = other.getRandomSamplingPercentage();
+        if (this$randomSamplingPercentage == null ? other$randomSamplingPercentage != null : !this$randomSamplingPercentage.equals(other$randomSamplingPercentage)) {
+            return false;
+        }
+        Object this$useRequestIdForTraceSampling = this.getUseRequestIdForTraceSampling();
+        Object other$useRequestIdForTraceSampling = other.getUseRequestIdForTraceSampling();
+        if (this$useRequestIdForTraceSampling == null ? other$useRequestIdForTraceSampling != null : !this$useRequestIdForTraceSampling.equals(other$useRequestIdForTraceSampling)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Tracing;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $customTags = this.getCustomTags();
+        result = result * prime + ($customTags == null ? 43 : $customTags.hashCode());
+        Object $disableContextPropagation = this.getDisableContextPropagation();
+        result = result * prime + ($disableContextPropagation == null ? 43 : $disableContextPropagation.hashCode());
+        Object $disableSpanReporting = this.getDisableSpanReporting();
+        result = result * prime + ($disableSpanReporting == null ? 43 : $disableSpanReporting.hashCode());
+        Object $enableIstioTags = this.getEnableIstioTags();
+        result = result * prime + ($enableIstioTags == null ? 43 : $enableIstioTags.hashCode());
+        Object $match = this.getMatch();
+        result = result * prime + ($match == null ? 43 : $match.hashCode());
+        Object $providers = this.getProviders();
+        result = result * prime + ($providers == null ? 43 : $providers.hashCode());
+        Object $randomSamplingPercentage = this.getRandomSamplingPercentage();
+        result = result * prime + ($randomSamplingPercentage == null ? 43 : $randomSamplingPercentage.hashCode());
+        Object $useRequestIdForTraceSampling = this.getUseRequestIdForTraceSampling();
+        result = result * prime + ($useRequestIdForTraceSampling == null ? 43 : $useRequestIdForTraceSampling.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Tracing(" + "customTags=" + this.getCustomTags() + ", disableContextPropagation=" + this.getDisableContextPropagation() + ", disableSpanReporting=" + this.getDisableSpanReporting() + ", enableIstioTags=" + this.getEnableIstioTags() + ", match=" + this.getMatch() + ", providers=" + this.getProviders() + ", randomSamplingPercentage=" + this.getRandomSamplingPercentage() + ", useRequestIdForTraceSampling=" + this.getUseRequestIdForTraceSampling() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

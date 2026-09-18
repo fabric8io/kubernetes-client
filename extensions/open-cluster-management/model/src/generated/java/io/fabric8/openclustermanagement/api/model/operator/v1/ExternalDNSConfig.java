@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ExternalDNSConfig contains settings for running external-dns in a Hive environment.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "aws",
     "gcp"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class ExternalDNSConfig implements Editable<ExternalDNSConfigBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ExternalDNSConfig)) {
+            return false;
+        }
+        ExternalDNSConfig other = (ExternalDNSConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$aws = this.getAws();
+        Object other$aws = other.getAws();
+        if (this$aws == null ? other$aws != null : !this$aws.equals(other$aws)) {
+            return false;
+        }
+        Object this$gcp = this.getGcp();
+        Object other$gcp = other.getGcp();
+        if (this$gcp == null ? other$gcp != null : !this$gcp.equals(other$gcp)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ExternalDNSConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $aws = this.getAws();
+        result = result * prime + ($aws == null ? 43 : $aws.hashCode());
+        Object $gcp = this.getGcp();
+        result = result * prime + ($gcp == null ? 43 : $gcp.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ExternalDNSConfig(" + "aws=" + this.getAws() + ", gcp=" + this.getGcp() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

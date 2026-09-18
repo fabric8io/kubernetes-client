@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "rdma-device",
     "representor-device",
     "vhost-net"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -167,6 +158,78 @@ public class PciDevice implements Editable<PciDeviceBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PciDevice)) {
+            return false;
+        }
+        PciDevice other = (PciDevice) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$pciAddress = this.getPciAddress();
+        Object other$pciAddress = other.getPciAddress();
+        if (this$pciAddress == null ? other$pciAddress != null : !this$pciAddress.equals(other$pciAddress)) {
+            return false;
+        }
+        Object this$pfPciAddress = this.getPfPciAddress();
+        Object other$pfPciAddress = other.getPfPciAddress();
+        if (this$pfPciAddress == null ? other$pfPciAddress != null : !this$pfPciAddress.equals(other$pfPciAddress)) {
+            return false;
+        }
+        Object this$rdmaDevice = this.getRdmaDevice();
+        Object other$rdmaDevice = other.getRdmaDevice();
+        if (this$rdmaDevice == null ? other$rdmaDevice != null : !this$rdmaDevice.equals(other$rdmaDevice)) {
+            return false;
+        }
+        Object this$representorDevice = this.getRepresentorDevice();
+        Object other$representorDevice = other.getRepresentorDevice();
+        if (this$representorDevice == null ? other$representorDevice != null : !this$representorDevice.equals(other$representorDevice)) {
+            return false;
+        }
+        Object this$vhostNet = this.getVhostNet();
+        Object other$vhostNet = other.getVhostNet();
+        if (this$vhostNet == null ? other$vhostNet != null : !this$vhostNet.equals(other$vhostNet)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PciDevice;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $pciAddress = this.getPciAddress();
+        result = result * prime + ($pciAddress == null ? 43 : $pciAddress.hashCode());
+        Object $pfPciAddress = this.getPfPciAddress();
+        result = result * prime + ($pfPciAddress == null ? 43 : $pfPciAddress.hashCode());
+        Object $rdmaDevice = this.getRdmaDevice();
+        result = result * prime + ($rdmaDevice == null ? 43 : $rdmaDevice.hashCode());
+        Object $representorDevice = this.getRepresentorDevice();
+        result = result * prime + ($representorDevice == null ? 43 : $representorDevice.hashCode());
+        Object $vhostNet = this.getVhostNet();
+        result = result * prime + ($vhostNet == null ? 43 : $vhostNet.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PciDevice(" + "pciAddress=" + this.getPciAddress() + ", pfPciAddress=" + this.getPfPciAddress() + ", rdmaDevice=" + this.getRdmaDevice() + ", representorDevice=" + this.getRepresentorDevice() + ", vhostNet=" + this.getVhostNet() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

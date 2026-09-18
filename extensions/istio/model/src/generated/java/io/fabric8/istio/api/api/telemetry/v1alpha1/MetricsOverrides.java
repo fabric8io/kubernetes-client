@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MetricsOverrides defines custom metric generation behavior for an individual metric or the set of all standard metrics.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "disabled",
     "match",
     "tagOverrides"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -162,6 +153,64 @@ public class MetricsOverrides implements Editable<MetricsOverridesBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MetricsOverrides)) {
+            return false;
+        }
+        MetricsOverrides other = (MetricsOverrides) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$disabled = this.getDisabled();
+        Object other$disabled = other.getDisabled();
+        if (this$disabled == null ? other$disabled != null : !this$disabled.equals(other$disabled)) {
+            return false;
+        }
+        Object this$match = this.getMatch();
+        Object other$match = other.getMatch();
+        if (this$match == null ? other$match != null : !this$match.equals(other$match)) {
+            return false;
+        }
+        Object this$tagOverrides = this.getTagOverrides();
+        Object other$tagOverrides = other.getTagOverrides();
+        if (this$tagOverrides == null ? other$tagOverrides != null : !this$tagOverrides.equals(other$tagOverrides)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MetricsOverrides;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $disabled = this.getDisabled();
+        result = result * prime + ($disabled == null ? 43 : $disabled.hashCode());
+        Object $match = this.getMatch();
+        result = result * prime + ($match == null ? 43 : $match.hashCode());
+        Object $tagOverrides = this.getTagOverrides();
+        result = result * prime + ($tagOverrides == null ? 43 : $tagOverrides.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MetricsOverrides(" + "disabled=" + this.getDisabled() + ", match=" + this.getMatch() + ", tagOverrides=" + this.getTagOverrides() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

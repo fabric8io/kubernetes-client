@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageRegistryConfigStorageAlibabaOSS holds Alibaba Cloud OSS configuration. Configures the registry to use Alibaba Cloud Object Storage Service for backend storage. More about oss, you can look at the [official documentation](https://www.alibabacloud.com/help/product/31815.htm)
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "encryption",
     "endpointAccessibility",
     "region"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class ImageRegistryConfigStorageAlibabaOSS implements Editable<ImageRegis
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageRegistryConfigStorageAlibabaOSS)) {
+            return false;
+        }
+        ImageRegistryConfigStorageAlibabaOSS other = (ImageRegistryConfigStorageAlibabaOSS) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$bucket = this.getBucket();
+        Object other$bucket = other.getBucket();
+        if (this$bucket == null ? other$bucket != null : !this$bucket.equals(other$bucket)) {
+            return false;
+        }
+        Object this$encryption = this.getEncryption();
+        Object other$encryption = other.getEncryption();
+        if (this$encryption == null ? other$encryption != null : !this$encryption.equals(other$encryption)) {
+            return false;
+        }
+        Object this$endpointAccessibility = this.getEndpointAccessibility();
+        Object other$endpointAccessibility = other.getEndpointAccessibility();
+        if (this$endpointAccessibility == null ? other$endpointAccessibility != null : !this$endpointAccessibility.equals(other$endpointAccessibility)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageRegistryConfigStorageAlibabaOSS;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $bucket = this.getBucket();
+        result = result * prime + ($bucket == null ? 43 : $bucket.hashCode());
+        Object $encryption = this.getEncryption();
+        result = result * prime + ($encryption == null ? 43 : $encryption.hashCode());
+        Object $endpointAccessibility = this.getEndpointAccessibility();
+        result = result * prime + ($endpointAccessibility == null ? 43 : $endpointAccessibility.hashCode());
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageRegistryConfigStorageAlibabaOSS(" + "bucket=" + this.getBucket() + ", encryption=" + this.getEncryption() + ", endpointAccessibility=" + this.getEndpointAccessibility() + ", region=" + this.getRegion() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

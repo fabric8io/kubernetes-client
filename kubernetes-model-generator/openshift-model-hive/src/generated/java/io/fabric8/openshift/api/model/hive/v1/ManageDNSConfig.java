@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ManageDNSConfig contains the domain being managed, and the cloud-specific details for accessing/managing the domain.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "azure",
     "domains",
     "gcp"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class ManageDNSConfig implements Editable<ManageDNSConfigBuilder>, Kubern
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ManageDNSConfig)) {
+            return false;
+        }
+        ManageDNSConfig other = (ManageDNSConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$aws = this.getAws();
+        Object other$aws = other.getAws();
+        if (this$aws == null ? other$aws != null : !this$aws.equals(other$aws)) {
+            return false;
+        }
+        Object this$azure = this.getAzure();
+        Object other$azure = other.getAzure();
+        if (this$azure == null ? other$azure != null : !this$azure.equals(other$azure)) {
+            return false;
+        }
+        Object this$domains = this.getDomains();
+        Object other$domains = other.getDomains();
+        if (this$domains == null ? other$domains != null : !this$domains.equals(other$domains)) {
+            return false;
+        }
+        Object this$gcp = this.getGcp();
+        Object other$gcp = other.getGcp();
+        if (this$gcp == null ? other$gcp != null : !this$gcp.equals(other$gcp)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ManageDNSConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $aws = this.getAws();
+        result = result * prime + ($aws == null ? 43 : $aws.hashCode());
+        Object $azure = this.getAzure();
+        result = result * prime + ($azure == null ? 43 : $azure.hashCode());
+        Object $domains = this.getDomains();
+        result = result * prime + ($domains == null ? 43 : $domains.hashCode());
+        Object $gcp = this.getGcp();
+        result = result * prime + ($gcp == null ? 43 : $gcp.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ManageDNSConfig(" + "aws=" + this.getAws() + ", azure=" + this.getAzure() + ", domains=" + this.getDomains() + ", gcp=" + this.getGcp() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

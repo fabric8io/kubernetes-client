@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * UserWorkloadLogsCollectionSpec defines the spec for the addon to collect and forward logs from user workloads hosted on fleet managed clusters.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "clusterLogForwarder"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -120,6 +111,50 @@ public class UserWorkloadLogsCollectionSpec implements Editable<UserWorkloadLogs
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof UserWorkloadLogsCollectionSpec)) {
+            return false;
+        }
+        UserWorkloadLogsCollectionSpec other = (UserWorkloadLogsCollectionSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterLogForwarder = this.getClusterLogForwarder();
+        Object other$clusterLogForwarder = other.getClusterLogForwarder();
+        if (this$clusterLogForwarder == null ? other$clusterLogForwarder != null : !this$clusterLogForwarder.equals(other$clusterLogForwarder)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof UserWorkloadLogsCollectionSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterLogForwarder = this.getClusterLogForwarder();
+        result = result * prime + ($clusterLogForwarder == null ? 43 : $clusterLogForwarder.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "UserWorkloadLogsCollectionSpec(" + "clusterLogForwarder=" + this.getClusterLogForwarder() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OpenTelemetryCollectionSpec defines the spec for the addon to collect and forward observability signals from user workloads hosted on fleet managed clusters using the OpenTelemetryCollector with or without instrumentation.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "collector",
     "instrumentation"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class OpenTelemetryCollectionSpec implements Editable<OpenTelemetryCollec
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OpenTelemetryCollectionSpec)) {
+            return false;
+        }
+        OpenTelemetryCollectionSpec other = (OpenTelemetryCollectionSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$collector = this.getCollector();
+        Object other$collector = other.getCollector();
+        if (this$collector == null ? other$collector != null : !this$collector.equals(other$collector)) {
+            return false;
+        }
+        Object this$instrumentation = this.getInstrumentation();
+        Object other$instrumentation = other.getInstrumentation();
+        if (this$instrumentation == null ? other$instrumentation != null : !this$instrumentation.equals(other$instrumentation)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OpenTelemetryCollectionSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $collector = this.getCollector();
+        result = result * prime + ($collector == null ? 43 : $collector.hashCode());
+        Object $instrumentation = this.getInstrumentation();
+        result = result * prime + ($instrumentation == null ? 43 : $instrumentation.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OpenTelemetryCollectionSpec(" + "collector=" + this.getCollector() + ", instrumentation=" + this.getInstrumentation() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

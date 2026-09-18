@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ImageLayer represents a single layer of the image. Some images may have multiple layers. Some may have none.
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
     "mediaType",
     "name",
     "size"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -159,6 +150,64 @@ public class ImageLayer implements Editable<ImageLayerBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ImageLayer)) {
+            return false;
+        }
+        ImageLayer other = (ImageLayer) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$mediaType = this.getMediaType();
+        Object other$mediaType = other.getMediaType();
+        if (this$mediaType == null ? other$mediaType != null : !this$mediaType.equals(other$mediaType)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$size = this.getSize();
+        Object other$size = other.getSize();
+        if (this$size == null ? other$size != null : !this$size.equals(other$size)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ImageLayer;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $mediaType = this.getMediaType();
+        result = result * prime + ($mediaType == null ? 43 : $mediaType.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $size = this.getSize();
+        result = result * prime + ($size == null ? 43 : $size.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ImageLayer(" + "mediaType=" + this.getMediaType() + ", name=" + this.getName() + ", size=" + this.getSize() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

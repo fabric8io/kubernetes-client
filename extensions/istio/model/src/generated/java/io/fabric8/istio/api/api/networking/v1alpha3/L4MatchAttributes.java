@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * L4 connection match attributes. Note that L4 connection matching support is incomplete.
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "sourceLabels",
     "sourceNamespace",
     "sourceSubnet"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -228,6 +219,85 @@ public class L4MatchAttributes implements Editable<L4MatchAttributesBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof L4MatchAttributes)) {
+            return false;
+        }
+        L4MatchAttributes other = (L4MatchAttributes) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$destinationSubnets = this.getDestinationSubnets();
+        Object other$destinationSubnets = other.getDestinationSubnets();
+        if (this$destinationSubnets == null ? other$destinationSubnets != null : !this$destinationSubnets.equals(other$destinationSubnets)) {
+            return false;
+        }
+        Object this$gateways = this.getGateways();
+        Object other$gateways = other.getGateways();
+        if (this$gateways == null ? other$gateways != null : !this$gateways.equals(other$gateways)) {
+            return false;
+        }
+        Object this$port = this.getPort();
+        Object other$port = other.getPort();
+        if (this$port == null ? other$port != null : !this$port.equals(other$port)) {
+            return false;
+        }
+        Object this$sourceLabels = this.getSourceLabels();
+        Object other$sourceLabels = other.getSourceLabels();
+        if (this$sourceLabels == null ? other$sourceLabels != null : !this$sourceLabels.equals(other$sourceLabels)) {
+            return false;
+        }
+        Object this$sourceNamespace = this.getSourceNamespace();
+        Object other$sourceNamespace = other.getSourceNamespace();
+        if (this$sourceNamespace == null ? other$sourceNamespace != null : !this$sourceNamespace.equals(other$sourceNamespace)) {
+            return false;
+        }
+        Object this$sourceSubnet = this.getSourceSubnet();
+        Object other$sourceSubnet = other.getSourceSubnet();
+        if (this$sourceSubnet == null ? other$sourceSubnet != null : !this$sourceSubnet.equals(other$sourceSubnet)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof L4MatchAttributes;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $destinationSubnets = this.getDestinationSubnets();
+        result = result * prime + ($destinationSubnets == null ? 43 : $destinationSubnets.hashCode());
+        Object $gateways = this.getGateways();
+        result = result * prime + ($gateways == null ? 43 : $gateways.hashCode());
+        Object $port = this.getPort();
+        result = result * prime + ($port == null ? 43 : $port.hashCode());
+        Object $sourceLabels = this.getSourceLabels();
+        result = result * prime + ($sourceLabels == null ? 43 : $sourceLabels.hashCode());
+        Object $sourceNamespace = this.getSourceNamespace();
+        result = result * prime + ($sourceNamespace == null ? 43 : $sourceNamespace.hashCode());
+        Object $sourceSubnet = this.getSourceSubnet();
+        result = result * prime + ($sourceSubnet == null ? 43 : $sourceSubnet.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "L4MatchAttributes(" + "destinationSubnets=" + this.getDestinationSubnets() + ", gateways=" + this.getGateways() + ", port=" + this.getPort() + ", sourceLabels=" + this.getSourceLabels() + ", sourceNamespace=" + this.getSourceNamespace() + ", sourceSubnet=" + this.getSourceSubnet() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

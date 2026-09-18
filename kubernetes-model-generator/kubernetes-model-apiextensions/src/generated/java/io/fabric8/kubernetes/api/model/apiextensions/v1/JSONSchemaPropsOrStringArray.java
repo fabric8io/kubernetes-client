@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonSerialize(using = io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArraySerDe.Serializer.class)
 @JsonDeserialize(using = io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArraySerDe.Deserializer.class)
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "Property",
     "Schema"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -131,6 +122,57 @@ public class JSONSchemaPropsOrStringArray implements Editable<JSONSchemaPropsOrS
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof JSONSchemaPropsOrStringArray)) {
+            return false;
+        }
+        JSONSchemaPropsOrStringArray other = (JSONSchemaPropsOrStringArray) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$property = this.getProperty();
+        Object other$property = other.getProperty();
+        if (this$property == null ? other$property != null : !this$property.equals(other$property)) {
+            return false;
+        }
+        Object this$schema = this.getSchema();
+        Object other$schema = other.getSchema();
+        if (this$schema == null ? other$schema != null : !this$schema.equals(other$schema)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof JSONSchemaPropsOrStringArray;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $property = this.getProperty();
+        result = result * prime + ($property == null ? 43 : $property.hashCode());
+        Object $schema = this.getSchema();
+        result = result * prime + ($schema == null ? 43 : $schema.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "JSONSchemaPropsOrStringArray(" + "property=" + this.getProperty() + ", schema=" + this.getSchema() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

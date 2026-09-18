@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * PoolStatus contains status information for a single resource pool.
@@ -52,12 +49,6 @@ import lombok.experimental.Accessors;
     "totalDevices",
     "unavailableDevices",
     "validationError"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -344,6 +335,127 @@ public class PoolStatus implements Editable<PoolStatusBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PoolStatus)) {
+            return false;
+        }
+        PoolStatus other = (PoolStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allocatedDevices = this.getAllocatedDevices();
+        Object other$allocatedDevices = other.getAllocatedDevices();
+        if (this$allocatedDevices == null ? other$allocatedDevices != null : !this$allocatedDevices.equals(other$allocatedDevices)) {
+            return false;
+        }
+        Object this$availableDevices = this.getAvailableDevices();
+        Object other$availableDevices = other.getAvailableDevices();
+        if (this$availableDevices == null ? other$availableDevices != null : !this$availableDevices.equals(other$availableDevices)) {
+            return false;
+        }
+        Object this$driver = this.getDriver();
+        Object other$driver = other.getDriver();
+        if (this$driver == null ? other$driver != null : !this$driver.equals(other$driver)) {
+            return false;
+        }
+        Object this$generation = this.getGeneration();
+        Object other$generation = other.getGeneration();
+        if (this$generation == null ? other$generation != null : !this$generation.equals(other$generation)) {
+            return false;
+        }
+        Object this$nodeName = this.getNodeName();
+        Object other$nodeName = other.getNodeName();
+        if (this$nodeName == null ? other$nodeName != null : !this$nodeName.equals(other$nodeName)) {
+            return false;
+        }
+        Object this$partitionSummary = this.getPartitionSummary();
+        Object other$partitionSummary = other.getPartitionSummary();
+        if (this$partitionSummary == null ? other$partitionSummary != null : !this$partitionSummary.equals(other$partitionSummary)) {
+            return false;
+        }
+        Object this$poolName = this.getPoolName();
+        Object other$poolName = other.getPoolName();
+        if (this$poolName == null ? other$poolName != null : !this$poolName.equals(other$poolName)) {
+            return false;
+        }
+        Object this$resourceSliceCount = this.getResourceSliceCount();
+        Object other$resourceSliceCount = other.getResourceSliceCount();
+        if (this$resourceSliceCount == null ? other$resourceSliceCount != null : !this$resourceSliceCount.equals(other$resourceSliceCount)) {
+            return false;
+        }
+        Object this$shareableSummary = this.getShareableSummary();
+        Object other$shareableSummary = other.getShareableSummary();
+        if (this$shareableSummary == null ? other$shareableSummary != null : !this$shareableSummary.equals(other$shareableSummary)) {
+            return false;
+        }
+        Object this$totalDevices = this.getTotalDevices();
+        Object other$totalDevices = other.getTotalDevices();
+        if (this$totalDevices == null ? other$totalDevices != null : !this$totalDevices.equals(other$totalDevices)) {
+            return false;
+        }
+        Object this$unavailableDevices = this.getUnavailableDevices();
+        Object other$unavailableDevices = other.getUnavailableDevices();
+        if (this$unavailableDevices == null ? other$unavailableDevices != null : !this$unavailableDevices.equals(other$unavailableDevices)) {
+            return false;
+        }
+        Object this$validationError = this.getValidationError();
+        Object other$validationError = other.getValidationError();
+        if (this$validationError == null ? other$validationError != null : !this$validationError.equals(other$validationError)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PoolStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allocatedDevices = this.getAllocatedDevices();
+        result = result * prime + ($allocatedDevices == null ? 43 : $allocatedDevices.hashCode());
+        Object $availableDevices = this.getAvailableDevices();
+        result = result * prime + ($availableDevices == null ? 43 : $availableDevices.hashCode());
+        Object $driver = this.getDriver();
+        result = result * prime + ($driver == null ? 43 : $driver.hashCode());
+        Object $generation = this.getGeneration();
+        result = result * prime + ($generation == null ? 43 : $generation.hashCode());
+        Object $nodeName = this.getNodeName();
+        result = result * prime + ($nodeName == null ? 43 : $nodeName.hashCode());
+        Object $partitionSummary = this.getPartitionSummary();
+        result = result * prime + ($partitionSummary == null ? 43 : $partitionSummary.hashCode());
+        Object $poolName = this.getPoolName();
+        result = result * prime + ($poolName == null ? 43 : $poolName.hashCode());
+        Object $resourceSliceCount = this.getResourceSliceCount();
+        result = result * prime + ($resourceSliceCount == null ? 43 : $resourceSliceCount.hashCode());
+        Object $shareableSummary = this.getShareableSummary();
+        result = result * prime + ($shareableSummary == null ? 43 : $shareableSummary.hashCode());
+        Object $totalDevices = this.getTotalDevices();
+        result = result * prime + ($totalDevices == null ? 43 : $totalDevices.hashCode());
+        Object $unavailableDevices = this.getUnavailableDevices();
+        result = result * prime + ($unavailableDevices == null ? 43 : $unavailableDevices.hashCode());
+        Object $validationError = this.getValidationError();
+        result = result * prime + ($validationError == null ? 43 : $validationError.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PoolStatus(" + "allocatedDevices=" + this.getAllocatedDevices() + ", availableDevices=" + this.getAvailableDevices() + ", driver=" + this.getDriver() + ", generation=" + this.getGeneration() + ", nodeName=" + this.getNodeName() + ", partitionSummary=" + this.getPartitionSummary() + ", poolName=" + this.getPoolName() + ", resourceSliceCount=" + this.getResourceSliceCount() + ", shareableSummary=" + this.getShareableSummary() + ", totalDevices=" + this.getTotalDevices() + ", unavailableDevices=" + this.getUnavailableDevices() + ", validationError=" + this.getValidationError() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

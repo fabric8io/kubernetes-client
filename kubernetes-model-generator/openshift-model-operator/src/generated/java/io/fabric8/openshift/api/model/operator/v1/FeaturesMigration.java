@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -38,12 +35,6 @@ import lombok.experimental.Accessors;
     "egressFirewall",
     "egressIP",
     "multicast"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -157,6 +148,64 @@ public class FeaturesMigration implements Editable<FeaturesMigrationBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof FeaturesMigration)) {
+            return false;
+        }
+        FeaturesMigration other = (FeaturesMigration) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$egressFirewall = this.getEgressFirewall();
+        Object other$egressFirewall = other.getEgressFirewall();
+        if (this$egressFirewall == null ? other$egressFirewall != null : !this$egressFirewall.equals(other$egressFirewall)) {
+            return false;
+        }
+        Object this$egressIP = this.getEgressIP();
+        Object other$egressIP = other.getEgressIP();
+        if (this$egressIP == null ? other$egressIP != null : !this$egressIP.equals(other$egressIP)) {
+            return false;
+        }
+        Object this$multicast = this.getMulticast();
+        Object other$multicast = other.getMulticast();
+        if (this$multicast == null ? other$multicast != null : !this$multicast.equals(other$multicast)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof FeaturesMigration;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $egressFirewall = this.getEgressFirewall();
+        result = result * prime + ($egressFirewall == null ? 43 : $egressFirewall.hashCode());
+        Object $egressIP = this.getEgressIP();
+        result = result * prime + ($egressIP == null ? 43 : $egressIP.hashCode());
+        Object $multicast = this.getMulticast();
+        result = result * prime + ($multicast == null ? 43 : $multicast.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "FeaturesMigration(" + "egressFirewall=" + this.getEgressFirewall() + ", egressIP=" + this.getEgressIP() + ", multicast=" + this.getMulticast() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

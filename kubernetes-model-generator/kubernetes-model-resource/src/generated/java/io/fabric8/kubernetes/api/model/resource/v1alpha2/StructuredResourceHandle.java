@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * StructuredResourceHandle is the in-tree representation of the allocation result.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "results",
     "vendorClaimParameters",
     "vendorClassParameters"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -188,6 +179,71 @@ public class StructuredResourceHandle implements Editable<StructuredResourceHand
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof StructuredResourceHandle)) {
+            return false;
+        }
+        StructuredResourceHandle other = (StructuredResourceHandle) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$nodeName = this.getNodeName();
+        Object other$nodeName = other.getNodeName();
+        if (this$nodeName == null ? other$nodeName != null : !this$nodeName.equals(other$nodeName)) {
+            return false;
+        }
+        Object this$results = this.getResults();
+        Object other$results = other.getResults();
+        if (this$results == null ? other$results != null : !this$results.equals(other$results)) {
+            return false;
+        }
+        Object this$vendorClaimParameters = this.getVendorClaimParameters();
+        Object other$vendorClaimParameters = other.getVendorClaimParameters();
+        if (this$vendorClaimParameters == null ? other$vendorClaimParameters != null : !this$vendorClaimParameters.equals(other$vendorClaimParameters)) {
+            return false;
+        }
+        Object this$vendorClassParameters = this.getVendorClassParameters();
+        Object other$vendorClassParameters = other.getVendorClassParameters();
+        if (this$vendorClassParameters == null ? other$vendorClassParameters != null : !this$vendorClassParameters.equals(other$vendorClassParameters)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof StructuredResourceHandle;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $nodeName = this.getNodeName();
+        result = result * prime + ($nodeName == null ? 43 : $nodeName.hashCode());
+        Object $results = this.getResults();
+        result = result * prime + ($results == null ? 43 : $results.hashCode());
+        Object $vendorClaimParameters = this.getVendorClaimParameters();
+        result = result * prime + ($vendorClaimParameters == null ? 43 : $vendorClaimParameters.hashCode());
+        Object $vendorClassParameters = this.getVendorClassParameters();
+        result = result * prime + ($vendorClassParameters == null ? 43 : $vendorClassParameters.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "StructuredResourceHandle(" + "nodeName=" + this.getNodeName() + ", results=" + this.getResults() + ", vendorClaimParameters=" + this.getVendorClaimParameters() + ", vendorClassParameters=" + this.getVendorClassParameters() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

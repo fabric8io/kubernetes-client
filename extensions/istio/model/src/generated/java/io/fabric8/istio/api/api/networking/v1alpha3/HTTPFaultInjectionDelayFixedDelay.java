@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Add a fixed delay before forwarding the request. Format: 1h/1m/1s/1ms. MUST be &gt;=1ms.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "fixedDelay"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -120,6 +111,50 @@ public class HTTPFaultInjectionDelayFixedDelay implements IsHTTPFaultInjectionDe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HTTPFaultInjectionDelayFixedDelay)) {
+            return false;
+        }
+        HTTPFaultInjectionDelayFixedDelay other = (HTTPFaultInjectionDelayFixedDelay) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$fixedDelay = this.getFixedDelay();
+        Object other$fixedDelay = other.getFixedDelay();
+        if (this$fixedDelay == null ? other$fixedDelay != null : !this$fixedDelay.equals(other$fixedDelay)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HTTPFaultInjectionDelayFixedDelay;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $fixedDelay = this.getFixedDelay();
+        result = result * prime + ($fixedDelay == null ? 43 : $fixedDelay.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HTTPFaultInjectionDelayFixedDelay(" + "fixedDelay=" + this.getFixedDelay() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

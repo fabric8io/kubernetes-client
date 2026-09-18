@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AzureManagedIdentity contains the configuration for Azure Workload Identity or Azure Managed Service Identity If the AZURE_FEDERATED_TOKEN_FILE environment variable is set, the Azure Workload Identity will be used. Otherwise, we fall back to using Azure Managed Service Identity.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "clientID",
     "resourceID",
     "tenantID"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class AzureManagedIdentity implements Editable<AzureManagedIdentityBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AzureManagedIdentity)) {
+            return false;
+        }
+        AzureManagedIdentity other = (AzureManagedIdentity) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clientID = this.getClientID();
+        Object other$clientID = other.getClientID();
+        if (this$clientID == null ? other$clientID != null : !this$clientID.equals(other$clientID)) {
+            return false;
+        }
+        Object this$resourceID = this.getResourceID();
+        Object other$resourceID = other.getResourceID();
+        if (this$resourceID == null ? other$resourceID != null : !this$resourceID.equals(other$resourceID)) {
+            return false;
+        }
+        Object this$tenantID = this.getTenantID();
+        Object other$tenantID = other.getTenantID();
+        if (this$tenantID == null ? other$tenantID != null : !this$tenantID.equals(other$tenantID)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AzureManagedIdentity;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clientID = this.getClientID();
+        result = result * prime + ($clientID == null ? 43 : $clientID.hashCode());
+        Object $resourceID = this.getResourceID();
+        result = result * prime + ($resourceID == null ? 43 : $resourceID.hashCode());
+        Object $tenantID = this.getTenantID();
+        result = result * prime + ($tenantID == null ? 43 : $tenantID.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AzureManagedIdentity(" + "clientID=" + this.getClientID() + ", resourceID=" + this.getResourceID() + ", tenantID=" + this.getTenantID() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

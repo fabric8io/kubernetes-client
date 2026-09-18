@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * VenafiTPP defines connection configuration details for a CyberArk Certificate Manager Self-Hosted instance
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "caBundleSecretRef",
     "credentialsRef",
     "url"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -181,6 +172,71 @@ public class VenafiTPP implements Editable<VenafiTPPBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VenafiTPP)) {
+            return false;
+        }
+        VenafiTPP other = (VenafiTPP) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$caBundle = this.getCaBundle();
+        Object other$caBundle = other.getCaBundle();
+        if (this$caBundle == null ? other$caBundle != null : !this$caBundle.equals(other$caBundle)) {
+            return false;
+        }
+        Object this$caBundleSecretRef = this.getCaBundleSecretRef();
+        Object other$caBundleSecretRef = other.getCaBundleSecretRef();
+        if (this$caBundleSecretRef == null ? other$caBundleSecretRef != null : !this$caBundleSecretRef.equals(other$caBundleSecretRef)) {
+            return false;
+        }
+        Object this$credentialsRef = this.getCredentialsRef();
+        Object other$credentialsRef = other.getCredentialsRef();
+        if (this$credentialsRef == null ? other$credentialsRef != null : !this$credentialsRef.equals(other$credentialsRef)) {
+            return false;
+        }
+        Object this$url = this.getUrl();
+        Object other$url = other.getUrl();
+        if (this$url == null ? other$url != null : !this$url.equals(other$url)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VenafiTPP;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $caBundle = this.getCaBundle();
+        result = result * prime + ($caBundle == null ? 43 : $caBundle.hashCode());
+        Object $caBundleSecretRef = this.getCaBundleSecretRef();
+        result = result * prime + ($caBundleSecretRef == null ? 43 : $caBundleSecretRef.hashCode());
+        Object $credentialsRef = this.getCredentialsRef();
+        result = result * prime + ($credentialsRef == null ? 43 : $credentialsRef.hashCode());
+        Object $url = this.getUrl();
+        result = result * prime + ($url == null ? 43 : $url.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VenafiTPP(" + "caBundle=" + this.getCaBundle() + ", caBundleSecretRef=" + this.getCaBundleSecretRef() + ", credentialsRef=" + this.getCredentialsRef() + ", url=" + this.getUrl() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

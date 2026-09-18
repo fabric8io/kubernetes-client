@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * HorizontalPodAutoscalerBehavior configures the scaling behavior of the target in both Up and Down directions (scaleUp and scaleDown fields respectively).
@@ -40,12 +37,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "scaleDown",
     "scaleUp"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -140,6 +131,57 @@ public class HorizontalPodAutoscalerBehavior implements Editable<HorizontalPodAu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HorizontalPodAutoscalerBehavior)) {
+            return false;
+        }
+        HorizontalPodAutoscalerBehavior other = (HorizontalPodAutoscalerBehavior) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$scaleDown = this.getScaleDown();
+        Object other$scaleDown = other.getScaleDown();
+        if (this$scaleDown == null ? other$scaleDown != null : !this$scaleDown.equals(other$scaleDown)) {
+            return false;
+        }
+        Object this$scaleUp = this.getScaleUp();
+        Object other$scaleUp = other.getScaleUp();
+        if (this$scaleUp == null ? other$scaleUp != null : !this$scaleUp.equals(other$scaleUp)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HorizontalPodAutoscalerBehavior;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $scaleDown = this.getScaleDown();
+        result = result * prime + ($scaleDown == null ? 43 : $scaleDown.hashCode());
+        Object $scaleUp = this.getScaleUp();
+        result = result * prime + ($scaleUp == null ? 43 : $scaleUp.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HorizontalPodAutoscalerBehavior(" + "scaleDown=" + this.getScaleDown() + ", scaleUp=" + this.getScaleUp() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

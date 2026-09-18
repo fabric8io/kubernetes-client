@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ACMEIssuerDNS01ProviderRoute53 is a structure containing the Route 53 configuration for AWS
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "region",
     "role",
     "secretAccessKeySecretRef"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -241,6 +232,92 @@ public class ACMEIssuerDNS01ProviderRoute53 implements Editable<ACMEIssuerDNS01P
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ACMEIssuerDNS01ProviderRoute53)) {
+            return false;
+        }
+        ACMEIssuerDNS01ProviderRoute53 other = (ACMEIssuerDNS01ProviderRoute53) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$accessKeyID = this.getAccessKeyID();
+        Object other$accessKeyID = other.getAccessKeyID();
+        if (this$accessKeyID == null ? other$accessKeyID != null : !this$accessKeyID.equals(other$accessKeyID)) {
+            return false;
+        }
+        Object this$accessKeyIDSecretRef = this.getAccessKeyIDSecretRef();
+        Object other$accessKeyIDSecretRef = other.getAccessKeyIDSecretRef();
+        if (this$accessKeyIDSecretRef == null ? other$accessKeyIDSecretRef != null : !this$accessKeyIDSecretRef.equals(other$accessKeyIDSecretRef)) {
+            return false;
+        }
+        Object this$auth = this.getAuth();
+        Object other$auth = other.getAuth();
+        if (this$auth == null ? other$auth != null : !this$auth.equals(other$auth)) {
+            return false;
+        }
+        Object this$hostedZoneID = this.getHostedZoneID();
+        Object other$hostedZoneID = other.getHostedZoneID();
+        if (this$hostedZoneID == null ? other$hostedZoneID != null : !this$hostedZoneID.equals(other$hostedZoneID)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$role = this.getRole();
+        Object other$role = other.getRole();
+        if (this$role == null ? other$role != null : !this$role.equals(other$role)) {
+            return false;
+        }
+        Object this$secretAccessKeySecretRef = this.getSecretAccessKeySecretRef();
+        Object other$secretAccessKeySecretRef = other.getSecretAccessKeySecretRef();
+        if (this$secretAccessKeySecretRef == null ? other$secretAccessKeySecretRef != null : !this$secretAccessKeySecretRef.equals(other$secretAccessKeySecretRef)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ACMEIssuerDNS01ProviderRoute53;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $accessKeyID = this.getAccessKeyID();
+        result = result * prime + ($accessKeyID == null ? 43 : $accessKeyID.hashCode());
+        Object $accessKeyIDSecretRef = this.getAccessKeyIDSecretRef();
+        result = result * prime + ($accessKeyIDSecretRef == null ? 43 : $accessKeyIDSecretRef.hashCode());
+        Object $auth = this.getAuth();
+        result = result * prime + ($auth == null ? 43 : $auth.hashCode());
+        Object $hostedZoneID = this.getHostedZoneID();
+        result = result * prime + ($hostedZoneID == null ? 43 : $hostedZoneID.hashCode());
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $role = this.getRole();
+        result = result * prime + ($role == null ? 43 : $role.hashCode());
+        Object $secretAccessKeySecretRef = this.getSecretAccessKeySecretRef();
+        result = result * prime + ($secretAccessKeySecretRef == null ? 43 : $secretAccessKeySecretRef.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ACMEIssuerDNS01ProviderRoute53(" + "accessKeyID=" + this.getAccessKeyID() + ", accessKeyIDSecretRef=" + this.getAccessKeyIDSecretRef() + ", auth=" + this.getAuth() + ", hostedZoneID=" + this.getHostedZoneID() + ", region=" + this.getRegion() + ", role=" + this.getRole() + ", secretAccessKeySecretRef=" + this.getSecretAccessKeySecretRef() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

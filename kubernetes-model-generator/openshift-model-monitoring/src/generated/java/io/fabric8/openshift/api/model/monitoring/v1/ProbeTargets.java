@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ProbeTargets defines how to discover the probed targets. One of the `staticConfig` or `ingress` must be defined. If both are defined, `staticConfig` takes precedence.
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "ingress",
     "staticConfig"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -139,6 +130,57 @@ public class ProbeTargets implements Editable<ProbeTargetsBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ProbeTargets)) {
+            return false;
+        }
+        ProbeTargets other = (ProbeTargets) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$ingress = this.getIngress();
+        Object other$ingress = other.getIngress();
+        if (this$ingress == null ? other$ingress != null : !this$ingress.equals(other$ingress)) {
+            return false;
+        }
+        Object this$staticConfig = this.getStaticConfig();
+        Object other$staticConfig = other.getStaticConfig();
+        if (this$staticConfig == null ? other$staticConfig != null : !this$staticConfig.equals(other$staticConfig)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ProbeTargets;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $ingress = this.getIngress();
+        result = result * prime + ($ingress == null ? 43 : $ingress.hashCode());
+        Object $staticConfig = this.getStaticConfig();
+        result = result * prime + ($staticConfig == null ? 43 : $staticConfig.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ProbeTargets(" + "ingress=" + this.getIngress() + ", staticConfig=" + this.getStaticConfig() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

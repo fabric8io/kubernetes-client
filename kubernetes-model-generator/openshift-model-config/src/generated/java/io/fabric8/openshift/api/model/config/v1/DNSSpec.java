@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -38,12 +35,6 @@ import lombok.experimental.Accessors;
     "platform",
     "privateZone",
     "publicZone"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -158,6 +149,71 @@ public class DNSSpec implements Editable<DNSSpecBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DNSSpec)) {
+            return false;
+        }
+        DNSSpec other = (DNSSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$baseDomain = this.getBaseDomain();
+        Object other$baseDomain = other.getBaseDomain();
+        if (this$baseDomain == null ? other$baseDomain != null : !this$baseDomain.equals(other$baseDomain)) {
+            return false;
+        }
+        Object this$platform = this.getPlatform();
+        Object other$platform = other.getPlatform();
+        if (this$platform == null ? other$platform != null : !this$platform.equals(other$platform)) {
+            return false;
+        }
+        Object this$privateZone = this.getPrivateZone();
+        Object other$privateZone = other.getPrivateZone();
+        if (this$privateZone == null ? other$privateZone != null : !this$privateZone.equals(other$privateZone)) {
+            return false;
+        }
+        Object this$publicZone = this.getPublicZone();
+        Object other$publicZone = other.getPublicZone();
+        if (this$publicZone == null ? other$publicZone != null : !this$publicZone.equals(other$publicZone)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DNSSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $baseDomain = this.getBaseDomain();
+        result = result * prime + ($baseDomain == null ? 43 : $baseDomain.hashCode());
+        Object $platform = this.getPlatform();
+        result = result * prime + ($platform == null ? 43 : $platform.hashCode());
+        Object $privateZone = this.getPrivateZone();
+        result = result * prime + ($privateZone == null ? 43 : $privateZone.hashCode());
+        Object $publicZone = this.getPublicZone();
+        result = result * prime + ($publicZone == null ? 43 : $publicZone.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DNSSpec(" + "baseDomain=" + this.getBaseDomain() + ", platform=" + this.getPlatform() + ", privateZone=" + this.getPrivateZone() + ", publicZone=" + this.getPublicZone() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

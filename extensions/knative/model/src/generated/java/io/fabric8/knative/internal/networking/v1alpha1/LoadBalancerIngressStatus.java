@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * LoadBalancerIngressStatus represents the status of a load-balancer ingress point: traffic intended for the service should be sent to an ingress point.
@@ -42,12 +39,6 @@ import lombok.experimental.Accessors;
     "domainInternal",
     "ip",
     "meshOnly"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class LoadBalancerIngressStatus implements Editable<LoadBalancerIngressSt
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof LoadBalancerIngressStatus)) {
+            return false;
+        }
+        LoadBalancerIngressStatus other = (LoadBalancerIngressStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$domain = this.getDomain();
+        Object other$domain = other.getDomain();
+        if (this$domain == null ? other$domain != null : !this$domain.equals(other$domain)) {
+            return false;
+        }
+        Object this$domainInternal = this.getDomainInternal();
+        Object other$domainInternal = other.getDomainInternal();
+        if (this$domainInternal == null ? other$domainInternal != null : !this$domainInternal.equals(other$domainInternal)) {
+            return false;
+        }
+        Object this$ip = this.getIp();
+        Object other$ip = other.getIp();
+        if (this$ip == null ? other$ip != null : !this$ip.equals(other$ip)) {
+            return false;
+        }
+        Object this$meshOnly = this.getMeshOnly();
+        Object other$meshOnly = other.getMeshOnly();
+        if (this$meshOnly == null ? other$meshOnly != null : !this$meshOnly.equals(other$meshOnly)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof LoadBalancerIngressStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $domain = this.getDomain();
+        result = result * prime + ($domain == null ? 43 : $domain.hashCode());
+        Object $domainInternal = this.getDomainInternal();
+        result = result * prime + ($domainInternal == null ? 43 : $domainInternal.hashCode());
+        Object $ip = this.getIp();
+        result = result * prime + ($ip == null ? 43 : $ip.hashCode());
+        Object $meshOnly = this.getMeshOnly();
+        result = result * prime + ($meshOnly == null ? 43 : $meshOnly.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "LoadBalancerIngressStatus(" + "domain=" + this.getDomain() + ", domainInternal=" + this.getDomainInternal() + ", ip=" + this.getIp() + ", meshOnly=" + this.getMeshOnly() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

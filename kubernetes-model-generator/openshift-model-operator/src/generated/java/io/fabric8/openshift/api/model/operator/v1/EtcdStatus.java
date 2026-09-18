@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -46,12 +43,6 @@ import lombok.experimental.Accessors;
     "observedGeneration",
     "readyReplicas",
     "version"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -285,6 +276,106 @@ public class EtcdStatus implements Editable<EtcdStatusBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EtcdStatus)) {
+            return false;
+        }
+        EtcdStatus other = (EtcdStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$controlPlaneHardwareSpeed = this.getControlPlaneHardwareSpeed();
+        Object other$controlPlaneHardwareSpeed = other.getControlPlaneHardwareSpeed();
+        if (this$controlPlaneHardwareSpeed == null ? other$controlPlaneHardwareSpeed != null : !this$controlPlaneHardwareSpeed.equals(other$controlPlaneHardwareSpeed)) {
+            return false;
+        }
+        Object this$generations = this.getGenerations();
+        Object other$generations = other.getGenerations();
+        if (this$generations == null ? other$generations != null : !this$generations.equals(other$generations)) {
+            return false;
+        }
+        Object this$latestAvailableRevision = this.getLatestAvailableRevision();
+        Object other$latestAvailableRevision = other.getLatestAvailableRevision();
+        if (this$latestAvailableRevision == null ? other$latestAvailableRevision != null : !this$latestAvailableRevision.equals(other$latestAvailableRevision)) {
+            return false;
+        }
+        Object this$latestAvailableRevisionReason = this.getLatestAvailableRevisionReason();
+        Object other$latestAvailableRevisionReason = other.getLatestAvailableRevisionReason();
+        if (this$latestAvailableRevisionReason == null ? other$latestAvailableRevisionReason != null : !this$latestAvailableRevisionReason.equals(other$latestAvailableRevisionReason)) {
+            return false;
+        }
+        Object this$nodeStatuses = this.getNodeStatuses();
+        Object other$nodeStatuses = other.getNodeStatuses();
+        if (this$nodeStatuses == null ? other$nodeStatuses != null : !this$nodeStatuses.equals(other$nodeStatuses)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$readyReplicas = this.getReadyReplicas();
+        Object other$readyReplicas = other.getReadyReplicas();
+        if (this$readyReplicas == null ? other$readyReplicas != null : !this$readyReplicas.equals(other$readyReplicas)) {
+            return false;
+        }
+        Object this$version = this.getVersion();
+        Object other$version = other.getVersion();
+        if (this$version == null ? other$version != null : !this$version.equals(other$version)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EtcdStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $controlPlaneHardwareSpeed = this.getControlPlaneHardwareSpeed();
+        result = result * prime + ($controlPlaneHardwareSpeed == null ? 43 : $controlPlaneHardwareSpeed.hashCode());
+        Object $generations = this.getGenerations();
+        result = result * prime + ($generations == null ? 43 : $generations.hashCode());
+        Object $latestAvailableRevision = this.getLatestAvailableRevision();
+        result = result * prime + ($latestAvailableRevision == null ? 43 : $latestAvailableRevision.hashCode());
+        Object $latestAvailableRevisionReason = this.getLatestAvailableRevisionReason();
+        result = result * prime + ($latestAvailableRevisionReason == null ? 43 : $latestAvailableRevisionReason.hashCode());
+        Object $nodeStatuses = this.getNodeStatuses();
+        result = result * prime + ($nodeStatuses == null ? 43 : $nodeStatuses.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $readyReplicas = this.getReadyReplicas();
+        result = result * prime + ($readyReplicas == null ? 43 : $readyReplicas.hashCode());
+        Object $version = this.getVersion();
+        result = result * prime + ($version == null ? 43 : $version.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EtcdStatus(" + "conditions=" + this.getConditions() + ", controlPlaneHardwareSpeed=" + this.getControlPlaneHardwareSpeed() + ", generations=" + this.getGenerations() + ", latestAvailableRevision=" + this.getLatestAvailableRevision() + ", latestAvailableRevisionReason=" + this.getLatestAvailableRevisionReason() + ", nodeStatuses=" + this.getNodeStatuses() + ", observedGeneration=" + this.getObservedGeneration() + ", readyReplicas=" + this.getReadyReplicas() + ", version=" + this.getVersion() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

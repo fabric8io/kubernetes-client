@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.hive.aws.v1.AssumeRole;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AWSClusterDeprovision contains AWS-specific configuration for a ClusterDeprovision
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "credentialsSecretRef",
     "hostedZoneRole",
     "region"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -181,6 +172,71 @@ public class AWSClusterDeprovision implements Editable<AWSClusterDeprovisionBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AWSClusterDeprovision)) {
+            return false;
+        }
+        AWSClusterDeprovision other = (AWSClusterDeprovision) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$credentialsAssumeRole = this.getCredentialsAssumeRole();
+        Object other$credentialsAssumeRole = other.getCredentialsAssumeRole();
+        if (this$credentialsAssumeRole == null ? other$credentialsAssumeRole != null : !this$credentialsAssumeRole.equals(other$credentialsAssumeRole)) {
+            return false;
+        }
+        Object this$credentialsSecretRef = this.getCredentialsSecretRef();
+        Object other$credentialsSecretRef = other.getCredentialsSecretRef();
+        if (this$credentialsSecretRef == null ? other$credentialsSecretRef != null : !this$credentialsSecretRef.equals(other$credentialsSecretRef)) {
+            return false;
+        }
+        Object this$hostedZoneRole = this.getHostedZoneRole();
+        Object other$hostedZoneRole = other.getHostedZoneRole();
+        if (this$hostedZoneRole == null ? other$hostedZoneRole != null : !this$hostedZoneRole.equals(other$hostedZoneRole)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AWSClusterDeprovision;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $credentialsAssumeRole = this.getCredentialsAssumeRole();
+        result = result * prime + ($credentialsAssumeRole == null ? 43 : $credentialsAssumeRole.hashCode());
+        Object $credentialsSecretRef = this.getCredentialsSecretRef();
+        result = result * prime + ($credentialsSecretRef == null ? 43 : $credentialsSecretRef.hashCode());
+        Object $hostedZoneRole = this.getHostedZoneRole();
+        result = result * prime + ($hostedZoneRole == null ? 43 : $hostedZoneRole.hashCode());
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AWSClusterDeprovision(" + "credentialsAssumeRole=" + this.getCredentialsAssumeRole() + ", credentialsSecretRef=" + this.getCredentialsSecretRef() + ", hostedZoneRole=" + this.getHostedZoneRole() + ", region=" + this.getRegion() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

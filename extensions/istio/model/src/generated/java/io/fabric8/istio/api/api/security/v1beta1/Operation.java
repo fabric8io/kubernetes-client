@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Operation specifies the operations of a request. Fields in the operation are ANDed together.<br><p> <br><p> For example, the following operation matches if the host has suffix `.example.com` and the method is `GET` or `HEAD` and the path doesn't have prefix `/admin`.<br><p> <br><p> ```yaml hosts: ["&#42;.example.com"] methods: ["GET", "HEAD"] notPaths: ["/admin&#42;"] ```
@@ -48,12 +45,6 @@ import lombok.experimental.Accessors;
     "notPorts",
     "paths",
     "ports"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -278,6 +269,99 @@ public class Operation implements Editable<OperationBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Operation)) {
+            return false;
+        }
+        Operation other = (Operation) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$hosts = this.getHosts();
+        Object other$hosts = other.getHosts();
+        if (this$hosts == null ? other$hosts != null : !this$hosts.equals(other$hosts)) {
+            return false;
+        }
+        Object this$methods = this.getMethods();
+        Object other$methods = other.getMethods();
+        if (this$methods == null ? other$methods != null : !this$methods.equals(other$methods)) {
+            return false;
+        }
+        Object this$notHosts = this.getNotHosts();
+        Object other$notHosts = other.getNotHosts();
+        if (this$notHosts == null ? other$notHosts != null : !this$notHosts.equals(other$notHosts)) {
+            return false;
+        }
+        Object this$notMethods = this.getNotMethods();
+        Object other$notMethods = other.getNotMethods();
+        if (this$notMethods == null ? other$notMethods != null : !this$notMethods.equals(other$notMethods)) {
+            return false;
+        }
+        Object this$notPaths = this.getNotPaths();
+        Object other$notPaths = other.getNotPaths();
+        if (this$notPaths == null ? other$notPaths != null : !this$notPaths.equals(other$notPaths)) {
+            return false;
+        }
+        Object this$notPorts = this.getNotPorts();
+        Object other$notPorts = other.getNotPorts();
+        if (this$notPorts == null ? other$notPorts != null : !this$notPorts.equals(other$notPorts)) {
+            return false;
+        }
+        Object this$paths = this.getPaths();
+        Object other$paths = other.getPaths();
+        if (this$paths == null ? other$paths != null : !this$paths.equals(other$paths)) {
+            return false;
+        }
+        Object this$ports = this.getPorts();
+        Object other$ports = other.getPorts();
+        if (this$ports == null ? other$ports != null : !this$ports.equals(other$ports)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Operation;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $hosts = this.getHosts();
+        result = result * prime + ($hosts == null ? 43 : $hosts.hashCode());
+        Object $methods = this.getMethods();
+        result = result * prime + ($methods == null ? 43 : $methods.hashCode());
+        Object $notHosts = this.getNotHosts();
+        result = result * prime + ($notHosts == null ? 43 : $notHosts.hashCode());
+        Object $notMethods = this.getNotMethods();
+        result = result * prime + ($notMethods == null ? 43 : $notMethods.hashCode());
+        Object $notPaths = this.getNotPaths();
+        result = result * prime + ($notPaths == null ? 43 : $notPaths.hashCode());
+        Object $notPorts = this.getNotPorts();
+        result = result * prime + ($notPorts == null ? 43 : $notPorts.hashCode());
+        Object $paths = this.getPaths();
+        result = result * prime + ($paths == null ? 43 : $paths.hashCode());
+        Object $ports = this.getPorts();
+        result = result * prime + ($ports == null ? 43 : $ports.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Operation(" + "hosts=" + this.getHosts() + ", methods=" + this.getMethods() + ", notHosts=" + this.getNotHosts() + ", notMethods=" + this.getNotMethods() + ", notPaths=" + this.getNotPaths() + ", notPorts=" + this.getNotPorts() + ", paths=" + this.getPaths() + ", ports=" + this.getPorts() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

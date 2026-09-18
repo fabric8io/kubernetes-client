@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * OutageEntry records time period of an outage
@@ -45,12 +42,6 @@ import lombok.experimental.Accessors;
     "message",
     "start",
     "startLogs"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -206,6 +197,78 @@ public class OutageEntry implements Editable<OutageEntryBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OutageEntry)) {
+            return false;
+        }
+        OutageEntry other = (OutageEntry) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$end = this.getEnd();
+        Object other$end = other.getEnd();
+        if (this$end == null ? other$end != null : !this$end.equals(other$end)) {
+            return false;
+        }
+        Object this$endLogs = this.getEndLogs();
+        Object other$endLogs = other.getEndLogs();
+        if (this$endLogs == null ? other$endLogs != null : !this$endLogs.equals(other$endLogs)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$start = this.getStart();
+        Object other$start = other.getStart();
+        if (this$start == null ? other$start != null : !this$start.equals(other$start)) {
+            return false;
+        }
+        Object this$startLogs = this.getStartLogs();
+        Object other$startLogs = other.getStartLogs();
+        if (this$startLogs == null ? other$startLogs != null : !this$startLogs.equals(other$startLogs)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OutageEntry;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $end = this.getEnd();
+        result = result * prime + ($end == null ? 43 : $end.hashCode());
+        Object $endLogs = this.getEndLogs();
+        result = result * prime + ($endLogs == null ? 43 : $endLogs.hashCode());
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $start = this.getStart();
+        result = result * prime + ($start == null ? 43 : $start.hashCode());
+        Object $startLogs = this.getStartLogs();
+        result = result * prime + ($startLogs == null ? 43 : $startLogs.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OutageEntry(" + "end=" + this.getEnd() + ", endLogs=" + this.getEndLogs() + ", message=" + this.getMessage() + ", start=" + this.getStart() + ", startLogs=" + this.getStartLogs() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * ClientTLS specifies TLS configuration to enable client-to-server authentication, which can be used for mutual TLS.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "allowedSubjectPatterns",
     "clientCA",
     "clientCertificatePolicy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -165,6 +156,64 @@ public class ClientTLS implements Editable<ClientTLSBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClientTLS)) {
+            return false;
+        }
+        ClientTLS other = (ClientTLS) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allowedSubjectPatterns = this.getAllowedSubjectPatterns();
+        Object other$allowedSubjectPatterns = other.getAllowedSubjectPatterns();
+        if (this$allowedSubjectPatterns == null ? other$allowedSubjectPatterns != null : !this$allowedSubjectPatterns.equals(other$allowedSubjectPatterns)) {
+            return false;
+        }
+        Object this$clientCA = this.getClientCA();
+        Object other$clientCA = other.getClientCA();
+        if (this$clientCA == null ? other$clientCA != null : !this$clientCA.equals(other$clientCA)) {
+            return false;
+        }
+        Object this$clientCertificatePolicy = this.getClientCertificatePolicy();
+        Object other$clientCertificatePolicy = other.getClientCertificatePolicy();
+        if (this$clientCertificatePolicy == null ? other$clientCertificatePolicy != null : !this$clientCertificatePolicy.equals(other$clientCertificatePolicy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClientTLS;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allowedSubjectPatterns = this.getAllowedSubjectPatterns();
+        result = result * prime + ($allowedSubjectPatterns == null ? 43 : $allowedSubjectPatterns.hashCode());
+        Object $clientCA = this.getClientCA();
+        result = result * prime + ($clientCA == null ? 43 : $clientCA.hashCode());
+        Object $clientCertificatePolicy = this.getClientCertificatePolicy();
+        result = result * prime + ($clientCertificatePolicy == null ? 43 : $clientCertificatePolicy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClientTLS(" + "allowedSubjectPatterns=" + this.getAllowedSubjectPatterns() + ", clientCA=" + this.getClientCA() + ", clientCertificatePolicy=" + this.getClientCertificatePolicy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

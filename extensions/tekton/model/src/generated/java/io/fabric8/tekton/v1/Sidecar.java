@@ -35,9 +35,6 @@ import io.fabric8.kubernetes.api.model.VolumeDevice;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * Sidecar has nearly the same data structure as Step but does not have the ability to timeout.
@@ -70,12 +67,6 @@ import lombok.experimental.Accessors;
     "volumeMounts",
     "workingDir",
     "workspaces"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -623,6 +614,218 @@ public class Sidecar implements Editable<SidecarBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Sidecar)) {
+            return false;
+        }
+        Sidecar other = (Sidecar) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$args = this.getArgs();
+        Object other$args = other.getArgs();
+        if (this$args == null ? other$args != null : !this$args.equals(other$args)) {
+            return false;
+        }
+        Object this$command = this.getCommand();
+        Object other$command = other.getCommand();
+        if (this$command == null ? other$command != null : !this$command.equals(other$command)) {
+            return false;
+        }
+        Object this$computeResources = this.getComputeResources();
+        Object other$computeResources = other.getComputeResources();
+        if (this$computeResources == null ? other$computeResources != null : !this$computeResources.equals(other$computeResources)) {
+            return false;
+        }
+        Object this$env = this.getEnv();
+        Object other$env = other.getEnv();
+        if (this$env == null ? other$env != null : !this$env.equals(other$env)) {
+            return false;
+        }
+        Object this$envFrom = this.getEnvFrom();
+        Object other$envFrom = other.getEnvFrom();
+        if (this$envFrom == null ? other$envFrom != null : !this$envFrom.equals(other$envFrom)) {
+            return false;
+        }
+        Object this$image = this.getImage();
+        Object other$image = other.getImage();
+        if (this$image == null ? other$image != null : !this$image.equals(other$image)) {
+            return false;
+        }
+        Object this$imagePullPolicy = this.getImagePullPolicy();
+        Object other$imagePullPolicy = other.getImagePullPolicy();
+        if (this$imagePullPolicy == null ? other$imagePullPolicy != null : !this$imagePullPolicy.equals(other$imagePullPolicy)) {
+            return false;
+        }
+        Object this$lifecycle = this.getLifecycle();
+        Object other$lifecycle = other.getLifecycle();
+        if (this$lifecycle == null ? other$lifecycle != null : !this$lifecycle.equals(other$lifecycle)) {
+            return false;
+        }
+        Object this$livenessProbe = this.getLivenessProbe();
+        Object other$livenessProbe = other.getLivenessProbe();
+        if (this$livenessProbe == null ? other$livenessProbe != null : !this$livenessProbe.equals(other$livenessProbe)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$ports = this.getPorts();
+        Object other$ports = other.getPorts();
+        if (this$ports == null ? other$ports != null : !this$ports.equals(other$ports)) {
+            return false;
+        }
+        Object this$readinessProbe = this.getReadinessProbe();
+        Object other$readinessProbe = other.getReadinessProbe();
+        if (this$readinessProbe == null ? other$readinessProbe != null : !this$readinessProbe.equals(other$readinessProbe)) {
+            return false;
+        }
+        Object this$restartPolicy = this.getRestartPolicy();
+        Object other$restartPolicy = other.getRestartPolicy();
+        if (this$restartPolicy == null ? other$restartPolicy != null : !this$restartPolicy.equals(other$restartPolicy)) {
+            return false;
+        }
+        Object this$script = this.getScript();
+        Object other$script = other.getScript();
+        if (this$script == null ? other$script != null : !this$script.equals(other$script)) {
+            return false;
+        }
+        Object this$securityContext = this.getSecurityContext();
+        Object other$securityContext = other.getSecurityContext();
+        if (this$securityContext == null ? other$securityContext != null : !this$securityContext.equals(other$securityContext)) {
+            return false;
+        }
+        Object this$startupProbe = this.getStartupProbe();
+        Object other$startupProbe = other.getStartupProbe();
+        if (this$startupProbe == null ? other$startupProbe != null : !this$startupProbe.equals(other$startupProbe)) {
+            return false;
+        }
+        Object this$stdin = this.getStdin();
+        Object other$stdin = other.getStdin();
+        if (this$stdin == null ? other$stdin != null : !this$stdin.equals(other$stdin)) {
+            return false;
+        }
+        Object this$stdinOnce = this.getStdinOnce();
+        Object other$stdinOnce = other.getStdinOnce();
+        if (this$stdinOnce == null ? other$stdinOnce != null : !this$stdinOnce.equals(other$stdinOnce)) {
+            return false;
+        }
+        Object this$terminationMessagePath = this.getTerminationMessagePath();
+        Object other$terminationMessagePath = other.getTerminationMessagePath();
+        if (this$terminationMessagePath == null ? other$terminationMessagePath != null : !this$terminationMessagePath.equals(other$terminationMessagePath)) {
+            return false;
+        }
+        Object this$terminationMessagePolicy = this.getTerminationMessagePolicy();
+        Object other$terminationMessagePolicy = other.getTerminationMessagePolicy();
+        if (this$terminationMessagePolicy == null ? other$terminationMessagePolicy != null : !this$terminationMessagePolicy.equals(other$terminationMessagePolicy)) {
+            return false;
+        }
+        Object this$tty = this.getTty();
+        Object other$tty = other.getTty();
+        if (this$tty == null ? other$tty != null : !this$tty.equals(other$tty)) {
+            return false;
+        }
+        Object this$volumeDevices = this.getVolumeDevices();
+        Object other$volumeDevices = other.getVolumeDevices();
+        if (this$volumeDevices == null ? other$volumeDevices != null : !this$volumeDevices.equals(other$volumeDevices)) {
+            return false;
+        }
+        Object this$volumeMounts = this.getVolumeMounts();
+        Object other$volumeMounts = other.getVolumeMounts();
+        if (this$volumeMounts == null ? other$volumeMounts != null : !this$volumeMounts.equals(other$volumeMounts)) {
+            return false;
+        }
+        Object this$workingDir = this.getWorkingDir();
+        Object other$workingDir = other.getWorkingDir();
+        if (this$workingDir == null ? other$workingDir != null : !this$workingDir.equals(other$workingDir)) {
+            return false;
+        }
+        Object this$workspaces = this.getWorkspaces();
+        Object other$workspaces = other.getWorkspaces();
+        if (this$workspaces == null ? other$workspaces != null : !this$workspaces.equals(other$workspaces)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Sidecar;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $args = this.getArgs();
+        result = result * prime + ($args == null ? 43 : $args.hashCode());
+        Object $command = this.getCommand();
+        result = result * prime + ($command == null ? 43 : $command.hashCode());
+        Object $computeResources = this.getComputeResources();
+        result = result * prime + ($computeResources == null ? 43 : $computeResources.hashCode());
+        Object $env = this.getEnv();
+        result = result * prime + ($env == null ? 43 : $env.hashCode());
+        Object $envFrom = this.getEnvFrom();
+        result = result * prime + ($envFrom == null ? 43 : $envFrom.hashCode());
+        Object $image = this.getImage();
+        result = result * prime + ($image == null ? 43 : $image.hashCode());
+        Object $imagePullPolicy = this.getImagePullPolicy();
+        result = result * prime + ($imagePullPolicy == null ? 43 : $imagePullPolicy.hashCode());
+        Object $lifecycle = this.getLifecycle();
+        result = result * prime + ($lifecycle == null ? 43 : $lifecycle.hashCode());
+        Object $livenessProbe = this.getLivenessProbe();
+        result = result * prime + ($livenessProbe == null ? 43 : $livenessProbe.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $ports = this.getPorts();
+        result = result * prime + ($ports == null ? 43 : $ports.hashCode());
+        Object $readinessProbe = this.getReadinessProbe();
+        result = result * prime + ($readinessProbe == null ? 43 : $readinessProbe.hashCode());
+        Object $restartPolicy = this.getRestartPolicy();
+        result = result * prime + ($restartPolicy == null ? 43 : $restartPolicy.hashCode());
+        Object $script = this.getScript();
+        result = result * prime + ($script == null ? 43 : $script.hashCode());
+        Object $securityContext = this.getSecurityContext();
+        result = result * prime + ($securityContext == null ? 43 : $securityContext.hashCode());
+        Object $startupProbe = this.getStartupProbe();
+        result = result * prime + ($startupProbe == null ? 43 : $startupProbe.hashCode());
+        Object $stdin = this.getStdin();
+        result = result * prime + ($stdin == null ? 43 : $stdin.hashCode());
+        Object $stdinOnce = this.getStdinOnce();
+        result = result * prime + ($stdinOnce == null ? 43 : $stdinOnce.hashCode());
+        Object $terminationMessagePath = this.getTerminationMessagePath();
+        result = result * prime + ($terminationMessagePath == null ? 43 : $terminationMessagePath.hashCode());
+        Object $terminationMessagePolicy = this.getTerminationMessagePolicy();
+        result = result * prime + ($terminationMessagePolicy == null ? 43 : $terminationMessagePolicy.hashCode());
+        Object $tty = this.getTty();
+        result = result * prime + ($tty == null ? 43 : $tty.hashCode());
+        Object $volumeDevices = this.getVolumeDevices();
+        result = result * prime + ($volumeDevices == null ? 43 : $volumeDevices.hashCode());
+        Object $volumeMounts = this.getVolumeMounts();
+        result = result * prime + ($volumeMounts == null ? 43 : $volumeMounts.hashCode());
+        Object $workingDir = this.getWorkingDir();
+        result = result * prime + ($workingDir == null ? 43 : $workingDir.hashCode());
+        Object $workspaces = this.getWorkspaces();
+        result = result * prime + ($workspaces == null ? 43 : $workspaces.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Sidecar(" + "args=" + this.getArgs() + ", command=" + this.getCommand() + ", computeResources=" + this.getComputeResources() + ", env=" + this.getEnv() + ", envFrom=" + this.getEnvFrom() + ", image=" + this.getImage() + ", imagePullPolicy=" + this.getImagePullPolicy() + ", lifecycle=" + this.getLifecycle() + ", livenessProbe=" + this.getLivenessProbe() + ", name=" + this.getName() + ", ports=" + this.getPorts() + ", readinessProbe=" + this.getReadinessProbe() + ", restartPolicy=" + this.getRestartPolicy() + ", script=" + this.getScript() + ", securityContext=" + this.getSecurityContext() + ", startupProbe=" + this.getStartupProbe() + ", stdin=" + this.getStdin() + ", stdinOnce=" + this.getStdinOnce() + ", terminationMessagePath=" + this.getTerminationMessagePath() + ", terminationMessagePolicy=" + this.getTerminationMessagePolicy() + ", tty=" + this.getTty() + ", volumeDevices=" + this.getVolumeDevices() + ", volumeMounts=" + this.getVolumeMounts() + ", workingDir=" + this.getWorkingDir() + ", workspaces=" + this.getWorkspaces() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

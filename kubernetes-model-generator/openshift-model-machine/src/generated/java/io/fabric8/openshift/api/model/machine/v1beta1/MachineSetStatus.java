@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MachineSetStatus defines the observed state of MachineSet
@@ -49,12 +46,6 @@ import lombok.experimental.Accessors;
     "readyReplicas",
     "replicas",
     "synchronizedGeneration"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -303,6 +294,113 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachineSetStatus)) {
+            return false;
+        }
+        MachineSetStatus other = (MachineSetStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$authoritativeAPI = this.getAuthoritativeAPI();
+        Object other$authoritativeAPI = other.getAuthoritativeAPI();
+        if (this$authoritativeAPI == null ? other$authoritativeAPI != null : !this$authoritativeAPI.equals(other$authoritativeAPI)) {
+            return false;
+        }
+        Object this$availableReplicas = this.getAvailableReplicas();
+        Object other$availableReplicas = other.getAvailableReplicas();
+        if (this$availableReplicas == null ? other$availableReplicas != null : !this$availableReplicas.equals(other$availableReplicas)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$errorMessage = this.getErrorMessage();
+        Object other$errorMessage = other.getErrorMessage();
+        if (this$errorMessage == null ? other$errorMessage != null : !this$errorMessage.equals(other$errorMessage)) {
+            return false;
+        }
+        Object this$errorReason = this.getErrorReason();
+        Object other$errorReason = other.getErrorReason();
+        if (this$errorReason == null ? other$errorReason != null : !this$errorReason.equals(other$errorReason)) {
+            return false;
+        }
+        Object this$fullyLabeledReplicas = this.getFullyLabeledReplicas();
+        Object other$fullyLabeledReplicas = other.getFullyLabeledReplicas();
+        if (this$fullyLabeledReplicas == null ? other$fullyLabeledReplicas != null : !this$fullyLabeledReplicas.equals(other$fullyLabeledReplicas)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$readyReplicas = this.getReadyReplicas();
+        Object other$readyReplicas = other.getReadyReplicas();
+        if (this$readyReplicas == null ? other$readyReplicas != null : !this$readyReplicas.equals(other$readyReplicas)) {
+            return false;
+        }
+        Object this$replicas = this.getReplicas();
+        Object other$replicas = other.getReplicas();
+        if (this$replicas == null ? other$replicas != null : !this$replicas.equals(other$replicas)) {
+            return false;
+        }
+        Object this$synchronizedGeneration = this.getSynchronizedGeneration();
+        Object other$synchronizedGeneration = other.getSynchronizedGeneration();
+        if (this$synchronizedGeneration == null ? other$synchronizedGeneration != null : !this$synchronizedGeneration.equals(other$synchronizedGeneration)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachineSetStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $authoritativeAPI = this.getAuthoritativeAPI();
+        result = result * prime + ($authoritativeAPI == null ? 43 : $authoritativeAPI.hashCode());
+        Object $availableReplicas = this.getAvailableReplicas();
+        result = result * prime + ($availableReplicas == null ? 43 : $availableReplicas.hashCode());
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $errorMessage = this.getErrorMessage();
+        result = result * prime + ($errorMessage == null ? 43 : $errorMessage.hashCode());
+        Object $errorReason = this.getErrorReason();
+        result = result * prime + ($errorReason == null ? 43 : $errorReason.hashCode());
+        Object $fullyLabeledReplicas = this.getFullyLabeledReplicas();
+        result = result * prime + ($fullyLabeledReplicas == null ? 43 : $fullyLabeledReplicas.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $readyReplicas = this.getReadyReplicas();
+        result = result * prime + ($readyReplicas == null ? 43 : $readyReplicas.hashCode());
+        Object $replicas = this.getReplicas();
+        result = result * prime + ($replicas == null ? 43 : $replicas.hashCode());
+        Object $synchronizedGeneration = this.getSynchronizedGeneration();
+        result = result * prime + ($synchronizedGeneration == null ? 43 : $synchronizedGeneration.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachineSetStatus(" + "authoritativeAPI=" + this.getAuthoritativeAPI() + ", availableReplicas=" + this.getAvailableReplicas() + ", conditions=" + this.getConditions() + ", errorMessage=" + this.getErrorMessage() + ", errorReason=" + this.getErrorReason() + ", fullyLabeledReplicas=" + this.getFullyLabeledReplicas() + ", observedGeneration=" + this.getObservedGeneration() + ", readyReplicas=" + this.getReadyReplicas() + ", replicas=" + this.getReplicas() + ", synchronizedGeneration=" + this.getSynchronizedGeneration() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

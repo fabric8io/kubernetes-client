@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * DefaultClusterManagerConfiguration represents customized configurations for clustermanager in the Default mode.
@@ -41,12 +38,6 @@ import lombok.experimental.Accessors;
     "addonWebhookConfiguration",
     "registrationWebhookConfiguration",
     "workWebhookConfiguration"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class DefaultClusterManagerConfiguration implements Editable<DefaultClust
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DefaultClusterManagerConfiguration)) {
+            return false;
+        }
+        DefaultClusterManagerConfiguration other = (DefaultClusterManagerConfiguration) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$addonWebhookConfiguration = this.getAddonWebhookConfiguration();
+        Object other$addonWebhookConfiguration = other.getAddonWebhookConfiguration();
+        if (this$addonWebhookConfiguration == null ? other$addonWebhookConfiguration != null : !this$addonWebhookConfiguration.equals(other$addonWebhookConfiguration)) {
+            return false;
+        }
+        Object this$registrationWebhookConfiguration = this.getRegistrationWebhookConfiguration();
+        Object other$registrationWebhookConfiguration = other.getRegistrationWebhookConfiguration();
+        if (this$registrationWebhookConfiguration == null ? other$registrationWebhookConfiguration != null : !this$registrationWebhookConfiguration.equals(other$registrationWebhookConfiguration)) {
+            return false;
+        }
+        Object this$workWebhookConfiguration = this.getWorkWebhookConfiguration();
+        Object other$workWebhookConfiguration = other.getWorkWebhookConfiguration();
+        if (this$workWebhookConfiguration == null ? other$workWebhookConfiguration != null : !this$workWebhookConfiguration.equals(other$workWebhookConfiguration)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DefaultClusterManagerConfiguration;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $addonWebhookConfiguration = this.getAddonWebhookConfiguration();
+        result = result * prime + ($addonWebhookConfiguration == null ? 43 : $addonWebhookConfiguration.hashCode());
+        Object $registrationWebhookConfiguration = this.getRegistrationWebhookConfiguration();
+        result = result * prime + ($registrationWebhookConfiguration == null ? 43 : $registrationWebhookConfiguration.hashCode());
+        Object $workWebhookConfiguration = this.getWorkWebhookConfiguration();
+        result = result * prime + ($workWebhookConfiguration == null ? 43 : $workWebhookConfiguration.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DefaultClusterManagerConfiguration(" + "addonWebhookConfiguration=" + this.getAddonWebhookConfiguration() + ", registrationWebhookConfiguration=" + this.getRegistrationWebhookConfiguration() + ", workWebhookConfiguration=" + this.getWorkWebhookConfiguration() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

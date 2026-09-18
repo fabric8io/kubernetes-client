@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AWSPlatformStatus holds the current status of the Amazon Web Services infrastructure provider.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "region",
     "resourceTags",
     "serviceEndpoints"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -185,6 +176,71 @@ public class AWSPlatformStatus implements Editable<AWSPlatformStatusBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AWSPlatformStatus)) {
+            return false;
+        }
+        AWSPlatformStatus other = (AWSPlatformStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cloudLoadBalancerConfig = this.getCloudLoadBalancerConfig();
+        Object other$cloudLoadBalancerConfig = other.getCloudLoadBalancerConfig();
+        if (this$cloudLoadBalancerConfig == null ? other$cloudLoadBalancerConfig != null : !this$cloudLoadBalancerConfig.equals(other$cloudLoadBalancerConfig)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$resourceTags = this.getResourceTags();
+        Object other$resourceTags = other.getResourceTags();
+        if (this$resourceTags == null ? other$resourceTags != null : !this$resourceTags.equals(other$resourceTags)) {
+            return false;
+        }
+        Object this$serviceEndpoints = this.getServiceEndpoints();
+        Object other$serviceEndpoints = other.getServiceEndpoints();
+        if (this$serviceEndpoints == null ? other$serviceEndpoints != null : !this$serviceEndpoints.equals(other$serviceEndpoints)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AWSPlatformStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cloudLoadBalancerConfig = this.getCloudLoadBalancerConfig();
+        result = result * prime + ($cloudLoadBalancerConfig == null ? 43 : $cloudLoadBalancerConfig.hashCode());
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $resourceTags = this.getResourceTags();
+        result = result * prime + ($resourceTags == null ? 43 : $resourceTags.hashCode());
+        Object $serviceEndpoints = this.getServiceEndpoints();
+        result = result * prime + ($serviceEndpoints == null ? 43 : $serviceEndpoints.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AWSPlatformStatus(" + "cloudLoadBalancerConfig=" + this.getCloudLoadBalancerConfig() + ", region=" + this.getRegion() + ", resourceTags=" + this.getResourceTags() + ", serviceEndpoints=" + this.getServiceEndpoints() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -32,9 +32,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.monitoring.v1.SafeTLSConfig;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * EmailConfig configures notifications via Email.
@@ -58,12 +55,6 @@ import lombok.experimental.Accessors;
     "threading",
     "tlsConfig",
     "to"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -426,6 +417,155 @@ public class EmailConfig implements Editable<EmailConfigBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EmailConfig)) {
+            return false;
+        }
+        EmailConfig other = (EmailConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$authIdentity = this.getAuthIdentity();
+        Object other$authIdentity = other.getAuthIdentity();
+        if (this$authIdentity == null ? other$authIdentity != null : !this$authIdentity.equals(other$authIdentity)) {
+            return false;
+        }
+        Object this$authPassword = this.getAuthPassword();
+        Object other$authPassword = other.getAuthPassword();
+        if (this$authPassword == null ? other$authPassword != null : !this$authPassword.equals(other$authPassword)) {
+            return false;
+        }
+        Object this$authSecret = this.getAuthSecret();
+        Object other$authSecret = other.getAuthSecret();
+        if (this$authSecret == null ? other$authSecret != null : !this$authSecret.equals(other$authSecret)) {
+            return false;
+        }
+        Object this$authUsername = this.getAuthUsername();
+        Object other$authUsername = other.getAuthUsername();
+        if (this$authUsername == null ? other$authUsername != null : !this$authUsername.equals(other$authUsername)) {
+            return false;
+        }
+        Object this$forceImplicitTLS = this.getForceImplicitTLS();
+        Object other$forceImplicitTLS = other.getForceImplicitTLS();
+        if (this$forceImplicitTLS == null ? other$forceImplicitTLS != null : !this$forceImplicitTLS.equals(other$forceImplicitTLS)) {
+            return false;
+        }
+        Object this$from = this.getFrom();
+        Object other$from = other.getFrom();
+        if (this$from == null ? other$from != null : !this$from.equals(other$from)) {
+            return false;
+        }
+        Object this$headers = this.getHeaders();
+        Object other$headers = other.getHeaders();
+        if (this$headers == null ? other$headers != null : !this$headers.equals(other$headers)) {
+            return false;
+        }
+        Object this$hello = this.getHello();
+        Object other$hello = other.getHello();
+        if (this$hello == null ? other$hello != null : !this$hello.equals(other$hello)) {
+            return false;
+        }
+        Object this$html = this.getHtml();
+        Object other$html = other.getHtml();
+        if (this$html == null ? other$html != null : !this$html.equals(other$html)) {
+            return false;
+        }
+        Object this$requireTLS = this.getRequireTLS();
+        Object other$requireTLS = other.getRequireTLS();
+        if (this$requireTLS == null ? other$requireTLS != null : !this$requireTLS.equals(other$requireTLS)) {
+            return false;
+        }
+        Object this$sendResolved = this.getSendResolved();
+        Object other$sendResolved = other.getSendResolved();
+        if (this$sendResolved == null ? other$sendResolved != null : !this$sendResolved.equals(other$sendResolved)) {
+            return false;
+        }
+        Object this$smarthost = this.getSmarthost();
+        Object other$smarthost = other.getSmarthost();
+        if (this$smarthost == null ? other$smarthost != null : !this$smarthost.equals(other$smarthost)) {
+            return false;
+        }
+        Object this$text = this.getText();
+        Object other$text = other.getText();
+        if (this$text == null ? other$text != null : !this$text.equals(other$text)) {
+            return false;
+        }
+        Object this$threading = this.getThreading();
+        Object other$threading = other.getThreading();
+        if (this$threading == null ? other$threading != null : !this$threading.equals(other$threading)) {
+            return false;
+        }
+        Object this$tlsConfig = this.getTlsConfig();
+        Object other$tlsConfig = other.getTlsConfig();
+        if (this$tlsConfig == null ? other$tlsConfig != null : !this$tlsConfig.equals(other$tlsConfig)) {
+            return false;
+        }
+        Object this$to = this.getTo();
+        Object other$to = other.getTo();
+        if (this$to == null ? other$to != null : !this$to.equals(other$to)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EmailConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $authIdentity = this.getAuthIdentity();
+        result = result * prime + ($authIdentity == null ? 43 : $authIdentity.hashCode());
+        Object $authPassword = this.getAuthPassword();
+        result = result * prime + ($authPassword == null ? 43 : $authPassword.hashCode());
+        Object $authSecret = this.getAuthSecret();
+        result = result * prime + ($authSecret == null ? 43 : $authSecret.hashCode());
+        Object $authUsername = this.getAuthUsername();
+        result = result * prime + ($authUsername == null ? 43 : $authUsername.hashCode());
+        Object $forceImplicitTLS = this.getForceImplicitTLS();
+        result = result * prime + ($forceImplicitTLS == null ? 43 : $forceImplicitTLS.hashCode());
+        Object $from = this.getFrom();
+        result = result * prime + ($from == null ? 43 : $from.hashCode());
+        Object $headers = this.getHeaders();
+        result = result * prime + ($headers == null ? 43 : $headers.hashCode());
+        Object $hello = this.getHello();
+        result = result * prime + ($hello == null ? 43 : $hello.hashCode());
+        Object $html = this.getHtml();
+        result = result * prime + ($html == null ? 43 : $html.hashCode());
+        Object $requireTLS = this.getRequireTLS();
+        result = result * prime + ($requireTLS == null ? 43 : $requireTLS.hashCode());
+        Object $sendResolved = this.getSendResolved();
+        result = result * prime + ($sendResolved == null ? 43 : $sendResolved.hashCode());
+        Object $smarthost = this.getSmarthost();
+        result = result * prime + ($smarthost == null ? 43 : $smarthost.hashCode());
+        Object $text = this.getText();
+        result = result * prime + ($text == null ? 43 : $text.hashCode());
+        Object $threading = this.getThreading();
+        result = result * prime + ($threading == null ? 43 : $threading.hashCode());
+        Object $tlsConfig = this.getTlsConfig();
+        result = result * prime + ($tlsConfig == null ? 43 : $tlsConfig.hashCode());
+        Object $to = this.getTo();
+        result = result * prime + ($to == null ? 43 : $to.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EmailConfig(" + "authIdentity=" + this.getAuthIdentity() + ", authPassword=" + this.getAuthPassword() + ", authSecret=" + this.getAuthSecret() + ", authUsername=" + this.getAuthUsername() + ", forceImplicitTLS=" + this.getForceImplicitTLS() + ", from=" + this.getFrom() + ", headers=" + this.getHeaders() + ", hello=" + this.getHello() + ", html=" + this.getHtml() + ", requireTLS=" + this.getRequireTLS() + ", sendResolved=" + this.getSendResolved() + ", smarthost=" + this.getSmarthost() + ", text=" + this.getText() + ", threading=" + this.getThreading() + ", tlsConfig=" + this.getTlsConfig() + ", to=" + this.getTo() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

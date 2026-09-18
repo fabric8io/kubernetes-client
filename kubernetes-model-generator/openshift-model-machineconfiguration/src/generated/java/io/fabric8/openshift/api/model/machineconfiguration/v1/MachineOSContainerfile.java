@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * MachineOSContainerfile contains all custom content the user wants built into the image
@@ -39,12 +36,6 @@ import lombok.experimental.Accessors;
 @JsonPropertyOrder({
     "containerfileArch",
     "content"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -139,6 +130,57 @@ public class MachineOSContainerfile implements Editable<MachineOSContainerfileBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachineOSContainerfile)) {
+            return false;
+        }
+        MachineOSContainerfile other = (MachineOSContainerfile) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$containerfileArch = this.getContainerfileArch();
+        Object other$containerfileArch = other.getContainerfileArch();
+        if (this$containerfileArch == null ? other$containerfileArch != null : !this$containerfileArch.equals(other$containerfileArch)) {
+            return false;
+        }
+        Object this$content = this.getContent();
+        Object other$content = other.getContent();
+        if (this$content == null ? other$content != null : !this$content.equals(other$content)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachineOSContainerfile;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $containerfileArch = this.getContainerfileArch();
+        result = result * prime + ($containerfileArch == null ? 43 : $containerfileArch.hashCode());
+        Object $content = this.getContent();
+        result = result * prime + ($content == null ? 43 : $content.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachineOSContainerfile(" + "containerfileArch=" + this.getContainerfileArch() + ", content=" + this.getContent() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

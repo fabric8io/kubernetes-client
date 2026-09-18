@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * StrategyDetailsDeployment represents the parsed details of a Deployment InstallStrategy.
@@ -43,12 +40,6 @@ import lombok.experimental.Accessors;
     "clusterPermissions",
     "deployments",
     "permissions"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -168,6 +159,64 @@ public class StrategyDetailsDeployment implements Editable<StrategyDetailsDeploy
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof StrategyDetailsDeployment)) {
+            return false;
+        }
+        StrategyDetailsDeployment other = (StrategyDetailsDeployment) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterPermissions = this.getClusterPermissions();
+        Object other$clusterPermissions = other.getClusterPermissions();
+        if (this$clusterPermissions == null ? other$clusterPermissions != null : !this$clusterPermissions.equals(other$clusterPermissions)) {
+            return false;
+        }
+        Object this$deployments = this.getDeployments();
+        Object other$deployments = other.getDeployments();
+        if (this$deployments == null ? other$deployments != null : !this$deployments.equals(other$deployments)) {
+            return false;
+        }
+        Object this$permissions = this.getPermissions();
+        Object other$permissions = other.getPermissions();
+        if (this$permissions == null ? other$permissions != null : !this$permissions.equals(other$permissions)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof StrategyDetailsDeployment;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterPermissions = this.getClusterPermissions();
+        result = result * prime + ($clusterPermissions == null ? 43 : $clusterPermissions.hashCode());
+        Object $deployments = this.getDeployments();
+        result = result * prime + ($deployments == null ? 43 : $deployments.hashCode());
+        Object $permissions = this.getPermissions();
+        result = result * prime + ($permissions == null ? 43 : $permissions.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "StrategyDetailsDeployment(" + "clusterPermissions=" + this.getClusterPermissions() + ", deployments=" + this.getDeployments() + ", permissions=" + this.getPermissions() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

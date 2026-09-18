@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
 /**
  * AwsSqsSourceSpec defines the desired state of the source.
@@ -44,12 +41,6 @@ import lombok.experimental.Accessors;
     "queueUrl",
     "serviceAccountName",
     "sink"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -203,6 +194,78 @@ public class AwsSqsSourceSpec implements Editable<AwsSqsSourceSpecBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AwsSqsSourceSpec)) {
+            return false;
+        }
+        AwsSqsSourceSpec other = (AwsSqsSourceSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$annotations = this.getAnnotations();
+        Object other$annotations = other.getAnnotations();
+        if (this$annotations == null ? other$annotations != null : !this$annotations.equals(other$annotations)) {
+            return false;
+        }
+        Object this$awsCredsSecret = this.getAwsCredsSecret();
+        Object other$awsCredsSecret = other.getAwsCredsSecret();
+        if (this$awsCredsSecret == null ? other$awsCredsSecret != null : !this$awsCredsSecret.equals(other$awsCredsSecret)) {
+            return false;
+        }
+        Object this$queueUrl = this.getQueueUrl();
+        Object other$queueUrl = other.getQueueUrl();
+        if (this$queueUrl == null ? other$queueUrl != null : !this$queueUrl.equals(other$queueUrl)) {
+            return false;
+        }
+        Object this$serviceAccountName = this.getServiceAccountName();
+        Object other$serviceAccountName = other.getServiceAccountName();
+        if (this$serviceAccountName == null ? other$serviceAccountName != null : !this$serviceAccountName.equals(other$serviceAccountName)) {
+            return false;
+        }
+        Object this$sink = this.getSink();
+        Object other$sink = other.getSink();
+        if (this$sink == null ? other$sink != null : !this$sink.equals(other$sink)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AwsSqsSourceSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $annotations = this.getAnnotations();
+        result = result * prime + ($annotations == null ? 43 : $annotations.hashCode());
+        Object $awsCredsSecret = this.getAwsCredsSecret();
+        result = result * prime + ($awsCredsSecret == null ? 43 : $awsCredsSecret.hashCode());
+        Object $queueUrl = this.getQueueUrl();
+        result = result * prime + ($queueUrl == null ? 43 : $queueUrl.hashCode());
+        Object $serviceAccountName = this.getServiceAccountName();
+        result = result * prime + ($serviceAccountName == null ? 43 : $serviceAccountName.hashCode());
+        Object $sink = this.getSink();
+        result = result * prime + ($sink == null ? 43 : $sink.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AwsSqsSourceSpec(" + "annotations=" + this.getAnnotations() + ", awsCredsSecret=" + this.getAwsCredsSecret() + ", queueUrl=" + this.getQueueUrl() + ", serviceAccountName=" + this.getServiceAccountName() + ", sink=" + this.getSink() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }
