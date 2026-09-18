@@ -15,7 +15,6 @@
  */
 package io.fabric8.java.generator.nodes;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.*;
@@ -26,6 +25,7 @@ import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.utils.StringEscapeUtils;
 import io.fabric8.java.generator.Config;
+import tools.jackson.databind.JsonNode;
 
 import java.util.ArrayList;
 import java.util.Collections;

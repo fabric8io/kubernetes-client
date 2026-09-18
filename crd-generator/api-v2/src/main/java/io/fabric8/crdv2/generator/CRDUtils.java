@@ -15,12 +15,15 @@
  */
 package io.fabric8.crdv2.generator;
 
-import com.fasterxml.jackson.databind.BeanDescription;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationConfig;
-import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 import io.fabric8.crd.generator.annotation.Annotations;
 import io.fabric8.crd.generator.annotation.Labels;
+import tools.jackson.databind.BeanDescription;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.SerializationConfig;
+import tools.jackson.databind.introspect.AnnotatedClass;
+import tools.jackson.databind.introspect.BeanPropertyDefinition;
+import tools.jackson.databind.introspect.ClassIntrospector;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -64,8 +67,11 @@ public class CRDUtils {
    * then this logic will need to change
    */
   public static SpecAndStatus resolveSpecAndStatusTypes(Class<?> definition) {
-    SerializationConfig config = new ObjectMapper().getSerializationConfig();
-    BeanDescription description = config.introspect(config.constructType(definition));
+    SerializationConfig config = new ObjectMapper().serializationConfig();
+    JavaType javaType = config.constructType(definition);
+    ClassIntrospector ci = config.classIntrospectorInstance().forOperation(config);
+    AnnotatedClass ac = ci.introspectClassAnnotations(javaType);
+    BeanDescription description = ci.introspectForSerialization(javaType, ac);
     String specClassName = null;
     String statusClassName = null;
     for (BeanPropertyDefinition bpd : description.findProperties()) {

@@ -2,10 +2,6 @@
 
 The CRD Generator v2 can be used in a [build script](https://docs.gradle.org/current/userguide/writing_build_scripts.html) without an additional plugin:
 
-> [!NOTE]
-> The snippets pin `8.0.0`. Replace it with the kubernetes-client version you use;
-> the CRD Generator v2 is available since 7.0.0.
-
 ## Kotlin DSL (`build.gradle.kts`)
 
 ```kotlin
@@ -26,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.fabric8:kubernetes-client-api:8.0.0")
+    compileOnly("io.fabric8:kubernetes-client-api:7.0.0")
 }
 
 buildscript {
@@ -34,8 +30,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("io.fabric8:crd-generator-api-v2:8.0.0")
-        classpath("io.fabric8:crd-generator-collector:8.0.0")
+        classpath("io.fabric8:crd-generator-api-v2:7.0.0")
+        classpath("io.fabric8:crd-generator-collector:7.0.0")
     }
 }
 
@@ -122,7 +118,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.fabric8:kubernetes-client-api:8.0.0")
+    compileOnly("io.fabric8:kubernetes-client-api:7.0.0")
 }
 
 // Dedicated configuration for the CRD generator CLI and its dependencies.
@@ -130,7 +126,7 @@ dependencies {
 val crdGeneratorCli: Configuration by configurations.creating
 
 dependencies {
-    crdGeneratorCli("io.fabric8:crd-generator-cli:8.0.0")
+    crdGeneratorCli("io.fabric8:crd-generator-cli:7.0.0")
 }
 
 tasks.register<JavaExec>("generateCrds") {
@@ -195,7 +191,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'io.fabric8:kubernetes-client-api:8.0.0'
+    compileOnly 'io.fabric8:kubernetes-client-api:7.0.0'
 }
 
 // Dedicated configuration for the CRD generator CLI and its dependencies.
@@ -205,7 +201,7 @@ configurations {
 }
 
 dependencies {
-    crdGeneratorCli 'io.fabric8:crd-generator-cli:8.0.0'
+    crdGeneratorCli 'io.fabric8:crd-generator-cli:7.0.0'
 }
 
 tasks.register('generateCrds', JavaExec) {

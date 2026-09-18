@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #7374: (crd-generator) Migrated CRD generator to Jackson 3 compatible implementation
 
 #### Dependency Upgrade
 * Fix #7374: Upgrade Jackson from 2.x to 3.2.1

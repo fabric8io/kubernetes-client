@@ -16,10 +16,10 @@
 package io.fabric8.it.datetime;
 
 import com.example.v1.Dummy;
-import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.java.generator.testing.KubernetesResourceDiff;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.JsonNode;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
