@@ -41,6 +41,13 @@ public interface V1DynamicresourceAllocationAPIGroupDSL extends Client {
   NonNamespaceOperation<DeviceClass, DeviceClassList, Resource<DeviceClass>> deviceClasses();
 
   /**
+   * API entrypoint for resource.k8s.io/v1 DeviceTaintRule (cluster-scoped)
+   *
+   * @return {@link NonNamespaceOperation} for DeviceTaintRule
+   */
+  NonNamespaceOperation<DeviceTaintRule, DeviceTaintRuleList, Resource<DeviceTaintRule>> deviceTaintRules();
+
+  /**
    * API entrypoint for resource.k8s.io/v1 ResourceSlice (cluster-scoped)
    *
    * @return {@link NonNamespaceOperation} for ResourceSlice
