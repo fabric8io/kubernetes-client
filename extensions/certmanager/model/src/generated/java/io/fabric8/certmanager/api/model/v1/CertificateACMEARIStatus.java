@@ -32,16 +32,14 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
-/**
- * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
- */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "cloud",
-    "ngts",
-    "tpp",
-    "zone"
+    "explanationURL",
+    "lastChecked",
+    "lastError",
+    "nextCheck",
+    "suggestedWindow"
 })
 @ToString
 @EqualsAndHashCode
@@ -65,105 +63,106 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VenafiIssuer implements Editable<VenafiIssuerBuilder>, KubernetesResource
+public class CertificateACMEARIStatus implements Editable<CertificateACMEARIStatusBuilder>, KubernetesResource
 {
 
-    @JsonProperty("cloud")
-    private VenafiCloud cloud;
-    @JsonProperty("ngts")
-    private VenafiNGTS ngts;
-    @JsonProperty("tpp")
-    private VenafiTPP tpp;
-    @JsonProperty("zone")
-    private String zone;
+    @JsonProperty("explanationURL")
+    private String explanationURL;
+    @JsonProperty("lastChecked")
+    private String lastChecked;
+    @JsonProperty("lastError")
+    private String lastError;
+    @JsonProperty("nextCheck")
+    private String nextCheck;
+    @JsonProperty("suggestedWindow")
+    private ACMERenewalWindow suggestedWindow;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public VenafiIssuer() {
+    public CertificateACMEARIStatus() {
     }
 
-    public VenafiIssuer(VenafiCloud cloud, VenafiNGTS ngts, VenafiTPP tpp, String zone) {
+    public CertificateACMEARIStatus(String explanationURL, String lastChecked, String lastError, String nextCheck, ACMERenewalWindow suggestedWindow) {
         super();
-        this.cloud = cloud;
-        this.ngts = ngts;
-        this.tpp = tpp;
-        this.zone = zone;
+        this.explanationURL = explanationURL;
+        this.lastChecked = lastChecked;
+        this.lastError = lastError;
+        this.nextCheck = nextCheck;
+        this.suggestedWindow = suggestedWindow;
     }
 
     /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+     * ExplanationURL is a human-readable URL that may explain why the suggested window has its current value.
      */
-    @JsonProperty("cloud")
-    public VenafiCloud getCloud() {
-        return cloud;
+    @JsonProperty("explanationURL")
+    public String getExplanationURL() {
+        return explanationURL;
     }
 
     /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+     * ExplanationURL is a human-readable URL that may explain why the suggested window has its current value.
      */
-    @JsonProperty("cloud")
-    public void setCloud(VenafiCloud cloud) {
-        this.cloud = cloud;
+    @JsonProperty("explanationURL")
+    public void setExplanationURL(String explanationURL) {
+        this.explanationURL = explanationURL;
+    }
+
+    @JsonProperty("lastChecked")
+    public String getLastChecked() {
+        return lastChecked;
+    }
+
+    @JsonProperty("lastChecked")
+    public void setLastChecked(String lastChecked) {
+        this.lastChecked = lastChecked;
     }
 
     /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+     * LastError is the last error encountered when checking the ACME server for renewal information, if any.
      */
-    @JsonProperty("ngts")
-    public VenafiNGTS getNgts() {
-        return ngts;
+    @JsonProperty("lastError")
+    public String getLastError() {
+        return lastError;
     }
 
     /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+     * LastError is the last error encountered when checking the ACME server for renewal information, if any.
      */
-    @JsonProperty("ngts")
-    public void setNgts(VenafiNGTS ngts) {
-        this.ngts = ngts;
+    @JsonProperty("lastError")
+    public void setLastError(String lastError) {
+        this.lastError = lastError;
     }
 
-    /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
-     */
-    @JsonProperty("tpp")
-    public VenafiTPP getTpp() {
-        return tpp;
+    @JsonProperty("nextCheck")
+    public String getNextCheck() {
+        return nextCheck;
     }
 
-    /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
-     */
-    @JsonProperty("tpp")
-    public void setTpp(VenafiTPP tpp) {
-        this.tpp = tpp;
+    @JsonProperty("nextCheck")
+    public void setNextCheck(String nextCheck) {
+        this.nextCheck = nextCheck;
     }
 
-    /**
-     * Zone is the Certificate Manager Policy Zone to use for this issuer. All requests made to the Certificate Manager platform will be restricted by the named zone policy. This field is required.
-     */
-    @JsonProperty("zone")
-    public String getZone() {
-        return zone;
+    @JsonProperty("suggestedWindow")
+    public ACMERenewalWindow getSuggestedWindow() {
+        return suggestedWindow;
     }
 
-    /**
-     * Zone is the Certificate Manager Policy Zone to use for this issuer. All requests made to the Certificate Manager platform will be restricted by the named zone policy. This field is required.
-     */
-    @JsonProperty("zone")
-    public void setZone(String zone) {
-        this.zone = zone;
+    @JsonProperty("suggestedWindow")
+    public void setSuggestedWindow(ACMERenewalWindow suggestedWindow) {
+        this.suggestedWindow = suggestedWindow;
     }
 
     @JsonIgnore
-    public VenafiIssuerBuilder edit() {
-        return new VenafiIssuerBuilder(this);
+    public CertificateACMEARIStatusBuilder edit() {
+        return new CertificateACMEARIStatusBuilder(this);
     }
 
     @JsonIgnore
-    public VenafiIssuerBuilder toBuilder() {
+    public CertificateACMEARIStatusBuilder toBuilder() {
         return edit();
     }
 

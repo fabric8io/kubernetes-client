@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.fabric8.certmanager.api.model.meta.v1.LocalObjectReference;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -17,7 +18,6 @@ import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -33,15 +33,15 @@ import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+ * VenafiNGTS defines connection configuration for the Palo Alto Networks Next Generation Trust Services (NGTS) platform using OAuth 2.0 Client Credentials.
  */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "cloud",
-    "ngts",
-    "tpp",
-    "zone"
+    "credentialsRef",
+    "tokenEndpoint",
+    "tsgID",
+    "url"
 })
 @ToString
 @EqualsAndHashCode
@@ -57,7 +57,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     @BuildableReference(ResourceRequirements.class),
     @BuildableReference(IntOrString.class),
     @BuildableReference(ObjectReference.class),
-    @BuildableReference(LocalObjectReference.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class),
     @BuildableReference(EnvVar.class),
     @BuildableReference(ContainerPort.class),
@@ -65,105 +65,105 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VenafiIssuer implements Editable<VenafiIssuerBuilder>, KubernetesResource
+public class VenafiNGTS implements Editable<VenafiNGTSBuilder>, KubernetesResource
 {
 
-    @JsonProperty("cloud")
-    private VenafiCloud cloud;
-    @JsonProperty("ngts")
-    private VenafiNGTS ngts;
-    @JsonProperty("tpp")
-    private VenafiTPP tpp;
-    @JsonProperty("zone")
-    private String zone;
+    @JsonProperty("credentialsRef")
+    private LocalObjectReference credentialsRef;
+    @JsonProperty("tokenEndpoint")
+    private String tokenEndpoint;
+    @JsonProperty("tsgID")
+    private String tsgID;
+    @JsonProperty("url")
+    private String url;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public VenafiIssuer() {
+    public VenafiNGTS() {
     }
 
-    public VenafiIssuer(VenafiCloud cloud, VenafiNGTS ngts, VenafiTPP tpp, String zone) {
+    public VenafiNGTS(LocalObjectReference credentialsRef, String tokenEndpoint, String tsgID, String url) {
         super();
-        this.cloud = cloud;
-        this.ngts = ngts;
-        this.tpp = tpp;
-        this.zone = zone;
+        this.credentialsRef = credentialsRef;
+        this.tokenEndpoint = tokenEndpoint;
+        this.tsgID = tsgID;
+        this.url = url;
     }
 
     /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+     * VenafiNGTS defines connection configuration for the Palo Alto Networks Next Generation Trust Services (NGTS) platform using OAuth 2.0 Client Credentials.
      */
-    @JsonProperty("cloud")
-    public VenafiCloud getCloud() {
-        return cloud;
+    @JsonProperty("credentialsRef")
+    public LocalObjectReference getCredentialsRef() {
+        return credentialsRef;
     }
 
     /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+     * VenafiNGTS defines connection configuration for the Palo Alto Networks Next Generation Trust Services (NGTS) platform using OAuth 2.0 Client Credentials.
      */
-    @JsonProperty("cloud")
-    public void setCloud(VenafiCloud cloud) {
-        this.cloud = cloud;
+    @JsonProperty("credentialsRef")
+    public void setCredentialsRef(LocalObjectReference credentialsRef) {
+        this.credentialsRef = credentialsRef;
     }
 
     /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+     * TokenEndpoint is the OAuth 2.0 token endpoint URL used to obtain access tokens, for example "https://auth.apps.paloaltonetworks.com/oauth2/access_token". Defaults to "https://auth.apps.paloaltonetworks.com/oauth2/access_token" if not set.
      */
-    @JsonProperty("ngts")
-    public VenafiNGTS getNgts() {
-        return ngts;
+    @JsonProperty("tokenEndpoint")
+    public String getTokenEndpoint() {
+        return tokenEndpoint;
     }
 
     /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+     * TokenEndpoint is the OAuth 2.0 token endpoint URL used to obtain access tokens, for example "https://auth.apps.paloaltonetworks.com/oauth2/access_token". Defaults to "https://auth.apps.paloaltonetworks.com/oauth2/access_token" if not set.
      */
-    @JsonProperty("ngts")
-    public void setNgts(VenafiNGTS ngts) {
-        this.ngts = ngts;
+    @JsonProperty("tokenEndpoint")
+    public void setTokenEndpoint(String tokenEndpoint) {
+        this.tokenEndpoint = tokenEndpoint;
     }
 
     /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+     * TSGID is the Tenant Service Group ID used to scope the OAuth 2.0 access token, for example "1234567890". The tsg_id: prefix is added automatically. This field is required.
      */
-    @JsonProperty("tpp")
-    public VenafiTPP getTpp() {
-        return tpp;
+    @JsonProperty("tsgID")
+    public String getTsgID() {
+        return tsgID;
     }
 
     /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+     * TSGID is the Tenant Service Group ID used to scope the OAuth 2.0 access token, for example "1234567890". The tsg_id: prefix is added automatically. This field is required.
      */
-    @JsonProperty("tpp")
-    public void setTpp(VenafiTPP tpp) {
-        this.tpp = tpp;
+    @JsonProperty("tsgID")
+    public void setTsgID(String tsgID) {
+        this.tsgID = tsgID;
     }
 
     /**
-     * Zone is the Certificate Manager Policy Zone to use for this issuer. All requests made to the Certificate Manager platform will be restricted by the named zone policy. This field is required.
+     * URL is the base URL for the NGTS API endpoint. Defaults to "https://api.strata.paloaltonetworks.com/ngts" if not set.
      */
-    @JsonProperty("zone")
-    public String getZone() {
-        return zone;
+    @JsonProperty("url")
+    public String getUrl() {
+        return url;
     }
 
     /**
-     * Zone is the Certificate Manager Policy Zone to use for this issuer. All requests made to the Certificate Manager platform will be restricted by the named zone policy. This field is required.
+     * URL is the base URL for the NGTS API endpoint. Defaults to "https://api.strata.paloaltonetworks.com/ngts" if not set.
      */
-    @JsonProperty("zone")
-    public void setZone(String zone) {
-        this.zone = zone;
+    @JsonProperty("url")
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @JsonIgnore
-    public VenafiIssuerBuilder edit() {
-        return new VenafiIssuerBuilder(this);
+    public VenafiNGTSBuilder edit() {
+        return new VenafiNGTSBuilder(this);
     }
 
     @JsonIgnore
-    public VenafiIssuerBuilder toBuilder() {
+    public VenafiNGTSBuilder toBuilder() {
         return edit();
     }
 

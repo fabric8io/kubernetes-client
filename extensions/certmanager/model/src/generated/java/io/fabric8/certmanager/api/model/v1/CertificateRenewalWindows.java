@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
+import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -33,15 +34,14 @@ import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+ * CertificateRenewalWindows is the definition for renewal windows
  */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "cloud",
-    "ngts",
-    "tpp",
-    "zone"
+    "cron",
+    "timezone",
+    "windowDuration"
 })
 @ToString
 @EqualsAndHashCode
@@ -65,105 +65,86 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VenafiIssuer implements Editable<VenafiIssuerBuilder>, KubernetesResource
+public class CertificateRenewalWindows implements Editable<CertificateRenewalWindowsBuilder>, KubernetesResource
 {
 
-    @JsonProperty("cloud")
-    private VenafiCloud cloud;
-    @JsonProperty("ngts")
-    private VenafiNGTS ngts;
-    @JsonProperty("tpp")
-    private VenafiTPP tpp;
-    @JsonProperty("zone")
-    private String zone;
+    @JsonProperty("cron")
+    private String cron;
+    @JsonProperty("timezone")
+    private String timezone;
+    @JsonProperty("windowDuration")
+    private Duration windowDuration;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public VenafiIssuer() {
+    public CertificateRenewalWindows() {
     }
 
-    public VenafiIssuer(VenafiCloud cloud, VenafiNGTS ngts, VenafiTPP tpp, String zone) {
+    public CertificateRenewalWindows(String cron, String timezone, Duration windowDuration) {
         super();
-        this.cloud = cloud;
-        this.ngts = ngts;
-        this.tpp = tpp;
-        this.zone = zone;
+        this.cron = cron;
+        this.timezone = timezone;
+        this.windowDuration = windowDuration;
     }
 
     /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+     * `cron` is a cron compliant string to allow when the renewal should be allowed. Format is as shown below: &#42; &#42; &#42; &#42; &#42; | | | | | | | | | day of the week (0–6) (Sunday to Saturday; | | | month (1–12)             7 is also Sunday on some systems) | | day of the month (1–31) | hour (0–23) minute (0–59)
      */
-    @JsonProperty("cloud")
-    public VenafiCloud getCloud() {
-        return cloud;
+    @JsonProperty("cron")
+    public String getCron() {
+        return cron;
     }
 
     /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+     * `cron` is a cron compliant string to allow when the renewal should be allowed. Format is as shown below: &#42; &#42; &#42; &#42; &#42; | | | | | | | | | day of the week (0–6) (Sunday to Saturday; | | | month (1–12)             7 is also Sunday on some systems) | | day of the month (1–31) | hour (0–23) minute (0–59)
      */
-    @JsonProperty("cloud")
-    public void setCloud(VenafiCloud cloud) {
-        this.cloud = cloud;
+    @JsonProperty("cron")
+    public void setCron(String cron) {
+        this.cron = cron;
     }
 
     /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+     * `timezone` is IANA compliant timezone. For example America/Denver. If this field is not set, timezone is treated as UTC.
      */
-    @JsonProperty("ngts")
-    public VenafiNGTS getNgts() {
-        return ngts;
+    @JsonProperty("timezone")
+    public String getTimezone() {
+        return timezone;
     }
 
     /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+     * `timezone` is IANA compliant timezone. For example America/Denver. If this field is not set, timezone is treated as UTC.
      */
-    @JsonProperty("ngts")
-    public void setNgts(VenafiNGTS ngts) {
-        this.ngts = ngts;
+    @JsonProperty("timezone")
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
     }
 
     /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+     * CertificateRenewalWindows is the definition for renewal windows
      */
-    @JsonProperty("tpp")
-    public VenafiTPP getTpp() {
-        return tpp;
+    @JsonProperty("windowDuration")
+    public Duration getWindowDuration() {
+        return windowDuration;
     }
 
     /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+     * CertificateRenewalWindows is the definition for renewal windows
      */
-    @JsonProperty("tpp")
-    public void setTpp(VenafiTPP tpp) {
-        this.tpp = tpp;
-    }
-
-    /**
-     * Zone is the Certificate Manager Policy Zone to use for this issuer. All requests made to the Certificate Manager platform will be restricted by the named zone policy. This field is required.
-     */
-    @JsonProperty("zone")
-    public String getZone() {
-        return zone;
-    }
-
-    /**
-     * Zone is the Certificate Manager Policy Zone to use for this issuer. All requests made to the Certificate Manager platform will be restricted by the named zone policy. This field is required.
-     */
-    @JsonProperty("zone")
-    public void setZone(String zone) {
-        this.zone = zone;
+    @JsonProperty("windowDuration")
+    public void setWindowDuration(Duration windowDuration) {
+        this.windowDuration = windowDuration;
     }
 
     @JsonIgnore
-    public VenafiIssuerBuilder edit() {
-        return new VenafiIssuerBuilder(this);
+    public CertificateRenewalWindowsBuilder edit() {
+        return new CertificateRenewalWindowsBuilder(this);
     }
 
     @JsonIgnore
-    public VenafiIssuerBuilder toBuilder() {
+    public CertificateRenewalWindowsBuilder toBuilder() {
         return edit();
     }
 

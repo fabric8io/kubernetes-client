@@ -32,16 +32,11 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
-/**
- * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
- */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "cloud",
-    "ngts",
-    "tpp",
-    "zone"
+    "end",
+    "start"
 })
 @ToString
 @EqualsAndHashCode
@@ -65,105 +60,55 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VenafiIssuer implements Editable<VenafiIssuerBuilder>, KubernetesResource
+public class ACMERenewalWindow implements Editable<ACMERenewalWindowBuilder>, KubernetesResource
 {
 
-    @JsonProperty("cloud")
-    private VenafiCloud cloud;
-    @JsonProperty("ngts")
-    private VenafiNGTS ngts;
-    @JsonProperty("tpp")
-    private VenafiTPP tpp;
-    @JsonProperty("zone")
-    private String zone;
+    @JsonProperty("end")
+    private String end;
+    @JsonProperty("start")
+    private String start;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public VenafiIssuer() {
+    public ACMERenewalWindow() {
     }
 
-    public VenafiIssuer(VenafiCloud cloud, VenafiNGTS ngts, VenafiTPP tpp, String zone) {
+    public ACMERenewalWindow(String end, String start) {
         super();
-        this.cloud = cloud;
-        this.ngts = ngts;
-        this.tpp = tpp;
-        this.zone = zone;
+        this.end = end;
+        this.start = start;
     }
 
-    /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
-     */
-    @JsonProperty("cloud")
-    public VenafiCloud getCloud() {
-        return cloud;
+    @JsonProperty("end")
+    public String getEnd() {
+        return end;
     }
 
-    /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
-     */
-    @JsonProperty("cloud")
-    public void setCloud(VenafiCloud cloud) {
-        this.cloud = cloud;
+    @JsonProperty("end")
+    public void setEnd(String end) {
+        this.end = end;
     }
 
-    /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
-     */
-    @JsonProperty("ngts")
-    public VenafiNGTS getNgts() {
-        return ngts;
+    @JsonProperty("start")
+    public String getStart() {
+        return start;
     }
 
-    /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
-     */
-    @JsonProperty("ngts")
-    public void setNgts(VenafiNGTS ngts) {
-        this.ngts = ngts;
-    }
-
-    /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
-     */
-    @JsonProperty("tpp")
-    public VenafiTPP getTpp() {
-        return tpp;
-    }
-
-    /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
-     */
-    @JsonProperty("tpp")
-    public void setTpp(VenafiTPP tpp) {
-        this.tpp = tpp;
-    }
-
-    /**
-     * Zone is the Certificate Manager Policy Zone to use for this issuer. All requests made to the Certificate Manager platform will be restricted by the named zone policy. This field is required.
-     */
-    @JsonProperty("zone")
-    public String getZone() {
-        return zone;
-    }
-
-    /**
-     * Zone is the Certificate Manager Policy Zone to use for this issuer. All requests made to the Certificate Manager platform will be restricted by the named zone policy. This field is required.
-     */
-    @JsonProperty("zone")
-    public void setZone(String zone) {
-        this.zone = zone;
+    @JsonProperty("start")
+    public void setStart(String start) {
+        this.start = start;
     }
 
     @JsonIgnore
-    public VenafiIssuerBuilder edit() {
-        return new VenafiIssuerBuilder(this);
+    public ACMERenewalWindowBuilder edit() {
+        return new ACMERenewalWindowBuilder(this);
     }
 
     @JsonIgnore
-    public VenafiIssuerBuilder toBuilder() {
+    public ACMERenewalWindowBuilder toBuilder() {
         return edit();
     }
 
