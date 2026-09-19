@@ -19,10 +19,14 @@ import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest
 import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestList;
 import io.fabric8.kubernetes.api.model.certificates.v1.ClusterTrustBundle;
 import io.fabric8.kubernetes.api.model.certificates.v1.ClusterTrustBundleList;
+import io.fabric8.kubernetes.api.model.certificates.v1.PodCertificateRequest;
+import io.fabric8.kubernetes.api.model.certificates.v1.PodCertificateRequestList;
 import io.fabric8.kubernetes.client.Client;
 
 public interface V1CertificatesAPIGroupDSL extends Client {
   NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, CertificateSigningRequestResource<CertificateSigningRequest>> certificateSigningRequests();
 
   NonNamespaceOperation<ClusterTrustBundle, ClusterTrustBundleList, Resource<ClusterTrustBundle>> clusterTrustBundles();
+
+  MixedOperation<PodCertificateRequest, PodCertificateRequestList, Resource<PodCertificateRequest>> podCertificateRequests();
 }

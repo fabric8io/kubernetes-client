@@ -19,6 +19,10 @@ import io.fabric8.kubernetes.api.model.resource.v1.DeviceClass;
 import io.fabric8.kubernetes.api.model.resource.v1.DeviceClassBuilder;
 import io.fabric8.kubernetes.api.model.resource.v1.DeviceClassList;
 import io.fabric8.kubernetes.api.model.resource.v1.DeviceClassListBuilder;
+import io.fabric8.kubernetes.api.model.resource.v1.DeviceTaintRule;
+import io.fabric8.kubernetes.api.model.resource.v1.DeviceTaintRuleBuilder;
+import io.fabric8.kubernetes.api.model.resource.v1.DeviceTaintRuleList;
+import io.fabric8.kubernetes.api.model.resource.v1.DeviceTaintRuleListBuilder;
 import io.fabric8.kubernetes.api.model.resource.v1.ResourceClaim;
 import io.fabric8.kubernetes.api.model.resource.v1.ResourceClaimBuilder;
 import io.fabric8.kubernetes.api.model.resource.v1.ResourceClaimList;
@@ -325,6 +329,75 @@ class V1DynamicResourceAllocationTest {
     assertThat(isDeleted).isTrue();
   }
 
+  // DeviceTaintRule Tests (Cluster-scoped)
+  @Test
+  void deviceTaintRuleGet() {
+    // Given
+    server.expect().get().withPath("/apis/resource.k8s.io/v1/devicetaintrules/test-device-taint-rule")
+        .andReturn(HttpURLConnection.HTTP_OK, createNewDeviceTaintRule("test-device-taint-rule"))
+        .once();
+
+    // When
+    DeviceTaintRule deviceTaintRule = client.dynamicResourceAllocation().v1().deviceTaintRules()
+        .withName("test-device-taint-rule").get();
+
+    // Then
+    assertThat(deviceTaintRule)
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "test-device-taint-rule");
+  }
+
+  @Test
+  void deviceTaintRuleList() {
+    // Given
+    server.expect().get().withPath("/apis/resource.k8s.io/v1/devicetaintrules")
+        .andReturn(HttpURLConnection.HTTP_OK, new DeviceTaintRuleListBuilder()
+            .addToItems(createNewDeviceTaintRule("rule1"))
+            .addToItems(createNewDeviceTaintRule("rule2"))
+            .build())
+        .once();
+
+    // When
+    DeviceTaintRuleList deviceTaintRuleList = client.dynamicResourceAllocation().v1().deviceTaintRules().list();
+
+    // Then
+    assertThat(deviceTaintRuleList).isNotNull();
+    assertThat(deviceTaintRuleList.getItems()).hasSize(2);
+  }
+
+  @Test
+  void deviceTaintRuleCreate() {
+    // Given
+    DeviceTaintRule deviceTaintRule = createNewDeviceTaintRule("new-device-taint-rule");
+    server.expect().post().withPath("/apis/resource.k8s.io/v1/devicetaintrules")
+        .andReturn(HttpURLConnection.HTTP_CREATED, deviceTaintRule)
+        .once();
+
+    // When
+    DeviceTaintRule created = client.dynamicResourceAllocation().v1().deviceTaintRules()
+        .resource(deviceTaintRule).create();
+
+    // Then
+    assertThat(created)
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("metadata.name", "new-device-taint-rule");
+  }
+
+  @Test
+  void deviceTaintRuleDelete() {
+    // Given
+    server.expect().delete().withPath("/apis/resource.k8s.io/v1/devicetaintrules/device-taint-rule-to-delete")
+        .andReturn(HttpURLConnection.HTTP_OK, createNewDeviceTaintRule("device-taint-rule-to-delete"))
+        .once();
+
+    // When
+    boolean isDeleted = client.dynamicResourceAllocation().v1().deviceTaintRules()
+        .withName("device-taint-rule-to-delete").withGracePeriod(0).delete().size() == 1;
+
+    // Then
+    assertThat(isDeleted).isTrue();
+  }
+
   // Helper methods to create test resources
   private ResourceClaim createNewResourceClaim(String name) {
     return new ResourceClaimBuilder()
@@ -396,6 +469,21 @@ class V1DynamicResourceAllocationTest {
         .withGeneration(1L)
         .withResourceSliceCount(1L)
         .endPool()
+        .endSpec()
+        .build();
+  }
+
+  private DeviceTaintRule createNewDeviceTaintRule(String name) {
+    return new DeviceTaintRuleBuilder()
+        .withNewMetadata()
+        .withName(name)
+        .endMetadata()
+        .withNewSpec()
+        .withNewTaint()
+        .withKey("example.com/taint")
+        .withValue("true")
+        .withEffect("NoSchedule")
+        .endTaint()
         .endSpec()
         .build();
   }
