@@ -34,6 +34,7 @@
     <module>api-v2</module>
     <module>collector</module>
     <module>maven-plugin</module>
+    <module>gradle-plugin</module>
     <module>cli</module>
     <module>test</module>
   </modules>
