@@ -1,4 +1,4 @@
-package io.fabric8.tekton.pod;
+package io.fabric8.tekton.unversioned;
 
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import java.lang.Object;

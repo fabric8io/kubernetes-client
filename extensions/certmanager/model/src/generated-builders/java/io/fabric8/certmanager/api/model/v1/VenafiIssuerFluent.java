@@ -19,6 +19,7 @@ public class VenafiIssuerFluent<A extends io.fabric8.certmanager.api.model.v1.Ve
 
   private Map<String,Object> additionalProperties;
   private VenafiCloudBuilder cloud;
+  private VenafiNGTSBuilder ngts;
   private VenafiTPPBuilder tpp;
   private String zone;
 
@@ -53,6 +54,10 @@ public class VenafiIssuerFluent<A extends io.fabric8.certmanager.api.model.v1.Ve
     return this.cloud != null ? this.cloud.build() : null;
   }
   
+  public VenafiNGTS buildNgts() {
+    return this.ngts != null ? this.ngts.build() : null;
+  }
+  
   public VenafiTPP buildTpp() {
     return this.tpp != null ? this.tpp.build() : null;
   }
@@ -61,6 +66,7 @@ public class VenafiIssuerFluent<A extends io.fabric8.certmanager.api.model.v1.Ve
     instance = instance != null ? instance : new VenafiIssuer();
     if (instance != null) {
         this.withCloud(instance.getCloud());
+        this.withNgts(instance.getNgts());
         this.withTpp(instance.getTpp());
         this.withZone(instance.getZone());
         this.withAdditionalProperties(instance.getAdditionalProperties());
@@ -71,12 +77,24 @@ public class VenafiIssuerFluent<A extends io.fabric8.certmanager.api.model.v1.Ve
     return this.withNewCloudLike(Optional.ofNullable(this.buildCloud()).orElse(null));
   }
   
+  public NgtsNested<A> editNgts() {
+    return this.withNewNgtsLike(Optional.ofNullable(this.buildNgts()).orElse(null));
+  }
+  
   public CloudNested<A> editOrNewCloud() {
     return this.withNewCloudLike(Optional.ofNullable(this.buildCloud()).orElse(new VenafiCloudBuilder().build()));
   }
   
   public CloudNested<A> editOrNewCloudLike(VenafiCloud item) {
     return this.withNewCloudLike(Optional.ofNullable(this.buildCloud()).orElse(item));
+  }
+  
+  public NgtsNested<A> editOrNewNgts() {
+    return this.withNewNgtsLike(Optional.ofNullable(this.buildNgts()).orElse(new VenafiNGTSBuilder().build()));
+  }
+  
+  public NgtsNested<A> editOrNewNgtsLike(VenafiNGTS item) {
+    return this.withNewNgtsLike(Optional.ofNullable(this.buildNgts()).orElse(item));
   }
   
   public TppNested<A> editOrNewTpp() {
@@ -103,6 +121,9 @@ public class VenafiIssuerFluent<A extends io.fabric8.certmanager.api.model.v1.Ve
     }
     VenafiIssuerFluent that = (VenafiIssuerFluent) o;
     if (!(Objects.equals(cloud, that.cloud))) {
+      return false;
+    }
+    if (!(Objects.equals(ngts, that.ngts))) {
       return false;
     }
     if (!(Objects.equals(tpp, that.tpp))) {
@@ -133,6 +154,10 @@ public class VenafiIssuerFluent<A extends io.fabric8.certmanager.api.model.v1.Ve
     return this.cloud != null;
   }
   
+  public boolean hasNgts() {
+    return this.ngts != null;
+  }
+  
   public boolean hasTpp() {
     return this.tpp != null;
   }
@@ -142,7 +167,7 @@ public class VenafiIssuerFluent<A extends io.fabric8.certmanager.api.model.v1.Ve
   }
   
   public int hashCode() {
-    return Objects.hash(cloud, tpp, zone, additionalProperties);
+    return Objects.hash(cloud, ngts, tpp, zone, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -175,6 +200,11 @@ public class VenafiIssuerFluent<A extends io.fabric8.certmanager.api.model.v1.Ve
     if (!(cloud == null)) {
         sb.append("cloud:");
         sb.append(cloud);
+        sb.append(",");
+    }
+    if (!(ngts == null)) {
+        sb.append("ngts:");
+        sb.append(ngts);
         sb.append(",");
     }
     if (!(tpp == null)) {
@@ -224,12 +254,32 @@ public class VenafiIssuerFluent<A extends io.fabric8.certmanager.api.model.v1.Ve
     return new CloudNested(item);
   }
   
+  public NgtsNested<A> withNewNgts() {
+    return new NgtsNested(null);
+  }
+  
+  public NgtsNested<A> withNewNgtsLike(VenafiNGTS item) {
+    return new NgtsNested(item);
+  }
+  
   public TppNested<A> withNewTpp() {
     return new TppNested(null);
   }
   
   public TppNested<A> withNewTppLike(VenafiTPP item) {
     return new TppNested(item);
+  }
+  
+  public A withNgts(VenafiNGTS ngts) {
+    this._visitables.remove("ngts");
+    if (ngts != null) {
+        this.ngts = new VenafiNGTSBuilder(ngts);
+        this._visitables.get("ngts").add(this.ngts);
+    } else {
+        this.ngts = null;
+        this._visitables.get("ngts").remove(this.ngts);
+    }
+    return (A) this;
   }
   
   public A withTpp(VenafiTPP tpp) {
@@ -261,6 +311,23 @@ public class VenafiIssuerFluent<A extends io.fabric8.certmanager.api.model.v1.Ve
     }
     
     public N endCloud() {
+      return and();
+    }
+    
+  }
+  public class NgtsNested<N> extends VenafiNGTSFluent<NgtsNested<N>> implements Nested<N>{
+  
+    VenafiNGTSBuilder builder;
+  
+    NgtsNested(VenafiNGTS item) {
+      this.builder = new VenafiNGTSBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) VenafiIssuerFluent.this.withNgts(builder.build());
+    }
+    
+    public N endNgts() {
       return and();
     }
     

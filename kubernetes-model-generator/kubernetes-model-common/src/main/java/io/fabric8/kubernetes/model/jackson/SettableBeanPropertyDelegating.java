@@ -16,21 +16,22 @@
 package io.fabric8.kubernetes.model.jackson;
 
 import com.fasterxml.jackson.annotation.JacksonInject;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.PropertyName;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.deser.NullValueProvider;
-import com.fasterxml.jackson.databind.deser.SettableAnyProperty;
-import com.fasterxml.jackson.databind.deser.SettableBeanProperty;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import com.fasterxml.jackson.databind.introspect.ObjectIdInfo;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
-import com.fasterxml.jackson.databind.util.NameTransformer;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.PropertyName;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.cfg.MapperConfig;
+import tools.jackson.databind.deser.NullValueProvider;
+import tools.jackson.databind.deser.SettableAnyProperty;
+import tools.jackson.databind.deser.SettableBeanProperty;
+import tools.jackson.databind.exc.MismatchedInputException;
+import tools.jackson.databind.introspect.ObjectIdInfo;
+import tools.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
+import tools.jackson.databind.util.NameTransformer;
 
-import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.function.BooleanSupplier;
 
@@ -120,6 +121,14 @@ public class SettableBeanPropertyDelegating extends SettableBeanProperty.Delegat
    * {@inheritDoc}
    */
   @Override
+  public JsonInclude.Value findPropertyInclusion(MapperConfig<?> config, Class<?> baseType) {
+    return delegate.findPropertyInclusion(config, baseType);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public NullValueProvider getNullValueProvider() {
     return delegate.getNullValueProvider();
   }
@@ -128,8 +137,8 @@ public class SettableBeanPropertyDelegating extends SettableBeanProperty.Delegat
    * {@inheritDoc}
    */
   @Override
-  public void depositSchemaProperty(JsonObjectFormatVisitor objectVisitor, SerializerProvider provider)
-      throws JsonMappingException {
+  public void depositSchemaProperty(JsonObjectFormatVisitor objectVisitor, SerializationContext provider)
+      throws DatabindException {
     delegate.depositSchemaProperty(objectVisitor, provider);
   }
 
@@ -169,8 +178,8 @@ public class SettableBeanPropertyDelegating extends SettableBeanProperty.Delegat
    * {@inheritDoc}
    */
   @Override
-  public SettableBeanProperty unwrapped(NameTransformer unwrapper) {
-    return _with(delegate.unwrapped(unwrapper));
+  public SettableBeanProperty unwrapped(DeserializationContext ctxt, NameTransformer unwrapper) {
+    return _with(delegate.unwrapped(ctxt, unwrapper));
   }
 
   /**
@@ -204,12 +213,12 @@ public class SettableBeanPropertyDelegating extends SettableBeanProperty.Delegat
    * An example use-case is the use of placeholders (e.g. {@code ${aValue}}) in a field.
    */
   @Override
-  public void deserializeAndSet(JsonParser p, DeserializationContext ctxt, Object instance) throws IOException {
+  public void deserializeAndSet(JsonParser p, DeserializationContext ctxt, Object instance) {
     try {
       delegate.deserializeAndSet(p, ctxt, instance);
     } catch (MismatchedInputException ex) {
       if (shouldUseAnySetter()) {
-        anySetter.set(instance, delegate.getName(), p.getText());
+        anySetter.set(ctxt, instance, delegate.getName(), p.getText());
       } else {
         throw ex;
       }
@@ -220,7 +229,7 @@ public class SettableBeanPropertyDelegating extends SettableBeanProperty.Delegat
    * {@inheritDoc}
    */
   @Override
-  public Object deserializeSetAndReturn(JsonParser p, DeserializationContext ctxt, Object instance) throws IOException {
+  public Object deserializeSetAndReturn(JsonParser p, DeserializationContext ctxt, Object instance) {
     try {
       return delegate.deserializeSetAndReturn(p, ctxt, instance);
     } catch (MismatchedInputException ex) {

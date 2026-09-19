@@ -1,4 +1,4 @@
-package io.fabric8.tekton.pod;
+package io.fabric8.tekton.unversioned;
 
 import io.fabric8.kubernetes.api.builder.BaseFluent;
 import io.fabric8.kubernetes.api.builder.Nested;
@@ -26,7 +26,7 @@ import java.util.function.Predicate;
  * Generated
  */
 @SuppressWarnings("unchecked")
-public class AffinityAssistantTemplateFluent<A extends io.fabric8.tekton.pod.AffinityAssistantTemplateFluent<A>> extends BaseFluent<A>{
+public class AffinityAssistantTemplateFluent<A extends io.fabric8.tekton.unversioned.AffinityAssistantTemplateFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
   private ArrayList<LocalObjectReferenceBuilder> imagePullSecrets = new ArrayList<LocalObjectReferenceBuilder>();

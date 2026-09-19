@@ -15,12 +15,13 @@
  */
 package io.fabric8.kubernetes.api.model.apiextensions.v1;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.model.util.Helper;
 import io.fabric8.zjsonpatch.JsonDiff;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.util.Map;
 
@@ -29,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CustomResourceDefinitionTest {
-  private final ObjectMapper mapper = new ObjectMapper();
+  private final ObjectMapper mapper = new JsonMapper();
 
   @Test
   void testBuilder() {
@@ -62,7 +63,7 @@ class CustomResourceDefinitionTest {
   }
 
   @Test
-  void testLoadFromJsonSchemaPropsOrBool() throws JsonProcessingException {
+  void testLoadFromJsonSchemaPropsOrBool() throws JacksonException {
     // Given
     final String originalJson = Helper.loadJson("/valid-v1-crd.json");
     final CustomResourceDefinition customResourceDefinition = mapper.readValue(originalJson,
@@ -75,7 +76,7 @@ class CustomResourceDefinitionTest {
   }
 
   @Test
-  void testLoadFromJsonSchemaPropsOrArray() throws JsonProcessingException {
+  void testLoadFromJsonSchemaPropsOrArray() throws JacksonException {
     // Given
     final String originalJson = Helper.loadJson("/valid-crd-jsonschemapropsorarray.json");
     final CustomResourceDefinition result = mapper.readValue(originalJson, CustomResourceDefinition.class);
@@ -86,7 +87,7 @@ class CustomResourceDefinitionTest {
   }
 
   @Test
-  void testLoadFromJsonSchemaPropsOrStringArray() throws JsonProcessingException {
+  void testLoadFromJsonSchemaPropsOrStringArray() throws JacksonException {
     // Given
     final String originalJson = Helper.loadJson("/valid-crd-jsonschemapropsorstringarray.json");
     final CustomResourceDefinition result = mapper.readValue(originalJson, CustomResourceDefinition.class);
@@ -97,7 +98,7 @@ class CustomResourceDefinitionTest {
   }
 
   @Test
-  void testLoadFromCrdWithValidationExpressionLanguage() throws JsonProcessingException {
+  void testLoadFromCrdWithValidationExpressionLanguage() throws JacksonException {
     // Given
     final String originalJson = Helper.loadJson("/valid-v1-crd-validation-expression.json");
     final CustomResourceDefinition result = mapper.readValue(originalJson, CustomResourceDefinition.class);

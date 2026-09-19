@@ -25,7 +25,7 @@ public class ChallengeStatusBuilder extends ChallengeStatusFluent<ChallengeStatu
   }
 
   public ChallengeStatus build() {
-    ChallengeStatus buildable = new ChallengeStatus(fluent.getPresented(), fluent.getProcessing(), fluent.getReason(), fluent.getState());
+    ChallengeStatus buildable = new ChallengeStatus(fluent.getPresented(), fluent.getPresentedAt(), fluent.getProcessing(), fluent.getReason(), fluent.getState());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

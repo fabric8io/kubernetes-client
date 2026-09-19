@@ -32,6 +32,7 @@ public class FeatureFlagsFluent<A extends io.fabric8.tekton.pipeline.pkg.apis.co
   private Boolean enableProvenanceInStatus;
   private Boolean enableStepActions;
   private Boolean enableTektonOCIBundles;
+  private Boolean enableTerminationMessageCompression;
   private Boolean enableWaitExponentialBackoff;
   private String enforceNonfalsifiability;
   private Integer maxResultSize;
@@ -87,6 +88,7 @@ public class FeatureFlagsFluent<A extends io.fabric8.tekton.pipeline.pkg.apis.co
         this.withEnableProvenanceInStatus(instance.getEnableProvenanceInStatus());
         this.withEnableStepActions(instance.getEnableStepActions());
         this.withEnableTektonOCIBundles(instance.getEnableTektonOCIBundles());
+        this.withEnableTerminationMessageCompression(instance.getEnableTerminationMessageCompression());
         this.withEnableWaitExponentialBackoff(instance.getEnableWaitExponentialBackoff());
         this.withEnforceNonfalsifiability(instance.getEnforceNonfalsifiability());
         this.withMaxResultSize(instance.getMaxResultSize());
@@ -152,6 +154,9 @@ public class FeatureFlagsFluent<A extends io.fabric8.tekton.pipeline.pkg.apis.co
       return false;
     }
     if (!(Objects.equals(enableTektonOCIBundles, that.enableTektonOCIBundles))) {
+      return false;
+    }
+    if (!(Objects.equals(enableTerminationMessageCompression, that.enableTerminationMessageCompression))) {
       return false;
     }
     if (!(Objects.equals(enableWaitExponentialBackoff, that.enableWaitExponentialBackoff))) {
@@ -248,6 +253,10 @@ public class FeatureFlagsFluent<A extends io.fabric8.tekton.pipeline.pkg.apis.co
   
   public Boolean getEnableTektonOCIBundles() {
     return this.enableTektonOCIBundles;
+  }
+  
+  public Boolean getEnableTerminationMessageCompression() {
+    return this.enableTerminationMessageCompression;
   }
   
   public Boolean getEnableWaitExponentialBackoff() {
@@ -350,6 +359,10 @@ public class FeatureFlagsFluent<A extends io.fabric8.tekton.pipeline.pkg.apis.co
     return this.enableTektonOCIBundles != null;
   }
   
+  public boolean hasEnableTerminationMessageCompression() {
+    return this.enableTerminationMessageCompression != null;
+  }
+  
   public boolean hasEnableWaitExponentialBackoff() {
     return this.enableWaitExponentialBackoff != null;
   }
@@ -391,7 +404,7 @@ public class FeatureFlagsFluent<A extends io.fabric8.tekton.pipeline.pkg.apis.co
   }
   
   public int hashCode() {
-    return Objects.hash(awaitSidecarReadiness, coschedule, disableCredsInit, disableInlineSpec, enableAPIFields, enableArtifacts, enableCELInWhenExpression, enableConciseResolverSyntax, enableKeepPodOnCancel, enableKubernetesSidecar, enableParamEnum, enableProvenanceInStatus, enableStepActions, enableTektonOCIBundles, enableWaitExponentialBackoff, enforceNonfalsifiability, maxResultSize, requireGitSSHSecretKnownHosts, resultExtractionMethod, runningInEnvWithInjectedSidecars, sendCloudEventsForRuns, setSecurityContext, setSecurityContextReadOnlyRootFilesystem, verificationNoMatchPolicy, additionalProperties);
+    return Objects.hash(awaitSidecarReadiness, coschedule, disableCredsInit, disableInlineSpec, enableAPIFields, enableArtifacts, enableCELInWhenExpression, enableConciseResolverSyntax, enableKeepPodOnCancel, enableKubernetesSidecar, enableParamEnum, enableProvenanceInStatus, enableStepActions, enableTektonOCIBundles, enableTerminationMessageCompression, enableWaitExponentialBackoff, enforceNonfalsifiability, maxResultSize, requireGitSSHSecretKnownHosts, resultExtractionMethod, runningInEnvWithInjectedSidecars, sendCloudEventsForRuns, setSecurityContext, setSecurityContextReadOnlyRootFilesystem, verificationNoMatchPolicy, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -489,6 +502,11 @@ public class FeatureFlagsFluent<A extends io.fabric8.tekton.pipeline.pkg.apis.co
     if (!(enableTektonOCIBundles == null)) {
         sb.append("enableTektonOCIBundles:");
         sb.append(enableTektonOCIBundles);
+        sb.append(",");
+    }
+    if (!(enableTerminationMessageCompression == null)) {
+        sb.append("enableTerminationMessageCompression:");
+        sb.append(enableTerminationMessageCompression);
         sb.append(",");
     }
     if (!(enableWaitExponentialBackoff == null)) {
@@ -669,6 +687,15 @@ public class FeatureFlagsFluent<A extends io.fabric8.tekton.pipeline.pkg.apis.co
   
   public A withEnableTektonOCIBundles(Boolean enableTektonOCIBundles) {
     this.enableTektonOCIBundles = enableTektonOCIBundles;
+    return (A) this;
+  }
+  
+  public A withEnableTerminationMessageCompression() {
+    return withEnableTerminationMessageCompression(true);
+  }
+  
+  public A withEnableTerminationMessageCompression(Boolean enableTerminationMessageCompression) {
+    this.enableTerminationMessageCompression = enableTerminationMessageCompression;
     return (A) this;
   }
   

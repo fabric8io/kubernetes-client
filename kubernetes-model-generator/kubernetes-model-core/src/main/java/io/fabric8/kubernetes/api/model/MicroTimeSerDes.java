@@ -15,24 +15,21 @@
  */
 package io.fabric8.kubernetes.api.model;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.ObjectCodec;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-
-import java.io.IOException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.ValueSerializer;
 
 public class MicroTimeSerDes {
   private MicroTimeSerDes() {
   }
 
-  public static class Serializer extends JsonSerializer<MicroTime> {
+  public static class Serializer extends ValueSerializer<MicroTime> {
     @Override
-    public void serialize(MicroTime value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+    public void serialize(MicroTime value, JsonGenerator jgen, SerializationContext provider) {
       if (value != null) {
         if (value.getTime() != null) {
           jgen.writeString(value.getTime());
@@ -43,11 +40,10 @@ public class MicroTimeSerDes {
     }
   }
 
-  public static class Deserializer extends JsonDeserializer<MicroTime> {
+  public static class Deserializer extends ValueDeserializer<MicroTime> {
     @Override
-    public MicroTime deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
-      ObjectCodec oc = jsonParser.getCodec();
-      JsonNode node = oc.readTree(jsonParser);
+    public MicroTime deserialize(JsonParser jsonParser, DeserializationContext ctxt) {
+      JsonNode node = jsonParser.readValueAsTree();
       MicroTime microTime = null;
       if (node != null) {
         microTime = new MicroTime(node.asText());

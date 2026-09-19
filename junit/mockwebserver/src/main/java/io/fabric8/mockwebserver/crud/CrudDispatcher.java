@@ -15,13 +15,13 @@
  */
 package io.fabric8.mockwebserver.crud;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.MockServerException;
 import io.fabric8.mockwebserver.http.Dispatcher;
 import io.fabric8.mockwebserver.http.MockResponse;
 import io.fabric8.mockwebserver.http.RecordedRequest;
 import io.fabric8.zjsonpatch.JsonPatch;
+import tools.jackson.databind.JsonNode;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;

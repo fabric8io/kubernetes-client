@@ -2,6 +2,7 @@ package io.fabric8.certmanager.api.model.acme.v1;
 
 import io.fabric8.kubernetes.api.builder.BaseFluent;
 import io.fabric8.kubernetes.api.builder.Nested;
+import io.fabric8.kubernetes.api.model.Duration;
 import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
@@ -21,6 +22,7 @@ public class ACMEChallengeSolverFluent<A extends io.fabric8.certmanager.api.mode
   private ACMEChallengeSolverDNS01Builder dns01;
   private ACMEChallengeSolverHTTP01Builder http01;
   private CertificateDNSNameSelectorBuilder selector;
+  private Duration waitInsteadOfSelfCheck;
 
   public ACMEChallengeSolverFluent() {
   }
@@ -67,6 +69,7 @@ public class ACMEChallengeSolverFluent<A extends io.fabric8.certmanager.api.mode
         this.withDns01(instance.getDns01());
         this.withHttp01(instance.getHttp01());
         this.withSelector(instance.getSelector());
+        this.withWaitInsteadOfSelfCheck(instance.getWaitInsteadOfSelfCheck());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -127,6 +130,9 @@ public class ACMEChallengeSolverFluent<A extends io.fabric8.certmanager.api.mode
     if (!(Objects.equals(selector, that.selector))) {
       return false;
     }
+    if (!(Objects.equals(waitInsteadOfSelfCheck, that.waitInsteadOfSelfCheck))) {
+      return false;
+    }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
       return false;
     }
@@ -135,6 +141,10 @@ public class ACMEChallengeSolverFluent<A extends io.fabric8.certmanager.api.mode
   
   public Map<String,Object> getAdditionalProperties() {
     return this.additionalProperties;
+  }
+  
+  public Duration getWaitInsteadOfSelfCheck() {
+    return this.waitInsteadOfSelfCheck;
   }
   
   public boolean hasAdditionalProperties() {
@@ -153,8 +163,12 @@ public class ACMEChallengeSolverFluent<A extends io.fabric8.certmanager.api.mode
     return this.selector != null;
   }
   
+  public boolean hasWaitInsteadOfSelfCheck() {
+    return this.waitInsteadOfSelfCheck != null;
+  }
+  
   public int hashCode() {
-    return Objects.hash(dns01, http01, selector, additionalProperties);
+    return Objects.hash(dns01, http01, selector, waitInsteadOfSelfCheck, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -197,6 +211,11 @@ public class ACMEChallengeSolverFluent<A extends io.fabric8.certmanager.api.mode
     if (!(selector == null)) {
         sb.append("selector:");
         sb.append(selector);
+        sb.append(",");
+    }
+    if (!(waitInsteadOfSelfCheck == null)) {
+        sb.append("waitInsteadOfSelfCheck:");
+        sb.append(waitInsteadOfSelfCheck);
         sb.append(",");
     }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
@@ -273,6 +292,11 @@ public class ACMEChallengeSolverFluent<A extends io.fabric8.certmanager.api.mode
         this.selector = null;
         this._visitables.get("selector").remove(this.selector);
     }
+    return (A) this;
+  }
+  
+  public A withWaitInsteadOfSelfCheck(Duration waitInsteadOfSelfCheck) {
+    this.waitInsteadOfSelfCheck = waitInsteadOfSelfCheck;
     return (A) this;
   }
   public class Dns01Nested<N> extends ACMEChallengeSolverDNS01Fluent<Dns01Nested<N>> implements Nested<N>{

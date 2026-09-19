@@ -19,11 +19,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
-import com.fasterxml.jackson.databind.node.BooleanNode;
-import com.fasterxml.jackson.databind.node.IntNode;
-import com.fasterxml.jackson.databind.node.TextNode;
 import io.fabric8.kubernetes.api.model.AnyType;
 import io.fabric8.kubernetes.api.model.Config;
 import io.fabric8.kubernetes.api.model.ConfigMap;
@@ -63,6 +58,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonTypeResolver;
+import tools.jackson.databind.node.BooleanNode;
+import tools.jackson.databind.node.IntNode;
+import tools.jackson.databind.node.StringNode;
 
 import java.io.File;
 import java.io.IOException;
@@ -119,7 +119,7 @@ class SerializationTest {
         .get("spec");
     // Then
     assertThat(spec)
-        .hasFieldOrPropertyWithValue("properties.builderName.example", new TextNode("builder-example"))
+        .hasFieldOrPropertyWithValue("properties.builderName.example", new StringNode("builder-example"))
         .hasFieldOrPropertyWithValue("properties.hollow.default", BooleanNode.FALSE)
         .hasFieldOrPropertyWithValue("properties.dimensions.properties.x.default", new IntNode(10))
         .extracting(JSONSchemaProps::getRequired).asList()
@@ -438,13 +438,13 @@ class SerializationTest {
 
   }
 
-  @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+  @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
   @JsonInclude(JsonInclude.Include.NON_NULL)
   static class Named implements Poly {
     public String name;
   }
 
-  @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+  @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
   static class Counted implements Poly {
     public int count;
   }
@@ -540,11 +540,11 @@ class SerializationTest {
   @DisplayName("S3064: yamlMapper should return a fully initialized mapper with modules registered")
   @SuppressWarnings("deprecation")
   void yamlMapper_shouldReturnFullyInitializedMapper() {
-    com.fasterxml.jackson.databind.ObjectMapper mapper = Serialization.yamlMapper();
+    tools.jackson.databind.ObjectMapper mapper = Serialization.yamlMapper();
     assertThat(mapper).isNotNull();
-    assertThat(mapper.getRegisteredModuleIds())
+    assertThat(mapper.registeredModules())
         .as("YAML mapper must have GoCompatibilityModule registered (not partially constructed)")
-        .anyMatch(id -> id.toString().contains("GoCompatibility"));
+        .anyMatch(m -> m.getModuleName().contains("GoCompatibility"));
   }
 
   @Test
