@@ -26,6 +26,8 @@ import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.ShardSelector;
+import io.fabric8.kubernetes.client.dsl.ShardSelectorBuilder;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.extension.ExtensibleResource;
 import io.fabric8.kubernetes.client.http.HttpClient;
@@ -64,6 +66,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -288,6 +291,31 @@ class BaseOperationTest {
     assertNotNull(capturedUrl[0]);
     assertThat(capturedUrl[0].toString(),
         containsString("shardSelector=" + URLEncoder.encode(SHARD_RANGE, StandardCharsets.UTF_8)));
+  }
+
+  @Test
+  @SuppressWarnings("unchecked")
+  void testTypedShardSelectorEndsUpInTheSameContextFieldAsTheExpression() {
+    // withShardSelector(ShardSelector) is a default method on Filterable: it must render into the very
+    // same context field as the String overload, otherwise list/watch/deleteAll would not pick it up.
+    ShardSelector selector = new ShardSelectorBuilder()
+        .addShard(0, 4)
+        .addShard(2, 4)
+        .build();
+    BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation<>(new OperationContext()
+        .withNamespace("default")
+        .withPlural("pods"));
+
+    BaseOperation<Pod, PodList, Resource<Pod>> filtered = (BaseOperation<Pod, PodList, Resource<Pod>>) baseOp
+        .withShardSelector(selector);
+
+    assertEquals(selector.toExpression(), filtered.context.getShardSelector());
+    assertEquals(
+        "shardRange(object.metadata.uid, '0x0000000000000000', '0x4000000000000000') || " +
+            "shardRange(object.metadata.uid, '0x8000000000000000', '0xc000000000000000')",
+        filtered.context.getShardSelector());
+    // and the filter is additive, as for any other Filterable method
+    assertNull(baseOp.context.getShardSelector());
   }
 
   @Test
