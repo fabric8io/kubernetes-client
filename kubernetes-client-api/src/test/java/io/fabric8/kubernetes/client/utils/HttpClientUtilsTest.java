@@ -105,6 +105,22 @@ class HttpClientUtilsTest {
   }
 
   @Test
+  void testConfigureProxyDoesNotBypassLookalikeNoProxySuffix() throws Exception {
+    Config config = new ConfigBuilder()
+        .withMasterUrl("https://evilcorp.example.")
+        .withHttpsProxy("http://proxy.internal:8080")
+        .withNoProxy("corp.example.")
+        .build();
+    Builder builder = Mockito.mock(HttpClient.Builder.class, Mockito.RETURNS_SELF);
+
+    HttpClientUtils.configureProxy(config, builder);
+
+    Mockito.verify(builder).proxyAddress(new InetSocketAddress("proxy.internal", 8080));
+    Mockito.verify(builder).proxyType(HttpClient.ProxyType.HTTP);
+    Mockito.verify(builder, Mockito.never()).proxyType(HttpClient.ProxyType.DIRECT);
+  }
+
+  @Test
   void testApplyCommonConfigurationWithTlsServerName() {
     // Given
     Config config = new ConfigBuilder()
@@ -211,7 +227,10 @@ class HttpClientUtilsTest {
       return Stream.of(
           arguments("192.168.1.100", new String[] { "192.168.1.0/24" }),
           arguments("master.example.com", new String[] { "master.example.com" }),
+          arguments("master.example.com.", new String[] { "master.example.com" }),
+          arguments("master.example.com", new String[] { "master.example.com." }),
           arguments("master.example.com", new String[] { ".example.com" }),
+          arguments("master.example.com.", new String[] { ".example.com." }),
           arguments("master.example.com",
               new String[] { "circleci-internal-outer-build-agent", "one.com", "other.com", ".com" }),
           arguments("192.168.1.110", new String[] { "192.168.1.110" }),
@@ -239,6 +258,11 @@ class HttpClientUtilsTest {
           arguments("master.example.com", new String[0]),
           arguments("master.example.com", new String[] { "master1.example.com" }),
           arguments("master.example.com", new String[] { ".example1.com" }),
+          arguments("evilcorp.example", new String[] { "corp.example" }),
+          arguments("evilcorp.example.", new String[] { "corp.example" }),
+          arguments("evilcorp.example", new String[] { "corp.example." }),
+          arguments("evilcorp.example.", new String[] { ".corp.example." }),
+          arguments("master.example.com", new String[] { "." }),
           arguments("master.example.com", new String[] { "circleci-internal-outer-build-agent", }),
           arguments("master.example.com", new String[] { "one.com", "other.com", "master.example.", ".co" }),
           arguments("192.168.1.110", new String[] { "192.168.1.111" }),
