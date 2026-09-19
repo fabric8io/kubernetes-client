@@ -52,6 +52,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "enableProvenanceInStatus",
     "enableStepActions",
     "enableTektonOCIBundles",
+    "enableTerminationMessageCompression",
     "enableWaitExponentialBackoff",
     "enforceNonfalsifiability",
     "maxResultSize",
@@ -116,6 +117,8 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     private Boolean enableStepActions;
     @JsonProperty("enableTektonOCIBundles")
     private Boolean enableTektonOCIBundles;
+    @JsonProperty("enableTerminationMessageCompression")
+    private Boolean enableTerminationMessageCompression;
     @JsonProperty("enableWaitExponentialBackoff")
     private Boolean enableWaitExponentialBackoff;
     @JsonProperty("enforceNonfalsifiability")
@@ -145,7 +148,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     public FeatureFlags() {
     }
 
-    public FeatureFlags(Boolean awaitSidecarReadiness, String coschedule, Boolean disableCredsInit, String disableInlineSpec, String enableAPIFields, Boolean enableArtifacts, Boolean enableCELInWhenExpression, Boolean enableConciseResolverSyntax, Boolean enableKeepPodOnCancel, Boolean enableKubernetesSidecar, Boolean enableParamEnum, Boolean enableProvenanceInStatus, Boolean enableStepActions, Boolean enableTektonOCIBundles, Boolean enableWaitExponentialBackoff, String enforceNonfalsifiability, Integer maxResultSize, Boolean requireGitSSHSecretKnownHosts, String resultExtractionMethod, Boolean runningInEnvWithInjectedSidecars, Boolean sendCloudEventsForRuns, Boolean setSecurityContext, Boolean setSecurityContextReadOnlyRootFilesystem, String verificationNoMatchPolicy) {
+    public FeatureFlags(Boolean awaitSidecarReadiness, String coschedule, Boolean disableCredsInit, String disableInlineSpec, String enableAPIFields, Boolean enableArtifacts, Boolean enableCELInWhenExpression, Boolean enableConciseResolverSyntax, Boolean enableKeepPodOnCancel, Boolean enableKubernetesSidecar, Boolean enableParamEnum, Boolean enableProvenanceInStatus, Boolean enableStepActions, Boolean enableTektonOCIBundles, Boolean enableTerminationMessageCompression, Boolean enableWaitExponentialBackoff, String enforceNonfalsifiability, Integer maxResultSize, Boolean requireGitSSHSecretKnownHosts, String resultExtractionMethod, Boolean runningInEnvWithInjectedSidecars, Boolean sendCloudEventsForRuns, Boolean setSecurityContext, Boolean setSecurityContextReadOnlyRootFilesystem, String verificationNoMatchPolicy) {
         super();
         this.awaitSidecarReadiness = awaitSidecarReadiness;
         this.coschedule = coschedule;
@@ -161,6 +164,7 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
         this.enableProvenanceInStatus = enableProvenanceInStatus;
         this.enableStepActions = enableStepActions;
         this.enableTektonOCIBundles = enableTektonOCIBundles;
+        this.enableTerminationMessageCompression = enableTerminationMessageCompression;
         this.enableWaitExponentialBackoff = enableWaitExponentialBackoff;
         this.enforceNonfalsifiability = enforceNonfalsifiability;
         this.maxResultSize = maxResultSize;
@@ -395,6 +399,22 @@ public class FeatureFlags implements Editable<FeatureFlagsBuilder>, KubernetesRe
     @JsonProperty("enableTektonOCIBundles")
     public void setEnableTektonOCIBundles(Boolean enableTektonOCIBundles) {
         this.enableTektonOCIBundles = enableTektonOCIBundles;
+    }
+
+    /**
+     * FeatureFlags holds the features configurations
+     */
+    @JsonProperty("enableTerminationMessageCompression")
+    public Boolean getEnableTerminationMessageCompression() {
+        return enableTerminationMessageCompression;
+    }
+
+    /**
+     * FeatureFlags holds the features configurations
+     */
+    @JsonProperty("enableTerminationMessageCompression")
+    public void setEnableTerminationMessageCompression(Boolean enableTerminationMessageCompression) {
+        this.enableTerminationMessageCompression = enableTerminationMessageCompression;
     }
 
     /**

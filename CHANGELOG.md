@@ -21,6 +21,8 @@
 * Fix #8086: bump k8s.io/client-go from 0.35.2 to 0.35.8
 * Fix #8086: bump k8s.io/kube-openapi from 0.0.0-20260501160325-927ab1f70cd6 to 0.0.0-20260821135717-be32def86098
 * Fix #8086: bump k8s.io/metrics from 0.36.1 to 0.37.0
+* Fix #8100: bump tektoncd/pipeline from 1.12.0 to 1.16.0
+* Fix #8100: bump tektoncd/triggers from 0.36.0 to 0.37.0
 * Fix #8050: (karaf) The Karaf feature bundles Aries SPI-Fly 1.3.7 (from 1.3.0) and ASM 9.10.1 (from 8.0.1), the versions required to weave Java 17 bytecode
 
 #### New Features
@@ -31,6 +33,7 @@
 * Fix #8031: (crd-generator) Removed the deprecated CRD Generator v1 (`crd-generator-api` and `crd-generator-apt`). Migrate to `crd-generator-api-v2` with the [Maven plugin](./crd-generator/maven-plugin/README.md), the [CLI tool](./crd-generator/cli/README.md), or the [Gradle build script recipe](./crd-generator/gradle/README.md), see the [migration guide](./doc/CRD-generator-migration-v2.md)
 * Fix #8009: Moved Java baseline from 11 to 17. In addition to the runtime requirement, the Maven plugins, the Gradle plugin and the annotation processor now require a Java 17+ JVM to run the build, and the OSGi bundles declare `osgi.ee=JavaSE 17`
 * Fix #8050: (karaf) The `kubernetes-karaf` feature repository no longer defines its own `scr` feature. `kubernetes-client` now depends on the `scr` feature provided by the Karaf distribution, which supplies the Declarative Services API bundles and the `scr:*` shell commands
+* Fix #8100: (tekton) Model classes `Template` and `AffinityAssistantTemplate` moved from package `io.fabric8.tekton.pod` to `io.fabric8.tekton.unversioned`, since tekton pipeline 1.16.0 declares them as `+versionName=unversioned`
 
 ### 7.9.0 (2026-09-04)
 

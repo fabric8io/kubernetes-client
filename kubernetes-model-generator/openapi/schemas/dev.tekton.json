@@ -65,13 +65,14 @@
         "DefaultResolverType",
         "DefaultContainerResourceRequirements",
         "DefaultImagePullBackOffTimeout",
+        "DefaultCreateContainerErrorTimeout",
         "DefaultMaximumResolutionTimeout",
         "DefaultSidecarLogPollingInterval",
         "DefaultStepRefConcurrencyLimit"
       ],
       "properties": {
         "DefaultAAPodTemplate": {
-          "$ref": "#/definitions/dev.tekton.pod.AffinityAssistantTemplate"
+          "$ref": "#/definitions/dev.tekton.unversioned.AffinityAssistantTemplate"
         },
         "DefaultCloudEventsSink": {
           "type": "string",
@@ -82,6 +83,11 @@
           "additionalProperties": {
             "$ref": "#/definitions/io.k8s.api.core.v1.ResourceRequirements"
           }
+        },
+        "DefaultCreateContainerErrorTimeout": {
+          "type": "integer",
+          "format": "int64",
+          "default": 0
         },
         "DefaultForbiddenEnv": {
           "type": "array",
@@ -109,7 +115,7 @@
           "default": 0
         },
         "DefaultPodTemplate": {
-          "$ref": "#/definitions/dev.tekton.pod.Template"
+          "$ref": "#/definitions/dev.tekton.unversioned.Template"
         },
         "DefaultResolverType": {
           "type": "string",
@@ -223,6 +229,9 @@
         },
         "enableTektonOCIBundles": {
           "description": "DeprecatedEnableTektonOCIBundles is maintained for backward compatibility to allow deletion of PipelineRuns created before v0.62.x. This field is not used and can be removed in a future release once we're confident old PipelineRuns have been cleaned up. See issue #8359 for context.",
+          "type": "boolean"
+        },
+        "enableTerminationMessageCompression": {
           "type": "boolean"
         },
         "enableWaitExponentialBackoff": {
@@ -749,169 +758,6 @@
         "Group": "",
         "Version": "result",
         "Kind": "RunResult",
-        "Scope": "Namespaced"
-      }
-    },
-    "dev.tekton.pod.AffinityAssistantTemplate": {
-      "description": "AffinityAssistantTemplate holds pod specific configuration and is a subset of the generic pod Template",
-      "type": "object",
-      "properties": {
-        "imagePullSecrets": {
-          "description": "ImagePullSecrets gives the name of the secret used by the pod to pull the image if specified",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
-          },
-          "x-kubernetes-list-type": "atomic"
-        },
-        "nodeSelector": {
-          "description": "NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node. More info: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/",
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
-        },
-        "priorityClassName": {
-          "description": "If specified, indicates the pod's priority. \"system-node-critical\" and \"system-cluster-critical\" are two special keywords which indicate the highest priorities with the former being the highest priority. Any other name must be defined by creating a PriorityClass object with that name. If not specified, the pod priority will be default or zero if there is no default.",
-          "type": "string"
-        },
-        "securityContext": {
-          "description": "SecurityContext sets the security context for the pod",
-          "$ref": "#/definitions/io.k8s.api.core.v1.PodSecurityContext"
-        },
-        "serviceAccountName": {
-          "description": "ServiceAccountName is the name of the ServiceAccount to use for the affinity assistant pod. If not specified, the affinity assistant will inherit the serviceAccountName from the PipelineRun's taskRunTemplate. If that is also not specified, the pod will use the namespace's default ServiceAccount. More info: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/",
-          "type": "string"
-        },
-        "tolerations": {
-          "description": "If specified, the pod's tolerations.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.core.v1.Toleration"
-          },
-          "x-kubernetes-list-type": "atomic"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "nested",
-        "Group": "tekton.dev",
-        "Version": "pod",
-        "Kind": "AffinityAssistantTemplate",
-        "Scope": "Namespaced"
-      }
-    },
-    "dev.tekton.pod.Template": {
-      "description": "Template holds pod specific configuration",
-      "type": "object",
-      "properties": {
-        "affinity": {
-          "description": "If specified, the pod's scheduling constraints. See Pod.spec.affinity (API version: v1)",
-          "$ref": "#/definitions/io.k8s.api.core.v1.Affinity"
-        },
-        "automountServiceAccountToken": {
-          "description": "AutomountServiceAccountToken indicates whether pods running as this service account should have an API token automatically mounted.",
-          "type": "boolean"
-        },
-        "dnsConfig": {
-          "description": "Specifies the DNS parameters of a pod. Parameters specified here will be merged to the generated DNS configuration based on DNSPolicy.",
-          "$ref": "#/definitions/io.k8s.api.core.v1.PodDNSConfig"
-        },
-        "dnsPolicy": {
-          "description": "Set DNS policy for the pod. Defaults to \"ClusterFirst\". Valid values are 'ClusterFirst', 'Default' or 'None'. DNS parameters given in DNSConfig will be merged with the policy selected with DNSPolicy.",
-          "type": "string"
-        },
-        "enableServiceLinks": {
-          "description": "EnableServiceLinks indicates whether information about services should be injected into pod's environment variables, matching the syntax of Docker links. Optional: Defaults to true.",
-          "type": "boolean"
-        },
-        "env": {
-          "description": "List of environment variables that can be provided to the containers belonging to the pod.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.core.v1.EnvVar"
-          },
-          "x-kubernetes-list-type": "atomic",
-          "x-kubernetes-patch-merge-key": "name",
-          "x-kubernetes-patch-strategy": "merge"
-        },
-        "hostAliases": {
-          "description": "HostAliases is an optional list of hosts and IPs that will be injected into the pod's hosts file if specified. This is only valid for non-hostNetwork pods.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.core.v1.HostAlias"
-          },
-          "x-kubernetes-list-type": "atomic"
-        },
-        "hostNetwork": {
-          "description": "HostNetwork specifies whether the pod may use the node network namespace",
-          "type": "boolean"
-        },
-        "hostUsers": {
-          "description": "HostUsers indicates whether the pod will use the host's user namespace. Optional: Default to true. If set to true or not present, the pod will be run in the host user namespace, useful for when the pod needs a feature only available to the host user namespace, such as loading a kernel module with CAP_SYS_MODULE. When set to false, a new user namespace is created for the pod. Setting false is useful to mitigating container breakout vulnerabilities such as allowing containers to run as root without their user having root privileges on the host. This field depends on the kubernetes feature gate UserNamespacesSupport being enabled.",
-          "type": "boolean"
-        },
-        "imagePullSecrets": {
-          "description": "ImagePullSecrets gives the name of the secret used by the pod to pull the image if specified",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
-          },
-          "x-kubernetes-list-type": "atomic"
-        },
-        "nodeSelector": {
-          "description": "NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node. More info: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/",
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
-        },
-        "priorityClassName": {
-          "description": "If specified, indicates the pod's priority. \"system-node-critical\" and \"system-cluster-critical\" are two special keywords which indicate the highest priorities with the former being the highest priority. Any other name must be defined by creating a PriorityClass object with that name. If not specified, the pod priority will be default or zero if there is no default.",
-          "type": "string"
-        },
-        "runtimeClassName": {
-          "description": "RuntimeClassName refers to a RuntimeClass object in the node.k8s.io group, which should be used to run this pod. If no RuntimeClass resource matches the named class, the pod will not be run. If unset or empty, the \"legacy\" RuntimeClass will be used, which is an implicit class with an empty definition that uses the default runtime handler. More info: https://git.k8s.io/enhancements/keps/sig-node/runtime-class.md This is a beta feature as of Kubernetes v1.14.",
-          "type": "string"
-        },
-        "schedulerName": {
-          "description": "SchedulerName specifies the scheduler to be used to dispatch the Pod",
-          "type": "string"
-        },
-        "securityContext": {
-          "description": "SecurityContext holds pod-level security attributes and common container settings. Optional: Defaults to empty.  See type description for default values of each field. See Pod.spec.securityContext (API version: v1)",
-          "$ref": "#/definitions/io.k8s.api.core.v1.PodSecurityContext"
-        },
-        "tolerations": {
-          "description": "If specified, the pod's tolerations.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.core.v1.Toleration"
-          },
-          "x-kubernetes-list-type": "atomic"
-        },
-        "topologySpreadConstraints": {
-          "description": "TopologySpreadConstraints controls how Pods are spread across your cluster among failure-domains such as regions, zones, nodes, and other user-defined topology domains.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.core.v1.TopologySpreadConstraint"
-          },
-          "x-kubernetes-list-type": "atomic"
-        },
-        "volumes": {
-          "description": "List of volumes that can be mounted by containers belonging to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes See Pod.spec.volumes (API version: v1)",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.core.v1.Volume"
-          },
-          "x-kubernetes-patch-merge-key": "name",
-          "x-kubernetes-patch-strategy": "merge,retainKeys"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "nested",
-        "Group": "tekton.dev",
-        "Version": "pod",
-        "Kind": "Template",
         "Scope": "Namespaced"
       }
     },
@@ -3900,6 +3746,169 @@
         "Scope": "Namespaced"
       }
     },
+    "dev.tekton.unversioned.AffinityAssistantTemplate": {
+      "description": "AffinityAssistantTemplate holds pod specific configuration and is a subset of the generic pod Template",
+      "type": "object",
+      "properties": {
+        "imagePullSecrets": {
+          "description": "ImagePullSecrets gives the name of the secret used by the pod to pull the image if specified",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
+          },
+          "x-kubernetes-list-type": "atomic"
+        },
+        "nodeSelector": {
+          "description": "NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node. More info: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "priorityClassName": {
+          "description": "If specified, indicates the pod's priority. \"system-node-critical\" and \"system-cluster-critical\" are two special keywords which indicate the highest priorities with the former being the highest priority. Any other name must be defined by creating a PriorityClass object with that name. If not specified, the pod priority will be default or zero if there is no default.",
+          "type": "string"
+        },
+        "securityContext": {
+          "description": "SecurityContext sets the security context for the pod",
+          "$ref": "#/definitions/io.k8s.api.core.v1.PodSecurityContext"
+        },
+        "serviceAccountName": {
+          "description": "ServiceAccountName is the name of the ServiceAccount to use for the affinity assistant pod. If not specified, the affinity assistant will inherit the serviceAccountName from the PipelineRun's taskRunTemplate. If that is also not specified, the pod will use the namespace's default ServiceAccount. More info: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/",
+          "type": "string"
+        },
+        "tolerations": {
+          "description": "If specified, the pod's tolerations.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.core.v1.Toleration"
+          },
+          "x-kubernetes-list-type": "atomic"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "tekton.dev",
+        "Version": "unversioned",
+        "Kind": "AffinityAssistantTemplate",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.tekton.unversioned.Template": {
+      "description": "Template holds pod specific configuration",
+      "type": "object",
+      "properties": {
+        "affinity": {
+          "description": "If specified, the pod's scheduling constraints. See Pod.spec.affinity (API version: v1)",
+          "$ref": "#/definitions/io.k8s.api.core.v1.Affinity"
+        },
+        "automountServiceAccountToken": {
+          "description": "AutomountServiceAccountToken indicates whether pods running as this service account should have an API token automatically mounted.",
+          "type": "boolean"
+        },
+        "dnsConfig": {
+          "description": "Specifies the DNS parameters of a pod. Parameters specified here will be merged to the generated DNS configuration based on DNSPolicy.",
+          "$ref": "#/definitions/io.k8s.api.core.v1.PodDNSConfig"
+        },
+        "dnsPolicy": {
+          "description": "Set DNS policy for the pod. Defaults to \"ClusterFirst\". Valid values are 'ClusterFirst', 'Default' or 'None'. DNS parameters given in DNSConfig will be merged with the policy selected with DNSPolicy.",
+          "type": "string"
+        },
+        "enableServiceLinks": {
+          "description": "EnableServiceLinks indicates whether information about services should be injected into pod's environment variables, matching the syntax of Docker links. Optional: Defaults to true.",
+          "type": "boolean"
+        },
+        "env": {
+          "description": "List of environment variables that can be provided to the containers belonging to the pod.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.core.v1.EnvVar"
+          },
+          "x-kubernetes-list-type": "atomic",
+          "x-kubernetes-patch-merge-key": "name",
+          "x-kubernetes-patch-strategy": "merge"
+        },
+        "hostAliases": {
+          "description": "HostAliases is an optional list of hosts and IPs that will be injected into the pod's hosts file if specified. This is only valid for non-hostNetwork pods.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.core.v1.HostAlias"
+          },
+          "x-kubernetes-list-type": "atomic"
+        },
+        "hostNetwork": {
+          "description": "HostNetwork specifies whether the pod may use the node network namespace",
+          "type": "boolean"
+        },
+        "hostUsers": {
+          "description": "HostUsers indicates whether the pod will use the host's user namespace. Optional: Default to true. If set to true or not present, the pod will be run in the host user namespace, useful for when the pod needs a feature only available to the host user namespace, such as loading a kernel module with CAP_SYS_MODULE. When set to false, a new user namespace is created for the pod. Setting false is useful to mitigating container breakout vulnerabilities such as allowing containers to run as root without their user having root privileges on the host. This field depends on the kubernetes feature gate UserNamespacesSupport being enabled.",
+          "type": "boolean"
+        },
+        "imagePullSecrets": {
+          "description": "ImagePullSecrets gives the name of the secret used by the pod to pull the image if specified",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
+          },
+          "x-kubernetes-list-type": "atomic"
+        },
+        "nodeSelector": {
+          "description": "NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node. More info: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "priorityClassName": {
+          "description": "If specified, indicates the pod's priority. \"system-node-critical\" and \"system-cluster-critical\" are two special keywords which indicate the highest priorities with the former being the highest priority. Any other name must be defined by creating a PriorityClass object with that name. If not specified, the pod priority will be default or zero if there is no default.",
+          "type": "string"
+        },
+        "runtimeClassName": {
+          "description": "RuntimeClassName refers to a RuntimeClass object in the node.k8s.io group, which should be used to run this pod. If no RuntimeClass resource matches the named class, the pod will not be run. If unset or empty, the \"legacy\" RuntimeClass will be used, which is an implicit class with an empty definition that uses the default runtime handler. More info: https://git.k8s.io/enhancements/keps/sig-node/runtime-class.md This is a beta feature as of Kubernetes v1.14.",
+          "type": "string"
+        },
+        "schedulerName": {
+          "description": "SchedulerName specifies the scheduler to be used to dispatch the Pod",
+          "type": "string"
+        },
+        "securityContext": {
+          "description": "SecurityContext holds pod-level security attributes and common container settings. Optional: Defaults to empty.  See type description for default values of each field. See Pod.spec.securityContext (API version: v1)",
+          "$ref": "#/definitions/io.k8s.api.core.v1.PodSecurityContext"
+        },
+        "tolerations": {
+          "description": "If specified, the pod's tolerations.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.core.v1.Toleration"
+          },
+          "x-kubernetes-list-type": "atomic"
+        },
+        "topologySpreadConstraints": {
+          "description": "TopologySpreadConstraints controls how Pods are spread across your cluster among failure-domains such as regions, zones, nodes, and other user-defined topology domains.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.core.v1.TopologySpreadConstraint"
+          },
+          "x-kubernetes-list-type": "atomic"
+        },
+        "volumes": {
+          "description": "List of volumes that can be mounted by containers belonging to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes See Pod.spec.volumes (API version: v1)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.core.v1.Volume"
+          },
+          "x-kubernetes-patch-merge-key": "name",
+          "x-kubernetes-patch-strategy": "merge,retainKeys"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "tekton.dev",
+        "Version": "unversioned",
+        "Kind": "Template",
+        "Scope": "Namespaced"
+      }
+    },
     "dev.tekton.v1.Artifact": {
       "description": "Artifact represents an artifact within a system, potentially containing multiple values associated with it.",
       "type": "object",
@@ -4848,11 +4857,11 @@
           }
         },
         "pipelineRef": {
-          "description": "PipelineRef is a reference to a pipeline definition Note: PipelineRef is in preview mode and not yet supported",
+          "description": "PipelineRef is a reference to a pipeline definition. This is an alpha field. You must set the \"enable-api-fields\" feature flag to \"alpha\" for this field to be supported. When enabled, the referenced Pipeline is executed as a child PipelineRun owned by the parent PipelineRun.",
           "$ref": "#/definitions/dev.tekton.v1.PipelineRef"
         },
         "pipelineSpec": {
-          "description": "PipelineSpec is a specification of a pipeline Note: PipelineSpec is in preview mode and not yet supported Specifying PipelineSpec can be disabled by setting `disable-inline-spec` feature flag. See Pipeline.spec (API version: tekton.dev/v1)",
+          "description": "PipelineSpec is a specification of a pipeline. This is an alpha field. You must set the \"enable-api-fields\" feature flag to \"alpha\" for this field to be supported. When enabled, the embedded Pipeline is executed as a child PipelineRun owned by the parent PipelineRun. Specifying PipelineSpec can be disabled by setting `disable-inline-spec` feature flag. See Pipeline.spec (API version: tekton.dev/v1)",
           "$ref": "#/definitions/dev.tekton.v1.PipelineSpec"
         },
         "retries": {
@@ -4985,7 +4994,7 @@
           "type": "string"
         },
         "podTemplate": {
-          "$ref": "#/definitions/dev.tekton.pod.Template"
+          "$ref": "#/definitions/dev.tekton.unversioned.Template"
         },
         "serviceAccountName": {
           "type": "string"
@@ -5022,7 +5031,7 @@
       "type": "object",
       "properties": {
         "podTemplate": {
-          "$ref": "#/definitions/dev.tekton.pod.Template"
+          "$ref": "#/definitions/dev.tekton.unversioned.Template"
         },
         "serviceAccountName": {
           "type": "string"
@@ -6148,7 +6157,7 @@
         },
         "podTemplate": {
           "description": "PodTemplate holds pod specific configuration",
-          "$ref": "#/definitions/dev.tekton.pod.Template"
+          "$ref": "#/definitions/dev.tekton.unversioned.Template"
         },
         "retries": {
           "description": "Retries represents how many times this TaskRun should be retried in the event of task failure.",
@@ -7084,7 +7093,7 @@
         },
         "podTemplate": {
           "description": "PodTemplate holds pod specific configuration",
-          "$ref": "#/definitions/dev.tekton.pod.Template"
+          "$ref": "#/definitions/dev.tekton.unversioned.Template"
         },
         "ref": {
           "$ref": "#/definitions/dev.tekton.v1beta1.TaskRef"
@@ -8633,7 +8642,7 @@
         },
         "podTemplate": {
           "description": "PodTemplate holds pod specific configuration",
-          "$ref": "#/definitions/dev.tekton.pod.Template"
+          "$ref": "#/definitions/dev.tekton.unversioned.Template"
         },
         "resources": {
           "description": "Resources is a list of bindings specifying which actual instances of PipelineResources to use for the resources the Pipeline has declared it needs.\n\nDeprecated: Unused, preserved only for backwards compatibility",
@@ -8989,11 +8998,11 @@
           }
         },
         "pipelineRef": {
-          "description": "PipelineRef is a reference to a pipeline definition Note: PipelineRef is in preview mode and not yet supported",
+          "description": "PipelineRef is a reference to a pipeline definition. This is an alpha field. You must set the \"enable-api-fields\" feature flag to \"alpha\" for this field to be supported. When enabled, the referenced Pipeline is executed as a child PipelineRun owned by the parent PipelineRun.",
           "$ref": "#/definitions/dev.tekton.v1beta1.PipelineRef"
         },
         "pipelineSpec": {
-          "description": "PipelineSpec is a specification of a pipeline Note: PipelineSpec is in preview mode and not yet supported Specifying PipelineSpec can be disabled by setting `disable-inline-spec` feature flag. See Pipeline.spec (API version: tekton.dev/v1beta1)",
+          "description": "PipelineSpec is a specification of a pipeline. This is an alpha field. You must set the \"enable-api-fields\" feature flag to \"alpha\" for this field to be supported. When enabled, the embedded Pipeline is executed as a child PipelineRun owned by the parent PipelineRun. Specifying PipelineSpec can be disabled by setting `disable-inline-spec` feature flag. See Pipeline.spec (API version: tekton.dev/v1beta1)",
           "$ref": "#/definitions/dev.tekton.v1beta1.PipelineSpec"
         },
         "resources": {
@@ -9235,7 +9244,7 @@
           "x-kubernetes-list-type": "atomic"
         },
         "taskPodTemplate": {
-          "$ref": "#/definitions/dev.tekton.pod.Template"
+          "$ref": "#/definitions/dev.tekton.unversioned.Template"
         },
         "taskServiceAccountName": {
           "type": "string"
@@ -10094,9 +10103,6 @@
     "dev.tekton.v1beta1.StepTemplate": {
       "description": "StepTemplate is a template for a Step",
       "type": "object",
-      "required": [
-        "name"
-      ],
       "properties": {
         "args": {
           "description": "Arguments to the entrypoint. The image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the Step's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell",
@@ -10150,8 +10156,7 @@
         },
         "name": {
           "description": "Default name for each Step specified as a DNS_LABEL. Each Step in a Task must have a unique name. Cannot be updated.\n\nDeprecated: This field will be removed in a future release.",
-          "type": "string",
-          "default": ""
+          "type": "string"
         },
         "ports": {
           "description": "List of ports to expose from the Step's container. Exposing a port here gives the system additional information about the network connections a container uses, but is primarily informational. Not specifying a port here DOES NOT prevent that port from being exposed. Any port which is listening on the default \"0.0.0.0\" address inside a container will be accessible from the network. Cannot be updated.\n\nDeprecated: This field will be removed in a future release.",
@@ -10745,7 +10750,7 @@
         },
         "podTemplate": {
           "description": "PodTemplate holds pod specific configuration",
-          "$ref": "#/definitions/dev.tekton.pod.Template"
+          "$ref": "#/definitions/dev.tekton.unversioned.Template"
         },
         "resources": {
           "description": "Deprecated: Unused, preserved only for backwards compatibility",
