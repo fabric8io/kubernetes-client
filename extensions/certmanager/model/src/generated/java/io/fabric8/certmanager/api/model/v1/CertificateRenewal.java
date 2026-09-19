@@ -1,7 +1,9 @@
 
 package io.fabric8.certmanager.api.model.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -32,16 +34,11 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
-/**
- * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
- */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "cloud",
-    "ngts",
-    "tpp",
-    "zone"
+    "policy",
+    "windows"
 })
 @ToString
 @EqualsAndHashCode
@@ -65,105 +62,69 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class VenafiIssuer implements Editable<VenafiIssuerBuilder>, KubernetesResource
+public class CertificateRenewal implements Editable<CertificateRenewalBuilder>, KubernetesResource
 {
 
-    @JsonProperty("cloud")
-    private VenafiCloud cloud;
-    @JsonProperty("ngts")
-    private VenafiNGTS ngts;
-    @JsonProperty("tpp")
-    private VenafiTPP tpp;
-    @JsonProperty("zone")
-    private String zone;
+    @JsonProperty("policy")
+    private String policy;
+    @JsonProperty("windows")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<CertificateRenewalWindows> windows = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public VenafiIssuer() {
+    public CertificateRenewal() {
     }
 
-    public VenafiIssuer(VenafiCloud cloud, VenafiNGTS ngts, VenafiTPP tpp, String zone) {
+    public CertificateRenewal(String policy, List<CertificateRenewalWindows> windows) {
         super();
-        this.cloud = cloud;
-        this.ngts = ngts;
-        this.tpp = tpp;
-        this.zone = zone;
+        this.policy = policy;
+        this.windows = windows;
     }
 
     /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+     * `policy` must be one of `Disabled`, `RenewBefore`.
      */
-    @JsonProperty("cloud")
-    public VenafiCloud getCloud() {
-        return cloud;
+    @JsonProperty("policy")
+    public String getPolicy() {
+        return policy;
     }
 
     /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+     * `policy` must be one of `Disabled`, `RenewBefore`.
      */
-    @JsonProperty("cloud")
-    public void setCloud(VenafiCloud cloud) {
-        this.cloud = cloud;
+    @JsonProperty("policy")
+    public void setPolicy(String policy) {
+        this.policy = policy;
     }
 
     /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+     * `windows` mentions the behavior of when the renewal must happen.
      */
-    @JsonProperty("ngts")
-    public VenafiNGTS getNgts() {
-        return ngts;
+    @JsonProperty("windows")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<CertificateRenewalWindows> getWindows() {
+        return windows;
     }
 
     /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+     * `windows` mentions the behavior of when the renewal must happen.
      */
-    @JsonProperty("ngts")
-    public void setNgts(VenafiNGTS ngts) {
-        this.ngts = ngts;
-    }
-
-    /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
-     */
-    @JsonProperty("tpp")
-    public VenafiTPP getTpp() {
-        return tpp;
-    }
-
-    /**
-     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
-     */
-    @JsonProperty("tpp")
-    public void setTpp(VenafiTPP tpp) {
-        this.tpp = tpp;
-    }
-
-    /**
-     * Zone is the Certificate Manager Policy Zone to use for this issuer. All requests made to the Certificate Manager platform will be restricted by the named zone policy. This field is required.
-     */
-    @JsonProperty("zone")
-    public String getZone() {
-        return zone;
-    }
-
-    /**
-     * Zone is the Certificate Manager Policy Zone to use for this issuer. All requests made to the Certificate Manager platform will be restricted by the named zone policy. This field is required.
-     */
-    @JsonProperty("zone")
-    public void setZone(String zone) {
-        this.zone = zone;
+    @JsonProperty("windows")
+    public void setWindows(List<CertificateRenewalWindows> windows) {
+        this.windows = windows;
     }
 
     @JsonIgnore
-    public VenafiIssuerBuilder edit() {
-        return new VenafiIssuerBuilder(this);
+    public CertificateRenewalBuilder edit() {
+        return new CertificateRenewalBuilder(this);
     }
 
     @JsonIgnore
-    public VenafiIssuerBuilder toBuilder() {
+    public CertificateRenewalBuilder toBuilder() {
         return edit();
     }
 

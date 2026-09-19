@@ -40,6 +40,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "acme",
     "conditions",
     "failedIssuanceAttempts",
     "lastFailureTime",
@@ -74,6 +75,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 public class CertificateStatus implements Editable<CertificateStatusBuilder>, KubernetesResource
 {
 
+    @JsonProperty("acme")
+    private CertificateACMEStatus acme;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CertificateCondition> conditions = new ArrayList<>();
@@ -100,8 +103,9 @@ public class CertificateStatus implements Editable<CertificateStatusBuilder>, Ku
     public CertificateStatus() {
     }
 
-    public CertificateStatus(List<CertificateCondition> conditions, Integer failedIssuanceAttempts, String lastFailureTime, String nextPrivateKeySecretName, String notAfter, String notBefore, String renewalTime, Integer revision) {
+    public CertificateStatus(CertificateACMEStatus acme, List<CertificateCondition> conditions, Integer failedIssuanceAttempts, String lastFailureTime, String nextPrivateKeySecretName, String notAfter, String notBefore, String renewalTime, Integer revision) {
         super();
+        this.acme = acme;
         this.conditions = conditions;
         this.failedIssuanceAttempts = failedIssuanceAttempts;
         this.lastFailureTime = lastFailureTime;
@@ -110,6 +114,22 @@ public class CertificateStatus implements Editable<CertificateStatusBuilder>, Ku
         this.notBefore = notBefore;
         this.renewalTime = renewalTime;
         this.revision = revision;
+    }
+
+    /**
+     * CertificateStatus defines the observed state of Certificate
+     */
+    @JsonProperty("acme")
+    public CertificateACMEStatus getAcme() {
+        return acme;
+    }
+
+    /**
+     * CertificateStatus defines the observed state of Certificate
+     */
+    @JsonProperty("acme")
+    public void setAcme(CertificateACMEStatus acme) {
+        this.acme = acme;
     }
 
     /**

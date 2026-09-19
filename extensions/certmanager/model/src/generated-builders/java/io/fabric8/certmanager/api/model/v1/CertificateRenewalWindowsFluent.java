@@ -1,7 +1,7 @@
-package io.fabric8.certmanager.api.model.acme.v1;
+package io.fabric8.certmanager.api.model.v1;
 
 import io.fabric8.kubernetes.api.builder.BaseFluent;
-import java.lang.Boolean;
+import io.fabric8.kubernetes.api.model.Duration;
 import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
@@ -14,19 +14,17 @@ import java.util.Objects;
  * Generated
  */
 @SuppressWarnings("unchecked")
-public class ChallengeStatusFluent<A extends io.fabric8.certmanager.api.model.acme.v1.ChallengeStatusFluent<A>> extends BaseFluent<A>{
+public class CertificateRenewalWindowsFluent<A extends io.fabric8.certmanager.api.model.v1.CertificateRenewalWindowsFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
-  private Boolean presented;
-  private String presentedAt;
-  private Boolean processing;
-  private String reason;
-  private String state;
+  private String cron;
+  private String timezone;
+  private Duration windowDuration;
 
-  public ChallengeStatusFluent() {
+  public CertificateRenewalWindowsFluent() {
   }
   
-  public ChallengeStatusFluent(ChallengeStatus instance) {
+  public CertificateRenewalWindowsFluent(CertificateRenewalWindows instance) {
     this.copyInstance(instance);
   }
 
@@ -50,14 +48,12 @@ public class ChallengeStatusFluent<A extends io.fabric8.certmanager.api.model.ac
     return (A) this;
   }
   
-  protected void copyInstance(ChallengeStatus instance) {
-    instance = instance != null ? instance : new ChallengeStatus();
+  protected void copyInstance(CertificateRenewalWindows instance) {
+    instance = instance != null ? instance : new CertificateRenewalWindows();
     if (instance != null) {
-        this.withPresented(instance.getPresented());
-        this.withPresentedAt(instance.getPresentedAt());
-        this.withProcessing(instance.getProcessing());
-        this.withReason(instance.getReason());
-        this.withState(instance.getState());
+        this.withCron(instance.getCron());
+        this.withTimezone(instance.getTimezone());
+        this.withWindowDuration(instance.getWindowDuration());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -72,20 +68,14 @@ public class ChallengeStatusFluent<A extends io.fabric8.certmanager.api.model.ac
     if (!(super.equals(o))) {
       return false;
     }
-    ChallengeStatusFluent that = (ChallengeStatusFluent) o;
-    if (!(Objects.equals(presented, that.presented))) {
+    CertificateRenewalWindowsFluent that = (CertificateRenewalWindowsFluent) o;
+    if (!(Objects.equals(cron, that.cron))) {
       return false;
     }
-    if (!(Objects.equals(presentedAt, that.presentedAt))) {
+    if (!(Objects.equals(timezone, that.timezone))) {
       return false;
     }
-    if (!(Objects.equals(processing, that.processing))) {
-      return false;
-    }
-    if (!(Objects.equals(reason, that.reason))) {
-      return false;
-    }
-    if (!(Objects.equals(state, that.state))) {
+    if (!(Objects.equals(windowDuration, that.windowDuration))) {
       return false;
     }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
@@ -98,52 +88,36 @@ public class ChallengeStatusFluent<A extends io.fabric8.certmanager.api.model.ac
     return this.additionalProperties;
   }
   
-  public Boolean getPresented() {
-    return this.presented;
+  public String getCron() {
+    return this.cron;
   }
   
-  public String getPresentedAt() {
-    return this.presentedAt;
+  public String getTimezone() {
+    return this.timezone;
   }
   
-  public Boolean getProcessing() {
-    return this.processing;
-  }
-  
-  public String getReason() {
-    return this.reason;
-  }
-  
-  public String getState() {
-    return this.state;
+  public Duration getWindowDuration() {
+    return this.windowDuration;
   }
   
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
   }
   
-  public boolean hasPresented() {
-    return this.presented != null;
+  public boolean hasCron() {
+    return this.cron != null;
   }
   
-  public boolean hasPresentedAt() {
-    return this.presentedAt != null;
+  public boolean hasTimezone() {
+    return this.timezone != null;
   }
   
-  public boolean hasProcessing() {
-    return this.processing != null;
-  }
-  
-  public boolean hasReason() {
-    return this.reason != null;
-  }
-  
-  public boolean hasState() {
-    return this.state != null;
+  public boolean hasWindowDuration() {
+    return this.windowDuration != null;
   }
   
   public int hashCode() {
-    return Objects.hash(presented, presentedAt, processing, reason, state, additionalProperties);
+    return Objects.hash(cron, timezone, windowDuration, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -173,29 +147,19 @@ public class ChallengeStatusFluent<A extends io.fabric8.certmanager.api.model.ac
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
-    if (!(presented == null)) {
-        sb.append("presented:");
-        sb.append(presented);
+    if (!(cron == null)) {
+        sb.append("cron:");
+        sb.append(cron);
         sb.append(",");
     }
-    if (!(presentedAt == null)) {
-        sb.append("presentedAt:");
-        sb.append(presentedAt);
+    if (!(timezone == null)) {
+        sb.append("timezone:");
+        sb.append(timezone);
         sb.append(",");
     }
-    if (!(processing == null)) {
-        sb.append("processing:");
-        sb.append(processing);
-        sb.append(",");
-    }
-    if (!(reason == null)) {
-        sb.append("reason:");
-        sb.append(reason);
-        sb.append(",");
-    }
-    if (!(state == null)) {
-        sb.append("state:");
-        sb.append(state);
+    if (!(windowDuration == null)) {
+        sb.append("windowDuration:");
+        sb.append(windowDuration);
         sb.append(",");
     }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
@@ -215,36 +179,18 @@ public class ChallengeStatusFluent<A extends io.fabric8.certmanager.api.model.ac
     return (A) this;
   }
   
-  public A withPresented() {
-    return withPresented(true);
-  }
-  
-  public A withPresented(Boolean presented) {
-    this.presented = presented;
+  public A withCron(String cron) {
+    this.cron = cron;
     return (A) this;
   }
   
-  public A withPresentedAt(String presentedAt) {
-    this.presentedAt = presentedAt;
+  public A withTimezone(String timezone) {
+    this.timezone = timezone;
     return (A) this;
   }
   
-  public A withProcessing() {
-    return withProcessing(true);
-  }
-  
-  public A withProcessing(Boolean processing) {
-    this.processing = processing;
-    return (A) this;
-  }
-  
-  public A withReason(String reason) {
-    this.reason = reason;
-    return (A) this;
-  }
-  
-  public A withState(String state) {
-    this.state = state;
+  public A withWindowDuration(Duration windowDuration) {
+    this.windowDuration = windowDuration;
     return (A) this;
   }
   
