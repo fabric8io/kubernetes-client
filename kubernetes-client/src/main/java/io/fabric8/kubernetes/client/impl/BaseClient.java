@@ -39,6 +39,7 @@ import io.fabric8.kubernetes.client.extension.ExtensionAdapter;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
+import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -284,7 +285,7 @@ public abstract class BaseClient implements Client {
 
   @Override
   public APIGroup getApiGroup(String name) {
-    return getOperationSupport().restCall(APIGroup.class, APIS, name);
+    return getOperationSupport().restCall(APIGroup.class, APIS, URLUtils.encodePathSegment(name));
   }
 
   @Override
@@ -304,7 +305,18 @@ public abstract class BaseClient implements Client {
     if ("v1".equals(groupVersion)) {
       return getOperationSupport().restCall(APIResourceList.class, "api", "v1");
     }
-    return getOperationSupport().restCall(APIResourceList.class, APIS, groupVersion);
+    return getOperationSupport().restCall(APIResourceList.class, APIS,
+        encodeApiGroupVersion(groupVersion));
+  }
+
+  private static String encodeApiGroupVersion(String groupVersion) {
+    String[] parts = groupVersion.split("/", -1);
+    if (parts.length != 2) {
+      throw new IllegalArgumentException(
+          "API groupVersion must be in the form <group>/<version>: " + groupVersion);
+    }
+    return URLUtils.pathJoin(
+        URLUtils.encodePathSegment(parts[0]), URLUtils.encodePathSegment(parts[1]));
   }
 
   protected VersionInfo getVersionInfo(String path) {

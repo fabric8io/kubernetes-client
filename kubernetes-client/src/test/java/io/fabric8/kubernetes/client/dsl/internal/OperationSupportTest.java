@@ -179,6 +179,24 @@ class OperationSupportTest {
   }
 
   @Test
+  void getResourceURLRejectsTraversalPathSegments() {
+    OperationSupport pods = new OperationSupport(
+        operationSupport.context.withPlural("pods").withName("../secrets"));
+    assertThrows(IllegalArgumentException.class, pods::getResourceUrl);
+
+    pods = new OperationSupport(
+        operationSupport.context.withPlural("pods").withNamespace("../nodes"));
+    assertThrows(IllegalArgumentException.class, pods::getResourceUrl);
+
+    pods = new OperationSupport(operationSupport.context.withPlural("../secrets"));
+    assertThrows(IllegalArgumentException.class, pods::getResourceUrl);
+
+    pods = new OperationSupport(
+        operationSupport.context.withPlural("pods").withName("pod").withSubresource("../status"));
+    assertThrows(IllegalArgumentException.class, pods::getResourceUrl);
+  }
+
+  @Test
   void getRequestConfigReturnsFromGlobalConfigByDefault() {
     assertThat(operationSupport.getRequestConfig())
         .hasFieldOrPropertyWithValue("requestTimeout", 313373);
