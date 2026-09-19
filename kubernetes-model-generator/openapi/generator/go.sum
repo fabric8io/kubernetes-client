@@ -6719,5 +6719,5 @@ sigs.k8s.io/yaml v1.4.0/go.mod h1:Ejl7/uTz7PSA4eKMyQCUTnhZYNmLIl+5c2lQPGR2BPY=
 sigs.k8s.io/yaml v1.6.0 h1:G8fkbMSAFqgEFgh4b1wmtzDnioxFCUgTZhlbj5P9QYs=
 sigs.k8s.io/yaml v1.6.0/go.mod h1:796bPqUfzR/0jLAl6XjHl3Ck7MiyVv8dbTdyT3/pMf4=
 sourcegraph.com/sourcegraph/appdash v0.0.0-20190731080439-ebfcffb1b5c0/go.mod h1:hI742Nqp5OhwiqlzhgfbWU4mW4yO10fP+LoT9WOswdU=
-volcano.sh/apis v1.11.0 h1:Z5ZXxxgUNfXv1OhfVXXfGPN7StoSsozQM+8CAPoNWY8=
-volcano.sh/apis v1.11.0/go.mod h1:FOdmG++9+8lgENJ9XXDh+O3Jcb9YVRnlMSpgIh3NSVI=
+volcano.sh/apis v1.15.2 h1:L36cw3pRU+nqrrFoNuHMVJJ364bjzeTHiSrBZ1XTJBk=
+volcano.sh/apis v1.15.2/go.mod h1:rIDP5D1IR0Tq0uGIMCjMdTEDXMzyTMbwlXhxtMdxLls=
