@@ -26,11 +26,13 @@ import io.fabric8.mockwebserver.crud.AttributeSet;
 import io.fabric8.mockwebserver.http.MockResponse;
 
 import java.net.HttpURLConnection;
-import java.time.ZoneOffset;
+import java.time.Clock;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 import static io.fabric8.kubernetes.client.utils.Utils.generateId;
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
@@ -39,10 +41,17 @@ public class PostHandler implements KubernetesCrudDispatcherHandler {
 
   private final KubernetesAttributesExtractor attributeExtractor;
   private final KubernetesCrudPersistence persistence;
+  private final Supplier<Clock> clockSupplier;
 
   public PostHandler(KubernetesAttributesExtractor attributeExtractor, KubernetesCrudPersistence persistence) {
+    this(attributeExtractor, persistence, Clock::systemUTC);
+  }
+
+  public PostHandler(KubernetesAttributesExtractor attributeExtractor, KubernetesCrudPersistence persistence,
+      Supplier<Clock> clockSupplier) {
     this.attributeExtractor = attributeExtractor;
     this.persistence = persistence;
+    this.clockSupplier = Objects.requireNonNull(clockSupplier, "clockSupplier");
   }
 
   @Override
@@ -86,7 +95,7 @@ public class PostHandler implements KubernetesCrudDispatcherHandler {
     resource.getMetadata().setNamespace(pathNamespace);
     resource.getMetadata().setUid(uuid.toString());
     resource.getMetadata().setCreationTimestamp(
-        ZonedDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS).format(DateTimeFormatter.ISO_INSTANT));
+        ZonedDateTime.now(clockSupplier.get()).truncatedTo(ChronoUnit.SECONDS).format(DateTimeFormatter.ISO_INSTANT));
     resource.getMetadata().setResourceVersion(String.valueOf(persistence.requestResourceVersion()));
     resource.getMetadata().setGeneration(1L);
   }
