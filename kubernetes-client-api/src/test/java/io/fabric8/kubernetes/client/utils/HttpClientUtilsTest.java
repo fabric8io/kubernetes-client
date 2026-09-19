@@ -30,6 +30,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
@@ -77,8 +78,8 @@ class HttpClientUtilsTest {
   }
 
   @Test
-  void toProxyTypeTestHttps() throws MalformedURLException {
-    assertEquals(HttpClient.ProxyType.HTTP, HttpClientUtils.toProxyType("https"));
+  void toProxyTypeTestHttps() {
+    assertThrows(MalformedURLException.class, () -> HttpClientUtils.toProxyType("https"));
   }
 
   @Test
@@ -102,6 +103,23 @@ class HttpClientUtilsTest {
 
     Mockito.verify(builder).proxyType(HttpClient.ProxyType.HTTP);
     Mockito.verify(builder).proxyAuthorization("Basic dXNlcjpwYXNzd29yZA==");
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+      "http://localhost, https://192.168.0.1:8080",
+      "https://localhost, https://192.168.0.1:8080"
+  })
+  void testConfigureHttpsProxyUrlThrows(String masterUrl, String proxyUrl) {
+    Config config = new ConfigBuilder()
+        .withMasterUrl(masterUrl)
+        .withHttpProxy(proxyUrl)
+        .withHttpsProxy(proxyUrl)
+        .build();
+    Builder builder = Mockito.mock(HttpClient.Builder.class, Mockito.RETURNS_SELF);
+
+    assertThrows(
+        MalformedURLException.class, () -> HttpClientUtils.configureProxy(config, builder));
   }
 
   @Test
