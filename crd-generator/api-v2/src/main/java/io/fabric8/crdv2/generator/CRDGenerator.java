@@ -15,7 +15,6 @@
  */
 package io.fabric8.crdv2.generator;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.crdv2.generator.v1.CustomResourceHandler;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
@@ -23,6 +22,7 @@ import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import io.fabric8.kubernetes.client.utils.YamlDumpSettingsBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.Closeable;
 import java.io.File;

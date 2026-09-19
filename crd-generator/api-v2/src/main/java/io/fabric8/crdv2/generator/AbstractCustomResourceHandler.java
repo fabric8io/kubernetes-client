@@ -34,7 +34,7 @@ import java.util.stream.Stream;
  */
 public abstract class AbstractCustomResourceHandler {
 
-  private static final Logger logger = LoggerFactory.getLogger(AbstractJsonSchema.class);
+  private static final Logger logger = LoggerFactory.getLogger(AbstractCustomResourceHandler.class);
 
   public abstract void handle(CustomResourceInfo config, ResolvingContext resolvingContext);
 
@@ -52,29 +52,28 @@ public abstract class AbstractCustomResourceHandler {
     resolver.getAdditionalPrinterColumns().forEach(apc -> sortedCols.put(apc.jsonPath(), new AnnotationMetadata(apc, null)));
     sortedCols.putAll(resolver.getAllPaths(PrinterColumn.class));
     sortedCols.forEach((path, property) -> {
-      if (property.annotation instanceof AdditionalPrinterColumn) {
-        AdditionalPrinterColumn printerColumn = ((AdditionalPrinterColumn) property.annotation);
-        String column = printerColumn.name();
-        String format = printerColumn.format().getValue();
-        String type = printerColumn.type().getValue();
-        int priority = printerColumn.priority();
-        String description = printerColumn.getDescription();
+      if (property.annotation() instanceof AdditionalPrinterColumn additionalPrinterColumn) {
+        String column = additionalPrinterColumn.name();
+        String format = additionalPrinterColumn.format().getValue();
+        String type = additionalPrinterColumn.type().getValue();
+        int priority = additionalPrinterColumn.priority();
+        String description = additionalPrinterColumn.getDescription();
         handler.addPrinterColumn(path, column, format, priority, type, description);
       } else {
-        PrinterColumn printerColumn = ((PrinterColumn) property.annotation);
+        PrinterColumn printerColumn = ((PrinterColumn) property.annotation());
         String column = printerColumn.name();
         String format = printerColumn.format().getValue();
-        String type = property.schema.getType();
+        String type = property.schema().getType();
         if ("object".equals(type) || "array".equals(type)) {
           logger.warn("Printer column '{}' has a type '{}' that is not allowed, will use string instead", column, type);
           type = "string";
-        } else if ("string".equals(type) && "date".equals(property.schema.getFormat())) {
+        } else if ("string".equals(type) && "date".equals(property.schema().getFormat())) {
           type = "date";
         }
         int priority = printerColumn.priority();
 
         // TODO: add description to the annotation? The previous logic considered the comments, which are not available here
-        String description = property.schema.getDescription();
+        String description = property.schema().getDescription();
         handler.addPrinterColumn(path, column, format, priority, type, description);
       }
     });

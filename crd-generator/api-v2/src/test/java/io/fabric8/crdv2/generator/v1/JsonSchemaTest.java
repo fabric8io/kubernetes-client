@@ -20,13 +20,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import io.fabric8.crd.generator.annotation.PreserveUnknownFields;
 import io.fabric8.crd.generator.annotation.SchemaSwap;
 import io.fabric8.crdv2.example.annotated.Annotated;
@@ -43,17 +36,27 @@ import io.fabric8.crdv2.example.json.ContainingJson;
 import io.fabric8.crdv2.example.person.Person;
 import io.fabric8.crdv2.generator.ResolvingContext;
 import io.fabric8.kubernetes.api.model.AnyType;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ServicePort;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.ValidationRule;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseSpec;
+import io.fabric8.kubernetes.api.model.runtime.RawExtension;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Node;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.annotation.JsonSerialize;
+import tools.jackson.databind.node.ObjectNode;
+import tools.jackson.databind.node.StringNode;
+import tools.jackson.databind.ser.std.StdSerializer;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -141,9 +144,10 @@ class JsonSchemaTest {
     assertEquals(type.apply("integer").withMaximum(5.0).build(), spec.get("max"));
     assertEquals(type.apply("string").withPattern("\\b[1-9]\\b").build(), spec.get("singleDigit"));
     assertEquals(type.apply("string").withNullable(true).build(), spec.get("nullable"));
-    assertEquals(type.apply("string").withDefault(TextNode.valueOf("my-value")).build(), spec.get("defaultValue"));
-    assertEquals(type.apply("string").withDefault(TextNode.valueOf("my-value2")).build(), spec.get("defaultValue2"));
-    assertEquals(type.apply("string").withEnum(TextNode.valueOf("non"), TextNode.valueOf("oui")).build(), spec.get("anEnum"));
+    assertEquals(type.apply("string").withDefault(StringNode.valueOf("my-value")).build(), spec.get("defaultValue"));
+    assertEquals(type.apply("string").withDefault(StringNode.valueOf("my-value2")).build(), spec.get("defaultValue2"));
+    assertEquals(type.apply("string").withEnum(StringNode.valueOf("non"), StringNode.valueOf("oui")).build(),
+        spec.get("anEnum"));
     assertEquals(type.apply("string").withFormat("date-time").build(), spec.get("issuedAt"));
     // the shape does not influence the type in these cases
     assertEquals(type.apply("string").build(), spec.get("bool"));
@@ -425,7 +429,7 @@ class JsonSchemaTest {
     }
 
     @Override
-    public void serialize(Object value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(Object value, JsonGenerator gen, SerializationContext provider) {
 
     }
 
@@ -633,6 +637,166 @@ class JsonSchemaTest {
     JSONSchemaProps schema = JsonSchema.from(Parent.class);
     assertNotNull(schema);
     assertEquals(2, schema.getXKubernetesValidations().size());
+  }
+
+  // --- Enum with @JsonProperty renaming and @JsonIgnore filtering ---
+
+  private enum RenamedEnum {
+    @JsonProperty("custom-a")
+    A,
+    @JsonProperty("custom-b")
+    B,
+    C
+  }
+
+  private enum IgnoredEnum {
+    VISIBLE,
+    @JsonIgnore
+    HIDDEN,
+    ALSO_VISIBLE
+  }
+
+  private static class EnumPropertyHolder {
+    public RenamedEnum renamed;
+    public IgnoredEnum filtered;
+  }
+
+  @Test
+  @DisplayName("Enum with @JsonProperty should use serialized names in schema")
+  void testEnumWithJsonPropertyRenaming() {
+    JSONSchemaProps schema = JsonSchema.from(EnumPropertyHolder.class);
+    assertNotNull(schema);
+    JSONSchemaProps renamed = schema.getProperties().get("renamed");
+    assertNotNull(renamed);
+    assertEquals("string", renamed.getType());
+    List<String> values = renamed.getEnum().stream().map(JsonNode::asText).collect(Collectors.toList());
+    assertEquals(3, values.size());
+    assertTrue(values.contains("C"));
+    assertTrue(values.contains("custom-a"));
+    assertTrue(values.contains("custom-b"));
+  }
+
+  @Test
+  @DisplayName("Enum with @JsonIgnore should exclude ignored constants from schema")
+  void testEnumWithJsonIgnoreFiltering() {
+    JSONSchemaProps schema = JsonSchema.from(EnumPropertyHolder.class);
+    assertNotNull(schema);
+    JSONSchemaProps filtered = schema.getProperties().get("filtered");
+    assertNotNull(filtered);
+    assertEquals("string", filtered.getType());
+    List<String> values = filtered.getEnum().stream().map(JsonNode::asText).collect(Collectors.toList());
+    assertEquals(2, values.size());
+    assertTrue(values.contains("VISIBLE"));
+    assertTrue(values.contains("ALSO_VISIBLE"));
+    assertFalse(values.contains("HIDDEN"));
+  }
+
+  // --- Kubernetes type definitions ---
+
+  private static class KubernetesTypesHolder {
+    public IntOrString intOrStringField;
+    public Quantity quantityField;
+    public RawExtension rawExtensionField;
+    public GenericKubernetesResource genericField;
+  }
+
+  @Test
+  @DisplayName("IntOrString field should generate x-kubernetes-int-or-string schema")
+  void testIntOrStringFieldSchema() {
+    JSONSchemaProps schema = JsonSchema.from(KubernetesTypesHolder.class);
+    assertNotNull(schema);
+    JSONSchemaProps intOrString = schema.getProperties().get("intOrStringField");
+    assertNotNull(intOrString);
+    assertTrue(intOrString.getXKubernetesIntOrString());
+    assertEquals(2, intOrString.getAnyOf().size());
+  }
+
+  @Test
+  @DisplayName("RawExtension field should generate x-kubernetes-embedded-resource schema")
+  void testRawExtensionFieldSchema() {
+    JSONSchemaProps schema = JsonSchema.from(KubernetesTypesHolder.class);
+    assertNotNull(schema);
+    JSONSchemaProps rawExt = schema.getProperties().get("rawExtensionField");
+    assertNotNull(rawExt);
+    assertTrue(rawExt.getXKubernetesEmbeddedResource());
+    assertEquals("object", rawExt.getType());
+  }
+
+  @Test
+  @DisplayName("GenericKubernetesResource field should generate embedded resource schema")
+  void testGenericKubernetesResourceFieldSchema() {
+    JSONSchemaProps schema = JsonSchema.from(KubernetesTypesHolder.class);
+    assertNotNull(schema);
+    JSONSchemaProps generic = schema.getProperties().get("genericField");
+    assertNotNull(generic);
+    assertTrue(generic.getXKubernetesEmbeddedResource());
+    assertEquals("object", generic.getType());
+  }
+
+  // --- FieldScope hierarchy traversal (inherited fields) ---
+
+  private static class GrandparentClass {
+    @JsonPropertyDescription("inherited-description")
+    public String inheritedField;
+  }
+
+  private static class ParentInheritedClass extends GrandparentClass {
+    public int ownField;
+  }
+
+  private static class ChildInheritedClass extends ParentInheritedClass {
+    public String childField;
+  }
+
+  @Test
+  @DisplayName("Inherited field annotations should be resolved from superclass hierarchy")
+  void testInheritedFieldAnnotationResolution() {
+    JSONSchemaProps schema = JsonSchema.from(ChildInheritedClass.class);
+    assertNotNull(schema);
+    JSONSchemaProps inheritedField = schema.getProperties().get("inheritedField");
+    assertNotNull(inheritedField);
+    assertEquals("inherited-description", inheritedField.getDescription());
+    assertEquals("string", inheritedField.getType());
+  }
+
+  // --- $ref resolution (cyclic references use the same resolveRef path) ---
+
+  @Test
+  @DisplayName("Cyclic reference in direct field should be detected after $ref resolution")
+  void testCyclicReferenceDetectionWithResolveRef() {
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> JsonSchema.from(Cyclic1.class));
+    assertTrue(exception.getMessage().contains("cyclic reference"));
+    assertTrue(exception.getMessage().contains("Cyclic1"));
+  }
+
+  @Test
+  @DisplayName("Cyclic reference in array field should be detected after $ref resolution")
+  void testCyclicReferenceInArrayDetection() {
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> JsonSchema.from(Cyclic2.class));
+    assertTrue(exception.getMessage().contains("cyclic reference"));
+  }
+
+  @Test
+  @DisplayName("Cyclic reference in map value should be detected after $ref resolution")
+  void testCyclicReferenceInMapDetection() {
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> JsonSchema.from(Cyclic3.class));
+    assertTrue(exception.getMessage().contains("cyclic reference"));
+  }
+
+  @Test
+  @DisplayName("SchemaSwap at zero depth should break cycles by producing empty properties")
+  void testSchemaSwapBreaksCycleViaResolveRef() {
+    JSONSchemaProps schema = JsonSchema.from(Cyclic4.class);
+    assertNotNull(schema);
+    JSONSchemaProps parent = schema.getProperties().get("parent");
+    assertNotNull(parent);
+    assertTrue(parent.getProperties().isEmpty());
+    JSONSchemaProps value = schema.getProperties().get("value");
+    assertNotNull(value);
+    assertEquals("integer", value.getType());
   }
 
   private static Map<String, JSONSchemaProps> assertSchemaHasNumberOfProperties(JSONSchemaProps specSchema, int expected) {

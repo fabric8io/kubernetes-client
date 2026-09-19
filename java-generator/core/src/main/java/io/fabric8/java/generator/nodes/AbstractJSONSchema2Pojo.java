@@ -15,7 +15,6 @@
  */
 package io.fabric8.java.generator.nodes;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
@@ -23,6 +22,7 @@ import com.github.javaparser.ast.expr.StringLiteralExpr;
 import io.fabric8.java.generator.Config;
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
+import tools.jackson.databind.JsonNode;
 
 import java.util.Locale;
 import java.util.function.Function;

@@ -15,8 +15,8 @@
  */
 package io.fabric8.crd.generator.approvaltests.json;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
+import tools.jackson.databind.JsonNode;
 
 @Data
 public class ContainingJsonSpec {
