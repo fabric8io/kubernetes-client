@@ -37,7 +37,7 @@ permissions:
 jobs:
   sonar:
     name: Sonar
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -50,7 +50,7 @@ jobs:
       - name: Setup Java 17
         uses: actions/setup-java@v6
         with:
-          java-version: '17'
+          java-version: '25'
           distribution: 'temurin'
           cache: 'maven'
       - name: Sonar
