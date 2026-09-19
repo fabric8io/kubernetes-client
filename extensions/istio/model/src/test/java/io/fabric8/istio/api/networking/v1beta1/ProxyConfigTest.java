@@ -15,10 +15,11 @@
  */
 package io.fabric8.istio.api.networking.v1beta1;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.util.Collections;
 import java.util.Scanner;
@@ -26,7 +27,7 @@ import java.util.Scanner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ProxyConfigTest {
-  private final ObjectMapper mapper = new ObjectMapper();
+  private final ObjectMapper mapper = new JsonMapper();
 
   @Test
   void hasExpectedApiVersion() {
@@ -49,7 +50,7 @@ class ProxyConfigTest {
   }
 
   @Test
-  void deserializationAndSerializationShouldWorkAsExpected() throws JsonProcessingException {
+  void deserializationAndSerializationShouldWorkAsExpected() throws JacksonException {
     // Given
     String originalJson = new Scanner(getClass().getResourceAsStream("/proxyconfig-valid.json"))
         .useDelimiter("\\A")

@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -30,11 +29,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * LuaConfig configures a Lua filter.<br><p> <br><p> Lua filters provide a lightweight alternative to WebAssembly for simple request/response transformations. The Lua code is executed inline within the Envoy proxy.<br><p> <br><p> Example: Simple header manipulation<br><p> <br><p> ```yaml lua:<br><p> <br><p> 	inlineCode: |<br><p> 	  function envoy_on_request(request_handle)<br><p> 	    request_handle:headers():add("x-custom-header", "custom-value")<br><p> 	  end<br><p> <br><p> ```<br><p> <br><p> The Lua script must define one or both of the following functions: - `envoy_on_request(request_handle)`: Called when a request is received - `envoy_on_response(response_handle)`: Called when a response is received<br><p> <br><p> The request_handle and response_handle provide access to headers, body, metadata, and other request/response attributes. See the Envoy Lua filter documentation for the complete API: https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/lua_filter
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "inlineCode"
