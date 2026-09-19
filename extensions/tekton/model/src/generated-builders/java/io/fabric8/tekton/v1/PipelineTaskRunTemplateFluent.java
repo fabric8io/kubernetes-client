@@ -2,9 +2,9 @@ package io.fabric8.tekton.v1;
 
 import io.fabric8.kubernetes.api.builder.BaseFluent;
 import io.fabric8.kubernetes.api.builder.Nested;
-import io.fabric8.tekton.pod.Template;
-import io.fabric8.tekton.pod.TemplateBuilder;
-import io.fabric8.tekton.pod.TemplateFluent;
+import io.fabric8.tekton.unversioned.Template;
+import io.fabric8.tekton.unversioned.TemplateBuilder;
+import io.fabric8.tekton.unversioned.TemplateFluent;
 import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
