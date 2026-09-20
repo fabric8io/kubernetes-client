@@ -7,6 +7,7 @@
   - [OSGi bundles require JavaSE 17](#java-17-osgi)
 - [Karaf: the bundled `scr` feature has been removed](#karaf-scr)
 - [Jackson 3](#jackson-3)
+- [`withShardSelector(null)` is ambiguous](#shard-selector-null)
 
 
 > [!NOTE]
@@ -105,3 +106,17 @@ The CRD generator now uses the Jackson 3 version of `jackson-module-jsonSchema` 
 
 - **`Optional<Pojo>` fields** now get the POJO's schema. In 7.x they were emitted as `x-kubernetes-preserve-unknown-fields: true`.
 - **`@JsonUnwrapped` properties** are now flattened into the parent object schema. In 7.x they were incorrectly nested under the field name.
+
+## `withShardSelector(null)` is ambiguous <a href="#shard-selector-null" id="shard-selector-null"/>
+
+`Filterable#withShardSelector` now also accepts a typed `ShardSelector` next to the expression `String`, so passing a literal `null` to clear the selector no longer compiles:
+
+```java
+// no longer compiles: reference to withShardSelector is ambiguous
+client.pods().withShardSelector(null);
+
+// pick the overload instead
+client.pods().withShardSelector((String) null);
+```
+
+Passing a `null`-valued variable is unaffected, and either overload still clears the selector.
