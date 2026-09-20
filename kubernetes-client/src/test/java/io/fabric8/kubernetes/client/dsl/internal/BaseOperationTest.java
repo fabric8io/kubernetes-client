@@ -308,13 +308,26 @@ class BaseOperationTest {
     BaseOperation<Pod, PodList, Resource<Pod>> filtered = (BaseOperation<Pod, PodList, Resource<Pod>>) baseOp
         .withShardSelector(selector);
 
-    assertEquals(selector.toExpression(), filtered.context.getShardSelector());
     assertEquals(
         "shardRange(object.metadata.uid, '0x0000000000000000', '0x4000000000000000') || " +
             "shardRange(object.metadata.uid, '0x8000000000000000', '0xc000000000000000')",
         filtered.context.getShardSelector());
-    // and the filter is additive, as for any other Filterable method
+    // and the source operation is left untouched, as for any other Filterable method
     assertNull(baseOp.context.getShardSelector());
+  }
+
+  @Test
+  @SuppressWarnings("unchecked")
+  void testTypedShardSelectorClearedWithNull() {
+    BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation<>(new OperationContext()
+        .withNamespace("default")
+        .withPlural("pods"));
+
+    BaseOperation<Pod, PodList, Resource<Pod>> cleared = (BaseOperation<Pod, PodList, Resource<Pod>>) baseOp
+        .withShardSelector(ShardSelector.ofShard(0, 2))
+        .withShardSelector((ShardSelector) null);
+
+    assertNull(cleared.context.getShardSelector());
   }
 
   @Test

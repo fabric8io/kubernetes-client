@@ -15,9 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
-import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.client.dsl.Filterable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -27,7 +24,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -136,11 +132,30 @@ class ShardSelectorTest {
     }
 
     @Test
-    @DisplayName("a shard index outside [0, totalShards) is rejected instead of producing an empty shard")
+    @DisplayName("a split that does not divide the hash space evenly rounds the bounds down")
+    void roundsUnevenSplitsDown() {
+      assertThat(Arrays.asList(
+          ShardRange.ofShard(0, 3).toExpression(),
+          ShardRange.ofShard(1, 3).toExpression(),
+          ShardRange.ofShard(2, 3).toExpression()))
+          .containsExactly(
+              "shardRange(object.metadata.uid, '0x0000000000000000', '0x5555555555555555')",
+              "shardRange(object.metadata.uid, '0x5555555555555555', '0xaaaaaaaaaaaaaaaa')",
+              "shardRange(object.metadata.uid, '0xaaaaaaaaaaaaaaaa', '0x10000000000000000')");
+    }
+
+    @Test
+    @DisplayName("a shard index outside [0, totalShards) is reported as such, not as a bad bound")
     void rejectsOutOfRangeShardIndex() {
-      assertThatIllegalArgumentException().isThrownBy(() -> ShardRange.ofShard(2, 2));
-      assertThatIllegalArgumentException().isThrownBy(() -> ShardRange.ofShard(-1, 2));
-      assertThatIllegalArgumentException().isThrownBy(() -> ShardRange.ofShard(0, 0));
+      assertThatIllegalArgumentException()
+          .isThrownBy(() -> ShardRange.ofShard(2, 2))
+          .withMessageContaining("shard index");
+      assertThatIllegalArgumentException()
+          .isThrownBy(() -> ShardRange.ofShard(-1, 2))
+          .withMessageContaining("shard index");
+      assertThatIllegalArgumentException()
+          .isThrownBy(() -> ShardRange.ofShard(0, 0))
+          .withMessageContaining("total number of shards");
     }
   }
 
@@ -156,7 +171,7 @@ class ShardSelectorTest {
     }
 
     @Test
-    @DisplayName("BigInteger bounds bypass hexadecimal formatting entirely")
+    @DisplayName("BigInteger bounds skip hexadecimal parsing, but are still rendered as padded hexadecimal")
     void acceptsBigIntegerBounds() {
       assertThat(ShardRange.of(ShardField.UID, BigInteger.ZERO, BigInteger.valueOf(255)).toExpression())
           .isEqualTo("shardRange(object.metadata.uid, '0x0000000000000000', '0x00000000000000ff')");
@@ -173,14 +188,17 @@ class ShardSelectorTest {
     }
 
     @Test
-    @DisplayName("bounds outside [0, 2^64] are rejected")
+    @DisplayName("a start outside [0, 2^64) or an end beyond 2^64 is rejected")
     void rejectsBoundsOutsideTheHashSpace() {
       assertThatIllegalArgumentException()
-          .isThrownBy(() -> ShardRange.of(ShardField.UID, ShardRange.MAX_HASH, ShardRange.MAX_HASH));
+          .isThrownBy(() -> ShardRange.of(ShardField.UID, ShardRange.MAX_HASH, ShardRange.MAX_HASH))
+          .withMessageContaining("start bound must be within");
       assertThatIllegalArgumentException()
-          .isThrownBy(() -> ShardRange.of(ShardField.UID, BigInteger.ZERO, ShardRange.MAX_HASH.add(BigInteger.ONE)));
+          .isThrownBy(() -> ShardRange.of(ShardField.UID, BigInteger.valueOf(-1), BigInteger.ONE))
+          .withMessageContaining("start bound must be within");
       assertThatIllegalArgumentException()
-          .isThrownBy(() -> ShardRange.of(ShardField.UID, BigInteger.valueOf(-1), BigInteger.ONE));
+          .isThrownBy(() -> ShardRange.of(ShardField.UID, BigInteger.ZERO, ShardRange.MAX_HASH.add(BigInteger.ONE)))
+          .withMessageContaining("end bound must not exceed");
     }
 
     @Test
@@ -270,108 +288,4 @@ class ShardSelectorTest {
     }
   }
 
-  @Nested
-  class FilterableIntegration {
-
-    @Test
-    @DisplayName("the typed overload of withShardSelector forwards the rendered expression to the String overload")
-    void forwardsExpressionToStringOverload() {
-      RecordingFilterable filterable = new RecordingFilterable();
-      ShardSelector selector = ShardSelector.ofShard(0, 2);
-
-      filterable.withShardSelector(selector);
-
-      assertThat(filterable.shardSelector).isEqualTo(selector.toExpression());
-    }
-
-    @Test
-    @DisplayName("a null typed selector clears the shard selector rather than throwing")
-    void clearsOnNull() {
-      RecordingFilterable filterable = new RecordingFilterable();
-      filterable.withShardSelector(ShardSelector.ofShard(0, 2));
-
-      filterable.withShardSelector((ShardSelector) null);
-
-      assertThat(filterable.shardSelector).isNull();
-    }
-  }
-
-  /**
-   * Minimal {@link Filterable} recording only what the shard selector overloads forward to it.
-   */
-  private static class RecordingFilterable implements Filterable<RecordingFilterable> {
-
-    private String shardSelector;
-
-    @Override
-    public RecordingFilterable withShardSelector(String shardSelector) {
-      this.shardSelector = shardSelector;
-      return this;
-    }
-
-    @Override
-    public RecordingFilterable withLabels(Map<String, String> labels) {
-      return this;
-    }
-
-    @Override
-    public RecordingFilterable withoutLabels(Map<String, String> labels) {
-      return this;
-    }
-
-    @Override
-    public RecordingFilterable withLabelIn(String key, String... values) {
-      return this;
-    }
-
-    @Override
-    public RecordingFilterable withLabelNotIn(String key, String... values) {
-      return this;
-    }
-
-    @Override
-    public RecordingFilterable withLabel(String key, String value) {
-      return this;
-    }
-
-    @Override
-    public RecordingFilterable withoutLabel(String key, String value) {
-      return this;
-    }
-
-    @Override
-    public RecordingFilterable withFields(Map<String, String> fields) {
-      return this;
-    }
-
-    @Override
-    public RecordingFilterable withField(String key, String value) {
-      return this;
-    }
-
-    @Override
-    public RecordingFilterable withoutFields(Map<String, String> fields) {
-      return this;
-    }
-
-    @Override
-    public RecordingFilterable withoutField(String key, String value) {
-      return this;
-    }
-
-    @Override
-    public RecordingFilterable withLabelSelector(LabelSelector selector) {
-      return this;
-    }
-
-    @Override
-    public RecordingFilterable withLabelSelector(String selectorAsString) {
-      return this;
-    }
-
-    @Override
-    public RecordingFilterable withInvolvedObject(ObjectReference objectReference) {
-      return this;
-    }
-  }
 }
