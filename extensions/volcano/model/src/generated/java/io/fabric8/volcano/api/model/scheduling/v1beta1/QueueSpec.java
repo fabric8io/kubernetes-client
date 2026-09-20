@@ -43,6 +43,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonPropertyOrder({
     "affinity",
     "capability",
+    "dequeueStrategy",
     "deserved",
     "extendClusters",
     "guarantee",
@@ -82,6 +83,8 @@ public class QueueSpec implements Editable<QueueSpecBuilder>, KubernetesResource
     @JsonProperty("capability")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Quantity> capability = new LinkedHashMap<>();
+    @JsonProperty("dequeueStrategy")
+    private String dequeueStrategy;
     @JsonProperty("deserved")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Quantity> deserved = new LinkedHashMap<>();
@@ -109,10 +112,11 @@ public class QueueSpec implements Editable<QueueSpecBuilder>, KubernetesResource
     public QueueSpec() {
     }
 
-    public QueueSpec(Affinity affinity, Map<String, Quantity> capability, Map<String, Quantity> deserved, List<Cluster> extendClusters, Guarantee guarantee, String parent, Integer priority, Boolean reclaimable, String type, Integer weight) {
+    public QueueSpec(Affinity affinity, Map<String, Quantity> capability, String dequeueStrategy, Map<String, Quantity> deserved, List<Cluster> extendClusters, Guarantee guarantee, String parent, Integer priority, Boolean reclaimable, String type, Integer weight) {
         super();
         this.affinity = affinity;
         this.capability = capability;
+        this.dequeueStrategy = dequeueStrategy;
         this.deserved = deserved;
         this.extendClusters = extendClusters;
         this.guarantee = guarantee;
@@ -154,6 +158,22 @@ public class QueueSpec implements Editable<QueueSpecBuilder>, KubernetesResource
     @JsonProperty("capability")
     public void setCapability(Map<String, Quantity> capability) {
         this.capability = capability;
+    }
+
+    /**
+     * DequeueStrategy defines the dequeue strategy of queue
+     */
+    @JsonProperty("dequeueStrategy")
+    public String getDequeueStrategy() {
+        return dequeueStrategy;
+    }
+
+    /**
+     * DequeueStrategy defines the dequeue strategy of queue
+     */
+    @JsonProperty("dequeueStrategy")
+    public void setDequeueStrategy(String dequeueStrategy) {
+        this.dequeueStrategy = dequeueStrategy;
     }
 
     /**

@@ -23,6 +23,7 @@
 * Fix #8086: bump k8s.io/metrics from 0.36.1 to 0.37.0
 * Fix #8100: bump tektoncd/pipeline from 1.12.0 to 1.16.0
 * Fix #8100: bump tektoncd/triggers from 0.36.0 to 0.37.0
+* Fix #8097: bump volcano.sh/apis from 1.11.0 to 1.15.2
 * Fix #8050: (karaf) The Karaf feature bundles Aries SPI-Fly 1.3.7 (from 1.3.0) and ASM 9.10.1 (from 8.0.1), the versions required to weave Java 17 bytecode
 
 #### New Features

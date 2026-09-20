@@ -1,5 +1,5 @@
 
-package io.fabric8.volcano.api.model.flow.v1alpha1;
+package io.fabric8.volcano.api.model.batch.v1alpha1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,14 +33,13 @@ import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * Flow defines the dependent of jobs
+ * JobTemplateSpec describes the data a Job should have when created from a template
  */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "dependsOn",
-    "name",
-    "patch"
+    "metadata",
+    "spec"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,86 +63,67 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Flow implements Editable<FlowBuilder>, KubernetesResource
+public class JobTemplateSpec implements Editable<JobTemplateSpecBuilder>, KubernetesResource
 {
 
-    @JsonProperty("dependsOn")
-    private DependsOn dependsOn;
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("patch")
-    private Patch patch;
+    @JsonProperty("metadata")
+    private ObjectMeta metadata;
+    @JsonProperty("spec")
+    private JobSpec spec;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public Flow() {
+    public JobTemplateSpec() {
     }
 
-    public Flow(DependsOn dependsOn, String name, Patch patch) {
+    public JobTemplateSpec(ObjectMeta metadata, JobSpec spec) {
         super();
-        this.dependsOn = dependsOn;
-        this.name = name;
-        this.patch = patch;
+        this.metadata = metadata;
+        this.spec = spec;
     }
 
     /**
-     * Flow defines the dependent of jobs
+     * JobTemplateSpec describes the data a Job should have when created from a template
      */
-    @JsonProperty("dependsOn")
-    public DependsOn getDependsOn() {
-        return dependsOn;
+    @JsonProperty("metadata")
+    public ObjectMeta getMetadata() {
+        return metadata;
     }
 
     /**
-     * Flow defines the dependent of jobs
+     * JobTemplateSpec describes the data a Job should have when created from a template
      */
-    @JsonProperty("dependsOn")
-    public void setDependsOn(DependsOn dependsOn) {
-        this.dependsOn = dependsOn;
+    @JsonProperty("metadata")
+    public void setMetadata(ObjectMeta metadata) {
+        this.metadata = metadata;
     }
 
     /**
-     * Flow defines the dependent of jobs
+     * JobTemplateSpec describes the data a Job should have when created from a template
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("spec")
+    public JobSpec getSpec() {
+        return spec;
     }
 
     /**
-     * Flow defines the dependent of jobs
+     * JobTemplateSpec describes the data a Job should have when created from a template
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Flow defines the dependent of jobs
-     */
-    @JsonProperty("patch")
-    public Patch getPatch() {
-        return patch;
-    }
-
-    /**
-     * Flow defines the dependent of jobs
-     */
-    @JsonProperty("patch")
-    public void setPatch(Patch patch) {
-        this.patch = patch;
+    @JsonProperty("spec")
+    public void setSpec(JobSpec spec) {
+        this.spec = spec;
     }
 
     @JsonIgnore
-    public FlowBuilder edit() {
-        return new FlowBuilder(this);
+    public JobTemplateSpecBuilder edit() {
+        return new JobTemplateSpecBuilder(this);
     }
 
     @JsonIgnore
-    public FlowBuilder toBuilder() {
+    public JobTemplateSpecBuilder toBuilder() {
         return edit();
     }
 

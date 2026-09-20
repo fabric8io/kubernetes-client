@@ -89,7 +89,7 @@ public class JobFlowSpec implements Editable<JobFlowSpecBuilder>, KubernetesReso
     }
 
     /**
-     * Foo is an example field of JobFlow. Edit jobflow_types.go to remove/update
+     * JobFlowSpec defines the desired state of JobFlow
      */
     @JsonProperty("flows")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -98,7 +98,7 @@ public class JobFlowSpec implements Editable<JobFlowSpecBuilder>, KubernetesReso
     }
 
     /**
-     * Foo is an example field of JobFlow. Edit jobflow_types.go to remove/update
+     * JobFlowSpec defines the desired state of JobFlow
      */
     @JsonProperty("flows")
     public void setFlows(List<Flow> flows) {
