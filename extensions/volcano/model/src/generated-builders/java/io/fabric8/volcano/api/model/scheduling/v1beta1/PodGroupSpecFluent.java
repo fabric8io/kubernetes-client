@@ -1,15 +1,23 @@
 package io.fabric8.volcano.api.model.scheduling.v1beta1;
 
 import io.fabric8.kubernetes.api.builder.BaseFluent;
+import io.fabric8.kubernetes.api.builder.Nested;
 import io.fabric8.kubernetes.api.model.Quantity;
 import java.lang.Integer;
 import java.lang.Object;
+import java.lang.RuntimeException;
 import java.lang.String;
 import java.lang.StringBuilder;
 import java.lang.SuppressWarnings;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 /**
  * Generated
@@ -21,8 +29,10 @@ public class PodGroupSpecFluent<A extends io.fabric8.volcano.api.model.schedulin
   private Integer minMember;
   private Map<String,Quantity> minResources;
   private Map<String,Integer> minTaskMember;
+  private NetworkTopologySpecBuilder networkTopology;
   private String priorityClassName;
   private String queue;
+  private ArrayList<SubGroupPolicySpecBuilder> subGroupPolicy = new ArrayList<SubGroupPolicySpecBuilder>();
 
   public PodGroupSpecFluent() {
   }
@@ -31,6 +41,26 @@ public class PodGroupSpecFluent<A extends io.fabric8.volcano.api.model.schedulin
     this.copyInstance(instance);
   }
 
+  public A addAllToSubGroupPolicy(Collection<SubGroupPolicySpec> items) {
+    if (this.subGroupPolicy == null) {
+      this.subGroupPolicy = new ArrayList();
+    }
+    for (SubGroupPolicySpec item : items) {
+        SubGroupPolicySpecBuilder builder = new SubGroupPolicySpecBuilder(item);
+        _visitables.get("subGroupPolicy").add(builder);
+        this.subGroupPolicy.add(builder);
+    }
+    return (A) this;
+  }
+  
+  public SubGroupPolicyNested<A> addNewSubGroupPolicy() {
+    return new SubGroupPolicyNested(-1, null);
+  }
+  
+  public SubGroupPolicyNested<A> addNewSubGroupPolicyLike(SubGroupPolicySpec item) {
+    return new SubGroupPolicyNested(-1, item);
+  }
+  
   public A addToAdditionalProperties(Map<String,Object> map) {
     if (this.additionalProperties == null && map != null) {
       this.additionalProperties = new LinkedHashMap();
@@ -91,16 +121,122 @@ public class PodGroupSpecFluent<A extends io.fabric8.volcano.api.model.schedulin
     return (A) this;
   }
   
+  public A addToSubGroupPolicy(SubGroupPolicySpec... items) {
+    if (this.subGroupPolicy == null) {
+      this.subGroupPolicy = new ArrayList();
+    }
+    for (SubGroupPolicySpec item : items) {
+        SubGroupPolicySpecBuilder builder = new SubGroupPolicySpecBuilder(item);
+        _visitables.get("subGroupPolicy").add(builder);
+        this.subGroupPolicy.add(builder);
+    }
+    return (A) this;
+  }
+  
+  public A addToSubGroupPolicy(int index,SubGroupPolicySpec item) {
+    if (this.subGroupPolicy == null) {
+      this.subGroupPolicy = new ArrayList();
+    }
+    SubGroupPolicySpecBuilder builder = new SubGroupPolicySpecBuilder(item);
+    if (index < 0 || index >= subGroupPolicy.size()) {
+        _visitables.get("subGroupPolicy").add(builder);
+        subGroupPolicy.add(builder);
+    } else {
+        _visitables.get("subGroupPolicy").add(builder);
+        subGroupPolicy.add(index, builder);
+    }
+    return (A) this;
+  }
+  
+  public SubGroupPolicySpec buildFirstSubGroupPolicy() {
+    return this.subGroupPolicy.get(0).build();
+  }
+  
+  public SubGroupPolicySpec buildLastSubGroupPolicy() {
+    return this.subGroupPolicy.get(subGroupPolicy.size() - 1).build();
+  }
+  
+  public SubGroupPolicySpec buildMatchingSubGroupPolicy(Predicate<SubGroupPolicySpecBuilder> predicate) {
+      for (SubGroupPolicySpecBuilder item : subGroupPolicy) {
+        if (predicate.test(item)) {
+          return item.build();
+        }
+      }
+      return null;
+  }
+  
+  public NetworkTopologySpec buildNetworkTopology() {
+    return this.networkTopology != null ? this.networkTopology.build() : null;
+  }
+  
+  public List<SubGroupPolicySpec> buildSubGroupPolicy() {
+    return this.subGroupPolicy != null ? build(subGroupPolicy) : null;
+  }
+  
+  public SubGroupPolicySpec buildSubGroupPolicy(int index) {
+    return this.subGroupPolicy.get(index).build();
+  }
+  
   protected void copyInstance(PodGroupSpec instance) {
     instance = instance != null ? instance : new PodGroupSpec();
     if (instance != null) {
         this.withMinMember(instance.getMinMember());
         this.withMinResources(instance.getMinResources());
         this.withMinTaskMember(instance.getMinTaskMember());
+        this.withNetworkTopology(instance.getNetworkTopology());
         this.withPriorityClassName(instance.getPriorityClassName());
         this.withQueue(instance.getQueue());
+        this.withSubGroupPolicy(instance.getSubGroupPolicy());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
+  }
+  
+  public SubGroupPolicyNested<A> editFirstSubGroupPolicy() {
+    if (subGroupPolicy.size() == 0) {
+      throw new RuntimeException(String.format("Can't edit first %s. The list is empty.", "subGroupPolicy"));
+    }
+    return this.setNewSubGroupPolicyLike(0, this.buildSubGroupPolicy(0));
+  }
+  
+  public SubGroupPolicyNested<A> editLastSubGroupPolicy() {
+    int index = subGroupPolicy.size() - 1;
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "subGroupPolicy"));
+    }
+    return this.setNewSubGroupPolicyLike(index, this.buildSubGroupPolicy(index));
+  }
+  
+  public SubGroupPolicyNested<A> editMatchingSubGroupPolicy(Predicate<SubGroupPolicySpecBuilder> predicate) {
+    int index = -1;
+    for (int i = 0;i < subGroupPolicy.size();i++) {
+      if (predicate.test(subGroupPolicy.get(i))) {
+          index = i;
+          break;
+      }
+    }
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit matching %s. No match found.", "subGroupPolicy"));
+    }
+    return this.setNewSubGroupPolicyLike(index, this.buildSubGroupPolicy(index));
+  }
+  
+  public NetworkTopologyNested<A> editNetworkTopology() {
+    return this.withNewNetworkTopologyLike(Optional.ofNullable(this.buildNetworkTopology()).orElse(null));
+  }
+  
+  public NetworkTopologyNested<A> editOrNewNetworkTopology() {
+    return this.withNewNetworkTopologyLike(Optional.ofNullable(this.buildNetworkTopology()).orElse(new NetworkTopologySpecBuilder().build()));
+  }
+  
+  public NetworkTopologyNested<A> editOrNewNetworkTopologyLike(NetworkTopologySpec item) {
+    return this.withNewNetworkTopologyLike(Optional.ofNullable(this.buildNetworkTopology()).orElse(item));
+  }
+  
+  public SubGroupPolicyNested<A> editSubGroupPolicy(int index) {
+    if (subGroupPolicy.size() <= index) {
+      throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "subGroupPolicy"));
+    }
+    return this.setNewSubGroupPolicyLike(index, this.buildSubGroupPolicy(index));
   }
   
   public boolean equals(Object o) {
@@ -123,10 +259,16 @@ public class PodGroupSpecFluent<A extends io.fabric8.volcano.api.model.schedulin
     if (!(Objects.equals(minTaskMember, that.minTaskMember))) {
       return false;
     }
+    if (!(Objects.equals(networkTopology, that.networkTopology))) {
+      return false;
+    }
     if (!(Objects.equals(priorityClassName, that.priorityClassName))) {
       return false;
     }
     if (!(Objects.equals(queue, that.queue))) {
+      return false;
+    }
+    if (!(Objects.equals(subGroupPolicy, that.subGroupPolicy))) {
       return false;
     }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
@@ -163,6 +305,15 @@ public class PodGroupSpecFluent<A extends io.fabric8.volcano.api.model.schedulin
     return this.additionalProperties != null;
   }
   
+  public boolean hasMatchingSubGroupPolicy(Predicate<SubGroupPolicySpecBuilder> predicate) {
+      for (SubGroupPolicySpecBuilder item : subGroupPolicy) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
   public boolean hasMinMember() {
     return this.minMember != null;
   }
@@ -175,6 +326,10 @@ public class PodGroupSpecFluent<A extends io.fabric8.volcano.api.model.schedulin
     return this.minTaskMember != null;
   }
   
+  public boolean hasNetworkTopology() {
+    return this.networkTopology != null;
+  }
+  
   public boolean hasPriorityClassName() {
     return this.priorityClassName != null;
   }
@@ -183,8 +338,24 @@ public class PodGroupSpecFluent<A extends io.fabric8.volcano.api.model.schedulin
     return this.queue != null;
   }
   
+  public boolean hasSubGroupPolicy() {
+    return this.subGroupPolicy != null && !(this.subGroupPolicy.isEmpty());
+  }
+  
   public int hashCode() {
-    return Objects.hash(minMember, minResources, minTaskMember, priorityClassName, queue, additionalProperties);
+    return Objects.hash(minMember, minResources, minTaskMember, networkTopology, priorityClassName, queue, subGroupPolicy, additionalProperties);
+  }
+  
+  public A removeAllFromSubGroupPolicy(Collection<SubGroupPolicySpec> items) {
+    if (this.subGroupPolicy == null) {
+      return (A) this;
+    }
+    for (SubGroupPolicySpec item : items) {
+        SubGroupPolicySpecBuilder builder = new SubGroupPolicySpecBuilder(item);
+        _visitables.get("subGroupPolicy").remove(builder);
+        this.subGroupPolicy.remove(builder);
+    }
+    return (A) this;
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -259,6 +430,53 @@ public class PodGroupSpecFluent<A extends io.fabric8.volcano.api.model.schedulin
     return (A) this;
   }
   
+  public A removeFromSubGroupPolicy(SubGroupPolicySpec... items) {
+    if (this.subGroupPolicy == null) {
+      return (A) this;
+    }
+    for (SubGroupPolicySpec item : items) {
+        SubGroupPolicySpecBuilder builder = new SubGroupPolicySpecBuilder(item);
+        _visitables.get("subGroupPolicy").remove(builder);
+        this.subGroupPolicy.remove(builder);
+    }
+    return (A) this;
+  }
+  
+  public A removeMatchingFromSubGroupPolicy(Predicate<SubGroupPolicySpecBuilder> predicate) {
+    if (subGroupPolicy == null) {
+      return (A) this;
+    }
+    Iterator<SubGroupPolicySpecBuilder> each = subGroupPolicy.iterator();
+    List visitables = _visitables.get("subGroupPolicy");
+    while (each.hasNext()) {
+        SubGroupPolicySpecBuilder builder = each.next();
+        if (predicate.test(builder)) {
+            visitables.remove(builder);
+            each.remove();
+        }
+    }
+    return (A) this;
+  }
+  
+  public SubGroupPolicyNested<A> setNewSubGroupPolicyLike(int index,SubGroupPolicySpec item) {
+    return new SubGroupPolicyNested(index, item);
+  }
+  
+  public A setToSubGroupPolicy(int index,SubGroupPolicySpec item) {
+    if (this.subGroupPolicy == null) {
+      this.subGroupPolicy = new ArrayList();
+    }
+    SubGroupPolicySpecBuilder builder = new SubGroupPolicySpecBuilder(item);
+    if (index < 0 || index >= subGroupPolicy.size()) {
+        _visitables.get("subGroupPolicy").add(builder);
+        subGroupPolicy.add(builder);
+    } else {
+        _visitables.get("subGroupPolicy").add(builder);
+        subGroupPolicy.set(index, builder);
+    }
+    return (A) this;
+  }
+  
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
@@ -277,6 +495,11 @@ public class PodGroupSpecFluent<A extends io.fabric8.volcano.api.model.schedulin
         sb.append(minTaskMember);
         sb.append(",");
     }
+    if (!(networkTopology == null)) {
+        sb.append("networkTopology:");
+        sb.append(networkTopology);
+        sb.append(",");
+    }
     if (!(priorityClassName == null)) {
         sb.append("priorityClassName:");
         sb.append(priorityClassName);
@@ -285,6 +508,11 @@ public class PodGroupSpecFluent<A extends io.fabric8.volcano.api.model.schedulin
     if (!(queue == null)) {
         sb.append("queue:");
         sb.append(queue);
+        sb.append(",");
+    }
+    if (!(subGroupPolicy == null) && !(subGroupPolicy.isEmpty())) {
+        sb.append("subGroupPolicy:");
+        sb.append(subGroupPolicy);
         sb.append(",");
     }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
@@ -327,6 +555,30 @@ public class PodGroupSpecFluent<A extends io.fabric8.volcano.api.model.schedulin
     return (A) this;
   }
   
+  public A withNetworkTopology(NetworkTopologySpec networkTopology) {
+    this._visitables.remove("networkTopology");
+    if (networkTopology != null) {
+        this.networkTopology = new NetworkTopologySpecBuilder(networkTopology);
+        this._visitables.get("networkTopology").add(this.networkTopology);
+    } else {
+        this.networkTopology = null;
+        this._visitables.get("networkTopology").remove(this.networkTopology);
+    }
+    return (A) this;
+  }
+  
+  public NetworkTopologyNested<A> withNewNetworkTopology() {
+    return new NetworkTopologyNested(null);
+  }
+  
+  public A withNewNetworkTopology(Integer highestTierAllowed,String highestTierName,String mode) {
+    return (A) this.withNetworkTopology(new NetworkTopologySpec(highestTierAllowed, highestTierName, mode));
+  }
+  
+  public NetworkTopologyNested<A> withNewNetworkTopologyLike(NetworkTopologySpec item) {
+    return new NetworkTopologyNested(item);
+  }
+  
   public A withPriorityClassName(String priorityClassName) {
     this.priorityClassName = priorityClassName;
     return (A) this;
@@ -337,4 +589,67 @@ public class PodGroupSpecFluent<A extends io.fabric8.volcano.api.model.schedulin
     return (A) this;
   }
   
+  public A withSubGroupPolicy(List<SubGroupPolicySpec> subGroupPolicy) {
+    if (this.subGroupPolicy != null) {
+      this._visitables.get("subGroupPolicy").clear();
+    }
+    if (subGroupPolicy != null) {
+        this.subGroupPolicy = new ArrayList();
+        for (SubGroupPolicySpec item : subGroupPolicy) {
+          this.addToSubGroupPolicy(item);
+        }
+    } else {
+      this.subGroupPolicy = null;
+    }
+    return (A) this;
+  }
+  
+  public A withSubGroupPolicy(SubGroupPolicySpec... subGroupPolicy) {
+    if (this.subGroupPolicy != null) {
+        this.subGroupPolicy.clear();
+        _visitables.remove("subGroupPolicy");
+    }
+    if (subGroupPolicy != null) {
+      for (SubGroupPolicySpec item : subGroupPolicy) {
+        this.addToSubGroupPolicy(item);
+      }
+    }
+    return (A) this;
+  }
+  public class NetworkTopologyNested<N> extends NetworkTopologySpecFluent<NetworkTopologyNested<N>> implements Nested<N>{
+  
+    NetworkTopologySpecBuilder builder;
+  
+    NetworkTopologyNested(NetworkTopologySpec item) {
+      this.builder = new NetworkTopologySpecBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) PodGroupSpecFluent.this.withNetworkTopology(builder.build());
+    }
+    
+    public N endNetworkTopology() {
+      return and();
+    }
+    
+  }
+  public class SubGroupPolicyNested<N> extends SubGroupPolicySpecFluent<SubGroupPolicyNested<N>> implements Nested<N>{
+  
+    SubGroupPolicySpecBuilder builder;
+    int index;
+  
+    SubGroupPolicyNested(int index,SubGroupPolicySpec item) {
+      this.index = index;
+      this.builder = new SubGroupPolicySpecBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) PodGroupSpecFluent.this.setToSubGroupPolicy(index, builder.build());
+    }
+    
+    public N endSubGroupPolicy() {
+      return and();
+    }
+    
+  }
 }

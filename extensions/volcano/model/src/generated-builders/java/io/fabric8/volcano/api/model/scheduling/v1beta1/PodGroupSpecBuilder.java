@@ -25,7 +25,7 @@ public class PodGroupSpecBuilder extends PodGroupSpecFluent<PodGroupSpecBuilder>
   }
 
   public PodGroupSpec build() {
-    PodGroupSpec buildable = new PodGroupSpec(fluent.getMinMember(), fluent.getMinResources(), fluent.getMinTaskMember(), fluent.getPriorityClassName(), fluent.getQueue());
+    PodGroupSpec buildable = new PodGroupSpec(fluent.getMinMember(), fluent.getMinResources(), fluent.getMinTaskMember(), fluent.buildNetworkTopology(), fluent.getPriorityClassName(), fluent.getQueue(), fluent.buildSubGroupPolicy());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

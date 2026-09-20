@@ -1,5 +1,5 @@
 
-package io.fabric8.volcano.api.model.flow.v1alpha1;
+package io.fabric8.volcano.api.model.scheduling.v1beta1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -32,15 +32,12 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
-/**
- * Flow defines the dependent of jobs
- */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "dependsOn",
-    "name",
-    "patch"
+    "highestTierAllowed",
+    "highestTierName",
+    "mode"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,86 +61,86 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Flow implements Editable<FlowBuilder>, KubernetesResource
+public class NetworkTopologySpec implements Editable<NetworkTopologySpecBuilder>, KubernetesResource
 {
 
-    @JsonProperty("dependsOn")
-    private DependsOn dependsOn;
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("patch")
-    private Patch patch;
+    @JsonProperty("highestTierAllowed")
+    private Integer highestTierAllowed;
+    @JsonProperty("highestTierName")
+    private String highestTierName;
+    @JsonProperty("mode")
+    private String mode;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public Flow() {
+    public NetworkTopologySpec() {
     }
 
-    public Flow(DependsOn dependsOn, String name, Patch patch) {
+    public NetworkTopologySpec(Integer highestTierAllowed, String highestTierName, String mode) {
         super();
-        this.dependsOn = dependsOn;
-        this.name = name;
-        this.patch = patch;
+        this.highestTierAllowed = highestTierAllowed;
+        this.highestTierName = highestTierName;
+        this.mode = mode;
     }
 
     /**
-     * Flow defines the dependent of jobs
+     * HighestTierAllowed specifies the highest tier that a job allowed to cross when scheduling.
      */
-    @JsonProperty("dependsOn")
-    public DependsOn getDependsOn() {
-        return dependsOn;
+    @JsonProperty("highestTierAllowed")
+    public Integer getHighestTierAllowed() {
+        return highestTierAllowed;
     }
 
     /**
-     * Flow defines the dependent of jobs
+     * HighestTierAllowed specifies the highest tier that a job allowed to cross when scheduling.
      */
-    @JsonProperty("dependsOn")
-    public void setDependsOn(DependsOn dependsOn) {
-        this.dependsOn = dependsOn;
+    @JsonProperty("highestTierAllowed")
+    public void setHighestTierAllowed(Integer highestTierAllowed) {
+        this.highestTierAllowed = highestTierAllowed;
     }
 
     /**
-     * Flow defines the dependent of jobs
+     * HighestTierName specifies the highest tier name that a job allowed to cross when scheduling. HighestTierName and HighestTierAllowed cannot be set simultaneously.
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("highestTierName")
+    public String getHighestTierName() {
+        return highestTierName;
     }
 
     /**
-     * Flow defines the dependent of jobs
+     * HighestTierName specifies the highest tier name that a job allowed to cross when scheduling. HighestTierName and HighestTierAllowed cannot be set simultaneously.
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("highestTierName")
+    public void setHighestTierName(String highestTierName) {
+        this.highestTierName = highestTierName;
     }
 
     /**
-     * Flow defines the dependent of jobs
+     * Mode specifies the mode of the network topology constrain.
      */
-    @JsonProperty("patch")
-    public Patch getPatch() {
-        return patch;
+    @JsonProperty("mode")
+    public String getMode() {
+        return mode;
     }
 
     /**
-     * Flow defines the dependent of jobs
+     * Mode specifies the mode of the network topology constrain.
      */
-    @JsonProperty("patch")
-    public void setPatch(Patch patch) {
-        this.patch = patch;
+    @JsonProperty("mode")
+    public void setMode(String mode) {
+        this.mode = mode;
     }
 
     @JsonIgnore
-    public FlowBuilder edit() {
-        return new FlowBuilder(this);
+    public NetworkTopologySpecBuilder edit() {
+        return new NetworkTopologySpecBuilder(this);
     }
 
     @JsonIgnore
-    public FlowBuilder toBuilder() {
+    public NetworkTopologySpecBuilder toBuilder() {
         return edit();
     }
 

@@ -1,7 +1,9 @@
 
-package io.fabric8.volcano.api.model.flow.v1alpha1;
+package io.fabric8.volcano.api.model.batch.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -33,14 +35,14 @@ import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * Flow defines the dependent of jobs
+ * CronJobStatus represents the current state of a cron job.
  */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "dependsOn",
-    "name",
-    "patch"
+    "active",
+    "lastScheduleTime",
+    "lastSuccessfulTime"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,86 +66,88 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Flow implements Editable<FlowBuilder>, KubernetesResource
+public class CronJobStatus implements Editable<CronJobStatusBuilder>, KubernetesResource
 {
 
-    @JsonProperty("dependsOn")
-    private DependsOn dependsOn;
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("patch")
-    private Patch patch;
+    @JsonProperty("active")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ObjectReference> active = new ArrayList<>();
+    @JsonProperty("lastScheduleTime")
+    private String lastScheduleTime;
+    @JsonProperty("lastSuccessfulTime")
+    private String lastSuccessfulTime;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public Flow() {
+    public CronJobStatus() {
     }
 
-    public Flow(DependsOn dependsOn, String name, Patch patch) {
+    public CronJobStatus(List<ObjectReference> active, String lastScheduleTime, String lastSuccessfulTime) {
         super();
-        this.dependsOn = dependsOn;
-        this.name = name;
-        this.patch = patch;
+        this.active = active;
+        this.lastScheduleTime = lastScheduleTime;
+        this.lastSuccessfulTime = lastSuccessfulTime;
     }
 
     /**
-     * Flow defines the dependent of jobs
+     * A list of pointers to currently running jobs.
      */
-    @JsonProperty("dependsOn")
-    public DependsOn getDependsOn() {
-        return dependsOn;
+    @JsonProperty("active")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<ObjectReference> getActive() {
+        return active;
     }
 
     /**
-     * Flow defines the dependent of jobs
+     * A list of pointers to currently running jobs.
      */
-    @JsonProperty("dependsOn")
-    public void setDependsOn(DependsOn dependsOn) {
-        this.dependsOn = dependsOn;
+    @JsonProperty("active")
+    public void setActive(List<ObjectReference> active) {
+        this.active = active;
     }
 
     /**
-     * Flow defines the dependent of jobs
+     * CronJobStatus represents the current state of a cron job.
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("lastScheduleTime")
+    public String getLastScheduleTime() {
+        return lastScheduleTime;
     }
 
     /**
-     * Flow defines the dependent of jobs
+     * CronJobStatus represents the current state of a cron job.
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("lastScheduleTime")
+    public void setLastScheduleTime(String lastScheduleTime) {
+        this.lastScheduleTime = lastScheduleTime;
     }
 
     /**
-     * Flow defines the dependent of jobs
+     * CronJobStatus represents the current state of a cron job.
      */
-    @JsonProperty("patch")
-    public Patch getPatch() {
-        return patch;
+    @JsonProperty("lastSuccessfulTime")
+    public String getLastSuccessfulTime() {
+        return lastSuccessfulTime;
     }
 
     /**
-     * Flow defines the dependent of jobs
+     * CronJobStatus represents the current state of a cron job.
      */
-    @JsonProperty("patch")
-    public void setPatch(Patch patch) {
-        this.patch = patch;
+    @JsonProperty("lastSuccessfulTime")
+    public void setLastSuccessfulTime(String lastSuccessfulTime) {
+        this.lastSuccessfulTime = lastSuccessfulTime;
     }
 
     @JsonIgnore
-    public FlowBuilder edit() {
-        return new FlowBuilder(this);
+    public CronJobStatusBuilder edit() {
+        return new CronJobStatusBuilder(this);
     }
 
     @JsonIgnore
-    public FlowBuilder toBuilder() {
+    public CronJobStatusBuilder toBuilder() {
         return edit();
     }
 

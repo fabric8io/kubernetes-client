@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
+import io.fabric8.volcano.api.model.batch.v1alpha1.JobSpec;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -32,15 +33,10 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
-/**
- * Flow defines the dependent of jobs
- */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "dependsOn",
-    "name",
-    "patch"
+    "jobSpec"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,86 +60,42 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Flow implements Editable<FlowBuilder>, KubernetesResource
+public class Patch implements Editable<PatchBuilder>, KubernetesResource
 {
 
-    @JsonProperty("dependsOn")
-    private DependsOn dependsOn;
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("patch")
-    private Patch patch;
+    @JsonProperty("jobSpec")
+    private JobSpec jobSpec;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public Flow() {
+    public Patch() {
     }
 
-    public Flow(DependsOn dependsOn, String name, Patch patch) {
+    public Patch(JobSpec jobSpec) {
         super();
-        this.dependsOn = dependsOn;
-        this.name = name;
-        this.patch = patch;
+        this.jobSpec = jobSpec;
     }
 
-    /**
-     * Flow defines the dependent of jobs
-     */
-    @JsonProperty("dependsOn")
-    public DependsOn getDependsOn() {
-        return dependsOn;
+    @JsonProperty("jobSpec")
+    public JobSpec getJobSpec() {
+        return jobSpec;
     }
 
-    /**
-     * Flow defines the dependent of jobs
-     */
-    @JsonProperty("dependsOn")
-    public void setDependsOn(DependsOn dependsOn) {
-        this.dependsOn = dependsOn;
-    }
-
-    /**
-     * Flow defines the dependent of jobs
-     */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Flow defines the dependent of jobs
-     */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Flow defines the dependent of jobs
-     */
-    @JsonProperty("patch")
-    public Patch getPatch() {
-        return patch;
-    }
-
-    /**
-     * Flow defines the dependent of jobs
-     */
-    @JsonProperty("patch")
-    public void setPatch(Patch patch) {
-        this.patch = patch;
+    @JsonProperty("jobSpec")
+    public void setJobSpec(JobSpec jobSpec) {
+        this.jobSpec = jobSpec;
     }
 
     @JsonIgnore
-    public FlowBuilder edit() {
-        return new FlowBuilder(this);
+    public PatchBuilder edit() {
+        return new PatchBuilder(this);
     }
 
     @JsonIgnore
-    public FlowBuilder toBuilder() {
+    public PatchBuilder toBuilder() {
         return edit();
     }
 

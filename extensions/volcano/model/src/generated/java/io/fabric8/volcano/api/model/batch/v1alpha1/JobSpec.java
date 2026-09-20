@@ -44,6 +44,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "maxRetry",
     "minAvailable",
     "minSuccess",
+    "networkTopology",
     "plugins",
     "policies",
     "priorityClassName",
@@ -85,6 +86,8 @@ public class JobSpec implements Editable<JobSpecBuilder>, KubernetesResource
     private Integer minAvailable;
     @JsonProperty("minSuccess")
     private Integer minSuccess;
+    @JsonProperty("networkTopology")
+    private NetworkTopologySpec networkTopology;
     @JsonProperty("plugins")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, List<String>> plugins = new LinkedHashMap<>();
@@ -116,11 +119,12 @@ public class JobSpec implements Editable<JobSpecBuilder>, KubernetesResource
     public JobSpec() {
     }
 
-    public JobSpec(Integer maxRetry, Integer minAvailable, Integer minSuccess, Map<String, List<String>> plugins, List<LifecyclePolicy> policies, String priorityClassName, String queue, Duration runningEstimate, String schedulerName, List<TaskSpec> tasks, Integer ttlSecondsAfterFinished, List<VolumeSpec> volumes) {
+    public JobSpec(Integer maxRetry, Integer minAvailable, Integer minSuccess, NetworkTopologySpec networkTopology, Map<String, List<String>> plugins, List<LifecyclePolicy> policies, String priorityClassName, String queue, Duration runningEstimate, String schedulerName, List<TaskSpec> tasks, Integer ttlSecondsAfterFinished, List<VolumeSpec> volumes) {
         super();
         this.maxRetry = maxRetry;
         this.minAvailable = minAvailable;
         this.minSuccess = minSuccess;
+        this.networkTopology = networkTopology;
         this.plugins = plugins;
         this.policies = policies;
         this.priorityClassName = priorityClassName;
@@ -178,6 +182,22 @@ public class JobSpec implements Editable<JobSpecBuilder>, KubernetesResource
     @JsonProperty("minSuccess")
     public void setMinSuccess(Integer minSuccess) {
         this.minSuccess = minSuccess;
+    }
+
+    /**
+     * JobSpec describes how the job execution will look like and when it will actually run.
+     */
+    @JsonProperty("networkTopology")
+    public NetworkTopologySpec getNetworkTopology() {
+        return networkTopology;
+    }
+
+    /**
+     * JobSpec describes how the job execution will look like and when it will actually run.
+     */
+    @JsonProperty("networkTopology")
+    public void setNetworkTopology(NetworkTopologySpec networkTopology) {
+        this.networkTopology = networkTopology;
     }
 
     /**

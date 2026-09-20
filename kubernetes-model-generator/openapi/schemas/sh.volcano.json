@@ -6,6 +6,159 @@
   },
   "paths": null,
   "definitions": {
+    "sh.volcano.batch.v1alpha1.CronJob": {
+      "description": "CronJob is the Schema for the cronjobs API",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Specification of the desired behavior of a cron job, including the schedule. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.batch.v1alpha1.CronJobSpec"
+        },
+        "status": {
+          "description": "Current status of a cron job. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.batch.v1alpha1.CronJobStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "batch.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "CronJob",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.batch.v1alpha1.CronJobList": {
+      "description": "CronJobList contains a list of Cronjob",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/sh.volcano.batch.v1alpha1.CronJob"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "batch.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "CronJobList",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.batch.v1alpha1.CronJobSpec": {
+      "description": "CronJobSpec defines the desired state of Cronjob",
+      "type": "object",
+      "required": [
+        "schedule",
+        "jobTemplate"
+      ],
+      "properties": {
+        "concurrencyPolicy": {
+          "description": "Specifies how to treat concurrent executions of a Job. Valid values are: - \"Allow\" (default): allows CronJobs to run concurrently; - \"Forbid\": forbids concurrent runs, skipping next run if previous run hasn't finished yet; - \"Replace\": cancels currently running job and replaces it with a new one",
+          "type": "string"
+        },
+        "failedJobsHistoryLimit": {
+          "description": "The number of failed finished jobs to retain. This is a pointer to distinguish between explicit zero and not specified. Defaults to 1.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "jobTemplate": {
+          "description": "Specifies the job that will be created when executing a CronJob.",
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.batch.v1alpha1.JobTemplateSpec"
+        },
+        "schedule": {
+          "description": "The schedule in Cron format, see https://en.wikipedia.org/wiki/Cron.",
+          "type": "string",
+          "default": ""
+        },
+        "startingDeadlineSeconds": {
+          "description": "Optional deadline in seconds for starting the job if it misses scheduled time for any reason.  Missed jobs executions will be counted as failed ones.",
+          "type": "integer",
+          "format": "int64"
+        },
+        "successfulJobsHistoryLimit": {
+          "description": "The number of successful finished jobs to retain. This is a pointer to distinguish between explicit zero and not specified. Defaults to 3.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "suspend": {
+          "description": "This flag tells the controller to suspend subsequent executions, it does not apply to already started executions.  Defaults to false.",
+          "type": "boolean"
+        },
+        "timeZone": {
+          "description": "The time zone name for the given schedule, see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones. If not specified, this will default to the time zone of the kube-controller-manager process. The set of valid time zone names and the time zone offset is loaded from the system-wide time zone database by the API server during CronJob validation and the controller manager during execution. If no system-wide time zone database can be found a bundled version of the database is used instead. If the time zone name becomes invalid during the lifetime of a CronJob or due to a change in host configuration, the controller will stop creating new Jobs and will create a system event with the reason UnknownTimeZone. More information can be found in https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/#time-zones",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "batch.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "CronJobSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.batch.v1alpha1.CronJobStatus": {
+      "description": "CronJobStatus represents the current state of a cron job.",
+      "type": "object",
+      "properties": {
+        "active": {
+          "description": "A list of pointers to currently running jobs.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.core.v1.ObjectReference"
+          },
+          "x-kubernetes-list-type": "atomic"
+        },
+        "lastScheduleTime": {
+          "description": "Information when was the last time the job was successfully scheduled.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        },
+        "lastSuccessfulTime": {
+          "description": "Information when was the last time the job successfully completed.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "batch.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "CronJobStatus",
+        "Scope": "Namespaced"
+      }
+    },
     "sh.volcano.batch.v1alpha1.DependsOn": {
       "description": "DependsOn represents the tasks that this task depends on and their dependencies",
       "type": "object",
@@ -142,6 +295,10 @@
           "description": "The minimal success pods to run for this Job",
           "type": "integer",
           "format": "int32"
+        },
+        "networkTopology": {
+          "description": "NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.",
+          "$ref": "#/definitions/sh.volcano.batch.v1alpha1.NetworkTopologySpec"
         },
         "plugins": {
           "description": "Specifies the plugin of job Key is plugin name, value is the arguments of the plugin",
@@ -323,6 +480,29 @@
         "Scope": "Namespaced"
       }
     },
+    "sh.volcano.batch.v1alpha1.JobTemplateSpec": {
+      "description": "JobTemplateSpec describes the data a Job should have when created from a template",
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "description": "Standard object's metadata of the jobs created from this template. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Specification of the desired behavior of the job. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.batch.v1alpha1.JobSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "batch.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "JobTemplateSpec",
+        "Scope": "Namespaced"
+      }
+    },
     "sh.volcano.batch.v1alpha1.LifecyclePolicy": {
       "description": "LifecyclePolicy specifies the lifecycle and error handling of task and job.",
       "type": "object",
@@ -360,6 +540,68 @@
         "Scope": "Namespaced"
       }
     },
+    "sh.volcano.batch.v1alpha1.NetworkTopologySpec": {
+      "type": "object",
+      "properties": {
+        "highestTierAllowed": {
+          "description": "HighestTierAllowed specifies the highest tier that a job allowed to cross when scheduling.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "highestTierName": {
+          "description": "HighestTierName specifies the highest tier name that a job allowed to cross when scheduling. HighestTierName and HighestTierAllowed cannot be set simultaneously.",
+          "type": "string"
+        },
+        "mode": {
+          "description": "Mode specifies the mode of the network topology constrain.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "batch.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "NetworkTopologySpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.batch.v1alpha1.PartitionPolicySpec": {
+      "type": "object",
+      "required": [
+        "totalPartitions",
+        "partitionSize"
+      ],
+      "properties": {
+        "minPartitions": {
+          "description": "MinPartitions defines the minimum number of sub-affinity groups required.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "networkTopology": {
+          "description": "NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.",
+          "$ref": "#/definitions/sh.volcano.batch.v1alpha1.NetworkTopologySpec"
+        },
+        "partitionSize": {
+          "description": "PartitionSize is the number of pods included in each group.",
+          "type": "integer",
+          "format": "int32",
+          "default": 0
+        },
+        "totalPartitions": {
+          "description": "TotalPartitions indicates how many groups a set of pods within a task is divided into. The product of TotalPartitions and PartitionSize should be equal to Replicas.",
+          "type": "integer",
+          "format": "int32",
+          "default": 0
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "batch.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "PartitionPolicySpec",
+        "Scope": "Namespaced"
+      }
+    },
     "sh.volcano.batch.v1alpha1.TaskSpec": {
       "description": "TaskSpec specifies the task specification of Job.",
       "type": "object",
@@ -381,6 +623,10 @@
         "name": {
           "description": "Name specifies the name of tasks",
           "type": "string"
+        },
+        "partitionPolicy": {
+          "description": "PartitionPolicy defines the partition policy of a task.",
+          "$ref": "#/definitions/sh.volcano.batch.v1alpha1.PartitionPolicySpec"
         },
         "policies": {
           "description": "Specifies the lifecycle of task",
@@ -598,6 +844,9 @@
         "name": {
           "type": "string",
           "default": ""
+        },
+        "patch": {
+          "$ref": "#/definitions/sh.volcano.flow.v1alpha1.Patch"
         }
       },
       "x-fabric8-info": {
@@ -706,7 +955,6 @@
       "type": "object",
       "properties": {
         "flows": {
-          "description": "Foo is an example field of JobFlow. Edit jobflow_types.go to remove/update",
           "type": "array",
           "items": {
             "$ref": "#/definitions/sh.volcano.flow.v1alpha1.Flow"
@@ -753,7 +1001,6 @@
           }
         },
         "pendingJobs": {
-          "description": "INSERT ADDITIONAL STATUS FIELD - define observed state of cluster Important: Run \"make\" to regenerate code after modifying this file",
           "type": "array",
           "items": {
             "type": "string"
@@ -915,12 +1162,9 @@
     "sh.volcano.flow.v1alpha1.JobTemplateSpec": {
       "description": "JobTemplateSpec defines the desired state of JobTemplate",
       "type": "object",
-      "required": [
-        "JobSpec"
-      ],
       "properties": {
-        "JobSpec": {
-          "description": "Foo is an example field of JobTemplate. Edit jobtemplate_types.go to remove/update",
+        "jobSpec": {
+          "description": "JobSpec is the specification of the Job",
           "default": {},
           "$ref": "#/definitions/sh.volcano.batch.v1alpha1.JobSpec"
         }
@@ -938,7 +1182,7 @@
       "type": "object",
       "properties": {
         "jobDependsOnList": {
-          "description": "Describes the Jobs generated from the JobTemplate",
+          "description": "JobDependsOnList is the list of jobs that this job depends on",
           "type": "array",
           "items": {
             "type": "string"
@@ -950,6 +1194,22 @@
         "Group": "flow.volcano.sh",
         "Version": "v1alpha1",
         "Kind": "JobTemplateStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.flow.v1alpha1.Patch": {
+      "type": "object",
+      "properties": {
+        "jobSpec": {
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.batch.v1alpha1.JobSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "flow.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "Patch",
         "Scope": "Namespaced"
       }
     },
@@ -1256,6 +1516,31 @@
         "Scope": "Namespaced"
       }
     },
+    "sh.volcano.scheduling.v1beta1.NetworkTopologySpec": {
+      "type": "object",
+      "properties": {
+        "highestTierAllowed": {
+          "description": "HighestTierAllowed specifies the highest tier that a job allowed to cross when scheduling.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "highestTierName": {
+          "description": "HighestTierName specifies the highest tier name that a job allowed to cross when scheduling. HighestTierName and HighestTierAllowed cannot be set simultaneously.",
+          "type": "string"
+        },
+        "mode": {
+          "description": "Mode specifies the mode of the network topology constrain.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "NetworkTopologySpec",
+        "Scope": "Namespaced"
+      }
+    },
     "sh.volcano.scheduling.v1beta1.NodeGroupAffinity": {
       "type": "object",
       "properties": {
@@ -1429,12 +1714,16 @@
           }
         },
         "minTaskMember": {
-          "description": "MinTaskMember defines the minimal number of pods to run each task in the pod group; if there's not enough resources to start each task, the scheduler will not start anyone.",
+          "description": "MinTaskMember defines the minimal number of pods to run for each task in the pod group; if there's not enough resources to start each task, the scheduler will not start anyone. SubGroupPolicy covers all capabilities of minTaskMember, while providing richer network topology and Gang scheduling management capabilities. Recommend using SubGroupPolicy to uniformly manage Gang scheduling for each Task group.",
           "type": "object",
           "additionalProperties": {
             "type": "integer",
             "format": "int32"
           }
+        },
+        "networkTopology": {
+          "description": "NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.",
+          "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.NetworkTopologySpec"
         },
         "priorityClassName": {
           "description": "If specified, indicates the PodGroup's priority. \"system-node-critical\" and \"system-cluster-critical\" are two special keywords which indicate the highest priorities with the former being the highest priority. Any other name must be defined by creating a PriorityClass object with that name. If not specified, the PodGroup priority will be default or zero if there is no default.",
@@ -1443,6 +1732,13 @@
         "queue": {
           "description": "Queue defines the queue to allocate resource for PodGroup; if queue does not exist, the PodGroup will not be scheduled. Defaults to `default` Queue with the lowest weight.",
           "type": "string"
+        },
+        "subGroupPolicy": {
+          "description": "Compared with minTaskMember, it offers more comprehensive topology scheduling and Gang scheduling management capabilities. Concurrent use with minTaskMember is not recommended, and SubGroupPolicy is the long-term evolution direction.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.SubGroupPolicySpec"
+          }
         }
       },
       "x-fabric8-info": {
@@ -1577,6 +1873,10 @@
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
           }
         },
+        "dequeueStrategy": {
+          "description": "DequeueStrategy defines the dequeue strategy of queue",
+          "type": "string"
+        },
         "deserved": {
           "description": "The amount of resources configured by the user. This part of resource can be shared with other queues and reclaimed back.",
           "type": "object",
@@ -1629,9 +1929,6 @@
     "sh.volcano.scheduling.v1beta1.QueueStatus": {
       "description": "QueueStatus represents the status of Queue.",
       "type": "object",
-      "required": [
-        "allocated"
-      ],
       "properties": {
         "allocated": {
           "description": "Allocated is allocated resources in queue",
@@ -1707,6 +2004,48 @@
         "Group": "scheduling.volcano.sh",
         "Version": "v1beta1",
         "Kind": "Reservation",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.SubGroupPolicySpec": {
+      "type": "object",
+      "properties": {
+        "labelSelector": {
+          "description": "LabelSelector is used to find matching pods. Pods that match this label selector are counted to determine the number of pods in their corresponding topology domain.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
+        },
+        "matchLabelKeys": {
+          "description": "MatchLabelKeys: A label-based grouping configuration field for Pods, defining filtering rules for grouping label keys Core function: Refine grouping of Pods that meet LabelSelector criteria by label attributes, with the following rules and constraints: 1. Scope: Only applies to Pods matching the predefined LabelSelector 2. Grouping rule: Specify one or more label keys; Pods containing the target label keys with exactly the same corresponding label values are grouped together 3. Policy constraint: Pods in the same group follow a unified NetworkTopology policy to achieve group-level network behavior governance",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-kubernetes-list-type": "atomic"
+        },
+        "minSubGroups": {
+          "description": "MinSubGroups: Minimum number of subgroups required to trigger scheduling. Scheduling is initiated only if cluster resources meet the requirements of at least this number of subgroups. Subgroup-level Gang Scheduling",
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "description": "Name specifies the name of SubGroupPolicy",
+          "type": "string"
+        },
+        "networkTopology": {
+          "description": "NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.",
+          "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.NetworkTopologySpec"
+        },
+        "subGroupSize": {
+          "description": "SubGroupSize defines the number of pods in each sub-affinity group. Only when a subGroup of pods, with a size of \"subGroupSize\", can satisfy the network topology constraint then will the subGroup be scheduled.",
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "SubGroupPolicySpec",
         "Scope": "Namespaced"
       }
     }

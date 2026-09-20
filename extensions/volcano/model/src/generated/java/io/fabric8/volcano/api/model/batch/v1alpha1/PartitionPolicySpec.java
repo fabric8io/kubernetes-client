@@ -1,5 +1,5 @@
 
-package io.fabric8.volcano.api.model.flow.v1alpha1;
+package io.fabric8.volcano.api.model.batch.v1alpha1;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -32,15 +32,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
-/**
- * Flow defines the dependent of jobs
- */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "dependsOn",
-    "name",
-    "patch"
+    "minPartitions",
+    "networkTopology",
+    "partitionSize",
+    "totalPartitions"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,86 +62,99 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class Flow implements Editable<FlowBuilder>, KubernetesResource
+public class PartitionPolicySpec implements Editable<PartitionPolicySpecBuilder>, KubernetesResource
 {
 
-    @JsonProperty("dependsOn")
-    private DependsOn dependsOn;
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("patch")
-    private Patch patch;
+    @JsonProperty("minPartitions")
+    private Integer minPartitions;
+    @JsonProperty("networkTopology")
+    private NetworkTopologySpec networkTopology;
+    @JsonProperty("partitionSize")
+    private Integer partitionSize;
+    @JsonProperty("totalPartitions")
+    private Integer totalPartitions;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public Flow() {
+    public PartitionPolicySpec() {
     }
 
-    public Flow(DependsOn dependsOn, String name, Patch patch) {
+    public PartitionPolicySpec(Integer minPartitions, NetworkTopologySpec networkTopology, Integer partitionSize, Integer totalPartitions) {
         super();
-        this.dependsOn = dependsOn;
-        this.name = name;
-        this.patch = patch;
+        this.minPartitions = minPartitions;
+        this.networkTopology = networkTopology;
+        this.partitionSize = partitionSize;
+        this.totalPartitions = totalPartitions;
     }
 
     /**
-     * Flow defines the dependent of jobs
+     * MinPartitions defines the minimum number of sub-affinity groups required.
      */
-    @JsonProperty("dependsOn")
-    public DependsOn getDependsOn() {
-        return dependsOn;
+    @JsonProperty("minPartitions")
+    public Integer getMinPartitions() {
+        return minPartitions;
     }
 
     /**
-     * Flow defines the dependent of jobs
+     * MinPartitions defines the minimum number of sub-affinity groups required.
      */
-    @JsonProperty("dependsOn")
-    public void setDependsOn(DependsOn dependsOn) {
-        this.dependsOn = dependsOn;
+    @JsonProperty("minPartitions")
+    public void setMinPartitions(Integer minPartitions) {
+        this.minPartitions = minPartitions;
+    }
+
+    @JsonProperty("networkTopology")
+    public NetworkTopologySpec getNetworkTopology() {
+        return networkTopology;
+    }
+
+    @JsonProperty("networkTopology")
+    public void setNetworkTopology(NetworkTopologySpec networkTopology) {
+        this.networkTopology = networkTopology;
     }
 
     /**
-     * Flow defines the dependent of jobs
+     * PartitionSize is the number of pods included in each group.
      */
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("partitionSize")
+    public Integer getPartitionSize() {
+        return partitionSize;
     }
 
     /**
-     * Flow defines the dependent of jobs
+     * PartitionSize is the number of pods included in each group.
      */
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("partitionSize")
+    public void setPartitionSize(Integer partitionSize) {
+        this.partitionSize = partitionSize;
     }
 
     /**
-     * Flow defines the dependent of jobs
+     * TotalPartitions indicates how many groups a set of pods within a task is divided into. The product of TotalPartitions and PartitionSize should be equal to Replicas.
      */
-    @JsonProperty("patch")
-    public Patch getPatch() {
-        return patch;
+    @JsonProperty("totalPartitions")
+    public Integer getTotalPartitions() {
+        return totalPartitions;
     }
 
     /**
-     * Flow defines the dependent of jobs
+     * TotalPartitions indicates how many groups a set of pods within a task is divided into. The product of TotalPartitions and PartitionSize should be equal to Replicas.
      */
-    @JsonProperty("patch")
-    public void setPatch(Patch patch) {
-        this.patch = patch;
+    @JsonProperty("totalPartitions")
+    public void setTotalPartitions(Integer totalPartitions) {
+        this.totalPartitions = totalPartitions;
     }
 
     @JsonIgnore
-    public FlowBuilder edit() {
-        return new FlowBuilder(this);
+    public PartitionPolicySpecBuilder edit() {
+        return new PartitionPolicySpecBuilder(this);
     }
 
     @JsonIgnore
-    public FlowBuilder toBuilder() {
+    public PartitionPolicySpecBuilder toBuilder() {
         return edit();
     }
 

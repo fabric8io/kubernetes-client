@@ -39,7 +39,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "JobSpec"
+    "jobSpec"
 })
 @ToString
 @EqualsAndHashCode
@@ -66,7 +66,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 public class JobTemplateSpec implements Editable<JobTemplateSpecBuilder>, KubernetesResource
 {
 
-    @JsonProperty("JobSpec")
+    @JsonProperty("jobSpec")
     private JobSpec jobSpec;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
@@ -85,7 +85,7 @@ public class JobTemplateSpec implements Editable<JobTemplateSpecBuilder>, Kubern
     /**
      * JobTemplateSpec defines the desired state of JobTemplate
      */
-    @JsonProperty("JobSpec")
+    @JsonProperty("jobSpec")
     public JobSpec getJobSpec() {
         return jobSpec;
     }
@@ -93,7 +93,7 @@ public class JobTemplateSpec implements Editable<JobTemplateSpecBuilder>, Kubern
     /**
      * JobTemplateSpec defines the desired state of JobTemplate
      */
-    @JsonProperty("JobSpec")
+    @JsonProperty("jobSpec")
     public void setJobSpec(JobSpec jobSpec) {
         this.jobSpec = jobSpec;
     }
