@@ -36,7 +36,7 @@ env:
 jobs:
   e2e:
     name: CRC ${{ matrix.crc }} / OKD ${{ matrix.okd }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: github.repository == 'fabric8io/kubernetes-client'
     strategy:
       fail-fast: false
@@ -54,7 +54,7 @@ jobs:
       - name: Install required virtualization software
         run: |
           sudo apt-get update
-          sudo apt install qemu-kvm libvirt-daemon libvirt-daemon-system
+          sudo apt install qemu-system-x86 libvirt-daemon libvirt-daemon-system
           # This package may not be present depending on Ubuntu version
           sudo apt install virtiofsd || true
           sudo adduser $USER libvirt

@@ -85,7 +85,7 @@ public class JobTemplateStatus implements Editable<JobTemplateStatusBuilder>, Ku
     }
 
     /**
-     * Describes the Jobs generated from the JobTemplate
+     * JobDependsOnList is the list of jobs that this job depends on
      */
     @JsonProperty("jobDependsOnList")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -94,7 +94,7 @@ public class JobTemplateStatus implements Editable<JobTemplateStatusBuilder>, Ku
     }
 
     /**
-     * Describes the Jobs generated from the JobTemplate
+     * JobDependsOnList is the list of jobs that this job depends on
      */
     @JsonProperty("jobDependsOnList")
     public void setJobDependsOnList(List<String> jobDependsOnList) {

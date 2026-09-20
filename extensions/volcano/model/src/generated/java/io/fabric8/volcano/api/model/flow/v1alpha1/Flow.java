@@ -39,7 +39,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "dependsOn",
-    "name"
+    "name",
+    "patch"
 })
 @ToString
 @EqualsAndHashCode
@@ -70,6 +71,8 @@ public class Flow implements Editable<FlowBuilder>, KubernetesResource
     private DependsOn dependsOn;
     @JsonProperty("name")
     private String name;
+    @JsonProperty("patch")
+    private Patch patch;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -79,10 +82,11 @@ public class Flow implements Editable<FlowBuilder>, KubernetesResource
     public Flow() {
     }
 
-    public Flow(DependsOn dependsOn, String name) {
+    public Flow(DependsOn dependsOn, String name, Patch patch) {
         super();
         this.dependsOn = dependsOn;
         this.name = name;
+        this.patch = patch;
     }
 
     /**
@@ -115,6 +119,22 @@ public class Flow implements Editable<FlowBuilder>, KubernetesResource
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Flow defines the dependent of jobs
+     */
+    @JsonProperty("patch")
+    public Patch getPatch() {
+        return patch;
+    }
+
+    /**
+     * Flow defines the dependent of jobs
+     */
+    @JsonProperty("patch")
+    public void setPatch(Patch patch) {
+        this.patch = patch;
     }
 
     @JsonIgnore

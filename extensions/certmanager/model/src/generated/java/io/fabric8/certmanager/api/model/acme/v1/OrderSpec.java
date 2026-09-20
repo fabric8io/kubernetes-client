@@ -45,6 +45,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "ipAddresses",
     "issuerRef",
     "profile",
+    "replaces",
     "request"
 })
 @ToString
@@ -86,6 +87,8 @@ public class OrderSpec implements Editable<OrderSpecBuilder>, KubernetesResource
     private IssuerReference issuerRef;
     @JsonProperty("profile")
     private String profile;
+    @JsonProperty("replaces")
+    private String replaces;
     @JsonProperty("request")
     private String request;
     @JsonIgnore
@@ -97,7 +100,7 @@ public class OrderSpec implements Editable<OrderSpecBuilder>, KubernetesResource
     public OrderSpec() {
     }
 
-    public OrderSpec(String commonName, List<String> dnsNames, Duration duration, List<String> ipAddresses, IssuerReference issuerRef, String profile, String request) {
+    public OrderSpec(String commonName, List<String> dnsNames, Duration duration, List<String> ipAddresses, IssuerReference issuerRef, String profile, String replaces, String request) {
         super();
         this.commonName = commonName;
         this.dnsNames = dnsNames;
@@ -105,6 +108,7 @@ public class OrderSpec implements Editable<OrderSpecBuilder>, KubernetesResource
         this.ipAddresses = ipAddresses;
         this.issuerRef = issuerRef;
         this.profile = profile;
+        this.replaces = replaces;
         this.request = request;
     }
 
@@ -192,6 +196,22 @@ public class OrderSpec implements Editable<OrderSpecBuilder>, KubernetesResource
     @JsonProperty("profile")
     public void setProfile(String profile) {
         this.profile = profile;
+    }
+
+    /**
+     * Replaces is the ARI CertID (RFC 9773 §4.1) of the certificate that this Order is intended to replace. When set, cert-manager will include the "replaces" field on the newOrder request to the ACME server if and only if the server advertises ARI support in its directory. The CertID has the form "base64url(AKI).base64url(serial)" and is derived locally from the currently issued leaf certificate.
+     */
+    @JsonProperty("replaces")
+    public String getReplaces() {
+        return replaces;
+    }
+
+    /**
+     * Replaces is the ARI CertID (RFC 9773 §4.1) of the certificate that this Order is intended to replace. When set, cert-manager will include the "replaces" field on the newOrder request to the ACME server if and only if the server advertises ARI support in its directory. The CertID has the form "base64url(AKI).base64url(serial)" and is derived locally from the currently issued leaf certificate.
+     */
+    @JsonProperty("replaces")
+    public void setReplaces(String replaces) {
+        this.replaces = replaces;
     }
 
     /**

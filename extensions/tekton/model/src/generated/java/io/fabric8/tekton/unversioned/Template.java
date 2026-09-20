@@ -1,5 +1,5 @@
 
-package io.fabric8.tekton.pod;
+package io.fabric8.tekton.unversioned;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

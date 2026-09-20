@@ -25,7 +25,7 @@ public class VenafiIssuerBuilder extends VenafiIssuerFluent<VenafiIssuerBuilder>
   }
 
   public VenafiIssuer build() {
-    VenafiIssuer buildable = new VenafiIssuer(fluent.buildCloud(), fluent.buildTpp(), fluent.getZone());
+    VenafiIssuer buildable = new VenafiIssuer(fluent.buildCloud(), fluent.buildNgts(), fluent.buildTpp(), fluent.getZone());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }
