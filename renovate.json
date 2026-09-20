@@ -24,6 +24,8 @@
   "ignorePaths": [
     "**/src/it/**"
   ],
+  "description": "commitMessageExtra is the upstream default with 'from {{{currentValue}}}' prepended: the version being left behind is what tells a reviewer the blast radius of the bump. Renovate drops commitMessageExtra on grouped branches, so this only shows up on single-dependency PRs; grouped ones keep the from/to in the PR body table",
+  "commitMessageExtra": "from {{{currentValue}}} to {{#if isPinDigest}}{{{newDigestShort}}}{{else}}{{#if isMajor}}{{prettyNewMajor}}{{else}}{{#if isSingleVersion}}{{prettyNewVersion}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}{{/if}}",
   "prConcurrentLimit": 0,
   "prHourlyLimit": 10,
   "minimumReleaseAge": "3 days",
