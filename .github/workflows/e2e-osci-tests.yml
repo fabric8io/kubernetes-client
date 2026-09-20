@@ -41,7 +41,7 @@ jobs:
       - name: Setup Java 17
         uses: actions/setup-java@v6
         with:
-          java-version: '25'
+          java-version: '17'
           distribution: 'temurin'
       - name: Install oc
         uses: redhat-actions/oc-installer@35b60c3f9757ae4301521556e1b75ff6f59f8d7c # v1.2
