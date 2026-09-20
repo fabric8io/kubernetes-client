@@ -68,8 +68,8 @@ class ShardSelectorTest {
     @Test
     @DisplayName("the exclusive end of the hash space is rendered as 2^64, which does not fit in a long")
     void rendersMaxHashAsTwoToThe64() {
-      assertThat(ShardRange.ofShard(1, 2).getEndHex()).isEqualTo("0x10000000000000000");
-      assertThat(ShardRange.MAX_HASH).isEqualTo(BigInteger.ONE.shiftLeft(64));
+      assertThat(ShardRange.ofShard(1, 2).toExpression())
+          .isEqualTo("shardRange(object.metadata.uid, '0x8000000000000000', '0x10000000000000000')");
     }
 
     @Test
@@ -80,13 +80,18 @@ class ShardSelectorTest {
     }
 
     @Test
-    @DisplayName("an arbitrary field path is accepted, so a newly supported server-side path needs no client release")
-    void supportsRawFieldPath() {
+    @DisplayName("the field of a range is the one it was built with, not the UID default of the shorthands")
+    void honoursTheRequestedField() {
       assertThat(ShardSelector.builder()
-          .addRange("object.metadata.name", "0x0", "0x10000000000000000")
+          .addShard(ShardField.NAMESPACE, 1, 2)
           .build()
           .toExpression())
-          .isEqualTo("shardRange(object.metadata.name, '0x0000000000000000', '0x10000000000000000')");
+          .isEqualTo("shardRange(object.metadata.namespace, '0x8000000000000000', '0x10000000000000000')");
+      assertThat(ShardSelector.builder()
+          .addRange(ShardField.NAMESPACE, BigInteger.ZERO, BigInteger.valueOf(255))
+          .build()
+          .toExpression())
+          .isEqualTo("shardRange(object.metadata.namespace, '0x0000000000000000', '0x00000000000000ff')");
     }
 
     @Test
@@ -191,8 +196,10 @@ class ShardSelectorTest {
     @Test
     @DisplayName("a missing field or bound is rejected at construction, not when the request is sent")
     void rejectsMissingFieldOrBound() {
-      assertThatIllegalArgumentException()
-          .isThrownBy(() -> ShardRange.of("", BigInteger.ZERO, BigInteger.ONE));
+      assertThatNullPointerException()
+          .isThrownBy(() -> ShardRange.of(null, BigInteger.ZERO, BigInteger.ONE));
+      assertThatNullPointerException()
+          .isThrownBy(() -> ShardRange.ofShard(null, 0, 2));
       assertThatNullPointerException()
           .isThrownBy(() -> ShardRange.of(ShardField.UID, null, BigInteger.ONE));
       assertThatNullPointerException()
@@ -228,7 +235,7 @@ class ShardSelectorTest {
       assertThatIllegalArgumentException()
           .isThrownBy(() -> ShardSelector.of(
               ShardRange.ofShard(ShardField.UID, 0, 4),
-              ShardRange.ofShard("object.metadata.name", 2, 4)));
+              ShardRange.ofShard(ShardField.NAMESPACE, 2, 4)));
     }
 
     @Test

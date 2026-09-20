@@ -192,15 +192,6 @@ public class ShardSelector {
     }
 
     /**
-     * @param fieldPath the CEL field path to hash, e.g. {@code object.metadata.uid}
-     * @param hexStart the inclusive lower bound as a hexadecimal value, with or without the {@code 0x} prefix
-     * @param hexEnd the exclusive upper bound as a hexadecimal value, with or without the {@code 0x} prefix
-     */
-    public Builder addRange(String fieldPath, String hexStart, String hexEnd) {
-      return addRange(ShardRange.of(fieldPath, hexStart, hexEnd));
-    }
-
-    /**
      * Adds the {@code shard}-th slice of an even {@code totalShards}-way split of the {@link ShardField#UID}
      * hash space.
      *

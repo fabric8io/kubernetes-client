@@ -49,12 +49,7 @@ public class ShardRange {
   private final BigInteger start;
   private final BigInteger end;
 
-  /**
-   * @param fieldPath the CEL field path to hash, e.g. {@code object.metadata.uid}
-   * @param start the inclusive lower bound, within <code>[{@link #MIN_HASH}, {@link #MAX_HASH})</code>
-   * @param end the exclusive upper bound, greater than {@code start} and at most {@link #MAX_HASH}
-   */
-  public ShardRange(String fieldPath, BigInteger start, BigInteger end) {
+  private ShardRange(String fieldPath, BigInteger start, BigInteger end) {
     if (Utils.isNullOrEmpty(fieldPath)) {
       throw new IllegalArgumentException("A shard range requires a field path");
     }
@@ -77,6 +72,10 @@ public class ShardRange {
     this.end = end;
   }
 
+  /**
+   * @param start the inclusive lower bound, within <code>[{@link #MIN_HASH}, {@link #MAX_HASH})</code>
+   * @param end the exclusive upper bound, greater than {@code start} and at most {@link #MAX_HASH}
+   */
   public static ShardRange of(ShardField field, BigInteger start, BigInteger end) {
     return new ShardRange(pathOf(field), start, end);
   }
@@ -87,14 +86,6 @@ public class ShardRange {
    */
   public static ShardRange of(ShardField field, String hexStart, String hexEnd) {
     return new ShardRange(pathOf(field), parseHash(hexStart), parseHash(hexEnd));
-  }
-
-  public static ShardRange of(String fieldPath, BigInteger start, BigInteger end) {
-    return new ShardRange(fieldPath, start, end);
-  }
-
-  public static ShardRange of(String fieldPath, String hexStart, String hexEnd) {
-    return new ShardRange(fieldPath, parseHash(hexStart), parseHash(hexEnd));
   }
 
   /**
@@ -117,13 +108,7 @@ public class ShardRange {
     return ofShard(pathOf(field), shard, totalShards);
   }
 
-  /**
-   * The {@code shard}-th slice of an even {@code totalShards}-way split of the {@code fieldPath} hash space.
-   *
-   * @param shard the zero based index of the shard, lower than {@code totalShards}
-   * @param totalShards the number of shards the hash space is split into
-   */
-  public static ShardRange ofShard(String fieldPath, int shard, int totalShards) {
+  private static ShardRange ofShard(String fieldPath, int shard, int totalShards) {
     if (totalShards < 1) {
       throw new IllegalArgumentException("The total number of shards must be at least 1, but was " + totalShards);
     }
@@ -156,24 +141,12 @@ public class ShardRange {
   }
 
   /**
-   * @return the inclusive lower bound as it appears in the expression, e.g. {@code 0x8000000000000000}
-   */
-  public String getStartHex() {
-    return toHex(start);
-  }
-
-  /**
-   * @return the exclusive upper bound as it appears in the expression, e.g. {@code 0x10000000000000000}
-   */
-  public String getEndHex() {
-    return toHex(end);
-  }
-
-  /**
-   * @return this range as a single {@code shardRange(...)} CEL term
+   * @return this range as a single {@code shardRange(...)} CEL term, with the bounds as the zero padded
+   *         16 digit lower case hexadecimal values the API server expects, e.g.
+   *         {@code shardRange(object.metadata.uid, '0x8000000000000000', '0x10000000000000000')}
    */
   public String toExpression() {
-    return "shardRange(" + fieldPath + ", '" + getStartHex() + "', '" + getEndHex() + "')";
+    return "shardRange(" + fieldPath + ", '" + toHex(start) + "', '" + toHex(end) + "')";
   }
 
   @Override

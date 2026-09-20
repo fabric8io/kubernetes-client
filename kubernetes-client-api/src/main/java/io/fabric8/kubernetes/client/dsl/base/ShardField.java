@@ -19,8 +19,8 @@ package io.fabric8.kubernetes.client.dsl.base;
  * The object field paths currently supported by the {@code shardSelector} list option.
  * <p>
  * Field paths use the CEL-style object-rooted syntax (e.g. {@code object.metadata.uid}), <em>not</em> the
- * {@code fieldSelector} format ({@code metadata.uid}). Should the API server support a path that is not
- * listed here, use the {@link String} based factories of {@link ShardRange} instead.
+ * {@code fieldSelector} format ({@code metadata.uid}). These are the only paths the API server accepts;
+ * should it support further ones, they are added here.
  *
  * @see ShardSelector
  */
