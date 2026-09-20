@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #7987: (kubernetes-client-api) `withShardSelector` accepts a typed `ShardSelector` (`ShardSelector.builder().addShard(0, 4).addShard(2, 4).build()`) next to the raw expression `String`, so the `shardRange(...)` CEL grammar and its hexadecimal bounds don't have to be written by hand
 
 #### Dependency Upgrade
 * Fix #7374: Upgrade Jackson from 2.x to 3.2.1
