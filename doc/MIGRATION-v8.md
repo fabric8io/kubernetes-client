@@ -98,3 +98,10 @@ The client and the model now use Jackson 3. Any code of yours that uses the Jack
 The default `KubernetesSerialization` (and therefore `KubernetesClientBuilder`) uses `JsonMapper.builderWithJackson2Defaults()`, so your custom types keep their 2.x wire format. If you pass your own mapper, build it the same way: with plain Jackson 3 defaults, properties are sorted alphabetically, enums go through `toString()`, `null` for a primitive fails and getter-only collections are no longer populated.
 
 One difference can't be restored: getters with an upper-case prefix follow the standard bean naming, so `getURL()` is now `URL` instead of `url`. Annotate them with `@JsonProperty` to keep the old name.
+
+### CRD Generator
+
+The CRD generator now uses the Jackson 3 version of `jackson-module-jsonSchema` (`tools.jackson.module:jackson-module-jsonSchema`). The generated CRDs are compatible with 7.x with two exceptions, both bug fixes:
+
+- **`Optional<Pojo>` fields** now get the POJO's schema. In 7.x they were emitted as `x-kubernetes-preserve-unknown-fields: true`.
+- **`@JsonUnwrapped` properties** are now flattened into the parent object schema. In 7.x they were incorrectly nested under the field name.
