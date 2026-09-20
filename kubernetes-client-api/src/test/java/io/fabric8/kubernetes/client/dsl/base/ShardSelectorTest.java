@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl;
+package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.ObjectReference;
+import io.fabric8.kubernetes.client.dsl.Filterable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,7 @@ class ShardSelectorTest {
     @Test
     @DisplayName("ranges are ORed together in insertion order, matching the shardSelector CEL grammar")
     void combinesRangesWithOr() {
-      ShardSelector selector = new ShardSelectorBuilder()
+      ShardSelector selector = ShardSelector.builder()
           .addShard(0, 4)
           .addShard(2, 4)
           .build();
@@ -81,7 +82,7 @@ class ShardSelectorTest {
     @Test
     @DisplayName("an arbitrary field path is accepted, so a newly supported server-side path needs no client release")
     void supportsRawFieldPath() {
-      assertThat(new ShardSelectorBuilder()
+      assertThat(ShardSelector.builder()
           .addRange("object.metadata.name", "0x0", "0x10000000000000000")
           .build()
           .toExpression())
@@ -206,19 +207,34 @@ class ShardSelectorTest {
     @DisplayName("a selector without ranges is rejected, since an empty expression is not valid CEL")
     void rejectsEmptySelector() {
       assertThatIllegalArgumentException()
-          .isThrownBy(() -> new ShardSelectorBuilder().build())
+          .isThrownBy(() -> ShardSelector.builder().build())
           .withMessageContaining("at least one shard range");
       assertThatIllegalArgumentException().isThrownBy(() -> new ShardSelector(Collections.emptyList()));
       assertThatIllegalArgumentException().isThrownBy(() -> new ShardSelector(null));
       assertThatIllegalArgumentException()
           .isThrownBy(() -> new ShardSelector(Collections.singletonList(null)));
-      assertThatIllegalArgumentException().isThrownBy(() -> new ShardSelectorBuilder().addRange(null));
+      assertThatIllegalArgumentException().isThrownBy(() -> ShardSelector.builder().addRange(null));
+    }
+
+    @Test
+    @DisplayName("ranges using different fields are rejected, as the API server only evaluates one field")
+    void rejectsMixedFields() {
+      assertThatIllegalArgumentException()
+          .isThrownBy(() -> ShardSelector.builder()
+              .addShard(ShardField.NAMESPACE, 0, 4)
+              .addShard(2, 4)
+              .build())
+          .withMessageContaining("same field");
+      assertThatIllegalArgumentException()
+          .isThrownBy(() -> ShardSelector.of(
+              ShardRange.ofShard(ShardField.UID, 0, 4),
+              ShardRange.ofShard("object.metadata.name", 2, 4)));
     }
 
     @Test
     @DisplayName("the ranges of a built selector cannot be mutated through the builder or the returned list")
     void isImmutable() {
-      ShardSelectorBuilder builder = new ShardSelectorBuilder().addShard(0, 2);
+      ShardSelector.Builder builder = ShardSelector.builder().addShard(0, 2);
       ShardSelector selector = builder.build();
       builder.addShard(1, 2);
 
@@ -229,8 +245,8 @@ class ShardSelectorTest {
     @DisplayName("selectors and ranges compare by value, so they can be used as map keys or asserted on")
     void comparesByValue() {
       assertThat(ShardSelector.ofShard(0, 2))
-          .isEqualTo(new ShardSelectorBuilder().addRange(ShardField.UID, "0x0", "0x8000000000000000").build())
-          .hasSameHashCodeAs(new ShardSelectorBuilder().addShard(0, 2).build())
+          .isEqualTo(ShardSelector.builder().addRange(ShardField.UID, "0x0", "0x8000000000000000").build())
+          .hasSameHashCodeAs(ShardSelector.builder().addShard(0, 2).build())
           .isNotEqualTo(ShardSelector.ofShard(1, 2))
           .isNotEqualTo(ShardSelector.ofShard(ShardField.NAMESPACE, 0, 2));
     }
@@ -238,7 +254,7 @@ class ShardSelectorTest {
     @Test
     @DisplayName("a selector can be copied and extended through the builder")
     void copiesExistingSelector() {
-      ShardSelector selector = new ShardSelectorBuilder(ShardSelector.ofShard(0, 4))
+      ShardSelector selector = ShardSelector.builder(ShardSelector.ofShard(0, 4))
           .addShard(2, 4)
           .build();
 

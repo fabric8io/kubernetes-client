@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
-import io.fabric8.kubernetes.client.dsl.ShardSelector;
+import io.fabric8.kubernetes.client.dsl.base.ShardSelector;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;

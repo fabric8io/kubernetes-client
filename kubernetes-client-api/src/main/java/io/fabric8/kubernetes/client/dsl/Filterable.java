@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.ObjectReference;
+import io.fabric8.kubernetes.client.dsl.base.ShardSelector;
 
 import java.util.Map;
 

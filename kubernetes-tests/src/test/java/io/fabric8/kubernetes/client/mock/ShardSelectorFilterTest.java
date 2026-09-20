@@ -17,9 +17,8 @@ package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.ShardField;
-import io.fabric8.kubernetes.client.dsl.ShardSelector;
-import io.fabric8.kubernetes.client.dsl.ShardSelectorBuilder;
+import io.fabric8.kubernetes.client.dsl.base.ShardField;
+import io.fabric8.kubernetes.client.dsl.base.ShardSelector;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -40,7 +39,7 @@ class ShardSelectorFilterTest {
   @Test
   @DisplayName("a typed ShardSelector is sent as the shardSelector query parameter of a list request")
   void listSendsTypedShardSelector() throws InterruptedException {
-    ShardSelector selector = new ShardSelectorBuilder()
+    ShardSelector selector = ShardSelector.builder()
         .addShard(0, 4)
         .addShard(2, 4)
         .build();

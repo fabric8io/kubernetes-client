@@ -26,8 +26,7 @@ import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.ShardSelector;
-import io.fabric8.kubernetes.client.dsl.ShardSelectorBuilder;
+import io.fabric8.kubernetes.client.dsl.base.ShardSelector;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.extension.ExtensibleResource;
 import io.fabric8.kubernetes.client.http.HttpClient;
@@ -298,7 +297,7 @@ class BaseOperationTest {
   void testTypedShardSelectorEndsUpInTheSameContextFieldAsTheExpression() {
     // withShardSelector(ShardSelector) is a default method on Filterable: it must render into the very
     // same context field as the String overload, otherwise list/watch/deleteAll would not pick it up.
-    ShardSelector selector = new ShardSelectorBuilder()
+    ShardSelector selector = ShardSelector.builder()
         .addShard(0, 4)
         .addShard(2, 4)
         .build();
