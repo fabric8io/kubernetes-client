@@ -16,22 +16,23 @@
 
 package io.fabric8.crdv2.generator;
 
-import com.fasterxml.jackson.databind.BeanProperty;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
-import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
-import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
-import com.fasterxml.jackson.module.jsonSchema.factories.JsonSchemaFactory;
-import com.fasterxml.jackson.module.jsonSchema.factories.SchemaFactoryWrapper;
-import com.fasterxml.jackson.module.jsonSchema.factories.VisitorContext;
-import com.fasterxml.jackson.module.jsonSchema.factories.WrapperFactory;
-import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema;
 import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import io.fabric8.kubernetes.client.utils.YamlDumpSettings;
 import io.fabric8.kubernetes.client.utils.YamlDumpSettingsBuilder;
+import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.cfg.DateTimeFeature;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
+import tools.jackson.module.jsonSchema.JsonSchema;
+import tools.jackson.module.jsonSchema.JsonSchemaGenerator;
+import tools.jackson.module.jsonSchema.factories.JsonSchemaFactory;
+import tools.jackson.module.jsonSchema.factories.SchemaFactoryWrapper;
+import tools.jackson.module.jsonSchema.factories.VisitorContext;
+import tools.jackson.module.jsonSchema.factories.WrapperFactory;
+import tools.jackson.module.jsonSchema.types.ObjectSchema;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -65,7 +66,7 @@ public class ResolvingContext {
 
   private final class KubernetesSchemaFactoryWrapper extends SchemaFactoryWrapper {
 
-    private KubernetesSchemaFactoryWrapper(SerializerProvider p, WrapperFactory wrapperFactory) {
+    private KubernetesSchemaFactoryWrapper(SerializationContext p, WrapperFactory wrapperFactory) {
       super(p, wrapperFactory);
       this.schemaProvider = new JsonSchemaFactory() {
 
@@ -103,7 +104,10 @@ public class ResolvingContext {
   public static ResolvingContext defaultResolvingContext(boolean implicitPreserveUnknownFields,
       YamlDumpSettings yamlDumpSettings) {
     if (OBJECT_MAPPER == null) {
-      OBJECT_MAPPER = new ObjectMapper();
+      OBJECT_MAPPER = JsonMapper.builderWithJackson2Defaults()
+          .disable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS)
+          .disable(DateTimeFeature.WRITE_DURATIONS_AS_TIMESTAMPS)
+          .build();
     }
     return new ResolvingContext(
         OBJECT_MAPPER,
@@ -130,13 +134,13 @@ public class ResolvingContext {
     generator = new JsonSchemaGenerator(mapper, new WrapperFactory() {
 
       @Override
-      public SchemaFactoryWrapper getWrapper(SerializerProvider provider) {
-        return new KubernetesSchemaFactoryWrapper(provider, this);
+      public SchemaFactoryWrapper getWrapper(SerializationContext ctxt) {
+        return new KubernetesSchemaFactoryWrapper(ctxt, this);
       }
 
       @Override
-      public SchemaFactoryWrapper getWrapper(SerializerProvider provider, VisitorContext rvc) {
-        SchemaFactoryWrapper wrapper = getWrapper(provider);
+      public SchemaFactoryWrapper getWrapper(SerializationContext ctxt, VisitorContext rvc) {
+        SchemaFactoryWrapper wrapper = getWrapper(ctxt);
         wrapper.setVisitorContext(rvc);
         return wrapper;
       }
@@ -145,11 +149,7 @@ public class ResolvingContext {
   }
 
   JsonSchema toJsonSchema(Class<?> clazz) {
-    try {
-      return generator.generateSchema(clazz);
-    } catch (JsonMappingException e) {
-      throw new RuntimeException(e);
-    }
+    return generator.generateSchema(clazz);
   }
 
 }

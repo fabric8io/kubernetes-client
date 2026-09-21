@@ -17,22 +17,6 @@ package io.fabric8.crdv2.generator;
 
 import com.fasterxml.jackson.annotation.JsonClassDescription;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.BeanDescription;
-import com.fasterxml.jackson.databind.BeanProperty;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
-import com.fasterxml.jackson.module.jsonSchema.types.ArraySchema;
-import com.fasterxml.jackson.module.jsonSchema.types.ArraySchema.Items;
-import com.fasterxml.jackson.module.jsonSchema.types.IntegerSchema;
-import com.fasterxml.jackson.module.jsonSchema.types.NumberSchema;
-import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema;
-import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema.SchemaAdditionalProperties;
-import com.fasterxml.jackson.module.jsonSchema.types.ReferenceSchema;
-import com.fasterxml.jackson.module.jsonSchema.types.StringSchema;
-import com.fasterxml.jackson.module.jsonSchema.types.ValueTypeSchema;
 import io.fabric8.crd.generator.annotation.AdditionalPrinterColumn;
 import io.fabric8.crd.generator.annotation.AdditionalSelectableField;
 import io.fabric8.crd.generator.annotation.PreserveUnknownFields;
@@ -65,6 +49,23 @@ import io.fabric8.kubernetes.model.annotation.SpecReplicas;
 import io.fabric8.kubernetes.model.annotation.StatusReplicas;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.databind.BeanDescription;
+import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.introspect.ClassIntrospector;
+import tools.jackson.databind.node.JsonNodeFactory;
+import tools.jackson.databind.node.ObjectNode;
+import tools.jackson.module.jsonSchema.JsonSchema;
+import tools.jackson.module.jsonSchema.types.ArraySchema;
+import tools.jackson.module.jsonSchema.types.ArraySchema.Items;
+import tools.jackson.module.jsonSchema.types.IntegerSchema;
+import tools.jackson.module.jsonSchema.types.NumberSchema;
+import tools.jackson.module.jsonSchema.types.ObjectSchema;
+import tools.jackson.module.jsonSchema.types.ObjectSchema.SchemaAdditionalProperties;
+import tools.jackson.module.jsonSchema.types.ReferenceSchema;
+import tools.jackson.module.jsonSchema.types.StringSchema;
+import tools.jackson.module.jsonSchema.types.ValueTypeSchema;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -167,7 +168,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       return resolveObject(new LinkedHashMap<>(), schemaSwaps, schema, "kind", "apiVersion", "metadata");
     }
     return resolveProperty(new LinkedHashMap<>(), schemaSwaps, null,
-        resolvingContext.objectMapper.getSerializationConfig().constructType(definition), schema, null);
+        resolvingContext.objectMapper.serializationConfig().constructType(definition), schema, null);
   }
 
   /**
@@ -438,7 +439,9 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     final InternalSchemaSwaps swaps = schemaSwaps;
 
     GeneratorObjectSchema gos = (GeneratorObjectSchema) jacksonSchema.asObjectSchema();
-    BeanDescription bd = resolvingContext.objectMapper.getSerializationConfig().introspect(gos.javaType);
+    ClassIntrospector ci = resolvingContext.objectMapper.serializationConfig()
+        .classIntrospectorInstance();
+    BeanDescription bd = ci.introspectForSerialization(gos.javaType, ci.introspectClassAnnotations(gos.javaType));
     boolean preserveUnknownFields = false;
     if (resolvingContext.implicitPreserveUnknownFields) {
       preserveUnknownFields = bd.findAnyGetter() != null || bd.findAnySetterAccessor() != null;
@@ -500,7 +503,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
           continue;
         }
         propertySchema = resolvingContext.toJsonSchema(propertyMetadata.schemaFrom);
-        type = resolvingContext.objectMapper.getSerializationConfig().constructType(propertyMetadata.schemaFrom);
+        type = resolvingContext.objectMapper.serializationConfig().constructType(propertyMetadata.schemaFrom);
       }
 
       T schema = resolveProperty(visited, schemaSwaps, name, type, propertySchema, beanProperty);
@@ -597,7 +600,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         final JsonNode[] enumValues = stringSchema.getEnums().stream()
             .sorted()
             .filter(s -> !ignores.contains(s))
-            .map(JsonNodeFactory.instance::textNode)
+            .map(JsonNodeFactory.instance::stringNode)
             .toArray(JsonNode[]::new);
         return enumProperty(enumValues);
       }

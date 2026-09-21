@@ -13,28 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crdv2.example.json;
+package io.fabric8.crd.generator.approvaltests.jackson3;
 
-import tools.jackson.databind.JsonNode;
+import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 
-public class ContainingJsonSpec {
-
-  private int field;
-
-  public int getField() {
-    return field;
-  }
-
-  private JsonNode free;
-
-  public JsonNode getFree() {
-    return free;
-  }
-
-  private Foo foo;
-
-  public Foo getFoo() {
-    return foo;
-  }
+@Group("samples.fabric8.io")
+@Version("v1")
+public class Jackson3 extends CustomResource<Jackson3Spec, Void> {
 
 }
