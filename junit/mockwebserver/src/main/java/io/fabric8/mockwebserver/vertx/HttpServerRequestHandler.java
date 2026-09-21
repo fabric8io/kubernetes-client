@@ -24,10 +24,8 @@ import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
-import io.vertx.core.http.ServerWebSocket;
 
 import java.util.Locale;
-import java.util.Set;
 
 public abstract class HttpServerRequestHandler implements Handler<HttpServerRequest> {
 
@@ -36,11 +34,9 @@ public abstract class HttpServerRequestHandler implements Handler<HttpServerRequ
   private static final String TRANSFER_ENCODING = "Transfer-Encoding";
 
   private final Vertx vertx;
-  private final Set<ServerWebSocket> activeWebSockets;
 
-  protected HttpServerRequestHandler(Vertx vertx, Set<ServerWebSocket> activeWebSockets) {
+  protected HttpServerRequestHandler(Vertx vertx) {
     this.vertx = vertx;
-    this.activeWebSockets = activeWebSockets;
   }
 
   protected abstract MockResponse onHttpRequest(RecordedRequest request);
@@ -63,7 +59,7 @@ public abstract class HttpServerRequestHandler implements Handler<HttpServerRequ
       if (mockResponse.getWebSocketListener() != null) {
         event.toWebSocket()
             .onFailure(exceptionHandler)
-            .onSuccess(new ServerWebSocketHandler(request, mockResponse, activeWebSockets));
+            .onSuccess(new ServerWebSocketHandler(request, mockResponse));
         return;
       }
       // Not a WebSocket response after all; drain the request and reply as a standard HTTP
@@ -85,7 +81,7 @@ public abstract class HttpServerRequestHandler implements Handler<HttpServerRequ
       if (mockResponse.getWebSocketListener() != null) {
         event.toWebSocket()
             .onFailure(exceptionHandler)
-            .onSuccess(new ServerWebSocketHandler(request, mockResponse, activeWebSockets));
+            .onSuccess(new ServerWebSocketHandler(request, mockResponse));
         return;
       }
       // Standard Http Response
