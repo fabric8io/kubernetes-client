@@ -52,7 +52,7 @@
 
   <dependencyManagement>
     <dependencies>
-      <!-- Override parent POM's Vert.x 5.x dependency management to force Vert.x 4.x -->
+      <!-- Pin Vert.x 4.x for this module (root POM now manages Vert.x 5.x) -->
       <dependency>
         <groupId>io.vertx</groupId>
         <artifactId>vertx-core</artifactId>
@@ -68,6 +68,26 @@
             <artifactId>vertx-uri-template</artifactId>
           </exclusion>
         </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-web</artifactId>
+        <version>${vertx4.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-web-common</artifactId>
+        <version>${vertx4.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-auth-common</artifactId>
+        <version>${vertx4.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-bridge-common</artifactId>
+        <version>${vertx4.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

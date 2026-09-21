@@ -30,6 +30,33 @@
 
   <name>Fabric8 :: Mock Web Server</name>
 
+  <properties>
+    <vertx.version>${vertx4.version}</vertx.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- Pin to Vert.x 4 so the mockwebserver bytecode is compatible with both
+           httpclient-vertx (Vert.x 4 runtime) and httpclient-vertx-5 (Vert.x 5 runtime,
+           which is backward-compatible with Vert.x 4 bytecode). -->
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-core</artifactId>
+        <version>${vertx4.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-web</artifactId>
+        <version>${vertx4.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-web-client</artifactId>
+        <version>${vertx4.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>io.vertx</groupId>
