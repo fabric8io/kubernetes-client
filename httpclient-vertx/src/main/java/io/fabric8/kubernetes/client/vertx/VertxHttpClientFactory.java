@@ -26,7 +26,7 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
 
   @Override
   public int priority() {
-    return -1;
+    return 0;
   }
 
   public VertxHttpClientFactory() {

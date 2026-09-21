@@ -30,6 +30,7 @@
 
   <properties>
     <jpms.module.name>io.fabric8.kubernetes.client.vertx</jpms.module.name>
+    <vertx.version>${vertx4.version}</vertx.version>
     <osgi.require-capability>
       osgi.extender;
       filter:="(osgi.extender=osgi.serviceloader.registrar)",
@@ -48,6 +49,28 @@
     <osgi.private>
     </osgi.private>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- Override parent POM's Vert.x 5.x dependency management to force Vert.x 4.x -->
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-core</artifactId>
+        <version>${vertx4.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-web-client</artifactId>
+        <version>${vertx4.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-uri-template</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>

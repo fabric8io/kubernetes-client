@@ -44,6 +44,11 @@ public class Vertx5HttpClientFactory implements HttpClient.Factory {
   final Vertx vertx;
   private volatile TlsWarmup tlsWarmup = TlsWarmup.CONTEXT;
 
+  @Override
+  public int priority() {
+    return -1;
+  }
+
   /**
    * Return a factory that reuses the supplied Vert.x instance.
    */

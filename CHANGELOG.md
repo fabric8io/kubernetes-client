@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #8008: Changed default HttpClient implementation from `kubernetes-httpclient-vertx` (Vert.x 4) to `kubernetes-httpclient-vertx-5` (Vert.x 5)
 * Fix #7374: (crd-generator) Ported CRD generator to Jackson 3 `jackson-module-jsonSchema`
 * Fix #7987: (kubernetes-client-api) `withShardSelector` accepts a typed `ShardSelector` (`ShardSelector.builder().addShard(0, 4).addShard(2, 4).build()`) next to the raw expression `String`, so the `shardRange(...)` CEL grammar and its hexadecimal bounds don't have to be written by hand
 
@@ -239,14 +240,11 @@ Both modules provide an implementation of `HttpClient.Factory` and use the same 
 This causes `NoClassDefFoundError` for Vert.x 5-specific classes like `io.vertx.core.impl.SysProps`.
 
 **Solution**: Ensure your project includes only ONE of these modules:
-- `kubernetes-httpclient-vertx` (default, uses Vert.x 4.x) - included transitively via `kubernetes-client`
-- `kubernetes-httpclient-vertx-5` (optional, uses Vert.x 5.x) - requires explicit dependency and exclusion of vertx-4
+- `kubernetes-httpclient-vertx-5` (default since 8.0, uses Vert.x 5.x) - included transitively via `kubernetes-client`
+- `kubernetes-httpclient-vertx` (optional, uses Vert.x 4.x) - requires explicit dependency and exclusion of vertx-5
 
-When using Vert.x 5, exclude the default Vert.x 4 client and set the `vertx.version` property:
+When using Vert.x 4, exclude the default Vert.x 5 client:
 ```xml
-<properties>
-  <vertx.version>${vertx5.version}</vertx.version> <!-- or explicit 5.0.7 -->
-</properties>
 <dependencies>
   <dependency>
     <groupId>io.fabric8</groupId>
@@ -254,13 +252,13 @@ When using Vert.x 5, exclude the default Vert.x 4 client and set the `vertx.vers
     <exclusions>
       <exclusion>
         <groupId>io.fabric8</groupId>
-        <artifactId>kubernetes-httpclient-vertx</artifactId>
+        <artifactId>kubernetes-httpclient-vertx-5</artifactId>
       </exclusion>
     </exclusions>
   </dependency>
   <dependency>
     <groupId>io.fabric8</groupId>
-    <artifactId>kubernetes-httpclient-vertx-5</artifactId>
+    <artifactId>kubernetes-httpclient-vertx</artifactId>
   </dependency>
 </dependencies>
 ```

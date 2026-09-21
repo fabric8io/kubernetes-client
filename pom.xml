@@ -103,8 +103,8 @@
     <jetty.version>11.0.26</jetty.version>
     <maven-core.version>3.9.16</maven-core.version>
     <maven-plugin-annotations.version>3.16.0</maven-plugin-annotations.version>
-    <vertx.version>4.5.34</vertx.version>
-    <vertx5.version>5.1.8</vertx5.version>
+    <vertx.version>5.1.8</vertx.version>
+    <vertx4.version>4.5.34</vertx4.version>
     <jandex.version>3.6.0</jandex.version>
     <snakeyaml.version>3.1.1</snakeyaml.version>
     <snakeyaml.bundle.version>2.5</snakeyaml.bundle.version> <!-- Transitive Jackson -->
@@ -775,12 +775,6 @@
         <groupId>io.vertx</groupId>
         <artifactId>vertx-web-client</artifactId>
         <version>${vertx.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-uri-template</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>io.vertx</groupId>

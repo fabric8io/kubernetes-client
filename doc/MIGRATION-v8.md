@@ -1,6 +1,7 @@
 # Migration from 7.x to 8.x
 
 ## Contents
+- [Vert.x 5 is now the default HttpClient implementation](#vertx5-httpclient)
 - [CRD Generator v1 has been removed](#crd-generator-v1-removed)
 - [Java baseline set to Java 17](#java-17)
   - [Build tooling requires a Java 17 runtime](#java-17-build-tooling)
@@ -15,6 +16,36 @@
 >
 > We value your feedback and will work to address your issue promptly.
 > Your contribution is essential to improving our documentation, making our migration process smoother for everyone!
+
+## Vert.x 5 is now the default HttpClient implementation <a href="#vertx5-httpclient" id="vertx5-httpclient"/>
+
+The default HttpClient implementation has been changed from `kubernetes-httpclient-vertx` (Vert.x 4.x) to `kubernetes-httpclient-vertx-5` (Vert.x 5.x).
+
+As of version 8.0.0, `io.fabric8:kubernetes-client` and `io.fabric8:openshift-client` include a transitive dependency to `io.fabric8:kubernetes-httpclient-vertx-5`.
+
+If your project explicitly depends on Vert.x 4.x APIs, you can switch back to the Vert.x 4 implementation by excluding the default and adding the legacy module:
+
+```xml
+<dependency>
+  <groupId>io.fabric8</groupId>
+  <artifactId>kubernetes-client</artifactId>
+  <exclusions>
+    <exclusion>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-httpclient-vertx-5</artifactId>
+    </exclusion>
+  </exclusions>
+</dependency>
+<dependency>
+  <groupId>io.fabric8</groupId>
+  <artifactId>kubernetes-httpclient-vertx</artifactId>
+</dependency>
+```
+
+> [!IMPORTANT]
+> The two Vert.x modules are **mutually exclusive**. They must not be included together, as both ship the same `io.vertx` artifact coordinates but with incompatible major versions. Including both causes `NoClassDefFoundError` at runtime.
+
+If you were previously using the `kubernetes-httpclient-vertx-5` module as an opt-in dependency in 7.x, you can now remove the explicit dependency and exclusion — it is included by default.
 
 ## CRD Generator v1 has been removed <a href="#crd-generator-v1-removed" id="crd-generator-v1-removed"/>
 
