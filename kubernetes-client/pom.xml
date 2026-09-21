@@ -67,7 +67,7 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-httpclient-vertx-5</artifactId>
+      <artifactId>kubernetes-httpclient-vertx</artifactId>
       <scope>runtime</scope>
     </dependency>
 
@@ -201,7 +201,7 @@
             </goals>
             <configuration>
               <excludeDependencies>
-                kubernetes-httpclient-vertx-5
+                kubernetes-httpclient-vertx
               </excludeDependencies>
               <instructions>
                 <Bundle-Name>${project.name}</Bundle-Name>
