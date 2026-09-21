@@ -47,6 +47,42 @@ class TypeMappingsTest {
         .isEqualTo(expectedType);
   }
 
+  @ParameterizedTest(name = "{0} has format {1}")
+  @MethodSource("targetFormatCases")
+  @DisplayName("Java types keep the OpenAPI format the API server validates against")
+  void targetFormat(String propertyName, String expectedFormat) {
+    assertThat(PROPERTIES)
+        .withFailMessage("Expected %s to have format %s, but was %s", propertyName, expectedFormat,
+            PROPERTIES.containsKey(propertyName) ? PROPERTIES.get(propertyName).getFormat() : "absent")
+        .extractingByKey(propertyName)
+        .extracting(JSONSchemaProps::getFormat)
+        .isEqualTo(expectedFormat);
+  }
+
+  /**
+   * A format the API server does not accept is worse than none: it rejects values the client writes.
+   * Durations ("PT1H30M") and the partial date/time types ("10:15:30+01:00", "2026-01", "--12-25") are
+   * not RFC 3339 date-times, so they are deliberately left unformatted.
+   */
+  static Stream<Arguments> targetFormatCases() {
+    return Stream.of(
+        Arguments.of("date", "date-time"),
+        Arguments.of("localDate", "date"),
+        Arguments.of("localDateTime", "date-time"),
+        Arguments.of("zonedDateTime", "date-time"),
+        Arguments.of("offsetDateTime", "date-time"),
+        Arguments.of("offsetTime", null),
+        Arguments.of("yearMonth", null),
+        Arguments.of("monthDay", null),
+        Arguments.of("timestamp", "date-time"),
+        Arguments.of("instant", "date-time"),
+        Arguments.of("duration", null),
+        Arguments.of("period", null),
+        Arguments.of("uuid", "uuid"),
+        Arguments.of("aString", null),
+        Arguments.of("aInt", null));
+  }
+
   static Stream<Arguments> targetTypeCases() {
     return Stream.of(
         Arguments.of("date", "string"),

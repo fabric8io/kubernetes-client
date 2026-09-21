@@ -29,6 +29,7 @@ import io.fabric8.crd.generator.approvaltests.printercolum.PrinterColumn;
 import io.fabric8.crd.generator.approvaltests.replica.Replica;
 import io.fabric8.crd.generator.approvaltests.required.Required;
 import io.fabric8.crd.generator.approvaltests.selectablefield.SelectableField;
+import io.fabric8.crd.generator.approvaltests.shapes.Shapes;
 import io.fabric8.crd.generator.approvaltests.validation.Validation;
 import io.fabric8.crdv2.generator.CRDGenerator;
 import io.fabric8.crdv2.generator.CRDInfo;
@@ -111,6 +112,7 @@ class CRDGeneratorApprovalTest {
     cases.add(new TestCase("k8svalidations.samples.fabric8.io", K8sValidation.class));
     cases.add(new TestCase("containingmaps.sample.fabric8.io", ContainingMaps.class));
     cases.add(new TestCase("replicas.samples.fabric8.io", Replica.class));
+    cases.add(new TestCase("shapes.samples.fabric8.io", Shapes.class));
     cases.add(new TestCase("multiples.sample.fabric8.io",
         io.fabric8.crd.generator.approvaltests.multipleversions.v1.Multiple.class,
         io.fabric8.crd.generator.approvaltests.multipleversions.v2.Multiple.class));

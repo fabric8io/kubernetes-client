@@ -3,9 +3,9 @@
 ### 8.0-SNAPSHOT
 
 #### Bugs
+* Fix #7374: (crd-generator) Generated CRDs no longer prune or reject valid content: `Object`, raw `Map`, `List<Object>`, `Optional`, `@JsonUnwrapped` and polymorphic properties keep what is stored in them, and the types that never serialize to an RFC 3339 date-time (`Duration`, `Period`, `OffsetTime`, `LocalTime`, `YearMonth`, `MonthDay`) no longer declare that format, see the [migration guide](./doc/MIGRATION-v8.md#jackson-3-crd-generator)
 
 #### Improvements
-* Fix #7374: (crd-generator) Ported CRD generator to Jackson 3 `jackson-module-jsonSchema`
 * Fix #7987: (kubernetes-client-api) `withShardSelector` accepts a typed `ShardSelector` (`ShardSelector.builder().addShard(0, 4).addShard(2, 4).build()`) next to the raw expression `String`, so the `shardRange(...)` CEL grammar and its hexadecimal bounds don't have to be written by hand
 
 #### Dependency Upgrade

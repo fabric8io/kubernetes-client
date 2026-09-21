@@ -9,7 +9,7 @@ spec:
     kind: "Jackson3"
     plural: "jackson3s"
     singular: "jackson3"
-  scope: "Cluster"
+  scope: "Namespaced"
   versions:
   - name: "v1"
     schema:

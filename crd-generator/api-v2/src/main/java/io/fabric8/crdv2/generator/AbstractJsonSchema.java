@@ -17,6 +17,8 @@ package io.fabric8.crdv2.generator;
 
 import com.fasterxml.jackson.annotation.JsonClassDescription;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.fabric8.crd.generator.annotation.AdditionalPrinterColumn;
 import io.fabric8.crd.generator.annotation.AdditionalSelectableField;
 import io.fabric8.crd.generator.annotation.PreserveUnknownFields;
@@ -53,7 +55,6 @@ import tools.jackson.databind.BeanDescription;
 import tools.jackson.databind.BeanProperty;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.introspect.ClassIntrospector;
 import tools.jackson.databind.node.JsonNodeFactory;
 import tools.jackson.databind.node.ObjectNode;
 import tools.jackson.module.jsonSchema.JsonSchema;
@@ -102,6 +103,20 @@ import static java.util.Optional.ofNullable;
 public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V extends KubernetesValidationRule> {
 
   private static final Logger logger = LoggerFactory.getLogger(AbstractJsonSchema.class);
+
+  /**
+   * Jackson reports these as {@code date-time}, but none of them serializes to an RFC 3339 date-time:
+   * durations are ISO-8601 ({@code PT1H30M}), and the partials are times or fragments of a date
+   * ({@code 10:15:30+01:00}, {@code 2026-01}, {@code --12-25}). No Kubernetes format matches those, and a
+   * format the API server does not accept rejects values the client itself writes, so they get none.
+   */
+  private static final Set<Class<?>> TYPES_WITHOUT_MATCHING_FORMAT = Set.of(
+      java.time.Duration.class,
+      java.time.Period.class,
+      java.time.OffsetTime.class,
+      java.time.LocalTime.class,
+      java.time.YearMonth.class,
+      java.time.MonthDay.class);
 
   private final ResolvingContext resolvingContext;
   private final T root;
@@ -282,6 +297,10 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         this.format = ofNullable(valueTypeSchema.getFormat()).map(Object::toString).orElse(null);
       }
 
+      if (hasNoMatchingFormat(beanProperty.getType())) {
+        this.format = null;
+      }
+
       if (value.isStringSchema()) {
         StringSchema stringSchema = value.asStringSchema();
         // only set if ValidationSchemaFactoryWrapper is used
@@ -353,7 +372,9 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
               + "' from JsonProperty annotation as valid YAML or JSON, no default value will be used.");
           return null;
         }
-        throw new IllegalArgumentException("Cannot parse default value: '" + value + "' as valid YAML or JSON.", e);
+        throw new IllegalArgumentException("Cannot parse default value: '" + value
+            + "' as valid YAML or JSON. Values starting with '{' or '[' are parsed as JSON, so a flow-style YAML"
+            + " mapping such as '{key: value}' has to be written as JSON ('{\"key\": \"value\"}').", e);
       }
     }
 
@@ -439,9 +460,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     final InternalSchemaSwaps swaps = schemaSwaps;
 
     GeneratorObjectSchema gos = (GeneratorObjectSchema) jacksonSchema.asObjectSchema();
-    ClassIntrospector ci = resolvingContext.objectMapper.serializationConfig()
-        .classIntrospectorInstance();
-    BeanDescription bd = ci.introspectForSerialization(gos.javaType, ci.introspectClassAnnotations(gos.javaType));
+    BeanDescription bd = CRDUtils.introspectForSerialization(
+        resolvingContext.objectMapper.serializationConfig(), gos.javaType);
     boolean preserveUnknownFields = false;
     if (resolvingContext.implicitPreserveUnknownFields) {
       preserveUnknownFields = bd.findAnyGetter() != null || bd.findAnySetterAccessor() != null;
@@ -458,6 +478,13 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     // while it should not be repeating, we reuse this method to look for preserve unknown on the class hierarchy
     consumeRepeatingAnnotation(rawClass, PreserveUnknownFields.class,
         ignored -> objectSchema.setXKubernetesPreserveUnknownFields(true));
+
+    // only the declared type is introspected, so the subtypes' properties are not part of the schema;
+    // CRDs cannot express a discriminated union, so keep the subtype content instead of pruning it
+    if (findClassAnnotation(rawClass, JsonTypeInfo.class) != null
+        || findClassAnnotation(rawClass, JsonSubTypes.class) != null) {
+      objectSchema.setXKubernetesPreserveUnknownFields(true);
+    }
 
     consumeRepeatingAnnotation(rawClass, SchemaSwap.class, ss -> {
       swaps.registerSwap(rawClass,
@@ -576,8 +603,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
     if (jacksonSchema.isArraySchema()) {
       Items items = jacksonSchema.asArraySchema().getItems();
-      if (items == null) { // raw collection
-        throw new IllegalStateException(String.format("Untyped collection %s", name));
+      if (items == null) { // raw collection, or one with an Object element type
+        return arrayLikeProperty(anyTypeProperty());
       }
       if (items.isArrayItems()) {
         throw new IllegalStateException("not yet supported");
@@ -653,6 +680,11 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     if (def == GenericKubernetesResource.class
         || (def.isInterface() && HasMetadata.class.isAssignableFrom(def))) {
       return raw();
+    }
+
+    // an Object property (or an Object map value) holds arbitrary JSON, so it cannot be described further
+    if (def == Object.class) {
+      return anyTypeProperty();
     }
 
     if (visited.put(def.getName(), name) != null) {
@@ -739,6 +771,20 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       }
     }
     return toIgnore;
+  }
+
+  private static boolean hasNoMatchingFormat(JavaType type) {
+    return type != null && TYPES_WITHOUT_MATCHING_FORMAT.contains(type.getRawClass());
+  }
+
+  /**
+   * Schema for content that cannot be described, such as an {@code Object} property or a raw collection.
+   * Without {@code x-kubernetes-preserve-unknown-fields} the API server prunes whatever is stored there.
+   */
+  private T anyTypeProperty() {
+    T schema = singleProperty(null);
+    schema.setXKubernetesPreserveUnknownFields(true);
+    return schema;
   }
 
   V from(ValidationRule validationRule) {

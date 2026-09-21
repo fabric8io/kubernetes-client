@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.generator.approvaltests.jackson3;
+package io.fabric8.crd.generator.approvaltests.shapes;
 
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
@@ -22,6 +22,5 @@ import io.fabric8.kubernetes.model.annotation.Version;
 
 @Group("samples.fabric8.io")
 @Version("v1")
-public class Jackson3 extends CustomResource<Jackson3Spec, Void> implements Namespaced {
-
+public class Shapes extends CustomResource<ShapesSpec, Void> implements Namespaced {
 }
