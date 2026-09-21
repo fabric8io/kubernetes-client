@@ -37,6 +37,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
+// Explicit demand (not Session.Listener.AutoDemanding). Don't override onWebSocketPing/onWebSocketPong: Jetty only
+// answers pings and demands again by itself when they aren't, otherwise the socket stalls after the first ping
 public class JettyWebSocket implements WebSocket, Session.Listener {
 
   private static final Logger logger = LoggerFactory.getLogger(JettyWebSocket.class);

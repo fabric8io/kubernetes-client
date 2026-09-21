@@ -105,6 +105,33 @@ class HttpClientUtilsTest {
   }
 
   @Test
+  @DisplayName("configureProxy, a proxy URL with a user and no password, authenticates the user with an empty password")
+  void configureProxyUrlUserWithoutPassword() throws Exception {
+    // Given
+    Config config = new ConfigBuilder().withMasterUrl("http://localhost").withHttpProxy("http://user@192.168.0.1:8080")
+        .build();
+    Builder builder = Mockito.mock(HttpClient.Builder.class, Mockito.RETURNS_SELF);
+    // When
+    HttpClientUtils.configureProxy(config, builder);
+    // Then
+    Mockito.verify(builder).proxyAuthorization(HttpClientUtils.basicCredentials("user", ""));
+  }
+
+  @Test
+  @DisplayName("configureProxy, a proxy username without a password, authenticates the user with an empty password")
+  void configureProxyUsernameWithoutPassword() throws Exception {
+    // Given
+    Config config = new ConfigBuilder().withMasterUrl("http://localhost").withHttpProxy("http://192.168.0.1:8080")
+        .withProxyUsername("user")
+        .build();
+    Builder builder = Mockito.mock(HttpClient.Builder.class, Mockito.RETURNS_SELF);
+    // When
+    HttpClientUtils.configureProxy(config, builder);
+    // Then
+    Mockito.verify(builder).proxyAuthorization(HttpClientUtils.basicCredentials("user", ""));
+  }
+
+  @Test
   void testApplyCommonConfigurationWithTlsServerName() {
     // Given
     Config config = new ConfigBuilder()

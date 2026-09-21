@@ -30,8 +30,10 @@ import org.junit.jupiter.api.Test;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -153,6 +155,27 @@ class JettyAsyncResponseListenerTest {
     // Then
     assertThat(received).containsExactly("forwarded");
     assertThat(listener.done()).isCompleted();
+  }
+
+  @Test
+  @DisplayName("consumer failure after success was notified (Jetty forwards 407 responses this way), completes done() exceptionally")
+  void consumerFailureAfterSuccessFailsDone() {
+    // Given
+    final var failure = new IllegalStateException("consumer failed");
+    final var failingListener = listener(content -> {
+      throw failure;
+    });
+    final var failingSource = new AsyncContent();
+    failingListener.onContentSource(response, failingSource);
+    failingSource.write(true, ByteBuffer.wrap("forwarded".getBytes(StandardCharsets.UTF_8)), Callback.NOOP);
+    failingListener.onComplete(new Result(request, response));
+    // When
+    failingListener.consume();
+    // Then
+    assertThat(failingListener.done())
+        .failsWithin(Duration.ZERO)
+        .withThrowableOfType(ExecutionException.class)
+        .withCause(failure);
   }
 
   private void write(String content) {

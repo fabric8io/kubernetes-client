@@ -40,8 +40,8 @@ public abstract class JettyAsyncResponseListener implements Response.Listener, A
   // a thread is reading from the content source or waiting on its demand, Content.Source allows a single pending demand
   private boolean reading;
   // done() completes once both the last chunk was read and Jetty reported success, in either order:
-  // responses Jetty forwards (a 407 it couldn't authenticate, a non-100 reply to Expect: 100-continue) report success
-  // before their body is read
+  // responses Jetty forwards (a 407 it couldn't authenticate, a redirect it couldn't follow) report success
+  // and completion before their body is read
   private boolean lastChunkRead;
   private boolean succeeded;
 
@@ -126,6 +126,9 @@ public abstract class JettyAsyncResponseListener implements Response.Listener, A
    * <p>
    * Only the thread that set {@code reading}, or the demand callback it registered, runs this loop.
    * After the last or a failed chunk {@code reading} stays set, so nothing reads past the end.
+   * <p>
+   * Failures complete done() here as well: for a forwarded response the exchange is already complete, so the abort
+   * doesn't notify onComplete.
    */
   private void read() {
     while (true) {
@@ -145,6 +148,7 @@ public abstract class JettyAsyncResponseListener implements Response.Listener, A
         if (!chunk.isLast()) {
           contentSource.fail(chunk.getFailure());
         }
+        asyncBodyDone.completeExceptionally(chunk.getFailure());
         return;
       }
       final boolean last = chunk.isLast();
@@ -160,6 +164,7 @@ public abstract class JettyAsyncResponseListener implements Response.Listener, A
       } catch (Exception e) {
         response.abort(e);
         contentSource.fail(e);
+        asyncBodyDone.completeExceptionally(e);
         return;
       } finally {
         chunk.release();

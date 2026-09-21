@@ -39,6 +39,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class JettyHttpClientTest {
 
@@ -98,6 +99,29 @@ class JettyHttpClientTest {
       jettyHttpClient.close();
       // Then
       assertThat(stopping).containsExactly("websocket", "http");
+    }
+  }
+
+  @Test
+  @DisplayName("close, stops the HTTP client even if stopping the WebSocket client fails")
+  void closeStopsHttpClientWhenWebSocketClientStopFails() throws Exception {
+    // Given
+    final var failingWebSocketClient = new WebSocketClient(httpClient) {
+      @Override
+      protected void doStop() throws Exception {
+        super.doStop();
+        throw new IllegalStateException("WebSocket client stop failed");
+      }
+    };
+    httpClient.start();
+    failingWebSocketClient.start();
+    try (var jettyHttpClient = new JettyHttpClient(
+        null, httpClient, failingWebSocketClient)) {
+      // When
+      assertThatThrownBy(jettyHttpClient::close)
+          .hasStackTraceContaining("WebSocket client stop failed");
+      // Then
+      assertThat(httpClient.isStopped()).isTrue();
     }
   }
 

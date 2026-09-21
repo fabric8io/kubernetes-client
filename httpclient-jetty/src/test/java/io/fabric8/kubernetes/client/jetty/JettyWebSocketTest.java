@@ -244,6 +244,35 @@ class JettyWebSocketTest {
   }
 
   @Test
+  @DisplayName("request() from the listener's onOpen, demands only once onOpen returns")
+  void requestFromOnOpenDemandsAfterOnOpenReturns() {
+    // Given
+    final List<String> events = new ArrayList<>();
+    final var session = mock(Session.class);
+    doAnswer(i -> events.add("demand")).when(session).demand();
+    final var jws = new JettyWebSocket(new WebSocket.Listener() {
+      @Override
+      public void onOpen(WebSocket webSocket) {
+        webSocket.request();
+        events.add("onOpen returns");
+      }
+    });
+    // When
+    jws.onWebSocketOpen(session);
+    // Then
+    assertThat(events).containsExactly("onOpen returns", "demand");
+  }
+
+  @Test
+  @DisplayName("onWebSocketPing and onWebSocketPong aren't overridden, so that Jetty answers pings and demands again by itself")
+  void pingAndPongAreLeftToJetty() throws Exception {
+    assertThat(JettyWebSocket.class.getMethod("onWebSocketPing", ByteBuffer.class).getDeclaringClass())
+        .isEqualTo(Session.Listener.class);
+    assertThat(JettyWebSocket.class.getMethod("onWebSocketPong", ByteBuffer.class).getDeclaringClass())
+        .isEqualTo(Session.Listener.class);
+  }
+
+  @Test
   @DisplayName("message delivery, doesn't demand the next message until request() is called")
   void messageDeliveryWaitsForRequest() {
     // Given

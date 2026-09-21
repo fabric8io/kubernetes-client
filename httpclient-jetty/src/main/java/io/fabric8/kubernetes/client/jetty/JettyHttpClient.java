@@ -86,10 +86,14 @@ public class JettyHttpClient extends StandardHttpClient<JettyHttpClient, JettyHt
 
   @Override
   public void doClose() {
+    // Stop the WebSocket client before the HTTP client it runs on, which a graceful session shutdown
+    // (WebSocketClient#setStopTimeout, off by default) needs. The HTTP client is stopped even if that fails.
     try {
-      // The WebSocket client runs on the HTTP client, stop it first so that it can close its sessions
-      jettyWs.stop();
-      jetty.stop();
+      try {
+        jettyWs.stop();
+      } finally {
+        jetty.stop();
+      }
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
