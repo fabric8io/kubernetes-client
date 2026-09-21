@@ -55,6 +55,8 @@ import tools.jackson.databind.BeanDescription;
 import tools.jackson.databind.BeanProperty;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ValueSerializer;
+import tools.jackson.databind.annotation.JsonSerialize;
 import tools.jackson.databind.node.JsonNodeFactory;
 import tools.jackson.databind.node.ObjectNode;
 import tools.jackson.databind.ser.BeanPropertyWriter;
@@ -75,6 +77,7 @@ import java.lang.reflect.AnnotatedParameterizedType;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -93,11 +96,18 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.OptionalInt;
+import java.util.OptionalLong;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.xml.namespace.QName;
 
 import static java.util.Optional.ofNullable;
 
@@ -308,10 +318,14 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         pattern = ofNullable(beanProperty.getAnnotation(Pattern.class)).map(Pattern::value)
             .or(() -> ofNullable(stringSchema.getPattern()))
             .orElse(null);
-        minLength = findMinInSizeAnnotation(beanProperty)
+        // @Size counts the bytes of a binary type, the API server validates the length of their base64 string
+        final UnaryOperator<Long> length = value instanceof Base64Schema
+            ? AbstractJsonSchema::base64Length
+            : UnaryOperator.identity();
+        minLength = findMinInSizeAnnotation(beanProperty).map(length)
             .or(() -> ofNullable(stringSchema.getMinLength()).map(Integer::longValue))
             .orElse(null);
-        maxLength = findMaxInSizeAnnotation(beanProperty)
+        maxLength = findMaxInSizeAnnotation(beanProperty).map(length)
             .or(() -> ofNullable(stringSchema.getMaxLength()).map(Integer::longValue))
             .orElse(null);
       } else if (value.isIntegerSchema()) {
@@ -458,7 +472,10 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       schema.setMaxProperties(maxProperties);
 
       schema.setPattern(pattern);
-      schema.setFormat(format);
+      if (format != null) {
+        // otherwise keep the one resolveProperty derived from the type
+        schema.setFormat(format);
+      }
       if (preserveUnknownFields) {
         schema.setXKubernetesPreserveUnknownFields(true);
       }
@@ -544,7 +561,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         continue;
       }
 
-      JsonSchema propertySchema = property.getValue();
+      JsonSchema propertySchema = wireSchema(beanProperty.getType(), property.getValue(), beanProperty);
       PropertyMetadata propertyMetadata = new PropertyMetadata(propertySchema, beanProperty);
 
       if (propertyMetadata.required) {
@@ -638,6 +655,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
     // the schema Jackson generated is the referenced type's, so resolve it with that type
     type = unwrapReferenceType(type);
+    jacksonSchema = wireSchema(type, jacksonSchema, beanProperty);
+    final String integerFormat = integerFormat(type);
 
     if (jacksonSchema.isArraySchema()) {
       Items items = jacksonSchema.asArraySchema().getItems();
@@ -652,8 +671,11 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
           valueTypeInfo);
       handleTypeAnnotations(schema, beanProperty, List.class, 0);
       return arrayLikeProperty(schema);
-    } else if (jacksonSchema.isIntegerSchema()) {
-      return singleProperty("integer");
+    } else if (jacksonSchema.isIntegerSchema() || (jacksonSchema.isNumberSchema() && integerFormat != null)) {
+      // Jackson describes the items of a long[] as numbers
+      final T schema = singleProperty("integer");
+      schema.setFormat(integerFormat);
+      return schema;
     } else if (jacksonSchema.isNumberSchema()) {
       return singleProperty("number");
     } else if (jacksonSchema.isBooleanSchema()) {
@@ -670,7 +692,11 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
             .toArray(JsonNode[]::new);
         return enumProperty(enumValues);
       }
-      return singleProperty("string");
+      final T schema = singleProperty("string");
+      if (jacksonSchema instanceof Base64Schema) {
+        schema.setFormat("byte");
+      }
+      return schema;
     } else if (jacksonSchema.isNullSchema()) {
       return singleProperty("object"); // TODO: this may not be the right choice, but rarely will someone be using Void
     } else if (jacksonSchema.isAnySchema()) {
@@ -766,14 +792,20 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
             ofNullable(at.getAnnotation(Pattern.class))
                 .ifPresent(a -> schema.setPattern(a.value()));
 
+            // see PropertyMetadata
+            final UnaryOperator<Long> length = "byte".equals(schema.getFormat())
+                ? AbstractJsonSchema::base64Length
+                : UnaryOperator.identity();
             ofNullable(at.getAnnotation(Size.class))
                 .map(Size::min)
                 .filter(v -> v > 0)
+                .map(length)
                 .ifPresent(schema::setMinLength);
 
             ofNullable(at.getAnnotation(Size.class))
                 .map(Size::max)
                 .filter(v -> v < Long.MAX_VALUE)
+                .map(length)
                 .ifPresent(schema::setMaxLength);
 
           } else if ("number".equals(schema.getType()) || "integer".equals(schema.getType())) {
@@ -824,9 +856,70 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       case "date-time" -> type == Instant.class || type == OffsetDateTime.class || type == ZonedDateTime.class
           || Calendar.class.isAssignableFrom(type)
           || (Date.class.isAssignableFrom(type) && type != java.sql.Time.class);
-      case "date" -> type == LocalDate.class;
+      // java.sql.Date only reports date with Jackson2JdkTypesModule, which writes it as yyyy-MM-dd
+      case "date" -> type == LocalDate.class || type == java.sql.Date.class;
       default -> false;
     };
+  }
+
+  /**
+   * Jackson's serializers describe {@code byte[]} and {@code ByteBuffer} as arrays of integers and {@code char[]} and
+   * {@code QName} as an array and an object (or a reference to the first QName), but write them as strings (base64 for
+   * the binary types). Only these default descriptions are replaced, a property with its own serializer keeps its schema.
+   */
+  private static JsonSchema wireSchema(JavaType type, JsonSchema schema, BeanProperty beanProperty) {
+    final JavaType valueType = unwrapReferenceType(type);
+    if (valueType == null || hasOwnSerializer(beanProperty)) {
+      return schema;
+    }
+    if (schema.isArraySchema() && isBinary(valueType)) {
+      return new Base64Schema();
+    }
+    if ((schema.isArraySchema() && valueType.hasRawClass(char[].class))
+        || ((schema.isObjectSchema() || schema instanceof ReferenceSchema) && valueType.hasRawClass(QName.class))) {
+      return new StringSchema();
+    }
+    return schema;
+  }
+
+  private static boolean hasOwnSerializer(BeanProperty beanProperty) {
+    final JsonSerialize serialize = beanProperty == null ? null : beanProperty.getAnnotation(JsonSerialize.class);
+    return serialize != null && serialize.using() != ValueSerializer.None.class;
+  }
+
+  /**
+   * A binary type Jackson writes as a base64 string, see {@link #wireSchema}.
+   */
+  private static final class Base64Schema extends StringSchema {
+  }
+
+  /**
+   * The format controller-gen gives the Go counterpart ({@code int32}, {@code int64}), which the API server
+   * range-checks. {@code short}, {@code byte} and {@code BigInteger} get none, like Go's {@code int16} and {@code int8}.
+   */
+  private static String integerFormat(JavaType type) {
+    if (type == null) {
+      return null;
+    }
+    final Class<?> raw = type.getRawClass();
+    if (raw == int.class || raw == Integer.class || raw == OptionalInt.class || raw == AtomicInteger.class) {
+      return "int32";
+    }
+    if (raw == long.class || raw == Long.class || raw == OptionalLong.class || raw == AtomicLong.class) {
+      return "int64";
+    }
+    return null;
+  }
+
+  /**
+   * Written as base64, like Go's {@code []byte}. {@code Byte[]} and {@code List<Byte>} are written as arrays of numbers.
+   */
+  private static boolean isBinary(JavaType type) {
+    return type != null && (type.hasRawClass(byte[].class) || ByteBuffer.class.isAssignableFrom(type.getRawClass()));
+  }
+
+  private static long base64Length(long bytes) {
+    return 4 * ((bytes + 2) / 3);
   }
 
   /**

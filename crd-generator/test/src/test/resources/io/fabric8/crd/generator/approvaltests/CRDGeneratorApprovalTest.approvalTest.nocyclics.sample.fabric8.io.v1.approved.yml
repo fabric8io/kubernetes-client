@@ -22,6 +22,7 @@ spec:
                   inner:
                     type: "object"
                   ref:
+                    format: "int32"
                     type: "integer"
                 type: "object"
               ref2:
@@ -29,6 +30,7 @@ spec:
                   inner:
                     type: "object"
                   ref:
+                    format: "int32"
                     type: "integer"
                 type: "object"
             type: "object"
@@ -41,6 +43,7 @@ spec:
                   inner:
                     type: "object"
                   ref:
+                    format: "int32"
                     type: "integer"
                 type: "object"
             type: "object"

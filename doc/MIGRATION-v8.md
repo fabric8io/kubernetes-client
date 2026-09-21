@@ -98,13 +98,25 @@ The client and the model now use Jackson 3. Any code of yours that uses the Jack
 - **Exposed types:** `Serialization.jsonMapper()`/`yamlMapper()` return Jackson 3 mappers, `unmarshal(..., TypeReference)` takes a `tools.jackson.core.type.TypeReference`, and `JsonNode` model fields (e.g. `JSONSchemaProps` `default`/`example`) are `tools.jackson.databind.JsonNode`.
 - **Mappers are immutable:** `registerModule` and `configure` are gone, use the builder or `mapper.rebuild()`. `new KubernetesSerialization(mapper, ...)` configures and uses a copy, the mapper you pass is left untouched. Subclasses overriding `configureMapper` must return the configured mapper.
 
-The default `KubernetesSerialization` (and therefore `KubernetesClientBuilder`) uses `JsonMapper.builderWithJackson2Defaults()`, so your custom types keep their 2.x wire format. If you pass your own mapper, build it the same way: with plain Jackson 3 defaults, properties are sorted alphabetically, enums go through `toString()`, `null` for a primitive fails and getter-only collections are no longer populated.
+The default `KubernetesSerialization` (and therefore `KubernetesClientBuilder`) uses `JsonMapper.builderWithJackson2Defaults()` and the new `Jackson2JdkTypesModule`, so your custom types keep their 2.x wire format. If you pass your own mapper, build it the same way:
 
-One difference can't be restored: getters with an upper-case prefix follow the standard bean naming, so `getURL()` is now `URL` instead of `url`. Annotate them with `@JsonProperty` to keep the old name.
+```java
+new KubernetesSerialization(JsonMapper.builderWithJackson2Defaults().addModule(new Jackson2JdkTypesModule()).build(), true);
+```
+
+With plain Jackson 3 defaults, properties are sorted alphabetically, enums go through `toString()`, `null` for a primitive fails and getter-only collections are no longer populated. Without the module, `Year` is written as a number, `Month` as its zero-based index, `java.sql.Date` as a UTC date-time and `Locale` as a language tag (`zh-Hant-TW` instead of `zh_TW_#Hant`), and locales written by 7.x lose their script or extension when read.
+
+The module also reads a `yyyy-MM-dd` `java.sql.Date` as a local date. 7.x read it as UTC midnight, which is the previous day west of UTC.
+
+A few differences can't be restored:
+
+- Getters with an upper-case prefix follow the standard bean naming, so `getURL()` is now `URL` instead of `url`. Annotate them with `@JsonProperty` to keep the old name.
+- `Map<Enum, V>` and `Set<Enum>` properties are read as an `EnumMap` and an `EnumSet`.
+- `Optional` values are written. 7.x failed on them.
 
 ### Generated CRDs <a href="#jackson-3-crd-generator" id="jackson-3-crd-generator"/>
 
-The CRD generator now uses the Jackson 3 version of `jackson-module-jsonSchema` (`tools.jackson.module:jackson-module-jsonSchema`). If you embed the generator, `CRDGenerator.withObjectMapper(...)` and `ResolvingContext` now take a `tools.jackson.databind.ObjectMapper`. The generator makes that mapper write dates and durations as strings, whatever its settings, because that's what the client writes.
+The CRD generator now uses the Jackson 3 version of `jackson-module-jsonSchema` (`tools.jackson.module:jackson-module-jsonSchema`). If you embed the generator, `CRDGenerator.withObjectMapper(...)` and `ResolvingContext` now take a `tools.jackson.databind.ObjectMapper`. The generator makes that mapper write dates and durations as strings, whatever its settings, because that's what the client writes. Add the `Jackson2JdkTypesModule` to it as well, like the default mapper does, so that `Year`, `Month`, `java.sql.Date` and `Locale` are described the way the client writes them.
 
 The generated CRDs are the same as in 7.x except for the following:
 
@@ -113,7 +125,11 @@ The generated CRDs are the same as in 7.x except for the following:
 - **`Object` properties, `Map` values of type `Object` and raw `Map`s** are now `x-kubernetes-preserve-unknown-fields: true` instead of `type: object`. They hold arbitrary JSON, and `type: object` made the API server prune it and reject scalars. An `Object` property with `@JsonSerialize(as = SomeType.class)` gets the schema of `SomeType`.
 - **`List<Object>` and raw collections** now generate an array whose items are `x-kubernetes-preserve-unknown-fields: true`. Generation used to fail with `Untyped collection <field>`.
 - **Polymorphic types** (`@JsonTypeInfo` / `@JsonSubTypes` on the class, on an interface it implements, or on the property) keep the base type's properties and add `x-kubernetes-preserve-unknown-fields: true`, so the subtypes' content and the type id are no longer pruned. A CRD cannot express the discriminated union itself. `@JsonTypeInfo(use = NONE)` opts a subtype or property out.
-- **Date and time formats** remain only where the value the client writes matches them, since the API server rejects any value that doesn't (`date-time` requires an offset). `Duration`, `LocalDateTime`, `OffsetTime`, `YearMonth`, `MonthDay` and `java.sql.Time` no longer carry `format: date-time` (`PT1H30M`, `2026-01-02T10:15:30`, `10:15:30+01:00`, `2026-01`, `--12-25`, `10:15:30`), and `LocalTime` no longer carries `format: time`. `Instant`, `OffsetDateTime`, `ZonedDateTime`, `Date`, `Timestamp` and `Calendar` keep `date-time`, and `LocalDate` keeps `date`.
+- **Date and time formats** remain only where the value the client writes matches them, since the API server rejects any value that doesn't (`date-time` requires an offset). `Duration`, `LocalDateTime`, `OffsetTime`, `YearMonth`, `MonthDay`, `Year` and `java.sql.Time` no longer carry `format: date-time` (`PT1H30M`, `2026-01-02T10:15:30`, `10:15:30+01:00`, `2026-01`, `--12-25`, `2024`, `10:15:30`), and `LocalTime` no longer carries `format: time`. `java.sql.Date` carries `format: date` instead of `date-time` (`2024-01-15`). `Instant`, `OffsetDateTime`, `ZonedDateTime`, `Date`, `Timestamp` and `Calendar` keep `date-time`, and `LocalDate` keeps `date`.
+- **`@PrinterColumn` on a date property** (`LocalDate`, `java.sql.Date`) is a `string` column instead of a `date` column. The API server renders a `date` column as the age of an RFC 3339 timestamp, so it showed `<invalid>`. Use `@AdditionalPrinterColumn(type = DATE)` for an age column.
+- **`byte[]` and `ByteBuffer`**, including in `Optional`, `List` and `Map` values, are `type: string, format: byte` instead of an array of integers, like Go's `[]byte`: the client writes them as base64, which the array schema rejected. `@Size` on them limits the length of the base64 string, rounded up to whole groups of 3 bytes. `Byte[]` and `List<Byte>` stay arrays of integers, that's how they're written. The API server rejects an empty string for `format: byte`, and the client writes an empty `byte[]` or `ByteBuffer` as `""`, so leave empty values `null` or annotate a `byte[]` field with `@JsonInclude(JsonInclude.Include.NON_EMPTY)`.
+- **`char[]`** is `type: string` instead of an array of strings, which rejected the string the client writes.
+- **Integers** get the format controller-gen gives their Go counterpart: `int`, `Integer`, `OptionalInt` and `AtomicInteger` get `format: int32`, and `long`, `Long`, `OptionalLong` and `AtomicLong` get `format: int64`, also as list items and map values. The API server range-checks these formats since Kubernetes 1.36. Java values always fit, but `@Min`/`@Max` bounds have to fit the type too. `short`, `byte` and `BigInteger` get none.
 
 ## `withShardSelector(null)` is ambiguous <a href="#shard-selector-null" id="shard-selector-null"/>
 
