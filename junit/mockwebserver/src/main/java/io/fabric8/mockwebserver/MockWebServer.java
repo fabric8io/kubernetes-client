@@ -55,7 +55,6 @@ import java.nio.file.Files;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.cert.X509Certificate;
-import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -190,11 +189,7 @@ public class MockWebServer implements Closeable {
     // connection state (e.g. WebSocketSession executors) that an in-flight upgrade may still
     // have been about to touch via onOpen — avoiding a RejectedExecutionException race.
     dispatcher.shutdown();
-    // Vert.x 5 HttpServer.shutdown(Duration) initiates graceful shutdown: stops accepting
-    // new connections, waits up to the given duration for in-flight requests to complete,
-    // then force-closes any remaining connections including WebSocket channels whose
-    // clients disconnected without a close handshake.
-    await(httpServer.shutdown(Duration.ofSeconds(1)), "Unable to close MockWebServer");
+    await(httpServer.close(), "Unable to close MockWebServer");
     dispatcher.releaseResources();
     info("done accepting connections");
     await(vertx.close(), "Unable to close Vertx");
