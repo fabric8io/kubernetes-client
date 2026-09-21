@@ -36,9 +36,13 @@
 
   <dependencyManagement>
     <dependencies>
-      <!-- Pin to Vert.x 4 so the mockwebserver bytecode is compatible with both
-           httpclient-vertx (Vert.x 4 runtime) and httpclient-vertx-5 (Vert.x 5 runtime,
-           which is backward-compatible with Vert.x 4 bytecode). -->
+      <!-- Pin compilation to Vert.x 4 so the mockwebserver bytecode can run with both
+           httpclient-vertx (Vert.x 4 runtime) and httpclient-vertx-5 (Vert.x 5 runtime).
+           Vert.x 5 is NOT fully backward-compatible (see migration guide); this works only
+           because mockwebserver uses a narrow subset of the API that was preserved. Note that
+           this pinning only affects compilation — consumer modules resolve Vert.x transitively
+           via the root POM's dependencyManagement, so at test runtime the actual Vert.x version
+           depends on the consumer. -->
       <dependency>
         <groupId>io.vertx</groupId>
         <artifactId>vertx-core</artifactId>
