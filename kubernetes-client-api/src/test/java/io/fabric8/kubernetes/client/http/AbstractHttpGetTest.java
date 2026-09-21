@@ -96,6 +96,61 @@ public abstract class AbstractHttpGetTest {
     }
   }
 
+  @Test
+  @DisplayName("Multi-valued request header reaches the server as one header line per value")
+  void multiValuedRequestHeaderSentAsSeparateLines() throws Exception {
+    // When
+    try (HttpClient client = getHttpClientFactory().newBuilder().build()) {
+      client
+          .sendAsync(client.newHttpRequestBuilder()
+              .uri(server.url("/multi-valued-header"))
+              .header("Impersonate-Group", "group-1")
+              .header("Impersonate-Group", "group-2")
+              .build(), String.class)
+          .get(10L, TimeUnit.SECONDS);
+    }
+    // Then
+    assertThat(server.getLastRequest().getHeaders().headers("Impersonate-Group"))
+        .as("a single joined line reads as one group named 'group-1, group-2' on the API server")
+        .containsExactly("group-1", "group-2");
+  }
+
+  @Test
+  @DisplayName("Request header names differing only in case, reach the server with all their values")
+  void caseVariantRequestHeaderNamesKeepAllValues() throws Exception {
+    // When
+    try (HttpClient client = getHttpClientFactory().newBuilder().build()) {
+      client
+          .sendAsync(client.newHttpRequestBuilder()
+              .uri(server.url("/case-variant-header"))
+              .header("Impersonate-Group", "group-1")
+              .header("impersonate-group", "group-2")
+              .build(), String.class)
+          .get(10L, TimeUnit.SECONDS);
+    }
+    // Then
+    assertThat(server.getLastRequest().getHeaders().headers("Impersonate-Group"))
+        .containsExactlyInAnyOrder("group-1", "group-2");
+  }
+
+  @Test
+  @DisplayName("401 response without WWW-Authenticate (the API server sends none), is returned with its body")
+  void unauthorizedWithoutChallengeReturnsBody() throws Exception {
+    // Given
+    final var status = "{\"kind\":\"Status\",\"reason\":\"Unauthorized\",\"code\":401}";
+    server.expect().withPath("/unauthorized").andReturn(401, status).always();
+    // When
+    try (HttpClient client = getHttpClientFactory().newBuilder().build()) {
+      final var response = client
+          .sendAsync(client.newHttpRequestBuilder().uri(server.url("/unauthorized")).build(), String.class)
+          .get(10L, TimeUnit.SECONDS);
+      // Then
+      assertThat(response)
+          .returns(401, HttpResponse::code)
+          .returns(status, HttpResponse::body);
+    }
+  }
+
   @DisplayName("Supported response body types")
   @ParameterizedTest(name = "{index}: {0}")
   @ValueSource(classes = { String.class, byte[].class, Reader.class, InputStream.class })

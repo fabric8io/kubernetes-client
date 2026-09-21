@@ -15,17 +15,15 @@
  */
 package io.fabric8.kubernetes.client.jetty;
 
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.BufferUtil;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocketResponse;
 import io.fabric8.kubernetes.client.http.WebSocketUpgradeResponse;
 import io.fabric8.kubernetes.client.utils.Utils;
+import org.eclipse.jetty.websocket.api.Callback;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.UpgradeResponse;
-import org.eclipse.jetty.websocket.api.WebSocketListener;
-import org.eclipse.jetty.websocket.api.WriteCallback;
 import org.eclipse.jetty.websocket.api.exceptions.CloseException;
 import org.eclipse.jetty.websocket.api.exceptions.UpgradeException;
 import org.slf4j.Logger;
@@ -38,30 +36,29 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
-public class JettyWebSocket implements WebSocket, WebSocketListener {
+// Explicit demand (not Session.Listener.AutoDemanding). Don't override onWebSocketPing/onWebSocketPong: Jetty only
+// answers pings and demands again by itself when they aren't, otherwise the socket stalls after the first ping
+public class JettyWebSocket implements WebSocket, Session.Listener {
 
   private static final Logger logger = LoggerFactory.getLogger(JettyWebSocket.class);
 
   private final WebSocket.Listener listener;
   private final AtomicLong sendQueue;
-  private final Lock lock;
-  private final Condition backPressure;
   private final CompletableFuture<Void> terminated = new CompletableFuture<>();
   private final AtomicBoolean outputClosed = new AtomicBoolean();
-  private boolean moreMessages;
   @SuppressWarnings("java:S3077") // volatile publishes the session reference; Jetty Session is thread-safe
   private volatile Session webSocketSession;
+  // request() calls not turned into a Jetty demand yet, onOpen implies the first one
+  private long requested = 1;
+  // Jetty allows a single pending demand, a second one throws ReadPendingException
+  private boolean demandPending;
+  // demand only once the listener's onOpen has returned, and not after the close
+  private boolean receiving;
 
   public JettyWebSocket(WebSocket.Listener listener) {
     this.listener = listener;
     sendQueue = new AtomicLong();
-    lock = new ReentrantLock();
-    backPressure = lock.newCondition();
-    moreMessages = true;
   }
 
   @Override
@@ -72,21 +69,13 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
     buffer = BufferUtil.copy(buffer);
     final int size = buffer.remaining();
     sendQueue.addAndGet(size);
-    webSocketSession.getRemote().sendBytes(buffer, new WriteCallback() {
-      @Override
-      public void writeFailed(Throwable x) {
-        sendQueue.addAndGet(-size);
-        if (webSocketSession.isOpen()) {
-          logger.warn("Queued write did not succeed", x);
-        }
-        webSocketSession.disconnect(); // prevent further writes
+    webSocketSession.sendBinary(buffer, Callback.from(() -> sendQueue.addAndGet(-size), x -> {
+      sendQueue.addAndGet(-size);
+      if (webSocketSession.isOpen()) {
+        logger.warn("Queued write did not succeed", x);
       }
-
-      @Override
-      public void writeSuccess() {
-        sendQueue.addAndGet(-size);
-      }
-    });
+      webSocketSession.disconnect(); // prevent further writes
+    }));
     return true;
   }
 
@@ -95,19 +84,13 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
     if (!outputClosed.compareAndSet(false, true) || !webSocketSession.isOpen()) {
       return false;
     }
-    webSocketSession.close(code, reason, new WriteCallback() {
-      @Override
-      public void writeFailed(Throwable x) {
-        logger.warn("Queued close did not succeed", x);
-        webSocketSession.disconnect(); // immediately terminate
-      }
-
-      @Override
-      public void writeSuccess() {
-        CompletableFuture<Void> future = Utils.schedule(Runnable::run, webSocketSession::disconnect, 1, TimeUnit.MINUTES);
-        terminated.whenComplete((v, ignored) -> future.cancel(true));
-      }
-    });
+    webSocketSession.close(code, reason, Callback.from(() -> {
+      CompletableFuture<Void> future = Utils.schedule(Runnable::run, webSocketSession::disconnect, 1, TimeUnit.MINUTES);
+      terminated.whenComplete((v, ignored) -> future.cancel(true));
+    }, x -> {
+      logger.warn("Queued close did not succeed", x);
+      webSocketSession.disconnect(); // immediately terminate
+    }));
     return true;
   }
 
@@ -118,39 +101,63 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
 
   @Override
   public void request() {
-    try {
-      lock.lock();
-      moreMessages = true;
-      backPressure.signalAll();
-    } finally {
-      lock.unlock();
+    synchronized (this) {
+      requested++;
     }
+    demand();
+  }
+
+  private void demand() {
+    synchronized (this) {
+      if (!receiving || demandPending || requested == 0) {
+        return;
+      }
+      demandPending = true;
+      requested--;
+    }
+    webSocketSession.demand();
   }
 
   @Override
-  public void onWebSocketBinary(byte[] payload, int offset, int len) {
-    backPressure();
-    final var buffer = ByteBuffer.allocate(len);
-    buffer.put(payload, offset, len).rewind();
-    listener.onMessage(this, buffer.asReadOnlyBuffer());
+  public void onWebSocketOpen(Session session) {
+    this.webSocketSession = session;
+    listener.onOpen(this);
+    synchronized (this) {
+      receiving = true;
+    }
+    demand();
+  }
+
+  @Override
+  public void onWebSocketBinary(ByteBuffer payload, Callback callback) {
+    // Jetty reuses the payload buffer once the callback completes, and fails the callback itself if the listener throws
+    final ByteBuffer copy = BufferUtil.copy(payload);
+    onMessage(() -> listener.onMessage(this, copy.asReadOnlyBuffer()));
+    callback.succeed();
   }
 
   @Override
   public void onWebSocketText(String message) {
-    backPressure();
-    listener.onMessage(this, message);
+    onMessage(() -> listener.onMessage(this, message));
+  }
+
+  private void onMessage(Runnable notifyListener) {
+    synchronized (this) {
+      demandPending = false;
+    }
+    notifyListener.run();
+    // serve the request() calls made before this message was delivered
+    demand();
   }
 
   @Override
-  public void onWebSocketClose(int statusCode, String reason) {
+  public void onWebSocketClose(int statusCode, String reason, Callback callback) {
+    synchronized (this) {
+      receiving = false;
+    }
     terminated.complete(null);
     listener.onClose(this, statusCode, reason);
-  }
-
-  @Override
-  public void onWebSocketConnect(Session session) {
-    this.webSocketSession = session;
-    listener.onOpen(this);
+    callback.succeed();
   }
 
   /**
@@ -174,28 +181,6 @@ public class JettyWebSocket implements WebSocket, WebSocketListener {
       cause = new ProtocolException().initCause(cause);
     }
     listener.onError(this, cause);
-  }
-
-  private void backPressure() {
-    try {
-      lock.lock();
-      while (!moreMessages) {
-        // arbitrary timeout to make it clearer that messages are not being processed
-        // - likely due to streams returned off of websocket not being read
-        // the jetty thread pool won't throw an exception until we're at least 8k jobs behind
-        // hopefully this will help avoid having to get a thread dump
-        if (!backPressure.await(30, TimeUnit.SECONDS)) {
-          throw new KubernetesClientException(
-              "Jetty HttpClient thread is waiting too long for the consumption of previous websocket message");
-        }
-      }
-      moreMessages = false;
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(e);
-    } finally {
-      lock.unlock();
-    }
   }
 
   static WebSocketResponse toWebSocketResponse(HttpRequest httpRequest, UpgradeException ex) {

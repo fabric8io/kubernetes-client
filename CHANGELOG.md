@@ -4,6 +4,9 @@
 
 #### Bugs
 * Fix #7374: (crd-generator) Generated CRDs no longer prune or reject what the client writes: `Object`, raw `Map`, `List<Object>`, raw collection, `@JsonUnwrapped` and polymorphic properties keep their content, and date and time types only declare a format their values match (`Duration`, `LocalDateTime` and the partial types lose `date-time`). `Optional` properties get their value type's schema instead of preserving unknown fields, see the [migration guide](./doc/MIGRATION-v8.md#jackson-3-crd-generator)
+* Fix #6779: (httpclient-jetty) 401 responses without a `WWW-Authenticate` header, which is how the API server sends them, are returned with their body instead of failing with "HTTP protocol violation: Authentication challenge without WWW-Authenticate header"
+* Fix #6779: (httpclient-jetty, httpclient-vertx, httpclient-vertx-5) A proxy password containing a colon, or a proxy URL with a user and no password, is now used to authenticate with the proxy, instead of falling back to a `Proxy-Authorization` request header that HTTPS requests carry through the proxy tunnel to the API server
+* Fix #6779: A proxy username configured without a password is sent with an empty password instead of `null`
 
 #### Improvements
 * Fix #7987: (kubernetes-client-api) `withShardSelector` accepts a typed `ShardSelector` (`ShardSelector.builder().addShard(0, 4).addShard(2, 4).build()`) next to the raw expression `String`, so the `shardRange(...)` CEL grammar and its hexadecimal bounds don't have to be written by hand
@@ -17,6 +20,7 @@
 * Fix #8101: bump cluster-api-provider-metal3 from 1.13.0 to 1.14.0
 * Fix #8086: bump gateway-api from 1.6.1 to 1.6.2
 * Fix #8127: bump istio.io/client-go from 1.30.0 to 1.31.0
+* Fix #6779: bump Jetty from 11.0.26 to 12.1.13
 * Fix #8086: bump k8s.io/api from 0.35.2 to 0.35.8
 * Fix #8086: bump k8s.io/apiextensions-apiserver from 0.36.1 to 0.37.0
 * Fix #8086: bump k8s.io/apimachinery from 0.36.1 to 0.37.0
@@ -48,6 +52,7 @@
 * Fix #8009: Moved Java baseline from 11 to 17. In addition to the runtime requirement, the Maven plugins, the Gradle plugin and the annotation processor now require a Java 17+ JVM to run the build, and the OSGi bundles declare `osgi.ee=JavaSE 17`
 * Fix #8050: (karaf) The `kubernetes-karaf` feature repository no longer defines its own `scr` feature. `kubernetes-client` now depends on the `scr` feature provided by the Karaf distribution, which supplies the Declarative Services API bundles and the `scr:*` shell commands
 * Fix #8100: (tekton) Model classes `Template` and `AffinityAssistantTemplate` moved from package `io.fabric8.tekton.pod` to `io.fabric8.tekton.unversioned`, since tekton pipeline 1.16.0 declares them as `+versionName=unversioned`
+* Fix #6779: (httpclient-jetty) Moved from Jetty 11 to Jetty 12.1, see the [migration guide](./doc/MIGRATION-v8.md#jetty-12)
 
 ### 7.9.0 (2026-09-04)
 
