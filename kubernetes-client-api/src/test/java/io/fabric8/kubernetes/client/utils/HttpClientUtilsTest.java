@@ -188,6 +188,26 @@ class HttpClientUtilsTest {
   }
 
   @Nested
+  @DisplayName("decodeBasicCredentials")
+  class DecodeBasicCredentials {
+
+    @ParameterizedTest(name = "{index}: password ''{0}''")
+    @ValueSource(strings = { "password", "pass:word", ":password:", "" })
+    @DisplayName("splits at the first colon, the password may contain colons (RFC 7617)")
+    void decodesUsernameAndPassword(String password) {
+      assertThat(HttpClientUtils.decodeBasicCredentials(HttpClientUtils.basicCredentials("username", password)))
+          .containsExactly("username", password);
+    }
+
+    @Test
+    @DisplayName("without a colon, can't be decoded")
+    void withoutColonReturnsNull() {
+      final String credentials = "Basic " + Base64.getEncoder().encodeToString("username".getBytes(StandardCharsets.UTF_8));
+      assertThat(HttpClientUtils.decodeBasicCredentials(credentials)).isNull();
+    }
+  }
+
+  @Nested
   @DisplayName("getProxyUrl")
   @TestInstance(PER_CLASS)
   class GetProxyUrl {

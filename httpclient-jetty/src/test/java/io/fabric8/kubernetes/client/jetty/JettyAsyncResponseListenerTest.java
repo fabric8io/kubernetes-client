@@ -140,7 +140,7 @@ class JettyAsyncResponseListenerTest {
   }
 
   @Test
-  @DisplayName("success notified before the body is read (Jetty forwards 401/407 responses this way), completes done() once the body is consumed")
+  @DisplayName("success notified before the body is read (Jetty forwards 407 responses this way), completes done() once the body is consumed")
   void successBeforeBodyIsReadCompletesDoneOnceConsumed() {
     // Given
     source.write(true, ByteBuffer.wrap("forwarded".getBytes(StandardCharsets.UTF_8)), Callback.NOOP);

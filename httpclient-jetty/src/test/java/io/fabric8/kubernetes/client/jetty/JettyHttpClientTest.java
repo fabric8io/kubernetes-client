@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.jetty;
 
 import io.fabric8.kubernetes.client.http.HttpClient.DerivedClientBuilder;
+import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.http.WebSocket;
@@ -139,6 +140,24 @@ class JettyHttpClientTest {
           }).get(10L, TimeUnit.SECONDS);
       // Then
       assertThat(server.getLastRequest().getHeaders().headers("Connection")).containsExactly("Upgrade");
+    }
+  }
+
+  @Test
+  @DisplayName("restarted HTTP client, still returns a 401 without challenge with its body (Jetty re-installs its WWW-Authenticate handler on every start)")
+  void restartedClientReturnsUnauthorizedBody() throws Exception {
+    // Given
+    server.expect().withPath("/unauthorized-after-restart").andReturn(401, "Unauthorized").always();
+    try (var client = new JettyHttpClientFactory().newBuilder().build()) {
+      final var request = client.newHttpRequestBuilder().uri(server.url("/unauthorized-after-restart")).build();
+      client.sendAsync(request, String.class).get(10L, TimeUnit.SECONDS);
+      client.getJetty().stop();
+      // When
+      final var response = client.sendAsync(request, String.class).get(10L, TimeUnit.SECONDS);
+      // Then
+      assertThat(response)
+          .returns(401, HttpResponse::code)
+          .returns("Unauthorized", HttpResponse::body);
     }
   }
 

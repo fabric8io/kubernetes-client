@@ -40,7 +40,8 @@ public abstract class JettyAsyncResponseListener implements Response.Listener, A
   // a thread is reading from the content source or waiting on its demand, Content.Source allows a single pending demand
   private boolean reading;
   // done() completes once both the last chunk was read and Jetty reported success, in either order:
-  // responses Jetty forwards (e.g. 401/407 it couldn't authenticate) report success before their body is read
+  // responses Jetty forwards (a 407 it couldn't authenticate, a non-100 reply to Expect: 100-continue) report success
+  // before their body is read
   private boolean lastChunkRead;
   private boolean succeeded;
 

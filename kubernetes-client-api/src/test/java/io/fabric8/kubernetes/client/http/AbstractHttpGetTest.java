@@ -133,6 +133,24 @@ public abstract class AbstractHttpGetTest {
         .containsExactlyInAnyOrder("group-1", "group-2");
   }
 
+  @Test
+  @DisplayName("401 response without WWW-Authenticate (the API server sends none), is returned with its body")
+  void unauthorizedWithoutChallengeReturnsBody() throws Exception {
+    // Given
+    final var status = "{\"kind\":\"Status\",\"reason\":\"Unauthorized\",\"code\":401}";
+    server.expect().withPath("/unauthorized").andReturn(401, status).always();
+    // When
+    try (HttpClient client = getHttpClientFactory().newBuilder().build()) {
+      final var response = client
+          .sendAsync(client.newHttpRequestBuilder().uri(server.url("/unauthorized")).build(), String.class)
+          .get(10L, TimeUnit.SECONDS);
+      // Then
+      assertThat(response)
+          .returns(401, HttpResponse::code)
+          .returns(status, HttpResponse::body);
+    }
+  }
+
   @DisplayName("Supported response body types")
   @ParameterizedTest(name = "{index}: {0}")
   @ValueSource(classes = { String.class, byte[].class, Reader.class, InputStream.class })

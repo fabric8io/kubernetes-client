@@ -27,12 +27,14 @@ import org.eclipse.jetty.client.HttpProxy;
 import org.eclipse.jetty.client.Origin;
 import org.eclipse.jetty.client.Socks4Proxy;
 import org.eclipse.jetty.client.Socks5Proxy;
+import org.eclipse.jetty.client.WWWAuthenticationProtocolHandler;
 import org.eclipse.jetty.client.transport.HttpClientConnectionFactory;
 import org.eclipse.jetty.client.transport.HttpClientTransportDynamic;
 import org.eclipse.jetty.client.transport.HttpClientTransportOverHTTP;
 import org.eclipse.jetty.http2.client.HTTP2Client;
 import org.eclipse.jetty.http2.client.transport.ClientConnectionFactoryOverHTTP2;
 import org.eclipse.jetty.io.ClientConnector;
+import org.eclipse.jetty.util.component.LifeCycle;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.slf4j.Logger;
@@ -87,6 +89,14 @@ public class JettyHttpClientBuilder
       sslContextFactory.setSNIProvider((sslEngine, serverNames) -> sniServerNames);
     }
     HttpClient sharedHttpClient = new HttpClient(newTransport(sslContextFactory, preferHttp11));
+    // Authentication goes through the client's interceptors, Jetty never holds the API server credentials. Its
+    // WWW-Authenticate handler, installed on every start, fails a 401 without challenge, which is all the API server sends
+    sharedHttpClient.addEventListener(new LifeCycle.Listener() {
+      @Override
+      public void lifeCycleStarted(LifeCycle event) {
+        sharedHttpClient.getProtocolHandlers().remove(WWWAuthenticationProtocolHandler.NAME);
+      }
+    });
     // The WebSocket upgrade requests are sent by the HTTP client, so they get the same transport, TLS and proxy settings
     WebSocketClient sharedWebSocketClient = new WebSocketClient(sharedHttpClient);
     sharedWebSocketClient.setMaxBinaryMessageSize(MAX_WS_MESSAGE_SIZE);

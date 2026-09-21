@@ -65,7 +65,7 @@ public abstract class AbstractHttpClientProxyHttpsTest {
   protected abstract HttpClient.Factory getHttpClientFactory();
 
   @Test
-  @DisplayName("Proxied HttpClient with basic authorization adds required headers to the request")
+  @DisplayName("Proxied HttpClient with basic authorization (the password contains a colon) adds required headers to the request")
   protected void proxyConfigurationAddsRequiredHeadersForHttps() throws Exception {
     final AtomicReference<RecordedRequest> initialConnectRequest = new AtomicReference<>();
     final ResponseProvider<String> bodyProvider = new ResponseProvider<String>() {
@@ -100,7 +100,9 @@ public abstract class AbstractHttpClientProxyHttpsTest {
     final HttpClient.Builder builder = getHttpClientFactory().newBuilder()
         .sslContext(null, SSLUtils.trustManagers(null, null, true, null, null))
         .proxyAddress(new InetSocketAddress("localhost", proxyServer.getPort()))
-        .proxyAuthorization(basicCredentials("auth", "cred"));
+        // The colon in the password must survive decoding: the CONNECT only authenticates with credentials configured
+        // on the transport, a Proxy-Authorization request header never reaches it
+        .proxyAuthorization(basicCredentials("auth", "cr:ed"));
     try (HttpClient client = builder.build()) {
       // When (just send and ignore the response, we only care about the CONNECT request headers)
       client.sendAsync(client.newHttpRequestBuilder().uri("https://example.com/proxied").build(), String.class)
@@ -111,7 +113,7 @@ public abstract class AbstractHttpClientProxyHttpsTest {
       // established, so we await that observable instead of blocking on the request's (irrelevant) final outcome.
       Awaitility.await().atMost(30, TimeUnit.SECONDS).untilAsserted(() -> assertThat(initialConnectRequest)
           .doesNotHaveNullValue()
-          .hasValueMatching(r -> r.getHeader("Proxy-Authorization").equals("Basic YXV0aDpjcmVk")));
+          .hasValueMatching(r -> r.getHeader("Proxy-Authorization").equals(basicCredentials("auth", "cr:ed"))));
     }
   }
 }

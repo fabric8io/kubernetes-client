@@ -141,7 +141,8 @@ public class HttpClientUtils {
       final String encodedCredentials = basicCredentials.replaceFirst("Basic ", "");
       final String decodedProxyAuthorization = new String(Base64.getDecoder().decode(encodedCredentials),
           StandardCharsets.UTF_8);
-      final String[] userPassword = decodedProxyAuthorization.split(":");
+      // RFC 7617: the user-id can't contain a colon, the password can
+      final String[] userPassword = decodedProxyAuthorization.split(":", 2);
       if (userPassword.length == 2) {
         return userPassword;
       }
