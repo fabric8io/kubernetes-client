@@ -55,17 +55,16 @@ import java.nio.file.Files;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.cert.X509Certificate;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -89,7 +88,6 @@ public class MockWebServer implements Closeable {
   private final BlockingQueue<RecordedRequest> requestQueue;
   private final AtomicInteger requestCount;
   private final List<MockWebServerListener> listeners;
-  private final Collection<io.vertx.core.http.HttpConnection> activeConnections = new ConcurrentLinkedQueue<>();
   @SuppressWarnings("java:S3077") // volatile reference-swap; Dispatcher implementations are thread-safe
   private volatile Dispatcher dispatcher;
   private ClientAuth clientAuth;
@@ -159,14 +157,10 @@ public class MockWebServer implements Closeable {
     }
     httpServer = vertx.createHttpServer(options);
     httpServer.connectionHandler(event -> {
-      activeConnections.add(event);
       final RecordedHttpConnection connection = new RecordedHttpConnection(
           event.remoteAddress(), event.localAddress(), ssl);
       listeners.forEach(listener -> listener.onConnection(connection));
-      event.closeHandler(res -> {
-        activeConnections.remove(event);
-        listeners.forEach(listener -> listener.onConnectionClosed(connection));
-      });
+      event.closeHandler(res -> listeners.forEach(listener -> listener.onConnectionClosed(connection)));
     });
     httpServer.requestHandler(new HttpServerRequestHandler(vertx) {
       @Override
@@ -196,15 +190,14 @@ public class MockWebServer implements Closeable {
     // connection state (e.g. WebSocketSession executors) that an in-flight upgrade may still
     // have been about to touch via onOpen — avoiding a RejectedExecutionException race.
     dispatcher.shutdown();
-    // Force-close all active connections before httpServer.close().
-    // Vert.x 5 waits for all connection channels to reach channelInactive, which hangs
-    // when the client dropped the TCP connection without sending a WebSocket close frame.
-    activeConnections.forEach(io.vertx.core.http.HttpConnection::close);
-    activeConnections.clear();
-    awaitQuietly(httpServer.close(), 1);
+    // Vert.x 5 HttpServer.shutdown(Duration) initiates graceful shutdown: stops accepting
+    // new connections, waits up to the given duration for in-flight requests to complete,
+    // then force-closes any remaining connections including WebSocket channels whose
+    // clients disconnected without a close handshake.
+    await(httpServer.shutdown(Duration.ofSeconds(1)), "Unable to close MockWebServer");
     dispatcher.releaseResources();
     info("done accepting connections");
-    awaitQuietly(vertx.close(), 5);
+    await(vertx.close(), "Unable to close Vertx");
   }
 
   @Override
@@ -378,24 +371,6 @@ public class MockWebServer implements Closeable {
       };
     } catch (Exception e) {
       throw new IllegalStateException("Failed to generate self-signed certificate with SANs", e);
-    }
-  }
-
-  private static <T> void awaitQuietly(Future<T> vertxFuture, long timeoutSeconds) {
-    final CompletableFuture<T> future = new CompletableFuture<>();
-    vertxFuture.onComplete(r -> {
-      if (r.succeeded()) {
-        future.complete(r.result());
-      } else {
-        future.completeExceptionally(r.cause());
-      }
-    });
-    try {
-      future.get(timeoutSeconds, TimeUnit.SECONDS);
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-    } catch (ExecutionException | TimeoutException e) {
-      logger.log(Level.FINE, "Timed out waiting for future, proceeding with shutdown", e);
     }
   }
 
