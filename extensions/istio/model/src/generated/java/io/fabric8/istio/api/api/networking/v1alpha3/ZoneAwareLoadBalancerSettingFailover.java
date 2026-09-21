@@ -1,5 +1,5 @@
 
-package io.fabric8.istio.api.api.networking.v1beta1;
+package io.fabric8.istio.api.api.networking.v1alpha3;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,12 +33,13 @@ import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * The following values are used to construct proxy image url. format: `${hub}/${image_name}/${tag}-${image_type}`, example: `registry.istio.io/release/proxyv2:1.11.1` or `registry.istio.io/release/proxyv2:1.11.1-distroless`. This information was previously part of the Values API.
+ * Specify the traffic failover policy across regions. Since zone and sub-zone failover is supported by default this only needs to be specified for regions when the operator needs to constrain traffic failover so that the default behavior of failing over to any endpoint globally does not apply. This is useful when failing over traffic across regions would not improve service health or may need to be restricted for other reasons like regulatory controls.
  */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "imageType"
+    "from",
+    "to"
 })
 @ToString
 @EqualsAndHashCode
@@ -62,48 +63,67 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ProxyImage implements Editable<ProxyImageBuilder>, KubernetesResource
+public class ZoneAwareLoadBalancerSettingFailover implements Editable<ZoneAwareLoadBalancerSettingFailoverBuilder>, KubernetesResource
 {
 
-    @JsonProperty("imageType")
-    private String imageType;
+    @JsonProperty("from")
+    private String from;
+    @JsonProperty("to")
+    private String to;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public ProxyImage() {
+    public ZoneAwareLoadBalancerSettingFailover() {
     }
 
-    public ProxyImage(String imageType) {
+    public ZoneAwareLoadBalancerSettingFailover(String from, String to) {
         super();
-        this.imageType = imageType;
+        this.from = from;
+        this.to = to;
     }
 
     /**
-     * The image type of the image. Istio publishes default, debug, and distroless images. Other values are allowed if those image types (example: centos) are published to the specified hub. supported values: default, debug, distroless.
+     * Originating region.
      */
-    @JsonProperty("imageType")
-    public String getImageType() {
-        return imageType;
+    @JsonProperty("from")
+    public String getFrom() {
+        return from;
     }
 
     /**
-     * The image type of the image. Istio publishes default, debug, and distroless images. Other values are allowed if those image types (example: centos) are published to the specified hub. supported values: default, debug, distroless.
+     * Originating region.
      */
-    @JsonProperty("imageType")
-    public void setImageType(String imageType) {
-        this.imageType = imageType;
+    @JsonProperty("from")
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    /**
+     * Destination region the traffic will fail over to when endpoints in the 'from' region becomes unhealthy.
+     */
+    @JsonProperty("to")
+    public String getTo() {
+        return to;
+    }
+
+    /**
+     * Destination region the traffic will fail over to when endpoints in the 'from' region becomes unhealthy.
+     */
+    @JsonProperty("to")
+    public void setTo(String to) {
+        this.to = to;
     }
 
     @JsonIgnore
-    public ProxyImageBuilder edit() {
-        return new ProxyImageBuilder(this);
+    public ZoneAwareLoadBalancerSettingFailoverBuilder edit() {
+        return new ZoneAwareLoadBalancerSettingFailoverBuilder(this);
     }
 
     @JsonIgnore
-    public ProxyImageBuilder toBuilder() {
+    public ZoneAwareLoadBalancerSettingFailoverBuilder toBuilder() {
         return edit();
     }
 

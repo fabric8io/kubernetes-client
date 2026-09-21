@@ -1,5 +1,5 @@
 
-package io.fabric8.istio.api.api.networking.v1beta1;
+package io.fabric8.istio.api.api.networking.v1alpha3;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,12 +33,13 @@ import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * The following values are used to construct proxy image url. format: `${hub}/${image_name}/${tag}-${image_type}`, example: `registry.istio.io/release/proxyv2:1.11.1` or `registry.istio.io/release/proxyv2:1.11.1-distroless`. This information was previously part of the Values API.
+ * Settings for HTTP/2 PING frames.
  */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "imageType"
+    "interval",
+    "timeout"
 })
 @ToString
 @EqualsAndHashCode
@@ -62,48 +63,67 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class ProxyImage implements Editable<ProxyImageBuilder>, KubernetesResource
+public class ConnectionPoolSettingsHTTPSettingsConnectionKeepalive implements Editable<ConnectionPoolSettingsHTTPSettingsConnectionKeepaliveBuilder>, KubernetesResource
 {
 
-    @JsonProperty("imageType")
-    private String imageType;
+    @JsonProperty("interval")
+    private String interval;
+    @JsonProperty("timeout")
+    private String timeout;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public ProxyImage() {
+    public ConnectionPoolSettingsHTTPSettingsConnectionKeepalive() {
     }
 
-    public ProxyImage(String imageType) {
+    public ConnectionPoolSettingsHTTPSettingsConnectionKeepalive(String interval, String timeout) {
         super();
-        this.imageType = imageType;
+        this.interval = interval;
+        this.timeout = timeout;
     }
 
     /**
-     * The image type of the image. Istio publishes default, debug, and distroless images. Other values are allowed if those image types (example: centos) are published to the specified hub. supported values: default, debug, distroless.
+     * Settings for HTTP/2 PING frames.
      */
-    @JsonProperty("imageType")
-    public String getImageType() {
-        return imageType;
+    @JsonProperty("interval")
+    public String getInterval() {
+        return interval;
     }
 
     /**
-     * The image type of the image. Istio publishes default, debug, and distroless images. Other values are allowed if those image types (example: centos) are published to the specified hub. supported values: default, debug, distroless.
+     * Settings for HTTP/2 PING frames.
      */
-    @JsonProperty("imageType")
-    public void setImageType(String imageType) {
-        this.imageType = imageType;
+    @JsonProperty("interval")
+    public void setInterval(String interval) {
+        this.interval = interval;
+    }
+
+    /**
+     * Settings for HTTP/2 PING frames.
+     */
+    @JsonProperty("timeout")
+    public String getTimeout() {
+        return timeout;
+    }
+
+    /**
+     * Settings for HTTP/2 PING frames.
+     */
+    @JsonProperty("timeout")
+    public void setTimeout(String timeout) {
+        this.timeout = timeout;
     }
 
     @JsonIgnore
-    public ProxyImageBuilder edit() {
-        return new ProxyImageBuilder(this);
+    public ConnectionPoolSettingsHTTPSettingsConnectionKeepaliveBuilder edit() {
+        return new ConnectionPoolSettingsHTTPSettingsConnectionKeepaliveBuilder(this);
     }
 
     @JsonIgnore
-    public ProxyImageBuilder toBuilder() {
+    public ConnectionPoolSettingsHTTPSettingsConnectionKeepaliveBuilder toBuilder() {
         return edit();
     }
 

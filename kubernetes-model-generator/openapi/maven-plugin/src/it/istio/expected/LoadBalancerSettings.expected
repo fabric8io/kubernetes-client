@@ -39,7 +39,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "LbPolicy",
     "localityLbSetting",
     "warmup",
-    "warmupDurationSecs"
+    "warmupDurationSecs",
+    "zoneAwareLbSetting"
 })
 @ToString
 @EqualsAndHashCode
@@ -75,6 +76,8 @@ public class LoadBalancerSettings implements Editable<LoadBalancerSettingsBuilde
     private WarmupConfiguration warmup;
     @JsonProperty("warmupDurationSecs")
     private String warmupDurationSecs;
+    @JsonProperty("zoneAwareLbSetting")
+    private ZoneAwareLoadBalancerSetting zoneAwareLbSetting;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -84,12 +87,13 @@ public class LoadBalancerSettings implements Editable<LoadBalancerSettingsBuilde
     public LoadBalancerSettings() {
     }
 
-    public LoadBalancerSettings(IsLoadBalancerSettingsLbPolicy lbPolicy, LocalityLoadBalancerSetting localityLbSetting, WarmupConfiguration warmup, String warmupDurationSecs) {
+    public LoadBalancerSettings(IsLoadBalancerSettingsLbPolicy lbPolicy, LocalityLoadBalancerSetting localityLbSetting, WarmupConfiguration warmup, String warmupDurationSecs, ZoneAwareLoadBalancerSetting zoneAwareLbSetting) {
         super();
         this.lbPolicy = lbPolicy;
         this.localityLbSetting = localityLbSetting;
         this.warmup = warmup;
         this.warmupDurationSecs = warmupDurationSecs;
+        this.zoneAwareLbSetting = zoneAwareLbSetting;
     }
 
     @JsonProperty("LbPolicy")
@@ -131,6 +135,16 @@ public class LoadBalancerSettings implements Editable<LoadBalancerSettingsBuilde
     @JsonProperty("warmupDurationSecs")
     public void setWarmupDurationSecs(String warmupDurationSecs) {
         this.warmupDurationSecs = warmupDurationSecs;
+    }
+
+    @JsonProperty("zoneAwareLbSetting")
+    public ZoneAwareLoadBalancerSetting getZoneAwareLbSetting() {
+        return zoneAwareLbSetting;
+    }
+
+    @JsonProperty("zoneAwareLbSetting")
+    public void setZoneAwareLbSetting(ZoneAwareLoadBalancerSetting zoneAwareLbSetting) {
+        this.zoneAwareLbSetting = zoneAwareLbSetting;
     }
 
     @JsonIgnore

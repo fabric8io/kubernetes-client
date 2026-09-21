@@ -32,6 +32,9 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
+/**
+ * Consistent Hash-based load balancing can be used to provide soft session affinity based on HTTP headers, cookies or other properties.
+ */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class LoadBalancerSettingsConsistentHash implements IsLoadBalancerSetting
         this.consistentHash = consistentHash;
     }
 
+    /**
+     * Consistent Hash-based load balancing can be used to provide soft session affinity based on HTTP headers, cookies or other properties.
+     */
     @JsonProperty("consistentHash")
     public LoadBalancerSettingsConsistentHashLB getConsistentHash() {
         return consistentHash;
     }
 
+    /**
+     * Consistent Hash-based load balancing can be used to provide soft session affinity based on HTTP headers, cookies or other properties.
+     */
     @JsonProperty("consistentHash")
     public void setConsistentHash(LoadBalancerSettingsConsistentHashLB consistentHash) {
         this.consistentHash = consistentHash;
