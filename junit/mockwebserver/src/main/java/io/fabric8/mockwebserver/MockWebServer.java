@@ -196,15 +196,15 @@ public class MockWebServer implements Closeable {
     // connection state (e.g. WebSocketSession executors) that an in-flight upgrade may still
     // have been about to touch via onOpen — avoiding a RejectedExecutionException race.
     dispatcher.shutdown();
-    // Force-close all active connections so httpServer.close() can complete.
-    // Vert.x 5 waits for WebSocket connections to complete the close handshake, which hangs
-    // when the client dropped the TCP connection without sending a close frame.
+    // Force-close all active connections before httpServer.close().
+    // Vert.x 5 waits for all connection channels to reach channelInactive, which hangs
+    // when the client dropped the TCP connection without sending a WebSocket close frame.
     activeConnections.forEach(io.vertx.core.http.HttpConnection::close);
     activeConnections.clear();
-    awaitQuietly(httpServer.close(), 2);
+    awaitQuietly(httpServer.close(), 1);
     dispatcher.releaseResources();
     info("done accepting connections");
-    await(vertx.close(), "Unable to close Vertx");
+    awaitQuietly(vertx.close(), 5);
   }
 
   @Override
