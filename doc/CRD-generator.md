@@ -93,6 +93,7 @@ spec:
           spec:
             properties:
               someValue:
+                format: int32
                 type: integer
             type: object
           status:
@@ -133,6 +134,7 @@ The generated field in the CRD will be named after the value provided in the ann
           spec:
             properties:
               myValue:
+                format: int32
                 type: integer
             type: object
 ```
@@ -188,6 +190,7 @@ The generated field in the CRD will preserve the provided description, such as:
             properties:
               someValue:
                 description: This is some value
+                format: int32
                 type: integer
             type: object
 ```
@@ -250,6 +253,7 @@ The field will have the `minimum` property in the generated CRD, such as:
             properties:
               someValue:
                 minimum: -1.0
+                format: int32
                 type: integer
             type: object
 ```
@@ -264,6 +268,7 @@ If the value should be *exclusive* use `@Min(value = -1, inclusive = false)`:
               someValue:
                 minimum: -1.0
                 exclusiveMinimum: true
+                format: int32
                 type: integer
             type: object
 ```
@@ -286,6 +291,7 @@ The field will have the `maximum` property in the generated CRD, such as:
             properties:
               someValue:
                 maximum: 1.0
+                format: int32
                 type: integer
             type: object
 ```
@@ -300,6 +306,7 @@ If the value should be *exclusive* use `@Max(value = 1, inclusive = false)`:
               someValue:
                 maximum: 1.0
                 exclusiveMaximum: true
+                format: int32
                 type: integer
             type: object
 ```
@@ -343,6 +350,8 @@ in the generated CRD depending on the type:
                 type: "object"
             type: object
 ```
+
+A `byte[]` or `ByteBuffer` is written as a base64 string, so its byte limits become the matching base64 length, which is only exact for multiples of 3 bytes: `@Size(max = 100)` results in `maxLength: 136`, which also accepts 101 and 102 bytes, and `@Size(min = 2)` in `minLength: 4`, which also accepts 1 byte.
 
 ### io.fabric8.generator.annotation.Pattern
 
@@ -405,6 +414,7 @@ The field will be marked as `required` in the generated CRD, such as:
           spec:
             properties:
               someValue:
+                format: int32
                 type: integer
             required:
             - someValue
@@ -493,6 +503,8 @@ public class ExampleSpec {
 ```
 
 The CRD generator will customize columns shown by the `kubectl get` command. Above example adds the `SOME_VALUE` column.
+Date and time properties get a `string` column: the API server renders a `date` column as the age of an RFC 3339 timestamp,
+so a `LocalDate` would show `<invalid>`. Use `@AdditionalPrinterColumn` with `type = DATE` for an age column.
 
 ```yaml
           - additionalPrinterColumns:
@@ -831,6 +843,7 @@ spec:
           spec:
             properties:
               replicas:
+                format: "int32"
                 type: "integer"
             type: "object"
           status:
@@ -838,6 +851,7 @@ spec:
               labelSelector:
                 type: "string"
               replicas:
+                format: "int32"
                 type: "integer"
             type: "object"
         type: "object"

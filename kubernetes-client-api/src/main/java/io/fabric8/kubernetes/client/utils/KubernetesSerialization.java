@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.runtime.RawExtension;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import io.fabric8.kubernetes.model.jackson.GoCompatibilityModule;
+import io.fabric8.kubernetes.model.jackson.Jackson2JdkTypesModule;
 import io.fabric8.kubernetes.model.jackson.UnmatchedFieldTypeModule;
 import org.snakeyaml.engine.v2.api.Dump;
 import org.snakeyaml.engine.v2.api.DumpSettings;
@@ -74,19 +75,19 @@ public class KubernetesSerialization {
 
   /**
    * Creates a new instance with a fresh ObjectMapper using Jackson 2.x compatible defaults
-   * ({@link JsonMapper#builderWithJackson2Defaults()}), so user types keep their 2.x wire format
-   * (property order, enum names, null primitives, getter-only collections...).
+   * ({@link JsonMapper#builderWithJackson2Defaults()} and the {@link Jackson2JdkTypesModule}), so user types keep their
+   * 2.x wire format (property order, enum names, null primitives, getter-only collections, JDK types...).
    */
   public KubernetesSerialization() {
-    this(JsonMapper.builderWithJackson2Defaults().build(), true);
+    this(JsonMapper.builderWithJackson2Defaults().addModule(new Jackson2JdkTypesModule()).build(), true);
   }
 
   /**
    * Creates a new instance configured for kubernetes resource serialization / deserialization based on a copy
    * of the given ObjectMapper (Jackson 3 mappers are immutable, the given instance is not modified).
    * <p>
-   * The rest of the mapper settings are preserved, use {@link JsonMapper#builderWithJackson2Defaults()} to match the
-   * defaults of {@link #KubernetesSerialization()}.
+   * The rest of the mapper settings are preserved, use {@link JsonMapper#builderWithJackson2Defaults()} and the
+   * {@link Jackson2JdkTypesModule} to match the defaults of {@link #KubernetesSerialization()}.
    *
    * @param mapper the ObjectMapper to use.
    * @param searchClassloaders if {@link KubernetesResource} should be automatically discovered via {@link ServiceLoader}.
@@ -99,8 +100,8 @@ public class KubernetesSerialization {
    * Creates a new instance configured for kubernetes resource serialization / deserialization based on a copy
    * of the given ObjectMapper (Jackson 3 mappers are immutable, the given instance is not modified).
    * <p>
-   * The rest of the mapper settings are preserved, use {@link JsonMapper#builderWithJackson2Defaults()} to match the
-   * defaults of {@link #KubernetesSerialization()}.
+   * The rest of the mapper settings are preserved, use {@link JsonMapper#builderWithJackson2Defaults()} and the
+   * {@link Jackson2JdkTypesModule} to match the defaults of {@link #KubernetesSerialization()}.
    *
    * @param mapper the ObjectMapper to use.
    * @param searchClassloaders if {@link KubernetesResource} should be automatically discovered via {@link ServiceLoader}.

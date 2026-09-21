@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.model.jackson.GoCompatibilityModule;
+import io.fabric8.kubernetes.model.jackson.Jackson2JdkTypesModule;
 import io.fabric8.kubernetes.model.jackson.UnmatchedFieldTypeModule;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
@@ -92,6 +93,7 @@ public class Serialization {
           YAML_MAPPER = YAMLMapper.builder(
               YAMLFactory.builder().configureForJackson2().disable(YAMLWriteFeature.USE_NATIVE_TYPE_ID).build())
               .configureForJackson2()
+              .addModule(new Jackson2JdkTypesModule())
               .addModule(new GoCompatibilityModule())
               .addModule(UNMATCHED_FIELD_TYPE_MODULE)
               .build();
