@@ -84,7 +84,6 @@ public abstract class AbstractWebSocketSendReceiveTest {
       final String result = receivedText.poll(10L, TimeUnit.SECONDS);
       // Then
       assertThat(result).isEqualTo("received");
-      ws.sendClose(1000, null);
     }
   }
 
@@ -108,7 +107,7 @@ public abstract class AbstractWebSocketSendReceiveTest {
           .always();
       final BlockingQueue<String> receivedText = new LinkedBlockingQueue<>();
       // When
-      final var ws = derivedClient.newWebSocketBuilder()
+      derivedClient.newWebSocketBuilder()
           .uri(URI.create(server.url("receive-large-derived")))
           .buildAsync(new WebSocket.Listener() {
             @Override
@@ -121,7 +120,6 @@ public abstract class AbstractWebSocketSendReceiveTest {
       assertThat(receivedText.poll(10L, TimeUnit.SECONDS))
           .as("a derived client must keep the configured WebSocket message limits, not revert to transport defaults")
           .isEqualTo(largeMessage);
-      ws.sendClose(1000, null);
     }
   }
 
@@ -151,7 +149,7 @@ public abstract class AbstractWebSocketSendReceiveTest {
       //   mapped to a WebSocket.Builder. We should probably use the WebSocket.Builder
       //   directly
       //.uri(URI.create(String.format("ws://%s:%s/receive-text", server.getHostName(), server.getPort())))
-      final var ws = derivedClient.newWebSocketBuilder()
+      derivedClient.newWebSocketBuilder()
           .uri(URI.create(server.url("receive-text")))
           .buildAsync(new WebSocket.Listener() {
             @Override
@@ -168,7 +166,6 @@ public abstract class AbstractWebSocketSendReceiveTest {
       result = receivedText.poll(10L, TimeUnit.SECONDS);
       // Then
       assertThat(result).isEqualTo(multiframe);
-      ws.sendClose(1000, null);
     }
   }
 
