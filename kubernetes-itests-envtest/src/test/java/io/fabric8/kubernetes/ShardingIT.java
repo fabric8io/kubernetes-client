@@ -18,10 +18,16 @@ package io.fabric8.kubernetes;
 import io.fabric8.kubeapitest.junit.EnableKubeAPIServer;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
+import io.fabric8.kubernetes.api.model.Namespace;
+import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
+import io.fabric8.kubernetes.client.dsl.base.ShardField;
 import io.fabric8.kubernetes.client.dsl.base.ShardSelector;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import org.junit.jupiter.api.AfterEach;
@@ -29,10 +35,18 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.awaitility.Awaitility.await;
 
 @EnableKubeAPIServer(kubeAPIVersion = "1.36.*", apiServerFlags = "--feature-gates=ShardedListAndWatch=true")
@@ -42,13 +56,14 @@ public class ShardingIT {
   public static final String SHARD1 = "shardRange(object.metadata.uid, '0x0000000000000000', '0x8000000000000000')";
   public static final String SHARD2 = "shardRange(object.metadata.uid, '0x8000000000000000', '0x10000000000000000')";
   public static final Duration EVENT_SETTLE_WINDOW = Duration.ofMillis(500);
+  private static final List<String> NAMESPACES = List.of("shard-a", "shard-b", "shard-c");
   static KubernetesClient client;
 
   // The apiserver is class-scoped, so labelled ConfigMaps from one method would otherwise
   // leak into the next and turn create() into AlreadyExists, masking the original failure.
   @AfterEach
   void cleanup() {
-    client.configMaps().inNamespace("default").withLabelSelector(LABEL_SELECTOR).delete();
+    client.configMaps().inAnyNamespace().withLabelSelector(LABEL_SELECTOR).delete();
   }
 
   @Test
@@ -65,20 +80,79 @@ public class ShardingIT {
     assertThat(shard1.getItems().size() + shard2.getItems().size()).isEqualTo(1);
   }
 
-  // The expression rendered by ShardSelector must be accepted by the apiserver as-is, including the
-  // zero padded bounds and the 17 digit '0x10000000000000000' upper bound of the last shard.
+  // The expressions rendered by ShardSelector must be accepted by the apiserver as-is, including the
+  // zero padded bounds and the 17 digit '0x10000000000000000' upper bound of the last shard, and the
+  // shards it computes must really partition the objects.
   @Test
-  void shardedListWithTypedShardSelector() {
-    client.resource(configMap()).create();
+  void typedShardSelectorPartitionsTheObjects() {
+    var names = createConfigMaps(20);
 
-    var shard1 = client.configMaps()
-        .withLabelSelector(LABEL_SELECTOR)
-        .withShardSelector(ShardSelector.ofShard(0, 2)).list();
-    var shard2 = client.configMaps()
-        .withLabelSelector(LABEL_SELECTOR)
-        .withShardSelector(ShardSelector.ofShard(1, 2)).list();
+    var shards = IntStream.range(0, 4)
+        .mapToObj(shard -> namesIn(ShardSelector.ofShard(shard, 4)))
+        .collect(Collectors.toList());
 
-    assertThat(shard1.getItems().size() + shard2.getItems().size()).isEqualTo(1);
+    // Every object in exactly one shard: a duplicate or a missing one fails the count.
+    assertThat(shards.stream().flatMap(Set::stream).collect(Collectors.toList()))
+        .containsExactlyInAnyOrderElementsOf(names);
+  }
+
+  // A selector with more than one range is sent as 'shardRange(...) || shardRange(...)', which no other
+  // test exercises against a real apiserver.
+  @Test
+  void typedShardSelectorCombinesRangesWithOr() {
+    var names = createConfigMaps(20);
+
+    var evenShards = namesIn(ShardSelector.builder().addShard(0, 4).addShard(2, 4).build());
+    var oddShards = namesIn(ShardSelector.builder().addShard(1, 4).addShard(3, 4).build());
+
+    assertThat(evenShards).doesNotContainAnyElementsOf(oddShards);
+    assertThat(Stream.concat(evenShards.stream(), oddShards.stream()).collect(Collectors.toList()))
+        .containsExactlyInAnyOrderElementsOf(names);
+  }
+
+  // Sharding on the namespace hashes a value the objects share, so a namespace must never be split
+  // across shards - which is the point of sharding on it.
+  @Test
+  void typedShardSelectorShardsByNamespace() {
+    var namesByNamespace = new HashMap<String, Set<String>>();
+    for (String namespace : NAMESPACES) {
+      client.namespaces().resource(namespace(namespace)).createOr(r -> r.update());
+      namesByNamespace.put(namespace, createConfigMaps(6, namespace));
+    }
+
+    var shard1 = namesIn(ShardSelector.ofShard(ShardField.NAMESPACE, 0, 2));
+    var shard2 = namesIn(ShardSelector.ofShard(ShardField.NAMESPACE, 1, 2));
+
+    // The two shards must partition the objects, so a selector the apiserver ignored - every object in
+    // both listings - is caught here rather than satisfying the per namespace check below vacuously.
+    assertThat(Stream.concat(shard1.stream(), shard2.stream()).collect(Collectors.toList()))
+        .containsExactlyInAnyOrderElementsOf(
+            namesByNamespace.values().stream().flatMap(Set::stream).collect(Collectors.toList()));
+    // Hashing the UID instead would keep all 6 ConfigMaps of a namespace together only 1 time in 32.
+    assertThat(namesByNamespace).allSatisfy((namespace, names) -> assertThat(
+        shard1.containsAll(names) || shard2.containsAll(names))
+        .withFailMessage("namespace %s was split across shards: %s vs %s", namespace, shard1, shard2)
+        .isTrue());
+  }
+
+  // The client refuses to build a selector mixing fields; this pins the server side rule it mirrors, so
+  // the two cannot drift apart. The apiserver reports the parse failure as a 500 rather than a 400, which
+  // the client retries, hence the retries-off request config.
+  @Test
+  void mixedFieldExpressionIsRejectedByTheApiServer() {
+    var mixed = SHARD1 + " || shardRange(object.metadata.namespace, "
+        + "'0x8000000000000000', '0x10000000000000000')";
+
+    assertThatExceptionOfType(KubernetesClientException.class)
+        .isThrownBy(() -> client.adapt(NamespacedKubernetesClient.class)
+            .withRequestConfig(new RequestConfigBuilder().withRequestRetryBackoffLimit(0).build())
+            .call(c -> c.configMaps()
+                .inNamespace("default")
+                .withLabelSelector(LABEL_SELECTOR)
+                .withShardSelector(mixed)
+                .list()))
+        .withMessageContaining("same field")
+        .satisfies(e -> assertThat(e.getCode()).isIn(400, 500));
   }
 
   @Test
@@ -178,13 +252,47 @@ public class ShardingIT {
   }
 
   private ConfigMap configMap(String name) {
+    return configMap(name, "default");
+  }
+
+  private static ConfigMap configMap(String name, String namespace) {
     return new ConfigMapBuilder()
         .withMetadata(new ObjectMetaBuilder()
             .withName(name)
             .withLabels(Map.of("test", "true"))
-            .withNamespace("default")
+            .withNamespace(namespace)
             .build())
         .build();
+  }
+
+  private static Namespace namespace(String name) {
+    return new NamespaceBuilder()
+        .withMetadata(new ObjectMetaBuilder().withName(name).build())
+        .build();
+  }
+
+  private static Set<String> createConfigMaps(int count) {
+    return createConfigMaps(count, "default");
+  }
+
+  // Names are unique across namespaces, so a cluster-wide listing can be compared by name alone.
+  private static Set<String> createConfigMaps(int count, String namespace) {
+    Set<String> names = new HashSet<>();
+    for (int i = 0; i < count; i++) {
+      String name = namespace + "-cm-" + i;
+      client.resource(configMap(name, namespace)).create();
+      names.add(name);
+    }
+    return names;
+  }
+
+  private static Set<String> namesIn(ShardSelector shardSelector) {
+    return client.configMaps().inAnyNamespace()
+        .withLabelSelector(LABEL_SELECTOR)
+        .withShardSelector(shardSelector)
+        .list().getItems().stream()
+        .map(configMap -> configMap.getMetadata().getName())
+        .collect(Collectors.toSet());
   }
 
 }
