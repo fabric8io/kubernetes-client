@@ -201,7 +201,7 @@
             </goals>
             <configuration>
               <excludeDependencies>
-                kubernetes-httpclient-vertx
+                kubernetes-httpclient-vertx-5
               </excludeDependencies>
               <instructions>
                 <Bundle-Name>${project.name}</Bundle-Name>
