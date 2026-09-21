@@ -163,26 +163,9 @@
         Usage: mvn -Phttpclient-vertx-4 -Pitests verify
         This profile overrides Vert.x versions to 4.x and swaps the HTTP client module.
       -->
-      <dependencyManagement>
-        <dependencies>
-          <!-- Force Vert.x 4.x versions when this profile is active -->
-          <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-core</artifactId>
-            <version>${vertx4.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-web-client</artifactId>
-            <version>${vertx4.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-web</artifactId>
-            <version>${vertx4.version}</version>
-          </dependency>
-        </dependencies>
-      </dependencyManagement>
+      <properties>
+        <vertx4.version>${vertx4.version}</vertx4.version>
+      </properties>
       <dependencies>
         <dependency>
           <groupId>io.fabric8</groupId>
