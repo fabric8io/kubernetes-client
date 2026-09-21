@@ -50,9 +50,6 @@ public class ShardRange {
   private final BigInteger end;
 
   private ShardRange(String fieldPath, BigInteger start, BigInteger end) {
-    if (Utils.isNullOrEmpty(fieldPath)) {
-      throw new IllegalArgumentException("A shard range requires a field path");
-    }
     Objects.requireNonNull(start, "A shard range requires a start bound");
     Objects.requireNonNull(end, "A shard range requires an end bound");
     if (start.compareTo(MIN_HASH) < 0 || start.compareTo(MAX_HASH) >= 0) {
@@ -141,8 +138,9 @@ public class ShardRange {
   }
 
   /**
-   * @return this range as a single {@code shardRange(...)} CEL term, with the bounds as the zero padded
-   *         16 digit lower case hexadecimal values the API server expects, e.g.
+   * @return this range as a single {@code shardRange(...)} CEL term, with the bounds as the lower case
+   *         hexadecimal values the API server expects: zero padded to 16 digits, or the 17 of
+   *         {@link #MAX_HASH}, e.g.
    *         {@code shardRange(object.metadata.uid, '0x8000000000000000', '0x10000000000000000')}
    */
   public String toExpression() {
