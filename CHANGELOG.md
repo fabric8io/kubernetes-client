@@ -7,7 +7,6 @@
 
 #### Improvements
 * Fix #8008: Changed default HttpClient implementation from `kubernetes-httpclient-vertx` (Vert.x 4) to `kubernetes-httpclient-vertx-5` (Vert.x 5)
-* Fix #7374: (crd-generator) Ported CRD generator to Jackson 3 `jackson-module-jsonSchema`
 * Fix #7987: (kubernetes-client-api) `withShardSelector` accepts a typed `ShardSelector` (`ShardSelector.builder().addShard(0, 4).addShard(2, 4).build()`) next to the raw expression `String`, so the `shardRange(...)` CEL grammar and its hexadecimal bounds don't have to be written by hand
 
 #### Dependency Upgrade
