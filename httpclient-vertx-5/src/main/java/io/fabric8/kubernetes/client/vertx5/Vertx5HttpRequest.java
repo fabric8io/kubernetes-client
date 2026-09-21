@@ -95,6 +95,9 @@ class Vertx5HttpRequest {
 
           // If the caller asked for 100-continue semantics we first flush the headers,
           // wait for the server to acknowledge, then stream the body.
+          // Note: using writeHead() instead of sendHead() which is deprecated and scheduled
+          // for removal in Vert.x 6. Both are functionally identical — writeHead() delegates
+          // to sendHead() internally.
           if (request.isExpectContinue()) {
             req.continueHandler(v -> writeBody(req, request.body(), true));
             req.writeHead().onFailure(promise::fail);
@@ -116,11 +119,11 @@ class Vertx5HttpRequest {
    * Writes the request body to the HTTP request.
    * For simple body types (null, String, byte[]), uses req.end() directly.
    * For InputStream bodies, uses req.send(ReadStream) when headers have not been sent,
-   * or stream.pipeTo(req) when headers were already flushed by sendHead() (100-continue).
+   * or stream.pipeTo(req) when headers were already flushed by writeHead() (100-continue).
    *
    * @param req the Vert.x HTTP client request
    * @param body the body content to send, or null for no body
-   * @param headAlreadySent true if sendHead() was already called (Expect: 100-continue path)
+   * @param headAlreadySent true if writeHead() was already called (Expect: 100-continue path)
    */
   private void writeBody(HttpClientRequest req, BodyContent body, boolean headAlreadySent) {
     if (body == null) {
@@ -143,7 +146,7 @@ class Vertx5HttpRequest {
       InputStream is = i.getContent();
       ReadStream<Buffer> stream = new InputStreamReadStream(this, is, req);
       if (headAlreadySent) {
-        // After sendHead() (Expect: 100-continue), req.send(ReadStream) must not be used because
+        // After writeHead() (Expect: 100-continue), req.send(ReadStream) must not be used because
         // it re-sends headers internally, causing the request to hang indefinitely in Vert.x 5.
         // Use pipeTo which only streams the body data and calls end().
         stream.pipeTo(req);
