@@ -248,11 +248,14 @@ Both modules provide an implementation of `HttpClient.Factory` and use the same 
 This causes `NoClassDefFoundError` for Vert.x 5-specific classes like `io.vertx.core.impl.SysProps`.
 
 **Solution**: Ensure your project includes only ONE of these modules:
-- `kubernetes-httpclient-vertx-5` (default since 8.0, uses Vert.x 5.x) - included transitively via `kubernetes-client`
-- `kubernetes-httpclient-vertx` (optional, uses Vert.x 4.x) - requires explicit dependency and exclusion of vertx-5
+- `kubernetes-httpclient-vertx` (default, uses Vert.x 4.x) - included transitively via `kubernetes-client`
+- `kubernetes-httpclient-vertx-5` (optional, uses Vert.x 5.x) - requires explicit dependency and exclusion of vertx-4
 
-When using Vert.x 4, exclude the default Vert.x 5 client:
+When using Vert.x 5, exclude the default Vert.x 4 client and set the `vertx.version` property:
 ```xml
+<properties>
+  <vertx.version>${vertx5.version}</vertx.version> <!-- or explicit 5.0.7 -->
+</properties>
 <dependencies>
   <dependency>
     <groupId>io.fabric8</groupId>
@@ -260,13 +263,13 @@ When using Vert.x 4, exclude the default Vert.x 5 client:
     <exclusions>
       <exclusion>
         <groupId>io.fabric8</groupId>
-        <artifactId>kubernetes-httpclient-vertx-5</artifactId>
+        <artifactId>kubernetes-httpclient-vertx</artifactId>
       </exclusion>
     </exclusions>
   </dependency>
   <dependency>
     <groupId>io.fabric8</groupId>
-    <artifactId>kubernetes-httpclient-vertx</artifactId>
+    <artifactId>kubernetes-httpclient-vertx-5</artifactId>
   </dependency>
 </dependencies>
 ```
