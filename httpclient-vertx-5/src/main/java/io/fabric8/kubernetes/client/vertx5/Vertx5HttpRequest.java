@@ -96,11 +96,11 @@ class Vertx5HttpRequest {
           // If the caller asked for 100-continue semantics we first flush the headers,
           // wait for the server to acknowledge, then stream the body.
           if (request.isExpectContinue()) {
-            req.continueHandler(v -> writeBody(req, request.body()));
-            req.sendHead().onFailure(promise::fail);
+            req.continueHandler(v -> writeBody(req, request.body(), true));
+            req.writeHead().onFailure(promise::fail);
           } else {
             // Normal request - send headers and body
-            writeBody(req, request.body());
+            writeBody(req, request.body(), false);
           }
 
           return promise.future();
@@ -115,14 +115,14 @@ class Vertx5HttpRequest {
   /**
    * Writes the request body to the HTTP request.
    * For simple body types (null, String, byte[]), uses req.end() directly.
-   * For InputStream bodies, uses req.send(ReadStream) which handles the streaming internally.
-   * Note: For InputStream, this method returns after initiating the send - the response
-   * will be handled by the response() future set up in consumeBytes().
+   * For InputStream bodies, uses req.send(ReadStream) when headers have not been sent,
+   * or stream.pipeTo(req) when headers were already flushed by sendHead() (100-continue).
    *
    * @param req the Vert.x HTTP client request
    * @param body the body content to send, or null for no body
+   * @param headAlreadySent true if sendHead() was already called (Expect: 100-continue path)
    */
-  private void writeBody(HttpClientRequest req, BodyContent body) {
+  private void writeBody(HttpClientRequest req, BodyContent body, boolean headAlreadySent) {
     if (body == null) {
       req.end();
       return;
@@ -142,9 +142,14 @@ class Vertx5HttpRequest {
       StandardHttpRequest.InputStreamBodyContent i = (StandardHttpRequest.InputStreamBodyContent) body;
       InputStream is = i.getContent();
       ReadStream<Buffer> stream = new InputStreamReadStream(this, is, req);
-      // Use send(ReadStream) which handles the streaming properly.
-      // The response will be handled by the response() future already set up.
-      req.send(stream);
+      if (headAlreadySent) {
+        // After sendHead() (Expect: 100-continue), req.send(ReadStream) must not be used because
+        // it re-sends headers internally, causing the request to hang indefinitely in Vert.x 5.
+        // Use pipeTo which only streams the body data and calls end().
+        stream.pipeTo(req);
+      } else {
+        req.send(stream);
+      }
       return;
     }
     req.reset(0L, new IllegalArgumentException("Unsupported body content: " + body.getClass()));
