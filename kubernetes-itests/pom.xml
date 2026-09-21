@@ -164,7 +164,7 @@
         This profile overrides Vert.x versions to 4.x and swaps the HTTP client module.
       -->
       <properties>
-        <vertx4.version>${vertx4.version}</vertx4.version>
+        <vertx.version>${vertx4.version}</vertx.version>
       </properties>
       <dependencies>
         <dependency>
