@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import io.fabric8.kubernetes.api.model.Duration;
 import lombok.Getter;
 import lombok.Setter;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -63,6 +64,9 @@ public class ShapesSpec {
       @JsonSubTypes.Type(value = Point3d.class, name = "3d")
   })
   private List<Point> points;
+  /** Written as an Inner, and declared before a plain Object property that must still accept any value. */
+  @JsonSerialize(as = Inner.class)
+  private Object serializedAsInner;
   private Object any;
   private Map<String, Object> anyMap;
   private List<Object> anyList;

@@ -72,6 +72,13 @@ spec:
                 - "tcp"
                 - "udp"
                 type: "string"
+              serializedAsInner:
+                properties:
+                  computed:
+                    type: "string"
+                  name:
+                    type: "string"
+                type: "object"
               shape:
                 properties:
                   name:

@@ -77,14 +77,25 @@ class PreservedContentTest {
     }
 
     @Test
-    @DisplayName("An Object property serialized as a POJO (@JsonSerialize(as)) gets the POJO's schema")
+    @DisplayName("An Object property declared after one with @JsonSerialize(as) still accepts any JSON value")
+    void objectPropertyAfterSerializedAs() {
+      assertAcceptsAnyValue(JsonSchema.from(SerializedAsFirstSpec.class).getProperties().get("plain"));
+    }
+
+    @Test
+    @DisplayName("An Object property with @JsonSerialize(as) gets that type's schema, whatever precedes it")
     void objectSerializedAsPojo() {
-      // on its own: once an Object property has been visited, jackson-module-jsonSchema reuses that schema
-      assertThat(JsonSchema.from(SerializedAsPojoSpec.class).getProperties().get("serializedAsPojo"))
-          .returns("object", JSONSchemaProps::getType)
-          .returns(null, JSONSchemaProps::getXKubernetesPreserveUnknownFields)
-          .extracting(JSONSchemaProps::getProperties)
-          .satisfies(p -> assertThat(p).containsOnlyKeys("name"));
+      assertDescribes(JsonSchema.from(SerializedAsFirstSpec.class).getProperties().get("serializedAs"), "name");
+      assertDescribes(JsonSchema.from(SerializedAsLastSpec.class).getProperties().get("serializedAs"), "name");
+      assertDescribes(JsonSchema.from(SerializedAsLastSpec.class).getProperties().get("serializedAsOther"), "count");
+    }
+
+    @Test
+    @DisplayName("Object properties with @JsonSerialize(as) can be nested without a false cyclic reference")
+    void nestedSerializedAs() {
+      final JSONSchemaProps outer = JsonSchema.from(NestedSerializedAsSpec.class).getProperties().get("outer");
+      assertDescribes(outer, "inner");
+      assertDescribes(outer.getProperties().get("inner"), "name");
     }
   }
 
@@ -162,6 +173,18 @@ class PreservedContentTest {
     }
 
     @Test
+    @DisplayName("A subtype opting out with @JsonTypeInfo(use = NONE) prunes unknown fields")
+    void optOutOnSubtype() {
+      assertThat(properties.get("optedOut").getXKubernetesPreserveUnknownFields()).isNull();
+    }
+
+    @Test
+    @DisplayName("A property opting out with @JsonTypeInfo(use = NONE) prunes unknown fields despite its type's")
+    void optOutOnProperty() {
+      assertThat(properties.get("optedOutProperty").getXKubernetesPreserveUnknownFields()).isNull();
+    }
+
+    @Test
     @DisplayName("A type without polymorphic annotations prunes unknown fields")
     void notPolymorphic() {
       assertThat(properties.get("plainPet").getXKubernetesPreserveUnknownFields()).isNull();
@@ -172,6 +195,14 @@ class PreservedContentTest {
     assertThat(schema)
         .returns(null, JSONSchemaProps::getType)
         .returns(true, JSONSchemaProps::getXKubernetesPreserveUnknownFields);
+  }
+
+  private static void assertDescribes(JSONSchemaProps schema, String... properties) {
+    assertThat(schema)
+        .returns("object", JSONSchemaProps::getType)
+        .returns(null, JSONSchemaProps::getXKubernetesPreserveUnknownFields)
+        .extracting(JSONSchemaProps::getProperties)
+        .satisfies(p -> assertThat(p).containsOnlyKeys(properties));
   }
 
   private static void assertPreservesSubtypeContent(JSONSchemaProps schema) {
@@ -191,9 +222,36 @@ class PreservedContentTest {
     public Set rawSet;
   }
 
-  public static class SerializedAsPojoSpec {
+  /**
+   * jackson-module-jsonSchema builds one schema per declared type and reuses it for every later property of that type,
+   * so the order of Object properties decides which schema they share.
+   */
+  public static class SerializedAsFirstSpec {
     @JsonSerialize(as = Named.class)
-    public Object serializedAsPojo;
+    public Object serializedAs;
+    public Object plain;
+  }
+
+  public static class SerializedAsLastSpec {
+    public Object plain;
+    @JsonSerialize(as = Named.class)
+    public Object serializedAs;
+    @JsonSerialize(as = Counted.class)
+    public Object serializedAsOther;
+  }
+
+  public static class NestedSerializedAsSpec {
+    @JsonSerialize(as = SerializedAsHolder.class)
+    public Object outer;
+  }
+
+  public static class SerializedAsHolder {
+    @JsonSerialize(as = Named.class)
+    public Object inner;
+  }
+
+  public static class Counted {
+    public int count;
   }
 
   public static class OptionalsSpec {
@@ -225,6 +283,9 @@ class PreservedContentTest {
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
     @JsonSubTypes(@JsonSubTypes.Type(value = Cat.class, name = "cat"))
     public Map<String, Pet> petsByName;
+    public OptedOut optedOut;
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
+    public TypeInfoOnly optedOutProperty;
     public Pet plainPet;
 
     public Pet getFieldAnnotatedPet() {
@@ -239,6 +300,11 @@ class PreservedContentTest {
   @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
   public static class TypeInfoOnly {
     public String name;
+  }
+
+  @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
+  public static class OptedOut extends TypeInfoOnly {
+    public int extra;
   }
 
   @JsonSubTypes(@JsonSubTypes.Type(value = SubTypesOnlyImpl.class, name = "impl"))

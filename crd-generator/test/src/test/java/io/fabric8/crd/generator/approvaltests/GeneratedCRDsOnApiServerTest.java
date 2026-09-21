@@ -234,6 +234,7 @@ class GeneratedCRDsOnApiServerTest {
     spec.setShape(circle);
     spec.setSquare(square);
     spec.setPoints(List.of(point, point3d));
+    spec.setSerializedAsInner(inner);
     spec.setAny("a scalar, which type: object would reject");
     spec.setAnyMap(Map.of("number", 1, "nested", Map.of("list", List.of("a", "b"))));
     spec.setAnyList(List.of("text", 2, Map.of("key", "value")));

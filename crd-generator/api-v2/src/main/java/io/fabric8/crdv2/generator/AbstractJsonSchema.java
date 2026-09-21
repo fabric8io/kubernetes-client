@@ -57,6 +57,7 @@ import tools.jackson.databind.JavaType;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.node.JsonNodeFactory;
 import tools.jackson.databind.node.ObjectNode;
+import tools.jackson.databind.ser.BeanPropertyWriter;
 import tools.jackson.module.jsonSchema.JsonSchema;
 import tools.jackson.module.jsonSchema.types.ArraySchema;
 import tools.jackson.module.jsonSchema.types.ArraySchema.Items;
@@ -179,10 +180,10 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     consumeRepeatingAnnotation(definition, AdditionalSelectableField.class,
         additionalSelectableFields::add);
     if (schema instanceof GeneratorObjectSchema) {
-      return resolveObject(new LinkedHashMap<>(), schemaSwaps, schema, "kind", "apiVersion", "metadata");
+      return resolveObject(new LinkedHashMap<>(), schemaSwaps, schema, null, "kind", "apiVersion", "metadata");
     }
     return resolveProperty(new LinkedHashMap<>(), schemaSwaps, null,
-        resolvingContext.objectMapper.serializationConfig().constructType(definition), schema, null);
+        resolvingContext.objectMapper.serializationConfig().constructType(definition), schema, null, null);
   }
 
   /**
@@ -288,7 +289,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
       description = beanProperty.getMetadata().getDescription();
 
-      schemaFrom = ofNullable(beanProperty.getAnnotation(SchemaFrom.class)).map(SchemaFrom::type).orElse(null);
+      schemaFrom = ofNullable(beanProperty.getAnnotation(SchemaFrom.class)).<Class<?>> map(SchemaFrom::type)
+          .orElseGet(() -> serializedAs(beanProperty));
       preserveUnknownFields = beanProperty.getAnnotation(PreserveUnknownFields.class) != null;
 
       if (value.isValueTypeSchema()) {
@@ -382,6 +384,21 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     }
 
     /**
+     * The type Jackson writes instead of the declared one ({@code @JsonSerialize(as)}), resolved on its own like
+     * {@code @SchemaFrom}: jackson-module-jsonSchema reuses the first schema it builds for a declared type, so
+     * properties declared with the same type would otherwise share one schema.
+     */
+    private Class<?> serializedAs(BeanProperty beanProperty) {
+      if (beanProperty instanceof BeanPropertyWriter) {
+        final JavaType serializationType = ((BeanPropertyWriter) beanProperty).getSerializationType();
+        if (serializationType != null && !serializationType.hasRawClass(beanProperty.getType().getRawClass())) {
+          return serializationType.getRawClass();
+        }
+      }
+      return null;
+    }
+
+    /**
      * JDK types keep only the formats they always match, other types keep whatever their serializer declares.
      */
     private boolean keepsTemporalFormat(BeanProperty beanProperty, String format) {
@@ -462,8 +479,11 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     }
   }
 
+  /**
+   * @param valueTypeInfo the {@link JsonTypeInfo} of the property holding this value, which overrides the one of its type
+   */
   private T resolveObject(LinkedHashMap<String, String> visited, InternalSchemaSwaps schemaSwaps, JsonSchema jacksonSchema,
-      String... ignore) {
+      JsonTypeInfo valueTypeInfo, String... ignore) {
     Set<String> ignores = ignore.length > 0 ? new LinkedHashSet<>(Arrays.asList(ignore)) : Collections.emptySet();
 
     T objectSchema = singleProperty("object");
@@ -492,9 +512,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         ignored -> objectSchema.setXKubernetesPreserveUnknownFields(true));
 
     // only the declared type is introspected, so the subtypes' properties are not part of the schema;
-    // CRDs cannot express a discriminated union, so keep the subtype content instead of pruning it.
-    // Jackson also inherits these annotations from interfaces and mix-ins, which the class hierarchy misses.
-    if (bd.getClassAnnotations().has(JsonTypeInfo.class) || bd.getClassAnnotations().has(JsonSubTypes.class)) {
+    // CRDs cannot express a discriminated union, so keep the subtype content instead of pruning it
+    if (isPolymorphic(valueTypeInfo, bd)) {
       objectSchema.setXKubernetesPreserveUnknownFields(true);
     }
 
@@ -545,7 +564,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         type = resolvingContext.objectMapper.serializationConfig().constructType(propertyMetadata.schemaFrom);
       }
 
-      T schema = resolveProperty(visited, schemaSwaps, name, type, propertySchema, beanProperty);
+      T schema = resolveProperty(visited, schemaSwaps, name, type, propertySchema, beanProperty,
+          beanProperty.getAnnotation(JsonTypeInfo.class));
 
       propertyMetadata.updateSchema(schema);
 
@@ -610,13 +630,14 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     return visited.values().stream().collect(Collectors.joining(".", ".", ".")) + name;
   }
 
+  /**
+   * @param valueTypeInfo the property's {@link JsonTypeInfo}, which applies to its value, or to the elements of a container
+   */
   private T resolveProperty(LinkedHashMap<String, String> visited, InternalSchemaSwaps schemaSwaps, String name,
-      JavaType type, JsonSchema jacksonSchema, BeanProperty beanProperty) {
+      JavaType type, JsonSchema jacksonSchema, BeanProperty beanProperty, JsonTypeInfo valueTypeInfo) {
 
     // the schema Jackson generated is the referenced type's, so resolve it with that type
     type = unwrapReferenceType(type);
-    // on a property, @JsonTypeInfo applies to the value, or to the elements of a container
-    final boolean polymorphicValues = beanProperty != null && beanProperty.getAnnotation(JsonTypeInfo.class) != null;
 
     if (jacksonSchema.isArraySchema()) {
       Items items = jacksonSchema.asArraySchema().getItems();
@@ -627,11 +648,9 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         throw new IllegalStateException("not yet supported");
       }
       JsonSchema arraySchema = jacksonSchema.asArraySchema().getItems().asSingleItems().getSchema();
-      final T schema = resolveProperty(visited, schemaSwaps, name, type.getContentType(), arraySchema, null);
+      final T schema = resolveProperty(visited, schemaSwaps, name, type.getContentType(), arraySchema, null,
+          valueTypeInfo);
       handleTypeAnnotations(schema, beanProperty, List.class, 0);
-      if (polymorphicValues) {
-        preserveSubtypeContent(schema);
-      }
       return arrayLikeProperty(schema);
     } else if (jacksonSchema.isIntegerSchema()) {
       return singleProperty("integer");
@@ -689,11 +708,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
       JsonSchema mapValueSchema = ((SchemaAdditionalProperties) ((ObjectSchema) jacksonSchema).getAdditionalProperties())
           .getJsonSchema();
-      T component = resolveProperty(visited, schemaSwaps, name, valueType, mapValueSchema, null);
+      T component = resolveProperty(visited, schemaSwaps, name, valueType, mapValueSchema, null, valueTypeInfo);
       handleTypeAnnotations(component, beanProperty, Map.class, 1);
-      if (polymorphicValues) {
-        preserveSubtypeContent(component);
-      }
       return mapLikeProperty(component);
     }
 
@@ -705,10 +721,10 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       return raw();
     }
 
-    // an Object property (or an Object map value) holds arbitrary JSON, so it cannot be described further,
-    // unless its serializer describes it (e.g. @JsonSerialize(as = SomePojo.class))
-    if (def == Object.class && jacksonSchema.isObjectSchema()
-        && jacksonSchema.asObjectSchema().getProperties().isEmpty()) {
+    // an Object property (or an Object map value) holds arbitrary JSON, so it cannot be described further.
+    // Its Jackson schema can't be trusted either: it's shared with every Object property, including one with
+    // @JsonSerialize(as), which is resolved from that type instead (see PropertyMetadata#serializedAs)
+    if (def == Object.class) {
       return anyTypeProperty();
     }
 
@@ -719,11 +735,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
               + name);
     }
 
-    T res = resolveObject(visited, schemaSwaps, jacksonSchema);
+    T res = resolveObject(visited, schemaSwaps, jacksonSchema, valueTypeInfo);
     visited.remove(def.getName());
-    if (polymorphicValues) {
-      preserveSubtypeContent(res);
-    }
     return res;
   }
 
@@ -827,12 +840,15 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
   }
 
   /**
-   * A polymorphic value may hold a subtype's properties, which a schema built from the declared type would prune.
+   * A property's {@link JsonTypeInfo} overrides its type's, which Jackson also inherits from interfaces and mix-ins.
+   * {@link JsonTypeInfo.Id#NONE} opts out of polymorphic handling.
    */
-  private static void preserveSubtypeContent(KubernetesJSONSchemaProps schema) {
-    if ("object".equals(schema.getType())) {
-      schema.setXKubernetesPreserveUnknownFields(true);
+  private static boolean isPolymorphic(JsonTypeInfo valueTypeInfo, BeanDescription bd) {
+    final JsonTypeInfo typeInfo = valueTypeInfo != null ? valueTypeInfo : bd.getClassAnnotations().get(JsonTypeInfo.class);
+    if (typeInfo != null) {
+      return typeInfo.use() != JsonTypeInfo.Id.NONE;
     }
+    return bd.getClassAnnotations().has(JsonSubTypes.class);
   }
 
   /**
