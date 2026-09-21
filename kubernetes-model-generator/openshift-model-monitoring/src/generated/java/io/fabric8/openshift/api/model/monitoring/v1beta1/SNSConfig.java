@@ -48,7 +48,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "sigv4",
     "subject",
     "targetARN",
-    "topicARN"
+    "topicARN",
+    "useAWSHTTPClient"
 })
 @ToString
 @EqualsAndHashCode
@@ -96,6 +97,8 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
     private String targetARN;
     @JsonProperty("topicARN")
     private String topicARN;
+    @JsonProperty("useAWSHTTPClient")
+    private Boolean useAWSHTTPClient;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -105,7 +108,7 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
     public SNSConfig() {
     }
 
-    public SNSConfig(String apiURL, Map<String, String> attributes, HTTPConfig httpConfig, String message, String phoneNumber, Boolean sendResolved, Sigv4 sigv4, String subject, String targetARN, String topicARN) {
+    public SNSConfig(String apiURL, Map<String, String> attributes, HTTPConfig httpConfig, String message, String phoneNumber, Boolean sendResolved, Sigv4 sigv4, String subject, String targetARN, String topicARN, Boolean useAWSHTTPClient) {
         super();
         this.apiURL = apiURL;
         this.attributes = attributes;
@@ -117,6 +120,7 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
         this.subject = subject;
         this.targetARN = targetARN;
         this.topicARN = topicARN;
+        this.useAWSHTTPClient = useAWSHTTPClient;
     }
 
     /**
@@ -278,6 +282,22 @@ public class SNSConfig implements Editable<SNSConfigBuilder>, KubernetesResource
     @JsonProperty("topicARN")
     public void setTopicARN(String topicARN) {
         this.topicARN = topicARN;
+    }
+
+    /**
+     * useAWSHTTPClient forces the AWS SDK's BuildableClient instead of alertmanager's tracing-wrapped HTTP client. Auto-enabled when AWS_CA_BUNDLE is set; set explicitly when configuring ca_bundle via shared AWS config.<br><p> <br><p> It requires Alertmanager &gt;= 0.33.0.
+     */
+    @JsonProperty("useAWSHTTPClient")
+    public Boolean getUseAWSHTTPClient() {
+        return useAWSHTTPClient;
+    }
+
+    /**
+     * useAWSHTTPClient forces the AWS SDK's BuildableClient instead of alertmanager's tracing-wrapped HTTP client. Auto-enabled when AWS_CA_BUNDLE is set; set explicitly when configuring ca_bundle via shared AWS config.<br><p> <br><p> It requires Alertmanager &gt;= 0.33.0.
+     */
+    @JsonProperty("useAWSHTTPClient")
+    public void setUseAWSHTTPClient(Boolean useAWSHTTPClient) {
+        this.useAWSHTTPClient = useAWSHTTPClient;
     }
 
     @JsonIgnore

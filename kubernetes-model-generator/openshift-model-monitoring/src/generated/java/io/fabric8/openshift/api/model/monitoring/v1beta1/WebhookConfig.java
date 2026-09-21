@@ -40,6 +40,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonPropertyOrder({
     "httpConfig",
     "maxAlerts",
+    "payload",
     "sendResolved",
     "timeout",
     "url",
@@ -74,6 +75,8 @@ public class WebhookConfig implements Editable<WebhookConfigBuilder>, Kubernetes
     private HTTPConfig httpConfig;
     @JsonProperty("maxAlerts")
     private Integer maxAlerts;
+    @JsonProperty("payload")
+    private String payload;
     @JsonProperty("sendResolved")
     private Boolean sendResolved;
     @JsonProperty("timeout")
@@ -91,10 +94,11 @@ public class WebhookConfig implements Editable<WebhookConfigBuilder>, Kubernetes
     public WebhookConfig() {
     }
 
-    public WebhookConfig(HTTPConfig httpConfig, Integer maxAlerts, Boolean sendResolved, String timeout, String url, SecretKeySelector urlSecret) {
+    public WebhookConfig(HTTPConfig httpConfig, Integer maxAlerts, String payload, Boolean sendResolved, String timeout, String url, SecretKeySelector urlSecret) {
         super();
         this.httpConfig = httpConfig;
         this.maxAlerts = maxAlerts;
+        this.payload = payload;
         this.sendResolved = sendResolved;
         this.timeout = timeout;
         this.url = url;
@@ -131,6 +135,22 @@ public class WebhookConfig implements Editable<WebhookConfigBuilder>, Kubernetes
     @JsonProperty("maxAlerts")
     public void setMaxAlerts(Integer maxAlerts) {
         this.maxAlerts = maxAlerts;
+    }
+
+    /**
+     * payload define custom payload to be sent to the webhook endpoint. This is an advanced configuration option that allows you to define a custom payload using Go templates. It requires Alertmanager &gt;= v0.32.0.
+     */
+    @JsonProperty("payload")
+    public String getPayload() {
+        return payload;
+    }
+
+    /**
+     * payload define custom payload to be sent to the webhook endpoint. This is an advanced configuration option that allows you to define a custom payload using Go templates. It requires Alertmanager &gt;= v0.32.0.
+     */
+    @JsonProperty("payload")
+    public void setPayload(String payload) {
+        this.payload = payload;
     }
 
     /**

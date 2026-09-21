@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodSecurityContext;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.SecretKeySelector;
 import io.fabric8.kubernetes.api.model.Toleration;
@@ -126,6 +127,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "replicas",
     "resources",
     "retention",
+    "retentionPercentage",
     "retentionSize",
     "routePrefix",
     "ruleNamespaceSelector",
@@ -375,6 +377,8 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     private ResourceRequirements resources;
     @JsonProperty("retention")
     private String retention;
+    @JsonProperty("retentionPercentage")
+    private Quantity retentionPercentage;
     @JsonProperty("retentionSize")
     private String retentionSize;
     @JsonProperty("routePrefix")
@@ -479,7 +483,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     public PrometheusSpec() {
     }
 
-    public PrometheusSpec(SecretKeySelector additionalAlertManagerConfigs, SecretKeySelector additionalAlertRelabelConfigs, List<Argument> additionalArgs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, AlertingSpec alerting, Boolean allowOverlappingBlocks, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, Boolean automountServiceAccountToken, String baseImage, String bodySizeLimit, List<String> configMaps, List<Container> containers, Boolean convertClassicHistogramsToNHCB, Boolean disableCompaction, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableAdminAPI, List<String> enableFeatures, Boolean enableOTLPReceiver, Boolean enableRemoteWriteReceiver, Boolean enableServiceLinks, String enforcedBodySizeLimit, Long enforcedKeepDroppedTargets, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, Exemplars exemplars, Map<String, String> externalLabels, String externalUrl, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean hostUsers, Boolean ignoreNamespaceSelectors, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, Boolean listenLocal, String logFormat, String logLevel, Integer maximumStartupDurationSeconds, Integer minReadySeconds, String nameEscapingScheme, String nameValidationScheme, Map<String, String> nodeSelector, OTLPConfig otlp, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, String podManagementPolicy, EmbeddedObjectMetadata podMetadata, LabelSelector podMonitorNamespaceSelector, LabelSelector podMonitorSelector, List<String> podTargetLabels, String portName, String priorityClassName, LabelSelector probeNamespaceSelector, LabelSelector probeSelector, String prometheusExternalLabelName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, QuerySpec query, String queryLogFile, String reloadStrategy, List<RemoteReadSpec> remoteRead, List<RemoteWriteSpec> remoteWrite, List<String> remoteWriteReceiverMessageVersions, String replicaExternalLabelName, Integer replicas, ResourceRequirements resources, String retention, String retentionSize, String routePrefix, LabelSelector ruleNamespaceSelector, String ruleQueryOffset, LabelSelector ruleSelector, Rules rules, RuntimeConfig runtime, Long sampleLimit, String schedulerName, List<ScrapeClass> scrapeClasses, Boolean scrapeClassicHistograms, LabelSelector scrapeConfigNamespaceSelector, LabelSelector scrapeConfigSelector, String scrapeFailureLogFile, String scrapeInterval, Boolean scrapeNativeHistograms, List<String> scrapeProtocols, String scrapeTimeout, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceDiscoveryRole, LabelSelector serviceMonitorNamespaceSelector, LabelSelector serviceMonitorSelector, String serviceName, String sha, ShardRetentionPolicy shardRetentionPolicy, ShardingStrategy shardingStrategy, Integer shards, StorageSpec storage, String tag, Long targetLimit, Long terminationGracePeriodSeconds, ThanosSpec thanos, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, TracingConfig tracingConfig, TSDBSpec tsdb, StatefulSetUpdateStrategy updateStrategy, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, PrometheusWebSpec web) {
+    public PrometheusSpec(SecretKeySelector additionalAlertManagerConfigs, SecretKeySelector additionalAlertRelabelConfigs, List<Argument> additionalArgs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, AlertingSpec alerting, Boolean allowOverlappingBlocks, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, Boolean automountServiceAccountToken, String baseImage, String bodySizeLimit, List<String> configMaps, List<Container> containers, Boolean convertClassicHistogramsToNHCB, Boolean disableCompaction, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableAdminAPI, List<String> enableFeatures, Boolean enableOTLPReceiver, Boolean enableRemoteWriteReceiver, Boolean enableServiceLinks, String enforcedBodySizeLimit, Long enforcedKeepDroppedTargets, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, String evaluationInterval, List<ObjectReference> excludedFromEnforcement, Exemplars exemplars, Map<String, String> externalLabels, String externalUrl, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean hostUsers, Boolean ignoreNamespaceSelectors, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, Long keepDroppedTargets, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, Boolean listenLocal, String logFormat, String logLevel, Integer maximumStartupDurationSeconds, Integer minReadySeconds, String nameEscapingScheme, String nameValidationScheme, Map<String, String> nodeSelector, OTLPConfig otlp, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, String podManagementPolicy, EmbeddedObjectMetadata podMetadata, LabelSelector podMonitorNamespaceSelector, LabelSelector podMonitorSelector, List<String> podTargetLabels, String portName, String priorityClassName, LabelSelector probeNamespaceSelector, LabelSelector probeSelector, String prometheusExternalLabelName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, QuerySpec query, String queryLogFile, String reloadStrategy, List<RemoteReadSpec> remoteRead, List<RemoteWriteSpec> remoteWrite, List<String> remoteWriteReceiverMessageVersions, String replicaExternalLabelName, Integer replicas, ResourceRequirements resources, String retention, Quantity retentionPercentage, String retentionSize, String routePrefix, LabelSelector ruleNamespaceSelector, String ruleQueryOffset, LabelSelector ruleSelector, Rules rules, RuntimeConfig runtime, Long sampleLimit, String schedulerName, List<ScrapeClass> scrapeClasses, Boolean scrapeClassicHistograms, LabelSelector scrapeConfigNamespaceSelector, LabelSelector scrapeConfigSelector, String scrapeFailureLogFile, String scrapeInterval, Boolean scrapeNativeHistograms, List<String> scrapeProtocols, String scrapeTimeout, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceDiscoveryRole, LabelSelector serviceMonitorNamespaceSelector, LabelSelector serviceMonitorSelector, String serviceName, String sha, ShardRetentionPolicy shardRetentionPolicy, ShardingStrategy shardingStrategy, Integer shards, StorageSpec storage, String tag, Long targetLimit, Long terminationGracePeriodSeconds, ThanosSpec thanos, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, TracingConfig tracingConfig, TSDBSpec tsdb, StatefulSetUpdateStrategy updateStrategy, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, PrometheusWebSpec web) {
         super();
         this.additionalAlertManagerConfigs = additionalAlertManagerConfigs;
         this.additionalAlertRelabelConfigs = additionalAlertRelabelConfigs;
@@ -563,6 +567,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
         this.replicas = replicas;
         this.resources = resources;
         this.retention = retention;
+        this.retentionPercentage = retentionPercentage;
         this.retentionSize = retentionSize;
         this.routePrefix = routePrefix;
         this.ruleNamespaceSelector = ruleNamespaceSelector;
@@ -853,7 +858,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * disableCompaction when true, the Prometheus compaction is disabled. When `spec.thanos.objectStorageConfig` or `spec.objectStorageConfigFile` are defined, the operator automatically disables block compaction to avoid race conditions during block uploads (as the Thanos documentation recommends).
+     * disableCompaction when true, the Prometheus compaction is disabled.<br><p> <br><p> When `spec.thanos.objectStorageConfig` or `spec.thanos.objectStorageConfigFile` are defined, the operator's default handling depends on the Prometheus and Thanos sidecar versions:<br><p>   - With Prometheus &lt; v3.9.0 or a Thanos sidecar &lt; v0.42.0, block compaction is disabled to avoid race<br><p>     conditions during block uploads (as the Thanos documentation recommends).<br><p>   - With Prometheus &gt;= v3.9.0 and a Thanos sidecar &gt;= v0.42.0, local compaction is kept enabled and coordinated<br><p>     with the sidecar through the shipper meta file (`--storage.tsdb.delay-compact-file.path`), so blocks are only<br><p>     compacted after they have been uploaded.<br><p> Setting this field to true always disables local compaction regardless of the versions.
      */
     @JsonProperty("disableCompaction")
     public Boolean getDisableCompaction() {
@@ -861,7 +866,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * disableCompaction when true, the Prometheus compaction is disabled. When `spec.thanos.objectStorageConfig` or `spec.objectStorageConfigFile` are defined, the operator automatically disables block compaction to avoid race conditions during block uploads (as the Thanos documentation recommends).
+     * disableCompaction when true, the Prometheus compaction is disabled.<br><p> <br><p> When `spec.thanos.objectStorageConfig` or `spec.thanos.objectStorageConfigFile` are defined, the operator's default handling depends on the Prometheus and Thanos sidecar versions:<br><p>   - With Prometheus &lt; v3.9.0 or a Thanos sidecar &lt; v0.42.0, block compaction is disabled to avoid race<br><p>     conditions during block uploads (as the Thanos documentation recommends).<br><p>   - With Prometheus &gt;= v3.9.0 and a Thanos sidecar &gt;= v0.42.0, local compaction is kept enabled and coordinated<br><p>     with the sidecar through the shipper meta file (`--storage.tsdb.delay-compact-file.path`), so blocks are only<br><p>     compacted after they have been uploaded.<br><p> Setting this field to true always disables local compaction regardless of the versions.
      */
     @JsonProperty("disableCompaction")
     public void setDisableCompaction(Boolean disableCompaction) {
@@ -1921,7 +1926,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * retention defines how long to retain the Prometheus data.<br><p> <br><p> Default: "24h" if `spec.retention` and `spec.retentionSize` are empty.
+     * retention defines how long to retain the Prometheus data.<br><p> <br><p> Default: "24h" if `spec.retention`, `spec.retentionSize` and `spec.retentionPercentage` are empty.
      */
     @JsonProperty("retention")
     public String getRetention() {
@@ -1929,11 +1934,27 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * retention defines how long to retain the Prometheus data.<br><p> <br><p> Default: "24h" if `spec.retention` and `spec.retentionSize` are empty.
+     * retention defines how long to retain the Prometheus data.<br><p> <br><p> Default: "24h" if `spec.retention`, `spec.retentionSize` and `spec.retentionPercentage` are empty.
      */
     @JsonProperty("retention")
     public void setRetention(String retention) {
         this.retention = retention;
+    }
+
+    /**
+     * PrometheusSpec is a specification of the desired behavior of the Prometheus cluster. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
+    @JsonProperty("retentionPercentage")
+    public Quantity getRetentionPercentage() {
+        return retentionPercentage;
+    }
+
+    /**
+     * PrometheusSpec is a specification of the desired behavior of the Prometheus cluster. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+     */
+    @JsonProperty("retentionPercentage")
+    public void setRetentionPercentage(Quantity retentionPercentage) {
+        this.retentionPercentage = retentionPercentage;
     }
 
     /**
@@ -2388,7 +2409,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * shards defines the number of shards to distribute the scraped targets onto.<br><p> <br><p> `spec.replicas` multiplied by `spec.shards` is the total number of Pods being created.<br><p> <br><p> When not defined, the operator assumes only one shard.<br><p> <br><p> Note that scaling down shards will not reshard data onto the remaining instances, it must be manually moved. Increasing shards will not reshard data either but it will continue to be available from the same instances. To query globally, use either &#42; Thanos sidecar + querier for query federation and Thanos Ruler for rules. &#42; Remote-write to send metrics to a central location.<br><p> <br><p> By default, the sharding of targets is performed on: &#42; The `__address__` target's metadata label for PodMonitor, ServiceMonitor and ScrapeConfig resources. &#42; The `__param_target__` label for Probe resources.<br><p> <br><p> Users can define their own sharding implementation by setting the `__tmp_hash` label during the target discovery with relabeling configuration (either in the monitoring resources or via scrape class).<br><p> <br><p> You can also disable sharding on a specific target by setting the `__tmp_disable_sharding` label with relabeling configuration. When the label value isn't empty, all Prometheus shards will scrape the target.
+     * shards defines the number of shards to distribute the scraped targets onto.<br><p> <br><p> `spec.replicas` multiplied by `spec.shards` is the total number of Pods being created.<br><p> <br><p> When not defined, the operator assumes only one shard.<br><p> <br><p> Note that scaling down shards will not reshard data onto the remaining instances, it must be manually moved. Increasing shards will not reshard data either but it will continue to be available from the same instances. To query globally, use either &#42; Thanos sidecar + querier for query federation and Thanos Ruler for rules. &#42; Remote-write to send metrics to a central location.<br><p> <br><p> By default, the sharding of targets is performed on: &#42; The `__address__` target's metadata label for PodMonitor, ServiceMonitor and ScrapeConfig resources. &#42; The `__param_target__` label for Probe resources.<br><p> <br><p> Users can define their own sharding implementation by setting the `__tmp_hash` label during the target discovery with relabeling configuration (either in the monitoring resources or via scrape class).<br><p> <br><p> You can also disable sharding on a specific target by setting the `__tmp_disable_sharding` label with relabeling configuration. When the label value isn't empty, all Prometheus shards will scrape the target.<br><p> <br><p> Default: 1
      */
     @JsonProperty("shards")
     public Integer getShards() {
@@ -2396,7 +2417,7 @@ public class PrometheusSpec implements Editable<PrometheusSpecBuilder>, Kubernet
     }
 
     /**
-     * shards defines the number of shards to distribute the scraped targets onto.<br><p> <br><p> `spec.replicas` multiplied by `spec.shards` is the total number of Pods being created.<br><p> <br><p> When not defined, the operator assumes only one shard.<br><p> <br><p> Note that scaling down shards will not reshard data onto the remaining instances, it must be manually moved. Increasing shards will not reshard data either but it will continue to be available from the same instances. To query globally, use either &#42; Thanos sidecar + querier for query federation and Thanos Ruler for rules. &#42; Remote-write to send metrics to a central location.<br><p> <br><p> By default, the sharding of targets is performed on: &#42; The `__address__` target's metadata label for PodMonitor, ServiceMonitor and ScrapeConfig resources. &#42; The `__param_target__` label for Probe resources.<br><p> <br><p> Users can define their own sharding implementation by setting the `__tmp_hash` label during the target discovery with relabeling configuration (either in the monitoring resources or via scrape class).<br><p> <br><p> You can also disable sharding on a specific target by setting the `__tmp_disable_sharding` label with relabeling configuration. When the label value isn't empty, all Prometheus shards will scrape the target.
+     * shards defines the number of shards to distribute the scraped targets onto.<br><p> <br><p> `spec.replicas` multiplied by `spec.shards` is the total number of Pods being created.<br><p> <br><p> When not defined, the operator assumes only one shard.<br><p> <br><p> Note that scaling down shards will not reshard data onto the remaining instances, it must be manually moved. Increasing shards will not reshard data either but it will continue to be available from the same instances. To query globally, use either &#42; Thanos sidecar + querier for query federation and Thanos Ruler for rules. &#42; Remote-write to send metrics to a central location.<br><p> <br><p> By default, the sharding of targets is performed on: &#42; The `__address__` target's metadata label for PodMonitor, ServiceMonitor and ScrapeConfig resources. &#42; The `__param_target__` label for Probe resources.<br><p> <br><p> Users can define their own sharding implementation by setting the `__tmp_hash` label during the target discovery with relabeling configuration (either in the monitoring resources or via scrape class).<br><p> <br><p> You can also disable sharding on a specific target by setting the `__tmp_disable_sharding` label with relabeling configuration. When the label value isn't empty, all Prometheus shards will scrape the target.<br><p> <br><p> Default: 1
      */
     @JsonProperty("shards")
     public void setShards(Integer shards) {

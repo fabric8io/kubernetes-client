@@ -21,7 +21,6 @@ import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
-import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
@@ -32,12 +31,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
+/**
+ * ChunkEncodingSpec configures per-chunk-type encoding overrides.
+ */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "chunkEncoding",
-    "outOfOrderTimeWindow",
-    "staleSeriesCompactionThreshold"
+    "floats"
 })
 @ToString
 @EqualsAndHashCode
@@ -61,74 +61,48 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     @BuildableReference(VolumeMount.class)
 })
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class TSDBSpec implements Editable<TSDBSpecBuilder>, KubernetesResource
+public class ChunkEncodingSpec implements Editable<ChunkEncodingSpecBuilder>, KubernetesResource
 {
 
-    @JsonProperty("chunkEncoding")
-    private ChunkEncodingSpec chunkEncoding;
-    @JsonProperty("outOfOrderTimeWindow")
-    private String outOfOrderTimeWindow;
-    @JsonProperty("staleSeriesCompactionThreshold")
-    private Quantity staleSeriesCompactionThreshold;
+    @JsonProperty("floats")
+    private String floats;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization
      */
-    public TSDBSpec() {
+    public ChunkEncodingSpec() {
     }
 
-    public TSDBSpec(ChunkEncodingSpec chunkEncoding, String outOfOrderTimeWindow, Quantity staleSeriesCompactionThreshold) {
+    public ChunkEncodingSpec(String floats) {
         super();
-        this.chunkEncoding = chunkEncoding;
-        this.outOfOrderTimeWindow = outOfOrderTimeWindow;
-        this.staleSeriesCompactionThreshold = staleSeriesCompactionThreshold;
-    }
-
-    @JsonProperty("chunkEncoding")
-    public ChunkEncodingSpec getChunkEncoding() {
-        return chunkEncoding;
-    }
-
-    @JsonProperty("chunkEncoding")
-    public void setChunkEncoding(ChunkEncodingSpec chunkEncoding) {
-        this.chunkEncoding = chunkEncoding;
+        this.floats = floats;
     }
 
     /**
-     * outOfOrderTimeWindow defines how old an out-of-order/out-of-bounds sample can be with respect to the TSDB max time.<br><p> <br><p> An out-of-order/out-of-bounds sample is ingested into the TSDB as long as the timestamp of the sample is &gt;= (TSDB.MaxTime - outOfOrderTimeWindow).<br><p> <br><p> This is an &#42;experimental feature&#42;, it may change in any upcoming release in a breaking way.<br><p> <br><p> It requires Prometheus &gt;= v2.39.0 or PrometheusAgent &gt;= v2.54.0.
+     * floats selects the encoding used for float chunks. Valid values are "Xor" and "Xor2".<br><p> <br><p> Notice:<br><p>  &#42; Setting "Xor" is incompatible with --enable-feature=st-storage<br><p> (XOR chunks do not store start timestamps).<br><p>  &#42; Setting "Xor2" automatically adds the `xor2-encoding` feature flag.<br><p> <br><p> It requires Prometheus &gt;= v3.13.0.
      */
-    @JsonProperty("outOfOrderTimeWindow")
-    public String getOutOfOrderTimeWindow() {
-        return outOfOrderTimeWindow;
+    @JsonProperty("floats")
+    public String getFloats() {
+        return floats;
     }
 
     /**
-     * outOfOrderTimeWindow defines how old an out-of-order/out-of-bounds sample can be with respect to the TSDB max time.<br><p> <br><p> An out-of-order/out-of-bounds sample is ingested into the TSDB as long as the timestamp of the sample is &gt;= (TSDB.MaxTime - outOfOrderTimeWindow).<br><p> <br><p> This is an &#42;experimental feature&#42;, it may change in any upcoming release in a breaking way.<br><p> <br><p> It requires Prometheus &gt;= v2.39.0 or PrometheusAgent &gt;= v2.54.0.
+     * floats selects the encoding used for float chunks. Valid values are "Xor" and "Xor2".<br><p> <br><p> Notice:<br><p>  &#42; Setting "Xor" is incompatible with --enable-feature=st-storage<br><p> (XOR chunks do not store start timestamps).<br><p>  &#42; Setting "Xor2" automatically adds the `xor2-encoding` feature flag.<br><p> <br><p> It requires Prometheus &gt;= v3.13.0.
      */
-    @JsonProperty("outOfOrderTimeWindow")
-    public void setOutOfOrderTimeWindow(String outOfOrderTimeWindow) {
-        this.outOfOrderTimeWindow = outOfOrderTimeWindow;
-    }
-
-    @JsonProperty("staleSeriesCompactionThreshold")
-    public Quantity getStaleSeriesCompactionThreshold() {
-        return staleSeriesCompactionThreshold;
-    }
-
-    @JsonProperty("staleSeriesCompactionThreshold")
-    public void setStaleSeriesCompactionThreshold(Quantity staleSeriesCompactionThreshold) {
-        this.staleSeriesCompactionThreshold = staleSeriesCompactionThreshold;
+    @JsonProperty("floats")
+    public void setFloats(String floats) {
+        this.floats = floats;
     }
 
     @JsonIgnore
-    public TSDBSpecBuilder edit() {
-        return new TSDBSpecBuilder(this);
+    public ChunkEncodingSpecBuilder edit() {
+        return new ChunkEncodingSpecBuilder(this);
     }
 
     @JsonIgnore
-    public TSDBSpecBuilder toBuilder() {
+    public ChunkEncodingSpecBuilder toBuilder() {
         return edit();
     }
 
