@@ -90,7 +90,7 @@
     <!-- Core versions -->
     <sundrio.version>0.230.2</sundrio.version>
     <okhttp.version>5.5.0</okhttp.version>
-    <jackson.version>3.2.1</jackson.version>
+    <jackson.version>3.2.2</jackson.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
     <!-- jackson-annotations is shared between Jackson 2.x and 3.x, uses 2.x groupId and major.minor versioning -->
     <jackson.bundle.version.annotations>2.22</jackson.bundle.version.annotations>
