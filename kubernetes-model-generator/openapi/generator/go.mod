@@ -39,16 +39,16 @@ require (
 	// Last commit before kube-openapi moved to structured-merge-diff/v7, which k8s.io/apimachinery v0.37.x doesn't support
 	k8s.io/kube-openapi v0.0.0-20260821135717-be32def86098
 	k8s.io/metrics v0.37.0
-	knative.dev/caching v0.0.0-20260422140616-453ad996bbe2
-	knative.dev/eventing v0.49.1
+	knative.dev/caching v0.0.0-20260821014320-af6341f3ab2b
+	knative.dev/eventing v0.50.0
 	knative.dev/eventing-awssqs v0.29.0
 	knative.dev/eventing-couchdb v0.28.0
-	knative.dev/eventing-github v0.49.1
-	knative.dev/eventing-gitlab v0.49.1
-	knative.dev/eventing-kafka-broker v0.49.1
+	knative.dev/eventing-github v0.50.0
+	knative.dev/eventing-gitlab v0.50.0
+	knative.dev/eventing-kafka-broker v0.50.1
 	knative.dev/eventing-prometheus v0.28.0
-	knative.dev/networking v0.0.0-20260529061306-c8de379770b9
-	knative.dev/serving v0.49.1
+	knative.dev/networking v0.0.0-20260921014731-e39778429a0f
+	knative.dev/serving v0.50.0
 	open-cluster-management.io/api v1.3.0
 	open-cluster-management.io/governance-policy-propagator v0.18.0
 	open-cluster-management.io/multicloud-operators-channel v0.16.0
@@ -80,7 +80,7 @@ replace (
 	k8s.io/mount-utils => k8s.io/mount-utils v0.35.8
 
 	// Pin knative.dev/pkg to a known-good pseudo-version (dependabot picks invalid tagged major versions)
-	knative.dev/pkg => knative.dev/pkg v0.0.0-20260422015212-ec452872dcc1
+	knative.dev/pkg => knative.dev/pkg v0.0.0-20260918182429-5dc1978f0042
 
 	sigs.k8s.io/cluster-api => sigs.k8s.io/cluster-api v1.14.2
 	// cluster-api v1.14+ requires its api module at a placeholder version (resolved by a local replace upstream)
@@ -181,7 +181,7 @@ require (
 	github.com/operator-framework/operator-registry v1.69.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
-	github.com/prometheus/client_golang v1.24.0 // indirect
+	github.com/prometheus/client_golang v1.24.1 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect
 	github.com/prometheus/common v0.70.1 // indirect
 	github.com/prometheus/otlptranslator v1.0.0 // indirect
@@ -200,13 +200,13 @@ require (
 	go.mongodb.org/mongo-driver v1.17.7 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/otel v1.45.0 // indirect
-	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc v1.44.0 // indirect
-	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp v1.44.0 // indirect
+	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc v1.45.0 // indirect
+	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp v1.45.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.45.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.45.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.45.0 // indirect
-	go.opentelemetry.io/otel/exporters/prometheus v0.66.0 // indirect
-	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.44.0 // indirect
+	go.opentelemetry.io/otel/exporters/prometheus v0.67.0 // indirect
+	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.45.0 // indirect
 	go.opentelemetry.io/otel/metric v1.45.0 // indirect
 	go.opentelemetry.io/otel/sdk v1.45.0 // indirect
 	go.opentelemetry.io/otel/sdk/metric v1.45.0 // indirect
@@ -237,7 +237,7 @@ require (
 	istio.io/api v1.30.0-rc.0.0.20260508191950-a283232d9647 // indirect
 	k8s.io/klog/v2 v2.140.0 // indirect
 	k8s.io/utils v0.0.0-20260626114624-be93311217bd // indirect
-	knative.dev/pkg v0.0.0-20260622140654-39ebae2ee2dc // indirect
+	knative.dev/pkg v0.0.0-20260918182429-5dc1978f0042 // indirect
 	sigs.k8s.io/cluster-api v1.14.2 // indirect
 	sigs.k8s.io/cluster-api-provider-azure v1.27.0 // indirect
 	sigs.k8s.io/controller-runtime v0.24.1 // indirect
