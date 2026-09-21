@@ -20,6 +20,7 @@ import io.fabric8.mockwebserver.http.Response;
 import io.fabric8.mockwebserver.http.WebSocketListener;
 import io.vertx.core.Handler;
 import io.vertx.core.http.ServerWebSocket;
+import io.vertx.core.http.WebSocketBase;
 
 public class ServerWebSocketHandler implements Handler<ServerWebSocket> {
 
@@ -44,13 +45,19 @@ public class ServerWebSocketHandler implements Handler<ServerWebSocket> {
     serverWebSocket.fetch(1);
   }
 
+  @SuppressWarnings("UnnecessaryLocalVariable")
   public void configureWebSocket(ServerWebSocket serverWebSocket, VertxMockWebSocket mockWebSocket,
       WebSocketListener wsListener) {
-    serverWebSocket.textMessageHandler(text -> {
+    // Cast to WebSocketBase so javac emits method descriptors that resolve in both Vert.x 4
+    // (WebSocketBase.textMessageHandler -> WebSocketBase) and Vert.x 5 (bridge method with the
+    // same descriptor). Calling these methods directly on ServerWebSocket binds to the Vert.x 5
+    // return type (WebSocket), which does not exist in Vert.x 4 and causes NoSuchMethodError.
+    final WebSocketBase ws = serverWebSocket;
+    ws.textMessageHandler(text -> {
       wsListener.onMessage(mockWebSocket, text);
       serverWebSocket.fetch(1);
     });
-    serverWebSocket.binaryMessageHandler(buff -> {
+    ws.binaryMessageHandler(buff -> {
       wsListener.onMessage(mockWebSocket, buff.getBytes());
       serverWebSocket.fetch(1);
     });
