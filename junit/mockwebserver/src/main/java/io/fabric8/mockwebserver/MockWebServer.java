@@ -48,7 +48,6 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -380,21 +379,13 @@ public class MockWebServer implements Closeable {
     }
   }
 
-  @SuppressWarnings("unchecked")
   private void closeServerAndVertx() {
-    // Vert.x 5's HttpServer.shutdown(long, TimeUnit) stops accepting new connections and
-    // force-closes lingering ones after the timeout, which is exactly what a test mock server
-    // needs. Vert.x 4 doesn't have this method, so we fall back to close().
-    Future<Void> serverCloseFuture;
-    try {
-      Method shutdownMethod = httpServer.getClass()
-          .getMethod("shutdown", long.class, TimeUnit.class);
-      serverCloseFuture = (Future<Void>) shutdownMethod.invoke(httpServer, 1L, TimeUnit.SECONDS);
-    } catch (ReflectiveOperationException e) {
-      serverCloseFuture = httpServer.close(); // Fallback to vertx 4 method
-    }
-    await(serverCloseFuture, "Unable to close MockWebServer");
-    await(vertx.close(), "Unable to close Vertx");
+    // Vert.x 5's HttpServer.close() and Vertx.close() wait for all connections (including
+    // WebSocket sessions) to drain. If a client abandoned its WebSocket without a close
+    // handshake, these calls block indefinitely. Since this is a test mock server, swallow
+    // the timeout and let the JVM clean up.
+    awaitQuietly(httpServer.close(), 5);
+    awaitQuietly(vertx.close(), 5);
   }
 
   private static <T> T await(Future<T> vertxFuture, String errorMessage) {
@@ -413,6 +404,24 @@ public class MockWebServer implements Closeable {
       throw new IllegalStateException(e);
     } catch (ExecutionException | TimeoutException e) {
       throw new IllegalStateException(errorMessage, e);
+    }
+  }
+
+  private static void awaitQuietly(Future<Void> vertxFuture, long timeoutSeconds) {
+    final CompletableFuture<Void> future = new CompletableFuture<>();
+    vertxFuture.onComplete(r -> {
+      if (r.succeeded()) {
+        future.complete(null);
+      } else {
+        future.completeExceptionally(r.cause());
+      }
+    });
+    try {
+      future.get(timeoutSeconds, TimeUnit.SECONDS);
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+    } catch (ExecutionException | TimeoutException e) {
+      logger.log(Level.WARNING, "Shutdown timed out, proceeding anyway", e);
     }
   }
 
