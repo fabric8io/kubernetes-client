@@ -76,7 +76,8 @@ import static org.awaitility.Awaitility.await;
  * Specs and approval files only pin what the generator emits. These tests check what matters to users against a
  * real API server: the CRDs are accepted, and the content the client writes is neither rejected nor pruned.
  */
-@EnableKubeAPIServer
+// Pinned: an unversioned server reuses the newest cached binary, which may predate selectableFields (1.32+)
+@EnableKubeAPIServer(kubeAPIVersion = "1.37.*")
 class GeneratedCRDsOnApiServerTest {
 
   private static final String NAMESPACE = "default";
