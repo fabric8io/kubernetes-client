@@ -157,10 +157,10 @@
       </dependencies>
     </profile>
     <profile>
-      <id>httpclient-vertx</id>
+      <id>httpclient-vertx-4</id>
       <!--
         Profile for testing with the legacy Vert.x 4.x HTTP client implementation.
-        Usage: mvn -Phttpclient-vertx -Pitests verify
+        Usage: mvn -Phttpclient-vertx-4 -Pitests verify
         This profile overrides Vert.x versions to 4.x and swaps the HTTP client module.
       -->
       <dependencyManagement>

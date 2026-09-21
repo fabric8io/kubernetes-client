@@ -164,7 +164,7 @@
         </dependencies>
       </profile>
       <profile>
-        <id>httpclient-vertx</id>
+        <id>httpclient-vertx-4</id>
         <dependencyManagement>
           <dependencies>
             <dependency>
@@ -196,7 +196,7 @@
         </dependencies>
       </profile>
       <profile>
-        <id>httpclient-vertx-5</id>
+        <id>httpclient-vertx</id>
         <dependencies>
           <dependency>
             <groupId>io.fabric8</groupId>
