@@ -26,8 +26,8 @@ import java.lang.annotation.Target;
  * The annotation can be used on strings, list/arrays and maps and will result in an appropriate JSON Schema constraint:
  * <ul>
  * <li>{@code minLength} and/or {@code maxLength} for a String</li>
- * <li>{@code minLength} and/or {@code maxLength} of the base64 string for a {@code byte[]} or {@code ByteBuffer}, the
- * limits are numbers of bytes rounded up to whole groups of 3 (a base64 string encodes 3 bytes per 4 characters)</li>
+ * <li>{@code minLength} and/or {@code maxLength} of the base64 string for a {@code byte[]} or {@code ByteBuffer}, which
+ * encodes 3 bytes per 4 characters, so the limits are only exact for multiples of 3 bytes</li>
  * <li>{@code minItems} and/or {@code maxItems} for a list/array</li>
  * <li>{@code minProperties} and/or {@code maxProperties} for a map</li>
  * </ul>

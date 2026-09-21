@@ -26,16 +26,24 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.JavaType;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.cfg.DateTimeFeature;
 import tools.jackson.databind.cfg.EnumFeature;
 import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.jsonFormatVisitors.JsonFormatVisitorWrapper;
+import tools.jackson.databind.jsonFormatVisitors.JsonIntegerFormatVisitor;
+import tools.jackson.databind.jsonFormatVisitors.JsonStringFormatVisitor;
+import tools.jackson.databind.jsonFormatVisitors.JsonValueFormat;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.stream.Stream;
 
@@ -114,6 +122,68 @@ class Jackson2JdkTypesModuleTest {
     void writesLocaleKeysInJackson2Form() {
       assertThat(mapper.writeValueAsString(Map.of(Locale.forLanguageTag("zh-Hant-TW"), "zh")))
           .isEqualTo("{\"zh_TW_#Hant\":\"zh\"}");
+    }
+  }
+
+  /**
+   * The CRD generator describes the types with what their serializers report.
+   */
+  @Nested
+  @DisplayName("Schema")
+  class Schema {
+
+    @Test
+    @DisplayName("reports what it writes: Year as a string without format, java.sql.Date as a date, Month by name")
+    void reportsWhatItWrites() {
+      assertThat(reportedSchema(mapper, Year.class)).containsExactly("string");
+      assertThat(reportedSchema(mapper, java.sql.Date.class)).containsExactly("string", "format date");
+      assertThat(reportedSchema(mapper, Month.class))
+          .containsExactly("string", "enum " + Stream.of(Month.values()).map(Month::name).sorted().toList());
+    }
+
+    @Test
+    @DisplayName("with WRITE_DATES_AS_TIMESTAMPS, reports Year and java.sql.Date as integers, like Jackson 2")
+    void reportsTimestampsWhenEnabled() {
+      final ObjectMapper timestamps = mapper.rebuild().enable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS).build();
+
+      assertThat(reportedSchema(timestamps, Year.class)).containsExactly("integer");
+      assertThat(reportedSchema(timestamps, java.sql.Date.class)).containsExactly("integer", "format utc-millisec");
+    }
+
+    /**
+     * The JSON type the serializer of the type reports, and its format or enum values.
+     */
+    private List<String> reportedSchema(ObjectMapper objectMapper, Class<?> type) {
+      final List<String> reported = new ArrayList<>();
+      objectMapper.acceptJsonFormatVisitor(type, new JsonFormatVisitorWrapper.Base() {
+        @Override
+        public JsonStringFormatVisitor expectStringFormat(JavaType typeHint) {
+          reported.add("string");
+          return new JsonStringFormatVisitor.Base() {
+            @Override
+            public void format(JsonValueFormat format) {
+              reported.add("format " + format);
+            }
+
+            @Override
+            public void enumTypes(Set<String> enums) {
+              reported.add("enum " + enums.stream().sorted().toList());
+            }
+          };
+        }
+
+        @Override
+        public JsonIntegerFormatVisitor expectIntegerFormat(JavaType typeHint) {
+          reported.add("integer");
+          return new JsonIntegerFormatVisitor.Base() {
+            @Override
+            public void format(JsonValueFormat format) {
+              reported.add("format " + format);
+            }
+          };
+        }
+      });
+      return reported;
     }
   }
 
@@ -209,6 +279,14 @@ class Jackson2JdkTypesModuleTest {
     }
 
     @Test
+    @DisplayName("reads und, how Jackson 3 writes the root locale, as the root locale (values and map keys)")
+    void readsUndAsRoot() {
+      assertThat(mapper.readValue("\"und\"", Locale.class)).isEqualTo(Locale.ROOT);
+      assertThat(mapper.readValue("{\"und\":\"a\"}", new TypeReference<Map<Locale, String>>() {
+      })).containsOnlyKeys(Locale.ROOT);
+    }
+
+    @Test
     @DisplayName("reads an empty map key as the root locale, like Jackson 2 did")
     void readsEmptyKeyAsRoot() {
       assertThat(mapper.readValue("{\"\":\"a\"}", new TypeReference<Map<Locale, String>>() {
@@ -226,7 +304,10 @@ class Jackson2JdkTypesModuleTest {
         new Locale("en", "USA"),
         new Locale("", "US"),
         new Locale("x", "US"),
-        new Locale("en", "", "a-b"))
+        new Locale("en", "", "a-b"),
+        // the POSIX locale, and other languages without separators that aren't valid BCP 47
+        new Locale("C"),
+        new Locale("x"))
         .map(Arguments::of);
   }
 

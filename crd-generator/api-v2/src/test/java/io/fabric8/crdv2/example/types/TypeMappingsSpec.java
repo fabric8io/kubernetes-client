@@ -24,6 +24,7 @@ import tools.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
 import tools.jackson.databind.jsonFormatVisitors.JsonFormatVisitorWrapper;
 import tools.jackson.databind.ser.std.StdSerializer;
 import tools.jackson.databind.ser.std.ToStringSerializer;
+import tools.jackson.databind.util.StdConverter;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -104,6 +105,11 @@ public class TypeMappingsSpec {
   public long[] longArray;
   public List<Integer> integerList;
   public Map<String, Long> longMap;
+  /** Written as decimals by the property's serializer or converter, which report a number. */
+  @JsonSerialize(using = RatioSerializer.class)
+  public Integer ratio;
+  @JsonSerialize(converter = RatioConverter.class)
+  public Long convertedRatio;
 
   // Boolean related types
   public boolean aBoolean;
@@ -144,8 +150,40 @@ public class TypeMappingsSpec {
   public byte[] stringSerializedBytes;
   @JsonSerialize(using = NumbersSerializer.class)
   public byte[] numberSerializedBytes;
+  @JsonSerialize(contentUsing = NumbersSerializer.class)
+  public List<byte[]> numberSerializedByteArrays;
+  @JsonSerialize(contentUsing = NumbersSerializer.class)
+  public Optional<byte[]> numberSerializedOptionalBytes;
 
   public UUID uuid;
+
+  /**
+   * Writes a percentage as a ratio.
+   */
+  public static class RatioSerializer extends StdSerializer<Integer> {
+
+    public RatioSerializer() {
+      super(Integer.class);
+    }
+
+    @Override
+    public void serialize(Integer value, JsonGenerator gen, SerializationContext provider) {
+      gen.writeNumber(value / 100d);
+    }
+
+    @Override
+    public void acceptJsonFormatVisitor(JsonFormatVisitorWrapper visitor, JavaType typeHint) {
+      visitor.expectNumberFormat(typeHint);
+    }
+  }
+
+  public static class RatioConverter extends StdConverter<Long, Double> {
+
+    @Override
+    public Double convert(Long value) {
+      return value / 100d;
+    }
+  }
 
   /**
    * Writes a byte[] as an array of numbers, like Jackson does for a Byte[].

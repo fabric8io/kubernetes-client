@@ -158,6 +158,9 @@ class TypeMappingsTest {
         Arguments.of("aLongObj", "int64"),
         Arguments.of("optionalLong", "int64"),
         Arguments.of("atomicLong", "int64"),
+        // the property's serializer or converter writes decimals
+        Arguments.of("ratio", null),
+        Arguments.of("convertedRatio", null),
         Arguments.of("aBigInteger", null),
         Arguments.of("aDouble", null),
         Arguments.of("aDoubleObj", null),
@@ -188,6 +191,8 @@ class TypeMappingsTest {
         Arguments.of("boxedByteArray", "items", "integer", null),
         Arguments.of("byteList", "items", "integer", null),
         Arguments.of("numberSerializedBytes", "items", "integer", null),
+        Arguments.of("numberSerializedByteArrays", "items", "array", null),
+        Arguments.of("numberSerializedOptionalBytes", "items", "integer", null),
         Arguments.of("qnameList", "items", "string", null),
         Arguments.of("qnameMap", "values", "string", null));
   }
@@ -236,6 +241,8 @@ class TypeMappingsTest {
         Arguments.of("longArray", "array"),
         Arguments.of("integerList", "array"),
         Arguments.of("longMap", "object"),
+        Arguments.of("ratio", "number"),
+        Arguments.of("convertedRatio", "number"),
         Arguments.of("aBoolean", "boolean"),
         Arguments.of("aBooleanObj", "boolean"),
         Arguments.of("aChar", "string"),
@@ -263,6 +270,8 @@ class TypeMappingsTest {
         Arguments.of("sizedByteBufferList", "array"),
         Arguments.of("stringSerializedBytes", "string"),
         Arguments.of("numberSerializedBytes", "array"),
+        Arguments.of("numberSerializedByteArrays", "array"),
+        Arguments.of("numberSerializedOptionalBytes", "array"),
         Arguments.of("uuid", "string"));
   }
 }

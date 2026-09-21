@@ -22,7 +22,6 @@ import tools.jackson.core.JsonToken;
 import tools.jackson.databind.BeanDescription;
 import tools.jackson.databind.DeserializationContext;
 import tools.jackson.databind.JavaType;
-import tools.jackson.databind.KeyDeserializer;
 import tools.jackson.databind.SerializationConfig;
 import tools.jackson.databind.SerializationContext;
 import tools.jackson.databind.ValueDeserializer;
@@ -48,6 +47,7 @@ import java.time.Month;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.IllformedLocaleException;
 import java.util.Locale;
 import java.util.StringJoiner;
 
@@ -99,7 +99,8 @@ public class Jackson2JdkTypesModule extends SimpleModule {
   /**
    * Parses the {@link Locale#toString()} of a locale with a script or extensions, the form Jackson 2 wrote:
    * {@code language_REGION_variant_#script_extensions}. Jackson 3 doesn't know the {@code _#} marker and reads the
-   * script and extensions as part of the variant, it reads the rest of the Jackson 2 forms like Jackson 2 did.
+   * script and extensions as part of the variant, it reads the rest of the Jackson 2 forms like Jackson 2 did, except a
+   * language that isn't valid BCP 47 (see {@link Jackson2LocaleDeserializer}).
    */
   private static Locale fromLocaleString(String value) {
     final int marker = value.indexOf("_#");
@@ -244,15 +245,30 @@ public class Jackson2JdkTypesModule extends SimpleModule {
     }
 
     @Override
+    @SuppressWarnings("deprecation") // Locale.of needs Java 19
     public Object _deserialize(String value, DeserializationContext ctxt)
         throws MalformedURLException, UnknownHostException {
-      return value.contains("_#") ? fromLocaleString(value) : super._deserialize(value, ctxt);
+      if (value.contains("_#")) {
+        return fromLocaleString(value);
+      }
+      try {
+        return super._deserialize(value, ctxt);
+      } catch (IllformedLocaleException e) {
+        // Jackson 3 only takes a valid BCP 47 language without separators, Jackson 2 took any (e.g. "c", which is
+        // how 7.x wrote the POSIX locale new Locale("C"))
+        return new Locale(value);
+      }
     }
   }
 
-  static final class Jackson2LocaleKeyDeserializer extends KeyDeserializer {
+  /**
+   * Reads keys with {@link Jackson2LocaleDeserializer}, like Jackson reads them with its own Locale deserializer.
+   */
+  static final class Jackson2LocaleKeyDeserializer extends JDKKeyDeserializer {
 
-    private final KeyDeserializer jackson = JDKKeyDeserializer.forType(Locale.class);
+    Jackson2LocaleKeyDeserializer() {
+      super(TYPE_LOCALE, Locale.class, new Jackson2LocaleDeserializer());
+    }
 
     @Override
     public Object deserializeKey(String key, DeserializationContext ctxt) {
@@ -260,13 +276,16 @@ public class Jackson2JdkTypesModule extends SimpleModule {
         // Locale.ROOT, which Jackson 2 read back and Jackson 3 rejects
         return Locale.ROOT;
       }
-      return key.contains("_#") ? fromLocaleString(key) : jackson.deserializeKey(key, ctxt);
+      return super.deserializeKey(key, ctxt);
     }
   }
 
   /**
    * Jackson 2 had no {@link Month} serializer and wrote it like any other enum (by name, enum schema), Jackson 3 writes
    * its zero-based index.
+   * <p>
+   * Reading is left to Jackson 3's Month deserializer, which reads the names and indexes but not the enum features, so a
+   * mapper that writes enums in lower case ({@code EnumFeature.WRITE_ENUMS_TO_LOWERCASE}) can't read a Month back.
    */
   static final class Jackson2MonthSerializers extends Serializers.Base {
 

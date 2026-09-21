@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResourceBuilder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
+import io.fabric8.kubernetes.api.model.StatusCause;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
@@ -35,6 +36,7 @@ import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -77,6 +79,7 @@ import java.util.stream.Stream;
 import javax.xml.namespace.QName;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.awaitility.Awaitility.await;
 
@@ -152,10 +155,12 @@ class GeneratedCRDsOnApiServerTest {
     jdkTypes.setSpec(new JdkTypesSpec());
     jdkTypes.getSpec().setBytes(new byte[0]);
 
-    assertThatThrownBy(() -> createOnceServed(jdkTypes))
-        .isInstanceOf(KubernetesClientException.class)
-        .extracting(e -> ((KubernetesClientException) e).getCode())
-        .isEqualTo(422);
+    assertThatExceptionOfType(KubernetesClientException.class)
+        .isThrownBy(() -> createOnceServed(jdkTypes))
+        .satisfies(e -> assertThat(e.getCode()).isEqualTo(422))
+        .extracting(e -> e.getStatus().getDetails().getCauses(), InstanceOfAssertFactories.list(StatusCause.class))
+        .extracting(StatusCause::getField)
+        .containsExactly("spec.bytes");
   }
 
   /**

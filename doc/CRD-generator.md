@@ -351,7 +351,7 @@ in the generated CRD depending on the type:
             type: object
 ```
 
-A `byte[]` or `ByteBuffer` is written as a base64 string, so its byte limits become the matching base64 length, rounded up to whole groups of 3 bytes: `@Size(max = 100)` results in `maxLength: 136`, which also accepts 101 and 102 bytes.
+A `byte[]` or `ByteBuffer` is written as a base64 string, so its byte limits become the matching base64 length, which is only exact for multiples of 3 bytes: `@Size(max = 100)` results in `maxLength: 136`, which also accepts 101 and 102 bytes, and `@Size(min = 2)` in `minLength: 4`, which also accepts 1 byte.
 
 ### io.fabric8.generator.annotation.Pattern
 
