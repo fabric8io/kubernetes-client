@@ -24,6 +24,10 @@ import tools.jackson.databind.json.JsonMapper;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.Year;
+import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,17 +39,21 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class ResolvingContextMapperTest {
 
-  private static final Map<String, Object> SAMPLE = Map.of(
-      "instant", Instant.ofEpochSecond(1_700_000_000L),
-      "duration", Duration.ofMinutes(90),
-      "localDateTime", LocalDateTime.of(2026, 1, 1, 10, 15, 30),
-      "offsetTime", java.time.OffsetTime.parse("10:15:30+01:00"),
-      "yearMonth", java.time.YearMonth.of(2026, 1),
-      "monthDay", java.time.MonthDay.of(12, 25),
-      "timestamp", new java.sql.Timestamp(1_700_000_000_000L));
+  private static final Map<String, Object> SAMPLE = Map.ofEntries(
+      Map.entry("instant", Instant.ofEpochSecond(1_700_000_000L)),
+      Map.entry("duration", Duration.ofMinutes(90)),
+      Map.entry("localDateTime", LocalDateTime.of(2026, 1, 1, 10, 15, 30)),
+      Map.entry("offsetTime", java.time.OffsetTime.parse("10:15:30+01:00")),
+      Map.entry("yearMonth", java.time.YearMonth.of(2026, 1)),
+      Map.entry("monthDay", java.time.MonthDay.of(12, 25)),
+      Map.entry("timestamp", new java.sql.Timestamp(1_700_000_000_000L)),
+      Map.entry("year", Year.of(2024)),
+      Map.entry("month", Month.JANUARY),
+      Map.entry("sqlDate", java.sql.Date.valueOf("2024-01-15")),
+      Map.entry("locale", Locale.forLanguageTag("zh-Hant-TW")));
 
   @Test
-  @DisplayName("Default schema mapper serializes dates and durations like KubernetesSerialization does")
+  @DisplayName("Default schema mapper serializes dates, durations and JDK types like KubernetesSerialization does")
   void defaultMapperMatchesClientSerialization() {
     final String fromSchemaMapper = ResolvingContext.defaultResolvingContext(false).objectMapper.writeValueAsString(SAMPLE);
 
@@ -53,7 +61,20 @@ class ResolvingContextMapperTest {
   }
 
   @Test
-  @DisplayName("A caller-supplied mapper serializes dates and durations like KubernetesSerialization does")
+  @DisplayName("Default schema mapper writes Year, Month, java.sql.Date and Locale in their Jackson 2 form")
+  void defaultMapperWritesJackson2JdkTypes() {
+    final Map<String, Object> jdkTypes = new LinkedHashMap<>();
+    jdkTypes.put("year", Year.of(2024));
+    jdkTypes.put("month", Month.JANUARY);
+    jdkTypes.put("sqlDate", java.sql.Date.valueOf("2024-01-15"));
+    jdkTypes.put("locale", Locale.forLanguageTag("zh-Hant-TW"));
+
+    assertThat(ResolvingContext.defaultResolvingContext(false).objectMapper.writeValueAsString(jdkTypes))
+        .isEqualTo("{\"year\":\"2024\",\"month\":\"JANUARY\",\"sqlDate\":\"2024-01-15\",\"locale\":\"zh_TW_#Hant\"}");
+  }
+
+  @Test
+  @DisplayName("A caller-supplied mapper serializes dates, durations and JDK types like KubernetesSerialization does")
   void callerSuppliedMapperMatchesClientSerialization() {
     final ObjectMapper mapper = JsonMapper.builderWithJackson2Defaults().build();
     final KubernetesSerialization kubernetesSerialization = new KubernetesSerialization(mapper, false);

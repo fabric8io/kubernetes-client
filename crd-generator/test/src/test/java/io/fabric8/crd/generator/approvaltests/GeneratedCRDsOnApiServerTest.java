@@ -15,6 +15,8 @@
  */
 package io.fabric8.crd.generator.approvaltests;
 
+import io.fabric8.crd.generator.approvaltests.jdktypes.JdkTypes;
+import io.fabric8.crd.generator.approvaltests.jdktypes.JdkTypesSpec;
 import io.fabric8.crd.generator.approvaltests.shapes.Shapes;
 import io.fabric8.crd.generator.approvaltests.shapes.ShapesSpec;
 import io.fabric8.crdv2.generator.CRDGenerator;
@@ -25,6 +27,7 @@ import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResourceBuilder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
+import io.fabric8.kubernetes.api.model.StatusCause;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
@@ -33,6 +36,7 @@ import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -43,15 +47,18 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.MonthDay;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
 import java.time.Period;
+import java.time.Year;
 import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -60,6 +67,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TimeZone;
@@ -68,7 +76,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.xml.namespace.QName;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.awaitility.Awaitility.await;
 
@@ -76,7 +87,8 @@ import static org.awaitility.Awaitility.await;
  * Specs and approval files only pin what the generator emits. These tests check what matters to users against a
  * real API server: the CRDs are accepted, and the content the client writes is neither rejected nor pruned.
  */
-@EnableKubeAPIServer
+// Pinned: an unversioned server reuses the newest cached binary, which may predate selectableFields (1.32+)
+@EnableKubeAPIServer(kubeAPIVersion = "1.37.*")
 class GeneratedCRDsOnApiServerTest {
 
   private static final String NAMESPACE = "default";
@@ -110,6 +122,45 @@ class GeneratedCRDsOnApiServerTest {
         .inNamespace(NAMESPACE).withName("all-shapes").get();
     assertThat(stored.getAdditionalProperties().get("spec"))
         .isEqualTo(written.getAdditionalProperties().get("spec"));
+  }
+
+  @Test
+  @DisplayName("A populated JdkTypes resource round-trips through the API server without being rejected or pruned")
+  void jdkTypesRoundTrip() {
+    establish(generate("jdktypes.samples.fabric8.io", JdkTypes.class));
+    final JdkTypes jdkTypes = new JdkTypes();
+    jdkTypes.setMetadata(new ObjectMetaBuilder().withName("all-jdk-types").withNamespace(NAMESPACE).build());
+    jdkTypes.setSpec(populatedJdkTypes());
+    // through JSON, a conversion would keep the binary values as byte[] instead of their base64 string
+    final GenericKubernetesResource written = client.getKubernetesSerialization()
+        .unmarshal(client.getKubernetesSerialization().asJson(jdkTypes), GenericKubernetesResource.class);
+
+    createOnceServed(written);
+
+    final GenericKubernetesResource stored = client.genericKubernetesResources("samples.fabric8.io/v1", "JdkTypes")
+        .inNamespace(NAMESPACE).withName("all-jdk-types").get();
+    assertThat(stored.getAdditionalProperties().get("spec"))
+        .isEqualTo(written.getAdditionalProperties().get("spec"));
+  }
+
+  /**
+   * Pins the reason the migration guide recommends leaving empty binary values null or omitting them.
+   */
+  @Test
+  @DisplayName("An empty byte[] is rejected, the client writes it as an empty string and format: byte doesn't accept it")
+  void emptyByteArrayIsRejected() {
+    establish(generate("jdktypes.samples.fabric8.io", JdkTypes.class));
+    final JdkTypes jdkTypes = new JdkTypes();
+    jdkTypes.setMetadata(new ObjectMetaBuilder().withName("empty-bytes").withNamespace(NAMESPACE).build());
+    jdkTypes.setSpec(new JdkTypesSpec());
+    jdkTypes.getSpec().setBytes(new byte[0]);
+
+    assertThatExceptionOfType(KubernetesClientException.class)
+        .isThrownBy(() -> createOnceServed(jdkTypes))
+        .satisfies(e -> assertThat(e.getCode()).isEqualTo(422))
+        .extracting(e -> e.getStatus().getDetails().getCauses(), InstanceOfAssertFactories.list(StatusCause.class))
+        .extracting(StatusCause::getField)
+        .containsExactly("spec.bytes");
   }
 
   /**
@@ -240,6 +291,42 @@ class GeneratedCRDsOnApiServerTest {
     spec.setAnyList(List.of("text", 2, Map.of("key", "value")));
     spec.setOptionalAny(Optional.of(List.of(1, 2)));
     spec.setOptionalLabels(Optional.of(Map.of("app", "shapes")));
+    return spec;
+  }
+
+  private static JdkTypesSpec populatedJdkTypes() {
+    // 100 bytes are 136 base64 characters, more than the 76 per line a MIME encoder writes
+    final byte[] bytes = new byte[100];
+    for (int i = 0; i < bytes.length; i++) {
+      bytes[i] = (byte) (i * 7);
+    }
+    final JdkTypesSpec spec = new JdkTypesSpec();
+    spec.setBytes(bytes);
+    spec.setByteBuffer(ByteBuffer.wrap(bytes));
+    spec.setOptionalBytes(Optional.of(bytes));
+    spec.setByteArrays(List.of(bytes, new byte[] { 1 }));
+    spec.setByteArrayMap(Map.of("key", bytes));
+    spec.setMaxSizedBytes(bytes);
+    spec.setMinSizedBytes(new byte[] { 1, 2 });
+    spec.setEmptyBytes(new byte[0]);
+    spec.setBoxedBytes(new Byte[] { 1, -1 });
+    spec.setByteList(List.of((byte) 1, (byte) -1));
+    spec.setChars("chars".toCharArray());
+    spec.setQname(new QName("urn:example", "local", "ex"));
+    spec.setQnames(List.of(new QName("local"), new QName("urn:example", "other")));
+    spec.setYear(Year.of(2024));
+    spec.setYears(List.of(Year.of(2024), Year.of(2025)));
+    spec.setMonth(Month.JANUARY);
+    spec.setMonths(Map.of("first", Month.JANUARY, "last", Month.DECEMBER));
+    spec.setSqlDate(java.sql.Date.valueOf("2024-01-15"));
+    spec.setSqlDates(List.of(java.sql.Date.valueOf("2024-01-15"), java.sql.Date.valueOf("2024-12-31")));
+    spec.setLocale(Locale.forLanguageTag("zh-Hant-TW"));
+    spec.setLocales(Map.of("es", Locale.forLanguageTag("es-ES"), "th", Locale.forLanguageTag("th-TH-u-nu-thai")));
+    spec.setLocaleKeys(Map.of(Locale.forLanguageTag("zh-Hant-TW"), "zh"));
+    spec.setMaxInt(Integer.MAX_VALUE);
+    spec.setMaxLong(Long.MAX_VALUE);
+    spec.setInts(List.of(Integer.MIN_VALUE, Integer.MAX_VALUE));
+    spec.setLongs(Map.of("min", Long.MIN_VALUE, "max", Long.MAX_VALUE));
     return spec;
   }
 

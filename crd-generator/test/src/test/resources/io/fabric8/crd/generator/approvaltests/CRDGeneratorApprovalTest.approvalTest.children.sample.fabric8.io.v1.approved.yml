@@ -18,6 +18,7 @@ spec:
           spec:
             properties:
               baseInt:
+                format: "int32"
                 type: "integer"
               supported:
                 additionalProperties:

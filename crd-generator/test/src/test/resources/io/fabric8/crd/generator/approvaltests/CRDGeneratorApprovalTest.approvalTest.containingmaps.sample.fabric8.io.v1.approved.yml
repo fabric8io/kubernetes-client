@@ -24,42 +24,49 @@ spec:
               stringToIntMultiMap1:
                 additionalProperties:
                   items:
+                    format: "int32"
                     type: "integer"
                   type: "array"
                 type: "object"
               stringToIntMultiMap2:
                 additionalProperties:
                   items:
+                    format: "int32"
                     type: "integer"
                   type: "array"
                 type: "object"
               stringToIntMultiMap3:
                 additionalProperties:
                   items:
+                    format: "int32"
                     type: "integer"
                   type: "array"
                 type: "object"
               stringToIntMultiMap4:
                 additionalProperties:
                   items:
+                    format: "int32"
                     type: "integer"
                   type: "array"
                 type: "object"
               stringToIntMultiMap5:
                 additionalProperties:
                   items:
+                    format: "int32"
                     type: "integer"
                   type: "array"
                 type: "object"
               stringToIntMultiMap6:
                 additionalProperties:
                   items:
+                    format: "int32"
                     type: "integer"
                   type: "array"
                 type: "object"
               stringToIntMultiMap7:
                 additionalProperties:
                   items:
+                    format: "int32"
                     type: "integer"
                   type: "array"
                 type: "object"

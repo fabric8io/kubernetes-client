@@ -61,8 +61,10 @@ spec:
                 items:
                   properties:
                     x:
+                      format: "int32"
                       type: "integer"
                     "y":
+                      format: "int32"
                       type: "integer"
                   type: "object"
                   x-kubernetes-preserve-unknown-fields: true
