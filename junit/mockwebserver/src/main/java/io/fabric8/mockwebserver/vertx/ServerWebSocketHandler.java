@@ -21,25 +21,20 @@ import io.fabric8.mockwebserver.http.WebSocketListener;
 import io.vertx.core.Handler;
 import io.vertx.core.http.ServerWebSocket;
 
-import java.util.Set;
-
 public class ServerWebSocketHandler implements Handler<ServerWebSocket> {
 
   private static final int WEBSOCKET_CLOSE_CODE_SERVER_ERROR = 1011;
 
   private final RecordedRequest request;
   private final Response response;
-  private final Set<ServerWebSocket> activeWebSockets;
 
-  public ServerWebSocketHandler(RecordedRequest request, Response response, Set<ServerWebSocket> activeWebSockets) {
+  public ServerWebSocketHandler(RecordedRequest request, Response response) {
     this.request = request;
     this.response = response;
-    this.activeWebSockets = activeWebSockets;
   }
 
   @Override
   public void handle(ServerWebSocket serverWebSocket) {
-    activeWebSockets.add(serverWebSocket);
     final WebSocketListener wsListener = response.getWebSocketListener();
     final VertxMockWebSocket mockWebSocket = new VertxMockWebSocket(request, serverWebSocket);
     // Important to call onBeforeAccept before configuring so that WebSockets get registered by dispatchers, handlers, and so on
@@ -66,14 +61,11 @@ public class ServerWebSocketHandler implements Handler<ServerWebSocket> {
       serverWebSocket.fetch(1);
     });
     // use end, not close, because close is processed immediately vs. end is in frame order
-    serverWebSocket.endHandler(v -> {
-      activeWebSockets.remove(serverWebSocket);
-      wsListener.onClosed(
-          mockWebSocket,
-          serverWebSocket.closeStatusCode() == null ? WEBSOCKET_CLOSE_CODE_SERVER_ERROR
-              : serverWebSocket.closeStatusCode(),
-          serverWebSocket.closeReason());
-    });
+    serverWebSocket.endHandler(v -> wsListener.onClosed(
+        mockWebSocket,
+        serverWebSocket.closeStatusCode() == null ? WEBSOCKET_CLOSE_CODE_SERVER_ERROR
+            : serverWebSocket.closeStatusCode(),
+        serverWebSocket.closeReason()));
     serverWebSocket.exceptionHandler(err -> wsListener.onFailure(mockWebSocket, err, response));
   }
 }

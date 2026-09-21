@@ -28,7 +28,6 @@ import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
-import io.vertx.core.http.ServerWebSocket;
 import io.vertx.core.net.NetServerOptions;
 import io.vertx.core.net.PemKeyCertOptions;
 import io.vertx.core.net.PemTrustOptions;
@@ -63,10 +62,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -102,7 +99,6 @@ public class MockWebServer implements Closeable {
   private String hostName;
   private List<Protocol> protocols;
   private boolean http2ClearTextEnabled;
-  private final Set<ServerWebSocket> activeWebSockets;
   private boolean started;
   private boolean shutdown;
 
@@ -111,7 +107,6 @@ public class MockWebServer implements Closeable {
     requestQueue = new LinkedBlockingQueue<>();
     requestCount = new AtomicInteger();
     listeners = new ArrayList<>();
-    activeWebSockets = ConcurrentHashMap.newKeySet();
     dispatcher = new QueueDispatcher();
     clientAuth = ClientAuth.NONE;
     enabledSecuredTransportProtocols = new ArrayList<>();
@@ -166,7 +161,7 @@ public class MockWebServer implements Closeable {
       listeners.forEach(listener -> listener.onConnection(connection));
       event.closeHandler(res -> listeners.forEach(listener -> listener.onConnectionClosed(connection)));
     });
-    httpServer.requestHandler(new HttpServerRequestHandler(vertx, activeWebSockets) {
+    httpServer.requestHandler(new HttpServerRequestHandler(vertx) {
       @Override
       protected MockResponse onHttpRequest(RecordedRequest request) {
         requestCount.incrementAndGet();
@@ -194,15 +189,10 @@ public class MockWebServer implements Closeable {
     // connection state (e.g. WebSocketSession executors) that an in-flight upgrade may still
     // have been about to touch via onOpen — avoiding a RejectedExecutionException race.
     dispatcher.shutdown();
-    // Vert.x 5's HttpServer.close() waits for all connections (including WebSocket sessions)
-    // to drain. Force-close any lingering WebSocket sessions left open by tests so the server
-    // can shut down promptly.
-    for (ServerWebSocket ws : activeWebSockets) {
-      ws.close();
-    }
-    closeServerAndVertx();
+    await(httpServer.close(), "Unable to close MockWebServer");
     dispatcher.releaseResources();
     info("done accepting connections");
+    await(vertx.close(), "Unable to close Vertx");
   }
 
   @Override
@@ -379,15 +369,6 @@ public class MockWebServer implements Closeable {
     }
   }
 
-  private void closeServerAndVertx() {
-    // Vert.x 5's HttpServer.close() and Vertx.close() wait for all connections (including
-    // WebSocket sessions) to drain. If a client abandoned its WebSocket without a close
-    // handshake, these calls block indefinitely. Since this is a test mock server, swallow
-    // the timeout and let the JVM clean up.
-    awaitQuietly(httpServer.close(), 5);
-    awaitQuietly(vertx.close(), 5);
-  }
-
   private static <T> T await(Future<T> vertxFuture, String errorMessage) {
     final CompletableFuture<T> future = new CompletableFuture<>();
     vertxFuture.onComplete(r -> {
@@ -404,24 +385,6 @@ public class MockWebServer implements Closeable {
       throw new IllegalStateException(e);
     } catch (ExecutionException | TimeoutException e) {
       throw new IllegalStateException(errorMessage, e);
-    }
-  }
-
-  private static void awaitQuietly(Future<Void> vertxFuture, long timeoutSeconds) {
-    final CompletableFuture<Void> future = new CompletableFuture<>();
-    vertxFuture.onComplete(r -> {
-      if (r.succeeded()) {
-        future.complete(null);
-      } else {
-        future.completeExceptionally(r.cause());
-      }
-    });
-    try {
-      future.get(timeoutSeconds, TimeUnit.SECONDS);
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-    } catch (ExecutionException | TimeoutException e) {
-      logger.log(Level.WARNING, "Shutdown timed out, proceeding anyway", e);
     }
   }
 
