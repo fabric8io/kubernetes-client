@@ -19,131 +19,55 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.fabric8.kubernetes.api.model.Duration;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
  * The Java shapes whose schema does not follow from the field type alone: types with their own
- * serializer, enums that rename their values, properties that only exist as a getter, generic and
- * polymorphic types, and content that cannot be described at all.
+ * serializer, enums that rename their values, properties that only exist as a getter, generic, optional
+ * and polymorphic types, and content that cannot be described at all.
+ * GeneratedCRDsOnApiServerTest round-trips a populated instance through a real API server.
  */
+@Getter
+@Setter
 public class ShapesSpec {
 
-  /** Serializes as a Kubernetes duration string ("1h30m") through its own serializer. */
+  /** Serializes through its own serializer as a Go duration ("5400000000000ns"). */
   private Duration k8sDuration;
-  /** Serializes as an ISO-8601 duration ("PT1H30M"), which no Kubernetes string format accepts. */
+  /** Jackson reports date-time, but the value is an ISO-8601 duration ("PT1H30M"). */
   private java.time.Duration isoDuration;
   private Period isoPeriod;
   private Instant instant;
   private LocalDate localDate;
+  /** Jackson reports date-time, but the value has no offset ("2026-01-01T10:15:30"). */
+  private LocalDateTime localDateTime;
   private UUID uuid;
   private Protocol protocol;
   private Holder holder;
   private Shape shape;
+  /** Inherits @JsonTypeInfo from an interface, so the client also writes a type id. */
+  private Square square;
+  /** On a property, @JsonTypeInfo applies to the elements. */
+  @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "dimensions")
+  @JsonSubTypes({
+      @JsonSubTypes.Type(value = Point.class, name = "2d"),
+      @JsonSubTypes.Type(value = Point3d.class, name = "3d")
+  })
+  private List<Point> points;
   private Object any;
   private Map<String, Object> anyMap;
   private List<Object> anyList;
-
-  public Duration getK8sDuration() {
-    return k8sDuration;
-  }
-
-  public void setK8sDuration(Duration k8sDuration) {
-    this.k8sDuration = k8sDuration;
-  }
-
-  public java.time.Duration getIsoDuration() {
-    return isoDuration;
-  }
-
-  public void setIsoDuration(java.time.Duration isoDuration) {
-    this.isoDuration = isoDuration;
-  }
-
-  public Period getIsoPeriod() {
-    return isoPeriod;
-  }
-
-  public void setIsoPeriod(Period isoPeriod) {
-    this.isoPeriod = isoPeriod;
-  }
-
-  public Instant getInstant() {
-    return instant;
-  }
-
-  public void setInstant(Instant instant) {
-    this.instant = instant;
-  }
-
-  public LocalDate getLocalDate() {
-    return localDate;
-  }
-
-  public void setLocalDate(LocalDate localDate) {
-    this.localDate = localDate;
-  }
-
-  public UUID getUuid() {
-    return uuid;
-  }
-
-  public void setUuid(UUID uuid) {
-    this.uuid = uuid;
-  }
-
-  public Protocol getProtocol() {
-    return protocol;
-  }
-
-  public void setProtocol(Protocol protocol) {
-    this.protocol = protocol;
-  }
-
-  public Holder getHolder() {
-    return holder;
-  }
-
-  public void setHolder(Holder holder) {
-    this.holder = holder;
-  }
-
-  public Shape getShape() {
-    return shape;
-  }
-
-  public void setShape(Shape shape) {
-    this.shape = shape;
-  }
-
-  public Object getAny() {
-    return any;
-  }
-
-  public void setAny(Object any) {
-    this.any = any;
-  }
-
-  public Map<String, Object> getAnyMap() {
-    return anyMap;
-  }
-
-  public void setAnyMap(Map<String, Object> anyMap) {
-    this.anyMap = anyMap;
-  }
-
-  public List<Object> getAnyList() {
-    return anyList;
-  }
-
-  public void setAnyList(List<Object> anyList) {
-    this.anyList = anyList;
-  }
+  private Optional<Object> optionalAny;
+  private Optional<Map<String, String>> optionalLabels;
 
   /** Serialized through {@link JsonValue}, so the enum values are the lower-case ones. */
   public enum Protocol {
@@ -165,28 +89,16 @@ public class ShapesSpec {
   public static class Holder extends GenericHolder<Inner> {
   }
 
+  @Getter
+  @Setter
   public static class GenericHolder<T> {
     private T value;
-
-    public T getValue() {
-      return value;
-    }
-
-    public void setValue(T value) {
-      this.value = value;
-    }
   }
 
+  @Getter
+  @Setter
   public static class Inner {
     private String name;
-
-    public String getName() {
-      return name;
-    }
-
-    public void setName(String name) {
-      this.name = name;
-    }
 
     /** Only exists as a getter, but Jackson still writes it. */
     public String getComputed() {
@@ -194,29 +106,41 @@ public class ShapesSpec {
     }
   }
 
+  @Getter
+  @Setter
   @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind")
   @JsonSubTypes({ @JsonSubTypes.Type(value = Circle.class, name = "circle") })
   public abstract static class Shape {
     private String name;
-
-    public String getName() {
-      return name;
-    }
-
-    public void setName(String name) {
-      this.name = name;
-    }
   }
 
+  @Getter
+  @Setter
   public static class Circle extends Shape {
     private double radius;
+  }
 
-    public double getRadius() {
-      return radius;
-    }
+  @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind")
+  @JsonSubTypes({ @JsonSubTypes.Type(value = Square.class, name = "square") })
+  public interface Polygon {
+  }
 
-    public void setRadius(double radius) {
-      this.radius = radius;
-    }
+  @Getter
+  @Setter
+  public static class Square implements Polygon {
+    private double side;
+  }
+
+  @Getter
+  @Setter
+  public static class Point {
+    private int x;
+    private int y;
+  }
+
+  @Getter
+  @Setter
+  public static class Point3d extends Point {
+    private int z;
   }
 }

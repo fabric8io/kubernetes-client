@@ -49,6 +49,24 @@ spec:
               localDate:
                 format: "date"
                 type: "string"
+              localDateTime:
+                type: "string"
+              optionalAny:
+                x-kubernetes-preserve-unknown-fields: true
+              optionalLabels:
+                additionalProperties:
+                  type: "string"
+                type: "object"
+              points:
+                items:
+                  properties:
+                    x:
+                      type: "integer"
+                    "y":
+                      type: "integer"
+                  type: "object"
+                  x-kubernetes-preserve-unknown-fields: true
+                type: "array"
               protocol:
                 enum:
                 - "tcp"
@@ -58,6 +76,12 @@ spec:
                 properties:
                   name:
                     type: "string"
+                type: "object"
+                x-kubernetes-preserve-unknown-fields: true
+              square:
+                properties:
+                  side:
+                    type: "number"
                 type: "object"
                 x-kubernetes-preserve-unknown-fields: true
               uuid:

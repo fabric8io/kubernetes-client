@@ -74,9 +74,15 @@ import java.lang.reflect.AnnotatedParameterizedType;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -105,18 +111,11 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
   private static final Logger logger = LoggerFactory.getLogger(AbstractJsonSchema.class);
 
   /**
-   * Jackson reports these as {@code date-time}, but none of them serializes to an RFC 3339 date-time:
-   * durations are ISO-8601 ({@code PT1H30M}), and the partials are times or fragments of a date
-   * ({@code 10:15:30+01:00}, {@code 2026-01}, {@code --12-25}). No Kubernetes format matches those, and a
-   * format the API server does not accept rejects values the client itself writes, so they get none.
+   * Jackson gives every JDK date and time type one of these formats, but the API server validates {@code date-time}
+   * as RFC 3339 (the offset is mandatory) and {@code date} as a full-date, rejecting any value that doesn't match.
+   * JDK types only keep the format when they always write a matching value, see {@link #writesFormat}.
    */
-  private static final Set<Class<?>> TYPES_WITHOUT_MATCHING_FORMAT = Set.of(
-      java.time.Duration.class,
-      java.time.Period.class,
-      java.time.OffsetTime.class,
-      java.time.LocalTime.class,
-      java.time.YearMonth.class,
-      java.time.MonthDay.class);
+  private static final Set<String> TEMPORAL_FORMATS = Set.of("date-time", "date", "time");
 
   private final ResolvingContext resolvingContext;
   private final T root;
@@ -297,7 +296,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         this.format = ofNullable(valueTypeSchema.getFormat()).map(Object::toString).orElse(null);
       }
 
-      if (hasNoMatchingFormat(beanProperty.getType())) {
+      if (format != null && TEMPORAL_FORMATS.contains(format) && !keepsTemporalFormat(beanProperty, format)) {
         this.format = null;
       }
 
@@ -372,10 +371,23 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
               + "' from JsonProperty annotation as valid YAML or JSON, no default value will be used.");
           return null;
         }
-        throw new IllegalArgumentException("Cannot parse default value: '" + value
-            + "' as valid YAML or JSON. Values starting with '{' or '[' are parsed as JSON, so a flow-style YAML"
-            + " mapping such as '{key: value}' has to be written as JSON ('{\"key\": \"value\"}').", e);
+        final String strippedValue = value.strip();
+        final String jsonHint = strippedValue.startsWith("{") || strippedValue.startsWith("[")
+            ? " Values starting with '{' or '[' are parsed as JSON, so a flow-style YAML mapping such as"
+                + " '{key: value}' has to be written as JSON ('{\"key\": \"value\"}')."
+            : "";
+        throw new IllegalArgumentException(
+            "Cannot parse default value: '" + value + "' as valid YAML or JSON." + jsonHint, e);
       }
+    }
+
+    /**
+     * JDK types keep only the formats they always match, other types keep whatever their serializer declares.
+     */
+    private boolean keepsTemporalFormat(BeanProperty beanProperty, String format) {
+      final JavaType type = unwrapReferenceType(beanProperty.getType());
+      return type == null || !type.getRawClass().getName().startsWith("java.")
+          || writesFormat(type.getRawClass(), format);
     }
 
     private void setMinMax(BeanProperty beanProperty,
@@ -480,9 +492,9 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         ignored -> objectSchema.setXKubernetesPreserveUnknownFields(true));
 
     // only the declared type is introspected, so the subtypes' properties are not part of the schema;
-    // CRDs cannot express a discriminated union, so keep the subtype content instead of pruning it
-    if (findClassAnnotation(rawClass, JsonTypeInfo.class) != null
-        || findClassAnnotation(rawClass, JsonSubTypes.class) != null) {
+    // CRDs cannot express a discriminated union, so keep the subtype content instead of pruning it.
+    // Jackson also inherits these annotations from interfaces and mix-ins, which the class hierarchy misses.
+    if (bd.getClassAnnotations().has(JsonTypeInfo.class) || bd.getClassAnnotations().has(JsonSubTypes.class)) {
       objectSchema.setXKubernetesPreserveUnknownFields(true);
     }
 
@@ -601,6 +613,11 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
   private T resolveProperty(LinkedHashMap<String, String> visited, InternalSchemaSwaps schemaSwaps, String name,
       JavaType type, JsonSchema jacksonSchema, BeanProperty beanProperty) {
 
+    // the schema Jackson generated is the referenced type's, so resolve it with that type
+    type = unwrapReferenceType(type);
+    // on a property, @JsonTypeInfo applies to the value, or to the elements of a container
+    final boolean polymorphicValues = beanProperty != null && beanProperty.getAnnotation(JsonTypeInfo.class) != null;
+
     if (jacksonSchema.isArraySchema()) {
       Items items = jacksonSchema.asArraySchema().getItems();
       if (items == null) { // raw collection, or one with an Object element type
@@ -612,6 +629,9 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       JsonSchema arraySchema = jacksonSchema.asArraySchema().getItems().asSingleItems().getSchema();
       final T schema = resolveProperty(visited, schemaSwaps, name, type.getContentType(), arraySchema, null);
       handleTypeAnnotations(schema, beanProperty, List.class, 0);
+      if (polymorphicValues) {
+        preserveSubtypeContent(schema);
+      }
       return arrayLikeProperty(schema);
     } else if (jacksonSchema.isIntegerSchema()) {
       return singleProperty("integer");
@@ -671,6 +691,9 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
           .getJsonSchema();
       T component = resolveProperty(visited, schemaSwaps, name, valueType, mapValueSchema, null);
       handleTypeAnnotations(component, beanProperty, Map.class, 1);
+      if (polymorphicValues) {
+        preserveSubtypeContent(component);
+      }
       return mapLikeProperty(component);
     }
 
@@ -682,8 +705,10 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       return raw();
     }
 
-    // an Object property (or an Object map value) holds arbitrary JSON, so it cannot be described further
-    if (def == Object.class) {
+    // an Object property (or an Object map value) holds arbitrary JSON, so it cannot be described further,
+    // unless its serializer describes it (e.g. @JsonSerialize(as = SomePojo.class))
+    if (def == Object.class && jacksonSchema.isObjectSchema()
+        && jacksonSchema.asObjectSchema().getProperties().isEmpty()) {
       return anyTypeProperty();
     }
 
@@ -696,6 +721,9 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
     T res = resolveObject(visited, schemaSwaps, jacksonSchema);
     visited.remove(def.getName());
+    if (polymorphicValues) {
+      preserveSubtypeContent(res);
+    }
     return res;
   }
 
@@ -773,8 +801,38 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     return toIgnore;
   }
 
-  private static boolean hasNoMatchingFormat(JavaType type) {
-    return type != null && TYPES_WITHOUT_MATCHING_FORMAT.contains(type.getRawClass());
+  /**
+   * Whether the JDK type always writes a value the format accepts. Durations ({@code PT1H30M}), {@code LocalDateTime}
+   * and {@code java.sql.Time} (no offset) and the partial types ({@code 10:15:30+01:00}, {@code 2026-01},
+   * {@code --12-25}) never do.
+   */
+  private static boolean writesFormat(Class<?> type, String format) {
+    return switch (format) {
+      case "date-time" -> type == Instant.class || type == OffsetDateTime.class || type == ZonedDateTime.class
+          || Calendar.class.isAssignableFrom(type)
+          || (Date.class.isAssignableFrom(type) && type != java.sql.Time.class);
+      case "date" -> type == LocalDate.class;
+      default -> false;
+    };
+  }
+
+  /**
+   * Jackson describes {@code Optional<X>} and the other reference types with the schema of {@code X}.
+   */
+  private static JavaType unwrapReferenceType(JavaType type) {
+    while (type != null && type.isReferenceType()) {
+      type = type.getReferencedType();
+    }
+    return type;
+  }
+
+  /**
+   * A polymorphic value may hold a subtype's properties, which a schema built from the declared type would prune.
+   */
+  private static void preserveSubtypeContent(KubernetesJSONSchemaProps schema) {
+    if ("object".equals(schema.getType())) {
+      schema.setXKubernetesPreserveUnknownFields(true);
+    }
   }
 
   /**

@@ -17,18 +17,22 @@ package io.fabric8.crdv2.example.types;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.MonthDay;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
 import java.time.Period;
 import java.time.YearMonth;
 import java.time.ZonedDateTime;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 public class TypeMappingsSpec {
@@ -37,6 +41,7 @@ public class TypeMappingsSpec {
   public Date date;
   public LocalDate localDate;
   public LocalDateTime localDateTime;
+  public LocalTime localTime;
   public ZonedDateTime zonedDateTime;
   public OffsetDateTime offsetDateTime;
   public OffsetTime offsetTime;
@@ -46,6 +51,11 @@ public class TypeMappingsSpec {
   public Duration duration;
   public Period period;
   public Timestamp timestamp;
+  public java.sql.Date sqlDate;
+  public Time sqlTime;
+  public Calendar calendar;
+  public Optional<Instant> optionalInstant;
+  public Optional<Duration> optionalDuration;
 
   // Number related types
   public short aShort;

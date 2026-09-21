@@ -401,7 +401,7 @@ class CRDGeneratorTest {
     });
   }
 
-  private JSONSchemaProps checkAnyValuedMapProp(Map<String, JSONSchemaProps> specProps, String name) {
+  private void checkAnyValuedMapProp(Map<String, JSONSchemaProps> specProps, String name) {
     final JSONSchemaProps props = specProps.get(name);
     assertNotNull(props, name + " should be contained in spec");
     assertEquals("object", props.getType(), name + "'s type should be object");
@@ -409,7 +409,6 @@ class CRDGeneratorTest {
     assertNull(valueSchema.getType(), name + "'s value type should be left open");
     assertEquals(Boolean.TRUE, valueSchema.getXKubernetesPreserveUnknownFields(),
         name + "'s values should be preserved");
-    return valueSchema;
   }
 
   private JSONSchemaProps checkMapProp(Map<String, JSONSchemaProps> specProps, String name, String valueType) {
