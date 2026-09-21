@@ -20,7 +20,7 @@ require (
 	github.com/operator-framework/api v0.42.0
 	github.com/operator-framework/operator-lifecycle-manager v0.43.0
 	github.com/ovn-org/ovn-kubernetes/go-controller v0.0.0-20241030140127-a68ef49d9441
-	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.91.0
+	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.94.0
 	github.com/spf13/cobra v1.10.2
 	github.com/stolostron/discovery v0.0.0-20250721184441-6a13204f0907
 	github.com/stolostron/klusterlet-addon-controller v0.0.0-20250324045714-0d7e21c66660
@@ -122,7 +122,7 @@ require (
 	github.com/emicklei/go-restful/v3 v3.13.0 // indirect
 	github.com/evanphx/json-patch/v5 v5.9.11 // indirect
 	github.com/fsnotify/fsnotify v1.10.1 // indirect
-	github.com/fxamacker/cbor/v2 v2.9.2 // indirect
+	github.com/fxamacker/cbor/v2 v2.9.3 // indirect
 	github.com/go-errors/errors v1.5.1 // indirect
 	github.com/go-logr/logr v1.4.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
@@ -236,11 +236,11 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	istio.io/api v1.31.0-rc.0.0.20260824154656-b943409680a7 // indirect
 	k8s.io/klog/v2 v2.140.0 // indirect
-	k8s.io/utils v0.0.0-20260626114624-be93311217bd // indirect
+	k8s.io/utils v0.0.0-20260707023825-cf1189d6abe3 // indirect
 	knative.dev/pkg v0.0.0-20260918182429-5dc1978f0042 // indirect
 	sigs.k8s.io/cluster-api v1.14.2 // indirect
 	sigs.k8s.io/cluster-api-provider-azure v1.27.0 // indirect
-	sigs.k8s.io/controller-runtime v0.24.1 // indirect
+	sigs.k8s.io/controller-runtime v0.25.0 // indirect
 	sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730 // indirect
 	sigs.k8s.io/kustomize/kyaml v0.21.1 // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect

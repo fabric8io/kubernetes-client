@@ -105,7 +105,7 @@ public class MetadataConfig implements Editable<MetadataConfigBuilder>, Kubernet
     }
 
     /**
-     * send defines whether metric metadata is sent to the remote storage or not.
+     * send defines whether metric metadata is sent to the remote storage or not.<br><p> <br><p> The setting is ignored when Remote Write message's version 2.0 is used.
      */
     @JsonProperty("send")
     public Boolean getSend() {
@@ -113,7 +113,7 @@ public class MetadataConfig implements Editable<MetadataConfigBuilder>, Kubernet
     }
 
     /**
-     * send defines whether metric metadata is sent to the remote storage or not.
+     * send defines whether metric metadata is sent to the remote storage or not.<br><p> <br><p> The setting is ignored when Remote Write message's version 2.0 is used.
      */
     @JsonProperty("send")
     public void setSend(Boolean send) {

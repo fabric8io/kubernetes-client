@@ -25,7 +25,7 @@ public class OTLPConfigBuilder extends OTLPConfigFluent<OTLPConfigBuilder> imple
   }
 
   public OTLPConfig build() {
-    OTLPConfig buildable = new OTLPConfig(fluent.getConvertHistogramsToNHCB(), fluent.getIgnoreResourceAttributes(), fluent.getKeepIdentifyingResourceAttributes(), fluent.getPromoteAllResourceAttributes(), fluent.getPromoteResourceAttributes(), fluent.getPromoteScopeMetadata(), fluent.getTranslationStrategy());
+    OTLPConfig buildable = new OTLPConfig(fluent.getConvertHistogramsToNHCB(), fluent.getIgnoreResourceAttributes(), fluent.getKeepIdentifyingResourceAttributes(), fluent.getLabelNamePreserveMultipleUnderscores(), fluent.getLabelNameUnderscoreSanitization(), fluent.getPromoteAllResourceAttributes(), fluent.getPromoteResourceAttributes(), fluent.getPromoteScopeMetadata(), fluent.getTranslationStrategy());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

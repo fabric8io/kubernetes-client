@@ -426,7 +426,7 @@ public class Endpoint implements Editable<EndpointBuilder>, KubernetesResource
     }
 
     /**
-     * port defines the name of the Service port which this endpoint refers to.<br><p> <br><p> It takes precedence over `targetPort`.
+     * port defines the name of the Service port which this endpoint refers to (e.g. `.spec.ports[].name`).<br><p> <br><p> It takes precedence over `targetPort`.
      */
     @JsonProperty("port")
     public String getPort() {
@@ -434,7 +434,7 @@ public class Endpoint implements Editable<EndpointBuilder>, KubernetesResource
     }
 
     /**
-     * port defines the name of the Service port which this endpoint refers to.<br><p> <br><p> It takes precedence over `targetPort`.
+     * port defines the name of the Service port which this endpoint refers to (e.g. `.spec.ports[].name`).<br><p> <br><p> It takes precedence over `targetPort`.
      */
     @JsonProperty("port")
     public void setPort(String port) {

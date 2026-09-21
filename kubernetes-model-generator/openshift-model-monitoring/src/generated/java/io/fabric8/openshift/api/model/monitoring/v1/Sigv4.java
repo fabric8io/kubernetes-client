@@ -122,7 +122,7 @@ public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
     }
 
     /**
-     * externalId defines the external ID used when assuming an AWS role. Can only be used with roleArn. It requires Prometheus &gt;= v3.11.0 or Alertmanager &gt;= v0.33.0. Currently not supported by Thanos.
+     * externalId defines the external ID used when assuming an AWS role. Can only be used with roleArn. It requires Prometheus &gt;= v3.11.0 or Alertmanager &gt;= v0.34.0. Currently not supported by Thanos.
      */
     @JsonProperty("externalId")
     public String getExternalId() {
@@ -130,7 +130,7 @@ public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
     }
 
     /**
-     * externalId defines the external ID used when assuming an AWS role. Can only be used with roleArn. It requires Prometheus &gt;= v3.11.0 or Alertmanager &gt;= v0.33.0. Currently not supported by Thanos.
+     * externalId defines the external ID used when assuming an AWS role. Can only be used with roleArn. It requires Prometheus &gt;= v3.11.0 or Alertmanager &gt;= v0.34.0. Currently not supported by Thanos.
      */
     @JsonProperty("externalId")
     public void setExternalId(String externalId) {

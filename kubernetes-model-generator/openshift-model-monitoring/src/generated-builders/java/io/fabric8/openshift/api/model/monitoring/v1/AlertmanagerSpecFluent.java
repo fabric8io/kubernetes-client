@@ -62,6 +62,7 @@ public class AlertmanagerSpecFluent<A extends io.fabric8.openshift.api.model.mon
   private String clusterAdvertiseAddress;
   private String clusterGossipInterval;
   private String clusterLabel;
+  private String clusterPeerName;
   private String clusterPeerTimeout;
   private String clusterPushpullInterval;
   private ClusterTLSConfigBuilder clusterTLS;
@@ -908,6 +909,7 @@ public class AlertmanagerSpecFluent<A extends io.fabric8.openshift.api.model.mon
         this.withClusterAdvertiseAddress(instance.getClusterAdvertiseAddress());
         this.withClusterGossipInterval(instance.getClusterGossipInterval());
         this.withClusterLabel(instance.getClusterLabel());
+        this.withClusterPeerName(instance.getClusterPeerName());
         this.withClusterPeerTimeout(instance.getClusterPeerTimeout());
         this.withClusterPushpullInterval(instance.getClusterPushpullInterval());
         this.withClusterTLS(instance.getClusterTLS());
@@ -1406,6 +1408,9 @@ public class AlertmanagerSpecFluent<A extends io.fabric8.openshift.api.model.mon
     if (!(Objects.equals(clusterLabel, that.clusterLabel))) {
       return false;
     }
+    if (!(Objects.equals(clusterPeerName, that.clusterPeerName))) {
+      return false;
+    }
     if (!(Objects.equals(clusterPeerTimeout, that.clusterPeerTimeout))) {
       return false;
     }
@@ -1599,6 +1604,10 @@ public class AlertmanagerSpecFluent<A extends io.fabric8.openshift.api.model.mon
   
   public String getClusterLabel() {
     return this.clusterLabel;
+  }
+  
+  public String getClusterPeerName() {
+    return this.clusterPeerName;
   }
   
   public String getClusterPeerTimeout() {
@@ -1923,6 +1932,10 @@ public class AlertmanagerSpecFluent<A extends io.fabric8.openshift.api.model.mon
     return this.clusterLabel != null;
   }
   
+  public boolean hasClusterPeerName() {
+    return this.clusterPeerName != null;
+  }
+  
   public boolean hasClusterPeerTimeout() {
     return this.clusterPeerTimeout != null;
   }
@@ -2245,7 +2258,7 @@ public class AlertmanagerSpecFluent<A extends io.fabric8.openshift.api.model.mon
   }
   
   public int hashCode() {
-    return Objects.hash(additionalArgs, additionalPeers, affinity, alertmanagerConfigMatcherStrategy, alertmanagerConfigNamespaceSelector, alertmanagerConfigSelector, alertmanagerConfiguration, automountServiceAccountToken, baseImage, clusterAdvertiseAddress, clusterGossipInterval, clusterLabel, clusterPeerTimeout, clusterPushpullInterval, clusterTLS, configMaps, configSecret, containers, dnsConfig, dnsPolicy, enableFeatures, enableServiceLinks, externalUrl, forceEnableClusterMode, hostAliases, hostNetwork, hostUsers, image, imagePullPolicy, imagePullSecrets, initContainers, limits, listenLocal, logFormat, logLevel, minReadySeconds, nodeSelector, paused, persistentVolumeClaimRetentionPolicy, podManagementPolicy, podMetadata, portName, priorityClassName, replicas, resources, retention, routePrefix, schedulerName, secrets, securityContext, serviceAccountName, serviceName, sha, storage, tag, terminationGracePeriodSeconds, tolerations, topologySpreadConstraints, updateStrategy, version, volumeMounts, volumes, web, additionalProperties);
+    return Objects.hash(additionalArgs, additionalPeers, affinity, alertmanagerConfigMatcherStrategy, alertmanagerConfigNamespaceSelector, alertmanagerConfigSelector, alertmanagerConfiguration, automountServiceAccountToken, baseImage, clusterAdvertiseAddress, clusterGossipInterval, clusterLabel, clusterPeerName, clusterPeerTimeout, clusterPushpullInterval, clusterTLS, configMaps, configSecret, containers, dnsConfig, dnsPolicy, enableFeatures, enableServiceLinks, externalUrl, forceEnableClusterMode, hostAliases, hostNetwork, hostUsers, image, imagePullPolicy, imagePullSecrets, initContainers, limits, listenLocal, logFormat, logLevel, minReadySeconds, nodeSelector, paused, persistentVolumeClaimRetentionPolicy, podManagementPolicy, podMetadata, portName, priorityClassName, replicas, resources, retention, routePrefix, schedulerName, secrets, securityContext, serviceAccountName, serviceName, sha, storage, tag, terminationGracePeriodSeconds, tolerations, topologySpreadConstraints, updateStrategy, version, volumeMounts, volumes, web, additionalProperties);
   }
   
   public A removeAllFromAdditionalArgs(Collection<Argument> items) {
@@ -2940,6 +2953,11 @@ public class AlertmanagerSpecFluent<A extends io.fabric8.openshift.api.model.mon
         sb.append(clusterLabel);
         sb.append(",");
     }
+    if (!(clusterPeerName == null)) {
+        sb.append("clusterPeerName:");
+        sb.append(clusterPeerName);
+        sb.append(",");
+    }
     if (!(clusterPeerTimeout == null)) {
         sb.append("clusterPeerTimeout:");
         sb.append(clusterPeerTimeout);
@@ -3344,6 +3362,11 @@ public class AlertmanagerSpecFluent<A extends io.fabric8.openshift.api.model.mon
   
   public A withClusterLabel(String clusterLabel) {
     this.clusterLabel = clusterLabel;
+    return (A) this;
+  }
+  
+  public A withClusterPeerName(String clusterPeerName) {
+    this.clusterPeerName = clusterPeerName;
     return (A) this;
   }
   

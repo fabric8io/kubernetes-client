@@ -56,6 +56,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "clusterAdvertiseAddress",
     "clusterGossipInterval",
     "clusterLabel",
+    "clusterPeerName",
     "clusterPeerTimeout",
     "clusterPushpullInterval",
     "clusterTLS",
@@ -159,6 +160,8 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     private String clusterGossipInterval;
     @JsonProperty("clusterLabel")
     private String clusterLabel;
+    @JsonProperty("clusterPeerName")
+    private String clusterPeerName;
     @JsonProperty("clusterPeerTimeout")
     private String clusterPeerTimeout;
     @JsonProperty("clusterPushpullInterval")
@@ -282,7 +285,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     public AlertmanagerSpec() {
     }
 
-    public AlertmanagerSpec(List<Argument> additionalArgs, List<String> additionalPeers, Affinity affinity, AlertmanagerConfigMatcherStrategy alertmanagerConfigMatcherStrategy, LabelSelector alertmanagerConfigNamespaceSelector, LabelSelector alertmanagerConfigSelector, AlertmanagerConfiguration alertmanagerConfiguration, Boolean automountServiceAccountToken, String baseImage, String clusterAdvertiseAddress, String clusterGossipInterval, String clusterLabel, String clusterPeerTimeout, String clusterPushpullInterval, ClusterTLSConfig clusterTLS, List<String> configMaps, String configSecret, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableServiceLinks, String externalUrl, Boolean forceEnableClusterMode, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean hostUsers, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, AlertmanagerLimitsSpec limits, Boolean listenLocal, String logFormat, String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, String podManagementPolicy, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, Integer replicas, ResourceRequirements resources, String retention, String routePrefix, String schedulerName, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceName, String sha, StorageSpec storage, String tag, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, StatefulSetUpdateStrategy updateStrategy, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, AlertmanagerWebSpec web) {
+    public AlertmanagerSpec(List<Argument> additionalArgs, List<String> additionalPeers, Affinity affinity, AlertmanagerConfigMatcherStrategy alertmanagerConfigMatcherStrategy, LabelSelector alertmanagerConfigNamespaceSelector, LabelSelector alertmanagerConfigSelector, AlertmanagerConfiguration alertmanagerConfiguration, Boolean automountServiceAccountToken, String baseImage, String clusterAdvertiseAddress, String clusterGossipInterval, String clusterLabel, String clusterPeerName, String clusterPeerTimeout, String clusterPushpullInterval, ClusterTLSConfig clusterTLS, List<String> configMaps, String configSecret, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, List<String> enableFeatures, Boolean enableServiceLinks, String externalUrl, Boolean forceEnableClusterMode, List<HostAlias> hostAliases, Boolean hostNetwork, Boolean hostUsers, String image, String imagePullPolicy, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, AlertmanagerLimitsSpec limits, Boolean listenLocal, String logFormat, String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, Boolean paused, StatefulSetPersistentVolumeClaimRetentionPolicy persistentVolumeClaimRetentionPolicy, String podManagementPolicy, EmbeddedObjectMetadata podMetadata, String portName, String priorityClassName, Integer replicas, ResourceRequirements resources, String retention, String routePrefix, String schedulerName, List<String> secrets, PodSecurityContext securityContext, String serviceAccountName, String serviceName, String sha, StorageSpec storage, String tag, Long terminationGracePeriodSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, StatefulSetUpdateStrategy updateStrategy, String version, List<VolumeMount> volumeMounts, List<Volume> volumes, AlertmanagerWebSpec web) {
         super();
         this.additionalArgs = additionalArgs;
         this.additionalPeers = additionalPeers;
@@ -296,6 +299,7 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
         this.clusterAdvertiseAddress = clusterAdvertiseAddress;
         this.clusterGossipInterval = clusterGossipInterval;
         this.clusterLabel = clusterLabel;
+        this.clusterPeerName = clusterPeerName;
         this.clusterPeerTimeout = clusterPeerTimeout;
         this.clusterPushpullInterval = clusterPushpullInterval;
         this.clusterTLS = clusterTLS;
@@ -541,6 +545,22 @@ public class AlertmanagerSpec implements Editable<AlertmanagerSpecBuilder>, Kube
     @JsonProperty("clusterLabel")
     public void setClusterLabel(String clusterLabel) {
         this.clusterLabel = clusterLabel;
+    }
+
+    /**
+     * clusterPeerName defines the name that this Alertmanager instance uses to advertise itself to other cluster peers (the `--cluster.peer-name` flag, available since Alertmanager v0.30.0).<br><p> <br><p> If not set, the operator defaults to the pod's name (`$(POD_NAME)`), which is injected via the Kubernetes downward API. Setting this field lets you override that default with either a literal value or a string referencing environment variables that are already available in the Alertmanager container (for example `$(POD_NAME).$(NAMESPACE)`).<br><p> <br><p> / It requires Alertmanager &gt;= 0.30.0.
+     */
+    @JsonProperty("clusterPeerName")
+    public String getClusterPeerName() {
+        return clusterPeerName;
+    }
+
+    /**
+     * clusterPeerName defines the name that this Alertmanager instance uses to advertise itself to other cluster peers (the `--cluster.peer-name` flag, available since Alertmanager v0.30.0).<br><p> <br><p> If not set, the operator defaults to the pod's name (`$(POD_NAME)`), which is injected via the Kubernetes downward API. Setting this field lets you override that default with either a literal value or a string referencing environment variables that are already available in the Alertmanager container (for example `$(POD_NAME).$(NAMESPACE)`).<br><p> <br><p> / It requires Alertmanager &gt;= 0.30.0.
+     */
+    @JsonProperty("clusterPeerName")
+    public void setClusterPeerName(String clusterPeerName) {
+        this.clusterPeerName = clusterPeerName;
     }
 
     /**

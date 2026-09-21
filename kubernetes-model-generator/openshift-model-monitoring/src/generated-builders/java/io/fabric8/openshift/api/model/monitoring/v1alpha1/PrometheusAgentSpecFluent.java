@@ -5572,10 +5572,6 @@ public class PrometheusAgentSpecFluent<A extends io.fabric8.openshift.api.model.
     return new TsdbNested(null);
   }
   
-  public A withNewTsdb(String outOfOrderTimeWindow) {
-    return (A) this.withTsdb(new TSDBSpec(outOfOrderTimeWindow));
-  }
-  
   public TsdbNested<A> withNewTsdbLike(TSDBSpec item) {
     return new TsdbNested(item);
   }
