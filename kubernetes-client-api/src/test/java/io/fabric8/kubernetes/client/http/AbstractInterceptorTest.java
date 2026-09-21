@@ -113,10 +113,11 @@ public abstract class AbstractInterceptorTest {
         });
     try (HttpClient client = builder.build()) {
       // When
-      client.newWebSocketBuilder()
+      final var ws = client.newWebSocketBuilder()
           .uri(URI.create(server.url("intercept-before")))
           .buildAsync(new WebSocket.Listener() {
           }).get(10L, TimeUnit.SECONDS);
+      ws.sendClose(1000, null);
     }
     // Then
     assertThat(server.getLastRequest().getHeaders().toMultimap())
@@ -139,10 +140,11 @@ public abstract class AbstractInterceptorTest {
         });
     try (HttpClient client = builder.build()) {
       // When
-      client.newWebSocketBuilder()
+      final var ws = client.newWebSocketBuilder()
           .uri(URI.create(server.url("invalid-url")))
           .buildAsync(new WebSocket.Listener() {
           }).get(10L, TimeUnit.SECONDS);
+      ws.sendClose(1000, null);
     }
     // Then
     assertThat(server.getRequestCount()).isEqualTo(1);
@@ -323,10 +325,11 @@ public abstract class AbstractInterceptorTest {
         });
     try (HttpClient client = builder.build()) {
       // When
-      client.newWebSocketBuilder()
+      final var ws = client.newWebSocketBuilder()
           .uri(URI.create(server.url("invalid-url")))
           .buildAsync(new WebSocket.Listener() {
           }).get(10L, TimeUnit.SECONDS);
+      ws.sendClose(1000, null);
     }
     // Then
     assertThat(server.getRequestCount()).isEqualTo(2);
@@ -469,10 +472,11 @@ public abstract class AbstractInterceptorTest {
         });
     try (HttpClient client = builder.build()) {
       // When
-      client.newWebSocketBuilder()
+      final var ws = client.newWebSocketBuilder()
           .uri(URI.create(server.url("intercept-before")))
           .buildAsync(new WebSocket.Listener() {
           }).get(10L, TimeUnit.SECONDS);
+      ws.sendClose(1000, null);
     }
     // Then
     assertThat(server.getLastRequest().getHeaders().toMultimap())
