@@ -28,6 +28,7 @@ import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
+import io.vertx.core.http.ServerWebSocket;
 import io.vertx.core.net.NetServerOptions;
 import io.vertx.core.net.PemKeyCertOptions;
 import io.vertx.core.net.PemTrustOptions;
@@ -47,6 +48,7 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -62,8 +64,10 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -99,6 +103,7 @@ public class MockWebServer implements Closeable {
   private String hostName;
   private List<Protocol> protocols;
   private boolean http2ClearTextEnabled;
+  private final Set<ServerWebSocket> activeWebSockets;
   private boolean started;
   private boolean shutdown;
 
@@ -107,6 +112,7 @@ public class MockWebServer implements Closeable {
     requestQueue = new LinkedBlockingQueue<>();
     requestCount = new AtomicInteger();
     listeners = new ArrayList<>();
+    activeWebSockets = ConcurrentHashMap.newKeySet();
     dispatcher = new QueueDispatcher();
     clientAuth = ClientAuth.NONE;
     enabledSecuredTransportProtocols = new ArrayList<>();
@@ -161,7 +167,7 @@ public class MockWebServer implements Closeable {
       listeners.forEach(listener -> listener.onConnection(connection));
       event.closeHandler(res -> listeners.forEach(listener -> listener.onConnectionClosed(connection)));
     });
-    httpServer.requestHandler(new HttpServerRequestHandler(vertx) {
+    httpServer.requestHandler(new HttpServerRequestHandler(vertx, activeWebSockets) {
       @Override
       protected MockResponse onHttpRequest(RecordedRequest request) {
         requestCount.incrementAndGet();
@@ -189,10 +195,15 @@ public class MockWebServer implements Closeable {
     // connection state (e.g. WebSocketSession executors) that an in-flight upgrade may still
     // have been about to touch via onOpen — avoiding a RejectedExecutionException race.
     dispatcher.shutdown();
-    await(httpServer.close(), "Unable to close MockWebServer");
+    // Vert.x 5's HttpServer.close() waits for all connections (including WebSocket sessions)
+    // to drain. Force-close any lingering WebSocket sessions left open by tests so the server
+    // can shut down promptly.
+    for (ServerWebSocket ws : activeWebSockets) {
+      ws.close();
+    }
+    closeServerAndVertx();
     dispatcher.releaseResources();
     info("done accepting connections");
-    await(vertx.close(), "Unable to close Vertx");
   }
 
   @Override
@@ -367,6 +378,23 @@ public class MockWebServer implements Closeable {
     } catch (Exception e) {
       throw new IllegalStateException("Failed to generate self-signed certificate with SANs", e);
     }
+  }
+
+  @SuppressWarnings("unchecked")
+  private void closeServerAndVertx() {
+    // Vert.x 5's HttpServer.shutdown(long, TimeUnit) stops accepting new connections and
+    // force-closes lingering ones after the timeout, which is exactly what a test mock server
+    // needs. Vert.x 4 doesn't have this method, so we fall back to close().
+    Future<Void> serverCloseFuture;
+    try {
+      Method shutdownMethod = httpServer.getClass()
+          .getMethod("shutdown", long.class, TimeUnit.class);
+      serverCloseFuture = (Future<Void>) shutdownMethod.invoke(httpServer, 1L, TimeUnit.SECONDS);
+    } catch (ReflectiveOperationException e) {
+      serverCloseFuture = httpServer.close(); // Fallback to vertx 4 method
+    }
+    await(serverCloseFuture, "Unable to close MockWebServer");
+    await(vertx.close(), "Unable to close Vertx");
   }
 
   private static <T> T await(Future<T> vertxFuture, String errorMessage) {
