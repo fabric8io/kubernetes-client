@@ -60,11 +60,11 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty.http2</groupId>
-      <artifactId>http2-http-client-transport</artifactId>
+      <artifactId>jetty-http2-client-transport</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty.websocket</groupId>
-      <artifactId>websocket-jetty-client</artifactId>
+      <artifactId>jetty-websocket-jetty-client</artifactId>
     </dependency>
 
     <dependency>

@@ -44,7 +44,7 @@
       "enabled": false
     },
     {
-      "description": "TODO: httpclient-jetty is still on Jetty 11. Jetty 12 reorganises the artifacts and changes the servlet/EE baseline, so it needs its own module alongside this one, mirroring the httpclient-vertx (4.x) / httpclient-vertx-5 (5.x) split, rather than being upgraded in place. Until that module exists Jetty stays on 11.x. Note this is effectively a freeze: 11.0.26 (2025-08-14) is the newest 11.x and there is no 11.1.x line, so no minor or patch updates are expected either",
+      "description": "Jetty 13 requires Java 25; we still target Java 17",
       "matchPackageNames": ["org.eclipse.jetty**"],
       "matchUpdateTypes": ["major"],
       "enabled": false
