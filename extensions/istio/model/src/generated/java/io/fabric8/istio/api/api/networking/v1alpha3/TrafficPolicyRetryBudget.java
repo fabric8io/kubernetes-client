@@ -35,6 +35,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "budgetInterval",
     "minRetryConcurrency",
     "percent"
 })
@@ -63,6 +64,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 public class TrafficPolicyRetryBudget implements Editable<TrafficPolicyRetryBudgetBuilder>, KubernetesResource
 {
 
+    @JsonProperty("budgetInterval")
+    private String budgetInterval;
     @JsonProperty("minRetryConcurrency")
     private Long minRetryConcurrency;
     @JsonProperty("percent")
@@ -76,10 +79,21 @@ public class TrafficPolicyRetryBudget implements Editable<TrafficPolicyRetryBudg
     public TrafficPolicyRetryBudget() {
     }
 
-    public TrafficPolicyRetryBudget(Long minRetryConcurrency, Double percent) {
+    public TrafficPolicyRetryBudget(String budgetInterval, Long minRetryConcurrency, Double percent) {
         super();
+        this.budgetInterval = budgetInterval;
         this.minRetryConcurrency = minRetryConcurrency;
         this.percent = percent;
+    }
+
+    @JsonProperty("budgetInterval")
+    public String getBudgetInterval() {
+        return budgetInterval;
+    }
+
+    @JsonProperty("budgetInterval")
+    public void setBudgetInterval(String budgetInterval) {
+        this.budgetInterval = budgetInterval;
     }
 
     /**

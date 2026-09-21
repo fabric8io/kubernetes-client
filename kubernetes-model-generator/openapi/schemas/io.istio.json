@@ -800,6 +800,10 @@
           "type": "integer",
           "format": "int32"
         },
+        "http2KeepAlive": {
+          "description": "Configure HTTP/2 PING frames for upstream connections.",
+          "$ref": "#/definitions/io.istio.api.networking.v1alpha3.ConnectionPoolSettings_HTTPSettings_ConnectionKeepalive"
+        },
         "http2MaxRequests": {
           "description": "Maximum number of active requests to a destination. Default 2^32-1. Please note that this is applicable to both HTTP/1.1 and HTTP/2.",
           "type": "integer",
@@ -837,6 +841,27 @@
         "Scope": "Namespaced"
       }
     },
+    "io.istio.api.networking.v1alpha3.ConnectionPoolSettings_HTTPSettings_ConnectionKeepalive": {
+      "description": "Settings for HTTP/2 PING frames.",
+      "type": "object",
+      "properties": {
+        "interval": {
+          "description": "Send HTTP/2 PING frames at this interval. Required when `http2KeepAlive` is set.",
+          "$ref": "#/definitions/org.golang.google.protobuf.types.known.durationpb.Duration"
+        },
+        "timeout": {
+          "description": "How long to wait for a response to an HTTP/2 PING frame before closing the connection. Required when `http2KeepAlive` is set.",
+          "$ref": "#/definitions/org.golang.google.protobuf.types.known.durationpb.Duration"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha3",
+        "Kind": "ConnectionPoolSettings_HTTPSettings_ConnectionKeepalive",
+        "Scope": "Namespaced"
+      }
+    },
     "io.istio.api.networking.v1alpha3.ConnectionPoolSettings_HTTPSettings_H2UpgradePolicy": {
       "description": "Policy for upgrading http1.1 connections to http2.",
       "type": "object",
@@ -859,7 +884,7 @@
           "$ref": "#/definitions/org.golang.google.protobuf.types.known.durationpb.Duration"
         },
         "idleTimeout": {
-          "description": "The idle timeout for TCP connections. The idle timeout is defined as the period in which there are no bytes sent or received on either the upstream or downstream connection. If not set, the default idle timeout is 1 hour. If set to 0s, the timeout will be disabled. Idle timeout is not configured per each cluster individually when weighted destinations are used, because idleTimeout is a property of a listener, not a cluster. In that case, idleTimeout specified in a destination rule for the first weighted route is configured in the listener, which means also for all weighted routes.",
+          "description": "The idle timeout for TCP connections. This is applied to the outbound connections to the upstream service. The idle timeout is defined as the period in which there are no bytes sent or received on the upstream connection. If not set, the default idle timeout is 1 hour. If set to 0s, the timeout will be disabled. Idle timeout is not configured per each cluster individually when weighted destinations are used, because idleTimeout is a property of a listener, not a cluster. In that case, idleTimeout specified in a destination rule for the first weighted route is configured in the listener, which means also for all weighted routes. To set the idle timeout for downstream (inbound) connections, use the `ISTIO_META_IDLE_TIMEOUT` field in the proxy configuration (e.g., via the `proxy.istio.io/config` annotation) which applies to all inbound connections. ``` proxy.istio.io/config: |-\n\n\tproxyMetadata:\n\t   ISTIO_META_IDLE_TIMEOUT: \"100s\"\n\n```",
           "$ref": "#/definitions/org.golang.google.protobuf.types.known.durationpb.Duration"
         },
         "maxConnectionDuration": {
@@ -1457,7 +1482,7 @@
         "Kind": "EnvoyFilter_Patch_Operation",
         "Scope": "Namespaced"
       },
-      "x-kubernetes-fabric8-enum-values": "ADD(2),INSERT_AFTER(5),INSERT_BEFORE(4),INSERT_FIRST(6),INVALID(0),MERGE(1),REMOVE(3),REPLACE(7)",
+      "x-kubernetes-fabric8-enum-values": "ADD(2),INSERT_AFTER(5),INSERT_BEFORE(4),INSERT_FIRST(6),INVALID(0),MERGE(1),MERGE_AND_REPLACE_LIST(8),REMOVE(3),REPLACE(7)",
       "x-kubernetes-fabric8-type": "enum"
     },
     "io.istio.api.networking.v1alpha3.EnvoyFilter_ProxyMatch": {
@@ -2163,7 +2188,7 @@
       }
     },
     "io.istio.api.networking.v1alpha3.HTTPRedirect": {
-      "description": "HTTPRedirect can be used to send a 301 redirect response to the caller, where the Authority/Host and the URI in the response can be swapped with the specified values. For example, the following rule redirects requests for /v1/getProductRatings API on the ratings service to /v1/bookRatings provided by the bookratings service.\n\n```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:\n\n\tname: ratings-route\n\nspec:\n\n\thosts:\n\t- ratings.prod.svc.cluster.local\n\thttp:\n\t- match:\n\t  - uri:\n\t      exact: /v1/getProductRatings\n\t  redirect:\n\t    uri: /v1/bookRatings\n\t    authority: newratings.default.svc.cluster.local\n\t...\n\n```",
+      "description": "HTTPRedirect can be used to send a 301 redirect response to the caller, where the Authority/Host and the URI in the response can be swapped with the specified values. For example, the following rule redirects requests for /v1/getProductRatings API on the ratings service to /v1/bookRatings provided by the bookratings service.\n\n```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:\n\n\tname: ratings-route\n\nspec:\n\n\thosts:\n\t- ratings.prod.svc.cluster.local\n\thttp:\n\t- match:\n\t  - uri:\n\t      exact: /v1/getProductRatings\n\t  redirect:\n\t    uri: /v1/bookRatings\n\t    authority: newratings.default.svc.cluster.local\n\t...\n\n```\n\nThe following rule redirects requests with a path prefix of /foo to the authority foo.example.com, stripping the /foo prefix from the path:\n\n```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:\n\n\tname: foo-redirect\n\nspec:\n\n\thosts:\n\t- example.com\n\thttp:\n\t- match:\n\t  - uri:\n\t      prefix: /foo/\n\t  redirect:\n\t    authority: foo.example.com\n\t    prefix_rewrite: /\n\n```\n\nWith this rule, a request to example.com/foo/bar is redirected to foo.example.com/bar.",
       "type": "object",
       "required": [
         "RedirectPort"
@@ -2178,6 +2203,10 @@
           "description": "On a redirect, overwrite the Authority/Host portion of the URL with this value.",
           "type": "string"
         },
+        "prefixRewrite": {
+          "description": "On a redirect, replace the matched prefix with this value. The route match must use a prefix match type. The matched prefix is stripped from the path and this value is prepended.\n\nExamples (route prefix match: /foo): - prefix_rewrite: /bar → /foo/baz becomes /bar/baz - prefix_rewrite: /   → /foo/baz becomes //baz (use /foo/ match to get /baz)\n\nMutually exclusive with uri.",
+          "type": "string"
+        },
         "redirectCode": {
           "description": "On a redirect, Specifies the HTTP status code to use in the redirect response. The default response code is MOVED_PERMANENTLY (301).",
           "type": "integer",
@@ -2188,7 +2217,7 @@
           "type": "string"
         },
         "uri": {
-          "description": "On a redirect, overwrite the Path portion of the URL with this value. Note that the entire path will be replaced, irrespective of the request URI being matched as an exact path or prefix.",
+          "description": "On a redirect, overwrite the Path portion of the URL with this value. Note that the entire path will be replaced, irrespective of the request URI being matched as an exact path or prefix.\n\nMutually exclusive with prefix_rewrite.",
           "type": "string"
         }
       },
@@ -2622,7 +2651,7 @@
           "$ref": "#/definitions/io.istio.api.networking.v1alpha3.CaptureMode"
         },
         "hosts": {
-          "description": "One or more service hosts exposed by the listener in `namespace/dnsName` format. Services in the specified namespace matching `dnsName` will be exposed. The corresponding service can be a service in the service registry (e.g., a Kubernetes or cloud foundry service) or a service specified using a `ServiceEntry` or `VirtualService` configuration. Any associated `DestinationRule` in the same namespace will also be used.\n\nThe `dnsName` should be specified using FQDN format, optionally including a wildcard character in the left-most component (e.g., `prod/*.example.com`). Set the `dnsName` to `*` to select all services from the specified namespace (e.g., `prod/*`).\n\nThe `namespace` can be set to `*`, `.`, or `~`, representing any, the current, or no namespace, respectively. For example, `*/foo.example.com` selects the service from any available namespace while `./foo.example.com` only selects the service from the namespace of the sidecar. If a host is set to `*/*`, Istio will configure the sidecar to be able to reach every service in the mesh that is exported to the sidecar's namespace. The value `~/*` can be used to completely trim the configuration for sidecars that simply receive traffic and respond, but make no outbound connections of their own.\n\nNOTE: Only services and configuration artifacts exported to the sidecar's namespace (e.g., `exportTo` value of `*`) can be referenced. Private configurations (e.g., `exportTo` set to `.`) will not be available. Refer to the `exportTo` setting in `VirtualService`, `DestinationRule`, and `ServiceEntry` configurations for details.",
+          "description": "One or more service hosts exposed by the listener in `namespace/dnsName` format. Services in the specified namespace matching `dnsName` will be exposed. The corresponding service can be a service in the service registry (e.g., a Kubernetes or cloud foundry service) or a service specified using a `ServiceEntry` or `VirtualService` configuration. Any associated `DestinationRule` in the same namespace will also be used.\n\nThe `dnsName` should be specified using FQDN format, optionally including a wildcard character in the left-most component (e.g., `prod/*.example.com`). Set the `dnsName` to `*` to select all services from the specified namespace (e.g., `prod/*`).\n\nThe `namespace` can be set to `*`, `.`, or `~`, representing any, the current, or no namespace, respectively. For example, `*/foo.example.com` selects the service from any available namespace while `./foo.example.com` only selects the service from the namespace of the sidecar. If a host is set to `*/*`, Istio will configure the sidecar to be able to reach every service in the mesh that is exported to the sidecar's namespace. The value `~/*` can be used to completely trim the configuration for sidecars that simply receive traffic and respond, but make no outbound connections of their own.\n\nA host may also be excluded by prefixing the `namespace` with `~`. An exclusion entry follows the exact same `namespace/dnsName` convention as an inclusion entry, so `~prod-us2/*` excludes every host in the `prod-us2` namespace. Note that a bare `~` namespace is treated as the wildcard namespace `*`, so `~/dnsName` (and `~/*`) selects across all namespaces. Excluded hosts are subtracted from the set of imported hosts, so a host is exposed only when it is imported by some entry and not excluded by any entry.\n\nNOTE: Only services and configuration artifacts exported to the sidecar's namespace (e.g., `exportTo` value of `*`) can be referenced. Private configurations (e.g., `exportTo` set to `.`) will not be available. Refer to the `exportTo` setting in `VirtualService`, `DestinationRule`, and `ServiceEntry` configurations for details.",
           "type": "array",
           "items": {
             "type": "string"
@@ -2739,7 +2768,7 @@
           "$ref": "#/definitions/io.istio.api.networking.v1alpha3.IsLoadBalancerSettings_LbPolicy"
         },
         "localityLbSetting": {
-          "description": "Locality load balancer settings, this will override mesh-wide settings in entirety, meaning no merging would be performed between this object and the object one in MeshConfig",
+          "description": "Locality load balancer settings. This will override mesh-wide settings in entirety, meaning no merging would be performed between this object and the object one in MeshConfig Only one of locality_lb_setting and zone_aware_lb_setting can be set.",
           "$ref": "#/definitions/io.istio.api.networking.v1alpha3.LocalityLoadBalancerSetting"
         },
         "warmup": {
@@ -2749,6 +2778,10 @@
         "warmupDurationSecs": {
           "description": "Deprecated: use `warmup` instead.",
           "$ref": "#/definitions/org.golang.google.protobuf.types.known.durationpb.Duration"
+        },
+        "zoneAwareLbSetting": {
+          "description": "Zone Aware load balancer settings. This will override mesh-wide settings in entirety, meaning no merging would be performed between this object and the object one in MeshConfig. Only one of locality_lb_setting and zone_aware_lb_setting can be set.",
+          "$ref": "#/definitions/io.istio.api.networking.v1alpha3.ZoneAwareLoadBalancerSetting"
         }
       },
       "x-fabric8-info": {
@@ -2761,12 +2794,14 @@
       "x-kubernetes-fabric8-interface-fields": "LbPolicy"
     },
     "io.istio.api.networking.v1alpha3.LoadBalancerSettings_ConsistentHash": {
+      "description": "Consistent Hash-based load balancing can be used to provide soft session affinity based on HTTP headers, cookies or other properties.",
       "type": "object",
       "required": [
         "consistentHash"
       ],
       "properties": {
         "consistentHash": {
+          "description": "Consistent Hash-based load balancing can be used to provide soft session affinity based on HTTP headers, cookies or other properties.",
           "$ref": "#/definitions/io.istio.api.networking.v1alpha3.LoadBalancerSettings_ConsistentHashLB"
         }
       },
@@ -3029,12 +3064,14 @@
       "x-kubernetes-fabric8-implements": "IsLoadBalancerSettings_ConsistentHashLB_HashKey"
     },
     "io.istio.api.networking.v1alpha3.LoadBalancerSettings_Simple": {
+      "description": "Standard load balancing algorithms that require no tuning.",
       "type": "object",
       "required": [
         "simple"
       ],
       "properties": {
         "simple": {
+          "description": "Standard load balancing algorithms that require no tuning.",
           "default": {},
           "$ref": "#/definitions/io.istio.api.networking.v1alpha3.LoadBalancerSettings_SimpleLB"
         }
@@ -3179,7 +3216,7 @@
       "x-kubernetes-fabric8-type": "enum"
     },
     "io.istio.api.networking.v1alpha3.OutlierDetection": {
-      "description": "A Circuit breaker implementation that tracks the status of each individual host in the upstream service.  Applicable to both HTTP and TCP services.  For HTTP services, hosts that continually return 5xx errors for API calls are ejected from the pool for a pre-defined period of time. For TCP services, connection timeouts or connection failures to a given host counts as an error when measuring the consecutive errors metric. See Envoy's [outlier detection](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/outlier) for more details.\n\nThe following rule sets a connection pool size of 100 HTTP1 connections with no more than 10 req/connection to the \"reviews\" service. In addition, it sets a limit of 1000 concurrent HTTP/2 requests and configures upstream hosts to be scanned every 5 mins so that any host that fails 7 consecutive times with a 502, 503, or 504 error code will be ejected for 15 minutes.\n\n```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:\n\n\tname: reviews-cb-policy\n\nspec:\n\n\thost: reviews.prod.svc.cluster.local\n\ttrafficPolicy:\n\t  connectionPool:\n\t    tcp:\n\t      maxConnections: 100\n\t    http:\n\t      http2MaxRequests: 1000\n\t      maxRequestsPerConnection: 10\n\t  outlierDetection:\n\t    consecutive5xxErrors: 7\n\t    interval: 5m\n\t    baseEjectionTime: 15m\n\n```",
+      "description": "A Circuit breaker implementation that tracks the status of each individual host in the upstream service.  Applicable to both HTTP and TCP services.  For HTTP services, hosts that continually return 5xx errors for API calls are ejected from the pool for a pre-defined period of time. For TCP services, connection timeouts or connection failures to a given host counts as an error when measuring the consecutive errors metric. See Envoy's [outlier detection](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/outlier) for more details.\n\n**Note:** Istio's default mesh configuration enables locality load balancing (`localityLbSetting.enabled: true`). As a result, configuring `OutlierDetection` in a `DestinationRule` will automatically activate locality-aware failover behavior — Envoy uses the outlier detection state to determine when endpoints are unhealthy and should be failed over to the next locality. To suppress this implicit failover, explicitly set `localityLbSetting.enabled: false` in the `DestinationRule`'s load balancer settings.\n\nThe following rule sets a connection pool size of 100 HTTP1 connections with no more than 10 req/connection to the \"reviews\" service. In addition, it sets a limit of 1000 concurrent HTTP/2 requests and configures upstream hosts to be scanned every 5 mins so that any host that fails 7 consecutive times with a 502, 503, or 504 error code will be ejected for 15 minutes.\n\n```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:\n\n\tname: reviews-cb-policy\n\nspec:\n\n\thost: reviews.prod.svc.cluster.local\n\ttrafficPolicy:\n\t  connectionPool:\n\t    tcp:\n\t      maxConnections: 100\n\t    http:\n\t      http2MaxRequests: 1000\n\t      maxRequestsPerConnection: 10\n\t  outlierDetection:\n\t    consecutive5xxErrors: 7\n\t    interval: 5m\n\t    baseEjectionTime: 15m\n\n```",
       "type": "object",
       "properties": {
         "baseEjectionTime": {
@@ -3216,6 +3253,14 @@
           "description": "Outlier detection will be enabled as long as the associated load balancing pool has at least `minHealthPercent` hosts in healthy mode. When the percentage of healthy hosts in the load balancing pool drops below this threshold, outlier detection will be disabled and the proxy will load balance across all hosts in the pool (healthy and unhealthy). The threshold can be disabled by setting it to 0%. The default is 0% as it's not typically applicable in k8s environments with few pods per service.",
           "type": "integer",
           "format": "int32"
+        },
+        "outlierDetectionHttpErrorCodes": {
+          "description": "Specifies the HTTP response status codes that are treated as outlier detection errors. If specified, only responses with one of these status codes will be treated as errors by outlier detection. If not specified, only 5xx responses are treated as errors.\n\nNote: Host ejection is still driven by the `consecutive5xxErrors` and `consecutiveGatewayErrors` thresholds; this field only redefines which HTTP status codes are counted as errors toward those thresholds.\n\nValues must be in the range [100, 599].",
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
         },
         "splitExternalLocalOriginErrors": {
           "description": "Determines whether to distinguish local origin failures from external errors. If set to true `consecutiveLocalOriginFailures` is taken into account for outlier detection calculations. This should be used when you want to derive the outlier detection status based on the errors seen locally such as failure to connect, timeout while connecting etc. rather than the status code returned by upstream service. This is especially useful when the upstream service explicitly returns a 5xx for some requests and you want to ignore those responses from upstream service while determining the outlier detection status of a host. Defaults to false.",
@@ -3545,6 +3590,10 @@
           "description": "If set to true, the load balancer will send a 301 redirect for all http connections, asking the clients to use HTTPS.",
           "type": "boolean"
         },
+        "insecureSkipVerify": {
+          "description": "Optional: If set to true, the proxy will try to validate the certificate, but even if the validation fails, it will allow the connection through.\n\nIt's needed to implement Gateway API AllowInsecureFallback feature. The different between AllowInsecureFallback and not verifying client certificate at all is that Gateway is able to pass the client certificate to the backend in the x-forwarded-client-cert HTTP header and backend can verify the certificate.",
+          "$ref": "#/definitions/org.golang.google.protobuf.types.known.wrapperspb.BoolValue"
+        },
         "maxProtocolVersion": {
           "description": "Optional: Maximum TLS protocol version.",
           "default": {},
@@ -3569,7 +3618,7 @@
           "type": "string"
         },
         "subjectAltNames": {
-          "description": "A list of alternate names to verify the subject identity in the certificate presented by the client. Requires TLS mode to be set to `MUTUAL`. When multiple certificates are provided via `credential_names` or `tls_certificates`, the subject alternate names are validated against the selected certificate.",
+          "description": "A list of alternate names to verify the subject identity in the certificate presented by the client. Requires TLS mode to be set to `MUTUAL`.",
           "type": "array",
           "items": {
             "type": "string"
@@ -4273,6 +4322,10 @@
     "io.istio.api.networking.v1alpha3.TrafficPolicy_RetryBudget": {
       "type": "object",
       "properties": {
+        "budgetInterval": {
+          "description": "Specifies the duration in which requests will be considered when calculating the budget for retries. This parameter alters the way in which the retry budget is calculated, overriding the default behavior when specified.\n\nBy default, when budget_interval is set to 0ms, only presently active and pending requests are considered when calculating the retry budget.\n\nWhen a non-zero budget_interval is specified, new requests are considered for the duration of budget_interval when calculating the retry budget.\n\nDefaults to 0ms.",
+          "$ref": "#/definitions/org.golang.google.protobuf.types.known.durationpb.Duration"
+        },
         "minRetryConcurrency": {
           "description": "Specifies the minimum retry concurrency allowed for the retry budget. For example, a budget of 20% with a minimum retry concurrency of 3 will allow 5 active retries while there are 25 active requests. If there are 2 active requests, there are still 3 active retries allowed because of the minimum retry concurrency.\n\nDefaults to 3.",
           "type": "integer",
@@ -4516,6 +4569,62 @@
         "Scope": "Namespaced"
       }
     },
+    "io.istio.api.networking.v1alpha3.ZoneAwareLoadBalancerSetting": {
+      "description": "Zone Aware Load Balancer automatically routes traffic to endpoints in the same availability zone as the downstream proxy, reducing cross-zone latency and inter-zone data transfer costs. Unlike [LocalityLoadBalancerSetting](#LocalityLoadBalancerSetting), which requires explicitly specifying traffic weights per locality, Zone Aware Load Balancer automatically calculates routing percentages based on the relative number of upstream endpoints in each zone — no manual distribution configuration is needed.\n\nWhen the local zone has proportionally fewer endpoints than the share of traffic it would need to absorb, Envoy automatically overflows the excess to other zones rather than overloading local endpoints.\n\nAdditionally Zone Aware Load Balancer always partitions endpoints by region: the proxy's own region forms the highest-priority tier and Envoy's automatic zone balancing operates only among the endpoints within that region. Endpoints in other regions form lower-priority failover tiers that receive traffic only when the local region is unhealthy or runs out of capacity. The `failover` and `failoverPriority` fields only influence how those lower tiers are ordered; the regional partitioning itself is always applied whenever zone-aware load balancing is enabled.\n\nFor proxies to activate Zone Aware Load Balancer all of the following conditions are needed:\n\n  - The downstream proxy is configured with  `ISTIO_META_ENABLE_SELF_DISCOVERY=true`\n    (set via `proxyMetadata`).\n  - The upstream cluster spans more than one zone.\n  - The upstream cluster has at least `minClusterSize` hosts (default 6) in the local region.\n  - There is at least one healthy endpoint in the local zone.\n\nIf any of these conditions are not met, Envoy falls back to the configured load balancing policy (e.g. round-robin or least-request) across all endpoints in the local region.\n\nFor additional details on the algorithm, refer to Envoy's [Zone Aware Routing](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/zone_aware) documentation.\n\nNote: Zone Aware Load Balancer is not supported on Ambient mode.\n\nThe following example enables zone-aware load balancing for the ratings service:\n\n```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:\n\n\tname: ratings-zone-aware\n\nspec:\n\n\thost: ratings.prod.svc.cluster.local\n\ttrafficPolicy:\n\t  loadBalancer:\n\t    simple: ROUND_ROBIN\n\t    zoneAwareLbSetting:\n\t      enabled: true\n\n```\n\nThe following example adds a cross-region failover policy so that when all endpoints in `us-east` become unhealthy, traffic fails over to `eu-west` instead of any region globally:\n\n```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:\n\n\tname: ratings-zone-aware-failover\n\nspec:\n\n\thost: ratings.prod.svc.cluster.local\n\ttrafficPolicy:\n\t  loadBalancer:\n\t    simple: LEAST_REQUEST\n\t    zoneAwareLbSetting:\n\t      enabled: true\n\t      failover:\n\t        - from: us-east\n\t          to: eu-west\n\t        - from: us-west\n\t          to: us-east\n\t  outlierDetection:\n\t    consecutive5xxErrors: 5\n\t    interval: 30s\n\t    baseEjectionTime: 30s\n\n```",
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "description": "Enable zone aware load balancing. This is DestinationRule-level and will override mesh-wide settings in entirety, meaning no merging is performed with MeshConfig.",
+          "$ref": "#/definitions/org.golang.google.protobuf.types.known.wrapperspb.BoolValue"
+        },
+        "failover": {
+          "description": "Optional. Explicitly specifies the region traffic will land on when the endpoints in the local region become unhealthy. Regional partitioning is always applied; this field only customizes the ordering of the cross-region tiers. It may be used on its own, or together with `failoverPriority`, in which case it orders the regional tiers applied on top of the label-based priorities. For this to be effective consider one of the following: - Use together with `OutlierDetection` to detect unhealthy endpoints in the local zone so that traffic fails over to other zones according to the specified priority. - Enable `PILOT_SEND_UNHEALTHY_ENDPOINTS` to allow Envoy to know when endpoints in the local zone are unhealthy and failover according to the specified priority.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.istio.api.networking.v1alpha3.ZoneAwareLoadBalancerSetting_Failover"
+          }
+        },
+        "failoverPriority": {
+          "description": "failoverPriority is an ordered list of labels used to sort endpoints for priority-based load balancing. This supports traffic failover across different groups of endpoints and complements the automatic zone-level routing by allowing label-based priority tiers on top of it.\n\nRegional partitioning is always applied in addition to these labels: within each tier produced by `failoverPriority`, endpoints in the proxy's own region are preferred over endpoints in other regions (ordered by `failover` when it is also set). Because region-, zone-, and subzone-level routing are all handled automatically, `failoverPriority` must not include the `topology.kubernetes.io/region`, `topology.kubernetes.io/zone`, or `topology.istio.io/subzone` labels.\n\nTwo kinds of labels can be specified:\n\n  - Specify only label keys `[key1, key2, key3]`, istio would compare the label values of client with endpoints.\n    Suppose there are total N label keys `[key1, key2, key3, ...keyN]` specified:\n\n    1. Endpoints matching all N labels with the client proxy have priority P(0) i.e. the highest priority.\n    2. Endpoints matching the first N-1 labels with the client proxy have priority P(1) i.e. second highest priority.\n    3. By extension of this logic, endpoints matching only the first label with the client proxy has priority P(N-1) i.e. second lowest priority.\n    4. All the other endpoints have priority P(N) i.e. lowest priority.\n\n  - Specify labels with key and value `[key1=value1, key2=value2, key3=value3]`, istio would compare the labels with endpoints.\n    Suppose there are total N labels `[key1=value1, key2=value2, key3=value3, ...keyN=valueN]` specified:\n\n    1. Endpoints matching all N labels have priority P(0) i.e. the highest priority.\n    2. Endpoints matching the first N-1 labels have priority P(1) i.e. second highest priority.\n    3. By extension of this logic, endpoints matching only the first label has priority P(N-1) i.e. second lowest priority.\n    4. All the other endpoints have priority P(N) i.e. lowest priority.\n\nNote: For a label to be considered for match, the previous labels must match, i.e. nth label would be considered matched only if first n-1 labels match.\n\nIt can be any label specified on both client and server workloads. The following labels which have special semantic meaning are also supported:\n\n  - `topology.istio.io/network` is used to match the network metadata of an endpoint, which can be specified by pod/namespace label `topology.istio.io/network`, sidecar env `ISTIO_META_NETWORK` or MeshNetworks.\n  - `topology.istio.io/cluster` is used to match the clusterID of an endpoint, which can be specified by pod label `topology.istio.io/cluster` or pod env `ISTIO_META_CLUSTER_ID`.\n  - `topology.kubernetes.io/region` is used to match the region metadata of an endpoint, which maps to Kubernetes node label `topology.kubernetes.io/region` or the deprecated label `failure-domain.beta.kubernetes.io/region`.\n  - `topology.kubernetes.io/zone` is used to match the zone metadata of an endpoint, which maps to Kubernetes node label `topology.kubernetes.io/zone` or the deprecated label `failure-domain.beta.kubernetes.io/zone`.\n  - `kubernetes.io/hostname` is used to match the current node of an endpoint, which maps to Kubernetes node label `kubernetes.io/hostname`.\n\nThe below topology config indicates the following priority levels:\n\n```yaml failoverPriority: - \"topology.istio.io/network\" - \"topology.kubernetes.io/region\" - \"topology.kubernetes.io/zone\" ```\n\n1. endpoints match same [network, region, zone] label with the client proxy have the highest priority. 2. endpoints have same [network, region] label but different [zone] label with the client proxy have the second highest priority. 3. endpoints have same [network] but different [region] labels with the client proxy have the third highest priority. 4. all the other endpoints have the same lowest priority.\n\nSuppose a service associated endpoints reside in multi clusters, the below example represents: 1. endpoints in `clusterA` and has `version=v1` label have P(0) priority. 2. endpoints not in `clusterA` but has `version=v1` label have P(1) priority. 3. all the other endpoints have P(2) priority.\n\n```yaml failoverPriority: - \"version=v1\" - \"topology.istio.io/cluster=clusterA\" ```\n\nOptional. May be combined with `failover` (which then orders the regional tiers applied on top of these label-based priorities). For this to be effective consider one of the following: - Use together with `OutlierDetection` to detect unhealthy endpoints in the local zone so that traffic fails over to other zones according to the specified priority. - Enable `PILOT_SEND_UNHEALTHY_ENDPOINTS` to allow Envoy to know when endpoints in the local zone are unhealthy and failover according to the specified priority.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "minClusterSize": {
+          "description": "Minimum number of hosts in the upstream cluster's local region required for zone-aware load balancing to be enabled. If the total number of upstream hosts in the local region falls below this value, zone-aware load balancing is disabled for this cluster regardless of other settings. This guards against zone-skew issues that can occur with very small clusters where the uneven distribution of hosts across zones would produce poor load balancing results. If not specified, the default is 6.",
+          "$ref": "#/definitions/org.golang.google.protobuf.types.known.wrapperspb.UInt32Value"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha3",
+        "Kind": "ZoneAwareLoadBalancerSetting",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.istio.api.networking.v1alpha3.ZoneAwareLoadBalancerSetting_Failover": {
+      "description": "Specify the traffic failover policy across regions. Since zone and sub-zone failover is supported by default this only needs to be specified for regions when the operator needs to constrain traffic failover so that the default behavior of failing over to any endpoint globally does not apply. This is useful when failing over traffic across regions would not improve service health or may need to be restricted for other reasons like regulatory controls.",
+      "type": "object",
+      "properties": {
+        "from": {
+          "description": "Originating region.",
+          "type": "string"
+        },
+        "to": {
+          "description": "Destination region the traffic will fail over to when endpoints in the 'from' region becomes unhealthy.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "v1alpha3",
+        "Kind": "ZoneAwareLoadBalancerSetting_Failover",
+        "Scope": "Namespaced"
+      }
+    },
     "io.istio.api.networking.v1beta1.ProxyConfig": {
       "description": "`ProxyConfig` exposes proxy level configuration options.\n\n\u003c!-- crd generation tags --\u003e\n\n\u003c!-- go code generation tags --\u003e",
       "type": "object",
@@ -4549,7 +4658,7 @@
       }
     },
     "io.istio.api.networking.v1beta1.ProxyImage": {
-      "description": "The following values are used to construct proxy image url. format: `${hub}/${image_name}/${tag}-${image_type}`, example: `docker.io/istio/proxyv2:1.11.1` or `docker.io/istio/proxyv2:1.11.1-distroless`. This information was previously part of the Values API.",
+      "description": "The following values are used to construct proxy image url. format: `${hub}/${image_name}/${tag}-${image_type}`, example: `registry.istio.io/release/proxyv2:1.11.1` or `registry.istio.io/release/proxyv2:1.11.1-distroless`. This information was previously part of the Values API.",
       "type": "object",
       "properties": {
         "imageType": {

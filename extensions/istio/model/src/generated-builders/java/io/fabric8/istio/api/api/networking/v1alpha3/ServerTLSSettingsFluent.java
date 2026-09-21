@@ -31,6 +31,7 @@ public class ServerTLSSettingsFluent<A extends io.fabric8.istio.api.api.networki
   private String credentialName;
   private List<String> credentialNames = new ArrayList<String>();
   private Boolean httpsRedirect;
+  private Boolean insecureSkipVerify;
   private ServerTLSSettingsTLSProtocol maxProtocolVersion;
   private ServerTLSSettingsTLSProtocol minProtocolVersion;
   private ServerTLSSettingsTLSmode mode;
@@ -294,6 +295,7 @@ public class ServerTLSSettingsFluent<A extends io.fabric8.istio.api.api.networki
         this.withCredentialName(instance.getCredentialName());
         this.withCredentialNames(instance.getCredentialNames());
         this.withHttpsRedirect(instance.getHttpsRedirect());
+        this.withInsecureSkipVerify(instance.getInsecureSkipVerify());
         this.withMaxProtocolVersion(instance.getMaxProtocolVersion());
         this.withMinProtocolVersion(instance.getMinProtocolVersion());
         this.withMode(instance.getMode());
@@ -373,6 +375,9 @@ public class ServerTLSSettingsFluent<A extends io.fabric8.istio.api.api.networki
       return false;
     }
     if (!(Objects.equals(httpsRedirect, that.httpsRedirect))) {
+      return false;
+    }
+    if (!(Objects.equals(insecureSkipVerify, that.insecureSkipVerify))) {
       return false;
     }
     if (!(Objects.equals(maxProtocolVersion, that.maxProtocolVersion))) {
@@ -466,6 +471,10 @@ public class ServerTLSSettingsFluent<A extends io.fabric8.istio.api.api.networki
   
   public Boolean getHttpsRedirect() {
     return this.httpsRedirect;
+  }
+  
+  public Boolean getInsecureSkipVerify() {
+    return this.insecureSkipVerify;
   }
   
   public String getLastCipherSuite() {
@@ -609,6 +618,10 @@ public class ServerTLSSettingsFluent<A extends io.fabric8.istio.api.api.networki
     return this.httpsRedirect != null;
   }
   
+  public boolean hasInsecureSkipVerify() {
+    return this.insecureSkipVerify != null;
+  }
+  
   public boolean hasMatchingCipherSuite(Predicate<String> predicate) {
       for (String item : cipherSuites) {
         if (predicate.test(item)) {
@@ -700,7 +713,7 @@ public class ServerTLSSettingsFluent<A extends io.fabric8.istio.api.api.networki
   }
   
   public int hashCode() {
-    return Objects.hash(caCertCredentialName, caCertificates, caCrl, cipherSuites, credentialName, credentialNames, httpsRedirect, maxProtocolVersion, minProtocolVersion, mode, privateKey, serverCertificate, subjectAltNames, tlsCertificates, verifyCertificateHash, verifyCertificateSpki, additionalProperties);
+    return Objects.hash(caCertCredentialName, caCertificates, caCrl, cipherSuites, credentialName, credentialNames, httpsRedirect, insecureSkipVerify, maxProtocolVersion, minProtocolVersion, mode, privateKey, serverCertificate, subjectAltNames, tlsCertificates, verifyCertificateHash, verifyCertificateSpki, additionalProperties);
   }
   
   public A removeAllFromCipherSuites(Collection<String> items) {
@@ -964,6 +977,11 @@ public class ServerTLSSettingsFluent<A extends io.fabric8.istio.api.api.networki
         sb.append(httpsRedirect);
         sb.append(",");
     }
+    if (!(insecureSkipVerify == null)) {
+        sb.append("insecureSkipVerify:");
+        sb.append(insecureSkipVerify);
+        sb.append(",");
+    }
     if (!(maxProtocolVersion == null)) {
         sb.append("maxProtocolVersion:");
         sb.append(maxProtocolVersion);
@@ -1102,6 +1120,15 @@ public class ServerTLSSettingsFluent<A extends io.fabric8.istio.api.api.networki
   
   public A withHttpsRedirect(Boolean httpsRedirect) {
     this.httpsRedirect = httpsRedirect;
+    return (A) this;
+  }
+  
+  public A withInsecureSkipVerify() {
+    return withInsecureSkipVerify(true);
+  }
+  
+  public A withInsecureSkipVerify(Boolean insecureSkipVerify) {
+    this.insecureSkipVerify = insecureSkipVerify;
     return (A) this;
   }
   

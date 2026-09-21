@@ -24,6 +24,7 @@ public class LoadBalancerSettingsFluent<A extends io.fabric8.istio.api.api.netwo
   private LocalityLoadBalancerSettingBuilder localityLbSetting;
   private WarmupConfigurationBuilder warmup;
   private String warmupDurationSecs;
+  private ZoneAwareLoadBalancerSettingBuilder zoneAwareLbSetting;
 
   public LoadBalancerSettingsFluent() {
   }
@@ -64,6 +65,10 @@ public class LoadBalancerSettingsFluent<A extends io.fabric8.istio.api.api.netwo
     return this.warmup != null ? this.warmup.build() : null;
   }
   
+  public ZoneAwareLoadBalancerSetting buildZoneAwareLbSetting() {
+    return this.zoneAwareLbSetting != null ? this.zoneAwareLbSetting.build() : null;
+  }
+  
   protected static <T>VisitableBuilder<T,?> builder(Object item) {
     switch (item.getClass().getName()) {
       case "LoadBalancerSettingsSimple":
@@ -88,6 +93,7 @@ public class LoadBalancerSettingsFluent<A extends io.fabric8.istio.api.api.netwo
         this.withLocalityLbSetting(instance.getLocalityLbSetting());
         this.withWarmup(instance.getWarmup());
         this.withWarmupDurationSecs(instance.getWarmupDurationSecs());
+        this.withZoneAwareLbSetting(instance.getZoneAwareLbSetting());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -112,8 +118,20 @@ public class LoadBalancerSettingsFluent<A extends io.fabric8.istio.api.api.netwo
     return this.withNewWarmupLike(Optional.ofNullable(this.buildWarmup()).orElse(item));
   }
   
+  public ZoneAwareLbSettingNested<A> editOrNewZoneAwareLbSetting() {
+    return this.withNewZoneAwareLbSettingLike(Optional.ofNullable(this.buildZoneAwareLbSetting()).orElse(new ZoneAwareLoadBalancerSettingBuilder().build()));
+  }
+  
+  public ZoneAwareLbSettingNested<A> editOrNewZoneAwareLbSettingLike(ZoneAwareLoadBalancerSetting item) {
+    return this.withNewZoneAwareLbSettingLike(Optional.ofNullable(this.buildZoneAwareLbSetting()).orElse(item));
+  }
+  
   public WarmupNested<A> editWarmup() {
     return this.withNewWarmupLike(Optional.ofNullable(this.buildWarmup()).orElse(null));
+  }
+  
+  public ZoneAwareLbSettingNested<A> editZoneAwareLbSetting() {
+    return this.withNewZoneAwareLbSettingLike(Optional.ofNullable(this.buildZoneAwareLbSetting()).orElse(null));
   }
   
   public boolean equals(Object o) {
@@ -137,6 +155,9 @@ public class LoadBalancerSettingsFluent<A extends io.fabric8.istio.api.api.netwo
       return false;
     }
     if (!(Objects.equals(warmupDurationSecs, that.warmupDurationSecs))) {
+      return false;
+    }
+    if (!(Objects.equals(zoneAwareLbSetting, that.zoneAwareLbSetting))) {
       return false;
     }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
@@ -173,8 +194,12 @@ public class LoadBalancerSettingsFluent<A extends io.fabric8.istio.api.api.netwo
     return this.warmupDurationSecs != null;
   }
   
+  public boolean hasZoneAwareLbSetting() {
+    return this.zoneAwareLbSetting != null;
+  }
+  
   public int hashCode() {
-    return Objects.hash(lbPolicy, localityLbSetting, warmup, warmupDurationSecs, additionalProperties);
+    return Objects.hash(lbPolicy, localityLbSetting, warmup, warmupDurationSecs, zoneAwareLbSetting, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -222,6 +247,11 @@ public class LoadBalancerSettingsFluent<A extends io.fabric8.istio.api.api.netwo
     if (!(warmupDurationSecs == null)) {
         sb.append("warmupDurationSecs:");
         sb.append(warmupDurationSecs);
+        sb.append(",");
+    }
+    if (!(zoneAwareLbSetting == null)) {
+        sb.append("zoneAwareLbSetting:");
+        sb.append(zoneAwareLbSetting);
         sb.append(",");
     }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
@@ -303,6 +333,14 @@ public class LoadBalancerSettingsFluent<A extends io.fabric8.istio.api.api.netwo
     return new WarmupNested(item);
   }
   
+  public ZoneAwareLbSettingNested<A> withNewZoneAwareLbSetting() {
+    return new ZoneAwareLbSettingNested(null);
+  }
+  
+  public ZoneAwareLbSettingNested<A> withNewZoneAwareLbSettingLike(ZoneAwareLoadBalancerSetting item) {
+    return new ZoneAwareLbSettingNested(item);
+  }
+  
   public A withWarmup(WarmupConfiguration warmup) {
     this._visitables.remove("warmup");
     if (warmup != null) {
@@ -317,6 +355,18 @@ public class LoadBalancerSettingsFluent<A extends io.fabric8.istio.api.api.netwo
   
   public A withWarmupDurationSecs(String warmupDurationSecs) {
     this.warmupDurationSecs = warmupDurationSecs;
+    return (A) this;
+  }
+  
+  public A withZoneAwareLbSetting(ZoneAwareLoadBalancerSetting zoneAwareLbSetting) {
+    this._visitables.remove("zoneAwareLbSetting");
+    if (zoneAwareLbSetting != null) {
+        this.zoneAwareLbSetting = new ZoneAwareLoadBalancerSettingBuilder(zoneAwareLbSetting);
+        this._visitables.get("zoneAwareLbSetting").add(this.zoneAwareLbSetting);
+    } else {
+        this.zoneAwareLbSetting = null;
+        this._visitables.get("zoneAwareLbSetting").remove(this.zoneAwareLbSetting);
+    }
     return (A) this;
   }
   public class LoadBalancerSettingsConsistentHashLbPolicyNested<N> extends LoadBalancerSettingsConsistentHashFluent<LoadBalancerSettingsConsistentHashLbPolicyNested<N>> implements Nested<N>{
@@ -383,6 +433,23 @@ public class LoadBalancerSettingsFluent<A extends io.fabric8.istio.api.api.netwo
     }
     
     public N endWarmup() {
+      return and();
+    }
+    
+  }
+  public class ZoneAwareLbSettingNested<N> extends ZoneAwareLoadBalancerSettingFluent<ZoneAwareLbSettingNested<N>> implements Nested<N>{
+  
+    ZoneAwareLoadBalancerSettingBuilder builder;
+  
+    ZoneAwareLbSettingNested(ZoneAwareLoadBalancerSetting item) {
+      this.builder = new ZoneAwareLoadBalancerSettingBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) LoadBalancerSettingsFluent.this.withZoneAwareLbSetting(builder.build());
+    }
+    
+    public N endZoneAwareLbSetting() {
       return and();
     }
     

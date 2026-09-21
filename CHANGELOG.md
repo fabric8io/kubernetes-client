@@ -16,6 +16,7 @@
 * Fix #8101: bump cluster-api from 1.13.6 to 1.14.2
 * Fix #8101: bump cluster-api-provider-metal3 from 1.13.0 to 1.14.0
 * Fix #8086: bump gateway-api from 1.6.1 to 1.6.2
+* Fix #8127: bump istio.io/client-go from 1.30.0 to 1.31.0
 * Fix #8086: bump k8s.io/api from 0.35.2 to 0.35.8
 * Fix #8086: bump k8s.io/apiextensions-apiserver from 0.36.1 to 0.37.0
 * Fix #8086: bump k8s.io/apimachinery from 0.36.1 to 0.37.0
