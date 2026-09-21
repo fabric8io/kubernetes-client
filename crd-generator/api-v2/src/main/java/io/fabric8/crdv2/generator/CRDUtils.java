@@ -67,9 +67,7 @@ public class CRDUtils {
    */
   public static SpecAndStatus resolveSpecAndStatusTypes(Class<?> definition) {
     SerializationConfig config = JsonMapper.builderWithJackson2Defaults().build().serializationConfig();
-    JavaType javaType = config.constructType(definition);
-    ClassIntrospector ci = config.classIntrospectorInstance();
-    BeanDescription description = ci.introspectForSerialization(javaType, ci.introspectClassAnnotations(javaType));
+    BeanDescription description = introspectForSerialization(config, config.constructType(definition));
     String specClassName = null;
     String statusClassName = null;
     for (BeanPropertyDefinition bpd : description.findProperties()) {
@@ -80,6 +78,15 @@ public class CRDUtils {
       }
     }
     return new SpecAndStatus(specClassName, statusClassName);
+  }
+
+  /**
+   * {@link SerializationConfig#classIntrospectorInstance()} already scopes the introspector to the given
+   * config, so it only needs the class annotations to describe the type.
+   */
+  static BeanDescription introspectForSerialization(SerializationConfig config, JavaType type) {
+    ClassIntrospector introspector = config.classIntrospectorInstance();
+    return introspector.introspectForSerialization(type, introspector.introspectClassAnnotations(type));
   }
 
   public static Map<String, String> toMap(String[] arr) {
