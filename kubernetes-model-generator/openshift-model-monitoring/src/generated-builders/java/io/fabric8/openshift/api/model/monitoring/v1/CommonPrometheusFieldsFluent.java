@@ -5495,10 +5495,6 @@ public class CommonPrometheusFieldsFluent<A extends io.fabric8.openshift.api.mod
     return new TsdbNested(null);
   }
   
-  public A withNewTsdb(String outOfOrderTimeWindow) {
-    return (A) this.withTsdb(new TSDBSpec(outOfOrderTimeWindow));
-  }
-  
   public TsdbNested<A> withNewTsdbLike(TSDBSpec item) {
     return new TsdbNested(item);
   }

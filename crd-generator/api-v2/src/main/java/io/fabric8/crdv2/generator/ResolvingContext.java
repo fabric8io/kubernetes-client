@@ -119,9 +119,26 @@ public class ResolvingContext {
     return new ResolvingContext(objectMapper, kubernetesSerialization, uriToJacksonSchema, implicitPreserveUnknownFields);
   }
 
+  /**
+   * @param mapper the mapper the schema is derived from, used as is except that it writes dates and durations as
+   *        strings, like {@link KubernetesSerialization} always does (it configures a copy, not the given mapper)
+   * @param kubernetesSerialization used to parse default values and to apply schema customizers
+   * @param implicitPreserveUnknownFields whether any-getters and any-setters preserve unknown fields
+   */
   public ResolvingContext(ObjectMapper mapper, KubernetesSerialization kubernetesSerialization,
       boolean implicitPreserveUnknownFields) {
-    this(mapper, kubernetesSerialization, new ConcurrentHashMap<>(), implicitPreserveUnknownFields);
+    this(withDatesAsStrings(mapper), kubernetesSerialization, new ConcurrentHashMap<>(), implicitPreserveUnknownFields);
+  }
+
+  private static ObjectMapper withDatesAsStrings(ObjectMapper mapper) {
+    if (!mapper.serializationConfig().isEnabled(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS)
+        && !mapper.serializationConfig().isEnabled(DateTimeFeature.WRITE_DURATIONS_AS_TIMESTAMPS)) {
+      return mapper;
+    }
+    return mapper.rebuild()
+        .disable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS)
+        .disable(DateTimeFeature.WRITE_DURATIONS_AS_TIMESTAMPS)
+        .build();
   }
 
   private ResolvingContext(ObjectMapper mapper, KubernetesSerialization kubernetesSerialization,

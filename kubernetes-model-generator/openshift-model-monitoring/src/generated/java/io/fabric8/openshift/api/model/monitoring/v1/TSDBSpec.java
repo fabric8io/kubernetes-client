@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
@@ -34,7 +35,9 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "outOfOrderTimeWindow"
+    "chunkEncoding",
+    "outOfOrderTimeWindow",
+    "staleSeriesCompactionThreshold"
 })
 @ToString
 @EqualsAndHashCode
@@ -61,8 +64,12 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 public class TSDBSpec implements Editable<TSDBSpecBuilder>, KubernetesResource
 {
 
+    @JsonProperty("chunkEncoding")
+    private ChunkEncodingSpec chunkEncoding;
     @JsonProperty("outOfOrderTimeWindow")
     private String outOfOrderTimeWindow;
+    @JsonProperty("staleSeriesCompactionThreshold")
+    private Quantity staleSeriesCompactionThreshold;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -72,9 +79,21 @@ public class TSDBSpec implements Editable<TSDBSpecBuilder>, KubernetesResource
     public TSDBSpec() {
     }
 
-    public TSDBSpec(String outOfOrderTimeWindow) {
+    public TSDBSpec(ChunkEncodingSpec chunkEncoding, String outOfOrderTimeWindow, Quantity staleSeriesCompactionThreshold) {
         super();
+        this.chunkEncoding = chunkEncoding;
         this.outOfOrderTimeWindow = outOfOrderTimeWindow;
+        this.staleSeriesCompactionThreshold = staleSeriesCompactionThreshold;
+    }
+
+    @JsonProperty("chunkEncoding")
+    public ChunkEncodingSpec getChunkEncoding() {
+        return chunkEncoding;
+    }
+
+    @JsonProperty("chunkEncoding")
+    public void setChunkEncoding(ChunkEncodingSpec chunkEncoding) {
+        this.chunkEncoding = chunkEncoding;
     }
 
     /**
@@ -91,6 +110,16 @@ public class TSDBSpec implements Editable<TSDBSpecBuilder>, KubernetesResource
     @JsonProperty("outOfOrderTimeWindow")
     public void setOutOfOrderTimeWindow(String outOfOrderTimeWindow) {
         this.outOfOrderTimeWindow = outOfOrderTimeWindow;
+    }
+
+    @JsonProperty("staleSeriesCompactionThreshold")
+    public Quantity getStaleSeriesCompactionThreshold() {
+        return staleSeriesCompactionThreshold;
+    }
+
+    @JsonProperty("staleSeriesCompactionThreshold")
+    public void setStaleSeriesCompactionThreshold(Quantity staleSeriesCompactionThreshold) {
+        this.staleSeriesCompactionThreshold = staleSeriesCompactionThreshold;
     }
 
     @JsonIgnore

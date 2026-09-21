@@ -13,6 +13,7 @@ import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.LocalObjectReferenceBuilder;
 import io.fabric8.kubernetes.api.model.LocalObjectReferenceFluent;
 import io.fabric8.kubernetes.api.model.PodSecurityContext;
+import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.ResourceRequirementsBuilder;
 import io.fabric8.kubernetes.api.model.ResourceRequirementsFluent;
@@ -132,6 +133,7 @@ public class PrometheusSpecFluent<A extends io.fabric8.openshift.api.model.monit
   private Integer replicas;
   private ResourceRequirementsBuilder resources;
   private String retention;
+  private Quantity retentionPercentage;
   private String retentionSize;
   private String routePrefix;
   private LabelSelectorBuilder ruleNamespaceSelector;
@@ -1597,6 +1599,7 @@ public class PrometheusSpecFluent<A extends io.fabric8.openshift.api.model.monit
         this.withReplicas(instance.getReplicas());
         this.withResources(instance.getResources());
         this.withRetention(instance.getRetention());
+        this.withRetentionPercentage(instance.getRetentionPercentage());
         this.withRetentionSize(instance.getRetentionSize());
         this.withRoutePrefix(instance.getRoutePrefix());
         this.withRuleNamespaceSelector(instance.getRuleNamespaceSelector());
@@ -2718,6 +2721,9 @@ public class PrometheusSpecFluent<A extends io.fabric8.openshift.api.model.monit
     if (!(Objects.equals(retention, that.retention))) {
       return false;
     }
+    if (!(Objects.equals(retentionPercentage, that.retentionPercentage))) {
+      return false;
+    }
     if (!(Objects.equals(retentionSize, that.retentionSize))) {
       return false;
     }
@@ -3233,6 +3239,10 @@ public class PrometheusSpecFluent<A extends io.fabric8.openshift.api.model.monit
   
   public String getRetention() {
     return this.retention;
+  }
+  
+  public Quantity getRetentionPercentage() {
+    return this.retentionPercentage;
   }
   
   public String getRetentionSize() {
@@ -3855,6 +3865,10 @@ public class PrometheusSpecFluent<A extends io.fabric8.openshift.api.model.monit
     return this.retention != null;
   }
   
+  public boolean hasRetentionPercentage() {
+    return this.retentionPercentage != null;
+  }
+  
   public boolean hasRetentionSize() {
     return this.retentionSize != null;
   }
@@ -4032,7 +4046,7 @@ public class PrometheusSpecFluent<A extends io.fabric8.openshift.api.model.monit
   }
   
   public int hashCode() {
-    return Objects.hash(additionalAlertManagerConfigs, additionalAlertRelabelConfigs, additionalArgs, additionalScrapeConfigs, affinity, alerting, allowOverlappingBlocks, apiserverConfig, arbitraryFSAccessThroughSMs, automountServiceAccountToken, baseImage, bodySizeLimit, configMaps, containers, convertClassicHistogramsToNHCB, disableCompaction, dnsConfig, dnsPolicy, enableAdminAPI, enableFeatures, enableOTLPReceiver, enableRemoteWriteReceiver, enableServiceLinks, enforcedBodySizeLimit, enforcedKeepDroppedTargets, enforcedLabelLimit, enforcedLabelNameLengthLimit, enforcedLabelValueLengthLimit, enforcedNamespaceLabel, enforcedSampleLimit, enforcedTargetLimit, evaluationInterval, excludedFromEnforcement, exemplars, externalLabels, externalUrl, hostAliases, hostNetwork, hostUsers, ignoreNamespaceSelectors, image, imagePullPolicy, imagePullSecrets, initContainers, keepDroppedTargets, labelLimit, labelNameLengthLimit, labelValueLengthLimit, listenLocal, logFormat, logLevel, maximumStartupDurationSeconds, minReadySeconds, nameEscapingScheme, nameValidationScheme, nodeSelector, otlp, overrideHonorLabels, overrideHonorTimestamps, paused, persistentVolumeClaimRetentionPolicy, podManagementPolicy, podMetadata, podMonitorNamespaceSelector, podMonitorSelector, podTargetLabels, portName, priorityClassName, probeNamespaceSelector, probeSelector, prometheusExternalLabelName, prometheusRulesExcludedFromEnforce, query, queryLogFile, reloadStrategy, remoteRead, remoteWrite, remoteWriteReceiverMessageVersions, replicaExternalLabelName, replicas, resources, retention, retentionSize, routePrefix, ruleNamespaceSelector, ruleQueryOffset, ruleSelector, rules, runtime, sampleLimit, schedulerName, scrapeClasses, scrapeClassicHistograms, scrapeConfigNamespaceSelector, scrapeConfigSelector, scrapeFailureLogFile, scrapeInterval, scrapeNativeHistograms, scrapeProtocols, scrapeTimeout, secrets, securityContext, serviceAccountName, serviceDiscoveryRole, serviceMonitorNamespaceSelector, serviceMonitorSelector, serviceName, sha, shardRetentionPolicy, shardingStrategy, shards, storage, tag, targetLimit, terminationGracePeriodSeconds, thanos, tolerations, topologySpreadConstraints, tracingConfig, tsdb, updateStrategy, version, volumeMounts, volumes, walCompression, web, additionalProperties);
+    return Objects.hash(additionalAlertManagerConfigs, additionalAlertRelabelConfigs, additionalArgs, additionalScrapeConfigs, affinity, alerting, allowOverlappingBlocks, apiserverConfig, arbitraryFSAccessThroughSMs, automountServiceAccountToken, baseImage, bodySizeLimit, configMaps, containers, convertClassicHistogramsToNHCB, disableCompaction, dnsConfig, dnsPolicy, enableAdminAPI, enableFeatures, enableOTLPReceiver, enableRemoteWriteReceiver, enableServiceLinks, enforcedBodySizeLimit, enforcedKeepDroppedTargets, enforcedLabelLimit, enforcedLabelNameLengthLimit, enforcedLabelValueLengthLimit, enforcedNamespaceLabel, enforcedSampleLimit, enforcedTargetLimit, evaluationInterval, excludedFromEnforcement, exemplars, externalLabels, externalUrl, hostAliases, hostNetwork, hostUsers, ignoreNamespaceSelectors, image, imagePullPolicy, imagePullSecrets, initContainers, keepDroppedTargets, labelLimit, labelNameLengthLimit, labelValueLengthLimit, listenLocal, logFormat, logLevel, maximumStartupDurationSeconds, minReadySeconds, nameEscapingScheme, nameValidationScheme, nodeSelector, otlp, overrideHonorLabels, overrideHonorTimestamps, paused, persistentVolumeClaimRetentionPolicy, podManagementPolicy, podMetadata, podMonitorNamespaceSelector, podMonitorSelector, podTargetLabels, portName, priorityClassName, probeNamespaceSelector, probeSelector, prometheusExternalLabelName, prometheusRulesExcludedFromEnforce, query, queryLogFile, reloadStrategy, remoteRead, remoteWrite, remoteWriteReceiverMessageVersions, replicaExternalLabelName, replicas, resources, retention, retentionPercentage, retentionSize, routePrefix, ruleNamespaceSelector, ruleQueryOffset, ruleSelector, rules, runtime, sampleLimit, schedulerName, scrapeClasses, scrapeClassicHistograms, scrapeConfigNamespaceSelector, scrapeConfigSelector, scrapeFailureLogFile, scrapeInterval, scrapeNativeHistograms, scrapeProtocols, scrapeTimeout, secrets, securityContext, serviceAccountName, serviceDiscoveryRole, serviceMonitorNamespaceSelector, serviceMonitorSelector, serviceName, sha, shardRetentionPolicy, shardingStrategy, shards, storage, tag, targetLimit, terminationGracePeriodSeconds, thanos, tolerations, topologySpreadConstraints, tracingConfig, tsdb, updateStrategy, version, volumeMounts, volumes, walCompression, web, additionalProperties);
   }
   
   public A removeAllFromAdditionalArgs(Collection<Argument> items) {
@@ -5483,6 +5497,11 @@ public class PrometheusSpecFluent<A extends io.fabric8.openshift.api.model.monit
         sb.append(retention);
         sb.append(",");
     }
+    if (!(retentionPercentage == null)) {
+        sb.append("retentionPercentage:");
+        sb.append(retentionPercentage);
+        sb.append(",");
+    }
     if (!(retentionSize == null)) {
         sb.append("retentionSize:");
         sb.append(retentionSize);
@@ -6392,6 +6411,14 @@ public class PrometheusSpecFluent<A extends io.fabric8.openshift.api.model.monit
     return new ResourcesNested(item);
   }
   
+  public A withNewRetentionPercentage(String amount) {
+    return (A) this.withRetentionPercentage(new Quantity(amount));
+  }
+  
+  public A withNewRetentionPercentage(String amount,String format) {
+    return (A) this.withRetentionPercentage(new Quantity(amount, format));
+  }
+  
   public RuleNamespaceSelectorNested<A> withNewRuleNamespaceSelector() {
     return new RuleNamespaceSelectorNested(null);
   }
@@ -6502,10 +6529,6 @@ public class PrometheusSpecFluent<A extends io.fabric8.openshift.api.model.monit
   
   public TsdbNested<A> withNewTsdb() {
     return new TsdbNested(null);
-  }
-  
-  public A withNewTsdb(String outOfOrderTimeWindow) {
-    return (A) this.withTsdb(new TSDBSpec(outOfOrderTimeWindow));
   }
   
   public TsdbNested<A> withNewTsdbLike(TSDBSpec item) {
@@ -6841,6 +6864,11 @@ public class PrometheusSpecFluent<A extends io.fabric8.openshift.api.model.monit
   
   public A withRetention(String retention) {
     this.retention = retention;
+    return (A) this;
+  }
+  
+  public A withRetentionPercentage(Quantity retentionPercentage) {
+    this.retentionPercentage = retentionPercentage;
     return (A) this;
   }
   

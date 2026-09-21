@@ -42,7 +42,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "LbPolicy",
     "localityLbSetting",
     "warmup",
-    "warmupDurationSecs"
+    "warmupDurationSecs",
+    "zoneAwareLbSetting"
 })
 @ToString
 @EqualsAndHashCode
@@ -78,6 +79,8 @@ public class LoadBalancerSettings implements Editable<LoadBalancerSettingsBuilde
     private WarmupConfiguration warmup;
     @JsonProperty("warmupDurationSecs")
     private String warmupDurationSecs;
+    @JsonProperty("zoneAwareLbSetting")
+    private ZoneAwareLoadBalancerSetting zoneAwareLbSetting;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -87,12 +90,13 @@ public class LoadBalancerSettings implements Editable<LoadBalancerSettingsBuilde
     public LoadBalancerSettings() {
     }
 
-    public LoadBalancerSettings(IsLoadBalancerSettingsLbPolicy lbPolicy, LocalityLoadBalancerSetting localityLbSetting, WarmupConfiguration warmup, String warmupDurationSecs) {
+    public LoadBalancerSettings(IsLoadBalancerSettingsLbPolicy lbPolicy, LocalityLoadBalancerSetting localityLbSetting, WarmupConfiguration warmup, String warmupDurationSecs, ZoneAwareLoadBalancerSetting zoneAwareLbSetting) {
         super();
         this.lbPolicy = lbPolicy;
         this.localityLbSetting = localityLbSetting;
         this.warmup = warmup;
         this.warmupDurationSecs = warmupDurationSecs;
+        this.zoneAwareLbSetting = zoneAwareLbSetting;
     }
 
     /**
@@ -158,6 +162,22 @@ public class LoadBalancerSettings implements Editable<LoadBalancerSettingsBuilde
     @JsonProperty("warmupDurationSecs")
     public void setWarmupDurationSecs(String warmupDurationSecs) {
         this.warmupDurationSecs = warmupDurationSecs;
+    }
+
+    /**
+     * Load balancing policies to apply for a specific destination. See Envoy's load balancing [documentation](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancing) for more details.<br><p> <br><p> For example, the following rule uses a round robin load balancing policy for all traffic going to the ratings service.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: bookinfo-ratings<br><p> <br><p> spec:<br><p> <br><p> 	host: ratings.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  loadBalancer:<br><p> 	    simple: ROUND_ROBIN<br><p> <br><p> ```<br><p> <br><p> The following example sets up sticky sessions for the ratings service hashing-based load balancer for the same ratings service using the the User cookie as the hash key.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: bookinfo-ratings<br><p> <br><p> spec:<br><p> <br><p> 	host: ratings.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  loadBalancer:<br><p> 	    consistentHash:<br><p> 	      httpCookie:<br><p> 	        name: user<br><p> 	        ttl: 0s<br><p> <br><p> ```
+     */
+    @JsonProperty("zoneAwareLbSetting")
+    public ZoneAwareLoadBalancerSetting getZoneAwareLbSetting() {
+        return zoneAwareLbSetting;
+    }
+
+    /**
+     * Load balancing policies to apply for a specific destination. See Envoy's load balancing [documentation](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancing) for more details.<br><p> <br><p> For example, the following rule uses a round robin load balancing policy for all traffic going to the ratings service.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: bookinfo-ratings<br><p> <br><p> spec:<br><p> <br><p> 	host: ratings.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  loadBalancer:<br><p> 	    simple: ROUND_ROBIN<br><p> <br><p> ```<br><p> <br><p> The following example sets up sticky sessions for the ratings service hashing-based load balancer for the same ratings service using the the User cookie as the hash key.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: bookinfo-ratings<br><p> <br><p> spec:<br><p> <br><p> 	host: ratings.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  loadBalancer:<br><p> 	    consistentHash:<br><p> 	      httpCookie:<br><p> 	        name: user<br><p> 	        ttl: 0s<br><p> <br><p> ```
+     */
+    @JsonProperty("zoneAwareLbSetting")
+    public void setZoneAwareLbSetting(ZoneAwareLoadBalancerSetting zoneAwareLbSetting) {
+        this.zoneAwareLbSetting = zoneAwareLbSetting;
     }
 
     @JsonIgnore

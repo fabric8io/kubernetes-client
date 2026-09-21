@@ -77,6 +77,17 @@
       <artifactId>validation-api</artifactId>
       <scope>test</scope>
     </dependency>
+    <!-- Real API server to verify the generated CRDs accept and keep what the client writes -->
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kube-api-test-client-inject</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.awaitility</groupId>
+      <artifactId>awaitility</artifactId>
+      <scope>test</scope>
+    </dependency>
 
     <!-- Keycloak model for testing -->
     <dependency>

@@ -42,6 +42,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "convertHistogramsToNHCB",
     "ignoreResourceAttributes",
     "keepIdentifyingResourceAttributes",
+    "labelNamePreserveMultipleUnderscores",
+    "labelNameUnderscoreSanitization",
     "promoteAllResourceAttributes",
     "promoteResourceAttributes",
     "promoteScopeMetadata",
@@ -79,6 +81,10 @@ public class OTLPConfig implements Editable<OTLPConfigBuilder>, KubernetesResour
     private List<String> ignoreResourceAttributes = new ArrayList<>();
     @JsonProperty("keepIdentifyingResourceAttributes")
     private Boolean keepIdentifyingResourceAttributes;
+    @JsonProperty("labelNamePreserveMultipleUnderscores")
+    private Boolean labelNamePreserveMultipleUnderscores;
+    @JsonProperty("labelNameUnderscoreSanitization")
+    private Boolean labelNameUnderscoreSanitization;
     @JsonProperty("promoteAllResourceAttributes")
     private Boolean promoteAllResourceAttributes;
     @JsonProperty("promoteResourceAttributes")
@@ -97,11 +103,13 @@ public class OTLPConfig implements Editable<OTLPConfigBuilder>, KubernetesResour
     public OTLPConfig() {
     }
 
-    public OTLPConfig(Boolean convertHistogramsToNHCB, List<String> ignoreResourceAttributes, Boolean keepIdentifyingResourceAttributes, Boolean promoteAllResourceAttributes, List<String> promoteResourceAttributes, Boolean promoteScopeMetadata, String translationStrategy) {
+    public OTLPConfig(Boolean convertHistogramsToNHCB, List<String> ignoreResourceAttributes, Boolean keepIdentifyingResourceAttributes, Boolean labelNamePreserveMultipleUnderscores, Boolean labelNameUnderscoreSanitization, Boolean promoteAllResourceAttributes, List<String> promoteResourceAttributes, Boolean promoteScopeMetadata, String translationStrategy) {
         super();
         this.convertHistogramsToNHCB = convertHistogramsToNHCB;
         this.ignoreResourceAttributes = ignoreResourceAttributes;
         this.keepIdentifyingResourceAttributes = keepIdentifyingResourceAttributes;
+        this.labelNamePreserveMultipleUnderscores = labelNamePreserveMultipleUnderscores;
+        this.labelNameUnderscoreSanitization = labelNameUnderscoreSanitization;
         this.promoteAllResourceAttributes = promoteAllResourceAttributes;
         this.promoteResourceAttributes = promoteResourceAttributes;
         this.promoteScopeMetadata = promoteScopeMetadata;
@@ -155,6 +163,38 @@ public class OTLPConfig implements Editable<OTLPConfigBuilder>, KubernetesResour
     @JsonProperty("keepIdentifyingResourceAttributes")
     public void setKeepIdentifyingResourceAttributes(Boolean keepIdentifyingResourceAttributes) {
         this.keepIdentifyingResourceAttributes = keepIdentifyingResourceAttributes;
+    }
+
+    /**
+     * labelNamePreserveMultipleUnderscores enables preserving of multiple consecutive underscores in label names when translation_strategy uses underscore escaping. When true (default), multiple consecutive underscores are preserved during label name sanitization.<br><p> <br><p> Notice: This one has no impact if `nameEscapingScheme` is `AllowUTF8`.<br><p> <br><p> It requires Prometheus &gt;= v3.8.0.
+     */
+    @JsonProperty("labelNamePreserveMultipleUnderscores")
+    public Boolean getLabelNamePreserveMultipleUnderscores() {
+        return labelNamePreserveMultipleUnderscores;
+    }
+
+    /**
+     * labelNamePreserveMultipleUnderscores enables preserving of multiple consecutive underscores in label names when translation_strategy uses underscore escaping. When true (default), multiple consecutive underscores are preserved during label name sanitization.<br><p> <br><p> Notice: This one has no impact if `nameEscapingScheme` is `AllowUTF8`.<br><p> <br><p> It requires Prometheus &gt;= v3.8.0.
+     */
+    @JsonProperty("labelNamePreserveMultipleUnderscores")
+    public void setLabelNamePreserveMultipleUnderscores(Boolean labelNamePreserveMultipleUnderscores) {
+        this.labelNamePreserveMultipleUnderscores = labelNamePreserveMultipleUnderscores;
+    }
+
+    /**
+     * labelNameUnderscoreSanitization controls whether to enable prepending of 'key_' to labels starting with '_'. Reserved labels starting with '__' are not modified. This is only relevant when translation_strategy uses underscore escaping (e.g., "UnderscoreEscapingWithSuffixes" or "UnderscoreEscapingWithoutSuffixes").<br><p> <br><p> Notice: This one has no impact if `nameEscapingScheme` is `AllowUTF8`.<br><p> <br><p> It requires Prometheus &gt;= v3.8.0.
+     */
+    @JsonProperty("labelNameUnderscoreSanitization")
+    public Boolean getLabelNameUnderscoreSanitization() {
+        return labelNameUnderscoreSanitization;
+    }
+
+    /**
+     * labelNameUnderscoreSanitization controls whether to enable prepending of 'key_' to labels starting with '_'. Reserved labels starting with '__' are not modified. This is only relevant when translation_strategy uses underscore escaping (e.g., "UnderscoreEscapingWithSuffixes" or "UnderscoreEscapingWithoutSuffixes").<br><p> <br><p> Notice: This one has no impact if `nameEscapingScheme` is `AllowUTF8`.<br><p> <br><p> It requires Prometheus &gt;= v3.8.0.
+     */
+    @JsonProperty("labelNameUnderscoreSanitization")
+    public void setLabelNameUnderscoreSanitization(Boolean labelNameUnderscoreSanitization) {
+        this.labelNameUnderscoreSanitization = labelNameUnderscoreSanitization;
     }
 
     /**

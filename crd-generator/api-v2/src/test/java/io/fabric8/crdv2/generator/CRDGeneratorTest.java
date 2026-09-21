@@ -338,8 +338,9 @@ class CRDGeneratorTest {
           .getProperties().get("spec").getProperties();
       assertEquals(4, specProps.size());
       assertEquals("integer", specProps.get("baseInt").getType());
-      checkMapProp(specProps, "unsupported", "object");
-      checkMapProp(specProps, "unsupported2", "object");
+      // Object and raw Map values hold arbitrary JSON, so they are untyped and preserved rather than pruned
+      checkAnyValuedMapProp(specProps, "unsupported");
+      checkAnyValuedMapProp(specProps, "unsupported2");
       checkMapProp(specProps, "supported", "string");
     });
   }
@@ -398,6 +399,16 @@ class CRDGeneratorTest {
         assertEquals("integer", schema.getItems().getSchema().getType(), name + "'s array item type should be integer");
       }
     });
+  }
+
+  private void checkAnyValuedMapProp(Map<String, JSONSchemaProps> specProps, String name) {
+    final JSONSchemaProps props = specProps.get(name);
+    assertNotNull(props, name + " should be contained in spec");
+    assertEquals("object", props.getType(), name + "'s type should be object");
+    final JSONSchemaProps valueSchema = props.getAdditionalProperties().getSchema();
+    assertNull(valueSchema.getType(), name + "'s value type should be left open");
+    assertEquals(Boolean.TRUE, valueSchema.getXKubernetesPreserveUnknownFields(),
+        name + "'s values should be preserved");
   }
 
   private JSONSchemaProps checkMapProp(Map<String, JSONSchemaProps> specProps, String name, String valueType) {

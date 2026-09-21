@@ -25,7 +25,7 @@ public class LoadBalancerSettingsBuilder extends LoadBalancerSettingsFluent<Load
   }
 
   public LoadBalancerSettings build() {
-    LoadBalancerSettings buildable = new LoadBalancerSettings(fluent.buildLbPolicy(), fluent.buildLocalityLbSetting(), fluent.buildWarmup(), fluent.getWarmupDurationSecs());
+    LoadBalancerSettings buildable = new LoadBalancerSettings(fluent.buildLbPolicy(), fluent.buildLocalityLbSetting(), fluent.buildWarmup(), fluent.getWarmupDurationSecs(), fluent.buildZoneAwareLbSetting());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

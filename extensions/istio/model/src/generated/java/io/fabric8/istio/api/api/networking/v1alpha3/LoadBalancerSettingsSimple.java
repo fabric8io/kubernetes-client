@@ -32,6 +32,9 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
+/**
+ * Standard load balancing algorithms that require no tuning.
+ */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -78,11 +81,17 @@ public class LoadBalancerSettingsSimple implements IsLoadBalancerSettingsLbPolic
         this.simple = simple;
     }
 
+    /**
+     * Standard load balancing algorithms that require no tuning.
+     */
     @JsonProperty("simple")
     public LoadBalancerSettingsSimpleLB getSimple() {
         return simple;
     }
 
+    /**
+     * Standard load balancing algorithms that require no tuning.
+     */
     @JsonProperty("simple")
     public void setSimple(LoadBalancerSettingsSimpleLB simple) {
         this.simple = simple;

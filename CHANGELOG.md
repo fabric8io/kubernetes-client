@@ -3,6 +3,7 @@
 ### 8.0-SNAPSHOT
 
 #### Bugs
+* Fix #7374: (crd-generator) Generated CRDs no longer prune or reject what the client writes: `Object`, raw `Map`, `List<Object>`, raw collection, `@JsonUnwrapped` and polymorphic properties keep their content, and date and time types only declare a format their values match (`Duration`, `LocalDateTime` and the partial types lose `date-time`). `Optional` properties get their value type's schema instead of preserving unknown fields, see the [migration guide](./doc/MIGRATION-v8.md#jackson-3-crd-generator)
 
 #### Improvements
 * Fix #8008: Changed default HttpClient implementation from `kubernetes-httpclient-vertx` (Vert.x 4) to `kubernetes-httpclient-vertx-5` (Vert.x 5)
@@ -17,6 +18,7 @@
 * Fix #8101: bump cluster-api from 1.13.6 to 1.14.2
 * Fix #8101: bump cluster-api-provider-metal3 from 1.13.0 to 1.14.0
 * Fix #8086: bump gateway-api from 1.6.1 to 1.6.2
+* Fix #8127: bump istio.io/client-go from 1.30.0 to 1.31.0
 * Fix #8086: bump k8s.io/api from 0.35.2 to 0.35.8
 * Fix #8086: bump k8s.io/apiextensions-apiserver from 0.36.1 to 0.37.0
 * Fix #8086: bump k8s.io/apimachinery from 0.36.1 to 0.37.0
@@ -32,6 +34,7 @@
 * Fix #8118: bump knative.dev/networking from 0.0.0-20260529061306-c8de379770b9 to 0.0.0-20260921014731-e39778429a0f
 * Fix #8118: bump knative.dev/pkg from 0.0.0-20260422015212-ec452872dcc1 to 0.0.0-20260918182429-5dc1978f0042
 * Fix #8118: bump knative.dev/serving from 0.49.1 to 0.50.0
+* Fix #8126: bump prometheus-operator from 0.91.0 to 0.94.0
 * Fix #8100: bump tektoncd/pipeline from 1.12.0 to 1.16.0
 * Fix #8100: bump tektoncd/triggers from 0.36.0 to 0.37.0
 * Fix #8097: bump volcano.sh/apis from 1.11.0 to 1.15.2

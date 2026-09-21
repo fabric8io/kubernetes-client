@@ -47,11 +47,54 @@ class TypeMappingsTest {
         .isEqualTo(expectedType);
   }
 
+  @ParameterizedTest(name = "{0} has format {1}")
+  @MethodSource("targetFormatCases")
+  @DisplayName("Java types only declare a format their serialized values match")
+  void targetFormat(String propertyName, String expectedFormat) {
+    assertThat(PROPERTIES)
+        .withFailMessage("Expected %s to have format %s, but was %s", propertyName, expectedFormat,
+            PROPERTIES.containsKey(propertyName) ? PROPERTIES.get(propertyName).getFormat() : "absent")
+        .extractingByKey(propertyName)
+        .extracting(JSONSchemaProps::getFormat)
+        .isEqualTo(expectedFormat);
+  }
+
+  /**
+   * The API server rejects values that don't match a date-time (RFC 3339, offset required) or date format, so only
+   * the types that always write a matching value keep one, see AbstractJsonSchema#writesFormat. The API server
+   * behavior is verified in crd-generator-test's GeneratedCRDsOnApiServerTest.
+   */
+  static Stream<Arguments> targetFormatCases() {
+    return Stream.of(
+        Arguments.of("date", "date-time"),
+        Arguments.of("localDate", "date"),
+        Arguments.of("localDateTime", null),
+        Arguments.of("localTime", null),
+        Arguments.of("zonedDateTime", "date-time"),
+        Arguments.of("offsetDateTime", "date-time"),
+        Arguments.of("offsetTime", null),
+        Arguments.of("yearMonth", null),
+        Arguments.of("monthDay", null),
+        Arguments.of("timestamp", "date-time"),
+        Arguments.of("sqlDate", "date-time"),
+        Arguments.of("sqlTime", null),
+        Arguments.of("calendar", "date-time"),
+        Arguments.of("instant", "date-time"),
+        Arguments.of("duration", null),
+        Arguments.of("period", null),
+        Arguments.of("optionalInstant", "date-time"),
+        Arguments.of("optionalDuration", null),
+        Arguments.of("uuid", "uuid"),
+        Arguments.of("aString", null),
+        Arguments.of("aInt", null));
+  }
+
   static Stream<Arguments> targetTypeCases() {
     return Stream.of(
         Arguments.of("date", "string"),
         Arguments.of("localDate", "string"),
         Arguments.of("localDateTime", "string"),
+        Arguments.of("localTime", "string"),
         Arguments.of("zonedDateTime", "string"),
         Arguments.of("offsetDateTime", "string"),
         Arguments.of("offsetTime", "string"),
@@ -61,6 +104,11 @@ class TypeMappingsTest {
         Arguments.of("duration", "string"),
         Arguments.of("period", "string"),
         Arguments.of("timestamp", "string"), // to review, see #8109
+        Arguments.of("sqlDate", "string"),
+        Arguments.of("sqlTime", "string"),
+        Arguments.of("calendar", "string"),
+        Arguments.of("optionalInstant", "string"),
+        Arguments.of("optionalDuration", "string"),
         Arguments.of("aShort", "integer"),
         Arguments.of("aShortObj", "integer"),
         Arguments.of("aInt", "integer"),

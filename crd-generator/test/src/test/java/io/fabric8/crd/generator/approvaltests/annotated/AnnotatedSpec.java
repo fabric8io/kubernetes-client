@@ -67,12 +67,12 @@ public class AnnotatedSpec {
 
   private boolean ignoredBar;
 
-  @ValidationRule(value = "self.startwith('prefix-')", message = "kubernetesValidationRule must start with prefix 'prefix-'")
+  @ValidationRule(value = "self.startsWith('prefix-')", message = "kubernetesValidationRule must start with prefix 'prefix-'")
   private String kubernetesValidationRule;
 
-  @ValidationRule("first.rule")
-  @ValidationRule("second.rule")
-  @ValidationRule(value = "third.rule", reason = "FieldValueForbidden")
+  @ValidationRule("self.size() > 0")
+  @ValidationRule("self.size() < 64")
+  @ValidationRule(value = "self != 'forbidden'", reason = "FieldValueForbidden")
   private String kubernetesValidationRules;
 
   @JsonProperty("from-getter")

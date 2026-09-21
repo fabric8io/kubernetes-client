@@ -8,6 +8,7 @@
   - [OSGi bundles require JavaSE 17](#java-17-osgi)
 - [Karaf: the bundled `scr` feature has been removed](#karaf-scr)
 - [Jackson 3](#jackson-3)
+  - [Generated CRDs](#jackson-3-crd-generator)
 - [`withShardSelector(null)` is ambiguous](#shard-selector-null)
 
 
@@ -131,12 +132,18 @@ The default `KubernetesSerialization` (and therefore `KubernetesClientBuilder`) 
 
 One difference can't be restored: getters with an upper-case prefix follow the standard bean naming, so `getURL()` is now `URL` instead of `url`. Annotate them with `@JsonProperty` to keep the old name.
 
-### CRD Generator
+### Generated CRDs <a href="#jackson-3-crd-generator" id="jackson-3-crd-generator"/>
 
-The CRD generator now uses the Jackson 3 version of `jackson-module-jsonSchema` (`tools.jackson.module:jackson-module-jsonSchema`). The generated CRDs are compatible with 7.x with two exceptions, both bug fixes:
+The CRD generator now uses the Jackson 3 version of `jackson-module-jsonSchema` (`tools.jackson.module:jackson-module-jsonSchema`). If you embed the generator, `CRDGenerator.withObjectMapper(...)` and `ResolvingContext` now take a `tools.jackson.databind.ObjectMapper`. The generator makes that mapper write dates and durations as strings, whatever its settings, because that's what the client writes.
 
-- **`Optional<Pojo>` fields** now get the POJO's schema. In 7.x they were emitted as `x-kubernetes-preserve-unknown-fields: true`.
+The generated CRDs are the same as in 7.x except for the following:
+
+- **`Optional` fields** now get the schema of their value type. In 7.x they were emitted as `x-kubernetes-preserve-unknown-fields: true`, so an `Optional<Pojo>` field now prunes the fields the POJO doesn't declare, like a plain `Pojo` field.
 - **`@JsonUnwrapped` properties** are now flattened into the parent object schema. In 7.x they were incorrectly nested under the field name.
+- **`Object` properties, `Map` values of type `Object` and raw `Map`s** are now `x-kubernetes-preserve-unknown-fields: true` instead of `type: object`. They hold arbitrary JSON, and `type: object` made the API server prune it and reject scalars. An `Object` property with `@JsonSerialize(as = SomeType.class)` gets the schema of `SomeType`.
+- **`List<Object>` and raw collections** now generate an array whose items are `x-kubernetes-preserve-unknown-fields: true`. Generation used to fail with `Untyped collection <field>`.
+- **Polymorphic types** (`@JsonTypeInfo` / `@JsonSubTypes` on the class, on an interface it implements, or on the property) keep the base type's properties and add `x-kubernetes-preserve-unknown-fields: true`, so the subtypes' content and the type id are no longer pruned. A CRD cannot express the discriminated union itself. `@JsonTypeInfo(use = NONE)` opts a subtype or property out.
+- **Date and time formats** remain only where the value the client writes matches them, since the API server rejects any value that doesn't (`date-time` requires an offset). `Duration`, `LocalDateTime`, `OffsetTime`, `YearMonth`, `MonthDay` and `java.sql.Time` no longer carry `format: date-time` (`PT1H30M`, `2026-01-02T10:15:30`, `10:15:30+01:00`, `2026-01`, `--12-25`, `10:15:30`), and `LocalTime` no longer carries `format: time`. `Instant`, `OffsetDateTime`, `ZonedDateTime`, `Date`, `Timestamp` and `Calendar` keep `date-time`, and `LocalDate` keeps `date`.
 
 ## `withShardSelector(null)` is ambiguous <a href="#shard-selector-null" id="shard-selector-null"/>
 

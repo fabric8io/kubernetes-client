@@ -24,6 +24,8 @@ public class OTLPConfigFluent<A extends io.fabric8.openshift.api.model.monitorin
   private Boolean convertHistogramsToNHCB;
   private List<String> ignoreResourceAttributes = new ArrayList<String>();
   private Boolean keepIdentifyingResourceAttributes;
+  private Boolean labelNamePreserveMultipleUnderscores;
+  private Boolean labelNameUnderscoreSanitization;
   private Boolean promoteAllResourceAttributes;
   private List<String> promoteResourceAttributes = new ArrayList<String>();
   private Boolean promoteScopeMetadata;
@@ -118,6 +120,8 @@ public class OTLPConfigFluent<A extends io.fabric8.openshift.api.model.monitorin
         this.withConvertHistogramsToNHCB(instance.getConvertHistogramsToNHCB());
         this.withIgnoreResourceAttributes(instance.getIgnoreResourceAttributes());
         this.withKeepIdentifyingResourceAttributes(instance.getKeepIdentifyingResourceAttributes());
+        this.withLabelNamePreserveMultipleUnderscores(instance.getLabelNamePreserveMultipleUnderscores());
+        this.withLabelNameUnderscoreSanitization(instance.getLabelNameUnderscoreSanitization());
         this.withPromoteAllResourceAttributes(instance.getPromoteAllResourceAttributes());
         this.withPromoteResourceAttributes(instance.getPromoteResourceAttributes());
         this.withPromoteScopeMetadata(instance.getPromoteScopeMetadata());
@@ -144,6 +148,12 @@ public class OTLPConfigFluent<A extends io.fabric8.openshift.api.model.monitorin
       return false;
     }
     if (!(Objects.equals(keepIdentifyingResourceAttributes, that.keepIdentifyingResourceAttributes))) {
+      return false;
+    }
+    if (!(Objects.equals(labelNamePreserveMultipleUnderscores, that.labelNamePreserveMultipleUnderscores))) {
+      return false;
+    }
+    if (!(Objects.equals(labelNameUnderscoreSanitization, that.labelNameUnderscoreSanitization))) {
       return false;
     }
     if (!(Objects.equals(promoteAllResourceAttributes, that.promoteAllResourceAttributes))) {
@@ -190,6 +200,14 @@ public class OTLPConfigFluent<A extends io.fabric8.openshift.api.model.monitorin
   
   public Boolean getKeepIdentifyingResourceAttributes() {
     return this.keepIdentifyingResourceAttributes;
+  }
+  
+  public Boolean getLabelNamePreserveMultipleUnderscores() {
+    return this.labelNamePreserveMultipleUnderscores;
+  }
+  
+  public Boolean getLabelNameUnderscoreSanitization() {
+    return this.labelNameUnderscoreSanitization;
   }
   
   public String getLastIgnoreResourceAttribute() {
@@ -254,6 +272,14 @@ public class OTLPConfigFluent<A extends io.fabric8.openshift.api.model.monitorin
     return this.keepIdentifyingResourceAttributes != null;
   }
   
+  public boolean hasLabelNamePreserveMultipleUnderscores() {
+    return this.labelNamePreserveMultipleUnderscores != null;
+  }
+  
+  public boolean hasLabelNameUnderscoreSanitization() {
+    return this.labelNameUnderscoreSanitization != null;
+  }
+  
   public boolean hasMatchingIgnoreResourceAttribute(Predicate<String> predicate) {
       for (String item : ignoreResourceAttributes) {
         if (predicate.test(item)) {
@@ -289,7 +315,7 @@ public class OTLPConfigFluent<A extends io.fabric8.openshift.api.model.monitorin
   }
   
   public int hashCode() {
-    return Objects.hash(convertHistogramsToNHCB, ignoreResourceAttributes, keepIdentifyingResourceAttributes, promoteAllResourceAttributes, promoteResourceAttributes, promoteScopeMetadata, translationStrategy, additionalProperties);
+    return Objects.hash(convertHistogramsToNHCB, ignoreResourceAttributes, keepIdentifyingResourceAttributes, labelNamePreserveMultipleUnderscores, labelNameUnderscoreSanitization, promoteAllResourceAttributes, promoteResourceAttributes, promoteScopeMetadata, translationStrategy, additionalProperties);
   }
   
   public A removeAllFromIgnoreResourceAttributes(Collection<String> items) {
@@ -390,6 +416,16 @@ public class OTLPConfigFluent<A extends io.fabric8.openshift.api.model.monitorin
         sb.append(keepIdentifyingResourceAttributes);
         sb.append(",");
     }
+    if (!(labelNamePreserveMultipleUnderscores == null)) {
+        sb.append("labelNamePreserveMultipleUnderscores:");
+        sb.append(labelNamePreserveMultipleUnderscores);
+        sb.append(",");
+    }
+    if (!(labelNameUnderscoreSanitization == null)) {
+        sb.append("labelNameUnderscoreSanitization:");
+        sb.append(labelNameUnderscoreSanitization);
+        sb.append(",");
+    }
     if (!(promoteAllResourceAttributes == null)) {
         sb.append("promoteAllResourceAttributes:");
         sb.append(promoteAllResourceAttributes);
@@ -467,6 +503,24 @@ public class OTLPConfigFluent<A extends io.fabric8.openshift.api.model.monitorin
   
   public A withKeepIdentifyingResourceAttributes(Boolean keepIdentifyingResourceAttributes) {
     this.keepIdentifyingResourceAttributes = keepIdentifyingResourceAttributes;
+    return (A) this;
+  }
+  
+  public A withLabelNamePreserveMultipleUnderscores() {
+    return withLabelNamePreserveMultipleUnderscores(true);
+  }
+  
+  public A withLabelNamePreserveMultipleUnderscores(Boolean labelNamePreserveMultipleUnderscores) {
+    this.labelNamePreserveMultipleUnderscores = labelNamePreserveMultipleUnderscores;
+    return (A) this;
+  }
+  
+  public A withLabelNameUnderscoreSanitization() {
+    return withLabelNameUnderscoreSanitization(true);
+  }
+  
+  public A withLabelNameUnderscoreSanitization(Boolean labelNameUnderscoreSanitization) {
+    this.labelNameUnderscoreSanitization = labelNameUnderscoreSanitization;
     return (A) this;
   }
   

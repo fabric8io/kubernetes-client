@@ -429,7 +429,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * url defines the URL of the endpoint to query from.
+     * url defines the URL of the endpoint to query from.<br><p> <br><p> It must use the HTTP or HTTPS scheme.
      */
     @JsonProperty("url")
     public String getUrl() {
@@ -437,7 +437,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * url defines the URL of the endpoint to query from.
+     * url defines the URL of the endpoint to query from.<br><p> <br><p> It must use the HTTP or HTTPS scheme.
      */
     @JsonProperty("url")
     public void setUrl(String url) {
