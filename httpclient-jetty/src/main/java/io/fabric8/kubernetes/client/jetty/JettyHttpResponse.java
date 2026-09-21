@@ -17,7 +17,7 @@ package io.fabric8.kubernetes.client.jetty;
 
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
-import org.eclipse.jetty.client.api.Response;
+import org.eclipse.jetty.client.Response;
 
 import java.util.ArrayList;
 import java.util.HashMap;

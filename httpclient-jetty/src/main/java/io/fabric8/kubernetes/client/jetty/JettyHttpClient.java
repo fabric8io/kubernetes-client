@@ -32,20 +32,28 @@ import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocket.Listener;
 import io.fabric8.kubernetes.client.http.WebSocketResponse;
 import io.fabric8.kubernetes.client.utils.Utils;
+import org.eclipse.jetty.client.BytesRequestContent;
 import org.eclipse.jetty.client.HttpClient;
-import org.eclipse.jetty.client.api.Request;
-import org.eclipse.jetty.client.util.BytesRequestContent;
-import org.eclipse.jetty.client.util.InputStreamRequestContent;
-import org.eclipse.jetty.client.util.StringRequestContent;
+import org.eclipse.jetty.client.InputStreamRequestContent;
+import org.eclipse.jetty.client.Request;
+import org.eclipse.jetty.client.StringRequestContent;
+import org.eclipse.jetty.http.HttpFields;
+import org.eclipse.jetty.http.HttpHeader;
+import org.eclipse.jetty.http.HttpVersion;
 import org.eclipse.jetty.websocket.api.exceptions.UpgradeException;
 import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
+import org.eclipse.jetty.websocket.client.JettyUpgradeListener;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 
 import java.nio.ByteBuffer;
 import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeUnit;
@@ -56,6 +64,10 @@ import static io.fabric8.kubernetes.client.http.StandardMediaTypes.APPLICATION_O
 import static io.fabric8.kubernetes.client.http.StandardMediaTypes.TEXT_PLAIN;
 
 public class JettyHttpClient extends StandardHttpClient<JettyHttpClient, JettyHttpClientFactory, JettyHttpClientBuilder> {
+
+  // Set by Jetty for the WebSocket handshake before the upgrade listener runs, request headers must not replace them
+  private static final Set<HttpHeader> HANDSHAKE_HEADERS = EnumSet.of(HttpHeader.UPGRADE, HttpHeader.CONNECTION,
+      HttpHeader.SEC_WEBSOCKET_KEY, HttpHeader.SEC_WEBSOCKET_VERSION, HttpHeader.PRAGMA, HttpHeader.CACHE_CONTROL);
 
   private final HttpClient jetty;
   private final WebSocketClient jettyWs;
@@ -75,8 +87,9 @@ public class JettyHttpClient extends StandardHttpClient<JettyHttpClient, JettyHt
   @Override
   public void doClose() {
     try {
-      jetty.stop();
+      // The WebSocket client runs on the HTTP client, stop it first so that it can close its sessions
       jettyWs.stop();
+      jetty.stop();
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
@@ -108,7 +121,7 @@ public class JettyHttpClient extends StandardHttpClient<JettyHttpClient, JettyHt
     if (originalRequest.getTimeout() != null) {
       jettyRequest.timeout(originalRequest.getTimeout().toMillis(), TimeUnit.MILLISECONDS);
     }
-    jettyRequest.headers(m -> request.headers().forEach(m::put));
+    jettyRequest.headers(m -> copyHeaders(request.headers(), m));
 
     final var contentType = Optional.ofNullable(request.getContentType());
 
@@ -142,20 +155,33 @@ public class JettyHttpClient extends StandardHttpClient<JettyHttpClient, JettyHt
   public CompletableFuture<WebSocketResponse> buildWebSocketDirect(StandardWebSocketBuilder standardWebSocketBuilder,
       Listener listener) {
     try {
+      // A WebSocketClient adopts an HttpClient that isn't running yet, and would stop it along with itself
+      jetty.start();
       jettyWs.start();
       StandardHttpRequest request = standardWebSocketBuilder.asHttpRequest();
-      final ClientUpgradeRequest cur = new ClientUpgradeRequest();
+      final ClientUpgradeRequest cur = new ClientUpgradeRequest(
+          Objects.requireNonNull(WebSocket.toWebSocketUri(request.uri())));
+      // Upgrade over HTTP/1.1 even if HTTP/2 gets enabled on the shared HTTP client
+      cur.setHttpVersion(HttpVersion.HTTP_1_1.asString());
       if (Utils.isNotNullOrEmpty(standardWebSocketBuilder.getSubprotocol())) {
         cur.setSubProtocols(standardWebSocketBuilder.getSubprotocol());
       }
-      cur.setHeaders(request.headers());
       if (request.getTimeout() != null) {
         cur.setTimeout(request.getTimeout().toMillis(), TimeUnit.MILLISECONDS);
       }
+      // ClientUpgradeRequest#setHeaders would join multi-valued headers into a single line
+      final Map<String, List<String>> upgradeHeaders = new HashMap<>(request.headers());
+      upgradeHeaders.keySet().removeIf(name -> HANDSHAKE_HEADERS.stream().anyMatch(h -> h.is(name)));
+      final JettyUpgradeListener upgradeListener = new JettyUpgradeListener() {
+        @Override
+        public void onHandshakeRequest(Request upgradeRequest) {
+          upgradeRequest.headers(m -> copyHeaders(upgradeHeaders, m));
+        }
+      };
       // Extra-future required because we can't Map the UpgradeException to a WebSocketHandshakeException easily
       final CompletableFuture<WebSocketResponse> future = new CompletableFuture<>();
       final JettyWebSocket webSocket = new JettyWebSocket(listener);
-      jettyWs.connect(webSocket, Objects.requireNonNull(WebSocket.toWebSocketUri(request.uri())), cur)
+      jettyWs.connect(webSocket, cur, upgradeListener)
           .whenComplete((s, ex) -> {
             if (ex != null) {
               if (ex instanceof CompletionException && ex.getCause() instanceof UpgradeException) {
@@ -173,6 +199,17 @@ public class JettyHttpClient extends StandardHttpClient<JettyHttpClient, JettyHt
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
+  }
+
+  /**
+   * One header line per value: Jetty's {@link HttpFields.Mutable#put(String, List)} joins the values into a single one,
+   * which the API server reads as a single value (e.g. one Impersonate-Group named "g1, g2").
+   * <p>
+   * Every name is removed before adding, so that spellings differing only in case keep all their values.
+   */
+  private static void copyHeaders(Map<String, List<String>> headers, HttpFields.Mutable fields) {
+    headers.keySet().forEach(fields::remove);
+    headers.forEach((name, values) -> values.forEach(value -> fields.add(name, value)));
   }
 
   HttpClient getJetty() {

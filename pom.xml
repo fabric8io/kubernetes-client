@@ -96,11 +96,7 @@
     <jackson.bundle.version.annotations>2.22</jackson.bundle.version.annotations>
     <!-- Jackson 2 for the internal openapi model generator/validator tooling (swagger-parser, swagger-request-validator) -->
     <jackson2.version>2.22.2</jackson2.version>
-    <!-- TODO: pinned to Jetty 11. Moving to 12 is not an in-place bump: it reorganises the
-         artifacts and changes the EE baseline, so it wants its own module next to httpclient-jetty,
-         the way httpclient-vertx (4.x) and httpclient-vertx-5 (5.x) coexist. Renovate is configured
-         to withhold Jetty majors until then. -->
-    <jetty.version>11.0.26</jetty.version>
+    <jetty.version>12.1.13</jetty.version>
     <maven-core.version>3.9.16</maven-core.version>
     <maven-plugin-annotations.version>3.16.0</maven-plugin-annotations.version>
     <vertx.version>4.5.34</vertx.version>
@@ -741,12 +737,12 @@
       </dependency>
       <dependency>
         <groupId>org.eclipse.jetty.http2</groupId>
-        <artifactId>http2-http-client-transport</artifactId>
+        <artifactId>jetty-http2-client-transport</artifactId>
         <version>${jetty.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.jetty.websocket</groupId>
-        <artifactId>websocket-jetty-client</artifactId>
+        <artifactId>jetty-websocket-jetty-client</artifactId>
         <version>${jetty.version}</version>
       </dependency>
       <dependency>
@@ -864,12 +860,6 @@
         <groupId>org.bouncycastle</groupId>
         <artifactId>bcpkix-jdk18on</artifactId>
         <version>${bouncycastle.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-server</artifactId>
-        <version>${jetty.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>

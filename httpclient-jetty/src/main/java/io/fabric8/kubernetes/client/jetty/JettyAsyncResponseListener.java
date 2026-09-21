@@ -18,24 +18,31 @@ package io.fabric8.kubernetes.client.jetty;
 import io.fabric8.kubernetes.client.http.AsyncBody;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
-import org.eclipse.jetty.client.api.Request;
-import org.eclipse.jetty.client.api.Response;
-import org.eclipse.jetty.client.api.Result;
-import org.eclipse.jetty.util.Callback;
+import org.eclipse.jetty.client.Request;
+import org.eclipse.jetty.client.Response;
+import org.eclipse.jetty.client.Result;
+import org.eclipse.jetty.io.Content;
 
 import java.nio.ByteBuffer;
 import java.util.Optional;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.LongConsumer;
 
-public abstract class JettyAsyncResponseListener extends Response.Listener.Adapter implements AsyncBody {
+public abstract class JettyAsyncResponseListener implements Response.Listener, AsyncBody {
 
   private final HttpRequest httpRequest;
   private final CompletableFuture<JettyHttpResponse<AsyncBody>> asyncResponse;
   private final CompletableFuture<Void> asyncBodyDone;
-  private LongConsumer demand;
-  private boolean initialConsumeCalled;
+  private Response response;
+  private Content.Source contentSource;
+  // consume() calls not served with a chunk yet, consumers may call it ahead of delivery (HttpClientReadableByteChannel)
+  private long requested;
+  // a thread is reading from the content source or waiting on its demand, Content.Source allows a single pending demand
+  private boolean reading;
+  // done() completes once both the last chunk was read and Jetty reported success, in either order:
+  // responses Jetty forwards (e.g. 401/407 it couldn't authenticate) report success before their body is read
+  private boolean lastChunkRead;
+  private boolean succeeded;
 
   JettyAsyncResponseListener(HttpRequest httpRequest) {
     this.httpRequest = httpRequest;
@@ -44,13 +51,15 @@ public abstract class JettyAsyncResponseListener extends Response.Listener.Adapt
   }
 
   @Override
-  public synchronized void consume() {
-    if (!this.initialConsumeCalled) {
-      this.initialConsumeCalled = true;
+  public void consume() {
+    synchronized (this) {
+      requested++;
+      if (contentSource == null || reading) {
+        return;
+      }
+      reading = true;
     }
-    if (demand != null) {
-      demand.accept(1);
-    }
+    read();
   }
 
   @Override
@@ -74,6 +83,12 @@ public abstract class JettyAsyncResponseListener extends Response.Listener.Adapt
   @Override
   public void onComplete(Result result) {
     if (result.isSucceeded()) {
+      synchronized (this) {
+        succeeded = true;
+        if (!lastChunkRead) {
+          return;
+        }
+      }
       asyncBodyDone.complete(null);
     } else {
       asyncBodyDone.completeExceptionally(
@@ -92,32 +107,80 @@ public abstract class JettyAsyncResponseListener extends Response.Listener.Adapt
   }
 
   @Override
-  public void onBeforeContent(Response response, LongConsumer demand) {
+  public void onContentSource(Response response, Content.Source contentSource) {
     synchronized (this) {
-      if (!this.initialConsumeCalled) {
-        this.demand = demand;
+      this.response = response;
+      this.contentSource = contentSource;
+      // nothing is read before the first consume()
+      if (requested == 0) {
         return;
       }
+      reading = true;
     }
-    demand.accept(1);
+    read();
   }
 
-  @Override
-  public void onContent(Response response, ByteBuffer content, Callback callback) {
-    try {
-      if (!asyncBodyDone.isCancelled()) {
-        onContent(content);
-        callback.succeeded();
+  /**
+   * Serves the pending consume() calls with one chunk each.
+   * <p>
+   * Only the thread that set {@code reading}, or the demand callback it registered, runs this loop.
+   * After the last or a failed chunk {@code reading} stays set, so nothing reads past the end.
+   */
+  private void read() {
+    while (true) {
+      synchronized (this) {
+        if (requested == 0) {
+          reading = false;
+          return;
+        }
       }
-    } catch (Exception e) {
-      callback.failed(e);
+      final Content.Chunk chunk = contentSource.read();
+      if (chunk == null) {
+        contentSource.demand(this::read);
+        return;
+      }
+      if (Content.Chunk.isFailure(chunk)) {
+        response.abort(chunk.getFailure());
+        if (!chunk.isLast()) {
+          contentSource.fail(chunk.getFailure());
+        }
+        return;
+      }
+      final boolean last = chunk.isLast();
+      try {
+        if (chunk.hasRemaining()) {
+          synchronized (this) {
+            requested--;
+          }
+          if (!asyncBodyDone.isCancelled()) {
+            onContent(chunk.getByteBuffer());
+          }
+        }
+      } catch (Exception e) {
+        response.abort(e);
+        contentSource.fail(e);
+        return;
+      } finally {
+        chunk.release();
+      }
+      if (last) {
+        synchronized (this) {
+          lastChunkRead = true;
+          if (!succeeded) {
+            return;
+          }
+        }
+        asyncBodyDone.complete(null);
+        return;
+      }
     }
   }
 
   /**
    * Implement to consume the content of the chunked response.
    * <p>
-   * Each chunk will be passed <b>in order</b> to this function (<code>onContent{callback.succeeded}</code>)
+   * Each chunk will be passed <b>in order</b> to this function, one per {@link #consume()} call.
+   * The buffer is released once this method returns, so it must be copied if kept.
    *
    * @param content the ByteBuffer containing a chunk of the response.
    * @throws Exception in case the downstream consumer throws an exception.
