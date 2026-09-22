@@ -1,8 +1,6 @@
 # Migration from 7.x to 8.x
 
 ## Contents
-- [Vert.x 5 is now the default HttpClient implementation](#vertx5-httpclient)
-  - [Staying on Vert.x 4](#staying-on-vertx-4)
 - [CRD Generator v1 has been removed](#crd-generator-v1-removed)
 - [Java baseline set to Java 17](#java-17)
   - [Build tooling requires a Java 17 runtime](#java-17-build-tooling)
@@ -12,6 +10,8 @@
   - [Generated CRDs](#jackson-3-crd-generator)
 - [`withShardSelector(null)` is ambiguous](#shard-selector-null)
 - [`kubernetes-httpclient-jetty` moved to Jetty 12](#jetty-12)
+- [Vert.x 5 is now the default HttpClient implementation](#vertx5-httpclient)
+  - [Staying on Vert.x 4](#staying-on-vertx-4)
 
 
 > [!NOTE]
