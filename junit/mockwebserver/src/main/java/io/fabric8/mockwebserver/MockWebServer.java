@@ -142,7 +142,10 @@ public class MockWebServer implements Closeable {
         .setPort(port)
         .setAlpnVersions(protocols.stream().map(Protocol::getHttpVersion).collect(Collectors.toList()))
         .setWebSocketSubProtocols(Arrays.asList(SUPPORTED_WEBSOCKET_SUB_PROTOCOLS))
-        .setHandle100ContinueAutomatically(true);
+        .setHandle100ContinueAutomatically(true)
+        // Vert.x 5 HttpServer#close() waits for the closing handshake of every open WebSocket (10 s by default),
+        // don't let clients that never answer the server's Close frame stall shutdown()
+        .setWebSocketClosingTimeout(1);
     if (ssl) {
       options
           .setSsl(true)
@@ -189,11 +192,7 @@ public class MockWebServer implements Closeable {
     // connection state (e.g. WebSocketSession executors) that an in-flight upgrade may still
     // have been about to touch via onOpen — avoiding a RejectedExecutionException race.
     dispatcher.shutdown();
-    try {
-      await(httpServer.close(), "Unable to close MockWebServer");
-    } catch (IllegalStateException e) {
-      logger.log(Level.WARNING, "MockWebServer close timed out, proceeding to force shutdown via Vertx.close()", e);
-    }
+    await(httpServer.close(), "Unable to close MockWebServer");
     dispatcher.releaseResources();
     info("done accepting connections");
     await(vertx.close(), "Unable to close Vertx");

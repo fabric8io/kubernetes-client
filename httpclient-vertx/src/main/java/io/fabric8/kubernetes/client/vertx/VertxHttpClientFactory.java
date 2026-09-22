@@ -24,6 +24,11 @@ public class VertxHttpClientFactory implements io.fabric8.kubernetes.client.http
   final Vertx sharedVertx;
   private volatile TlsWarmup tlsWarmup = TlsWarmup.CONTEXT;
 
+  @Override
+  public int priority() {
+    return -2;
+  }
+
   public VertxHttpClientFactory() {
     this(null);
   }

@@ -9,9 +9,9 @@
 * Fix #6779: A proxy username configured without a password is sent with an empty password instead of `null`
 * Fix #8109: A `java.sql.Date` written as `yyyy-MM-dd` is read as a local date instead of the previous day west of UTC. `Year`, `Month`, `java.sql.Date` and `Locale` keep their 7.x wire format, mappers you build yourself need the new `Jackson2JdkTypesModule`, see the [migration guide](./doc/MIGRATION-v8.md#jackson-3)
 * Fix #8109: (crd-generator) `byte[]`, `ByteBuffer`, `char[]`, `Year` and `java.sql.Date` schemas match what the client writes (`byte[]` and `ByteBuffer` are `format: byte` strings), so the API server no longer rejects them. `@PrinterColumn` on a `LocalDate` is a `string` column instead of a `date` column that showed `<invalid>`
+* Fix #8008: (httpclient-vertx-5) Requests with an `InputStream` body and `Expect: 100-continue` (binary builds) no longer hang, and an `InputStream` body of known length is sent with `Content-Length` instead of chunked
 
 #### Improvements
-* Fix #8008: Changed default HttpClient implementation from `kubernetes-httpclient-vertx` (Vert.x 4) to `kubernetes-httpclient-vertx-5` (Vert.x 5)
 * Fix #8109: (crd-generator) `int`/`Integer` and `long`/`Long` properties get `format: int32` and `format: int64`, like controller-gen
 * Fix #7987: (kubernetes-client-api) `withShardSelector` accepts a typed `ShardSelector` (`ShardSelector.builder().addShard(0, 4).addShard(2, 4).build()`) next to the raw expression `String`, so the `shardRange(...)` CEL grammar and its hexadecimal bounds don't have to be written by hand
 
@@ -57,6 +57,7 @@
 * Fix #8050: (karaf) The `kubernetes-karaf` feature repository no longer defines its own `scr` feature. `kubernetes-client` now depends on the `scr` feature provided by the Karaf distribution, which supplies the Declarative Services API bundles and the `scr:*` shell commands
 * Fix #8100: (tekton) Model classes `Template` and `AffinityAssistantTemplate` moved from package `io.fabric8.tekton.pod` to `io.fabric8.tekton.unversioned`, since tekton pipeline 1.16.0 declares them as `+versionName=unversioned`
 * Fix #6779: (httpclient-jetty) Moved from Jetty 11 to Jetty 12.1, see the [migration guide](./doc/MIGRATION-v8.md#jetty-12)
+* Fix #8008: `kubernetes-client` and `openshift-client` default to the Vert.x 5 HttpClient (`kubernetes-httpclient-vertx-5`) instead of Vert.x 4 (`kubernetes-httpclient-vertx`), see the [migration guide](./doc/MIGRATION-v8.md#vertx5-httpclient)
 
 ### 7.9.0 (2026-09-04)
 

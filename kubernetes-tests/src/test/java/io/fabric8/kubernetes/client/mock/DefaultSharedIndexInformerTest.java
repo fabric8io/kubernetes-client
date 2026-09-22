@@ -1327,10 +1327,10 @@ class DefaultSharedIndexInformerTest {
         .inNamespace("ns1")
         .runnableInformer(60 * WATCH_EVENT_EMIT_TIME);
     client.close();
-    // When — don't assert on the message: Vert.x 4 uses "Client is closed" but Vert.x 5
-    // throws IllegalStateException with a null message from CleanableResource.getOrDie()
+    // When
     assertThatIllegalStateException()
-        .isThrownBy(animalSharedIndexInformer::start);
+        .isThrownBy(animalSharedIndexInformer::start)
+        .withMessage("Client is closed");
   }
 
   private KubernetesResource getAnimal(String name, String order, String resourceVersion) {

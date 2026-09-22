@@ -92,12 +92,20 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
 
   @Override
   public CompletableFuture<HttpResponse<AsyncBody>> consumeBytes(HttpRequest request, Consumer<List<ByteBuffer>> consumer) {
+    checkNotClosed();
     final StandardHttpRequest standardHttpRequest = (StandardHttpRequest) request;
     return retryWithExponentialBackoff(
         standardHttpRequest,
         () -> consumeBytesOnce(standardHttpRequest, consumer),
         r -> r.body().cancel(),
         r -> r);
+  }
+
+  private void checkNotClosed() {
+    // Own the message: once closed, some transports (Vert.x 5) throw an IllegalStateException without one
+    if (closed.get()) {
+      throw new IllegalStateException("Client is closed");
+    }
   }
 
   private CompletableFuture<HttpResponse<AsyncBody>> consumeBytesOnce(StandardHttpRequest standardHttpRequest,
@@ -281,7 +289,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
 
   final CompletableFuture<WebSocket> buildWebSocket(StandardWebSocketBuilder standardWebSocketBuilder,
       Listener listener) {
-
+    checkNotClosed();
     final CompletableFuture<WebSocketResponse> intermediate = retryWithExponentialBackoff(
         standardWebSocketBuilder.asHttpRequest(),
         () -> buildWebSocketOnce(standardWebSocketBuilder, listener),

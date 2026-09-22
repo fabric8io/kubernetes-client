@@ -767,6 +767,8 @@
         <artifactId>vertx-core</artifactId>
         <version>${vertx.version}</version>
       </dependency>
+      <!-- No vertx-uri-template exclusion (#5391) for Vert.x 5: vertx-web-client 5 requires it as a JPMS module.
+           httpclient-vertx keeps the exclusion for Vert.x 4 -->
       <dependency>
         <groupId>io.vertx</groupId>
         <artifactId>vertx-web-client</artifactId>

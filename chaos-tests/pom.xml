@@ -185,7 +185,7 @@
         </dependencies>
       </profile>
       <profile>
-        <id>httpclient-vertx</id>
+        <id>httpclient-vertx-5</id>
         <dependencies>
           <dependency>
             <groupId>io.fabric8</groupId>
