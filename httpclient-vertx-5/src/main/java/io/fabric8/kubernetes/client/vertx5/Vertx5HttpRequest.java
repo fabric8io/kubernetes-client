@@ -27,6 +27,7 @@ import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
 import io.vertx.core.http.HttpClosedException;
+import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.RequestOptions;
 import io.vertx.core.streams.ReadStream;
 
@@ -93,11 +94,14 @@ class Vertx5HttpRequest {
               })
               .onFailure(promise::fail);
 
+          // Framing has to be set before the head is written: setChunked() throws once writeHead() has flushed it.
+          prepareFraming(req, request.body());
+
           // If the caller asked for 100-continue semantics we first flush the headers,
           // wait for the server to acknowledge, then stream the body.
           if (request.isExpectContinue()) {
             req.continueHandler(v -> writeBody(req, request.body()));
-            req.sendHead().onFailure(promise::fail);
+            req.writeHead().onFailure(promise::fail);
           } else {
             // Normal request - send headers and body
             writeBody(req, request.body());
@@ -115,9 +119,9 @@ class Vertx5HttpRequest {
   /**
    * Writes the request body to the HTTP request.
    * For simple body types (null, String, byte[]), uses req.end() directly.
-   * For InputStream bodies, uses req.send(ReadStream) which handles the streaming internally.
-   * Note: For InputStream, this method returns after initiating the send - the response
-   * will be handled by the response() future set up in consumeBytes().
+   * For InputStream bodies, pipes the stream into the request with the framing set by
+   * {@link #prepareFraming(HttpClientRequest, BodyContent)}. The response is handled by the
+   * response() future set up in consumeBytes().
    *
    * @param req the Vert.x HTTP client request
    * @param body the body content to send, or null for no body
@@ -142,12 +146,30 @@ class Vertx5HttpRequest {
       StandardHttpRequest.InputStreamBodyContent i = (StandardHttpRequest.InputStreamBodyContent) body;
       InputStream is = i.getContent();
       ReadStream<Buffer> stream = new InputStreamReadStream(this, is, req);
-      // Use send(ReadStream) which handles the streaming properly.
-      // The response will be handled by the response() future already set up.
-      req.send(stream);
+      // Use pipeTo which only streams the body data and calls end().
+      stream.pipeTo(req);
       return;
     }
     req.reset(0L, new IllegalArgumentException("Unsupported body content: " + body.getClass()));
+  }
+
+  /**
+   * Sets the request framing before any part of the request is written: Content-Length when the InputStream length
+   * is known, chunked otherwise. String and byte[] bodies need nothing: Vert.x sets Content-Length on end(Buffer),
+   * or switches to chunked when writeHead() came first.
+   *
+   * @param req the Vert.x HTTP client request
+   * @param body the body content to send, or null for no body
+   */
+  private static void prepareFraming(HttpClientRequest req, BodyContent body) {
+    if (body instanceof StandardHttpRequest.InputStreamBodyContent) {
+      final long length = ((StandardHttpRequest.InputStreamBodyContent) body).getLength();
+      if (length >= 0) {
+        req.putHeader(HttpHeaders.CONTENT_LENGTH, Long.toString(length));
+      } else {
+        req.setChunked(true);
+      }
+    }
   }
 
   /**

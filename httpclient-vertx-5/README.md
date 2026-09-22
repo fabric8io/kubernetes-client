@@ -4,7 +4,7 @@ This module provides Vert.x 5.x HTTP client implementation for the Fabric8 Kuber
 
 ## Features
 
-- **Vert.x 5.0.7**: Uses latest stable Vert.x 5.x release
+- **Vert.x 5.2.0**: Uses latest stable Vert.x 5.x release
 - **Async Operations**: Enhanced async HTTP request handling
 - **WebSocket Separation**: Vert.x 5's separate HTTP and WebSocket client architecture
 - **Backpressure Support**: Built-in flow control for streaming operations
@@ -32,21 +32,21 @@ To run integration tests specifically with the Vert.x 5 HTTP client:
 
 ```bash
 # Run all integration tests with Vert.x 5
-mvn -Phttpclient-vertx-5 -Pitests verify -Dtest.httpclient=vertx-5
+mvn -Phttpclient-vertx -Pitests verify -Dtest.httpclient=vertx-5
 
 # Run specific test with Vert.x 5
-mvn -Phttpclient-vertx-5 test -Dtest=ConfigMapIT -Dtest.httpclient=vertx-5
+mvn -Phttpclient-vertx test -Dtest=ConfigMapIT -Dtest.httpclient=vertx-5
 
 # Run WebSocket tests with Vert.x 5  
-mvn -Phttpclient-vertx-5 test -Dtest=WatchIT -Dtest.httpclient=vertx-5
+mvn -Phttpclient-vertx test -Dtest=WatchIT -Dtest.httpclient=vertx-5
 ```
 
 ### Version Validation Test
 
-A special test (`VertxVersionValidationIT`) validates that Vert.x 5.0.7 is actually being used:
+A special test (`VertxVersionValidationIT`) validates that Vert.x 5.2.0 is actually being used:
 
 ```bash
-mvn -Phttpclient-vertx-5 test -Dtest=VertxVersionValidationIT -Dtest.httpclient=vertx-5
+mvn -Phttpclient-vertx test -Dtest=VertxVersionValidationIT -Dtest.httpclient=vertx-5
 ```
 
 ### Dependency Verification
@@ -54,12 +54,12 @@ mvn -Phttpclient-vertx-5 test -Dtest=VertxVersionValidationIT -Dtest.httpclient=
 Verify the correct Vert.x version is being used:
 
 ```bash
-mvn -Phttpclient-vertx-5 dependency:tree | grep vertx
-# Should show: vertx-core:jar:5.0.7:compile
+mvn -Phttpclient-vertx dependency:tree | grep vertx
+# Should show: vertx-core:jar:5.2.0:compile
 ```
 
 ## Architecture Notes
 
 - **WebSocket Client Separation**: Unlike Vert.x 4, Vert.x 5 uses separate HTTP and WebSocket clients
-- **Dependency Management**: This module overrides parent POM's Vert.x version to ensure 5.0.7 is used
+- **Dependency Management**: This module is the default http client starting from version 8.0.0, for more info see the [migration guide](../doc/MIGRATION-v8.md#vertx5-httpclient)
 - **Profile Isolation**: The httpclient-vertx-5 profile ensures no conflicts with default Vert.x 4 usage
