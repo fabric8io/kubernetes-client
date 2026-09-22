@@ -176,7 +176,7 @@ public abstract class AbstractWebSocketSendReceiveTest {
   }
 
   @Test
-  @DisplayName("server-initiated close, is answered with a Close frame even if the listener doesn't send one (RFC 6455 5.5.1)")
+  @DisplayName("a server-initiated close is answered with a Close frame even if the listener doesn't send one (RFC 6455 5.5.1)")
   void serverInitiatedCloseIsAnswered() throws Exception {
     final CompletableFuture<Integer> clientReceivedClose = new CompletableFuture<>();
     final CompletableFuture<Integer> serverReceivedClose = new CompletableFuture<>();
@@ -202,12 +202,18 @@ public abstract class AbstractWebSocketSendReceiveTest {
               public void onClose(WebSocket webSocket, int code, String reason) {
                 clientReceivedClose.complete(code);
               }
+
+              @Override
+              public void onError(WebSocket webSocket, Throwable error) {
+                clientReceivedClose.completeExceptionally(error);
+              }
             }).get(10L, TimeUnit.SECONDS);
         // Then
         assertThat(clientReceivedClose).succeedsWithin(10, TimeUnit.SECONDS).isEqualTo(1000);
         assertThat(serverReceivedClose)
             .as("the HttpClient implementation, not the listener, must answer the server's Close frame")
-            .succeedsWithin(10, TimeUnit.SECONDS);
+            .succeedsWithin(10, TimeUnit.SECONDS)
+            .isEqualTo(1000);
       }
     }
   }

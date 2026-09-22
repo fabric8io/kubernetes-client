@@ -19,12 +19,15 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.mockwebserver.DefaultMockServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.net.URI;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
 public abstract class AbstractConfiguredClientTest {
@@ -68,5 +71,29 @@ public abstract class AbstractConfiguredClientTest {
     assertThat(client.isClosed()).isTrue();
     IntStream.range(0, 10).forEach(i -> client.close());
     assertThatNoException().isThrownBy(client::close);
+  }
+
+  @Test
+  @DisplayName("requests on a closed client fail fast with IllegalStateException(\"Client is closed\")")
+  public void requestOnClosedClient() {
+    final HttpClient client = clientWithDefaultConfiguration();
+    client.close();
+    final HttpRequest request = client.newHttpRequestBuilder().uri(server.url("/closed-client")).build();
+    assertThatIllegalStateException()
+        .isThrownBy(() -> client.sendAsync(request, String.class))
+        .withMessage("Client is closed");
+  }
+
+  @Test
+  @DisplayName("WebSockets on a closed client fail fast with IllegalStateException(\"Client is closed\")")
+  public void webSocketOnClosedClient() {
+    final HttpClient client = clientWithDefaultConfiguration();
+    client.close();
+    final WebSocket.Builder builder = client.newWebSocketBuilder().uri(URI.create(server.url("/closed-client")));
+    final WebSocket.Listener listener = new WebSocket.Listener() {
+    };
+    assertThatIllegalStateException()
+        .isThrownBy(() -> builder.buildAsync(listener))
+        .withMessage("Client is closed");
   }
 }

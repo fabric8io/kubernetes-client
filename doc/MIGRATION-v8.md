@@ -164,21 +164,49 @@ Passing a `null`-valued variable is unaffected, and either overload still clears
 - **Using another HttpClient:** if you exclude the default client to use OkHttp, the JDK or Jetty, change the exclusion from `kubernetes-httpclient-vertx` to `kubernetes-httpclient-vertx-5`. The old exclusion no longer matches anything, so Vert.x 5 and Netty 4.2 come back onto your classpath. Your client is still the one selected at runtime, so nothing warns you.
 - **Classpath:** Vert.x 5 requires Netty 4.2 and brings `io.vertx:vertx-uri-template`, which `vertx-web-client` 5 requires as a JPMS module. If your application pins Netty 4.1, or manages the `io.vertx` artifacts at 4.x (for example through a platform BOM), align them with Vert.x 5 or [stay on Vert.x 4](#vertx4-httpclient). With Vert.x 4 jars on the classpath, building the Vert.x 5 client fails with an `IllegalStateException`.
 - **`VertxHttpClientFactory`:** the Vert.x 5 factory is `io.fabric8.kubernetes.client.vertx5.Vertx5HttpClientFactory`, and its constructor takes a Vert.x 5 `Vertx`. `additionalConfig(WebClientOptions)` becomes `additionalConfig(WebClientOptions, WebSocketClientOptions, PoolOptions)`, since Vert.x 5 configures WebSockets and the connection pool separately. `TlsWarmup` is `io.fabric8.kubernetes.client.vertx5.TlsWarmup`, and the JPMS module is `io.fabric8.kubernetes.client.vertx5`.
-- **Mock server:** `io.fabric8:mockwebserver` and `io.fabric8:kubernetes-server-mock` (and through them `io.fabric8:kubernetes-junit-jupiter`) now run on Vert.x 5 too.
+- **Mock server:** `io.fabric8:mockwebserver` and `io.fabric8:kubernetes-server-mock` now run on Vert.x 5 too.
 
 ### Staying on Vert.x 4 <a href="#vertx4-httpclient" id="vertx4-httpclient"/>
 
-Exclude `kubernetes-httpclient-vertx-5` from every fabric8 dependency you declare that brings in `kubernetes-client` (`kubernetes-client`, `openshift-client`, `kubernetes-junit-jupiter`...), add `kubernetes-httpclient-vertx`, and pin the `io.vertx` artifacts to 4.x, so that the mock server and other dependencies can't pull Vert.x 5 back in:
+Exclude `kubernetes-httpclient-vertx-5` from every fabric8 dependency you declare that brings in `kubernetes-client` (`kubernetes-client`, `openshift-client`, `kubernetes-junit-jupiter`...), add `kubernetes-httpclient-vertx`, and pin the `io.vertx` artifacts to 4.x, so that the mock server and other dependencies can't pull Vert.x 5 back in.
+Pin the `io.vertx` artifacts themselves rather than importing a Vert.x BOM: `vertx-stack-depchain` and `vertx-dependencies` also manage Jackson, Netty and SLF4J, and downgrade the `jackson-annotations` version the client's Jackson 3 requires.
 
 ```xml
+<properties>
+  <vertx.version>4.5.34</vertx.version>
+</properties>
 <dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>io.vertx</groupId>
-      <artifactId>vertx-stack-depchain</artifactId>
-      <version>4.5.34</version>
-      <type>pom</type>
-      <scope>import</scope>
+      <artifactId>vertx-core</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-web-client</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-web-common</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-auth-common</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+    <!-- vertx-web and vertx-bridge-common come from the mock server -->
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-web</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-bridge-common</artifactId>
+      <version>${vertx.version}</version>
     </dependency>
   </dependencies>
 </dependencyManagement>
@@ -200,14 +228,18 @@ Exclude `kubernetes-httpclient-vertx-5` from every fabric8 dependency you declar
 </dependencies>
 ```
 
-With Gradle, which resolves version conflicts to the highest version, enforce the Vert.x 4 platform and exclude the Vert.x 5 client from every configuration:
+With Gradle, which resolves version conflicts to the highest version, exclude the Vert.x 5 client and pin the `io.vertx` modules in every configuration:
 
 ```kotlin
 configurations.configureEach {
   exclude(group = "io.fabric8", module = "kubernetes-httpclient-vertx-5")
+  resolutionStrategy.eachDependency {
+    if (requested.group == "io.vertx") {
+      useVersion("4.5.34")
+    }
+  }
 }
 dependencies {
-  implementation(enforcedPlatform("io.vertx:vertx-stack-depchain:4.5.34"))
   implementation("io.fabric8:kubernetes-client")
   implementation("io.fabric8:kubernetes-httpclient-vertx")
 }

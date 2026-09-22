@@ -150,13 +150,10 @@ class OkHttpWebSocketImpl implements WebSocket {
 
       @Override
       public void onClosing(okhttp3.WebSocket webSocket, int code, String reason) {
-        try {
-          listener.onClose(new OkHttpWebSocketImpl(webSocket, this::request), code, reason);
-        } finally {
-          // OkHttp doesn't answer the peer's Close by itself (RFC 6455 5.5.1); no-op if the listener already did.
-          // 1000 rather than an echo: OkHttp rejects reserved codes such as 1005 (no status received)
-          webSocket.close(1000, null);
-        }
+        listener.onClose(new OkHttpWebSocketImpl(webSocket, this::request), code, reason);
+        // OkHttp doesn't answer the peer's Close by itself (RFC 6455 5.5.1); no-op if the listener already did.
+        // 1000 rather than an echo: OkHttp rejects reserved codes such as 1005 (no status received)
+        webSocket.close(1000, null);
       }
 
     });
