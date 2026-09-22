@@ -16,6 +16,10 @@
 package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.mockwebserver.DefaultMockServer;
+import io.fabric8.mockwebserver.MockWebServer;
+import io.fabric8.mockwebserver.http.MockResponse;
+import io.fabric8.mockwebserver.http.Response;
+import io.fabric8.mockwebserver.http.WebSocketListener;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -26,6 +30,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -77,6 +82,7 @@ public abstract class AbstractWebSocketSendReceiveTest {
             @Override
             public void onMessage(WebSocket webSocket, String text) {
               assertTrue(receivedText.offer(text));
+              webSocket.request();
             }
           }).get(10L, TimeUnit.SECONDS);
       // When
@@ -166,6 +172,49 @@ public abstract class AbstractWebSocketSendReceiveTest {
       result = receivedText.poll(10L, TimeUnit.SECONDS);
       // Then
       assertThat(result).isEqualTo(multiframe);
+    }
+  }
+
+  @Test
+  @DisplayName("a server-initiated close is answered with a Close frame even if the listener doesn't send one (RFC 6455 5.5.1)")
+  void serverInitiatedCloseIsAnswered() throws Exception {
+    final CompletableFuture<Integer> clientReceivedClose = new CompletableFuture<>();
+    final CompletableFuture<Integer> serverReceivedClose = new CompletableFuture<>();
+    try (MockWebServer mockWebServer = new MockWebServer()) {
+      // Given
+      mockWebServer.enqueue(new MockResponse().withWebSocketUpgrade(new WebSocketListener() {
+        @Override
+        public void onOpen(io.fabric8.mockwebserver.http.WebSocket webSocket, Response response) {
+          webSocket.close(1000, "server closing");
+        }
+
+        @Override
+        public void onClosing(io.fabric8.mockwebserver.http.WebSocket webSocket, int code, String reason) {
+          serverReceivedClose.complete(code);
+        }
+      }));
+      try (HttpClient client = getHttpClientFactory().newBuilder().build()) {
+        // When
+        client.newWebSocketBuilder()
+            .uri(mockWebServer.url("/").uri())
+            .buildAsync(new WebSocket.Listener() {
+              @Override
+              public void onClose(WebSocket webSocket, int code, String reason) {
+                clientReceivedClose.complete(code);
+              }
+
+              @Override
+              public void onError(WebSocket webSocket, Throwable error) {
+                clientReceivedClose.completeExceptionally(error);
+              }
+            }).get(10L, TimeUnit.SECONDS);
+        // Then
+        assertThat(clientReceivedClose).succeedsWithin(10, TimeUnit.SECONDS).isEqualTo(1000);
+        assertThat(serverReceivedClose)
+            .as("the HttpClient implementation, not the listener, must answer the server's Close frame")
+            .succeedsWithin(10, TimeUnit.SECONDS)
+            .isEqualTo(1000);
+      }
     }
   }
 

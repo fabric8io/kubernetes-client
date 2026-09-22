@@ -10,6 +10,7 @@
 * Fix #8109: A `java.sql.Date` written as `yyyy-MM-dd` is read as a local date instead of the previous day west of UTC. `Year`, `Month`, `java.sql.Date` and `Locale` keep their 7.x wire format, mappers you build yourself need the new `Jackson2JdkTypesModule`, see the [migration guide](./doc/MIGRATION-v8.md#jackson-3)
 * Fix #8109: (crd-generator) `byte[]`, `ByteBuffer`, `char[]`, `Year` and `java.sql.Date` schemas match what the client writes (`byte[]` and `ByteBuffer` are `format: byte` strings), so the API server no longer rejects them. `@PrinterColumn` on a `LocalDate` is a `string` column instead of a `date` column that showed `<invalid>`
 * Fix #8008: (httpclient-vertx-5) Requests with an `InputStream` body and `Expect: 100-continue` (binary builds) no longer hang, and an `InputStream` body of known length is sent with `Content-Length` instead of chunked
+* Fix #8139: (httpclient-okhttp) WebSockets answer the server's Close frame even when the listener doesn't, so port forwarding and custom listeners release the connection instead of waiting for the server to drop it
 
 #### Improvements
 * Fix #8109: (crd-generator) `int`/`Integer` and `long`/`Long` properties get `format: int32` and `format: int64`, like controller-gen
