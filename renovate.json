@@ -13,7 +13,7 @@
   ],
   "customManagers": [
     {
-      "description": "jackson.bundle.version.annotations pins the jackson-annotations OSGi bundle in the Karaf feature. jackson-bom decouples it from jackson.version (2.20+ drops the patch segment), and it is not a dependency declaration, so the maven manager never sees it. Tracking it here keeps it in the same grouped jackson PR",
+      "description": "jackson.bundle.version.annotations pins the jackson-annotations OSGi bundle in the Karaf feature. Jackson 3 keeps using the 2.x jackson-annotations (major.minor only), decoupled from jackson.version, and it is not a dependency declaration, so the maven manager never sees it. Tracking it here keeps it in the same grouped jackson PR",
       "customType": "regex",
       "managerFilePatterns": ["/^pom\\.xml$/"],
       "matchStrings": ["<jackson\\.bundle\\.version\\.annotations>(?<currentValue>.*?)</jackson\\.bundle\\.version\\.annotations>"],
@@ -24,6 +24,8 @@
   "ignorePaths": [
     "**/src/it/**"
   ],
+  "description": "commitMessageExtra is the upstream default with 'from {{{currentValue}}}' prepended: the version being left behind is what tells a reviewer the blast radius of the bump. Renovate drops commitMessageExtra on grouped branches, so this only shows up on single-dependency PRs; grouped ones keep the from/to in the PR body table",
+  "commitMessageExtra": "from {{{currentValue}}} to {{#if isPinDigest}}{{{newDigestShort}}}{{else}}{{#if isMajor}}{{prettyNewMajor}}{{else}}{{#if isSingleVersion}}{{prettyNewVersion}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}{{/if}}",
   "prConcurrentLimit": 0,
   "prHourlyLimit": 10,
   "minimumReleaseAge": "3 days",
@@ -42,7 +44,7 @@
       "enabled": false
     },
     {
-      "description": "TODO: httpclient-jetty is still on Jetty 11. Jetty 12 reorganises the artifacts and changes the servlet/EE baseline, so it needs its own module alongside this one, mirroring the httpclient-vertx (4.x) / httpclient-vertx-5 (5.x) split, rather than being upgraded in place. Until that module exists Jetty stays on 11.x. Note this is effectively a freeze: 11.0.26 (2025-08-14) is the newest 11.x and there is no 11.1.x line, so no minor or patch updates are expected either",
+      "description": "Jetty 13 requires Java 25; we still target Java 17",
       "matchPackageNames": ["org.eclipse.jetty**"],
       "matchUpdateTypes": ["major"],
       "enabled": false
@@ -63,7 +65,7 @@
       "groupName": "bouncycastle"
     },
     {
-      "matchPackageNames": ["com.fasterxml.jackson**"],
+      "matchPackageNames": ["com.fasterxml.jackson**", "tools.jackson**"],
       "groupName": "jackson"
     },
     {
@@ -71,7 +73,7 @@
       "groupName": "jetty"
     },
     {
-      "matchPackageNames": ["org.keycloak:**"],
+      "matchPackageNames": ["org.keycloak:**", "org.jboss.logging:**"],
       "groupName": "keycloak"
     },
     {

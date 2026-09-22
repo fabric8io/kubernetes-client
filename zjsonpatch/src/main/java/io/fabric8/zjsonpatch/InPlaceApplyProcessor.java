@@ -15,9 +15,9 @@
  */
 package io.fabric8.zjsonpatch;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.util.EnumSet;
 
@@ -132,7 +132,7 @@ class InPlaceApplyProcessor implements JsonPatchProcessor {
       target = value;
     else {
       JsonNode parentNode = path.getParent().evaluate(target);
-      if (!parentNode.isContainerNode())
+      if (!parentNode.isContainer())
         throw new JsonPatchException("Cannot reference past scalar value", forOp, path.getParent());
       else if (parentNode.isArray())
         addToArray(path, value, parentNode);

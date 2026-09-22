@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.api.model.apps;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.HostAlias;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
@@ -24,6 +23,8 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.kubernetes.model.util.Helper;
 import io.fabric8.zjsonpatch.JsonDiff;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DeploymentTest {
 
-  private final ObjectMapper mapper = new ObjectMapper();
+  private final ObjectMapper mapper = new JsonMapper();
 
   @Test
   void kubernetesDeploymentTest() throws Exception {

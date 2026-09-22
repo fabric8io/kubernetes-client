@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -29,7 +28,7 @@ import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
-import io.fabric8.tekton.pod.Template;
+import io.fabric8.tekton.unversioned.Template;
 import io.fabric8.tekton.v1beta1.Param;
 import io.fabric8.tekton.v1beta1.TaskRef;
 import io.fabric8.tekton.v1beta1.WorkspaceBinding;
@@ -38,11 +37,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * RunSpec defines the desired state of Run
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "params",

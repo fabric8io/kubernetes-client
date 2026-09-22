@@ -3,16 +3,28 @@
 ### 8.0-SNAPSHOT
 
 #### Bugs
-* Fix requests hanging when a retry action, retry decision, or response cleanup throws an exception.
+* Fix #8105: requests hanging when a retry action, retry decision, or response cleanup throws an exception.
+* Fix #7374: (crd-generator) Generated CRDs no longer prune or reject what the client writes: `Object`, raw `Map`, `List<Object>`, raw collection, `@JsonUnwrapped` and polymorphic properties keep their content, and date and time types only declare a format their values match (`Duration`, `LocalDateTime` and the partial types lose `date-time`). `Optional` properties get their value type's schema instead of preserving unknown fields, see the [migration guide](./doc/MIGRATION-v8.md#jackson-3-crd-generator)
+* Fix #6779: (httpclient-jetty) 401 responses without a `WWW-Authenticate` header, which is how the API server sends them, are returned with their body instead of failing with "HTTP protocol violation: Authentication challenge without WWW-Authenticate header"
+* Fix #6779: (httpclient-jetty, httpclient-vertx, httpclient-vertx-5) A proxy password containing a colon, or a proxy URL with a user and no password, is now used to authenticate with the proxy, instead of falling back to a `Proxy-Authorization` request header that HTTPS requests carry through the proxy tunnel to the API server
+* Fix #6779: A proxy username configured without a password is sent with an empty password instead of `null`
+* Fix #8109: A `java.sql.Date` written as `yyyy-MM-dd` is read as a local date instead of the previous day west of UTC. `Year`, `Month`, `java.sql.Date` and `Locale` keep their 7.x wire format, mappers you build yourself need the new `Jackson2JdkTypesModule`, see the [migration guide](./doc/MIGRATION-v8.md#jackson-3)
+* Fix #8109: (crd-generator) `byte[]`, `ByteBuffer`, `char[]`, `Year` and `java.sql.Date` schemas match what the client writes (`byte[]` and `ByteBuffer` are `format: byte` strings), so the API server no longer rejects them. `@PrinterColumn` on a `LocalDate` is a `string` column instead of a `date` column that showed `<invalid>`
 
 #### Improvements
+* Fix #8109: (crd-generator) `int`/`Integer` and `long`/`Long` properties get `format: int32` and `format: int64`, like controller-gen
+* Fix #7987: (kubernetes-client-api) `withShardSelector` accepts a typed `ShardSelector` (`ShardSelector.builder().addShard(0, 4).addShard(2, 4).build()`) next to the raw expression `String`, so the `shardRange(...)` CEL grammar and its hexadecimal bounds don't have to be written by hand
 
 #### Dependency Upgrade
+* Fix #7374: Upgrade Jackson from 2.x to 3.2.1
+* Fix #8096: bump cert-manager from 1.20.2 to 1.21.2
 * Fix #8098: bump chaos-mesh api from 4db47f5 to d70b66a
 * Fix #8086: bump cluster-api from 1.12.2 to 1.13.6
 * Fix #8101: bump cluster-api from 1.13.6 to 1.14.2
 * Fix #8101: bump cluster-api-provider-metal3 from 1.13.0 to 1.14.0
 * Fix #8086: bump gateway-api from 1.6.1 to 1.6.2
+* Fix #8127: bump istio.io/client-go from 1.30.0 to 1.31.0
+* Fix #6779: bump Jetty from 11.0.26 to 12.1.13
 * Fix #8086: bump k8s.io/api from 0.35.2 to 0.35.8
 * Fix #8086: bump k8s.io/apiextensions-apiserver from 0.36.1 to 0.37.0
 * Fix #8086: bump k8s.io/apimachinery from 0.36.1 to 0.37.0
@@ -20,14 +32,31 @@
 * Fix #8086: bump k8s.io/client-go from 0.35.2 to 0.35.8
 * Fix #8086: bump k8s.io/kube-openapi from 0.0.0-20260501160325-927ab1f70cd6 to 0.0.0-20260821135717-be32def86098
 * Fix #8086: bump k8s.io/metrics from 0.36.1 to 0.37.0
+* Fix #8118: bump knative.dev/caching from 0.0.0-20260422140616-453ad996bbe2 to 0.0.0-20260821014320-af6341f3ab2b
+* Fix #8118: bump knative.dev/eventing from 0.49.1 to 0.50.0
+* Fix #8118: bump knative.dev/eventing-github from 0.49.1 to 0.50.0
+* Fix #8118: bump knative.dev/eventing-gitlab from 0.49.1 to 0.50.0
+* Fix #8118: bump knative.dev/eventing-kafka-broker from 0.49.1 to 0.50.1
+* Fix #8118: bump knative.dev/networking from 0.0.0-20260529061306-c8de379770b9 to 0.0.0-20260921014731-e39778429a0f
+* Fix #8118: bump knative.dev/pkg from 0.0.0-20260422015212-ec452872dcc1 to 0.0.0-20260918182429-5dc1978f0042
+* Fix #8118: bump knative.dev/serving from 0.49.1 to 0.50.0
+* Fix #8126: bump prometheus-operator from 0.91.0 to 0.94.0
+* Fix #8100: bump tektoncd/pipeline from 1.12.0 to 1.16.0
+* Fix #8100: bump tektoncd/triggers from 0.36.0 to 0.37.0
+* Fix #8097: bump volcano.sh/apis from 1.11.0 to 1.15.2
 * Fix #8050: (karaf) The Karaf feature bundles Aries SPI-Fly 1.3.7 (from 1.3.0) and ASM 9.10.1 (from 8.0.1), the versions required to weave Java 17 bytecode
 
 #### New Features
 
 #### _**Note**_: Breaking changes
 * Check detailed migration documentation for breaking changes in [8.0.0](./doc/MIGRATION-v8.md)
+* Fix #7374: Moved to Jackson 3 (`tools.jackson` coordinates and packages). The default serialization keeps the Jackson 2 behavior for custom types, see the [migration guide](./doc/MIGRATION-v8.md#jackson-3)
+* Fix #7987: (kubernetes-client-api) `Filterable#withShardSelector` also accepts a typed `ShardSelector`, so a literal `withShardSelector(null)` no longer compiles, see the [migration guide](./doc/MIGRATION-v8.md#shard-selector-null)
+* Fix #8031: (crd-generator) Removed the deprecated CRD Generator v1 (`crd-generator-api` and `crd-generator-apt`). Migrate to `crd-generator-api-v2` with the [Maven plugin](./crd-generator/maven-plugin/README.md), the [CLI tool](./crd-generator/cli/README.md), or the [Gradle build script recipe](./crd-generator/gradle/README.md), see the [migration guide](./doc/CRD-generator-migration-v2.md)
 * Fix #8009: Moved Java baseline from 11 to 17. In addition to the runtime requirement, the Maven plugins, the Gradle plugin and the annotation processor now require a Java 17+ JVM to run the build, and the OSGi bundles declare `osgi.ee=JavaSE 17`
 * Fix #8050: (karaf) The `kubernetes-karaf` feature repository no longer defines its own `scr` feature. `kubernetes-client` now depends on the `scr` feature provided by the Karaf distribution, which supplies the Declarative Services API bundles and the `scr:*` shell commands
+* Fix #8100: (tekton) Model classes `Template` and `AffinityAssistantTemplate` moved from package `io.fabric8.tekton.pod` to `io.fabric8.tekton.unversioned`, since tekton pipeline 1.16.0 declares them as `+versionName=unversioned`
+* Fix #6779: (httpclient-jetty) Moved from Jetty 11 to Jetty 12.1, see the [migration guide](./doc/MIGRATION-v8.md#jetty-12)
 
 ### 7.9.0 (2026-09-04)
 

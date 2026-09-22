@@ -16,17 +16,17 @@
 package io.fabric8.crdv2.generator.v1;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.BooleanNode;
-import com.fasterxml.jackson.databind.node.DoubleNode;
-import com.fasterxml.jackson.databind.node.FloatNode;
-import com.fasterxml.jackson.databind.node.IntNode;
-import com.fasterxml.jackson.databind.node.LongNode;
 import io.fabric8.generator.annotation.Default;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.BooleanNode;
+import tools.jackson.databind.node.DoubleNode;
+import tools.jackson.databind.node.FloatNode;
+import tools.jackson.databind.node.IntNode;
+import tools.jackson.databind.node.LongNode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

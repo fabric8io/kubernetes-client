@@ -25,7 +25,7 @@ public class QueueSpecBuilder extends QueueSpecFluent<QueueSpecBuilder> implemen
   }
 
   public QueueSpec build() {
-    QueueSpec buildable = new QueueSpec(fluent.buildAffinity(), fluent.getCapability(), fluent.getDeserved(), fluent.buildExtendClusters(), fluent.buildGuarantee(), fluent.getParent(), fluent.getPriority(), fluent.getReclaimable(), fluent.getType(), fluent.getWeight());
+    QueueSpec buildable = new QueueSpec(fluent.buildAffinity(), fluent.getCapability(), fluent.getDequeueStrategy(), fluent.getDeserved(), fluent.buildExtendClusters(), fluent.buildGuarantee(), fluent.getParent(), fluent.getPriority(), fluent.getReclaimable(), fluent.getType(), fluent.getWeight());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -32,6 +32,7 @@ public class TaskSpecFluent<A extends io.fabric8.volcano.api.model.batch.v1alpha
   private Integer maxRetry;
   private Integer minAvailable;
   private String name;
+  private PartitionPolicySpecBuilder partitionPolicy;
   private ArrayList<LifecyclePolicyBuilder> policies = new ArrayList<LifecyclePolicyBuilder>();
   private Integer replicas;
   private PodTemplateSpecBuilder template;
@@ -132,6 +133,10 @@ public class TaskSpecFluent<A extends io.fabric8.volcano.api.model.batch.v1alpha
       return null;
   }
   
+  public PartitionPolicySpec buildPartitionPolicy() {
+    return this.partitionPolicy != null ? this.partitionPolicy.build() : null;
+  }
+  
   public List<LifecyclePolicy> buildPolicies() {
     return this.policies != null ? build(policies) : null;
   }
@@ -151,6 +156,7 @@ public class TaskSpecFluent<A extends io.fabric8.volcano.api.model.batch.v1alpha
         this.withMaxRetry(instance.getMaxRetry());
         this.withMinAvailable(instance.getMinAvailable());
         this.withName(instance.getName());
+        this.withPartitionPolicy(instance.getPartitionPolicy());
         this.withPolicies(instance.getPolicies());
         this.withReplicas(instance.getReplicas());
         this.withTemplate(instance.getTemplate());
@@ -200,12 +206,24 @@ public class TaskSpecFluent<A extends io.fabric8.volcano.api.model.batch.v1alpha
     return this.withNewDependsOnLike(Optional.ofNullable(this.buildDependsOn()).orElse(item));
   }
   
+  public PartitionPolicyNested<A> editOrNewPartitionPolicy() {
+    return this.withNewPartitionPolicyLike(Optional.ofNullable(this.buildPartitionPolicy()).orElse(new PartitionPolicySpecBuilder().build()));
+  }
+  
+  public PartitionPolicyNested<A> editOrNewPartitionPolicyLike(PartitionPolicySpec item) {
+    return this.withNewPartitionPolicyLike(Optional.ofNullable(this.buildPartitionPolicy()).orElse(item));
+  }
+  
   public TemplateNested<A> editOrNewTemplate() {
     return this.withNewTemplateLike(Optional.ofNullable(this.buildTemplate()).orElse(new PodTemplateSpecBuilder().build()));
   }
   
   public TemplateNested<A> editOrNewTemplateLike(PodTemplateSpec item) {
     return this.withNewTemplateLike(Optional.ofNullable(this.buildTemplate()).orElse(item));
+  }
+  
+  public PartitionPolicyNested<A> editPartitionPolicy() {
+    return this.withNewPartitionPolicyLike(Optional.ofNullable(this.buildPartitionPolicy()).orElse(null));
   }
   
   public PoliciesNested<A> editPolicy(int index) {
@@ -240,6 +258,9 @@ public class TaskSpecFluent<A extends io.fabric8.volcano.api.model.batch.v1alpha
       return false;
     }
     if (!(Objects.equals(name, that.name))) {
+      return false;
+    }
+    if (!(Objects.equals(partitionPolicy, that.partitionPolicy))) {
       return false;
     }
     if (!(Objects.equals(policies, that.policies))) {
@@ -313,6 +334,10 @@ public class TaskSpecFluent<A extends io.fabric8.volcano.api.model.batch.v1alpha
     return this.name != null;
   }
   
+  public boolean hasPartitionPolicy() {
+    return this.partitionPolicy != null;
+  }
+  
   public boolean hasPolicies() {
     return this.policies != null && !(this.policies.isEmpty());
   }
@@ -330,7 +355,7 @@ public class TaskSpecFluent<A extends io.fabric8.volcano.api.model.batch.v1alpha
   }
   
   public int hashCode() {
-    return Objects.hash(dependsOn, maxRetry, minAvailable, name, policies, replicas, template, topologyPolicy, additionalProperties);
+    return Objects.hash(dependsOn, maxRetry, minAvailable, name, partitionPolicy, policies, replicas, template, topologyPolicy, additionalProperties);
   }
   
   public A removeAllFromPolicies(Collection<LifecyclePolicy> items) {
@@ -439,6 +464,11 @@ public class TaskSpecFluent<A extends io.fabric8.volcano.api.model.batch.v1alpha
         sb.append(name);
         sb.append(",");
     }
+    if (!(partitionPolicy == null)) {
+        sb.append("partitionPolicy:");
+        sb.append(partitionPolicy);
+        sb.append(",");
+    }
     if (!(policies == null) && !(policies.isEmpty())) {
         sb.append("policies:");
         sb.append(policies);
@@ -511,12 +541,32 @@ public class TaskSpecFluent<A extends io.fabric8.volcano.api.model.batch.v1alpha
     return new DependsOnNested(item);
   }
   
+  public PartitionPolicyNested<A> withNewPartitionPolicy() {
+    return new PartitionPolicyNested(null);
+  }
+  
+  public PartitionPolicyNested<A> withNewPartitionPolicyLike(PartitionPolicySpec item) {
+    return new PartitionPolicyNested(item);
+  }
+  
   public TemplateNested<A> withNewTemplate() {
     return new TemplateNested(null);
   }
   
   public TemplateNested<A> withNewTemplateLike(PodTemplateSpec item) {
     return new TemplateNested(item);
+  }
+  
+  public A withPartitionPolicy(PartitionPolicySpec partitionPolicy) {
+    this._visitables.remove("partitionPolicy");
+    if (partitionPolicy != null) {
+        this.partitionPolicy = new PartitionPolicySpecBuilder(partitionPolicy);
+        this._visitables.get("partitionPolicy").add(this.partitionPolicy);
+    } else {
+        this.partitionPolicy = null;
+        this._visitables.get("partitionPolicy").remove(this.partitionPolicy);
+    }
+    return (A) this;
   }
   
   public A withPolicies(List<LifecyclePolicy> policies) {
@@ -581,6 +631,23 @@ public class TaskSpecFluent<A extends io.fabric8.volcano.api.model.batch.v1alpha
     }
     
     public N endDependsOn() {
+      return and();
+    }
+    
+  }
+  public class PartitionPolicyNested<N> extends PartitionPolicySpecFluent<PartitionPolicyNested<N>> implements Nested<N>{
+  
+    PartitionPolicySpecBuilder builder;
+  
+    PartitionPolicyNested(PartitionPolicySpec item) {
+      this.builder = new PartitionPolicySpecBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) TaskSpecFluent.this.withPartitionPolicy(builder.build());
+    }
+    
+    public N endPartitionPolicy() {
       return and();
     }
     

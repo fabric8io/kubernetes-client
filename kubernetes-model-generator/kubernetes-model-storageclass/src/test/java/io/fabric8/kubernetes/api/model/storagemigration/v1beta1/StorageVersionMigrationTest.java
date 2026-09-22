@@ -15,9 +15,10 @@
  */
 package io.fabric8.kubernetes.api.model.storagemigration.v1beta1;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -25,7 +26,7 @@ import java.util.Scanner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class StorageVersionMigrationTest {
-  private final ObjectMapper mapper = new ObjectMapper();
+  private final ObjectMapper mapper = new JsonMapper();
 
   @Test
   void isClusterScoped() {

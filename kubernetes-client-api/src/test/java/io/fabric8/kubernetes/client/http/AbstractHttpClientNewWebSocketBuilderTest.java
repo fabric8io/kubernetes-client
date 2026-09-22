@@ -16,17 +16,24 @@
 package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.mockwebserver.DefaultMockServer;
+import io.fabric8.mockwebserver.internal.WebSocketMessage;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -107,6 +114,32 @@ public abstract class AbstractHttpClientNewWebSocketBuilderTest {
   }
 
   @Test
+  @DisplayName("buildAsync, receives every binary message when the listener requests one after each")
+  void buildAsyncReceivesMultipleBinaryMessages() throws Exception {
+    server.expect().withPath("/websocket-multiple-binary-message")
+        .andUpgradeToWebSocket()
+        .open(new WebSocketMessage(new byte[] { 1 }), new WebSocketMessage(new byte[] { 2 }),
+            new WebSocketMessage(new byte[] { 3 }))
+        .done()
+        .always();
+    final BlockingQueue<Byte> received = new LinkedBlockingQueue<>();
+    httpClient.newWebSocketBuilder()
+        .uri(URI.create(server.url("/websocket-multiple-binary-message")))
+        .buildAsync(new WebSocket.Listener() {
+          @Override
+          public void onMessage(WebSocket webSocket, ByteBuffer bytes) {
+            received.add(bytes.get());
+            webSocket.request();
+          }
+        }).get(10L, TimeUnit.SECONDS);
+    final List<Byte> messages = new ArrayList<>();
+    for (int i = 0; i < 3; i++) {
+      messages.add(received.poll(10L, TimeUnit.SECONDS));
+    }
+    assertThat(messages).containsExactly((byte) 1, (byte) 2, (byte) 3);
+  }
+
+  @Test
   void buildAsyncConnectsAndCloses() throws Exception {
     server.expect().withPath("/websocket-on-close")
         .andUpgradeToWebSocket()
@@ -180,6 +213,25 @@ public abstract class AbstractHttpClientNewWebSocketBuilderTest {
         }).get(10L, TimeUnit.SECONDS);
     assertThat(server.getLastRequest().getHeaders().toMultimap())
         .containsEntry("a-random-header", Collections.singletonList("A-Random-Value"));
+  }
+
+  @Test
+  @DisplayName("buildAsync, sends a multi-valued header as one header line per value")
+  void buildAsyncPropagatesMultiValuedHeaderAsSeparateLines() throws Exception {
+    server.expect().withPath("/websocket-multi-valued-header-test")
+        .andUpgradeToWebSocket()
+        .open()
+        .done()
+        .always();
+    httpClient.newWebSocketBuilder()
+        .header("Impersonate-Group", "group-1")
+        .header("Impersonate-Group", "group-2")
+        .uri(URI.create(server.url("/websocket-multi-valued-header-test")))
+        .buildAsync(new WebSocket.Listener() {
+        }).get(10L, TimeUnit.SECONDS);
+    assertThat(server.getLastRequest().getHeaders().headers("Impersonate-Group"))
+        .as("a single joined line reads as one group named 'group-1, group-2' on the API server")
+        .containsExactly("group-1", "group-2");
   }
 
   @Test

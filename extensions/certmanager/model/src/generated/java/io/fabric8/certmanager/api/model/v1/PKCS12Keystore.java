@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
@@ -32,11 +31,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * PKCS12 configures options for storing a PKCS12 keystore in the `spec.secretName` Secret resource.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "create",
@@ -143,7 +143,7 @@ public class PKCS12Keystore implements Editable<PKCS12KeystoreBuilder>, Kubernet
     }
 
     /**
-     * Profile specifies the key and certificate encryption algorithms and the HMAC algorithm used to create the PKCS12 keystore. Default value is `LegacyRC2` for backward compatibility.<br><p> <br><p> If provided, allowed values are: `LegacyRC2`: Deprecated. Not supported by default in OpenSSL 3 or Java 20. `LegacyDES`: Less secure algorithm. Use this option for maximal compatibility. `Modern2023`: Secure algorithm. Use this option in case you have to always use secure algorithms (e.g., because of company policy). Please note that the security of the algorithm is not that important in reality, because the unencrypted certificate and private key are also stored in the Secret.
+     * Profile specifies the key and certificate encryption algorithms and the HMAC algorithm used to create the PKCS12 keystore. Default value is `LegacyRC2` for backward compatibility.<br><p> <br><p> If provided, allowed values are: `LegacyRC2`: Deprecated. Not supported by default in OpenSSL 3 or Java 20. `LegacyDES`: Less secure algorithm. Use this option for maximal compatibility. `Modern2023`: Secure algorithm. Use this option in case you have to always use secure algorithms (e.g., because of company policy). Please note that the security of the algorithm is not that important in reality, because the unencrypted certificate and private key are also stored in the Secret. `Modern2026`: Encodes PKCS#12 files using algorithms that are considered modern as of 2026. Private keys and certificates are encrypted using PBES2 with PBKDF2-HMAC-SHA-256 and AES-256-CBC. The MAC algorithm is PBMAC1 with PBKDF2-HMAC-SHA-256 and HMAC-SHA256. Files produced with this profile can be read by OpenSSL 3.4.0 and higher, Java 26 and higher, or with Java using compatible versions of Bouncy Castle. Meets FIPS 140-3 requirements.
      */
     @JsonProperty("profile")
     public String getProfile() {
@@ -151,7 +151,7 @@ public class PKCS12Keystore implements Editable<PKCS12KeystoreBuilder>, Kubernet
     }
 
     /**
-     * Profile specifies the key and certificate encryption algorithms and the HMAC algorithm used to create the PKCS12 keystore. Default value is `LegacyRC2` for backward compatibility.<br><p> <br><p> If provided, allowed values are: `LegacyRC2`: Deprecated. Not supported by default in OpenSSL 3 or Java 20. `LegacyDES`: Less secure algorithm. Use this option for maximal compatibility. `Modern2023`: Secure algorithm. Use this option in case you have to always use secure algorithms (e.g., because of company policy). Please note that the security of the algorithm is not that important in reality, because the unencrypted certificate and private key are also stored in the Secret.
+     * Profile specifies the key and certificate encryption algorithms and the HMAC algorithm used to create the PKCS12 keystore. Default value is `LegacyRC2` for backward compatibility.<br><p> <br><p> If provided, allowed values are: `LegacyRC2`: Deprecated. Not supported by default in OpenSSL 3 or Java 20. `LegacyDES`: Less secure algorithm. Use this option for maximal compatibility. `Modern2023`: Secure algorithm. Use this option in case you have to always use secure algorithms (e.g., because of company policy). Please note that the security of the algorithm is not that important in reality, because the unencrypted certificate and private key are also stored in the Secret. `Modern2026`: Encodes PKCS#12 files using algorithms that are considered modern as of 2026. Private keys and certificates are encrypted using PBES2 with PBKDF2-HMAC-SHA-256 and AES-256-CBC. The MAC algorithm is PBMAC1 with PBKDF2-HMAC-SHA-256 and HMAC-SHA256. Files produced with this profile can be read by OpenSSL 3.4.0 and higher, Java 26 and higher, or with Java using compatible versions of Bouncy Castle. Meets FIPS 140-3 requirements.
      */
     @JsonProperty("profile")
     public void setProfile(String profile) {

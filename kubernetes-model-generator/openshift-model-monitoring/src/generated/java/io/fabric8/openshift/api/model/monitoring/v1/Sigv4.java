@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,11 +30,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Sigv4 defines AWS's Signature Verification 4 signing process to sign requests.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "accessKey",
@@ -122,7 +122,7 @@ public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
     }
 
     /**
-     * externalId defines the external ID used when assuming an AWS role. Can only be used with roleArn. It requires Prometheus &gt;= v3.11.0 or Alertmanager &gt;= v0.33.0. Currently not supported by Thanos.
+     * externalId defines the external ID used when assuming an AWS role. Can only be used with roleArn. It requires Prometheus &gt;= v3.11.0 or Alertmanager &gt;= v0.34.0. Currently not supported by Thanos.
      */
     @JsonProperty("externalId")
     public String getExternalId() {
@@ -130,7 +130,7 @@ public class Sigv4 implements Editable<Sigv4Builder>, KubernetesResource
     }
 
     /**
-     * externalId defines the external ID used when assuming an AWS role. Can only be used with roleArn. It requires Prometheus &gt;= v3.11.0 or Alertmanager &gt;= v0.33.0. Currently not supported by Thanos.
+     * externalId defines the external ID used when assuming an AWS role. Can only be used with roleArn. It requires Prometheus &gt;= v3.11.0 or Alertmanager &gt;= v0.34.0. Currently not supported by Thanos.
      */
     @JsonProperty("externalId")
     public void setExternalId(String externalId) {

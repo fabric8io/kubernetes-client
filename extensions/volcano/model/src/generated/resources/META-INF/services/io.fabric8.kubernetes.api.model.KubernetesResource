@@ -1,3 +1,5 @@
+io.fabric8.volcano.api.model.batch.v1alpha1.CronJob
+io.fabric8.volcano.api.model.batch.v1alpha1.CronJobList
 io.fabric8.volcano.api.model.batch.v1alpha1.Job
 io.fabric8.volcano.api.model.batch.v1alpha1.JobList
 io.fabric8.volcano.api.model.bus.v1alpha1.Command

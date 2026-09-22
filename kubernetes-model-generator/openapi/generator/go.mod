@@ -1,9 +1,9 @@
 module github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator
 
-go 1.26.0
+go 1.26.4
 
 require (
-	github.com/cert-manager/cert-manager v1.20.2
+	github.com/cert-manager/cert-manager v1.21.2
 	github.com/chaos-mesh/chaos-mesh/api v0.0.0-20260906172039-d70b66ad97ac
 	github.com/getkin/kin-openapi v0.149.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.7
@@ -20,16 +20,16 @@ require (
 	github.com/operator-framework/api v0.42.0
 	github.com/operator-framework/operator-lifecycle-manager v0.43.0
 	github.com/ovn-org/ovn-kubernetes/go-controller v0.0.0-20241030140127-a68ef49d9441
-	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.91.0
+	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.94.0
 	github.com/spf13/cobra v1.10.2
 	github.com/stolostron/discovery v0.0.0-20250721184441-6a13204f0907
 	github.com/stolostron/klusterlet-addon-controller v0.0.0-20250324045714-0d7e21c66660
 	github.com/stolostron/multicluster-observability-operator v0.0.0-20250726172846-3a17a1a4168e
 	github.com/stolostron/multiclusterhub-operator v0.0.0-20250728181123-c3e46b4bdbbc
 	github.com/stolostron/search-v2-operator v0.0.0-20250609200037-030a382461f4
-	github.com/tektoncd/pipeline v1.12.0
-	github.com/tektoncd/triggers v0.36.0
-	istio.io/client-go v1.30.0
+	github.com/tektoncd/pipeline v1.16.0
+	github.com/tektoncd/triggers v0.37.0
+	istio.io/client-go v1.31.1
 	k8s.io/api v0.37.0
 	k8s.io/apiextensions-apiserver v0.37.0
 	k8s.io/apimachinery v0.37.0
@@ -39,16 +39,16 @@ require (
 	// Last commit before kube-openapi moved to structured-merge-diff/v7, which k8s.io/apimachinery v0.37.x doesn't support
 	k8s.io/kube-openapi v0.0.0-20260821135717-be32def86098
 	k8s.io/metrics v0.37.0
-	knative.dev/caching v0.0.0-20260422140616-453ad996bbe2
-	knative.dev/eventing v0.49.1
+	knative.dev/caching v0.0.0-20260821014320-af6341f3ab2b
+	knative.dev/eventing v0.50.0
 	knative.dev/eventing-awssqs v0.29.0
 	knative.dev/eventing-couchdb v0.28.0
-	knative.dev/eventing-github v0.49.1
-	knative.dev/eventing-gitlab v0.49.1
-	knative.dev/eventing-kafka-broker v0.49.1
+	knative.dev/eventing-github v0.50.0
+	knative.dev/eventing-gitlab v0.50.0
+	knative.dev/eventing-kafka-broker v0.50.1
 	knative.dev/eventing-prometheus v0.28.0
-	knative.dev/networking v0.0.0-20260529061306-c8de379770b9
-	knative.dev/serving v0.49.1
+	knative.dev/networking v0.0.0-20260921014731-e39778429a0f
+	knative.dev/serving v0.50.0
 	open-cluster-management.io/api v1.3.0
 	open-cluster-management.io/governance-policy-propagator v0.18.0
 	open-cluster-management.io/multicloud-operators-channel v0.16.0
@@ -80,7 +80,7 @@ replace (
 	k8s.io/mount-utils => k8s.io/mount-utils v0.35.8
 
 	// Pin knative.dev/pkg to a known-good pseudo-version (dependabot picks invalid tagged major versions)
-	knative.dev/pkg => knative.dev/pkg v0.0.0-20260422015212-ec452872dcc1
+	knative.dev/pkg => knative.dev/pkg v0.0.0-20260918182429-5dc1978f0042
 
 	sigs.k8s.io/cluster-api => sigs.k8s.io/cluster-api v1.14.2
 	// cluster-api v1.14+ requires its api module at a placeholder version (resolved by a local replace upstream)
@@ -95,7 +95,7 @@ replace (
 	github.com/chaos-mesh/chaos-mesh/api => github.com/chaos-mesh/chaos-mesh/api v0.0.0-20260906172039-d70b66ad97ac
 	github.com/stolostron/multicluster-observability-operator => github.com/stolostron/multicluster-observability-operator v0.0.0-20250726172846-3a17a1a4168e
 	github.com/stolostron/multiclusterhub-operator => github.com/stolostron/multiclusterhub-operator v0.0.0-20250728181123-c3e46b4bdbbc
-	volcano.sh/apis => volcano.sh/apis v1.11.0
+	volcano.sh/apis => volcano.sh/apis v1.15.2
 )
 
 require (
@@ -122,7 +122,7 @@ require (
 	github.com/emicklei/go-restful/v3 v3.13.0 // indirect
 	github.com/evanphx/json-patch/v5 v5.9.11 // indirect
 	github.com/fsnotify/fsnotify v1.10.1 // indirect
-	github.com/fxamacker/cbor/v2 v2.9.2 // indirect
+	github.com/fxamacker/cbor/v2 v2.9.3 // indirect
 	github.com/go-errors/errors v1.5.1 // indirect
 	github.com/go-logr/logr v1.4.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
@@ -149,10 +149,10 @@ require (
 	github.com/go-openapi/validate v0.24.0 // indirect
 	github.com/go-test/deep v1.1.1 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
-	github.com/google/cel-go v0.29.2 // indirect
+	github.com/google/cel-go v0.31.0 // indirect
 	github.com/google/gnostic-models v0.7.1 // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
-	github.com/google/go-containerregistry v0.21.5 // indirect
+	github.com/google/go-containerregistry v0.21.9 // indirect
 	github.com/google/go-github/v31 v31.0.0 // indirect
 	github.com/google/go-querystring v1.2.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
@@ -181,9 +181,9 @@ require (
 	github.com/operator-framework/operator-registry v1.69.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
-	github.com/prometheus/client_golang v1.24.0 // indirect
+	github.com/prometheus/client_golang v1.24.1 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect
-	github.com/prometheus/common v0.70.0 // indirect
+	github.com/prometheus/common v0.70.1 // indirect
 	github.com/prometheus/otlptranslator v1.0.0 // indirect
 	github.com/prometheus/procfs v0.21.1 // indirect
 	github.com/rickb777/date v1.14.1 // indirect
@@ -199,19 +199,19 @@ require (
 	github.com/x448/float16 v0.8.4 // indirect
 	go.mongodb.org/mongo-driver v1.17.7 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
-	go.opentelemetry.io/otel v1.44.0 // indirect
-	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc v1.43.0 // indirect
-	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp v1.43.0 // indirect
-	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.44.0 // indirect
-	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.44.0 // indirect
-	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.43.0 // indirect
-	go.opentelemetry.io/otel/exporters/prometheus v0.66.0 // indirect
-	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.43.0 // indirect
-	go.opentelemetry.io/otel/metric v1.44.0 // indirect
-	go.opentelemetry.io/otel/sdk v1.44.0 // indirect
-	go.opentelemetry.io/otel/sdk/metric v1.44.0 // indirect
-	go.opentelemetry.io/otel/trace v1.44.0 // indirect
-	go.opentelemetry.io/proto/otlp v1.10.0 // indirect
+	go.opentelemetry.io/otel v1.45.0 // indirect
+	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc v1.45.0 // indirect
+	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp v1.45.0 // indirect
+	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.45.0 // indirect
+	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.45.0 // indirect
+	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.45.0 // indirect
+	go.opentelemetry.io/otel/exporters/prometheus v0.67.0 // indirect
+	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.45.0 // indirect
+	go.opentelemetry.io/otel/metric v1.45.0 // indirect
+	go.opentelemetry.io/otel/sdk v1.45.0 // indirect
+	go.opentelemetry.io/otel/sdk/metric v1.45.0 // indirect
+	go.opentelemetry.io/otel/trace v1.45.0 // indirect
+	go.opentelemetry.io/proto/otlp v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.28.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.4 // indirect
@@ -228,19 +228,19 @@ require (
 	golang.org/x/time v0.15.0 // indirect
 	golang.org/x/tools v0.49.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.5.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20260526163538-3dc84a4a5aaa // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20260526163538-3dc84a4a5aaa // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20260803160001-6ac0973c030d // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260803160001-6ac0973c030d // indirect
 	google.golang.org/grpc v1.83.2 // indirect
-	google.golang.org/protobuf v1.36.12-0.20260120151049-f2248ac996af // indirect
+	google.golang.org/protobuf v1.36.12 // indirect
 	gopkg.in/evanphx/json-patch.v4 v4.13.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
-	istio.io/api v1.30.0-rc.0.0.20260508191950-a283232d9647 // indirect
+	istio.io/api v1.31.1-0.20260915183457-d60a532be69a // indirect
 	k8s.io/klog/v2 v2.140.0 // indirect
-	k8s.io/utils v0.0.0-20260626114624-be93311217bd // indirect
-	knative.dev/pkg v0.0.0-20260531000007-52dbd5ece63f // indirect
+	k8s.io/utils v0.0.0-20260707023825-cf1189d6abe3 // indirect
+	knative.dev/pkg v0.0.0-20260918182429-5dc1978f0042 // indirect
 	sigs.k8s.io/cluster-api v1.14.2 // indirect
 	sigs.k8s.io/cluster-api-provider-azure v1.27.0 // indirect
-	sigs.k8s.io/controller-runtime v0.24.1 // indirect
+	sigs.k8s.io/controller-runtime v0.25.0 // indirect
 	sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730 // indirect
 	sigs.k8s.io/kustomize/kyaml v0.21.1 // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect

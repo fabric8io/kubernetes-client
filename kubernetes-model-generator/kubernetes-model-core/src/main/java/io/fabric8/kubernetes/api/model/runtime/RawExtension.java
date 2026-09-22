@@ -16,14 +16,14 @@
 package io.fabric8.kubernetes.api.model.runtime;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.AnyType;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.sundr.builder.annotations.Buildable;
 import lombok.ToString;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 @ToString(callSuper = true)
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 public class RawExtension extends AnyType implements KubernetesResource {
 

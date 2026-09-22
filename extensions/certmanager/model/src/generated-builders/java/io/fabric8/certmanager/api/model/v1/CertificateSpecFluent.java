@@ -46,6 +46,7 @@ public class CertificateSpecFluent<A extends io.fabric8.certmanager.api.model.v1
   private CertificatePrivateKeyBuilder privateKey;
   private Duration renewBefore;
   private Integer renewBeforePercentage;
+  private CertificateRenewalBuilder renewal;
   private Integer revisionHistoryLimit;
   private String secretName;
   private CertificateSecretTemplateBuilder secretTemplate;
@@ -389,6 +390,10 @@ public class CertificateSpecFluent<A extends io.fabric8.certmanager.api.model.v1
     return this.privateKey != null ? this.privateKey.build() : null;
   }
   
+  public CertificateRenewal buildRenewal() {
+    return this.renewal != null ? this.renewal.build() : null;
+  }
+  
   public CertificateSecretTemplate buildSecretTemplate() {
     return this.secretTemplate != null ? this.secretTemplate.build() : null;
   }
@@ -416,6 +421,7 @@ public class CertificateSpecFluent<A extends io.fabric8.certmanager.api.model.v1
         this.withPrivateKey(instance.getPrivateKey());
         this.withRenewBefore(instance.getRenewBefore());
         this.withRenewBeforePercentage(instance.getRenewBeforePercentage());
+        this.withRenewal(instance.getRenewal());
         this.withRevisionHistoryLimit(instance.getRevisionHistoryLimit());
         this.withSecretName(instance.getSecretName());
         this.withSecretTemplate(instance.getSecretTemplate());
@@ -536,6 +542,14 @@ public class CertificateSpecFluent<A extends io.fabric8.certmanager.api.model.v1
     return this.withNewPrivateKeyLike(Optional.ofNullable(this.buildPrivateKey()).orElse(item));
   }
   
+  public RenewalNested<A> editOrNewRenewal() {
+    return this.withNewRenewalLike(Optional.ofNullable(this.buildRenewal()).orElse(new CertificateRenewalBuilder().build()));
+  }
+  
+  public RenewalNested<A> editOrNewRenewalLike(CertificateRenewal item) {
+    return this.withNewRenewalLike(Optional.ofNullable(this.buildRenewal()).orElse(item));
+  }
+  
   public SecretTemplateNested<A> editOrNewSecretTemplate() {
     return this.withNewSecretTemplateLike(Optional.ofNullable(this.buildSecretTemplate()).orElse(new CertificateSecretTemplateBuilder().build()));
   }
@@ -561,6 +575,10 @@ public class CertificateSpecFluent<A extends io.fabric8.certmanager.api.model.v1
   
   public PrivateKeyNested<A> editPrivateKey() {
     return this.withNewPrivateKeyLike(Optional.ofNullable(this.buildPrivateKey()).orElse(null));
+  }
+  
+  public RenewalNested<A> editRenewal() {
+    return this.withNewRenewalLike(Optional.ofNullable(this.buildRenewal()).orElse(null));
   }
   
   public SecretTemplateNested<A> editSecretTemplate() {
@@ -628,6 +646,9 @@ public class CertificateSpecFluent<A extends io.fabric8.certmanager.api.model.v1
       return false;
     }
     if (!(Objects.equals(renewBeforePercentage, that.renewBeforePercentage))) {
+      return false;
+    }
+    if (!(Objects.equals(renewal, that.renewal))) {
       return false;
     }
     if (!(Objects.equals(revisionHistoryLimit, that.revisionHistoryLimit))) {
@@ -957,6 +978,10 @@ public class CertificateSpecFluent<A extends io.fabric8.certmanager.api.model.v1
     return this.renewBeforePercentage != null;
   }
   
+  public boolean hasRenewal() {
+    return this.renewal != null;
+  }
+  
   public boolean hasRevisionHistoryLimit() {
     return this.revisionHistoryLimit != null;
   }
@@ -986,7 +1011,7 @@ public class CertificateSpecFluent<A extends io.fabric8.certmanager.api.model.v1
   }
   
   public int hashCode() {
-    return Objects.hash(additionalOutputFormats, commonName, dnsNames, duration, emailAddresses, encodeUsagesInRequest, ipAddresses, isCA, issuerRef, keystores, literalSubject, nameConstraints, otherNames, privateKey, renewBefore, renewBeforePercentage, revisionHistoryLimit, secretName, secretTemplate, signatureAlgorithm, subject, uris, usages, additionalProperties);
+    return Objects.hash(additionalOutputFormats, commonName, dnsNames, duration, emailAddresses, encodeUsagesInRequest, ipAddresses, isCA, issuerRef, keystores, literalSubject, nameConstraints, otherNames, privateKey, renewBefore, renewBeforePercentage, renewal, revisionHistoryLimit, secretName, secretTemplate, signatureAlgorithm, subject, uris, usages, additionalProperties);
   }
   
   public A removeAllFromAdditionalOutputFormats(Collection<CertificateAdditionalOutputFormat> items) {
@@ -1354,6 +1379,11 @@ public class CertificateSpecFluent<A extends io.fabric8.certmanager.api.model.v1
         sb.append(renewBeforePercentage);
         sb.append(",");
     }
+    if (!(renewal == null)) {
+        sb.append("renewal:");
+        sb.append(renewal);
+        sb.append(",");
+    }
     if (!(revisionHistoryLimit == null)) {
         sb.append("revisionHistoryLimit:");
         sb.append(revisionHistoryLimit);
@@ -1618,6 +1648,14 @@ public class CertificateSpecFluent<A extends io.fabric8.certmanager.api.model.v1
     return new PrivateKeyNested(item);
   }
   
+  public RenewalNested<A> withNewRenewal() {
+    return new RenewalNested(null);
+  }
+  
+  public RenewalNested<A> withNewRenewalLike(CertificateRenewal item) {
+    return new RenewalNested(item);
+  }
+  
   public SecretTemplateNested<A> withNewSecretTemplate() {
     return new SecretTemplateNested(null);
   }
@@ -1681,6 +1719,18 @@ public class CertificateSpecFluent<A extends io.fabric8.certmanager.api.model.v1
   
   public A withRenewBeforePercentage(Integer renewBeforePercentage) {
     this.renewBeforePercentage = renewBeforePercentage;
+    return (A) this;
+  }
+  
+  public A withRenewal(CertificateRenewal renewal) {
+    this._visitables.remove("renewal");
+    if (renewal != null) {
+        this.renewal = new CertificateRenewalBuilder(renewal);
+        this._visitables.get("renewal").add(this.renewal);
+    } else {
+        this.renewal = null;
+        this._visitables.get("renewal").remove(this.renewal);
+    }
     return (A) this;
   }
   
@@ -1874,6 +1924,23 @@ public class CertificateSpecFluent<A extends io.fabric8.certmanager.api.model.v1
     }
     
     public N endPrivateKey() {
+      return and();
+    }
+    
+  }
+  public class RenewalNested<N> extends CertificateRenewalFluent<RenewalNested<N>> implements Nested<N>{
+  
+    CertificateRenewalBuilder builder;
+  
+    RenewalNested(CertificateRenewal item) {
+      this.builder = new CertificateRenewalBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) CertificateSpecFluent.this.withRenewal(builder.build());
+    }
+    
+    public N endRenewal() {
       return and();
     }
     

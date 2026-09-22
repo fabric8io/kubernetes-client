@@ -15,7 +15,7 @@
  */
 package io.fabric8.crdv2.example.json;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import tools.jackson.databind.JsonNode;
 
 public class ContainingJsonSpec {
 

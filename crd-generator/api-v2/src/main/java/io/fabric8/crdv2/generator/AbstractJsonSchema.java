@@ -17,22 +17,8 @@ package io.fabric8.crdv2.generator;
 
 import com.fasterxml.jackson.annotation.JsonClassDescription;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.BeanDescription;
-import com.fasterxml.jackson.databind.BeanProperty;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
-import com.fasterxml.jackson.module.jsonSchema.types.ArraySchema;
-import com.fasterxml.jackson.module.jsonSchema.types.ArraySchema.Items;
-import com.fasterxml.jackson.module.jsonSchema.types.IntegerSchema;
-import com.fasterxml.jackson.module.jsonSchema.types.NumberSchema;
-import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema;
-import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema.SchemaAdditionalProperties;
-import com.fasterxml.jackson.module.jsonSchema.types.ReferenceSchema;
-import com.fasterxml.jackson.module.jsonSchema.types.StringSchema;
-import com.fasterxml.jackson.module.jsonSchema.types.ValueTypeSchema;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.fabric8.crd.generator.annotation.AdditionalPrinterColumn;
 import io.fabric8.crd.generator.annotation.AdditionalSelectableField;
 import io.fabric8.crd.generator.annotation.PreserveUnknownFields;
@@ -65,6 +51,26 @@ import io.fabric8.kubernetes.model.annotation.SpecReplicas;
 import io.fabric8.kubernetes.model.annotation.StatusReplicas;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.databind.BeanDescription;
+import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ValueSerializer;
+import tools.jackson.databind.annotation.JsonSerialize;
+import tools.jackson.databind.node.JsonNodeFactory;
+import tools.jackson.databind.node.ObjectNode;
+import tools.jackson.databind.ser.BeanPropertyWriter;
+import tools.jackson.databind.util.Converter;
+import tools.jackson.module.jsonSchema.JsonSchema;
+import tools.jackson.module.jsonSchema.types.ArraySchema;
+import tools.jackson.module.jsonSchema.types.ArraySchema.Items;
+import tools.jackson.module.jsonSchema.types.IntegerSchema;
+import tools.jackson.module.jsonSchema.types.NumberSchema;
+import tools.jackson.module.jsonSchema.types.ObjectSchema;
+import tools.jackson.module.jsonSchema.types.ObjectSchema.SchemaAdditionalProperties;
+import tools.jackson.module.jsonSchema.types.ReferenceSchema;
+import tools.jackson.module.jsonSchema.types.StringSchema;
+import tools.jackson.module.jsonSchema.types.ValueTypeSchema;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -72,9 +78,16 @@ import java.lang.reflect.AnnotatedParameterizedType;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -84,11 +97,18 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.OptionalInt;
+import java.util.OptionalLong;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.xml.namespace.QName;
 
 import static java.util.Optional.ofNullable;
 
@@ -101,6 +121,13 @@ import static java.util.Optional.ofNullable;
 public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V extends KubernetesValidationRule> {
 
   private static final Logger logger = LoggerFactory.getLogger(AbstractJsonSchema.class);
+
+  /**
+   * Jackson gives every JDK date and time type one of these formats, but the API server validates {@code date-time}
+   * as RFC 3339 (the offset is mandatory) and {@code date} as a full-date, rejecting any value that doesn't match.
+   * JDK types only keep the format when they always write a matching value, see {@link #writesFormat}.
+   */
+  private static final Set<String> TEMPORAL_FORMATS = Set.of("date-time", "date", "time");
 
   private final ResolvingContext resolvingContext;
   private final T root;
@@ -164,10 +191,10 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     consumeRepeatingAnnotation(definition, AdditionalSelectableField.class,
         additionalSelectableFields::add);
     if (schema instanceof GeneratorObjectSchema) {
-      return resolveObject(new LinkedHashMap<>(), schemaSwaps, schema, "kind", "apiVersion", "metadata");
+      return resolveObject(new LinkedHashMap<>(), schemaSwaps, schema, null, "kind", "apiVersion", "metadata");
     }
     return resolveProperty(new LinkedHashMap<>(), schemaSwaps, null,
-        resolvingContext.objectMapper.getSerializationConfig().constructType(definition), schema, null);
+        resolvingContext.objectMapper.serializationConfig().constructType(definition), schema, null, null, false);
   }
 
   /**
@@ -273,12 +300,17 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
       description = beanProperty.getMetadata().getDescription();
 
-      schemaFrom = ofNullable(beanProperty.getAnnotation(SchemaFrom.class)).map(SchemaFrom::type).orElse(null);
+      schemaFrom = ofNullable(beanProperty.getAnnotation(SchemaFrom.class)).<Class<?>> map(SchemaFrom::type)
+          .orElseGet(() -> serializedAs(beanProperty));
       preserveUnknownFields = beanProperty.getAnnotation(PreserveUnknownFields.class) != null;
 
       if (value.isValueTypeSchema()) {
         ValueTypeSchema valueTypeSchema = value.asValueTypeSchema();
         this.format = ofNullable(valueTypeSchema.getFormat()).map(Object::toString).orElse(null);
+      }
+
+      if (format != null && TEMPORAL_FORMATS.contains(format) && !keepsTemporalFormat(beanProperty, format)) {
+        this.format = null;
       }
 
       if (value.isStringSchema()) {
@@ -287,10 +319,14 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         pattern = ofNullable(beanProperty.getAnnotation(Pattern.class)).map(Pattern::value)
             .or(() -> ofNullable(stringSchema.getPattern()))
             .orElse(null);
-        minLength = findMinInSizeAnnotation(beanProperty)
+        // @Size counts the bytes of a binary type, the API server validates the length of their base64 string
+        final UnaryOperator<Long> length = value instanceof Base64Schema
+            ? AbstractJsonSchema::base64Length
+            : UnaryOperator.identity();
+        minLength = findMinInSizeAnnotation(beanProperty).map(length)
             .or(() -> ofNullable(stringSchema.getMinLength()).map(Integer::longValue))
             .orElse(null);
-        maxLength = findMaxInSizeAnnotation(beanProperty)
+        maxLength = findMaxInSizeAnnotation(beanProperty).map(length)
             .or(() -> ofNullable(stringSchema.getMaxLength()).map(Integer::longValue))
             .orElse(null);
       } else if (value.isIntegerSchema()) {
@@ -352,8 +388,38 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
               + "' from JsonProperty annotation as valid YAML or JSON, no default value will be used.");
           return null;
         }
-        throw new IllegalArgumentException("Cannot parse default value: '" + value + "' as valid YAML or JSON.", e);
+        final String strippedValue = value.strip();
+        final String jsonHint = strippedValue.startsWith("{") || strippedValue.startsWith("[")
+            ? " Values starting with '{' or '[' are parsed as JSON, so a flow-style YAML mapping such as"
+                + " '{key: value}' has to be written as JSON ('{\"key\": \"value\"}')."
+            : "";
+        throw new IllegalArgumentException(
+            "Cannot parse default value: '" + value + "' as valid YAML or JSON." + jsonHint, e);
       }
+    }
+
+    /**
+     * The type Jackson writes instead of the declared one ({@code @JsonSerialize(as)}), resolved on its own like
+     * {@code @SchemaFrom}: jackson-module-jsonSchema reuses the first schema it builds for a declared type, so
+     * properties declared with the same type would otherwise share one schema.
+     */
+    private Class<?> serializedAs(BeanProperty beanProperty) {
+      if (beanProperty instanceof BeanPropertyWriter) {
+        final JavaType serializationType = ((BeanPropertyWriter) beanProperty).getSerializationType();
+        if (serializationType != null && !serializationType.hasRawClass(beanProperty.getType().getRawClass())) {
+          return serializationType.getRawClass();
+        }
+      }
+      return null;
+    }
+
+    /**
+     * JDK types keep only the formats they always match, other types keep whatever their serializer declares.
+     */
+    private boolean keepsTemporalFormat(BeanProperty beanProperty, String format) {
+      final JavaType type = unwrapReferenceType(beanProperty.getType());
+      return type == null || !type.getRawClass().getName().startsWith("java.")
+          || writesFormat(type.getRawClass(), format);
     }
 
     private void setMinMax(BeanProperty beanProperty,
@@ -407,7 +473,10 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       schema.setMaxProperties(maxProperties);
 
       schema.setPattern(pattern);
-      schema.setFormat(format);
+      if (format != null) {
+        // otherwise keep the one resolveProperty derived from the type
+        schema.setFormat(format);
+      }
       if (preserveUnknownFields) {
         schema.setXKubernetesPreserveUnknownFields(true);
       }
@@ -428,8 +497,11 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     }
   }
 
+  /**
+   * @param valueTypeInfo the {@link JsonTypeInfo} of the property holding this value, which overrides the one of its type
+   */
   private T resolveObject(LinkedHashMap<String, String> visited, InternalSchemaSwaps schemaSwaps, JsonSchema jacksonSchema,
-      String... ignore) {
+      JsonTypeInfo valueTypeInfo, String... ignore) {
     Set<String> ignores = ignore.length > 0 ? new LinkedHashSet<>(Arrays.asList(ignore)) : Collections.emptySet();
 
     T objectSchema = singleProperty("object");
@@ -438,7 +510,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     final InternalSchemaSwaps swaps = schemaSwaps;
 
     GeneratorObjectSchema gos = (GeneratorObjectSchema) jacksonSchema.asObjectSchema();
-    BeanDescription bd = resolvingContext.objectMapper.getSerializationConfig().introspect(gos.javaType);
+    BeanDescription bd = CRDUtils.introspectForSerialization(
+        resolvingContext.objectMapper.serializationConfig(), gos.javaType);
     boolean preserveUnknownFields = false;
     if (resolvingContext.implicitPreserveUnknownFields) {
       preserveUnknownFields = bd.findAnyGetter() != null || bd.findAnySetterAccessor() != null;
@@ -455,6 +528,12 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     // while it should not be repeating, we reuse this method to look for preserve unknown on the class hierarchy
     consumeRepeatingAnnotation(rawClass, PreserveUnknownFields.class,
         ignored -> objectSchema.setXKubernetesPreserveUnknownFields(true));
+
+    // only the declared type is introspected, so the subtypes' properties are not part of the schema;
+    // CRDs cannot express a discriminated union, so keep the subtype content instead of pruning it
+    if (isPolymorphic(valueTypeInfo, bd)) {
+      objectSchema.setXKubernetesPreserveUnknownFields(true);
+    }
 
     consumeRepeatingAnnotation(rawClass, SchemaSwap.class, ss -> {
       swaps.registerSwap(rawClass,
@@ -483,7 +562,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         continue;
       }
 
-      JsonSchema propertySchema = property.getValue();
+      boolean ownSerializer = hasOwnSerializer(beanProperty);
+      JsonSchema propertySchema = wireSchema(beanProperty.getType(), property.getValue(), ownSerializer);
       PropertyMetadata propertyMetadata = new PropertyMetadata(propertySchema, beanProperty);
 
       if (propertyMetadata.required) {
@@ -500,10 +580,13 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
           continue;
         }
         propertySchema = resolvingContext.toJsonSchema(propertyMetadata.schemaFrom);
-        type = resolvingContext.objectMapper.getSerializationConfig().constructType(propertyMetadata.schemaFrom);
+        type = resolvingContext.objectMapper.serializationConfig().constructType(propertyMetadata.schemaFrom);
+        // Jackson's own serializers describe that type
+        ownSerializer = false;
       }
 
-      T schema = resolveProperty(visited, schemaSwaps, name, type, propertySchema, beanProperty);
+      T schema = resolveProperty(visited, schemaSwaps, name, type, propertySchema, beanProperty,
+          beanProperty.getAnnotation(JsonTypeInfo.class), ownSerializer);
 
       propertyMetadata.updateSchema(schema);
 
@@ -568,23 +651,38 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
     return visited.values().stream().collect(Collectors.joining(".", ".", ".")) + name;
   }
 
+  /**
+   * @param valueTypeInfo the property's {@link JsonTypeInfo}, which applies to its value, or to the elements of a container
+   * @param ownSerializer whether the value is written by a serializer of the property, whose schema is kept as reported
+   */
   private T resolveProperty(LinkedHashMap<String, String> visited, InternalSchemaSwaps schemaSwaps, String name,
-      JavaType type, JsonSchema jacksonSchema, BeanProperty beanProperty) {
+      JavaType type, JsonSchema jacksonSchema, BeanProperty beanProperty, JsonTypeInfo valueTypeInfo,
+      boolean ownSerializer) {
+
+    // the schema Jackson generated is the referenced type's, so resolve it with that type
+    type = unwrapReferenceType(type);
+    jacksonSchema = wireSchema(type, jacksonSchema, ownSerializer);
+    final String integerFormat = integerFormat(type, ownSerializer);
+    final boolean ownContentSerializer = ownSerializer || hasOwnContentSerializer(beanProperty);
 
     if (jacksonSchema.isArraySchema()) {
       Items items = jacksonSchema.asArraySchema().getItems();
-      if (items == null) { // raw collection
-        throw new IllegalStateException(String.format("Untyped collection %s", name));
+      if (items == null) { // raw collection, or one with an Object element type
+        return arrayLikeProperty(anyTypeProperty());
       }
       if (items.isArrayItems()) {
         throw new IllegalStateException("not yet supported");
       }
       JsonSchema arraySchema = jacksonSchema.asArraySchema().getItems().asSingleItems().getSchema();
-      final T schema = resolveProperty(visited, schemaSwaps, name, type.getContentType(), arraySchema, null);
+      final T schema = resolveProperty(visited, schemaSwaps, name, type.getContentType(), arraySchema, null,
+          valueTypeInfo, ownContentSerializer);
       handleTypeAnnotations(schema, beanProperty, List.class, 0);
       return arrayLikeProperty(schema);
-    } else if (jacksonSchema.isIntegerSchema()) {
-      return singleProperty("integer");
+    } else if (jacksonSchema.isIntegerSchema() || (jacksonSchema.isNumberSchema() && integerFormat != null)) {
+      // Jackson describes the items of a long[] as numbers
+      final T schema = singleProperty("integer");
+      schema.setFormat(integerFormat);
+      return schema;
     } else if (jacksonSchema.isNumberSchema()) {
       return singleProperty("number");
     } else if (jacksonSchema.isBooleanSchema()) {
@@ -597,11 +695,15 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
         final JsonNode[] enumValues = stringSchema.getEnums().stream()
             .sorted()
             .filter(s -> !ignores.contains(s))
-            .map(JsonNodeFactory.instance::textNode)
+            .map(JsonNodeFactory.instance::stringNode)
             .toArray(JsonNode[]::new);
         return enumProperty(enumValues);
       }
-      return singleProperty("string");
+      final T schema = singleProperty("string");
+      if (jacksonSchema instanceof Base64Schema) {
+        schema.setFormat("byte");
+      }
+      return schema;
     } else if (jacksonSchema.isNullSchema()) {
       return singleProperty("object"); // TODO: this may not be the right choice, but rarely will someone be using Void
     } else if (jacksonSchema.isAnySchema()) {
@@ -639,7 +741,8 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
 
       JsonSchema mapValueSchema = ((SchemaAdditionalProperties) ((ObjectSchema) jacksonSchema).getAdditionalProperties())
           .getJsonSchema();
-      T component = resolveProperty(visited, schemaSwaps, name, valueType, mapValueSchema, null);
+      T component = resolveProperty(visited, schemaSwaps, name, valueType, mapValueSchema, null, valueTypeInfo,
+          ownContentSerializer);
       handleTypeAnnotations(component, beanProperty, Map.class, 1);
       return mapLikeProperty(component);
     }
@@ -652,6 +755,13 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       return raw();
     }
 
+    // an Object property (or an Object map value) holds arbitrary JSON, so it cannot be described further.
+    // Its Jackson schema can't be trusted either: it's shared with every Object property, including one with
+    // @JsonSerialize(as), which is resolved from that type instead (see PropertyMetadata#serializedAs)
+    if (def == Object.class) {
+      return anyTypeProperty();
+    }
+
     if (visited.put(def.getName(), name) != null) {
       throw new IllegalArgumentException(
           "Found a cyclic reference involving the field of type " + def.getName() + " starting a field "
@@ -659,7 +769,7 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
               + name);
     }
 
-    T res = resolveObject(visited, schemaSwaps, jacksonSchema);
+    T res = resolveObject(visited, schemaSwaps, jacksonSchema, valueTypeInfo);
     visited.remove(def.getName());
     return res;
   }
@@ -690,14 +800,20 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
             ofNullable(at.getAnnotation(Pattern.class))
                 .ifPresent(a -> schema.setPattern(a.value()));
 
+            // see PropertyMetadata
+            final UnaryOperator<Long> length = "byte".equals(schema.getFormat())
+                ? AbstractJsonSchema::base64Length
+                : UnaryOperator.identity();
             ofNullable(at.getAnnotation(Size.class))
                 .map(Size::min)
                 .filter(v -> v > 0)
+                .map(length)
                 .ifPresent(schema::setMinLength);
 
             ofNullable(at.getAnnotation(Size.class))
                 .map(Size::max)
                 .filter(v -> v < Long.MAX_VALUE)
+                .map(length)
                 .ifPresent(schema::setMaxLength);
 
           } else if ("number".equals(schema.getType()) || "integer".equals(schema.getType())) {
@@ -736,6 +852,130 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
       }
     }
     return toIgnore;
+  }
+
+  /**
+   * Whether the JDK type always writes a value the format accepts. Durations ({@code PT1H30M}), {@code LocalDateTime}
+   * and {@code java.sql.Time} (no offset) and the partial types ({@code 10:15:30+01:00}, {@code 2026-01},
+   * {@code --12-25}) never do.
+   */
+  private static boolean writesFormat(Class<?> type, String format) {
+    return switch (format) {
+      case "date-time" -> type == Instant.class || type == OffsetDateTime.class || type == ZonedDateTime.class
+          || Calendar.class.isAssignableFrom(type)
+          || (Date.class.isAssignableFrom(type) && type != java.sql.Time.class);
+      // java.sql.Date only reports date with Jackson2JdkTypesModule, which writes it as yyyy-MM-dd
+      case "date" -> type == LocalDate.class || type == java.sql.Date.class;
+      default -> false;
+    };
+  }
+
+  /**
+   * Jackson's serializers describe {@code byte[]} and {@code ByteBuffer} as arrays of integers and {@code char[]} and
+   * {@code QName} as an array and an object (or a reference to the first QName), but write them as strings (base64 for
+   * the binary types). Only these default descriptions are replaced, a value with its own serializer keeps its schema.
+   */
+  private static JsonSchema wireSchema(JavaType type, JsonSchema schema, boolean ownSerializer) {
+    final JavaType valueType = unwrapReferenceType(type);
+    if (valueType == null || ownSerializer) {
+      return schema;
+    }
+    if (schema.isArraySchema() && isBinary(valueType)) {
+      return new Base64Schema();
+    }
+    if ((schema.isArraySchema() && valueType.hasRawClass(char[].class))
+        || ((schema.isObjectSchema() || schema instanceof ReferenceSchema) && valueType.hasRawClass(QName.class))) {
+      return new StringSchema();
+    }
+    return schema;
+  }
+
+  /**
+   * Whether the value is written by a serializer or converter of the property, the content ones apply to the value of an
+   * {@code Optional} and the other reference types.
+   */
+  private static boolean hasOwnSerializer(BeanProperty beanProperty) {
+    final JsonSerialize serialize = beanProperty == null ? null : beanProperty.getAnnotation(JsonSerialize.class);
+    return serialize != null && (serialize.using() != ValueSerializer.None.class
+        || serialize.converter() != Converter.None.class
+        || (beanProperty.getType().isReferenceType() && hasOwnContentSerializer(beanProperty)));
+  }
+
+  /**
+   * Whether the items or values of the property are written by a serializer or converter of the property.
+   */
+  private static boolean hasOwnContentSerializer(BeanProperty beanProperty) {
+    final JsonSerialize serialize = beanProperty == null ? null : beanProperty.getAnnotation(JsonSerialize.class);
+    return serialize != null && (serialize.contentUsing() != ValueSerializer.None.class
+        || serialize.contentConverter() != Converter.None.class);
+  }
+
+  /**
+   * A binary type Jackson writes as a base64 string, see {@link #wireSchema}.
+   */
+  private static final class Base64Schema extends StringSchema {
+  }
+
+  /**
+   * The format controller-gen gives the Go counterpart ({@code int32}, {@code int64}), which the API server
+   * range-checks. {@code short}, {@code byte} and {@code BigInteger} get none, like Go's {@code int16} and {@code int8},
+   * and neither does a value with its own serializer, which may write something else.
+   */
+  private static String integerFormat(JavaType type, boolean ownSerializer) {
+    if (type == null || ownSerializer) {
+      return null;
+    }
+    final Class<?> raw = type.getRawClass();
+    if (raw == int.class || raw == Integer.class || raw == OptionalInt.class || raw == AtomicInteger.class) {
+      return "int32";
+    }
+    if (raw == long.class || raw == Long.class || raw == OptionalLong.class || raw == AtomicLong.class) {
+      return "int64";
+    }
+    return null;
+  }
+
+  /**
+   * Written as base64, like Go's {@code []byte}. {@code Byte[]} and {@code List<Byte>} are written as arrays of numbers.
+   */
+  private static boolean isBinary(JavaType type) {
+    return type != null && (type.hasRawClass(byte[].class) || ByteBuffer.class.isAssignableFrom(type.getRawClass()));
+  }
+
+  private static long base64Length(long bytes) {
+    return 4 * ((bytes + 2) / 3);
+  }
+
+  /**
+   * Jackson describes {@code Optional<X>} and the other reference types with the schema of {@code X}.
+   */
+  private static JavaType unwrapReferenceType(JavaType type) {
+    while (type != null && type.isReferenceType()) {
+      type = type.getReferencedType();
+    }
+    return type;
+  }
+
+  /**
+   * A property's {@link JsonTypeInfo} overrides its type's, which Jackson also inherits from interfaces and mix-ins.
+   * {@link JsonTypeInfo.Id#NONE} opts out of polymorphic handling.
+   */
+  private static boolean isPolymorphic(JsonTypeInfo valueTypeInfo, BeanDescription bd) {
+    final JsonTypeInfo typeInfo = valueTypeInfo != null ? valueTypeInfo : bd.getClassAnnotations().get(JsonTypeInfo.class);
+    if (typeInfo != null) {
+      return typeInfo.use() != JsonTypeInfo.Id.NONE;
+    }
+    return bd.getClassAnnotations().has(JsonSubTypes.class);
+  }
+
+  /**
+   * Schema for content that cannot be described, such as an {@code Object} property or a raw collection.
+   * Without {@code x-kubernetes-preserve-unknown-fields} the API server prunes whatever is stored there.
+   */
+  private T anyTypeProperty() {
+    T schema = singleProperty(null);
+    schema.setXKubernetesPreserveUnknownFields(true);
+    return schema;
   }
 
   V from(ValidationRule validationRule) {

@@ -29,6 +29,7 @@ public class QueueSpecFluent<A extends io.fabric8.volcano.api.model.scheduling.v
   private Map<String,Object> additionalProperties;
   private AffinityBuilder affinity;
   private Map<String,Quantity> capability;
+  private String dequeueStrategy;
   private Map<String,Quantity> deserved;
   private ArrayList<ClusterBuilder> extendClusters = new ArrayList<ClusterBuilder>();
   private GuaranteeBuilder guarantee;
@@ -190,6 +191,7 @@ public class QueueSpecFluent<A extends io.fabric8.volcano.api.model.scheduling.v
     if (instance != null) {
         this.withAffinity(instance.getAffinity());
         this.withCapability(instance.getCapability());
+        this.withDequeueStrategy(instance.getDequeueStrategy());
         this.withDeserved(instance.getDeserved());
         this.withExtendClusters(instance.getExtendClusters());
         this.withGuarantee(instance.getGuarantee());
@@ -279,6 +281,9 @@ public class QueueSpecFluent<A extends io.fabric8.volcano.api.model.scheduling.v
     if (!(Objects.equals(capability, that.capability))) {
       return false;
     }
+    if (!(Objects.equals(dequeueStrategy, that.dequeueStrategy))) {
+      return false;
+    }
     if (!(Objects.equals(deserved, that.deserved))) {
       return false;
     }
@@ -317,6 +322,10 @@ public class QueueSpecFluent<A extends io.fabric8.volcano.api.model.scheduling.v
     return this.capability;
   }
   
+  public String getDequeueStrategy() {
+    return this.dequeueStrategy;
+  }
+  
   public Map<String,Quantity> getDeserved() {
     return this.deserved;
   }
@@ -351,6 +360,10 @@ public class QueueSpecFluent<A extends io.fabric8.volcano.api.model.scheduling.v
   
   public boolean hasCapability() {
     return this.capability != null;
+  }
+  
+  public boolean hasDequeueStrategy() {
+    return this.dequeueStrategy != null;
   }
   
   public boolean hasDeserved() {
@@ -395,7 +408,7 @@ public class QueueSpecFluent<A extends io.fabric8.volcano.api.model.scheduling.v
   }
   
   public int hashCode() {
-    return Objects.hash(affinity, capability, deserved, extendClusters, guarantee, parent, priority, reclaimable, type, weight, additionalProperties);
+    return Objects.hash(affinity, capability, dequeueStrategy, deserved, extendClusters, guarantee, parent, priority, reclaimable, type, weight, additionalProperties);
   }
   
   public A removeAllFromExtendClusters(Collection<Cluster> items) {
@@ -542,6 +555,11 @@ public class QueueSpecFluent<A extends io.fabric8.volcano.api.model.scheduling.v
         sb.append(capability);
         sb.append(",");
     }
+    if (!(dequeueStrategy == null)) {
+        sb.append("dequeueStrategy:");
+        sb.append(dequeueStrategy);
+        sb.append(",");
+    }
     if (!(deserved == null) && !(deserved.isEmpty())) {
         sb.append("deserved:");
         sb.append(deserved);
@@ -617,6 +635,11 @@ public class QueueSpecFluent<A extends io.fabric8.volcano.api.model.scheduling.v
     } else {
       this.capability = new LinkedHashMap(capability);
     }
+    return (A) this;
+  }
+  
+  public A withDequeueStrategy(String dequeueStrategy) {
+    this.dequeueStrategy = dequeueStrategy;
     return (A) this;
   }
   

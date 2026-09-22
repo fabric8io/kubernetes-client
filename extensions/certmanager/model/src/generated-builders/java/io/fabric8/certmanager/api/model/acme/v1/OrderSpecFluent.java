@@ -32,6 +32,7 @@ public class OrderSpecFluent<A extends io.fabric8.certmanager.api.model.acme.v1.
   private List<String> ipAddresses = new ArrayList<String>();
   private IssuerReferenceBuilder issuerRef;
   private String profile;
+  private String replaces;
   private String request;
 
   public OrderSpecFluent() {
@@ -130,6 +131,7 @@ public class OrderSpecFluent<A extends io.fabric8.certmanager.api.model.acme.v1.
         this.withIpAddresses(instance.getIpAddresses());
         this.withIssuerRef(instance.getIssuerRef());
         this.withProfile(instance.getProfile());
+        this.withReplaces(instance.getReplaces());
         this.withRequest(instance.getRequest());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -174,6 +176,9 @@ public class OrderSpecFluent<A extends io.fabric8.certmanager.api.model.acme.v1.
       return false;
     }
     if (!(Objects.equals(profile, that.profile))) {
+      return false;
+    }
+    if (!(Objects.equals(replaces, that.replaces))) {
       return false;
     }
     if (!(Objects.equals(request, that.request))) {
@@ -251,6 +256,10 @@ public class OrderSpecFluent<A extends io.fabric8.certmanager.api.model.acme.v1.
     return this.profile;
   }
   
+  public String getReplaces() {
+    return this.replaces;
+  }
+  
   public String getRequest() {
     return this.request;
   }
@@ -301,12 +310,16 @@ public class OrderSpecFluent<A extends io.fabric8.certmanager.api.model.acme.v1.
     return this.profile != null;
   }
   
+  public boolean hasReplaces() {
+    return this.replaces != null;
+  }
+  
   public boolean hasRequest() {
     return this.request != null;
   }
   
   public int hashCode() {
-    return Objects.hash(commonName, dnsNames, duration, ipAddresses, issuerRef, profile, request, additionalProperties);
+    return Objects.hash(commonName, dnsNames, duration, ipAddresses, issuerRef, profile, replaces, request, additionalProperties);
   }
   
   public A removeAllFromDnsNames(Collection<String> items) {
@@ -422,6 +435,11 @@ public class OrderSpecFluent<A extends io.fabric8.certmanager.api.model.acme.v1.
         sb.append(profile);
         sb.append(",");
     }
+    if (!(replaces == null)) {
+        sb.append("replaces:");
+        sb.append(replaces);
+        sb.append(",");
+    }
     if (!(request == null)) {
         sb.append("request:");
         sb.append(request);
@@ -530,6 +548,11 @@ public class OrderSpecFluent<A extends io.fabric8.certmanager.api.model.acme.v1.
   
   public A withProfile(String profile) {
     this.profile = profile;
+    return (A) this;
+  }
+  
+  public A withReplaces(String replaces) {
+    this.replaces = replaces;
     return (A) this;
   }
   

@@ -25,7 +25,7 @@ public class HTTPRedirectBuilder extends HTTPRedirectFluent<HTTPRedirectBuilder>
   }
 
   public HTTPRedirect build() {
-    HTTPRedirect buildable = new HTTPRedirect(fluent.buildRedirectPort(), fluent.getAuthority(), fluent.getRedirectCode(), fluent.getScheme(), fluent.getUri());
+    HTTPRedirect buildable = new HTTPRedirect(fluent.buildRedirectPort(), fluent.getAuthority(), fluent.getPrefixRewrite(), fluent.getRedirectCode(), fluent.getScheme(), fluent.getUri());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

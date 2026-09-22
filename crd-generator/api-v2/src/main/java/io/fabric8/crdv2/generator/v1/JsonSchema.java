@@ -15,7 +15,6 @@
  */
 package io.fabric8.crdv2.generator.v1;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.crdv2.generator.AbstractJsonSchema;
 import io.fabric8.crdv2.generator.KubernetesJSONSchemaProps;
 import io.fabric8.crdv2.generator.KubernetesValidationRule;
@@ -26,6 +25,7 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrArray;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrBool;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.ValidationRule;
+import tools.jackson.databind.JsonNode;
 
 import java.util.Arrays;
 import java.util.List;

@@ -18,6 +18,7 @@ public class ChallengeStatusFluent<A extends io.fabric8.certmanager.api.model.ac
 
   private Map<String,Object> additionalProperties;
   private Boolean presented;
+  private String presentedAt;
   private Boolean processing;
   private String reason;
   private String state;
@@ -53,6 +54,7 @@ public class ChallengeStatusFluent<A extends io.fabric8.certmanager.api.model.ac
     instance = instance != null ? instance : new ChallengeStatus();
     if (instance != null) {
         this.withPresented(instance.getPresented());
+        this.withPresentedAt(instance.getPresentedAt());
         this.withProcessing(instance.getProcessing());
         this.withReason(instance.getReason());
         this.withState(instance.getState());
@@ -72,6 +74,9 @@ public class ChallengeStatusFluent<A extends io.fabric8.certmanager.api.model.ac
     }
     ChallengeStatusFluent that = (ChallengeStatusFluent) o;
     if (!(Objects.equals(presented, that.presented))) {
+      return false;
+    }
+    if (!(Objects.equals(presentedAt, that.presentedAt))) {
       return false;
     }
     if (!(Objects.equals(processing, that.processing))) {
@@ -97,6 +102,10 @@ public class ChallengeStatusFluent<A extends io.fabric8.certmanager.api.model.ac
     return this.presented;
   }
   
+  public String getPresentedAt() {
+    return this.presentedAt;
+  }
+  
   public Boolean getProcessing() {
     return this.processing;
   }
@@ -117,6 +126,10 @@ public class ChallengeStatusFluent<A extends io.fabric8.certmanager.api.model.ac
     return this.presented != null;
   }
   
+  public boolean hasPresentedAt() {
+    return this.presentedAt != null;
+  }
+  
   public boolean hasProcessing() {
     return this.processing != null;
   }
@@ -130,7 +143,7 @@ public class ChallengeStatusFluent<A extends io.fabric8.certmanager.api.model.ac
   }
   
   public int hashCode() {
-    return Objects.hash(presented, processing, reason, state, additionalProperties);
+    return Objects.hash(presented, presentedAt, processing, reason, state, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -163,6 +176,11 @@ public class ChallengeStatusFluent<A extends io.fabric8.certmanager.api.model.ac
     if (!(presented == null)) {
         sb.append("presented:");
         sb.append(presented);
+        sb.append(",");
+    }
+    if (!(presentedAt == null)) {
+        sb.append("presentedAt:");
+        sb.append(presentedAt);
         sb.append(",");
     }
     if (!(processing == null)) {
@@ -203,6 +221,11 @@ public class ChallengeStatusFluent<A extends io.fabric8.certmanager.api.model.ac
   
   public A withPresented(Boolean presented) {
     this.presented = presented;
+    return (A) this;
+  }
+  
+  public A withPresentedAt(String presentedAt) {
+    this.presentedAt = presentedAt;
     return (A) this;
   }
   

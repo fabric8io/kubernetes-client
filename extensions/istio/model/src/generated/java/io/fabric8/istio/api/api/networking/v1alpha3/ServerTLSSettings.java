@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,8 +32,9 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "caCertCredentialName",
@@ -44,6 +44,7 @@ import lombok.experimental.Accessors;
     "credentialName",
     "credentialNames",
     "httpsRedirect",
+    "insecureSkipVerify",
     "maxProtocolVersion",
     "minProtocolVersion",
     "mode",
@@ -95,6 +96,8 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
     private List<String> credentialNames = new ArrayList<>();
     @JsonProperty("httpsRedirect")
     private Boolean httpsRedirect;
+    @JsonProperty("insecureSkipVerify")
+    private Boolean insecureSkipVerify;
     @JsonProperty("maxProtocolVersion")
     private ServerTLSSettingsTLSProtocol maxProtocolVersion;
     @JsonProperty("minProtocolVersion")
@@ -126,7 +129,7 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
     public ServerTLSSettings() {
     }
 
-    public ServerTLSSettings(String caCertCredentialName, String caCertificates, String caCrl, List<String> cipherSuites, String credentialName, List<String> credentialNames, Boolean httpsRedirect, ServerTLSSettingsTLSProtocol maxProtocolVersion, ServerTLSSettingsTLSProtocol minProtocolVersion, ServerTLSSettingsTLSmode mode, String privateKey, String serverCertificate, List<String> subjectAltNames, List<ServerTLSSettingsTLSCertificate> tlsCertificates, List<String> verifyCertificateHash, List<String> verifyCertificateSpki) {
+    public ServerTLSSettings(String caCertCredentialName, String caCertificates, String caCrl, List<String> cipherSuites, String credentialName, List<String> credentialNames, Boolean httpsRedirect, Boolean insecureSkipVerify, ServerTLSSettingsTLSProtocol maxProtocolVersion, ServerTLSSettingsTLSProtocol minProtocolVersion, ServerTLSSettingsTLSmode mode, String privateKey, String serverCertificate, List<String> subjectAltNames, List<ServerTLSSettingsTLSCertificate> tlsCertificates, List<String> verifyCertificateHash, List<String> verifyCertificateSpki) {
         super();
         this.caCertCredentialName = caCertCredentialName;
         this.caCertificates = caCertificates;
@@ -135,6 +138,7 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
         this.credentialName = credentialName;
         this.credentialNames = credentialNames;
         this.httpsRedirect = httpsRedirect;
+        this.insecureSkipVerify = insecureSkipVerify;
         this.maxProtocolVersion = maxProtocolVersion;
         this.minProtocolVersion = minProtocolVersion;
         this.mode = mode;
@@ -260,6 +264,16 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
         this.httpsRedirect = httpsRedirect;
     }
 
+    @JsonProperty("insecureSkipVerify")
+    public Boolean getInsecureSkipVerify() {
+        return insecureSkipVerify;
+    }
+
+    @JsonProperty("insecureSkipVerify")
+    public void setInsecureSkipVerify(Boolean insecureSkipVerify) {
+        this.insecureSkipVerify = insecureSkipVerify;
+    }
+
     @JsonProperty("maxProtocolVersion")
     public ServerTLSSettingsTLSProtocol getMaxProtocolVersion() {
         return maxProtocolVersion;
@@ -323,7 +337,7 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
     }
 
     /**
-     * A list of alternate names to verify the subject identity in the certificate presented by the client. Requires TLS mode to be set to `MUTUAL`. When multiple certificates are provided via `credential_names` or `tls_certificates`, the subject alternate names are validated against the selected certificate.
+     * A list of alternate names to verify the subject identity in the certificate presented by the client. Requires TLS mode to be set to `MUTUAL`.
      */
     @JsonProperty("subjectAltNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -332,7 +346,7 @@ public class ServerTLSSettings implements Editable<ServerTLSSettingsBuilder>, Ku
     }
 
     /**
-     * A list of alternate names to verify the subject identity in the certificate presented by the client. Requires TLS mode to be set to `MUTUAL`. When multiple certificates are provided via `credential_names` or `tls_certificates`, the subject alternate names are validated against the selected certificate.
+     * A list of alternate names to verify the subject identity in the certificate presented by the client. Requires TLS mode to be set to `MUTUAL`.
      */
     @JsonProperty("subjectAltNames")
     public void setSubjectAltNames(List<String> subjectAltNames) {

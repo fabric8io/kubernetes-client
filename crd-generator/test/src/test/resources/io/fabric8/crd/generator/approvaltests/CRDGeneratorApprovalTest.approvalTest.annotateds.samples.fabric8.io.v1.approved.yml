@@ -30,9 +30,11 @@ spec:
                 type: "number"
               defaultInt:
                 default: 1337
+                format: "int32"
                 type: "integer"
               defaultInteger:
                 default: 1337
+                format: "int32"
                 type: "integer"
               defaultValue:
                 default: "my-value"
@@ -49,23 +51,26 @@ spec:
                 type: "string"
               from-getter:
                 description: "from-getter-description"
+                format: "int32"
                 type: "integer"
               kubernetesValidationRule:
                 type: "string"
                 x-kubernetes-validations:
                 - message: "kubernetesValidationRule must start with prefix 'prefix-'"
-                  rule: "self.startwith('prefix-')"
+                  rule: "self.startsWith('prefix-')"
               kubernetesValidationRules:
                 type: "string"
                 x-kubernetes-validations:
-                - rule: "first.rule"
-                - rule: "second.rule"
+                - rule: "self.size() > 0"
+                - rule: "self.size() < 64"
                 - reason: "FieldValueForbidden"
-                  rule: "third.rule"
+                  rule: "self != 'forbidden'"
               max:
+                format: "int32"
                 maximum: 5.0
                 type: "integer"
               min:
+                format: "int32"
                 minimum: -5.0
                 type: "integer"
               nullable:
@@ -75,6 +80,7 @@ spec:
                 pattern: "\\b[1-9]\\b"
                 type: "string"
               sizedField:
+                format: "int32"
                 type: "integer"
               unnamed:
                 type: "string"

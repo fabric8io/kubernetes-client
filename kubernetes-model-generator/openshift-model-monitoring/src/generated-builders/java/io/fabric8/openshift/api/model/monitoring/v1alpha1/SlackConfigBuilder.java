@@ -25,7 +25,7 @@ public class SlackConfigBuilder extends SlackConfigFluent<SlackConfigBuilder> im
   }
 
   public SlackConfig build() {
-    SlackConfig buildable = new SlackConfig(fluent.buildActions(), fluent.getApiURL(), fluent.getCallbackId(), fluent.getChannel(), fluent.getColor(), fluent.getFallback(), fluent.buildFields(), fluent.getFooter(), fluent.buildHttpConfig(), fluent.getIconEmoji(), fluent.getIconURL(), fluent.getImageURL(), fluent.getLinkNames(), fluent.getMessageText(), fluent.getMrkdwnIn(), fluent.getPretext(), fluent.getSendResolved(), fluent.getShortFields(), fluent.getText(), fluent.getThumbURL(), fluent.getTimeout(), fluent.getTitle(), fluent.getTitleLink(), fluent.getUsername());
+    SlackConfig buildable = new SlackConfig(fluent.buildActions(), fluent.getApiURL(), fluent.getCallbackId(), fluent.getChannel(), fluent.getColor(), fluent.getFallback(), fluent.buildFields(), fluent.getFooter(), fluent.buildHttpConfig(), fluent.getIconEmoji(), fluent.getIconURL(), fluent.getImageURL(), fluent.getLinkNames(), fluent.getMessageText(), fluent.getMrkdwnIn(), fluent.getPretext(), fluent.getSendResolved(), fluent.getShortFields(), fluent.getText(), fluent.getThumbURL(), fluent.getTimeout(), fluent.getTitle(), fluent.getTitleLink(), fluent.getUpdateMessage(), fluent.getUsername());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

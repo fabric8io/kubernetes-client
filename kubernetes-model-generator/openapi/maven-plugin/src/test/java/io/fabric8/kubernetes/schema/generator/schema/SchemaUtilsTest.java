@@ -445,7 +445,7 @@ class SchemaUtilsTest {
       schema.set$ref("#/components/schemas/io.k8s.apiextensions-apiserver.pkg.apis.apiextensions.v1.JSON");
       final String result = schemaUtils.schemaToClassName(importManager, schema);
       assertEquals("JsonNode", result);
-      assertEquals("com.fasterxml.jackson.databind.JsonNode", importManager.getImports().iterator().next());
+      assertEquals("tools.jackson.databind.JsonNode", importManager.getImports().iterator().next());
     }
 
     @Test

@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,11 +32,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * JobFlowSpec defines the desired state of JobFlow
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "flows",
@@ -89,7 +89,7 @@ public class JobFlowSpec implements Editable<JobFlowSpecBuilder>, KubernetesReso
     }
 
     /**
-     * Foo is an example field of JobFlow. Edit jobflow_types.go to remove/update
+     * JobFlowSpec defines the desired state of JobFlow
      */
     @JsonProperty("flows")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -98,7 +98,7 @@ public class JobFlowSpec implements Editable<JobFlowSpecBuilder>, KubernetesReso
     }
 
     /**
-     * Foo is an example field of JobFlow. Edit jobflow_types.go to remove/update
+     * JobFlowSpec defines the desired state of JobFlow
      */
     @JsonProperty("flows")
     public void setFlows(List<Flow> flows) {

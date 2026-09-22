@@ -90,19 +90,17 @@
     <!-- Core versions -->
     <sundrio.version>0.230.2</sundrio.version>
     <okhttp.version>5.5.0</okhttp.version>
-    <jackson.version>2.22.2</jackson.version>
+    <jackson.version>3.2.2</jackson.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
-    <!-- jackson-bom decouples jackson-annotations from jackson.version since 2.20 (it drops the patch segment). Keep in sync with jackson-bom's jackson.version.annotations, Refer: https://github.com/FasterXML/jackson-bom/blob/54f854ba1ce69c5827f8acf6d08ba2d7ce36233c/pom.xml#L53-L62 -->
+    <!-- jackson-annotations is shared between Jackson 2.x and 3.x, uses 2.x groupId and major.minor versioning -->
     <jackson.bundle.version.annotations>2.22</jackson.bundle.version.annotations>
-    <!-- TODO: pinned to Jetty 11. Moving to 12 is not an in-place bump: it reorganises the
-         artifacts and changes the EE baseline, so it wants its own module next to httpclient-jetty,
-         the way httpclient-vertx (4.x) and httpclient-vertx-5 (5.x) coexist. Renovate is configured
-         to withhold Jetty majors until then. -->
-    <jetty.version>11.0.26</jetty.version>
+    <!-- Jackson 2 for the internal openapi model generator/validator tooling (swagger-parser, swagger-request-validator) -->
+    <jackson2.version>2.22.2</jackson2.version>
+    <jetty.version>12.1.13</jetty.version>
     <maven-core.version>3.9.16</maven-core.version>
     <maven-plugin-annotations.version>3.16.0</maven-plugin-annotations.version>
     <vertx.version>4.5.34</vertx.version>
-    <vertx5.version>5.1.8</vertx5.version>
+    <vertx5.version>5.2.0</vertx5.version>
     <jandex.version>3.6.0</jandex.version>
     <snakeyaml.version>3.1.1</snakeyaml.version>
     <snakeyaml.bundle.version>2.5</snakeyaml.bundle.version> <!-- Transitive Jackson -->
@@ -118,16 +116,17 @@
     <assertj.core.version>3.27.7</assertj.core.version>
     <awaitility.version>4.3.0</awaitility.version>
     <approvaltests.version>31.0.0</approvaltests.version>
-    <bouncycastle.version>1.85</bouncycastle.version>
+    <bouncycastle.version>1.86</bouncycastle.version>
     <bc-fips.version>2.1.3</bc-fips.version>
     <bcpkix-fips.version>2.1.12</bcpkix-fips.version>
-    <keycloak.version>26.7.3</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
+    <keycloak.version>26.7.4</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
+    <jboss-logging.version>3.6.3.Final</jboss-logging.version><!-- Keycloak classes reference it; needed to introspect them -->
     <mockito.version>5.23.0</mockito.version>
     <!-- byte-buddy-agent is loaded as a startup -javaagent by surefire (see maven-surefire-plugin) to
          avoid Mockito's runtime self-attach. Keep this in sync with the byte-buddy-agent that mockito-core
          ${mockito.version} pulls transitively; a small skew is harmless since the agent only installs
          Instrumentation. -->
-    <byte-buddy.version>1.18.13-jdk5</byte-buddy.version>
+    <byte-buddy.version>1.18.14-jdk5</byte-buddy.version>
     <spock.version>2.4-groovy-5.0</spock.version>
 
     <conscrypt-openjdk-uber.bundle.version>1.4.2_1</conscrypt-openjdk-uber.bundle.version>
@@ -148,7 +147,7 @@
     <buildnumber.plugin.version>3.3.1</buildnumber.plugin.version>
     <exec.maven-plugin.version>3.6.4</exec.maven-plugin.version>
     <maven.compiler.plugin.version>3.16.0</maven.compiler.plugin.version>
-    <maven.bundle.plugin.version>6.1.2</maven.bundle.plugin.version>
+    <maven.bundle.plugin.version>6.2.0</maven.bundle.plugin.version>
     <maven.buildhelper.plugin.version>3.6.2</maven.buildhelper.plugin.version>
     <maven.jar.plugin.version>3.5.1</maven.jar.plugin.version>
     <maven.surefire.plugin.version>3.6.0</maven.surefire.plugin.version>
@@ -157,12 +156,12 @@
     <maven.javadoc.plugin.version>3.12.0</maven.javadoc.plugin.version>
     <maven.source.plugin.version>3.4.0</maven.source.plugin.version>
     <maven.enforcer.plugin.version>3.6.3</maven.enforcer.plugin.version>
-    <maven.deploy.plugin.version>3.1.4</maven.deploy.plugin.version>
+    <maven.deploy.plugin.version>3.2.0</maven.deploy.plugin.version>
     <maven.gpg.plugin.version>3.2.8</maven.gpg.plugin.version>
     <maven.antrun.plugin.version>3.2.0</maven.antrun.plugin.version>
     <maven.dependency.plugin.version>3.11.0</maven.dependency.plugin.version>
     <maven.shade.plugin.version>3.6.2</maven.shade.plugin.version>
-    <maven.install.plugin.version>3.1.4</maven.install.plugin.version>
+    <maven.install.plugin.version>3.2.0</maven.install.plugin.version>
     <maven.invoker.plugin.version>3.10.1</maven.invoker.plugin.version>
     <maven.plugin.plugin.version>3.16.0</maven.plugin.plugin.version>
     <gmavenplus-plugin.version>5.1.0</gmavenplus-plugin.version>
@@ -264,16 +263,6 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>java-generator-core</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>crd-generator-apt</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>crd-generator-api</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -684,7 +673,7 @@
 
       <!-- Jackson dependencies, imported as a BOM -->
       <dependency>
-        <groupId>com.fasterxml.jackson</groupId>
+        <groupId>tools.jackson</groupId>
         <artifactId>jackson-bom</artifactId>
         <version>${jackson.version}</version>
         <scope>import</scope>
@@ -748,12 +737,12 @@
       </dependency>
       <dependency>
         <groupId>org.eclipse.jetty.http2</groupId>
-        <artifactId>http2-http-client-transport</artifactId>
+        <artifactId>jetty-http2-client-transport</artifactId>
         <version>${jetty.version}</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.jetty.websocket</groupId>
-        <artifactId>websocket-jetty-client</artifactId>
+        <artifactId>jetty-websocket-jetty-client</artifactId>
         <version>${jetty.version}</version>
       </dependency>
       <dependency>
@@ -871,12 +860,6 @@
         <groupId>org.bouncycastle</groupId>
         <artifactId>bcpkix-jdk18on</artifactId>
         <version>${bouncycastle.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-server</artifactId>
-        <version>${jetty.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -1433,7 +1416,8 @@
                     <includes>
                       <include>io.sundr*:*</include>
                       <include>org.projectlombok:lombok*</include>
-                      <include>com.fasterxml.jackson*:*</include>
+                      <include>tools.jackson*:*</include>
+                      <include>com.fasterxml.jackson.core:jackson-annotations</include>
                       <include>io.fabric8:kubernetes-model*</include>
                       <include>io.fabric8:openshift-model*</include>
                     </includes>
@@ -1566,11 +1550,11 @@
                   <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/openshift-client</location>
                 </offlineLink>
                 <offlineLink>
-                  <url>${javadoc.links}/com.fasterxml.jackson.core/jackson-databind/${jackson.version}</url>
+                  <url>${javadoc.links}/tools.jackson.core/jackson-databind/${jackson.version}</url>
                   <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/jackson-databind</location>
                 </offlineLink>
                 <offlineLink>
-                  <url>${javadoc.links}/com.fasterxml.jackson.core/jackson-core/${jackson.version}</url>
+                  <url>${javadoc.links}/tools.jackson.core/jackson-core/${jackson.version}</url>
                   <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/jackson-core</location>
                 </offlineLink>
                 <offlineLink>
@@ -1700,11 +1684,11 @@
                   <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/openshift-client</location>
                 </offlineLink>
                 <offlineLink>
-                  <url>${javadoc.links}/com.fasterxml.jackson.core/jackson-databind/${jackson.version}</url>
+                  <url>${javadoc.links}/tools.jackson.core/jackson-databind/${jackson.version}</url>
                   <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/jackson-databind</location>
                 </offlineLink>
                 <offlineLink>
-                  <url>${javadoc.links}/com.fasterxml.jackson.core/jackson-core/${jackson.version}</url>
+                  <url>${javadoc.links}/tools.jackson.core/jackson-core/${jackson.version}</url>
                   <location>${maven.multiModuleProjectDirectory}/doc/javadoc-links/jackson-core</location>
                 </offlineLink>
                 <offlineLink>

@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.certmanager.api.model.meta.v1.SecretKeySelector;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
@@ -32,14 +31,16 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate` or `kubernetes`].
+ * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate`, `kubernetes`, `aws`].
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "appRole",
+    "aws",
     "clientCertificate",
     "kubernetes",
     "tokenSecretRef"
@@ -71,6 +72,8 @@ public class VaultAuth implements Editable<VaultAuthBuilder>, KubernetesResource
 
     @JsonProperty("appRole")
     private VaultAppRole appRole;
+    @JsonProperty("aws")
+    private VaultAWSAuth aws;
     @JsonProperty("clientCertificate")
     private VaultClientCertificateAuth clientCertificate;
     @JsonProperty("kubernetes")
@@ -86,16 +89,17 @@ public class VaultAuth implements Editable<VaultAuthBuilder>, KubernetesResource
     public VaultAuth() {
     }
 
-    public VaultAuth(VaultAppRole appRole, VaultClientCertificateAuth clientCertificate, VaultKubernetesAuth kubernetes, SecretKeySelector tokenSecretRef) {
+    public VaultAuth(VaultAppRole appRole, VaultAWSAuth aws, VaultClientCertificateAuth clientCertificate, VaultKubernetesAuth kubernetes, SecretKeySelector tokenSecretRef) {
         super();
         this.appRole = appRole;
+        this.aws = aws;
         this.clientCertificate = clientCertificate;
         this.kubernetes = kubernetes;
         this.tokenSecretRef = tokenSecretRef;
     }
 
     /**
-     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate` or `kubernetes`].
+     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate`, `kubernetes`, `aws`].
      */
     @JsonProperty("appRole")
     public VaultAppRole getAppRole() {
@@ -103,7 +107,7 @@ public class VaultAuth implements Editable<VaultAuthBuilder>, KubernetesResource
     }
 
     /**
-     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate` or `kubernetes`].
+     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate`, `kubernetes`, `aws`].
      */
     @JsonProperty("appRole")
     public void setAppRole(VaultAppRole appRole) {
@@ -111,7 +115,23 @@ public class VaultAuth implements Editable<VaultAuthBuilder>, KubernetesResource
     }
 
     /**
-     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate` or `kubernetes`].
+     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate`, `kubernetes`, `aws`].
+     */
+    @JsonProperty("aws")
+    public VaultAWSAuth getAws() {
+        return aws;
+    }
+
+    /**
+     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate`, `kubernetes`, `aws`].
+     */
+    @JsonProperty("aws")
+    public void setAws(VaultAWSAuth aws) {
+        this.aws = aws;
+    }
+
+    /**
+     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate`, `kubernetes`, `aws`].
      */
     @JsonProperty("clientCertificate")
     public VaultClientCertificateAuth getClientCertificate() {
@@ -119,7 +139,7 @@ public class VaultAuth implements Editable<VaultAuthBuilder>, KubernetesResource
     }
 
     /**
-     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate` or `kubernetes`].
+     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate`, `kubernetes`, `aws`].
      */
     @JsonProperty("clientCertificate")
     public void setClientCertificate(VaultClientCertificateAuth clientCertificate) {
@@ -127,7 +147,7 @@ public class VaultAuth implements Editable<VaultAuthBuilder>, KubernetesResource
     }
 
     /**
-     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate` or `kubernetes`].
+     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate`, `kubernetes`, `aws`].
      */
     @JsonProperty("kubernetes")
     public VaultKubernetesAuth getKubernetes() {
@@ -135,7 +155,7 @@ public class VaultAuth implements Editable<VaultAuthBuilder>, KubernetesResource
     }
 
     /**
-     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate` or `kubernetes`].
+     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate`, `kubernetes`, `aws`].
      */
     @JsonProperty("kubernetes")
     public void setKubernetes(VaultKubernetesAuth kubernetes) {
@@ -143,7 +163,7 @@ public class VaultAuth implements Editable<VaultAuthBuilder>, KubernetesResource
     }
 
     /**
-     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate` or `kubernetes`].
+     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate`, `kubernetes`, `aws`].
      */
     @JsonProperty("tokenSecretRef")
     public SecretKeySelector getTokenSecretRef() {
@@ -151,7 +171,7 @@ public class VaultAuth implements Editable<VaultAuthBuilder>, KubernetesResource
     }
 
     /**
-     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate` or `kubernetes`].
+     * VaultAuth is configuration used to authenticate with a Vault server. The order of precedence is [`tokenSecretRef`, `appRole`, `clientCertificate`, `kubernetes`, `aws`].
      */
     @JsonProperty("tokenSecretRef")
     public void setTokenSecretRef(SecretKeySelector tokenSecretRef) {
