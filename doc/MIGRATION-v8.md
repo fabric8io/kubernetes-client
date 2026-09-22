@@ -220,3 +220,19 @@ Exclude `kubernetes-httpclient-vertx-5`, add `kubernetes-httpclient-vertx`, and 
     <artifactId>kubernetes-httpclient-vertx</artifactId>
   </dependency>
 </dependencies>
+```
+#### Gradle Setup
+
+Exclude `kubernetes-httpclient-vertx-5`, add `kubernetes-httpclient-vertx`, and import the Vert.x 4 BOM in `build.gradle`:
+
+```groovy
+dependencies {
+    implementation('io.fabric8:kubernetes-client') {
+        exclude group: 'io.fabric8', module: 'kubernetes-httpclient-vertx-5'
+    }
+    implementation 'io.fabric8:kubernetes-httpclient-vertx'
+
+    // Enforce Vert.x 4.x to prevent Gradle from resolving Vert.x 5 transitively (e.g., from mock server)
+    implementation platform('io.vertx:vertx-stack-depchain:4.5.34')
+}
+```
