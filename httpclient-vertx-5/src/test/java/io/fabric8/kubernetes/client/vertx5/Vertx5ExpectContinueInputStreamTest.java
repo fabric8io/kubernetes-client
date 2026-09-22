@@ -31,6 +31,7 @@ import java.io.SequenceInputStream;
 import java.net.URI;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,6 +41,8 @@ class Vertx5ExpectContinueInputStreamTest {
   private Vertx vertx;
   private int serverPort;
   private final AtomicBoolean continueSent = new AtomicBoolean(false);
+  private final AtomicReference<String> contentLength = new AtomicReference<>();
+  private final AtomicReference<String> transferEncoding = new AtomicReference<>();
   private final HttpClient.Factory factory = new Vertx5HttpClientFactory();
 
   @BeforeEach
@@ -49,6 +52,8 @@ class Vertx5ExpectContinueInputStreamTest {
 
     HttpServer server = vertx.createHttpServer();
     server.requestHandler(req -> {
+      contentLength.set(req.getHeader("Content-Length"));
+      transferEncoding.set(req.getHeader("Transfer-Encoding"));
       if ("100-continue".equalsIgnoreCase(req.getHeader("Expect"))) {
         continueSent.set(true);
         req.response().writeContinue();
@@ -66,7 +71,7 @@ class Vertx5ExpectContinueInputStreamTest {
   }
 
   @Test
-  @DisplayName("Should upload InputStream with Expect: 100-continue and known length")
+  @DisplayName("Expect: 100-continue with a known-length InputStream completes and sends the body with Content-Length")
   void testInputStreamWithExpectContinueAndKnownLength() throws Exception {
     byte[] data = new byte[256 * 1024]; // 256 KiB
     InputStream is = new ByteArrayInputStream(data);
@@ -78,16 +83,18 @@ class Vertx5ExpectContinueInputStreamTest {
           .post("application/octet-stream", is, data.length)
           .build();
 
-      HttpResponse<String> response = client.sendAsync(request, String.class).get();
+      HttpResponse<String> response = client.sendAsync(request, String.class).get(10, TimeUnit.SECONDS);
 
       assertThat(response.code()).isEqualTo(200);
       assertThat(response.body()).isEqualTo("OK:" + data.length);
       assertThat(continueSent.get()).isTrue();
+      assertThat(contentLength.get()).isEqualTo(String.valueOf(data.length));
+      assertThat(transferEncoding.get()).isNull();
     }
   }
 
   @Test
-  @DisplayName("Should upload InputStream with Expect: 100-continue and unknown length")
+  @DisplayName("Expect: 100-continue with an unknown-length InputStream completes and sends the body chunked")
   void testInputStreamWithExpectContinueAndUnknownLength() throws Exception {
     byte[] data = new byte[256 * 1024]; // 256 KiB
     InputStream is = new SequenceInputStream(new ByteArrayInputStream(data), InputStream.nullInputStream());
@@ -99,16 +106,18 @@ class Vertx5ExpectContinueInputStreamTest {
           .post("application/octet-stream", is, -1)
           .build();
 
-      HttpResponse<String> response = client.sendAsync(request, String.class).get();
+      HttpResponse<String> response = client.sendAsync(request, String.class).get(10, TimeUnit.SECONDS);
 
       assertThat(response.code()).isEqualTo(200);
       assertThat(response.body()).isEqualTo("OK:" + data.length);
       assertThat(continueSent.get()).isTrue();
+      assertThat(contentLength.get()).isNull();
+      assertThat(transferEncoding.get()).isEqualTo("chunked");
     }
   }
 
   @Test
-  @DisplayName("Should upload InputStream without Expect: 100-continue")
+  @DisplayName("A known-length InputStream without Expect: 100-continue is sent with Content-Length")
   void testInputStreamWithoutExpectContinue() throws Exception {
     byte[] data = new byte[256 * 1024]; // 256 KiB
     InputStream is = new ByteArrayInputStream(data);
@@ -119,11 +128,13 @@ class Vertx5ExpectContinueInputStreamTest {
           .post("application/octet-stream", is, data.length)
           .build();
 
-      HttpResponse<String> response = client.sendAsync(request, String.class).get();
+      HttpResponse<String> response = client.sendAsync(request, String.class).get(10, TimeUnit.SECONDS);
 
       assertThat(response.code()).isEqualTo(200);
       assertThat(response.body()).isEqualTo("OK:" + data.length);
       assertThat(continueSent.get()).isFalse();
+      assertThat(contentLength.get()).isEqualTo(String.valueOf(data.length));
+      assertThat(transferEncoding.get()).isNull();
     }
   }
 }

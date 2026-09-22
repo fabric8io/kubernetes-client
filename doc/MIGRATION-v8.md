@@ -11,7 +11,7 @@
 - [`withShardSelector(null)` is ambiguous](#shard-selector-null)
 - [`kubernetes-httpclient-jetty` moved to Jetty 12](#jetty-12)
 - [Vert.x 5 is now the default HttpClient implementation](#vertx5-httpclient)
-  - [Staying on Vert.x 4](#staying-on-vertx-4)
+  - [Staying on Vert.x 4](#vertx4-httpclient)
 
 
 > [!NOTE]
@@ -157,40 +157,22 @@ Passing a `null`-valued variable is unaffected, and either overload still clears
 - **Exposed types:** `JettyHttpResponse`, `JettyAsyncResponseListener` and `JettyWebSocket` use Jetty 12 types and supertypes (`Response.Listener`, `Session.Listener`). The JPMS module names changed too: `org.eclipse.jetty.websocket.jetty.client` is now `org.eclipse.jetty.websocket.client`, and `org.eclipse.jetty.http2.http.client.transport` is `org.eclipse.jetty.http2.client.transport`.
 - **WebSocket back-pressure:** messages that aren't consumed now wait on the socket instead of blocking a Jetty thread, so the "Jetty HttpClient thread is waiting too long for the consumption of previous websocket message" exception is gone.
 
-## Vert.x 5 is now the default HttpClient implementation <a href="#vertx5-httpclient" id="vertx5-httpclient"></a>
+## Vert.x 5 is now the default HttpClient implementation <a href="#vertx5-httpclient" id="vertx5-httpclient"/>
 
-The default `HttpClient` implementation has been upgraded from `kubernetes-httpclient-vertx` (Vert.x 4.x) to `kubernetes-httpclient-vertx-5` (Vert.x 5.x). As of version 8.0.0, `io.fabric8:kubernetes-client` and `io.fabric8:openshift-client` depend on `io.fabric8:kubernetes-httpclient-vertx-5` by default.
+`io.fabric8:kubernetes-client` and `io.fabric8:openshift-client` now bring in `io.fabric8:kubernetes-httpclient-vertx-5` (Vert.x 5.x) instead of `io.fabric8:kubernetes-httpclient-vertx` (Vert.x 4.x). If you used `kubernetes-httpclient-vertx-5` as an opt-in dependency in 7.x, remove the explicit dependency and the `kubernetes-httpclient-vertx` exclusion.
 
-### Key Changes & Upgrade Impact
+- **Using another HttpClient:** if you exclude the default client to use OkHttp, the JDK or Jetty, change the exclusion from `kubernetes-httpclient-vertx` to `kubernetes-httpclient-vertx-5`. The old exclusion no longer matches anything, so Vert.x 5 and Netty 4.2 come back onto your classpath. Your client is still the one selected at runtime, so nothing warns you.
+- **Classpath:** Vert.x 5 requires Netty 4.2 and brings `io.vertx:vertx-uri-template`, which `vertx-web-client` 5 requires as a JPMS module. If your application pins Netty 4.1, or manages the `io.vertx` artifacts at 4.x (for example through a platform BOM), align them with Vert.x 5 or [stay on Vert.x 4](#vertx4-httpclient). With Vert.x 4 jars on the classpath, building the Vert.x 5 client fails with an `IllegalStateException`.
+- **`VertxHttpClientFactory`:** the Vert.x 5 factory is `io.fabric8.kubernetes.client.vertx5.Vertx5HttpClientFactory`, and its constructor takes a Vert.x 5 `Vertx`. `additionalConfig(WebClientOptions)` becomes `additionalConfig(WebClientOptions, WebSocketClientOptions, PoolOptions)`, since Vert.x 5 configures WebSockets and the connection pool separately. `TlsWarmup` is `io.fabric8.kubernetes.client.vertx5.TlsWarmup`, and the JPMS module is `io.fabric8.kubernetes.client.vertx5`.
+- **Mock server:** `io.fabric8:mockwebserver` and `io.fabric8:kubernetes-server-mock` (and through them `io.fabric8:kubernetes-junit-jupiter`) now run on Vert.x 5 too.
 
-* **Exclusion Changes for Custom Clients:** If you previously excluded `kubernetes-httpclient-vertx` in 7.x to use another HTTP client implementation (such as OkHttp, JDK, or Jetty), you must update your exclusion rule to target `kubernetes-httpclient-vertx-5`. The old exclusion will silently no longer match, causing Vert.x 5 to be pulled into your dependencies.
-* **Transitive Dependency Changes:** Vert.x 5 brings in Netty 4.2 and `vertx-uri-template`. If your build or a platform BOM forces Vert.x 4.x JARs onto the classpath alongside the Vert.x 5 module, the client will fail fast at runtime with a descriptive message rather than failing non-deterministically.
-* **API & Factory Mappings:**
-  * **Class & Package:** `io.fabric8.kubernetes.client.vertx.VertxHttpClientFactory` is now `io.fabric8.kubernetes.client.vertx5.Vertx5HttpClientFactory`.
-  * **`additionalConfig` Signature:** Updates from accepting Vert.x 4 `WebClientOptions` to Vert.x 5 HTTP client request / client options.
-  * **TLS Warmup & JPMS:** Update any JPMS module-info requires to reference `io.fabric8.kubernetes.client.httpclient.vertx5`.
-* **Mock Server:** `kubernetes-server-mock` now runs on Vert.x 5 by default.
-* **Opt-in Module Removal:** If you explicitly added `kubernetes-httpclient-vertx-5` as an opt-in dependency in 7.x, you can remove that explicit dependency and any exclusions—it is now included by default.
+### Staying on Vert.x 4 <a href="#vertx4-httpclient" id="vertx4-httpclient"/>
 
-> [!IMPORTANT]
-> Having both `kubernetes-httpclient-vertx` and `kubernetes-httpclient-vertx-5` on the classpath is **not supported**. When both modules or managed versions are present, dependency resolution will pick a single Vert.x version. If Vert.x 4.x is resolved, `kubernetes-httpclient-vertx-5` will fail fast at runtime with a clear error message explaining how to align or exclude your dependencies.
-
----
-
-### Staying on Vert.x 4
-
-If your application explicitly requires Vert.x 4.x APIs or runtime compatibility, you can switch back to the Vert.x 4 implementation.
-
-Because `kubernetes-server-mock` and other transitives pull in Vert.x 5, you **must also pin the `io.vertx` dependency version to 4.x** using your build tool's dependency management mechanism (otherwise, Gradle's highest-version resolution or Maven's transitive graph may pull Vert.x 5 dependencies back in).
-
-#### Maven Setup
-
-Exclude `kubernetes-httpclient-vertx-5`, add `kubernetes-httpclient-vertx`, and import the Vert.x 4 BOM in `<dependencyManagement>`:
+Exclude `kubernetes-httpclient-vertx-5` from every fabric8 dependency you declare that brings in `kubernetes-client` (`kubernetes-client`, `openshift-client`, `kubernetes-junit-jupiter`...), add `kubernetes-httpclient-vertx`, and pin the `io.vertx` artifacts to 4.x, so that the mock server and other dependencies can't pull Vert.x 5 back in:
 
 ```xml
 <dependencyManagement>
   <dependencies>
-    <!-- Pin Vert.x dependencies to 4.x -->
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-stack-depchain</artifactId>
@@ -200,39 +182,35 @@ Exclude `kubernetes-httpclient-vertx-5`, add `kubernetes-httpclient-vertx`, and 
     </dependency>
   </dependencies>
 </dependencyManagement>
-
 <dependencies>
   <dependency>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-client</artifactId>
     <exclusions>
-      <!-- Exclude default Vert.x 5 implementation -->
       <exclusion>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-httpclient-vertx-5</artifactId>
       </exclusion>
     </exclusions>
   </dependency>
-
-  <!-- Add Vert.x 4 implementation -->
   <dependency>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-httpclient-vertx</artifactId>
   </dependency>
 </dependencies>
 ```
-#### Gradle Setup
 
-Exclude `kubernetes-httpclient-vertx-5`, add `kubernetes-httpclient-vertx`, and import the Vert.x 4 BOM in `build.gradle`:
+With Gradle, which resolves version conflicts to the highest version, enforce the Vert.x 4 platform and exclude the Vert.x 5 client from every configuration:
 
-```groovy
+```kotlin
+configurations.configureEach {
+  exclude(group = "io.fabric8", module = "kubernetes-httpclient-vertx-5")
+}
 dependencies {
-    implementation('io.fabric8:kubernetes-client') {
-        exclude group: 'io.fabric8', module: 'kubernetes-httpclient-vertx-5'
-    }
-    implementation 'io.fabric8:kubernetes-httpclient-vertx'
-
-    // Enforce Vert.x 4.x to prevent Gradle from resolving Vert.x 5 transitively (e.g., from mock server)
-    implementation platform('io.vertx:vertx-stack-depchain:4.5.34')
+  implementation(enforcedPlatform("io.vertx:vertx-stack-depchain:4.5.34"))
+  implementation("io.fabric8:kubernetes-client")
+  implementation("io.fabric8:kubernetes-httpclient-vertx")
 }
 ```
+
+Only one Vert.x version can be resolved, so the two modules can't work side by side. If both end up on the classpath, the Vert.x 5 client is selected, and building it fails with the `IllegalStateException` above when Vert.x 4 jars were resolved.
