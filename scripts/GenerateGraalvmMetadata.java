@@ -315,9 +315,9 @@ class GenerateGraalvmMetadata {
 
   static class JandexReflectionScanner {
     private static final DotName JSON_DESERIALIZE = DotName
-      .createSimple("com.fasterxml.jackson.databind.annotation.JsonDeserialize");
+      .createSimple("tools.jackson.databind.annotation.JsonDeserialize");
     private static final DotName JSON_PROPERTY = DotName.createSimple("com.fasterxml.jackson.annotation.JsonProperty");
-    private static final DotName JSON_SERIALIZE = DotName.createSimple("com.fasterxml.jackson.databind.annotation.JsonSerialize");
+    private static final DotName JSON_SERIALIZE = DotName.createSimple("tools.jackson.databind.annotation.JsonSerialize");
     private static final DotName JSON_TYPE_INFO = DotName.createSimple("com.fasterxml.jackson.annotation.JsonTypeInfo");
     private static final DotName JSON_SUB_TYPES = DotName.createSimple("com.fasterxml.jackson.annotation.JsonSubTypes");
     private static final DotName BUILDABLE = DotName.createSimple("io.sundr.builder.annotations.Buildable");

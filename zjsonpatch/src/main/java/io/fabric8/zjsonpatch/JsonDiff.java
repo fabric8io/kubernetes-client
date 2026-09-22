@@ -15,11 +15,11 @@
  */
 package io.fabric8.zjsonpatch;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.fabric8.zjsonpatch.internal.collections4.ListUtils;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.JsonNodeFactory;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -183,7 +183,7 @@ public class JsonDiff {
 
   private static void computeObject(Map<JsonNode, JsonPointer> unchangedValues, JsonPointer path, JsonNode source,
       JsonNode target) {
-    final Iterator<String> firstFields = source.fieldNames();
+    final Iterator<String> firstFields = source.propertyNames().iterator();
     while (firstFields.hasNext()) {
       String name = firstFields.next();
       if (target.has(name)) {
@@ -459,7 +459,7 @@ public class JsonDiff {
   }
 
   private void compareObjects(JsonPointer path, JsonNode source, JsonNode target) {
-    Iterator<String> keysFromSrc = source.fieldNames();
+    Iterator<String> keysFromSrc = source.propertyNames().iterator();
     while (keysFromSrc.hasNext()) {
       String key = keysFromSrc.next();
       if (!target.has(key)) {
@@ -473,7 +473,7 @@ public class JsonDiff {
       JsonPointer currPath = path.append(key);
       generateDiffs(currPath, source.get(key), target.get(key));
     }
-    Iterator<String> keysFromTarget = target.fieldNames();
+    Iterator<String> keysFromTarget = target.propertyNames().iterator();
     while (keysFromTarget.hasNext()) {
       String key = keysFromTarget.next();
       if (!source.has(key)) {

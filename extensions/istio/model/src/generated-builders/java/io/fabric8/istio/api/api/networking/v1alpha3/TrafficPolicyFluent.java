@@ -594,8 +594,8 @@ public class TrafficPolicyFluent<A extends io.fabric8.istio.api.api.networking.v
     return new RetryBudgetNested(null);
   }
   
-  public A withNewRetryBudget(Long minRetryConcurrency,Double percent) {
-    return (A) this.withRetryBudget(new TrafficPolicyRetryBudget(minRetryConcurrency, percent));
+  public A withNewRetryBudget(String budgetInterval,Long minRetryConcurrency,Double percent) {
+    return (A) this.withRetryBudget(new TrafficPolicyRetryBudget(budgetInterval, minRetryConcurrency, percent));
   }
   
   public RetryBudgetNested<A> withNewRetryBudgetLike(TrafficPolicyRetryBudget item) {

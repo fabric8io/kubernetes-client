@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,11 +30,13 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "presented",
+    "presentedAt",
     "processing",
     "reason",
     "state"
@@ -67,6 +68,8 @@ public class ChallengeStatus implements Editable<ChallengeStatusBuilder>, Kubern
 
     @JsonProperty("presented")
     private Boolean presented;
+    @JsonProperty("presentedAt")
+    private String presentedAt;
     @JsonProperty("processing")
     private Boolean processing;
     @JsonProperty("reason")
@@ -82,16 +85,17 @@ public class ChallengeStatus implements Editable<ChallengeStatusBuilder>, Kubern
     public ChallengeStatus() {
     }
 
-    public ChallengeStatus(Boolean presented, Boolean processing, String reason, String state) {
+    public ChallengeStatus(Boolean presented, String presentedAt, Boolean processing, String reason, String state) {
         super();
         this.presented = presented;
+        this.presentedAt = presentedAt;
         this.processing = processing;
         this.reason = reason;
         this.state = state;
     }
 
     /**
-     * presented will be set to true if the challenge values for this challenge are currently 'presented'. This &#42;does not&#42; imply the self check is passing. Only that the values have been 'submitted' for the appropriate challenge mechanism (i.e. the DNS01 TXT record has been presented, or the HTTP01 configuration has been configured).
+     * Presented is true once cert-manager has configured the solver resources needed to expose this challenge's validation material. For example, the DNS01 TXT record has been created, or the HTTP01 solver has been configured to serve the challenge token. This does not imply the self check is passing, that the ACME server has validated the challenge, or that cert-manager has already accepted the challenge with the ACME server.
      */
     @JsonProperty("presented")
     public Boolean getPresented() {
@@ -99,11 +103,21 @@ public class ChallengeStatus implements Editable<ChallengeStatusBuilder>, Kubern
     }
 
     /**
-     * presented will be set to true if the challenge values for this challenge are currently 'presented'. This &#42;does not&#42; imply the self check is passing. Only that the values have been 'submitted' for the appropriate challenge mechanism (i.e. the DNS01 TXT record has been presented, or the HTTP01 configuration has been configured).
+     * Presented is true once cert-manager has configured the solver resources needed to expose this challenge's validation material. For example, the DNS01 TXT record has been created, or the HTTP01 solver has been configured to serve the challenge token. This does not imply the self check is passing, that the ACME server has validated the challenge, or that cert-manager has already accepted the challenge with the ACME server.
      */
     @JsonProperty("presented")
     public void setPresented(Boolean presented) {
         this.presented = presented;
+    }
+
+    @JsonProperty("presentedAt")
+    public String getPresentedAt() {
+        return presentedAt;
+    }
+
+    @JsonProperty("presentedAt")
+    public void setPresentedAt(String presentedAt) {
+        this.presentedAt = presentedAt;
     }
 
     /**

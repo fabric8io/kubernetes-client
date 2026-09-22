@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.log4j.lookup;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
 import io.fabric8.kubernetes.api.model.ContainerStatus;
@@ -31,9 +30,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.net.URL;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,7 +50,7 @@ class KubernetesLookupTest {
   private static final int MAX_CONTAINER_COUNT = 2;
   private static KubernetesClient mockClient;
 
-  private static final ObjectMapper objectMapper = new ObjectMapper();
+  private static final ObjectMapper objectMapper = new JsonMapper();
 
   @AfterEach
   void cleanUp() {
@@ -57,7 +59,8 @@ class KubernetesLookupTest {
 
   @Test
   void localPod() throws Exception {
-    final Pod pod = objectMapper.readValue(KubernetesLookupTest.class.getResource("/localPod.json"), Pod.class);
+    final Pod pod = objectMapper.readValue(
+        Objects.requireNonNull(KubernetesLookupTest.class.getResource("/localPod.json")).openStream(), Pod.class);
     final Namespace namespace = createNamespace();
     final URL masterUrl = new URL("http://localhost:443/");
     final StrLookup lookup = new KubernetesLookup(pod, namespace, masterUrl);
@@ -84,7 +87,8 @@ class KubernetesLookupTest {
 
   @Test
   void clusterPod() throws Exception {
-    final Pod pod = objectMapper.readValue(KubernetesLookupTest.class.getResource("/clusterPod.json"), Pod.class);
+    final Pod pod = objectMapper.readValue(
+        Objects.requireNonNull(KubernetesLookupTest.class.getResource("/clusterPod.json")).openStream(), Pod.class);
     final Namespace namespace = createNamespace();
     final URL masterUrl = new URL("http://localhost:443/");
     final StrLookup lookup = new KubernetesLookup(pod, namespace, masterUrl);

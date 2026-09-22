@@ -15,43 +15,41 @@
  */
 package io.fabric8.kubernetes.api.model.apiextensions.v1;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.ValueSerializer;
 
-import java.io.IOException;
 import java.util.List;
 
 public class JSONSchemaPropsOrStringArraySerDe {
   private JSONSchemaPropsOrStringArraySerDe() {
   }
 
-  public static class Serializer extends JsonSerializer<JSONSchemaPropsOrStringArray> {
+  public static class Serializer extends ValueSerializer<JSONSchemaPropsOrStringArray> {
     @Override
     public void serialize(JSONSchemaPropsOrStringArray jsonSchemaPropsOrStringArray,
         JsonGenerator jsonGenerator,
-        SerializerProvider serializerProvider) throws IOException {
+        SerializationContext serializationContext) {
       if (jsonSchemaPropsOrStringArray.getProperty() != null && !jsonSchemaPropsOrStringArray.getProperty().isEmpty()) {
         jsonGenerator.writeStartArray();
         for (String property : jsonSchemaPropsOrStringArray.getProperty()) {
-          jsonGenerator.writeObject(property);
+          jsonGenerator.writePOJO(property);
         }
         jsonGenerator.writeEndArray();
       } else {
-        jsonGenerator.writeObject(jsonSchemaPropsOrStringArray.getSchema());
+        jsonGenerator.writePOJO(jsonSchemaPropsOrStringArray.getSchema());
       }
     }
   }
 
-  public static class Deserializer extends JsonDeserializer<JSONSchemaPropsOrStringArray> {
+  public static class Deserializer extends ValueDeserializer<JSONSchemaPropsOrStringArray> {
 
     @Override
-    public JSONSchemaPropsOrStringArray deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-        throws IOException {
+    public JSONSchemaPropsOrStringArray deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) {
       JSONSchemaPropsOrStringArrayBuilder builder = new JSONSchemaPropsOrStringArrayBuilder();
       if (jsonParser.isExpectedStartObjectToken()) {
         builder.withSchema(

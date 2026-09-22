@@ -2,6 +2,10 @@
 
 The CRD Generator v2 can be used in a [build script](https://docs.gradle.org/current/userguide/writing_build_scripts.html) without an additional plugin:
 
+> [!NOTE]
+> The snippets pin `8.0.0`. Replace it with the kubernetes-client version you use;
+> the CRD Generator v2 is available since 7.0.0.
+
 ## Kotlin DSL (`build.gradle.kts`)
 
 ```kotlin
@@ -22,7 +26,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.fabric8:kubernetes-client-api:7.0.0")
+    compileOnly("io.fabric8:kubernetes-client-api:8.0.0")
 }
 
 buildscript {
@@ -30,8 +34,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("io.fabric8:crd-generator-api-v2:7.0.0")
-        classpath("io.fabric8:crd-generator-collector:7.0.0")
+        classpath("io.fabric8:crd-generator-api-v2:8.0.0")
+        classpath("io.fabric8:crd-generator-collector:8.0.0")
     }
 }
 
@@ -79,7 +83,7 @@ tasks.named(JvmConstants.CLASSES_TASK_NAME) {
 > **Limitation — cross-JDK version builds**
 >
 > The `doLast` block above runs in the Gradle daemon's JVM.
-> If the project is compiled with a newer JDK (e.g. JDK 17) than the daemon (e.g. JDK 11),
+> If the project is compiled with a newer JDK (e.g. JDK 21) than the daemon (e.g. JDK 17),
 > the `CustomResourceCollector` will throw `UnsupportedClassVersionError` when it tries to load
 > the compiled class files. Use the [forked approach](#forked-jvm-with-toolchain) below if your
 > compile JDK differs from the JDK that runs the Gradle daemon.
@@ -93,7 +97,7 @@ must run in a separate JVM process. This recipe uses a `JavaExec` task with Grad
 
 The `javaLauncher` is resolved from `java.toolchain.languageVersion` so it always matches the
 version used for compilation without duplicating the version number. If you need an explicit
-version, replace it with `JavaLanguageVersion.of(17)` (Kotlin) or `JavaLanguageVersion.of(17)`
+version, replace it with `JavaLanguageVersion.of(21)` (Kotlin) or `JavaLanguageVersion.of(21)`
 (Groovy).
 
 ### Kotlin DSL (`build.gradle.kts`)
@@ -107,9 +111,9 @@ group = "io.fabric8.crd-generator.gradle"
 version = "0.0.1-SNAPSHOT"
 
 java {
-    // Compile the project with JDK 17. Gradle will download it automatically if needed.
+    // Compile the project with JDK 21. Gradle will download it automatically if needed.
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
 
@@ -118,7 +122,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.fabric8:kubernetes-client-api:7.0.0")
+    compileOnly("io.fabric8:kubernetes-client-api:8.0.0")
 }
 
 // Dedicated configuration for the CRD generator CLI and its dependencies.
@@ -126,7 +130,7 @@ dependencies {
 val crdGeneratorCli: Configuration by configurations.creating
 
 dependencies {
-    crdGeneratorCli("io.fabric8:crd-generator-cli:7.0.0")
+    crdGeneratorCli("io.fabric8:crd-generator-cli:8.0.0")
 }
 
 tasks.register<JavaExec>("generateCrds") {
@@ -180,9 +184,9 @@ group = 'io.fabric8.crd-generator.gradle'
 version = '0.0.1-SNAPSHOT'
 
 java {
-    // Compile the project with JDK 17. Gradle will download it automatically if needed.
+    // Compile the project with JDK 21. Gradle will download it automatically if needed.
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
@@ -191,7 +195,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'io.fabric8:kubernetes-client-api:7.0.0'
+    compileOnly 'io.fabric8:kubernetes-client-api:8.0.0'
 }
 
 // Dedicated configuration for the CRD generator CLI and its dependencies.
@@ -201,7 +205,7 @@ configurations {
 }
 
 dependencies {
-    crdGeneratorCli 'io.fabric8:crd-generator-cli:7.0.0'
+    crdGeneratorCli 'io.fabric8:crd-generator-cli:8.0.0'
 }
 
 tasks.register('generateCrds', JavaExec) {

@@ -25,7 +25,7 @@ public class OutlierDetectionBuilder extends OutlierDetectionFluent<OutlierDetec
   }
 
   public OutlierDetection build() {
-    OutlierDetection buildable = new OutlierDetection(fluent.getBaseEjectionTime(), fluent.getConsecutive5xxErrors(), fluent.getConsecutiveErrors(), fluent.getConsecutiveGatewayErrors(), fluent.getConsecutiveLocalOriginFailures(), fluent.getInterval(), fluent.getMaxEjectionPercent(), fluent.getMinHealthPercent(), fluent.getSplitExternalLocalOriginErrors());
+    OutlierDetection buildable = new OutlierDetection(fluent.getBaseEjectionTime(), fluent.getConsecutive5xxErrors(), fluent.getConsecutiveErrors(), fluent.getConsecutiveGatewayErrors(), fluent.getConsecutiveLocalOriginFailures(), fluent.getInterval(), fluent.getMaxEjectionPercent(), fluent.getMinHealthPercent(), fluent.getOutlierDetectionHttpErrorCodes(), fluent.getSplitExternalLocalOriginErrors());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

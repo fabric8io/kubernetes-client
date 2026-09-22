@@ -32,6 +32,7 @@ public class SNSConfigFluent<A extends io.fabric8.openshift.api.model.monitoring
   private String subject;
   private String targetARN;
   private String topicARN;
+  private Boolean useAWSHTTPClient;
 
   public SNSConfigFluent() {
   }
@@ -101,6 +102,7 @@ public class SNSConfigFluent<A extends io.fabric8.openshift.api.model.monitoring
         this.withSubject(instance.getSubject());
         this.withTargetARN(instance.getTargetARN());
         this.withTopicARN(instance.getTopicARN());
+        this.withUseAWSHTTPClient(instance.getUseAWSHTTPClient());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -170,6 +172,9 @@ public class SNSConfigFluent<A extends io.fabric8.openshift.api.model.monitoring
     if (!(Objects.equals(topicARN, that.topicARN))) {
       return false;
     }
+    if (!(Objects.equals(useAWSHTTPClient, that.useAWSHTTPClient))) {
+      return false;
+    }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
       return false;
     }
@@ -210,6 +215,10 @@ public class SNSConfigFluent<A extends io.fabric8.openshift.api.model.monitoring
   
   public String getTopicARN() {
     return this.topicARN;
+  }
+  
+  public Boolean getUseAWSHTTPClient() {
+    return this.useAWSHTTPClient;
   }
   
   public boolean hasAdditionalProperties() {
@@ -256,8 +265,12 @@ public class SNSConfigFluent<A extends io.fabric8.openshift.api.model.monitoring
     return this.topicARN != null;
   }
   
+  public boolean hasUseAWSHTTPClient() {
+    return this.useAWSHTTPClient != null;
+  }
+  
   public int hashCode() {
-    return Objects.hash(apiURL, attributes, httpConfig, message, phoneNumber, sendResolved, sigv4, subject, targetARN, topicARN, additionalProperties);
+    return Objects.hash(apiURL, attributes, httpConfig, message, phoneNumber, sendResolved, sigv4, subject, targetARN, topicARN, useAWSHTTPClient, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -359,6 +372,11 @@ public class SNSConfigFluent<A extends io.fabric8.openshift.api.model.monitoring
     if (!(topicARN == null)) {
         sb.append("topicARN:");
         sb.append(topicARN);
+        sb.append(",");
+    }
+    if (!(useAWSHTTPClient == null)) {
+        sb.append("useAWSHTTPClient:");
+        sb.append(useAWSHTTPClient);
         sb.append(",");
     }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
@@ -463,6 +481,15 @@ public class SNSConfigFluent<A extends io.fabric8.openshift.api.model.monitoring
   
   public A withTopicARN(String topicARN) {
     this.topicARN = topicARN;
+    return (A) this;
+  }
+  
+  public A withUseAWSHTTPClient() {
+    return withUseAWSHTTPClient(true);
+  }
+  
+  public A withUseAWSHTTPClient(Boolean useAWSHTTPClient) {
+    this.useAWSHTTPClient = useAWSHTTPClient;
     return (A) this;
   }
   public class HttpConfigNested<N> extends HTTPConfigFluent<HttpConfigNested<N>> implements Nested<N>{

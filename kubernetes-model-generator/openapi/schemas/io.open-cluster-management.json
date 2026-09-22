@@ -148,7 +148,6 @@
           "description": "Webhooks is a list of webhooks and the affected resources and operations.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.admissionregistration.v1.MutatingWebhook"
           },
           "x-kubernetes-list-map-keys": [
@@ -181,7 +180,6 @@
           "description": "List of MutatingWebhookConfiguration.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.admissionregistration.v1.MutatingWebhookConfiguration"
           }
         },
@@ -282,7 +280,6 @@
           "description": "List of PolicyBinding.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.admissionregistration.v1.ValidatingAdmissionPolicyBinding"
           }
         },
@@ -318,7 +315,6 @@
           "description": "List of ValidatingAdmissionPolicy.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.admissionregistration.v1.ValidatingAdmissionPolicy"
           }
         },
@@ -360,7 +356,6 @@
           "description": "Webhooks is a list of webhooks and the affected resources and operations.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.admissionregistration.v1.ValidatingWebhook"
           },
           "x-kubernetes-list-map-keys": [
@@ -393,7 +388,6 @@
           "description": "List of ValidatingWebhookConfiguration.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.admissionregistration.v1.ValidatingWebhookConfiguration"
           }
         },
@@ -489,7 +483,6 @@
           "description": "List of PolicyBinding.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.admissionregistration.v1alpha1.MutatingAdmissionPolicyBinding"
           }
         },
@@ -525,7 +518,6 @@
           "description": "List of ValidatingAdmissionPolicy.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.admissionregistration.v1alpha1.MutatingAdmissionPolicy"
           }
         },
@@ -626,7 +618,6 @@
           "description": "List of PolicyBinding.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.admissionregistration.v1alpha1.ValidatingAdmissionPolicyBinding"
           }
         },
@@ -662,7 +653,6 @@
           "description": "List of ValidatingAdmissionPolicy.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.admissionregistration.v1alpha1.ValidatingAdmissionPolicy"
           }
         },
@@ -758,7 +748,6 @@
           "description": "List of PolicyBinding.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.admissionregistration.v1beta1.MutatingAdmissionPolicyBinding"
           }
         },
@@ -794,7 +783,6 @@
           "description": "List of ValidatingAdmissionPolicy.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.admissionregistration.v1beta1.MutatingAdmissionPolicy"
           }
         },
@@ -836,7 +824,6 @@
           "description": "Webhooks is a list of webhooks and the affected resources and operations.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.admissionregistration.v1beta1.MutatingWebhook"
           },
           "x-kubernetes-list-map-keys": [
@@ -869,7 +856,6 @@
           "description": "List of MutatingWebhookConfiguration.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.admissionregistration.v1beta1.MutatingWebhookConfiguration"
           }
         },
@@ -970,7 +956,6 @@
           "description": "List of PolicyBinding.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.admissionregistration.v1beta1.ValidatingAdmissionPolicyBinding"
           }
         },
@@ -1006,7 +991,6 @@
           "description": "List of ValidatingAdmissionPolicy.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.admissionregistration.v1beta1.ValidatingAdmissionPolicy"
           }
         },
@@ -1048,7 +1032,6 @@
           "description": "Webhooks is a list of webhooks and the affected resources and operations.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.admissionregistration.v1beta1.ValidatingWebhook"
           },
           "x-kubernetes-list-map-keys": [
@@ -1081,7 +1064,6 @@
           "description": "List of ValidatingWebhookConfiguration.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.admissionregistration.v1beta1.ValidatingWebhookConfiguration"
           }
         },
@@ -1156,7 +1138,6 @@
           "description": "Items holds a list of StorageVersion",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.apiserverinternal.v1alpha1.StorageVersion"
           }
         },
@@ -1230,7 +1211,6 @@
           "description": "Items is the list of ControllerRevisions",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.apps.v1.ControllerRevision"
           }
         },
@@ -1301,7 +1281,6 @@
           "description": "A list of daemon sets.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.apps.v1.DaemonSet"
           }
         },
@@ -1372,7 +1351,6 @@
           "description": "Items is the list of Deployments.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.apps.v1.Deployment"
           }
         },
@@ -1443,7 +1421,6 @@
           "description": "List of ReplicaSets. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.apps.v1.ReplicaSet"
           }
         },
@@ -1514,7 +1491,6 @@
           "description": "Items is the list of stateful sets.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.apps.v1.StatefulSet"
           }
         },
@@ -1588,7 +1564,6 @@
           "description": "Items is the list of ControllerRevisions",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.apps.v1beta1.ControllerRevision"
           }
         },
@@ -1659,7 +1634,6 @@
           "description": "Items is the list of Deployments.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.apps.v1beta1.Deployment"
           }
         },
@@ -1728,7 +1702,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.apps.v1beta1.StatefulSet"
           }
         },
@@ -1801,7 +1774,6 @@
           "description": "Items is the list of ControllerRevisions",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.apps.v1beta2.ControllerRevision"
           }
         },
@@ -1872,7 +1844,6 @@
           "description": "A list of daemon sets.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.apps.v1beta2.DaemonSet"
           }
         },
@@ -1943,7 +1914,6 @@
           "description": "Items is the list of Deployments.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.apps.v1beta2.Deployment"
           }
         },
@@ -2014,7 +1984,6 @@
           "description": "List of ReplicaSets. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.apps.v1beta2.ReplicaSet"
           }
         },
@@ -2118,7 +2087,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.apps.v1beta2.StatefulSet"
           }
         },
@@ -2696,7 +2664,6 @@
           "description": "items is the list of horizontal pod autoscaler objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.autoscaling.v1.HorizontalPodAutoscaler"
           }
         },
@@ -2802,7 +2769,6 @@
           "description": "items is the list of horizontal pod autoscaler objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.autoscaling.v2.HorizontalPodAutoscaler"
           }
         },
@@ -2873,7 +2839,6 @@
           "description": "items is the list of horizontal pod autoscaler objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.autoscaling.v2beta1.HorizontalPodAutoscaler"
           }
         },
@@ -2944,7 +2909,6 @@
           "description": "items is the list of horizontal pod autoscaler objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.autoscaling.v2beta2.HorizontalPodAutoscaler"
           }
         },
@@ -3015,7 +2979,6 @@
           "description": "items is the list of CronJobs.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.batch.v1.CronJob"
           }
         },
@@ -3086,7 +3049,6 @@
           "description": "items is the list of Jobs.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.batch.v1.Job"
           }
         },
@@ -3157,7 +3119,6 @@
           "description": "items is the list of CronJobs.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.batch.v1beta1.CronJob"
           }
         },
@@ -3230,7 +3191,6 @@
           "description": "items is a collection of CertificateSigningRequest objects",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.certificates.v1.CertificateSigningRequest"
           }
         },
@@ -3298,7 +3258,6 @@
           "description": "items is a collection of ClusterTrustBundle objects",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.certificates.v1alpha1.ClusterTrustBundle"
           }
         },
@@ -3370,7 +3329,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.certificates.v1beta1.CertificateSigningRequest"
           }
         },
@@ -3438,7 +3396,6 @@
           "description": "items is a collection of ClusterTrustBundle objects",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.certificates.v1beta1.ClusterTrustBundle"
           }
         },
@@ -3512,7 +3469,6 @@
           "description": "items is a collection of PodCertificateRequest objects",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.certificates.v1beta1.PodCertificateRequest"
           }
         },
@@ -3578,7 +3534,6 @@
           "description": "items is a list of schema objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.coordination.v1.Lease"
           }
         },
@@ -3644,7 +3599,6 @@
           "description": "items is a list of schema objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.coordination.v1alpha2.LeaseCandidate"
           }
         },
@@ -3740,7 +3694,6 @@
           "description": "items is a list of schema objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.coordination.v1beta1.LeaseCandidate"
           }
         },
@@ -3776,7 +3729,6 @@
           "description": "items is a list of schema objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.coordination.v1beta1.Lease"
           }
         },
@@ -3842,7 +3794,6 @@
           "description": "List of component conditions observed",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.ComponentCondition"
           },
           "x-kubernetes-list-map-keys": [
@@ -3884,7 +3835,6 @@
           "description": "List of ComponentStatus objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.ComponentStatus"
           }
         },
@@ -3925,8 +3875,7 @@
           "description": "Data contains the configuration data. Each key must consist of alphanumeric characters, '-', '_' or '.'. Values with non-UTF-8 byte sequences must use the BinaryData field. The keys stored in Data must not overlap with the keys in the BinaryData field, this is enforced during validation process.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "immutable": {
@@ -3965,7 +3914,6 @@
           "description": "Items is the list of ConfigMaps.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.ConfigMap"
           }
         },
@@ -4007,7 +3955,6 @@
           "description": "The set of all endpoints is the union of all subsets. Addresses are placed into subsets according to the IPs they share. A single address with multiple ports, some of which are ready and some of which are not (because they come from different containers) will result in the address being displayed in different subsets for the different ports. No address will appear in both Addresses and NotReadyAddresses in the same subset. Sets of addresses and ports that comprise a service.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.EndpointSubset"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4035,7 +3982,6 @@
           "description": "List of endpoints.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Endpoints"
           }
         },
@@ -4161,7 +4107,6 @@
           "description": "List of events",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Event"
           }
         },
@@ -4227,7 +4172,6 @@
           "description": "Items is a list of LimitRange objects. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.LimitRange"
           }
         },
@@ -4298,7 +4242,6 @@
           "description": "Items is the list of Namespace objects in the list. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Namespace"
           }
         },
@@ -4369,7 +4312,6 @@
           "description": "List of nodes",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Node"
           }
         },
@@ -4475,7 +4417,6 @@
           "description": "items is a list of persistent volume claims. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.PersistentVolumeClaim"
           }
         },
@@ -4511,7 +4452,6 @@
           "description": "items is a list of persistent volumes. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.PersistentVolume"
           }
         },
@@ -4582,7 +4522,6 @@
           "description": "List of pods. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Pod"
           }
         },
@@ -4711,7 +4650,6 @@
           "description": "List of pod templates",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.PodTemplate"
           }
         },
@@ -4782,7 +4720,6 @@
           "description": "List of replication controllers. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.ReplicationController"
           }
         },
@@ -4853,7 +4790,6 @@
           "description": "Items is a list of ResourceQuota objects. More info: https://kubernetes.io/docs/concepts/policy/resource-quotas/",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.ResourceQuota"
           }
         },
@@ -4907,8 +4843,7 @@
           "description": "stringData allows specifying non-binary secret data in string form. It is provided as a write-only input field for convenience. All keys and values are merged into the data field on write, overwriting any existing values. The stringData field is never output when reading from the API.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "type": {
@@ -4938,7 +4873,6 @@
           "description": "Items is a list of secret objects. More info: https://kubernetes.io/docs/concepts/configuration/secret",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Secret"
           }
         },
@@ -5010,7 +4944,6 @@
           "description": "ImagePullSecrets is a list of references to secrets in the same namespace to use for pulling any images in pods that reference this ServiceAccount. ImagePullSecrets are distinct from Secrets because Secrets can be mounted in the pod, but ImagePullSecrets are only accessed by the kubelet. More info: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
           },
           "x-kubernetes-list-type": "atomic"
@@ -5028,7 +4961,6 @@
           "description": "Secrets is a list of the secrets in the same namespace that pods running using this ServiceAccount are allowed to use. Pods are only limited to this list if this service account has a \"kubernetes.io/enforce-mountable-secrets\" annotation set to \"true\". The \"kubernetes.io/enforce-mountable-secrets\" annotation is deprecated since v1.32. Prefer separate namespaces to isolate access to mounted secrets. This field should not be used to find auto-generated service account token secrets for use outside of pods. Instead, tokens can be requested directly using the TokenRequest API, or service account token secrets can be manually created. More info: https://kubernetes.io/docs/concepts/configuration/secret",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.ObjectReference"
           },
           "x-kubernetes-list-map-keys": [
@@ -5061,7 +4993,6 @@
           "description": "List of ServiceAccounts. More info: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.ServiceAccount"
           }
         },
@@ -5097,7 +5028,6 @@
           "description": "List of services",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Service"
           }
         },
@@ -5139,7 +5069,6 @@
           "description": "endpoints is a list of unique endpoints in this slice. Each slice may include a maximum of 1000 endpoints.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.discovery.v1.Endpoint"
           },
           "x-kubernetes-list-type": "atomic"
@@ -5157,7 +5086,6 @@
           "description": "ports specifies the list of network ports exposed by each endpoint in this slice. Each port must have a unique name. Each slice may include a maximum of 100 ports. Services always have at least 1 port, so EndpointSlices generated by the EndpointSlice controller will likewise always have at least 1 port. EndpointSlices used for other purposes may have an empty ports list.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.discovery.v1.EndpointPort"
           },
           "x-kubernetes-list-type": "atomic"
@@ -5185,7 +5113,6 @@
           "description": "items is the list of endpoint slices",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.discovery.v1.EndpointSlice"
           }
         },
@@ -5227,7 +5154,6 @@
           "description": "endpoints is a list of unique endpoints in this slice. Each slice may include a maximum of 1000 endpoints.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.discovery.v1beta1.Endpoint"
           },
           "x-kubernetes-list-type": "atomic"
@@ -5245,7 +5171,6 @@
           "description": "ports specifies the list of network ports exposed by each endpoint in this slice. Each port must have a unique name. When ports is empty, it indicates that there are no defined ports. When a port is defined with a nil port value, it indicates \"all ports\". Each slice may include a maximum of 100 ports.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.discovery.v1beta1.EndpointPort"
           },
           "x-kubernetes-list-type": "atomic"
@@ -5273,7 +5198,6 @@
           "description": "items is the list of endpoint slices",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.discovery.v1beta1.EndpointSlice"
           }
         },
@@ -5396,7 +5320,6 @@
           "description": "items is a list of schema objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.events.v1.Event"
           }
         },
@@ -5519,7 +5442,6 @@
           "description": "items is a list of schema objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.events.v1beta1.Event"
           }
         },
@@ -5590,7 +5512,6 @@
           "description": "A list of daemon sets.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.extensions.v1beta1.DaemonSet"
           }
         },
@@ -5661,7 +5582,6 @@
           "description": "Items is the list of Deployments.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.extensions.v1beta1.Deployment"
           }
         },
@@ -5712,8 +5632,7 @@
           "description": "The annotations to be updated to a deployment",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -5774,7 +5693,6 @@
           "description": "Items is the list of Ingress.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.extensions.v1beta1.Ingress"
           }
         },
@@ -5840,7 +5758,6 @@
           "description": "Items is a list of schema objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.extensions.v1beta1.NetworkPolicy"
           }
         },
@@ -5911,7 +5828,6 @@
           "description": "List of ReplicaSets. More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.extensions.v1beta1.ReplicaSet"
           }
         },
@@ -6017,7 +5933,6 @@
           "description": "`items` is a list of FlowSchemas.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.flowcontrol.v1.FlowSchema"
           }
         },
@@ -6088,7 +6003,6 @@
           "description": "`items` is a list of request-priorities.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.flowcontrol.v1.PriorityLevelConfiguration"
           }
         },
@@ -6159,7 +6073,6 @@
           "description": "`items` is a list of FlowSchemas.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.flowcontrol.v1beta1.FlowSchema"
           }
         },
@@ -6230,7 +6143,6 @@
           "description": "`items` is a list of request-priorities.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.flowcontrol.v1beta1.PriorityLevelConfiguration"
           }
         },
@@ -6301,7 +6213,6 @@
           "description": "`items` is a list of FlowSchemas.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.flowcontrol.v1beta2.FlowSchema"
           }
         },
@@ -6372,7 +6283,6 @@
           "description": "`items` is a list of request-priorities.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.flowcontrol.v1beta2.PriorityLevelConfiguration"
           }
         },
@@ -6443,7 +6353,6 @@
           "description": "`items` is a list of FlowSchemas.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.flowcontrol.v1beta3.FlowSchema"
           }
         },
@@ -6514,7 +6423,6 @@
           "description": "`items` is a list of request-priorities.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.flowcontrol.v1beta3.PriorityLevelConfiguration"
           }
         },
@@ -6580,7 +6488,6 @@
           "description": "items is the list of IPAddresses.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.networking.v1.IPAddress"
           }
         },
@@ -6681,7 +6588,6 @@
           "description": "items is the list of IngressClasses.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.networking.v1.IngressClass"
           }
         },
@@ -6717,7 +6623,6 @@
           "description": "items is the list of Ingress.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.networking.v1.Ingress"
           }
         },
@@ -6783,7 +6688,6 @@
           "description": "items is a list of schema objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.networking.v1.NetworkPolicy"
           }
         },
@@ -6854,7 +6758,6 @@
           "description": "items is the list of ServiceCIDRs.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.networking.v1.ServiceCIDR"
           }
         },
@@ -6920,7 +6823,6 @@
           "description": "items is the list of IPAddresses.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.networking.v1beta1.IPAddress"
           }
         },
@@ -7021,7 +6923,6 @@
           "description": "items is the list of IngressClasses.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.networking.v1beta1.IngressClass"
           }
         },
@@ -7057,7 +6958,6 @@
           "description": "items is the list of Ingress.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.networking.v1beta1.Ingress"
           }
         },
@@ -7128,7 +7028,6 @@
           "description": "items is the list of ServiceCIDRs.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.networking.v1beta1.ServiceCIDR"
           }
         },
@@ -7205,7 +7104,6 @@
           "description": "items is a list of schema objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.node.v1.RuntimeClass"
           }
         },
@@ -7274,7 +7172,6 @@
           "description": "items is a list of schema objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.node.v1alpha1.RuntimeClass"
           }
         },
@@ -7351,7 +7248,6 @@
           "description": "items is a list of schema objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.node.v1beta1.RuntimeClass"
           }
         },
@@ -7451,7 +7347,6 @@
           "description": "Items is a list of PodDisruptionBudgets",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.policy.v1.PodDisruptionBudget"
           }
         },
@@ -7551,7 +7446,6 @@
           "description": "items list individual PodDisruptionBudget objects",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.policy.v1beta1.PodDisruptionBudget"
           }
         },
@@ -7597,7 +7491,6 @@
           "description": "Rules holds all the PolicyRules for this ClusterRole",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1.PolicyRule"
           },
           "x-kubernetes-list-type": "atomic"
@@ -7639,7 +7532,6 @@
           "description": "Subjects holds references to the objects the role applies to.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1.Subject"
           },
           "x-kubernetes-list-type": "atomic"
@@ -7667,7 +7559,6 @@
           "description": "Items is a list of ClusterRoleBindings",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1.ClusterRoleBinding"
           }
         },
@@ -7703,7 +7594,6 @@
           "description": "Items is a list of ClusterRoles",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1.ClusterRole"
           }
         },
@@ -7745,7 +7635,6 @@
           "description": "Rules holds all the PolicyRules for this Role",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1.PolicyRule"
           },
           "x-kubernetes-list-type": "atomic"
@@ -7787,7 +7676,6 @@
           "description": "Subjects holds references to the objects the role applies to.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1.Subject"
           },
           "x-kubernetes-list-type": "atomic"
@@ -7815,7 +7703,6 @@
           "description": "Items is a list of RoleBindings",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1.RoleBinding"
           }
         },
@@ -7851,7 +7738,6 @@
           "description": "Items is a list of Roles",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1.Role"
           }
         },
@@ -7897,7 +7783,6 @@
           "description": "Rules holds all the PolicyRules for this ClusterRole",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1alpha1.PolicyRule"
           },
           "x-kubernetes-list-type": "atomic"
@@ -7939,7 +7824,6 @@
           "description": "Subjects holds references to the objects the role applies to.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1alpha1.Subject"
           },
           "x-kubernetes-list-type": "atomic"
@@ -7967,7 +7851,6 @@
           "description": "Items is a list of ClusterRoleBindings",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1alpha1.ClusterRoleBinding"
           }
         },
@@ -8003,7 +7886,6 @@
           "description": "Items is a list of ClusterRoles",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1alpha1.ClusterRole"
           }
         },
@@ -8045,7 +7927,6 @@
           "description": "Rules holds all the PolicyRules for this Role",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1alpha1.PolicyRule"
           },
           "x-kubernetes-list-type": "atomic"
@@ -8087,7 +7968,6 @@
           "description": "Subjects holds references to the objects the role applies to.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1alpha1.Subject"
           },
           "x-kubernetes-list-type": "atomic"
@@ -8115,7 +7995,6 @@
           "description": "Items is a list of RoleBindings",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1alpha1.RoleBinding"
           }
         },
@@ -8151,7 +8030,6 @@
           "description": "Items is a list of Roles",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1alpha1.Role"
           }
         },
@@ -8197,7 +8075,6 @@
           "description": "Rules holds all the PolicyRules for this ClusterRole",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1beta1.PolicyRule"
           },
           "x-kubernetes-list-type": "atomic"
@@ -8239,7 +8116,6 @@
           "description": "Subjects holds references to the objects the role applies to.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1beta1.Subject"
           },
           "x-kubernetes-list-type": "atomic"
@@ -8267,7 +8143,6 @@
           "description": "Items is a list of ClusterRoleBindings",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1beta1.ClusterRoleBinding"
           }
         },
@@ -8303,7 +8178,6 @@
           "description": "Items is a list of ClusterRoles",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1beta1.ClusterRole"
           }
         },
@@ -8345,7 +8219,6 @@
           "description": "Rules holds all the PolicyRules for this Role",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1beta1.PolicyRule"
           },
           "x-kubernetes-list-type": "atomic"
@@ -8387,7 +8260,6 @@
           "description": "Subjects holds references to the objects the role applies to.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1beta1.Subject"
           },
           "x-kubernetes-list-type": "atomic"
@@ -8415,7 +8287,6 @@
           "description": "Items is a list of RoleBindings",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1beta1.RoleBinding"
           }
         },
@@ -8451,7 +8322,6 @@
           "description": "Items is a list of Roles",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.rbac.v1beta1.Role"
           }
         },
@@ -8520,7 +8390,6 @@
           "description": "Items is the list of resource classes.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.resource.v1.DeviceClass"
           }
         },
@@ -8594,7 +8463,6 @@
           "description": "Items is the list of resource claims.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.resource.v1.ResourceClaim"
           }
         },
@@ -8663,7 +8531,6 @@
           "description": "Items is the list of resource claim templates.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.resource.v1.ResourceClaimTemplate"
           }
         },
@@ -8732,7 +8599,6 @@
           "description": "Items is the list of resource ResourceSlices.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.resource.v1.ResourceSlice"
           }
         },
@@ -8806,7 +8672,6 @@
           "description": "Items is the list of DeviceTaintRules.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.resource.v1alpha3.DeviceTaintRule"
           }
         },
@@ -8875,7 +8740,6 @@
           "description": "Items is the list of resource classes.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.resource.v1beta1.DeviceClass"
           }
         },
@@ -8949,7 +8813,6 @@
           "description": "Items is the list of resource claims.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.resource.v1beta1.ResourceClaim"
           }
         },
@@ -9018,7 +8881,6 @@
           "description": "Items is the list of resource claim templates.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.resource.v1beta1.ResourceClaimTemplate"
           }
         },
@@ -9087,7 +8949,6 @@
           "description": "Items is the list of resource ResourceSlices.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.resource.v1beta1.ResourceSlice"
           }
         },
@@ -9156,7 +9017,6 @@
           "description": "Items is the list of resource classes.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.resource.v1beta2.DeviceClass"
           }
         },
@@ -9230,7 +9090,6 @@
           "description": "Items is the list of resource claims.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.resource.v1beta2.ResourceClaim"
           }
         },
@@ -9299,7 +9158,6 @@
           "description": "Items is the list of resource claim templates.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.resource.v1beta2.ResourceClaimTemplate"
           }
         },
@@ -9368,7 +9226,6 @@
           "description": "Items is the list of resource ResourceSlices.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.resource.v1beta2.ResourceSlice"
           }
         },
@@ -9450,7 +9307,6 @@
           "description": "items is the list of PriorityClasses",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.scheduling.v1.PriorityClass"
           }
         },
@@ -9532,7 +9388,6 @@
           "description": "items is the list of PriorityClasses",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha1.PriorityClass"
           }
         },
@@ -9601,7 +9456,6 @@
           "description": "Items is the list of Workloads.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha1.Workload"
           }
         },
@@ -9683,7 +9537,6 @@
           "description": "items is the list of PriorityClasses",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.scheduling.v1beta1.PriorityClass"
           }
         },
@@ -9752,7 +9605,6 @@
           "description": "items is the list of CSIDriver",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.storage.v1.CSIDriver"
           }
         },
@@ -9821,7 +9673,6 @@
           "description": "items is the list of CSINode",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.storage.v1.CSINode"
           }
         },
@@ -9902,7 +9753,6 @@
           "description": "items is the list of CSIStorageCapacity objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.storage.v1.CSIStorageCapacity"
           }
         },
@@ -9938,7 +9788,6 @@
           "description": "allowedTopologies restrict the node topologies where volumes can be dynamically provisioned. Each volume plugin defines its own supported topology specifications. An empty TopologySelectorTerm list means there is no topology restriction. This field is only honored by servers that enable the VolumeScheduling feature.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.TopologySelectorTerm"
           },
           "x-kubernetes-list-type": "atomic"
@@ -9960,8 +9809,7 @@
           "description": "mountOptions controls the mountOptions for dynamically provisioned PersistentVolumes of this storage class. e.g. [\"ro\", \"soft\"]. Not validated - mount of the PVs will simply fail if one is invalid.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -9969,8 +9817,7 @@
           "description": "parameters holds the parameters for the provisioner that should create volumes of this storage class.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "provisioner": {
@@ -10009,7 +9856,6 @@
           "description": "items is the list of StorageClasses",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.storage.v1.StorageClass"
           }
         },
@@ -10083,7 +9929,6 @@
           "description": "items is the list of VolumeAttachments",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.storage.v1.VolumeAttachment"
           }
         },
@@ -10133,8 +9978,7 @@
           "description": "parameters hold volume attributes defined by the CSI driver. These values are opaque to the Kubernetes and are passed directly to the CSI driver. The underlying storage provider supports changing these attributes on an existing volume, however the parameters field itself is immutable. To invoke a volume update, a new VolumeAttributesClass should be created with new parameters, and the PersistentVolumeClaim should be updated to reference the new VolumeAttributesClass.\n\nThis field is required and must contain at least one key/value pair. The keys cannot be empty, and the maximum number of parameters is 512, with a cumulative max size of 256K. If the CSI driver rejects invalid parameters, the target PersistentVolumeClaim will be set to an \"Infeasible\" state in the modifyVolumeStatus field.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -10160,7 +10004,6 @@
           "description": "items is the list of VolumeAttributesClass objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.storage.v1.VolumeAttributesClass"
           }
         },
@@ -10241,7 +10084,6 @@
           "description": "items is the list of CSIStorageCapacity objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.storage.v1alpha1.CSIStorageCapacity"
           }
         },
@@ -10315,7 +10157,6 @@
           "description": "items is the list of VolumeAttachments",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.storage.v1alpha1.VolumeAttachment"
           }
         },
@@ -10365,8 +10206,7 @@
           "description": "parameters hold volume attributes defined by the CSI driver. These values are opaque to the Kubernetes and are passed directly to the CSI driver. The underlying storage provider supports changing these attributes on an existing volume, however the parameters field itself is immutable. To invoke a volume update, a new VolumeAttributesClass should be created with new parameters, and the PersistentVolumeClaim should be updated to reference the new VolumeAttributesClass.\n\nThis field is required and must contain at least one key/value pair. The keys cannot be empty, and the maximum number of parameters is 512, with a cumulative max size of 256K. If the CSI driver rejects invalid parameters, the target PersistentVolumeClaim will be set to an \"Infeasible\" state in the modifyVolumeStatus field.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -10392,7 +10232,6 @@
           "description": "items is the list of VolumeAttributesClass objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.storage.v1alpha1.VolumeAttributesClass"
           }
         },
@@ -10461,7 +10300,6 @@
           "description": "items is the list of CSIDriver",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.storage.v1beta1.CSIDriver"
           }
         },
@@ -10530,7 +10368,6 @@
           "description": "items is the list of CSINode",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.storage.v1beta1.CSINode"
           }
         },
@@ -10611,7 +10448,6 @@
           "description": "items is the list of CSIStorageCapacity objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.storage.v1beta1.CSIStorageCapacity"
           }
         },
@@ -10647,7 +10483,6 @@
           "description": "allowedTopologies restrict the node topologies where volumes can be dynamically provisioned. Each volume plugin defines its own supported topology specifications. An empty TopologySelectorTerm list means there is no topology restriction. This field is only honored by servers that enable the VolumeScheduling feature.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.TopologySelectorTerm"
           },
           "x-kubernetes-list-type": "atomic"
@@ -10669,8 +10504,7 @@
           "description": "mountOptions controls the mountOptions for dynamically provisioned PersistentVolumes of this storage class. e.g. [\"ro\", \"soft\"]. Not validated - mount of the PVs will simply fail if one is invalid.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -10678,8 +10512,7 @@
           "description": "parameters holds the parameters for the provisioner that should create volumes of this storage class.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "provisioner": {
@@ -10718,7 +10551,6 @@
           "description": "items is the list of StorageClasses",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.storage.v1beta1.StorageClass"
           }
         },
@@ -10792,7 +10624,6 @@
           "description": "items is the list of VolumeAttachments",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.storage.v1beta1.VolumeAttachment"
           }
         },
@@ -10842,8 +10673,7 @@
           "description": "parameters hold volume attributes defined by the CSI driver. These values are opaque to the Kubernetes and are passed directly to the CSI driver. The underlying storage provider supports changing these attributes on an existing volume, however the parameters field itself is immutable. To invoke a volume update, a new VolumeAttributesClass should be created with new parameters, and the PersistentVolumeClaim should be updated to reference the new VolumeAttributesClass.\n\nThis field is required and must contain at least one key/value pair. The keys cannot be empty, and the maximum number of parameters is 512, with a cumulative max size of 256K. If the CSI driver rejects invalid parameters, the target PersistentVolumeClaim will be set to an \"Infeasible\" state in the modifyVolumeStatus field.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -10869,7 +10699,6 @@
           "description": "items is the list of VolumeAttributesClass objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.storage.v1beta1.VolumeAttributesClass"
           }
         },
@@ -10940,7 +10769,6 @@
           "description": "Items is the list of StorageVersionMigration",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.storagemigration.v1beta1.StorageVersionMigration"
           }
         },
@@ -10991,7 +10819,6 @@
           "description": "a map of client CIDR to server address that is serving this group. This is to help clients reach servers in the most network-efficient way possible. Clients can use the appropriate server address as per the CIDR that they match. In case of multiple matches, clients should use the longest matching CIDR. The server returns only those CIDRs that it thinks that the client can match. For example: the master will return an internal IP CIDR only, if the client reaches the server using an internal IP. Server looks at X-Forwarded-For header or X-Real-Ip header or request.RemoteAddr (in that order) to get the client IP.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ServerAddressByClientCIDR"
           },
           "x-kubernetes-list-type": "atomic"
@@ -11000,7 +10827,6 @@
           "description": "versions are the versions supported in this group.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.GroupVersionForDiscovery"
           },
           "x-kubernetes-list-type": "atomic"
@@ -11028,7 +10854,6 @@
           "description": "groups is a list of APIGroup.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.APIGroup"
           },
           "x-kubernetes-list-type": "atomic"
@@ -11070,7 +10895,6 @@
           "description": "resources contains the name of the resources and if they are namespaced.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.APIResource"
           },
           "x-kubernetes-list-type": "atomic"
@@ -11099,8 +10923,7 @@
           "description": "When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -11138,8 +10961,7 @@
           "description": "When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -11175,8 +10997,7 @@
           "description": "When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -11315,8 +11136,7 @@
           "description": "When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -11356,8 +11176,7 @@
           "description": "When present, indicates that modifications should not be persisted. An invalid or unrecognized dryRun directive will result in an error response and no further processing of the request. Valid values are: - All: all dry run stages will be processed",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -11415,8 +11234,7 @@
         "NodeSelector": {
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -11435,8 +11253,7 @@
         "imageOverrides": {
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "imagePullPolicy": {
@@ -11448,15 +11265,13 @@
         "nodeSelector": {
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "proxyConfig": {
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -11537,7 +11352,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.agent.v1.KlusterletAddonConfig"
           }
         },
@@ -11582,8 +11396,7 @@
           "description": "DEPRECATED in release 2.4 and will be removed in the future since not used anymore.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "clusterName": {
@@ -11635,7 +11448,6 @@
           "description": "Conditions contains condition information for the klusterletAddonConfig",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
           }
         },
@@ -11690,8 +11502,7 @@
           "description": "Kinds specifies a list of kinds under the same API version for the group of resources",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -11719,16 +11530,14 @@
           "description": "reserved for backward compatibility",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "prehookjobshistory": {
           "description": "reserved for backward compatibility",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -11785,8 +11594,7 @@
           "description": "The annotations for selecting the Deployables to be eligible for promotion.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "labelSelector": {
@@ -11820,7 +11628,6 @@
           "description": "A list of Channel objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.apps.v1.Channel"
           },
           "x-kubernetes-list-type": "set"
@@ -11874,8 +11681,7 @@
           "description": "A list of namespace names from which Deployables can be promoted.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "set"
         },
@@ -11992,7 +11798,6 @@
         "clusters": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.apps.v1.GenericClusterReference"
           }
         }
@@ -12066,8 +11871,7 @@
           "description": "Annotations defines a type of filter for selecting resources by annotations",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "filterRef": {
@@ -12112,7 +11916,6 @@
         "clusters": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.apps.v1.GenericClusterReference"
           }
         },
@@ -12202,7 +12005,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.apps.v1.PlacementRule"
           }
         },
@@ -12230,7 +12032,6 @@
         "clusterConditions": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.apps.v1.ClusterConditionFilter"
           }
         },
@@ -12245,7 +12046,6 @@
         "clusters": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.apps.v1.GenericClusterReference"
           }
         },
@@ -12253,7 +12053,6 @@
           "description": "Set Policy Filters",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.ObjectReference"
           }
         },
@@ -12282,7 +12081,6 @@
           "description": "INSERT ADDITIONAL STATUS FIELD - define observed state of cluster Important: Run \"make\" to regenerate code after modifying this file",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.apps.v1.PlacementDecision"
           }
         }
@@ -12411,7 +12209,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.apps.v1.Subscription"
           }
         },
@@ -12489,7 +12286,6 @@
           "description": "Specify overrides when applied to clusters. Hub use only",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.apps.v1.ClusterOverrides"
           }
         },
@@ -12616,15 +12412,13 @@
           "description": "A list of days of a week, valid values include: Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "hours": {
           "description": "A list of hour ranges",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.apps.v1.HourRange"
           }
         },
@@ -12687,7 +12481,6 @@
           "description": "conditions are the status conditions of the managed namespace",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
           },
           "x-kubernetes-list-map-keys": [
@@ -12783,7 +12576,6 @@
           "description": "Items is a list of managed clusters.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1.ManagedCluster"
           }
         },
@@ -12823,7 +12615,6 @@
           "description": "ManagedClusterClientConfigs represents a list of the apiserver address of the managed cluster. If it is empty, the managed cluster has no accessible address for the hub to connect with it.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1.ClientConfig"
           }
         },
@@ -12831,7 +12622,6 @@
           "description": "taints is a property of managed cluster that allow the cluster to be repelled when scheduling. Taints, including 'ManagedClusterUnavailable' and 'ManagedClusterUnreachable', can not be added/removed by agent running on the managed cluster; while it's fine to add/remove other taints from either hub cluser or managed cluster.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1.Taint"
           }
         }
@@ -12869,7 +12659,6 @@
           "description": "clusterClaims represents cluster information that a managed cluster claims, for example a unique cluster identifier (id.k8s.io) and kubernetes version (kubeversion.open-cluster-management.io). They are written from the managed cluster. The set of claims is not uniform across a fleet, some claims can be vendor or version specific and may not be included from all managed clusters.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1.ManagedClusterClaim"
           }
         },
@@ -12877,7 +12666,6 @@
           "description": "conditions contains the different condition statuses for this managed cluster.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
           },
           "x-kubernetes-list-map-keys": [
@@ -12889,7 +12677,6 @@
           "description": "managedNamespaces are a list of namespaces managed by the clustersets the cluster belongs to.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1.ClusterSetManagedNamespaceConfig"
           },
           "x-kubernetes-list-map-keys": [
@@ -13058,7 +12845,6 @@
           "description": "Items is a list of AddOnPlacementScore",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1alpha1.AddOnPlacementScore"
           }
         },
@@ -13088,7 +12874,6 @@
           "description": "Conditions contain the different condition statuses for this AddOnPlacementScore.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
           },
           "x-kubernetes-list-map-keys": [
@@ -13100,7 +12885,6 @@
           "description": "Scores contain a list of score name and value of this managed cluster.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1alpha1.AddOnPlacementScoreItem"
           },
           "x-kubernetes-list-map-keys": [
@@ -13166,7 +12950,6 @@
           "description": "Items is a list of ClusterClaim.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1alpha1.ClusterClaim"
           }
         },
@@ -13234,7 +13017,6 @@
           "description": "List of the decision groups names or indexes to apply the workload first and fail if workload did not reach successful state. GroupName or GroupIndex must match with the decisionGroups defined in the placement's decisionStrategy",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1alpha1.MandatoryDecisionGroup"
           }
         }
@@ -13305,7 +13087,6 @@
           "description": "List of the decision groups names or indexes to apply the workload first and fail if workload did not reach successful state. GroupName or GroupIndex must match with the decisionGroups defined in the placement's decisionStrategy",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1alpha1.MandatoryDecisionGroup"
           }
         },
@@ -13342,7 +13123,6 @@
           "description": "List of the decision groups names or indexes to apply the workload first and fail if workload did not reach successful state. GroupName or GroupIndex must match with the decisionGroups defined in the placement's decisionStrategy",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1alpha1.MandatoryDecisionGroup"
           }
         },
@@ -13429,8 +13209,7 @@
         "celExpressions": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -13450,7 +13229,6 @@
           "description": "matchExpressions is a list of cluster claim selector requirements. The requirements are ANDed.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelectorRequirement"
           }
         }
@@ -13593,8 +13371,7 @@
           "description": "List of placement decisions names associated with the decision group",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -13659,7 +13436,6 @@
           "description": "decisionGroups represents a list of predefined groups to put decision results. Decision groups will be constructed based on the DecisionGroups field at first. The clusters not included in the DecisionGroups will be divided to other decision groups afterwards. Each decision group should not have the number of clusters larger than the ClustersPerDecisionGroup.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta1.DecisionGroup"
           }
         }
@@ -13755,7 +13531,6 @@
           "description": "Items is a list of PlacementDecision.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta1.PlacementDecision"
           }
         },
@@ -13788,7 +13563,6 @@
           "description": "decisions is a slice of decisions according to a placement The number of decisions should not be larger than 100",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta1.ClusterDecision"
           }
         }
@@ -13816,7 +13590,6 @@
           "description": "Items is a list of Placements.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta1.Placement"
           }
         },
@@ -13846,8 +13619,7 @@
           "description": "clusterSets represent the ManagedClusterSets from which the ManagedClusters are selected. If the slice is empty, ManagedClusters will be selected from the ManagedClusterSets bound to the placement namespace, otherwise ManagedClusters will be selected from the intersection of this slice and the ManagedClusterSets bound to the placement namespace.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "decisionStrategy": {
@@ -13864,7 +13636,6 @@
           "description": "predicates represent a slice of predicates to select ManagedClusters. The predicates are ORed.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta1.ClusterPredicate"
           }
         },
@@ -13890,7 +13661,6 @@
           "description": "tolerations are applied to placements, and allow (but do not require) the managed clusters with certain taints to be selected by placements with matching tolerations.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta1.Toleration"
           }
         }
@@ -13910,7 +13680,6 @@
           "description": "Conditions contains the different condition status for this Placement.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
           },
           "x-kubernetes-list-map-keys": [
@@ -13922,7 +13691,6 @@
           "description": "List of decision groups determined by the placement and DecisionStrategy.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta1.DecisionGroupStatus"
           }
         },
@@ -13977,7 +13745,6 @@
         "configurations": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta1.PrioritizerConfig"
           }
         },
@@ -14068,7 +13835,6 @@
           "description": "SpreadConstraints defines how the placement decision should be distributed among a set of ManagedClusters. The importance of the SpreadConstraintsTerms follows the natural order of their index in the slice. The scheduler first consider SpreadConstraintsTerms with smaller index then those with larger index to distribute the placement decision.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta1.SpreadConstraintsTerm"
           }
         }
@@ -14230,7 +13996,6 @@
           "description": "Items is a list of ManagedClusterSetBinding.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta2.ManagedClusterSetBinding"
           }
         },
@@ -14284,7 +14049,6 @@
           "description": "Conditions contains the different condition statuses for this ManagedClusterSetBinding.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
           }
         }
@@ -14312,7 +14076,6 @@
           "description": "Items is a list of ManagedClusterSet.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1beta2.ManagedClusterSet"
           }
         },
@@ -14347,7 +14110,6 @@
           "description": "managedNamespaces defines the list of namespace on the managedclusters across the clusterset to be managed.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.cluster.v1.ManagedNamespaceConfig"
           },
           "x-kubernetes-list-map-keys": [
@@ -14375,7 +14137,6 @@
           "description": "Conditions contains the different condition statuses for this ManagedClusterSet.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
           }
         }
@@ -14467,7 +14228,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.discovery.v1.DiscoveredCluster"
           }
         },
@@ -14590,7 +14350,6 @@
           "description": "INSERT ADDITIONAL STATUS FIELD - define observed state of cluster Important: Run \"make\" to regenerate code after modifying this file",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.discovery.v1.DiscoveredClusterCondition"
           }
         }
@@ -14650,7 +14409,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.discovery.v1.DiscoveryConfig"
           }
         },
@@ -14716,16 +14474,14 @@
           "description": "ClusterTypes is the list of cluster types to discover. These types represent the platform the cluster is running on, such as OpenShift Container Platform (OCP), Azure Red Hat OpenShift (ARO), or others.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "infrastructureProviders": {
           "description": "InfrastructureProviders is the list of infrastructure providers to discover. This can be a list of cloud providers or platforms (e.g., AWS, Azure, GCP) where clusters might be running.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "lastActive": {
@@ -14737,16 +14493,14 @@
           "description": "OpenShiftVersions is the list of release versions of OpenShift of the form \"\u003cMajor\u003e.\u003cMinor\u003e\"",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "regions": {
           "description": "Regions is the list of regions where OpenShift clusters are located. This helps in filtering clusters based on geographic location or data center region, useful for compliance or latency requirements.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -14805,7 +14559,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.discovery.v1alpha1.DiscoveredCluster"
           }
         },
@@ -14946,7 +14699,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.discovery.v1alpha1.DiscoveryConfig"
           }
         },
@@ -15017,8 +14769,7 @@
           "description": "OpenShiftVersions is the list of release versions of OpenShift of the form \"\u003cMajor\u003e.\u003cMinor\u003e\"",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -15077,7 +14828,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.observability.v1beta1.MultiClusterObservability"
           }
         },
@@ -15126,8 +14876,7 @@
           "description": "Spec of NodeSelector",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "observabilityAddonSpec": {
@@ -15154,7 +14903,6 @@
           "description": "Tolerations causes all components to tolerate any taints.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Toleration"
           }
         }
@@ -15175,7 +14923,6 @@
           "description": "Represents the status of each deployment",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/com.github.stolostron.multicluster-observability-operator.operators.multiclusterobservability.api.shared.Condition"
           }
         }
@@ -15235,7 +14982,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.observability.v1beta1.ObservabilityAddon"
           }
         },
@@ -15266,7 +15012,6 @@
         "conditions": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.observability.v1beta1.StatusCondition"
           }
         }
@@ -15439,8 +15184,7 @@
           "description": "Secrets is a list of Secrets in the same namespace as the MCO object. Each of these Secrets shall be mounted into the Alertmanager Pods. Secrets are added to the StatefulSet as a volume named secret-\u003csecret-name\u003e. Secrets are mounted into /etc/alertmanager/secrets/\u003csecret-name\u003e in the 'alertmanager' container.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -15555,7 +15299,6 @@
           "description": "WARNING: Use only with guidance from Red Hat Support. Using this feature incorrectly can lead to an unrecoverable state, data loss, or both, which is not covered by Red Hat Support.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Container"
           }
         },
@@ -15567,8 +15310,7 @@
           "description": "Annotations is an unstructured key value map stored with a service account",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -15644,7 +15386,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.MultiClusterObservability"
           }
         },
@@ -15702,8 +15443,7 @@
           "description": "Spec of NodeSelector",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "observabilityAddonSpec": {
@@ -15718,7 +15458,6 @@
           "description": "Tolerations causes all components to tolerate any taints.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Toleration"
           }
         }
@@ -15739,7 +15478,6 @@
           "description": "Represents the status of each deployment",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/com.github.stolostron.multicluster-observability-operator.operators.multiclusterobservability.api.shared.Condition"
           }
         }
@@ -15961,7 +15699,6 @@
           "description": "WARNING: Use only with guidance from Red Hat Support. Using this feature incorrectly can lead to an unrecoverable state, data loss, or both, which is not covered by Red Hat Support.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Container"
           }
         },
@@ -15991,7 +15728,6 @@
           "description": "WARNING: Use only with guidance from Red Hat Support. Using this feature incorrectly can lead to an unrecoverable state, data loss, or both, which is not covered by Red Hat Support.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Container"
           }
         },
@@ -16008,8 +15744,7 @@
           "description": "Annotations is an unstructured key value map stored with a service account",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "usePrometheusEngine": {
@@ -16033,7 +15768,6 @@
           "description": "WARNING: Use only with guidance from Red Hat Support. Using this feature incorrectly can lead to an unrecoverable state, data loss, or both, which is not covered by Red Hat Support.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Container"
           }
         },
@@ -16050,8 +15784,7 @@
           "description": "Annotations is an unstructured key value map stored with a service account",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -16108,7 +15841,6 @@
           "description": "WARNING: Use only with guidance from Red Hat Support. Using this feature incorrectly can lead to an unrecoverable state, data loss, or both, which is not covered by Red Hat Support.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Container"
           }
         },
@@ -16129,8 +15861,7 @@
           "description": "Annotations is an unstructured key value map stored with a service account",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -16201,7 +15932,6 @@
           "description": "WARNING: Use only with guidance from Red Hat Support. Using this feature incorrectly can lead to an unrecoverable state, data loss, or both, which is not covered by Red Hat Support.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Container"
           }
         },
@@ -16218,8 +15948,7 @@
           "description": "Annotations is an unstructured key value map stored with a service account",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -16372,7 +16101,6 @@
           "description": "FeatureGates represents the list of feature gates for addon manager If it is set empty, default feature gates will be used. If it is set, featuregate/Foo is an example of one item in FeatureGates:\n  1. If featuregate/Foo does not exist, registration-operator will discard it\n  2. If featuregate/Foo exists and is false by default. It is now possible to set featuregate/Foo=[false|true]\n  3. If featuregate/Foo exists and is true by default. If a cluster-admin upgrading from 1 to 2 wants to continue having featuregate/Foo=false,\n \the can set featuregate/Foo=false before upgrading. Let's say the cluster-admin wants featuregate/Foo=false.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.FeatureGate"
           }
         }
@@ -16438,8 +16166,7 @@
           "description": "AutoApprovedIdentities represent a list of approved arn patterns",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "hubClusterArn": {
@@ -16450,8 +16177,7 @@
           "description": "List of tags to be added to AWS resources created by hub while processing awsirsa registration request Example - \"product:v1:tenant:app-name=My-App\"",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -16542,8 +16268,7 @@
         "LabelExceptions": {
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "Name": {
@@ -16553,8 +16278,7 @@
         "NameExceptions": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -16596,8 +16320,7 @@
           "description": "AutoApprovedIdentities represent a list of approved users",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -16626,8 +16349,7 @@
           "description": "Custom suffixes for reserved ClusterClaims.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -16720,7 +16442,6 @@
           "description": "Items is a list of deployment configurations for registration and work distribution controllers.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.ClusterManager"
           }
         },
@@ -16816,7 +16537,6 @@
           "description": "Conditions contain the different condition statuses for this ClusterManager. Valid condition types are: Applied: Components in hub are applied. Available: Components in hub are available and ready to serve. Progressing: Components in hub are in a transitioning state. Degraded: Components in hub do not match the desired configuration and only provide degraded service.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
           },
           "x-kubernetes-list-map-keys": [
@@ -16828,7 +16548,6 @@
           "description": "Generations are used to determine when an item needs to be reconciled or has changed in a way that needs a reaction.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.GenerationStatus"
           }
         },
@@ -16841,7 +16560,6 @@
           "description": "RelatedResources are used to track the resources that are related to this ClusterManager.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.RelatedResourceMeta"
           }
         }
@@ -16894,7 +16612,6 @@
           "description": "Deployments is a list of deployment specific configuration overrides.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.DeploymentConfig"
           }
         }
@@ -16919,7 +16636,6 @@
           "description": "Env is a list of environment variable overrides for the container.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.EnvConfig"
           }
         },
@@ -16994,7 +16710,6 @@
           "description": "Containers is a list of container specific configurations within the deployment.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.ContainerConfig"
           }
         },
@@ -17202,8 +16917,7 @@
           "description": "AutoApprovedIdentities represent a list of approved users",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -17276,7 +16990,6 @@
           "description": "(Deprecated) AdditionalCertificateAuthorities is a list of references to secrets in the 'hive' namespace that contain an additional Certificate Authority to use when communicating with target clusters. These certificate authorities will be used in addition to any self-signed CA generated by each cluster on installation.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
           }
         },
@@ -17484,8 +17197,7 @@
           "description": "renderers specifies which import renderers to use. Valid values are: \"render-auto\", \"render-from-config-secret\"",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -17505,8 +17217,7 @@
           "description": "List of SSL ciphers enabled for management ingress. Defaults to full list of supported ciphers",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -17559,7 +17270,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.InternalHubComponent"
           }
         },
@@ -17658,7 +17368,6 @@
           "description": "Items is a list of Klusterlet agents.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.Klusterlet"
           }
         },
@@ -17697,7 +17406,6 @@
           "description": "ExternalServerURLs represents a list of apiserver urls and ca bundles that is accessible externally If it is set empty, managed cluster has no externally accessible url that hub cluster can visit.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.ServerURL"
           }
         },
@@ -17762,7 +17470,6 @@
           "description": "Conditions contain the different condition statuses for this Klusterlet. Valid condition types are: Applied: Components have been applied in the managed cluster. Available: Components in the managed cluster are available and ready to serve. Progressing: Components in the managed cluster are in a transitioning state. Degraded: Components in the managed cluster do not match the desired configuration and only provide degraded service.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
           },
           "x-kubernetes-list-map-keys": [
@@ -17774,7 +17481,6 @@
           "description": "Generations are used to determine when an item needs to be reconciled or has changed in a way that needs a reaction.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.GenerationStatus"
           }
         },
@@ -17787,7 +17493,6 @@
           "description": "RelatedResources are used to track the resources that are related to this Klusterlet.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.RelatedResourceMeta"
           }
         }
@@ -17857,7 +17562,6 @@
           "description": "KubeConfigSecrets is a list of secret names. The secrets are in the same namespace where the agent controller runs.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.KubeConfigSecret"
           }
         }
@@ -17917,7 +17621,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.MultiClusterHub"
           }
         },
@@ -17988,8 +17691,7 @@
           "description": "Set the nodeselectors",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "overrides": {
@@ -18005,7 +17707,6 @@
           "description": "Tolerations causes all components to tolerate any taints.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Toleration"
           }
         }
@@ -18026,7 +17727,6 @@
           "description": "Components []ComponentCondition `json:\"manifests,omitempty\"`",
           "type": "object",
           "additionalProperties": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.StatusCondition"
           }
         },
@@ -18034,7 +17734,6 @@
           "description": "Conditions contains the different condition statuses for the MultiClusterHub",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.HubCondition"
           }
         },
@@ -18068,15 +17767,13 @@
           "description": "NodeSelector defines which Nodes the Pods are scheduled on. The default is an empty list.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "tolerations": {
           "description": "Tolerations are attached by pods to tolerate any taint that matches the triple \u003ckey,value,effect\u003e using the matching operator \u003coperator\u003e. The default is an empty list.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Toleration"
           }
         }
@@ -18097,7 +17794,6 @@
           "description": "Provides optional configuration for components, the list of which can be found here: https://github.com/stolostron/multiclusterhub-operator/tree/main/docs/available-components.md",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.ComponentConfig"
           }
         },
@@ -18121,7 +17817,6 @@
           "description": "FeatureGates represents the list of feature gates for placement If it is set empty, default feature gates will be used. If it is set, featuregate/Foo is an example of one item in FeatureGates:\n  1. If featuregate/Foo does not exist, registration-operator will discard it\n  2. If featuregate/Foo exists and is false by default. It is now possible to set featuregate/Foo=[false|true]\n  3. If featuregate/Foo exists and is true by default. If a cluster-admin upgrading from 1 to 2 wants to continue having featuregate/Foo=false,\n \the can set featuregate/Foo=false before upgrading. Let's say the cluster-admin wants featuregate/Foo=false.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.FeatureGate"
           }
         }
@@ -18155,8 +17850,7 @@
           "description": "ClusterAnnotations is annotations with the reserve prefix \"agent.open-cluster-management.io\" set on ManagedCluster when creating only, other actors can update it afterwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "clusterClaimConfiguration": {
@@ -18167,15 +17861,13 @@
           "description": "ClusterLabels is labels set on ManagedCluster when creating only, other actors can update it afterwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "featureGates": {
           "description": "FeatureGates represents the list of feature gates for registration If it is set empty, default feature gates will be used. If it is set, featuregate/Foo is an example of one item in FeatureGates:\n  1. If featuregate/Foo does not exist, registration-operator will discard it\n  2. If featuregate/Foo exists and is false by default. It is now possible to set featuregate/Foo=[false|true]\n  3. If featuregate/Foo exists and is true by default. If a cluster-admin upgrading from 1 to 2 wants to continue having featuregate/Foo=false,\n \the can set featuregate/Foo=false before upgrading. Let's say the cluster-admin wants featuregate/Foo=false.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.FeatureGate"
           }
         },
@@ -18264,15 +17956,13 @@
           "description": "AutoApproveUser represents a list of users that can auto approve CSR and accept client. If the credential of the bootstrap-hub-kubeconfig matches to the users, the cluster created by the bootstrap-hub-kubeconfig will be auto-registered into the hub cluster. This takes effect only when ManagedClusterAutoApproval feature gate is enabled.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "featureGates": {
           "description": "FeatureGates represents the list of feature gates for registration If it is set empty, default feature gates will be used. If it is set, featuregate/Foo is an example of one item in FeatureGates:\n  1. If featuregate/Foo does not exist, registration-operator will discard it\n  2. If featuregate/Foo exists and is false by default. It is now possible to set featuregate/Foo=[false|true]\n  3. If featuregate/Foo exists and is true by default. If a cluster-admin upgrading from 1 to 2 wants to continue having featuregate/Foo=false,\n \the can set featuregate/Foo=false before upgrading. Let's say the cluster-admin wants featuregate/Foo=false.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.FeatureGate"
           }
         },
@@ -18284,7 +17974,6 @@
           "description": "RegistrationDrivers represent the list of hub registration drivers that contain information used by hub to initialize the hub cluster A RegistrationDriverHub contains details of authentication type and the hub cluster ARN",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.RegistrationDriverHub"
           },
           "x-kubernetes-list-map-keys": [
@@ -18432,7 +18121,6 @@
           "description": "endpointsExposure represents the configuration for endpoints exposure of the server.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.EndpointExposure"
           }
         },
@@ -18440,7 +18128,6 @@
           "description": "featureGates represents the features enabled for the server",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.FeatureGate"
           }
         },
@@ -18575,7 +18262,6 @@
           "description": "FeatureGates represents the list of feature gates for work If it is set empty, default feature gates will be used. If it is set, featuregate/Foo is an example of one item in FeatureGates:\n  1. If featuregate/Foo does not exist, registration-operator will discard it\n  2. If featuregate/Foo exists and is false by default. It is now possible to set featuregate/Foo=[false|true]\n  3. If featuregate/Foo exists and is true by default. If a cluster-admin upgrading from 1 to 2 wants to continue having featuregate/Foo=false,\n \the can set featuregate/Foo=false before upgrading. Let's say the cluster-admin wants featuregate/Foo=false.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.FeatureGate"
           }
         },
@@ -18619,7 +18305,6 @@
           "description": "FeatureGates represents the list of feature gates for work If it is set empty, default feature gates will be used. If it is set, featuregate/Foo is an example of one item in FeatureGates:\n  1. If featuregate/Foo does not exist, registration-operator will discard it\n  2. If featuregate/Foo exists and is false by default. It is now possible to set featuregate/Foo=[false|true]\n  3. If featuregate/Foo exists and is true by default. If a cluster-admin upgrading from 1 to 2 wants to continue having featuregate/Foo=false,\n \the can set featuregate/Foo=false before upgrading. Let's say the cluster-admin wants featuregate/Foo=false.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.FeatureGate"
           }
         },
@@ -18710,7 +18395,6 @@
         "history": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.policy.v1.ComplianceHistory"
           }
         },
@@ -18751,7 +18435,6 @@
           "description": "Decisions is the list of managed clusters returned by the placement resource for this binding.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.policy.v1.PlacementDecision"
           }
         },
@@ -18818,7 +18501,6 @@
         "subjects": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.policy.v1.Subject"
           }
         }
@@ -18845,7 +18527,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.policy.v1.PlacementBinding"
           }
         },
@@ -19029,7 +18710,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.policy.v1.Policy"
           }
         },
@@ -19066,7 +18746,6 @@
           "description": "PolicyDependencies is a list of dependency objects detailed with extra considerations for compliance that should be fulfilled before applying the policies to the managed clusters.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.policy.v1.PolicyDependency"
           }
         },
@@ -19148,7 +18827,6 @@
           "description": "ExtraDependencies is additional PolicyDependencies that only apply to this policy template. ExtraDependencies is a list of dependency objects detailed with extra considerations for compliance that should be fulfilled before applying the policy template to the managed clusters.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.policy.v1.PolicyDependency"
           }
         },
@@ -19324,7 +19002,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.policy.v1beta1.PolicyAutomation"
           }
         },
@@ -19397,7 +19074,6 @@
           "description": "Cluster name as the key of ClustersWithEvent",
           "type": "object",
           "additionalProperties": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.policy.v1beta1.ClusterEvent"
           }
         }
@@ -19460,7 +19136,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.policy.v1beta1.PolicySet"
           }
         },
@@ -19496,8 +19171,7 @@
           "description": "Policies is a list of policy names that are contained within the policy set.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -19520,7 +19194,6 @@
         "placement": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.policy.v1beta1.PolicySetStatusPlacement"
           }
         },
@@ -19596,7 +19269,6 @@
         "history": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.policy.v1beta1.ReplicatedComplianceHistory"
           }
         }
@@ -19626,7 +19298,6 @@
           "description": "used by replicated policy",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.policy.v1beta1.ReplicatedDetailsPerTemplate"
           }
         },
@@ -19671,22 +19342,19 @@
         "policySets": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "policyViolations": {
           "type": "object",
           "additionalProperties": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.policy.v1beta1.ReplicatedPolicyStatus"
           }
         },
         "targetClusters": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -19705,15 +19373,13 @@
           "description": "Container Arguments",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "envVar": {
           "description": "Container Env variables",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.EnvVar"
           }
         },
@@ -19818,7 +19484,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.open-cluster-management.search.v1alpha1.Search"
           }
         },
@@ -19877,15 +19542,13 @@
           "description": "Define the nodes that you want to schedule with matching labels.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "tolerations": {
           "description": "Define tolerations to schedule pods on nodes with matching taints.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Toleration"
           }
         }
@@ -19910,7 +19573,6 @@
           "description": "Conditions",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
           }
         },

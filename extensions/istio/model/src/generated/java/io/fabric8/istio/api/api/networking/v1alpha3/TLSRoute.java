@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,11 +32,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Describes match conditions and actions for routing unterminated TLS traffic (TLS/HTTPS) The following routing rule forwards unterminated TLS traffic arriving at port 443 of gateway called "mygateway" to internal services in the mesh based on the SNI value.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: bookinfo-sni<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- "&#42;.bookinfo.com"<br><p> 	gateways:<br><p> 	- mygateway<br><p> 	tls:<br><p> 	- match:<br><p> 	  - port: 443<br><p> 	    sniHosts:<br><p> 	    - login.bookinfo.com<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: login.prod.svc.cluster.local<br><p> 	- match:<br><p> 	  - port: 443<br><p> 	    sniHosts:<br><p> 	    - reviews.bookinfo.com<br><p> 	  route:<br><p> 	  - destination:<br><p> 	      host: reviews.prod.svc.cluster.local<br><p> <br><p> ```
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "match",

@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -29,11 +28,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * HTTPRequestRedirect defines a filter that redirects a request. This filter MUST NOT be used on the same Route rule as a HTTPURLRewrite filter.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "hostname",
@@ -160,7 +160,7 @@ public class HTTPRequestRedirectFilter implements Editable<HTTPRequestRedirectFi
     }
 
     /**
-     * StatusCode is the HTTP status code to be used in response.<br><p> <br><p> Note that values may be added to this enum, implementations must ensure that unknown values will not cause a crash.<br><p> <br><p> Unknown values here must result in the implementation setting the Accepted Condition for the Route to `status: False`, with a Reason of `UnsupportedValue`.<br><p> <br><p> Support: Core
+     * StatusCode is the HTTP status code to be used in response.<br><p> <br><p> Note that values may be added to this enum, implementations must ensure that unknown values will not cause a crash.<br><p> <br><p> Unknown values here must result in the implementation setting the Accepted Condition for the Route to `status: False`, with a Reason of `UnsupportedValue`.<br><p> <br><p> Support: statusCode 301 and 302 are Core; all others are Extended.<br><p> <br><p> &lt;gateway:util:excludeFromCRD&gt; Extended codes have their own features:<br><p>   HTTPRoute303RedirectStatusCode,<br><p>   HTTPRoute307RedirectStatusCode, and<br><p>   HTTPRoute308RedirectStatusCode<br><p> &lt;/gateway:util:excludeFromCRD&gt;
      */
     @JsonProperty("statusCode")
     public Integer getStatusCode() {
@@ -168,7 +168,7 @@ public class HTTPRequestRedirectFilter implements Editable<HTTPRequestRedirectFi
     }
 
     /**
-     * StatusCode is the HTTP status code to be used in response.<br><p> <br><p> Note that values may be added to this enum, implementations must ensure that unknown values will not cause a crash.<br><p> <br><p> Unknown values here must result in the implementation setting the Accepted Condition for the Route to `status: False`, with a Reason of `UnsupportedValue`.<br><p> <br><p> Support: Core
+     * StatusCode is the HTTP status code to be used in response.<br><p> <br><p> Note that values may be added to this enum, implementations must ensure that unknown values will not cause a crash.<br><p> <br><p> Unknown values here must result in the implementation setting the Accepted Condition for the Route to `status: False`, with a Reason of `UnsupportedValue`.<br><p> <br><p> Support: statusCode 301 and 302 are Core; all others are Extended.<br><p> <br><p> &lt;gateway:util:excludeFromCRD&gt; Extended codes have their own features:<br><p>   HTTPRoute303RedirectStatusCode,<br><p>   HTTPRoute307RedirectStatusCode, and<br><p>   HTTPRoute308RedirectStatusCode<br><p> &lt;/gateway:util:excludeFromCRD&gt;
      */
     @JsonProperty("statusCode")
     public void setStatusCode(Integer statusCode) {

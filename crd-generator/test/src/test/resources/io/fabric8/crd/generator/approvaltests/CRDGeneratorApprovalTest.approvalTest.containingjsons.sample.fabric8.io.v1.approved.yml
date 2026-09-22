@@ -18,6 +18,7 @@ spec:
           spec:
             properties:
               field:
+                format: "int32"
                 type: "integer"
               free:
                 x-kubernetes-preserve-unknown-fields: true

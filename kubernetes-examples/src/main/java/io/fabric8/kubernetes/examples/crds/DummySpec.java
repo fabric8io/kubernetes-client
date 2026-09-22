@@ -15,13 +15,13 @@
  */
 package io.fabric8.kubernetes.examples.crds;
 
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  */
-@JsonDeserialize(using = JsonDeserializer.None.class)
+@JsonDeserialize(using = ValueDeserializer.None.class)
 public class DummySpec implements KubernetesResource {
   private String foo;
   private String bar;

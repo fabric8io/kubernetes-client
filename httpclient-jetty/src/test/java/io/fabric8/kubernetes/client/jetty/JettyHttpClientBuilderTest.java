@@ -20,12 +20,12 @@ import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.mockwebserver.DefaultMockServer;
 import io.fabric8.mockwebserver.utils.ResponseProviders;
 import org.assertj.core.api.InstanceOfAssertFactories;
+import org.eclipse.jetty.client.Authentication;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.HttpProxy;
 import org.eclipse.jetty.client.ProxyConfiguration;
 import org.eclipse.jetty.client.Socks4Proxy;
 import org.eclipse.jetty.client.Socks5Proxy;
-import org.eclipse.jetty.client.api.Authentication;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.junit.jupiter.api.AfterAll;
@@ -66,15 +66,10 @@ class JettyHttpClientBuilderTest {
   }
 
   @Test
-  @DisplayName("build, creates a WS client and an HTTP client with different underlying connector instances")
-  void underlyingHttpAndWsClientsDifferentTransports() {
+  @DisplayName("build, creates a WS client that runs on the HTTP client, so both share its transport, proxy and TLS configuration")
+  void webSocketClientRunsOnHttpClient() {
     try (var client = factory.newBuilder().build()) {
-      assertThat(client)
-          .satisfies(c -> assertThat(c.getJetty())
-              .isNotSameAs(c.getJettyWs().getHttpClient())
-              .returns(c.getJettyWs().getSslContextFactory(), HttpClient::getSslContextFactory)
-              .extracting(HttpClient::getTransport)
-              .isNotSameAs(c.getJettyWs().getHttpClient().getTransport()));
+      assertThat(client.getJettyWs().getHttpClient()).isSameAs(client.getJetty());
     }
   }
 
@@ -86,6 +81,16 @@ class JettyHttpClientBuilderTest {
           .extracting(JettyHttpClient::getJettyWs)
           .extracting(WebSocketClient::getIdleTimeout)
           .isEqualTo(Duration.ZERO);
+    }
+  }
+
+  @Test
+  @DisplayName("build, keeps the default HTTP idle timeout although the WS idle timeout (which writes through to the HTTP client) is disabled")
+  void httpIdleTimeoutNotDisabled() {
+    try (var client = factory.newBuilder().build()) {
+      assertThat(client.getJetty().getIdleTimeout())
+          .isPositive()
+          .isEqualTo(new HttpClient().getIdleTimeout());
     }
   }
 
@@ -198,13 +203,9 @@ class JettyHttpClientBuilderTest {
   }
 
   @Test
-  @DisplayName("proxyAddress, configures the HTTP proxy on the WebSocket transport as well as the HTTP one")
-  void httpProxyIsConfiguredOnBothTransports() {
+  @DisplayName("proxyAddress, configures the HTTP proxy once on the transport shared by HTTP and WebSocket")
+  void httpProxyIsConfiguredOnSharedTransport() {
     try (var client = factory.newBuilder().proxyAddress(PROXY_ADDRESS).build()) {
-      assertThat(proxiesOf(client.getJetty()))
-          .as("the HTTP transport should be proxied")
-          .singleElement().isInstanceOf(HttpProxy.class)
-          .returns(PROXY_ORIGIN, proxy -> proxy.getAddress().asString());
       assertThat(proxiesOf(client.getJettyWs().getHttpClient()))
           .as("exec/attach/portForward would otherwise bypass the configured egress proxy")
           .singleElement().isInstanceOf(HttpProxy.class)
@@ -213,47 +214,45 @@ class JettyHttpClientBuilderTest {
   }
 
   @Test
-  @DisplayName("proxyType SOCKS4, configures the SOCKS4 proxy on the WebSocket transport as well as the HTTP one")
-  void socks4ProxyIsConfiguredOnBothTransports() {
+  @DisplayName("proxyType SOCKS4, configures the SOCKS4 proxy once on the transport shared by HTTP and WebSocket")
+  void socks4ProxyIsConfiguredOnSharedTransport() {
     try (var client = factory.newBuilder().proxyType(ProxyType.SOCKS4).proxyAddress(PROXY_ADDRESS).build()) {
-      assertThat(proxiesOf(client.getJetty())).singleElement().isInstanceOf(Socks4Proxy.class);
       assertThat(proxiesOf(client.getJettyWs().getHttpClient())).singleElement().isInstanceOf(Socks4Proxy.class);
     }
   }
 
   @Test
-  @DisplayName("proxyType SOCKS5, configures the SOCKS5 proxy on the WebSocket transport as well as the HTTP one")
-  void socks5ProxyIsConfiguredOnBothTransports() {
+  @DisplayName("proxyType SOCKS5, configures the SOCKS5 proxy once on the transport shared by HTTP and WebSocket")
+  void socks5ProxyIsConfiguredOnSharedTransport() {
     try (var client = factory.newBuilder().proxyType(ProxyType.SOCKS5).proxyAddress(PROXY_ADDRESS).build()) {
-      assertThat(proxiesOf(client.getJetty())).singleElement().isInstanceOf(Socks5Proxy.class);
       assertThat(proxiesOf(client.getJettyWs().getHttpClient())).singleElement().isInstanceOf(Socks5Proxy.class);
     }
   }
 
   @Test
-  @DisplayName("proxyAuthorization, registers the proxy credentials on the WebSocket transport as well as the HTTP one")
-  void proxyAuthenticationIsRegisteredOnBothTransports() {
+  @DisplayName("proxyAuthorization, registers the proxy credentials once on the transport shared by HTTP and WebSocket")
+  void proxyAuthenticationIsRegisteredOnSharedTransport() {
     try (var client = factory.newBuilder()
         .proxyAddress(PROXY_ADDRESS)
         .proxyAuthorization(basicCredentials("user", "pass"))
         .build()) {
       final URI proxyUri = URI.create("http://" + PROXY_ORIGIN);
-      assertThat(client.getJetty().getAuthenticationStore()
-          .findAuthentication("Basic", proxyUri, Authentication.ANY_REALM))
-          .as("the HTTP transport should be able to answer the proxy's 407")
+      final var store = client.getJettyWs().getHttpClient().getAuthenticationStore();
+      final var authentication = store.findAuthentication("Basic", proxyUri, Authentication.ANY_REALM);
+      assertThat(authentication)
+          .as("the HTTP and WebSocket requests should be able to answer the proxy's 407")
           .isNotNull();
-      assertThat(client.getJettyWs().getHttpClient().getAuthenticationStore()
-          .findAuthentication("Basic", proxyUri, Authentication.ANY_REALM))
-          .as("the WebSocket transport has its own store, so it needs its own entry to answer the proxy's 407")
-          .isNotNull();
+      store.removeAuthentication(authentication);
+      assertThat(store.findAuthentication("Basic", proxyUri, Authentication.ANY_REALM))
+          .as("the credentials should be registered once")
+          .isNull();
     }
   }
 
   @Test
-  @DisplayName("proxyType DIRECT, leaves both transports unproxied even when an address is set")
-  void directProxyLeavesBothTransportsUnproxied() {
+  @DisplayName("proxyType DIRECT, leaves the shared transport unproxied even when an address is set")
+  void directProxyLeavesSharedTransportUnproxied() {
     try (var client = factory.newBuilder().proxyType(ProxyType.DIRECT).proxyAddress(PROXY_ADDRESS).build()) {
-      assertThat(proxiesOf(client.getJetty())).isEmpty();
       assertThat(proxiesOf(client.getJettyWs().getHttpClient())).isEmpty();
     }
   }

@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,11 +32,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * SSL/TLS related settings for upstream connections. See Envoy's [TLS context](https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/transport_sockets/tls/v3/common.proto.html#common-tls-configuration) for more details. These settings are common to both HTTP and TCP upstreams.<br><p> <br><p> For example, the following rule configures a client to use mutual TLS for connections to upstream database cluster.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: db-mtls<br><p> <br><p> spec:<br><p> <br><p> 	host: mydbserver.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  tls:<br><p> 	    mode: MUTUAL<br><p> 	    clientCertificate: /etc/certs/myclientcert.pem<br><p> 	    privateKey: /etc/certs/client_private_key.pem<br><p> 	    caCertificates: /etc/certs/rootcacerts.pem<br><p> <br><p> ```<br><p> <br><p> The following rule configures a client to use TLS when talking to a foreign service whose domain matches &#42;.foo.com.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: tls-foo<br><p> <br><p> spec:<br><p> <br><p> 	host: "&#42;.foo.com"<br><p> 	trafficPolicy:<br><p> 	  tls:<br><p> 	    mode: SIMPLE<br><p> <br><p> ```<br><p> <br><p> The following rule configures a client to use Istio mutual TLS when talking to rating services.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: ratings-istio-mtls<br><p> <br><p> spec:<br><p> <br><p> 	host: ratings.prod.svc.cluster.local<br><p> 	trafficPolicy:<br><p> 	  tls:<br><p> 	    mode: ISTIO_MUTUAL<br><p> <br><p> ```
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "caCertificates",

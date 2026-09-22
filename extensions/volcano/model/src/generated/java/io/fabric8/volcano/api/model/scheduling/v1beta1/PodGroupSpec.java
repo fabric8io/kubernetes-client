@@ -1,7 +1,9 @@
 
 package io.fabric8.volcano.api.model.scheduling.v1beta1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -10,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -32,18 +33,21 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * PodGroupSpec represents the template of a pod group.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "minMember",
     "minResources",
     "minTaskMember",
+    "networkTopology",
     "priorityClassName",
-    "queue"
+    "queue",
+    "subGroupPolicy"
 })
 @ToString
 @EqualsAndHashCode
@@ -78,10 +82,15 @@ public class PodGroupSpec implements Editable<PodGroupSpecBuilder>, KubernetesRe
     @JsonProperty("minTaskMember")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Integer> minTaskMember = new LinkedHashMap<>();
+    @JsonProperty("networkTopology")
+    private NetworkTopologySpec networkTopology;
     @JsonProperty("priorityClassName")
     private String priorityClassName;
     @JsonProperty("queue")
     private String queue;
+    @JsonProperty("subGroupPolicy")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<SubGroupPolicySpec> subGroupPolicy = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -91,13 +100,15 @@ public class PodGroupSpec implements Editable<PodGroupSpecBuilder>, KubernetesRe
     public PodGroupSpec() {
     }
 
-    public PodGroupSpec(Integer minMember, Map<String, Quantity> minResources, Map<String, Integer> minTaskMember, String priorityClassName, String queue) {
+    public PodGroupSpec(Integer minMember, Map<String, Quantity> minResources, Map<String, Integer> minTaskMember, NetworkTopologySpec networkTopology, String priorityClassName, String queue, List<SubGroupPolicySpec> subGroupPolicy) {
         super();
         this.minMember = minMember;
         this.minResources = minResources;
         this.minTaskMember = minTaskMember;
+        this.networkTopology = networkTopology;
         this.priorityClassName = priorityClassName;
         this.queue = queue;
+        this.subGroupPolicy = subGroupPolicy;
     }
 
     /**
@@ -134,7 +145,7 @@ public class PodGroupSpec implements Editable<PodGroupSpecBuilder>, KubernetesRe
     }
 
     /**
-     * MinTaskMember defines the minimal number of pods to run each task in the pod group; if there's not enough resources to start each task, the scheduler will not start anyone.
+     * MinTaskMember defines the minimal number of pods to run for each task in the pod group; if there's not enough resources to start each task, the scheduler will not start anyone. SubGroupPolicy covers all capabilities of minTaskMember, while providing richer network topology and Gang scheduling management capabilities. Recommend using SubGroupPolicy to uniformly manage Gang scheduling for each Task group.
      */
     @JsonProperty("minTaskMember")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -143,11 +154,27 @@ public class PodGroupSpec implements Editable<PodGroupSpecBuilder>, KubernetesRe
     }
 
     /**
-     * MinTaskMember defines the minimal number of pods to run each task in the pod group; if there's not enough resources to start each task, the scheduler will not start anyone.
+     * MinTaskMember defines the minimal number of pods to run for each task in the pod group; if there's not enough resources to start each task, the scheduler will not start anyone. SubGroupPolicy covers all capabilities of minTaskMember, while providing richer network topology and Gang scheduling management capabilities. Recommend using SubGroupPolicy to uniformly manage Gang scheduling for each Task group.
      */
     @JsonProperty("minTaskMember")
     public void setMinTaskMember(Map<String, Integer> minTaskMember) {
         this.minTaskMember = minTaskMember;
+    }
+
+    /**
+     * PodGroupSpec represents the template of a pod group.
+     */
+    @JsonProperty("networkTopology")
+    public NetworkTopologySpec getNetworkTopology() {
+        return networkTopology;
+    }
+
+    /**
+     * PodGroupSpec represents the template of a pod group.
+     */
+    @JsonProperty("networkTopology")
+    public void setNetworkTopology(NetworkTopologySpec networkTopology) {
+        this.networkTopology = networkTopology;
     }
 
     /**
@@ -180,6 +207,23 @@ public class PodGroupSpec implements Editable<PodGroupSpecBuilder>, KubernetesRe
     @JsonProperty("queue")
     public void setQueue(String queue) {
         this.queue = queue;
+    }
+
+    /**
+     * Compared with minTaskMember, it offers more comprehensive topology scheduling and Gang scheduling management capabilities. Concurrent use with minTaskMember is not recommended, and SubGroupPolicy is the long-term evolution direction.
+     */
+    @JsonProperty("subGroupPolicy")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<SubGroupPolicySpec> getSubGroupPolicy() {
+        return subGroupPolicy;
+    }
+
+    /**
+     * Compared with minTaskMember, it offers more comprehensive topology scheduling and Gang scheduling management capabilities. Concurrent use with minTaskMember is not recommended, and SubGroupPolicy is the long-term evolution direction.
+     */
+    @JsonProperty("subGroupPolicy")
+    public void setSubGroupPolicy(List<SubGroupPolicySpec> subGroupPolicy) {
+        this.subGroupPolicy = subGroupPolicy;
     }
 
     @JsonIgnore

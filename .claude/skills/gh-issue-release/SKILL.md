@@ -3,7 +3,7 @@ name: gh-issue-release
 description: Manage Fabric8 Kubernetes Client release tracking issues. Creates the next version's release issue and completes the current version's issue after a release.
 argument-hint: "<released-version> <next-version>"
 disable-model-invocation: true
-allowed-tools: Read, Grep, Glob, AskUserQuestion, Bash(.claude/skills/gh-issue-release/scripts/*), Bash(gh *)
+allowed-tools: Read, Grep, Glob, AskUserQuestion, Bash(${CLAUDE_SKILL_DIR}/scripts/get-release-context.sh *)
 ---
 
 ## Release Issue Manager
@@ -23,14 +23,23 @@ After a release is published, you manage the release tracking issues:
 ### Pre-fetched Release Context
 
 ```
-!`.claude/skills/gh-issue-release/scripts/get-release-context.sh $0 $1`
+!`${CLAUDE_SKILL_DIR}/scripts/get-release-context.sh "$0" "$1"`
 ```
+
+### Running in a Sandbox
+
+Every step talks to the GitHub API through `gh`. Inside the Claude Code sandbox `gh` commonly fails with `tls: failed to verify certificate: x509: OSStatus -26276` (macOS) or HTTP 401 (keyring-stored tokens are unreachable), so the repo's `.claude/settings.json` excludes `gh` and the context script from the sandbox. Only when a `gh` command (or the context script) still fails with such an error, rerun it with the sandbox disabled. If it still fails outside the sandbox, stop and report it to the user; never disable TLS verification.
 
 ### Process
 
 #### 1. Validate Context
 
-Review the pre-fetched context above and verify:
+First check the pre-fetched context for failure markers:
+- `!! MISSING_ARGS` — ask the user for the released and next versions, then run `${CLAUDE_SKILL_DIR}/scripts/get-release-context.sh "<released-version>" "<next-version>"` with the Bash tool.
+- `!! GH_FETCH_FAILED` — check the error above it. A TLS or auth error means the injected command ran inside the sandbox: rerun `${CLAUDE_SKILL_DIR}/scripts/get-release-context.sh "$0" "$1"` with the Bash tool and the sandbox disabled. Otherwise report the error to the user.
+- `!! LOOKUP_FAILED` — that single query failed (unlike `Not found`, it says nothing about whether the item exists). Rerun the script, or run the query yourself, before drawing conclusions.
+
+Then review the context and verify:
 - A release tracking issue exists for version `$0` and is **OPEN**
 - The release tag `v$0` exists
 - The milestone for `$0` exists

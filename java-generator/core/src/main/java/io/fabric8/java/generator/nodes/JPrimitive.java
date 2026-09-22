@@ -15,8 +15,8 @@
  */
 package io.fabric8.java.generator.nodes;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.java.generator.Config;
+import tools.jackson.databind.JsonNode;
 
 import java.util.ArrayList;
 

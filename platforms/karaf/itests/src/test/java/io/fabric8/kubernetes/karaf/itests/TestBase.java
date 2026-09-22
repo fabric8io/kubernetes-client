@@ -29,9 +29,12 @@ import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.ops4j.pax.exam.CoreOptions.composite;
 import static org.ops4j.pax.exam.CoreOptions.maven;
+import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.configureConsole;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.configureSecurity;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFileExtend;
+import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFilePut;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.logLevel;
@@ -52,16 +55,23 @@ public class TestBase {
       ret.addAll(Arrays.asList(
           karafDistributionConfiguration().frameworkUrl(karafUrl).name("Apache Karaf").unpackDirectory(new File("target/exam")),
           configureSecurity().disableKarafMBeanServerBuilder(),
+          // Karaf 4.4's local console calls Subject.getSubject, which throws on JDK 23+ (apache/karaf#2214). The tests
+          // don't need it, and its failed shell bundle would make every later feature install fail.
+          configureConsole().ignoreLocalConsole(),
           features,
           editConfigurationFileExtend(
               "etc/io.fabric8.kubernetes.client.cfg", "junit", "ignored"),
           editConfigurationFileExtend(
               "etc/io.fabric8.openshift.client.cfg", "junit", "ignored"),
-          editConfigurationFileExtend(
+          // Replace the shipped repository list rather than appending to it: it still points at
+          // the decommissioned oss.sonatype.org OSSRH snapshot host, and appending duplicated
+          // Central. Everything under test resolves from the local repository.
+          editConfigurationFilePut(
               "etc/org.ops4j.pax.url.mvn.cfg",
               "org.ops4j.pax.url.mvn.repositories",
-              "https://repo1.maven.org/maven2/"),
-          keepRuntimeFolder(),
+              "https://repo1.maven.org/maven2@id=central"),
+          // Keeping the unpacked container costs ~100MB per test class; opt in when debugging.
+          Boolean.getBoolean("karaf.itest.keepRuntimeFolder") ? keepRuntimeFolder() : composite(),
           logLevel(LogLevelOption.LogLevel.INFO),
           new VMOption("--add-exports=java.base/"
               + "org.apache.karaf.specs.locator=java.xml,ALL-UNNAMED"),
@@ -98,11 +108,15 @@ public class TestBase {
               "etc/io.fabric8.kubernetes.client.cfg", "junit", "ignored"),
           editConfigurationFileExtend(
               "etc/io.fabric8.openshift.client.cfg", "junit", "ignored"),
-          editConfigurationFileExtend(
+          // Replace the shipped repository list rather than appending to it: it still points at
+          // the decommissioned oss.sonatype.org OSSRH snapshot host, and appending duplicated
+          // Central. Everything under test resolves from the local repository.
+          editConfigurationFilePut(
               "etc/org.ops4j.pax.url.mvn.cfg",
               "org.ops4j.pax.url.mvn.repositories",
-              "https://repo1.maven.org/maven2/"),
-          keepRuntimeFolder(),
+              "https://repo1.maven.org/maven2@id=central"),
+          // Keeping the unpacked container costs ~100MB per test class; opt in when debugging.
+          Boolean.getBoolean("karaf.itest.keepRuntimeFolder") ? keepRuntimeFolder() : composite(),
           logLevel(LogLevelOption.LogLevel.INFO)));
     }
     ret.addAll(extraOptions);

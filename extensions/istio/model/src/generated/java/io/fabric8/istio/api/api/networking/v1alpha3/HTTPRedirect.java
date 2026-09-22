@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -32,15 +31,17 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * HTTPRedirect can be used to send a 301 redirect response to the caller, where the Authority/Host and the URI in the response can be swapped with the specified values. For example, the following rule redirects requests for /v1/getProductRatings API on the ratings service to /v1/bookRatings provided by the bookratings service.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      exact: /v1/getProductRatings<br><p> 	  redirect:<br><p> 	    uri: /v1/bookRatings<br><p> 	    authority: newratings.default.svc.cluster.local<br><p> 	...<br><p> <br><p> ```
+ * HTTPRedirect can be used to send a 301 redirect response to the caller, where the Authority/Host and the URI in the response can be swapped with the specified values. For example, the following rule redirects requests for /v1/getProductRatings API on the ratings service to /v1/bookRatings provided by the bookratings service.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      exact: /v1/getProductRatings<br><p> 	  redirect:<br><p> 	    uri: /v1/bookRatings<br><p> 	    authority: newratings.default.svc.cluster.local<br><p> 	...<br><p> <br><p> ```<br><p> <br><p> The following rule redirects requests with a path prefix of /foo to the authority foo.example.com, stripping the /foo prefix from the path:<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: foo-redirect<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- example.com<br><p> 	http:<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      prefix: /foo/<br><p> 	  redirect:<br><p> 	    authority: foo.example.com<br><p> 	    prefix_rewrite: /<br><p> <br><p> ```<br><p> <br><p> With this rule, a request to example.com/foo/bar is redirected to foo.example.com/bar.
  */
 @JsonDeserialize(using = io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "RedirectPort",
     "authority",
+    "prefixRewrite",
     "redirectCode",
     "scheme",
     "uri"
@@ -75,6 +76,8 @@ public class HTTPRedirect implements Editable<HTTPRedirectBuilder>, KubernetesRe
     private IsHTTPRedirectRedirectPort redirectPort;
     @JsonProperty("authority")
     private String authority;
+    @JsonProperty("prefixRewrite")
+    private String prefixRewrite;
     @JsonProperty("redirectCode")
     private Long redirectCode;
     @JsonProperty("scheme")
@@ -90,17 +93,18 @@ public class HTTPRedirect implements Editable<HTTPRedirectBuilder>, KubernetesRe
     public HTTPRedirect() {
     }
 
-    public HTTPRedirect(IsHTTPRedirectRedirectPort redirectPort, String authority, Long redirectCode, String scheme, String uri) {
+    public HTTPRedirect(IsHTTPRedirectRedirectPort redirectPort, String authority, String prefixRewrite, Long redirectCode, String scheme, String uri) {
         super();
         this.redirectPort = redirectPort;
         this.authority = authority;
+        this.prefixRewrite = prefixRewrite;
         this.redirectCode = redirectCode;
         this.scheme = scheme;
         this.uri = uri;
     }
 
     /**
-     * HTTPRedirect can be used to send a 301 redirect response to the caller, where the Authority/Host and the URI in the response can be swapped with the specified values. For example, the following rule redirects requests for /v1/getProductRatings API on the ratings service to /v1/bookRatings provided by the bookratings service.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      exact: /v1/getProductRatings<br><p> 	  redirect:<br><p> 	    uri: /v1/bookRatings<br><p> 	    authority: newratings.default.svc.cluster.local<br><p> 	...<br><p> <br><p> ```
+     * HTTPRedirect can be used to send a 301 redirect response to the caller, where the Authority/Host and the URI in the response can be swapped with the specified values. For example, the following rule redirects requests for /v1/getProductRatings API on the ratings service to /v1/bookRatings provided by the bookratings service.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      exact: /v1/getProductRatings<br><p> 	  redirect:<br><p> 	    uri: /v1/bookRatings<br><p> 	    authority: newratings.default.svc.cluster.local<br><p> 	...<br><p> <br><p> ```<br><p> <br><p> The following rule redirects requests with a path prefix of /foo to the authority foo.example.com, stripping the /foo prefix from the path:<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: foo-redirect<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- example.com<br><p> 	http:<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      prefix: /foo/<br><p> 	  redirect:<br><p> 	    authority: foo.example.com<br><p> 	    prefix_rewrite: /<br><p> <br><p> ```<br><p> <br><p> With this rule, a request to example.com/foo/bar is redirected to foo.example.com/bar.
      */
     @JsonProperty("RedirectPort")
     @JsonUnwrapped
@@ -109,7 +113,7 @@ public class HTTPRedirect implements Editable<HTTPRedirectBuilder>, KubernetesRe
     }
 
     /**
-     * HTTPRedirect can be used to send a 301 redirect response to the caller, where the Authority/Host and the URI in the response can be swapped with the specified values. For example, the following rule redirects requests for /v1/getProductRatings API on the ratings service to /v1/bookRatings provided by the bookratings service.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      exact: /v1/getProductRatings<br><p> 	  redirect:<br><p> 	    uri: /v1/bookRatings<br><p> 	    authority: newratings.default.svc.cluster.local<br><p> 	...<br><p> <br><p> ```
+     * HTTPRedirect can be used to send a 301 redirect response to the caller, where the Authority/Host and the URI in the response can be swapped with the specified values. For example, the following rule redirects requests for /v1/getProductRatings API on the ratings service to /v1/bookRatings provided by the bookratings service.<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: ratings-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- ratings.prod.svc.cluster.local<br><p> 	http:<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      exact: /v1/getProductRatings<br><p> 	  redirect:<br><p> 	    uri: /v1/bookRatings<br><p> 	    authority: newratings.default.svc.cluster.local<br><p> 	...<br><p> <br><p> ```<br><p> <br><p> The following rule redirects requests with a path prefix of /foo to the authority foo.example.com, stripping the /foo prefix from the path:<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: foo-redirect<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- example.com<br><p> 	http:<br><p> 	- match:<br><p> 	  - uri:<br><p> 	      prefix: /foo/<br><p> 	  redirect:<br><p> 	    authority: foo.example.com<br><p> 	    prefix_rewrite: /<br><p> <br><p> ```<br><p> <br><p> With this rule, a request to example.com/foo/bar is redirected to foo.example.com/bar.
      */
     @JsonProperty("RedirectPort")
     public void setRedirectPort(IsHTTPRedirectRedirectPort redirectPort) {
@@ -130,6 +134,22 @@ public class HTTPRedirect implements Editable<HTTPRedirectBuilder>, KubernetesRe
     @JsonProperty("authority")
     public void setAuthority(String authority) {
         this.authority = authority;
+    }
+
+    /**
+     * On a redirect, replace the matched prefix with this value. The route match must use a prefix match type. The matched prefix is stripped from the path and this value is prepended.<br><p> <br><p> Examples (route prefix match: /foo): - prefix_rewrite: /bar → /foo/baz becomes /bar/baz - prefix_rewrite: /   → /foo/baz becomes //baz (use /foo/ match to get /baz)<br><p> <br><p> Mutually exclusive with uri.
+     */
+    @JsonProperty("prefixRewrite")
+    public String getPrefixRewrite() {
+        return prefixRewrite;
+    }
+
+    /**
+     * On a redirect, replace the matched prefix with this value. The route match must use a prefix match type. The matched prefix is stripped from the path and this value is prepended.<br><p> <br><p> Examples (route prefix match: /foo): - prefix_rewrite: /bar → /foo/baz becomes /bar/baz - prefix_rewrite: /   → /foo/baz becomes //baz (use /foo/ match to get /baz)<br><p> <br><p> Mutually exclusive with uri.
+     */
+    @JsonProperty("prefixRewrite")
+    public void setPrefixRewrite(String prefixRewrite) {
+        this.prefixRewrite = prefixRewrite;
     }
 
     /**
@@ -165,7 +185,7 @@ public class HTTPRedirect implements Editable<HTTPRedirectBuilder>, KubernetesRe
     }
 
     /**
-     * On a redirect, overwrite the Path portion of the URL with this value. Note that the entire path will be replaced, irrespective of the request URI being matched as an exact path or prefix.
+     * On a redirect, overwrite the Path portion of the URL with this value. Note that the entire path will be replaced, irrespective of the request URI being matched as an exact path or prefix.<br><p> <br><p> Mutually exclusive with prefix_rewrite.
      */
     @JsonProperty("uri")
     public String getUri() {
@@ -173,7 +193,7 @@ public class HTTPRedirect implements Editable<HTTPRedirectBuilder>, KubernetesRe
     }
 
     /**
-     * On a redirect, overwrite the Path portion of the URL with this value. Note that the entire path will be replaced, irrespective of the request URI being matched as an exact path or prefix.
+     * On a redirect, overwrite the Path portion of the URL with this value. Note that the entire path will be replaced, irrespective of the request URI being matched as an exact path or prefix.<br><p> <br><p> Mutually exclusive with prefix_rewrite.
      */
     @JsonProperty("uri")
     public void setUri(String uri) {

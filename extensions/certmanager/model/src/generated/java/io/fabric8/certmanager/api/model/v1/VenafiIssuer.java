@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,14 +30,16 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "cloud",
+    "ngts",
     "tpp",
     "zone"
 })
@@ -69,6 +70,8 @@ public class VenafiIssuer implements Editable<VenafiIssuerBuilder>, KubernetesRe
 
     @JsonProperty("cloud")
     private VenafiCloud cloud;
+    @JsonProperty("ngts")
+    private VenafiNGTS ngts;
     @JsonProperty("tpp")
     private VenafiTPP tpp;
     @JsonProperty("zone")
@@ -82,9 +85,10 @@ public class VenafiIssuer implements Editable<VenafiIssuerBuilder>, KubernetesRe
     public VenafiIssuer() {
     }
 
-    public VenafiIssuer(VenafiCloud cloud, VenafiTPP tpp, String zone) {
+    public VenafiIssuer(VenafiCloud cloud, VenafiNGTS ngts, VenafiTPP tpp, String zone) {
         super();
         this.cloud = cloud;
+        this.ngts = ngts;
         this.tpp = tpp;
         this.zone = zone;
     }
@@ -103,6 +107,22 @@ public class VenafiIssuer implements Editable<VenafiIssuerBuilder>, KubernetesRe
     @JsonProperty("cloud")
     public void setCloud(VenafiCloud cloud) {
         this.cloud = cloud;
+    }
+
+    /**
+     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+     */
+    @JsonProperty("ngts")
+    public VenafiNGTS getNgts() {
+        return ngts;
+    }
+
+    /**
+     * Configures an issuer to sign certificates using a CyberArk Certificate Manager Self-Hosted or SaaS policy zone.
+     */
+    @JsonProperty("ngts")
+    public void setNgts(VenafiNGTS ngts) {
+        this.ngts = ngts;
     }
 
     /**

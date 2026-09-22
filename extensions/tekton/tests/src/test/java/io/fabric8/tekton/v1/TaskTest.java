@@ -15,8 +15,9 @@
  */
 package io.fabric8.tekton.v1;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,7 +30,7 @@ class TaskTest {
   @Test
   void testTaskFromJSON() throws IOException {
     InputStream is = TaskTest.class.getResourceAsStream("/task-v1.json");
-    ObjectMapper mapper = new ObjectMapper();
+    ObjectMapper mapper = new JsonMapper();
     Task task = mapper.readValue(is, Task.class);
     assertEquals("Task", task.getKind());
     assertEquals("tekton.dev/v1", task.getApiVersion());

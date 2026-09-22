@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,17 +32,19 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * TaskSpec specifies the task specification of Job.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "dependsOn",
     "maxRetry",
     "minAvailable",
     "name",
+    "partitionPolicy",
     "policies",
     "replicas",
     "template",
@@ -82,6 +83,8 @@ public class TaskSpec implements Editable<TaskSpecBuilder>, KubernetesResource
     private Integer minAvailable;
     @JsonProperty("name")
     private String name;
+    @JsonProperty("partitionPolicy")
+    private PartitionPolicySpec partitionPolicy;
     @JsonProperty("policies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<LifecyclePolicy> policies = new ArrayList<>();
@@ -100,12 +103,13 @@ public class TaskSpec implements Editable<TaskSpecBuilder>, KubernetesResource
     public TaskSpec() {
     }
 
-    public TaskSpec(DependsOn dependsOn, Integer maxRetry, Integer minAvailable, String name, List<LifecyclePolicy> policies, Integer replicas, PodTemplateSpec template, String topologyPolicy) {
+    public TaskSpec(DependsOn dependsOn, Integer maxRetry, Integer minAvailable, String name, PartitionPolicySpec partitionPolicy, List<LifecyclePolicy> policies, Integer replicas, PodTemplateSpec template, String topologyPolicy) {
         super();
         this.dependsOn = dependsOn;
         this.maxRetry = maxRetry;
         this.minAvailable = minAvailable;
         this.name = name;
+        this.partitionPolicy = partitionPolicy;
         this.policies = policies;
         this.replicas = replicas;
         this.template = template;
@@ -174,6 +178,22 @@ public class TaskSpec implements Editable<TaskSpecBuilder>, KubernetesResource
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * TaskSpec specifies the task specification of Job.
+     */
+    @JsonProperty("partitionPolicy")
+    public PartitionPolicySpec getPartitionPolicy() {
+        return partitionPolicy;
+    }
+
+    /**
+     * TaskSpec specifies the task specification of Job.
+     */
+    @JsonProperty("partitionPolicy")
+    public void setPartitionPolicy(PartitionPolicySpec partitionPolicy) {
+        this.partitionPolicy = partitionPolicy;
     }
 
     /**

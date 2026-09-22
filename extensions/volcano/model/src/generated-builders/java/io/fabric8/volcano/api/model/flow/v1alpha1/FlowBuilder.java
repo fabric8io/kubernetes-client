@@ -25,7 +25,7 @@ public class FlowBuilder extends FlowFluent<FlowBuilder> implements VisitableBui
   }
 
   public Flow build() {
-    Flow buildable = new Flow(fluent.buildDependsOn(), fluent.getName());
+    Flow buildable = new Flow(fluent.buildDependsOn(), fluent.getName(), fluent.buildPatch());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

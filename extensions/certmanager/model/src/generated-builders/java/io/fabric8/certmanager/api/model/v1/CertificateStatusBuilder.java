@@ -25,7 +25,7 @@ public class CertificateStatusBuilder extends CertificateStatusFluent<Certificat
   }
 
   public CertificateStatus build() {
-    CertificateStatus buildable = new CertificateStatus(fluent.buildConditions(), fluent.getFailedIssuanceAttempts(), fluent.getLastFailureTime(), fluent.getNextPrivateKeySecretName(), fluent.getNotAfter(), fluent.getNotBefore(), fluent.getRenewalTime(), fluent.getRevision());
+    CertificateStatus buildable = new CertificateStatus(fluent.buildAcme(), fluent.buildConditions(), fluent.getFailedIssuanceAttempts(), fluent.getLastFailureTime(), fluent.getNextPrivateKeySecretName(), fluent.getNotAfter(), fluent.getNotBefore(), fluent.getRenewalTime(), fluent.getRevision());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

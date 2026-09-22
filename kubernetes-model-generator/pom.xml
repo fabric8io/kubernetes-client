@@ -426,10 +426,9 @@
          `make generate-model` would just recompile the stale committed Builders — the
          generate-model.yml drift guard is the safety net that would catch that.
 
-         Note this makes implicit classpath discovery the ONLY route by which sundrio ever runs. javac
-         warns about it from JDK 21 and it is expected to be disabled by default eventually, at which
-         point regeneration silently produces nothing rather than merely slowing down; the drift guard
-         would again be what catches it. -->
+         Note this makes implicit classpath discovery the ONLY route by which sundrio ever runs. JDK 23+
+         disables it by default; the root pom's maven.compiler.proc=full keeps it on. Without that,
+         regeneration silently produces nothing and the drift guard is what catches it. -->
 
     <profile>
       <id>generate</id>

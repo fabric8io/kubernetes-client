@@ -2364,6 +2364,18 @@ PodList podList = client.pods().inNamespace("default").list(new ListOptionsBuild
   .withContinue(null)
   .build());
 ```
+- List only the resources belonging to one shard, here the first of an even four way split of the UID hash space (alpha, requires Kubernetes 1.36+ with the `ShardedListAndWatch` feature gate). It applies to watches and informers too:
+```
+PodList podList = client.pods().inNamespace("default").withShardSelector(ShardSelector.ofShard(0, 4)).list();
+```
+- Take more than one shard, or shard by namespace instead of by UID:
+```
+ShardSelector shardSelector = ShardSelector.builder()
+  .addShard(ShardField.NAMESPACE, 0, 4)
+  .addShard(ShardField.NAMESPACE, 2, 4)
+  .build();
+PodList podList = client.pods().inAnyNamespace().withShardSelector(shardSelector).list();
+```
 
 ### Delete Options
 Kubernetes Client also provides way to delete dependents of some Kubernetes resource. Here are some examples:

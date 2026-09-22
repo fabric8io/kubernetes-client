@@ -5,7 +5,7 @@ import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public enum LoadBalancerSettingsSimpleLB
+public enum LoadBalancerSettingsSimpleLB 
 {
     LEAST_CONN(1),
     LEAST_REQUEST(5),

@@ -16,6 +16,7 @@ public enum EnvoyFilterPatchOperation
     INSERT_FIRST(6),
     INVALID(0),
     MERGE(1),
+    MERGE_AND_REPLACE_LIST(8),
     REMOVE(3),
     REPLACE(7);
     private final int value;

@@ -65,13 +65,14 @@
         "DefaultResolverType",
         "DefaultContainerResourceRequirements",
         "DefaultImagePullBackOffTimeout",
+        "DefaultCreateContainerErrorTimeout",
         "DefaultMaximumResolutionTimeout",
         "DefaultSidecarLogPollingInterval",
         "DefaultStepRefConcurrencyLimit"
       ],
       "properties": {
         "DefaultAAPodTemplate": {
-          "$ref": "#/definitions/dev.tekton.pod.AffinityAssistantTemplate"
+          "$ref": "#/definitions/dev.tekton.unversioned.AffinityAssistantTemplate"
         },
         "DefaultCloudEventsSink": {
           "type": "string",
@@ -80,15 +81,18 @@
         "DefaultContainerResourceRequirements": {
           "type": "object",
           "additionalProperties": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.ResourceRequirements"
           }
+        },
+        "DefaultCreateContainerErrorTimeout": {
+          "type": "integer",
+          "format": "int64",
+          "default": 0
         },
         "DefaultForbiddenEnv": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "DefaultImagePullBackOffTimeout": {
@@ -111,7 +115,7 @@
           "default": 0
         },
         "DefaultPodTemplate": {
-          "$ref": "#/definitions/dev.tekton.pod.Template"
+          "$ref": "#/definitions/dev.tekton.unversioned.Template"
         },
         "DefaultResolverType": {
           "type": "string",
@@ -162,7 +166,6 @@
         "Formats": {
           "type": "object",
           "additionalProperties": {
-            "default": {},
             "$ref": "#/definitions/struct%7B%7D"
           }
         },
@@ -226,6 +229,9 @@
         },
         "enableTektonOCIBundles": {
           "description": "DeprecatedEnableTektonOCIBundles is maintained for backward compatibility to allow deletion of PipelineRuns created before v0.62.x. This field is not used and can be removed in a future release once we're confident old PipelineRuns have been cleaned up. See issue #8359 for context.",
+          "type": "boolean"
+        },
+        "enableTerminationMessageCompression": {
           "type": "boolean"
         },
         "enableWaitExponentialBackoff": {
@@ -466,7 +472,6 @@
           "description": "A collection of values related to the artifact",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/com.github.tektoncd.pipeline.pkg.apis.pipeline.v1.types.ArtifactValue"
           }
         }
@@ -486,8 +491,7 @@
         "digest": {
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "uri": {
@@ -510,14 +514,12 @@
         "inputs": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/com.github.tektoncd.pipeline.pkg.apis.pipeline.v1.types.Artifact"
           }
         },
         "outputs": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/com.github.tektoncd.pipeline.pkg.apis.pipeline.v1.types.Artifact"
           }
         }
@@ -543,16 +545,14 @@
         "ArrayVal": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
         "ObjectVal": {
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "StringVal": {
@@ -609,7 +609,6 @@
           "description": "Properties is the JSON Schema properties to support key-value pairs results.",
           "type": "object",
           "additionalProperties": {
-            "default": {},
             "$ref": "#/definitions/com.github.tektoncd.pipeline.pkg.apis.pipeline.v1.types.PropertySpec"
           }
         },
@@ -646,7 +645,6 @@
           "description": "Properties is the JSON Schema properties to support key-value pairs results.",
           "type": "object",
           "additionalProperties": {
-            "default": {},
             "$ref": "#/definitions/com.github.tektoncd.pipeline.pkg.apis.pipeline.v1.types.PropertySpec"
           }
         },
@@ -717,8 +715,7 @@
           "description": "Values is an array of strings, which is compared against the input, for guard checking It must be non-empty",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         }
@@ -761,179 +758,6 @@
         "Group": "",
         "Version": "result",
         "Kind": "RunResult",
-        "Scope": "Namespaced"
-      }
-    },
-    "dev.tekton.pod.AffinityAssistantTemplate": {
-      "description": "AffinityAssistantTemplate holds pod specific configuration and is a subset of the generic pod Template",
-      "type": "object",
-      "properties": {
-        "imagePullSecrets": {
-          "description": "ImagePullSecrets gives the name of the secret used by the pod to pull the image if specified",
-          "type": "array",
-          "items": {
-            "default": {},
-            "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
-          },
-          "x-kubernetes-list-type": "atomic"
-        },
-        "nodeSelector": {
-          "description": "NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node. More info: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/",
-          "type": "object",
-          "additionalProperties": {
-            "type": "string",
-            "default": ""
-          }
-        },
-        "priorityClassName": {
-          "description": "If specified, indicates the pod's priority. \"system-node-critical\" and \"system-cluster-critical\" are two special keywords which indicate the highest priorities with the former being the highest priority. Any other name must be defined by creating a PriorityClass object with that name. If not specified, the pod priority will be default or zero if there is no default.",
-          "type": "string"
-        },
-        "securityContext": {
-          "description": "SecurityContext sets the security context for the pod",
-          "$ref": "#/definitions/io.k8s.api.core.v1.PodSecurityContext"
-        },
-        "serviceAccountName": {
-          "description": "ServiceAccountName is the name of the ServiceAccount to use for the affinity assistant pod. If not specified, the affinity assistant will inherit the serviceAccountName from the PipelineRun's taskRunTemplate. If that is also not specified, the pod will use the namespace's default ServiceAccount. More info: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/",
-          "type": "string"
-        },
-        "tolerations": {
-          "description": "If specified, the pod's tolerations.",
-          "type": "array",
-          "items": {
-            "default": {},
-            "$ref": "#/definitions/io.k8s.api.core.v1.Toleration"
-          },
-          "x-kubernetes-list-type": "atomic"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "nested",
-        "Group": "tekton.dev",
-        "Version": "pod",
-        "Kind": "AffinityAssistantTemplate",
-        "Scope": "Namespaced"
-      }
-    },
-    "dev.tekton.pod.Template": {
-      "description": "Template holds pod specific configuration",
-      "type": "object",
-      "properties": {
-        "affinity": {
-          "description": "If specified, the pod's scheduling constraints. See Pod.spec.affinity (API version: v1)",
-          "$ref": "#/definitions/io.k8s.api.core.v1.Affinity"
-        },
-        "automountServiceAccountToken": {
-          "description": "AutomountServiceAccountToken indicates whether pods running as this service account should have an API token automatically mounted.",
-          "type": "boolean"
-        },
-        "dnsConfig": {
-          "description": "Specifies the DNS parameters of a pod. Parameters specified here will be merged to the generated DNS configuration based on DNSPolicy.",
-          "$ref": "#/definitions/io.k8s.api.core.v1.PodDNSConfig"
-        },
-        "dnsPolicy": {
-          "description": "Set DNS policy for the pod. Defaults to \"ClusterFirst\". Valid values are 'ClusterFirst', 'Default' or 'None'. DNS parameters given in DNSConfig will be merged with the policy selected with DNSPolicy.",
-          "type": "string"
-        },
-        "enableServiceLinks": {
-          "description": "EnableServiceLinks indicates whether information about services should be injected into pod's environment variables, matching the syntax of Docker links. Optional: Defaults to true.",
-          "type": "boolean"
-        },
-        "env": {
-          "description": "List of environment variables that can be provided to the containers belonging to the pod.",
-          "type": "array",
-          "items": {
-            "default": {},
-            "$ref": "#/definitions/io.k8s.api.core.v1.EnvVar"
-          },
-          "x-kubernetes-list-type": "atomic",
-          "x-kubernetes-patch-merge-key": "name",
-          "x-kubernetes-patch-strategy": "merge"
-        },
-        "hostAliases": {
-          "description": "HostAliases is an optional list of hosts and IPs that will be injected into the pod's hosts file if specified. This is only valid for non-hostNetwork pods.",
-          "type": "array",
-          "items": {
-            "default": {},
-            "$ref": "#/definitions/io.k8s.api.core.v1.HostAlias"
-          },
-          "x-kubernetes-list-type": "atomic"
-        },
-        "hostNetwork": {
-          "description": "HostNetwork specifies whether the pod may use the node network namespace",
-          "type": "boolean"
-        },
-        "hostUsers": {
-          "description": "HostUsers indicates whether the pod will use the host's user namespace. Optional: Default to true. If set to true or not present, the pod will be run in the host user namespace, useful for when the pod needs a feature only available to the host user namespace, such as loading a kernel module with CAP_SYS_MODULE. When set to false, a new user namespace is created for the pod. Setting false is useful to mitigating container breakout vulnerabilities such as allowing containers to run as root without their user having root privileges on the host. This field depends on the kubernetes feature gate UserNamespacesSupport being enabled.",
-          "type": "boolean"
-        },
-        "imagePullSecrets": {
-          "description": "ImagePullSecrets gives the name of the secret used by the pod to pull the image if specified",
-          "type": "array",
-          "items": {
-            "default": {},
-            "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
-          },
-          "x-kubernetes-list-type": "atomic"
-        },
-        "nodeSelector": {
-          "description": "NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node. More info: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/",
-          "type": "object",
-          "additionalProperties": {
-            "type": "string",
-            "default": ""
-          }
-        },
-        "priorityClassName": {
-          "description": "If specified, indicates the pod's priority. \"system-node-critical\" and \"system-cluster-critical\" are two special keywords which indicate the highest priorities with the former being the highest priority. Any other name must be defined by creating a PriorityClass object with that name. If not specified, the pod priority will be default or zero if there is no default.",
-          "type": "string"
-        },
-        "runtimeClassName": {
-          "description": "RuntimeClassName refers to a RuntimeClass object in the node.k8s.io group, which should be used to run this pod. If no RuntimeClass resource matches the named class, the pod will not be run. If unset or empty, the \"legacy\" RuntimeClass will be used, which is an implicit class with an empty definition that uses the default runtime handler. More info: https://git.k8s.io/enhancements/keps/sig-node/runtime-class.md This is a beta feature as of Kubernetes v1.14.",
-          "type": "string"
-        },
-        "schedulerName": {
-          "description": "SchedulerName specifies the scheduler to be used to dispatch the Pod",
-          "type": "string"
-        },
-        "securityContext": {
-          "description": "SecurityContext holds pod-level security attributes and common container settings. Optional: Defaults to empty.  See type description for default values of each field. See Pod.spec.securityContext (API version: v1)",
-          "$ref": "#/definitions/io.k8s.api.core.v1.PodSecurityContext"
-        },
-        "tolerations": {
-          "description": "If specified, the pod's tolerations.",
-          "type": "array",
-          "items": {
-            "default": {},
-            "$ref": "#/definitions/io.k8s.api.core.v1.Toleration"
-          },
-          "x-kubernetes-list-type": "atomic"
-        },
-        "topologySpreadConstraints": {
-          "description": "TopologySpreadConstraints controls how Pods are spread across your cluster among failure-domains such as regions, zones, nodes, and other user-defined topology domains.",
-          "type": "array",
-          "items": {
-            "default": {},
-            "$ref": "#/definitions/io.k8s.api.core.v1.TopologySpreadConstraint"
-          },
-          "x-kubernetes-list-type": "atomic"
-        },
-        "volumes": {
-          "description": "List of volumes that can be mounted by containers belonging to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes See Pod.spec.volumes (API version: v1)",
-          "type": "array",
-          "items": {
-            "default": {},
-            "$ref": "#/definitions/io.k8s.api.core.v1.Volume"
-          },
-          "x-kubernetes-patch-merge-key": "name",
-          "x-kubernetes-patch-strategy": "merge,retainKeys"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "nested",
-        "Group": "tekton.dev",
-        "Version": "pod",
-        "Kind": "Template",
         "Scope": "Namespaced"
       }
     },
@@ -986,7 +810,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.resolution.v1alpha1.ResolutionRequest"
           }
         },
@@ -1015,8 +838,7 @@
           "description": "Parameters are the runtime attributes passed to the resolver to help it figure out how to resolve the resource being requested. For example: repo URL, commit SHA, path to file, the kind of authentication to leverage, etc.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -1040,15 +862,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -1152,7 +972,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.resolution.v1beta1.ResolutionRequest"
           }
         },
@@ -1181,7 +1000,6 @@
           "description": "Parameters are the runtime attributes passed to the resolver to help it figure out how to resolve the resource being requested. For example: repo URL, commit SHA, path to file, the kind of authentication to leverage, etc.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Param"
           },
           "x-kubernetes-list-type": "atomic"
@@ -1212,15 +1030,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -1291,8 +1107,7 @@
         "eventTypes": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -1318,7 +1133,6 @@
         "overlays": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.triggers.v1alpha1.CELOverlay"
           },
           "x-kubernetes-list-type": "atomic"
@@ -1427,7 +1241,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.triggers.v1alpha1.ClusterInterceptor"
           }
         },
@@ -1480,7 +1293,6 @@
           "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
           }
         },
@@ -1488,15 +1300,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -1564,7 +1374,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.triggers.v1alpha1.ClusterTriggerBinding"
           }
         },
@@ -1664,7 +1473,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.triggers.v1alpha1.EventListener"
           }
         },
@@ -1709,7 +1517,6 @@
         "triggers": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.triggers.v1alpha1.EventListenerTrigger"
           },
           "x-kubernetes-list-type": "atomic"
@@ -1738,7 +1545,6 @@
           "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1alpha1.Addressable"
           }
         },
@@ -1746,15 +1552,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -1826,8 +1630,7 @@
         "eventTypes": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -1850,8 +1653,7 @@
         "eventTypes": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -1917,7 +1719,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.triggers.v1alpha1.Interceptor"
           }
         },
@@ -2015,8 +1816,7 @@
           "additionalProperties": {
             "type": "array",
             "items": {
-              "type": "string",
-              "default": ""
+              "type": "string"
             }
           }
         },
@@ -2102,7 +1902,6 @@
           "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
           }
         },
@@ -2110,15 +1909,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -2169,8 +1966,7 @@
           "description": "List of namespace names.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         }
@@ -2419,7 +2215,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.triggers.v1alpha1.TriggerBinding"
           }
         },
@@ -2448,7 +2243,6 @@
           "description": "Params defines the parameter mapping from the given input event.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.triggers.v1alpha1.Param"
           },
           "x-kubernetes-list-type": "atomic"
@@ -2525,7 +2319,6 @@
           "description": "Params are the params to send to the interceptor",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.triggers.v1alpha1.InterceptorParams"
           },
           "x-kubernetes-list-type": "atomic"
@@ -2562,7 +2355,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.triggers.v1alpha1.Trigger"
           }
         },
@@ -2739,7 +2531,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.triggers.v1alpha1.TriggerTemplate"
           }
         },
@@ -2767,7 +2558,6 @@
         "params": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.triggers.v1alpha1.ParamSpec"
           },
           "x-kubernetes-list-type": "atomic"
@@ -2807,7 +2597,6 @@
           "description": "Header is a group of key-value pairs that can be appended to the interceptor request headers. This allows the interceptor to make decisions specific to an EventListenerTrigger.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Param"
           },
           "x-kubernetes-list-type": "atomic"
@@ -2876,7 +2665,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.triggers.v1beta1.ClusterTriggerBinding"
           }
         },
@@ -2976,7 +2764,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.triggers.v1beta1.EventListener"
           }
         },
@@ -3022,7 +2809,6 @@
           "description": "Trigger groups allow for centralized processing of an interceptor chain",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.triggers.v1beta1.EventListenerTriggerGroup"
           },
           "x-kubernetes-list-type": "atomic"
@@ -3030,7 +2816,6 @@
         "triggers": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.triggers.v1beta1.EventListenerTrigger"
           },
           "x-kubernetes-list-type": "atomic"
@@ -3059,7 +2844,6 @@
           "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1beta1.Addressable"
           }
         },
@@ -3067,15 +2851,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -3270,8 +3052,7 @@
           "additionalProperties": {
             "type": "array",
             "items": {
-              "type": "string",
-              "default": ""
+              "type": "string"
             }
           }
         },
@@ -3363,8 +3144,7 @@
           "description": "List of namespace names.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         }
@@ -3577,7 +3357,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.triggers.v1beta1.TriggerBinding"
           }
         },
@@ -3606,7 +3385,6 @@
           "description": "Params defines the parameter mapping from the given input event.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.triggers.v1beta1.Param"
           },
           "x-kubernetes-list-type": "atomic"
@@ -3670,7 +3448,6 @@
           "description": "Params are the params to send to the interceptor",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.triggers.v1beta1.InterceptorParams"
           },
           "x-kubernetes-list-type": "atomic"
@@ -3707,7 +3484,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.triggers.v1beta1.Trigger"
           }
         },
@@ -3884,7 +3660,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.triggers.v1beta1.TriggerTemplate"
           }
         },
@@ -3912,7 +3687,6 @@
         "params": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.triggers.v1beta1.ParamSpec"
           },
           "x-kubernetes-list-type": "atomic"
@@ -3952,7 +3726,6 @@
           "description": "Header is a group of key-value pairs that can be appended to the interceptor request headers. This allows the interceptor to make decisions specific to an EventListenerTrigger.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Param"
           },
           "x-kubernetes-list-type": "atomic"
@@ -3973,6 +3746,169 @@
         "Scope": "Namespaced"
       }
     },
+    "dev.tekton.unversioned.AffinityAssistantTemplate": {
+      "description": "AffinityAssistantTemplate holds pod specific configuration and is a subset of the generic pod Template",
+      "type": "object",
+      "properties": {
+        "imagePullSecrets": {
+          "description": "ImagePullSecrets gives the name of the secret used by the pod to pull the image if specified",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
+          },
+          "x-kubernetes-list-type": "atomic"
+        },
+        "nodeSelector": {
+          "description": "NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node. More info: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "priorityClassName": {
+          "description": "If specified, indicates the pod's priority. \"system-node-critical\" and \"system-cluster-critical\" are two special keywords which indicate the highest priorities with the former being the highest priority. Any other name must be defined by creating a PriorityClass object with that name. If not specified, the pod priority will be default or zero if there is no default.",
+          "type": "string"
+        },
+        "securityContext": {
+          "description": "SecurityContext sets the security context for the pod",
+          "$ref": "#/definitions/io.k8s.api.core.v1.PodSecurityContext"
+        },
+        "serviceAccountName": {
+          "description": "ServiceAccountName is the name of the ServiceAccount to use for the affinity assistant pod. If not specified, the affinity assistant will inherit the serviceAccountName from the PipelineRun's taskRunTemplate. If that is also not specified, the pod will use the namespace's default ServiceAccount. More info: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/",
+          "type": "string"
+        },
+        "tolerations": {
+          "description": "If specified, the pod's tolerations.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.core.v1.Toleration"
+          },
+          "x-kubernetes-list-type": "atomic"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "tekton.dev",
+        "Version": "unversioned",
+        "Kind": "AffinityAssistantTemplate",
+        "Scope": "Namespaced"
+      }
+    },
+    "dev.tekton.unversioned.Template": {
+      "description": "Template holds pod specific configuration",
+      "type": "object",
+      "properties": {
+        "affinity": {
+          "description": "If specified, the pod's scheduling constraints. See Pod.spec.affinity (API version: v1)",
+          "$ref": "#/definitions/io.k8s.api.core.v1.Affinity"
+        },
+        "automountServiceAccountToken": {
+          "description": "AutomountServiceAccountToken indicates whether pods running as this service account should have an API token automatically mounted.",
+          "type": "boolean"
+        },
+        "dnsConfig": {
+          "description": "Specifies the DNS parameters of a pod. Parameters specified here will be merged to the generated DNS configuration based on DNSPolicy.",
+          "$ref": "#/definitions/io.k8s.api.core.v1.PodDNSConfig"
+        },
+        "dnsPolicy": {
+          "description": "Set DNS policy for the pod. Defaults to \"ClusterFirst\". Valid values are 'ClusterFirst', 'Default' or 'None'. DNS parameters given in DNSConfig will be merged with the policy selected with DNSPolicy.",
+          "type": "string"
+        },
+        "enableServiceLinks": {
+          "description": "EnableServiceLinks indicates whether information about services should be injected into pod's environment variables, matching the syntax of Docker links. Optional: Defaults to true.",
+          "type": "boolean"
+        },
+        "env": {
+          "description": "List of environment variables that can be provided to the containers belonging to the pod.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.core.v1.EnvVar"
+          },
+          "x-kubernetes-list-type": "atomic",
+          "x-kubernetes-patch-merge-key": "name",
+          "x-kubernetes-patch-strategy": "merge"
+        },
+        "hostAliases": {
+          "description": "HostAliases is an optional list of hosts and IPs that will be injected into the pod's hosts file if specified. This is only valid for non-hostNetwork pods.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.core.v1.HostAlias"
+          },
+          "x-kubernetes-list-type": "atomic"
+        },
+        "hostNetwork": {
+          "description": "HostNetwork specifies whether the pod may use the node network namespace",
+          "type": "boolean"
+        },
+        "hostUsers": {
+          "description": "HostUsers indicates whether the pod will use the host's user namespace. Optional: Default to true. If set to true or not present, the pod will be run in the host user namespace, useful for when the pod needs a feature only available to the host user namespace, such as loading a kernel module with CAP_SYS_MODULE. When set to false, a new user namespace is created for the pod. Setting false is useful to mitigating container breakout vulnerabilities such as allowing containers to run as root without their user having root privileges on the host. This field depends on the kubernetes feature gate UserNamespacesSupport being enabled.",
+          "type": "boolean"
+        },
+        "imagePullSecrets": {
+          "description": "ImagePullSecrets gives the name of the secret used by the pod to pull the image if specified",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
+          },
+          "x-kubernetes-list-type": "atomic"
+        },
+        "nodeSelector": {
+          "description": "NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node. More info: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "priorityClassName": {
+          "description": "If specified, indicates the pod's priority. \"system-node-critical\" and \"system-cluster-critical\" are two special keywords which indicate the highest priorities with the former being the highest priority. Any other name must be defined by creating a PriorityClass object with that name. If not specified, the pod priority will be default or zero if there is no default.",
+          "type": "string"
+        },
+        "runtimeClassName": {
+          "description": "RuntimeClassName refers to a RuntimeClass object in the node.k8s.io group, which should be used to run this pod. If no RuntimeClass resource matches the named class, the pod will not be run. If unset or empty, the \"legacy\" RuntimeClass will be used, which is an implicit class with an empty definition that uses the default runtime handler. More info: https://git.k8s.io/enhancements/keps/sig-node/runtime-class.md This is a beta feature as of Kubernetes v1.14.",
+          "type": "string"
+        },
+        "schedulerName": {
+          "description": "SchedulerName specifies the scheduler to be used to dispatch the Pod",
+          "type": "string"
+        },
+        "securityContext": {
+          "description": "SecurityContext holds pod-level security attributes and common container settings. Optional: Defaults to empty.  See type description for default values of each field. See Pod.spec.securityContext (API version: v1)",
+          "$ref": "#/definitions/io.k8s.api.core.v1.PodSecurityContext"
+        },
+        "tolerations": {
+          "description": "If specified, the pod's tolerations.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.core.v1.Toleration"
+          },
+          "x-kubernetes-list-type": "atomic"
+        },
+        "topologySpreadConstraints": {
+          "description": "TopologySpreadConstraints controls how Pods are spread across your cluster among failure-domains such as regions, zones, nodes, and other user-defined topology domains.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.core.v1.TopologySpreadConstraint"
+          },
+          "x-kubernetes-list-type": "atomic"
+        },
+        "volumes": {
+          "description": "List of volumes that can be mounted by containers belonging to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes See Pod.spec.volumes (API version: v1)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.core.v1.Volume"
+          },
+          "x-kubernetes-patch-merge-key": "name",
+          "x-kubernetes-patch-strategy": "merge,retainKeys"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "tekton.dev",
+        "Version": "unversioned",
+        "Kind": "Template",
+        "Scope": "Namespaced"
+      }
+    },
     "dev.tekton.v1.Artifact": {
       "description": "Artifact represents an artifact within a system, potentially containing multiple values associated with it.",
       "type": "object",
@@ -3989,7 +3925,6 @@
           "description": "A collection of values related to the artifact",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.ArtifactValue"
           }
         }
@@ -4009,8 +3944,7 @@
         "digest": {
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "uri": {
@@ -4033,7 +3967,6 @@
         "inputs": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Artifact"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4041,7 +3974,6 @@
         "outputs": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Artifact"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4081,7 +4013,6 @@
           "description": "WhenExpressions is the list of checks guarding the execution of the PipelineTask",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.WhenExpression"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4121,7 +4052,6 @@
           "description": "Params is a list of input parameters required to run the task. Params must be supplied as inputs in TaskRuns unless they declare a default value.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.ParamSpec"
           }
         },
@@ -4129,7 +4059,6 @@
           "description": "Results are values that this Task can output",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.TaskResult"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4138,7 +4067,6 @@
           "description": "Sidecars are run alongside the Task's step containers. They begin before the steps start and end after the steps complete.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Sidecar"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4155,7 +4083,6 @@
           "description": "Steps are the steps of the build; each step is run sequentially with the source mounted into /workspace.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Step"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4164,7 +4091,6 @@
           "description": "Volumes is a collection of volumes that are available to mount into the steps of the build. See Pod.spec.volumes (API version: v1)",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Volume"
           }
         },
@@ -4172,7 +4098,6 @@
           "description": "Workspaces are the volumes that this Task requires.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.WorkspaceDeclaration"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4198,7 +4123,6 @@
           "description": "Params takes only `Parameters` of type `\"string\"` The names of the `params` must match the names of the `params` in the underlying `Task`",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Param"
           }
         }
@@ -4219,7 +4143,6 @@
           "description": "Include is a list of IncludeParams which allows passing in specific combinations of Parameters into the Matrix.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.IncludeParams"
           }
         },
@@ -4227,7 +4150,6 @@
           "description": "Params is a list of parameters used to fan out the pipelineTask Params takes only `Parameters` of type `\"array\"` Each array element is supplied to the `PipelineTask` by substituting `params` of type `\"string\"` in the underlying `Task`. The names of the `params` in the `Matrix` must match the names of the `params` in the underlying `Task` that they will be substituting.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Param"
           }
         }
@@ -4283,8 +4205,7 @@
           "description": "Enum declares a set of allowed param input values for tasks/pipelines that can be validated. If Enum is not set, no input validation is performed for the param.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "name": {
@@ -4296,7 +4217,6 @@
           "description": "Properties is the JSON Schema properties to support key-value pairs parameter.",
           "type": "object",
           "additionalProperties": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.PropertySpec"
           }
         },
@@ -4326,16 +4246,14 @@
         "ArrayVal": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
         "ObjectVal": {
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "StringVal": {
@@ -4400,7 +4318,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Pipeline"
           }
         },
@@ -4437,7 +4354,6 @@
           "description": "Params contains the parameters used to identify the referenced Tekton resource. Example entries might include \"repo\" or \"path\" but the set of params ultimately depends on the chosen resolver.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Param"
           }
         },
@@ -4536,7 +4452,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.PipelineRun"
           }
         },
@@ -4599,7 +4514,6 @@
           "description": "WhenExpressions is the list of checks guarding the execution of the PipelineTask",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.WhenExpression"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4625,7 +4539,6 @@
           "description": "Params is a list of parameter names and values.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Param"
           }
         },
@@ -4644,7 +4557,6 @@
           "description": "TaskRunSpecs holds a set of runtime specs",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.PipelineTaskRunSpec"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4662,7 +4574,6 @@
           "description": "Workspaces holds a set of workspace bindings that must match names with those declared in the pipeline.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.WorkspaceBinding"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4684,15 +4595,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "childReferences": {
           "description": "list of TaskRun and Run names, PipelineTask names, and API versions/kinds for children of this PipelineRun.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.ChildStatusReference"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4705,7 +4614,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -4732,7 +4640,6 @@
           "description": "Results are the list of results written out by the pipeline task's containers",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.PipelineRunResult"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4741,7 +4648,6 @@
           "description": "list of tasks that were skipped due to when expressions evaluating to false",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.SkippedTask"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4750,8 +4656,7 @@
           "description": "SpanContext contains tracing span context fields",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "startTime": {
@@ -4775,7 +4680,6 @@
           "description": "list of TaskRun and Run names, PipelineTask names, and API versions/kinds for children of this PipelineRun.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.ChildStatusReference"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4800,7 +4704,6 @@
           "description": "Results are the list of results written out by the pipeline task's containers",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.PipelineRunResult"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4809,7 +4712,6 @@
           "description": "list of tasks that were skipped due to when expressions evaluating to false",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.SkippedTask"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4818,8 +4720,7 @@
           "description": "SpanContext contains tracing span context fields",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "startTime": {
@@ -4851,7 +4752,6 @@
           "description": "WhenExpressions is the list of checks guarding the execution of the PipelineTask",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.WhenExpression"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4881,7 +4781,6 @@
           "description": "Finally declares the list of Tasks that execute just before leaving the Pipeline i.e. either after all Tasks are finished executing successfully or after a failure which would result in ending the Pipeline",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.PipelineTask"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4890,7 +4789,6 @@
           "description": "Params declares a list of input parameters that must be supplied when this Pipeline is run.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.ParamSpec"
           }
         },
@@ -4898,7 +4796,6 @@
           "description": "Results are values that this pipeline can output once run",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.PipelineResult"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4907,7 +4804,6 @@
           "description": "Tasks declares the graph of Tasks that execute when this Pipeline is run.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.PipelineTask"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4916,7 +4812,6 @@
           "description": "Workspaces declares a set of named workspaces that are expected to be provided by a PipelineRun.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.PipelineWorkspaceDeclaration"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4958,16 +4853,15 @@
           "description": "Parameters declares parameters passed to this task.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Param"
           }
         },
         "pipelineRef": {
-          "description": "PipelineRef is a reference to a pipeline definition Note: PipelineRef is in preview mode and not yet supported",
+          "description": "PipelineRef is a reference to a pipeline definition. This is an alpha field. You must set the \"enable-api-fields\" feature flag to \"alpha\" for this field to be supported. When enabled, the referenced Pipeline is executed as a child PipelineRun owned by the parent PipelineRun.",
           "$ref": "#/definitions/dev.tekton.v1.PipelineRef"
         },
         "pipelineSpec": {
-          "description": "PipelineSpec is a specification of a pipeline Note: PipelineSpec is in preview mode and not yet supported Specifying PipelineSpec can be disabled by setting `disable-inline-spec` feature flag. See Pipeline.spec (API version: tekton.dev/v1)",
+          "description": "PipelineSpec is a specification of a pipeline. This is an alpha field. You must set the \"enable-api-fields\" feature flag to \"alpha\" for this field to be supported. When enabled, the embedded Pipeline is executed as a child PipelineRun owned by the parent PipelineRun. Specifying PipelineSpec can be disabled by setting `disable-inline-spec` feature flag. See Pipeline.spec (API version: tekton.dev/v1)",
           "$ref": "#/definitions/dev.tekton.v1.PipelineSpec"
         },
         "retries": {
@@ -4979,8 +4873,7 @@
           "description": "RunAfter is the list of PipelineTask names that should be executed before this Task executes. (Used to force a specific ordering in graph execution.)",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -5000,7 +4893,6 @@
           "description": "When is a list of when expressions that need to be true for the task to run",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.WhenExpression"
           }
         },
@@ -5008,7 +4900,6 @@
           "description": "Workspaces maps workspaces from the pipeline spec to the workspaces declared in the Task.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.WorkspacePipelineTaskBinding"
           },
           "x-kubernetes-list-type": "atomic"
@@ -5029,15 +4920,13 @@
         "annotations": {
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "labels": {
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -5105,7 +4994,7 @@
           "type": "string"
         },
         "podTemplate": {
-          "$ref": "#/definitions/dev.tekton.pod.Template"
+          "$ref": "#/definitions/dev.tekton.unversioned.Template"
         },
         "serviceAccountName": {
           "type": "string"
@@ -5113,7 +5002,6 @@
         "sidecarSpecs": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.TaskRunSidecarSpec"
           },
           "x-kubernetes-list-type": "atomic"
@@ -5121,7 +5009,6 @@
         "stepSpecs": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.TaskRunStepSpec"
           },
           "x-kubernetes-list-type": "atomic"
@@ -5144,7 +5031,7 @@
       "type": "object",
       "properties": {
         "podTemplate": {
-          "$ref": "#/definitions/dev.tekton.pod.Template"
+          "$ref": "#/definitions/dev.tekton.unversioned.Template"
         },
         "serviceAccountName": {
           "type": "string"
@@ -5236,7 +5123,6 @@
           "description": "Params contains the parameters used to identify the referenced Tekton resource. Example entries might include \"repo\" or \"path\" but the set of params ultimately depends on the chosen resolver.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Param"
           }
         },
@@ -5261,8 +5147,7 @@
           "description": "Digest is a collection of cryptographic digests for the contents of the artifact specified by URI. Example: {\"sha1\": \"f99d13e554ffcb696dee719fa85b695cb5b0f428\"}",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "entryPoint": {
@@ -5290,7 +5175,6 @@
           "description": "Params contains the parameters used to identify the referenced Tekton resource. Example entries might include \"repo\" or \"path\" but the set of params ultimately depends on the chosen resolver.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Param"
           }
         },
@@ -5353,8 +5237,7 @@
           "description": "Arguments to the entrypoint. The image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the Sidecar's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -5362,8 +5245,7 @@
           "description": "Entrypoint array. Not executed within a shell. The image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the Sidecar's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -5376,7 +5258,6 @@
           "description": "List of environment variables to set in the Sidecar. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.EnvVar"
           },
           "x-kubernetes-list-type": "atomic",
@@ -5387,7 +5268,6 @@
           "description": "List of sources to populate environment variables in the Sidecar. The keys defined within a source must be a C_IDENTIFIER. All invalid keys will be reported as an event when the container is starting. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.EnvFromSource"
           },
           "x-kubernetes-list-type": "atomic"
@@ -5417,7 +5297,6 @@
           "description": "List of ports to expose from the Sidecar. Exposing a port here gives the system additional information about the network connections a container uses, but is primarily informational. Not specifying a port here DOES NOT prevent that port from being exposed. Any port which is listening on the default \"0.0.0.0\" address inside a container will be accessible from the network. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.ContainerPort"
           },
           "x-kubernetes-list-map-keys": [
@@ -5472,7 +5351,6 @@
           "description": "volumeDevices is the list of block devices to be used by the Sidecar.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.VolumeDevice"
           },
           "x-kubernetes-list-type": "atomic",
@@ -5483,7 +5361,6 @@
           "description": "Volumes to mount into the Sidecar's filesystem. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.VolumeMount"
           },
           "x-kubernetes-list-type": "atomic",
@@ -5498,7 +5375,6 @@
           "description": "This is an alpha field. You must set the \"enable-api-fields\" feature flag to \"alpha\" for this field to be supported.\n\nWorkspaces is a list of workspaces from the Task that this Sidecar wants exclusive access to. Adding a workspace to this list means that any other Step or Sidecar that does not also request this Workspace will not have access to it.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.WorkspaceUsage"
           },
           "x-kubernetes-list-type": "atomic"
@@ -5568,7 +5444,6 @@
           "description": "WhenExpressions is the list of checks guarding the execution of the PipelineTask",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.WhenExpression"
           },
           "x-kubernetes-list-type": "atomic"
@@ -5593,8 +5468,7 @@
           "description": "Arguments to the entrypoint. The image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -5602,8 +5476,7 @@
           "description": "Entrypoint array. Not executed within a shell. The image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -5620,7 +5493,6 @@
           "description": "List of environment variables to set in the Step. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.EnvVar"
           },
           "x-kubernetes-list-type": "atomic",
@@ -5631,7 +5503,6 @@
           "description": "List of sources to populate environment variables in the Step. The keys defined within a source must be a C_IDENTIFIER. All invalid keys will be reported as an event when the Step is starting. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.EnvFromSource"
           },
           "x-kubernetes-list-type": "atomic"
@@ -5657,7 +5528,6 @@
           "description": "Params declares parameters passed to this step action.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Param"
           }
         },
@@ -5669,7 +5539,6 @@
           "description": "Results declares StepResults produced by the Step.\n\nIt can be used in an inlined Step when used to store Results to $(step.results.resultName.path). It cannot be used when referencing StepActions using [v1.Step.Ref]. The Results declared by the StepActions will be stored here instead.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.StepResult"
           },
           "x-kubernetes-list-type": "atomic"
@@ -5698,7 +5567,6 @@
           "description": "volumeDevices is the list of block devices to be used by the Step.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.VolumeDevice"
           },
           "x-kubernetes-list-type": "atomic",
@@ -5709,7 +5577,6 @@
           "description": "Volumes to mount into the Step's filesystem. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.VolumeMount"
           },
           "x-kubernetes-list-type": "atomic",
@@ -5720,7 +5587,6 @@
           "description": "When is a list of when expressions that need to be true for the task to run",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.WhenExpression"
           }
         },
@@ -5732,7 +5598,6 @@
           "description": "This is an alpha field. You must set the \"enable-api-fields\" feature flag to \"alpha\" for this field to be supported.\n\nWorkspaces is a list of workspaces from the Task that this Step wants exclusive access to. Adding a workspace to this list means that any other Step or Sidecar that does not also request this Workspace will not have access to it.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.WorkspaceUsage"
           },
           "x-kubernetes-list-type": "atomic"
@@ -5783,7 +5648,6 @@
           "description": "Properties is the JSON Schema properties to support key-value pairs results.",
           "type": "object",
           "additionalProperties": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.PropertySpec"
           }
         },
@@ -5813,7 +5677,6 @@
         "inputs": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Artifact"
           }
         },
@@ -5823,7 +5686,6 @@
         "outputs": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Artifact"
           }
         },
@@ -5833,7 +5695,6 @@
         "results": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.TaskRunResult"
           }
         },
@@ -5869,8 +5730,7 @@
           "description": "Arguments to the entrypoint. The image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the Step's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -5878,8 +5738,7 @@
           "description": "Entrypoint array. Not executed within a shell. The image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the Step's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -5892,7 +5751,6 @@
           "description": "List of environment variables to set in the Step. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.EnvVar"
           },
           "x-kubernetes-list-type": "atomic",
@@ -5903,7 +5761,6 @@
           "description": "List of sources to populate environment variables in the Step. The keys defined within a source must be a C_IDENTIFIER. All invalid keys will be reported as an event when the Step is starting. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.EnvFromSource"
           },
           "x-kubernetes-list-type": "atomic"
@@ -5924,7 +5781,6 @@
           "description": "volumeDevices is the list of block devices to be used by the Step.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.VolumeDevice"
           },
           "x-kubernetes-list-type": "atomic",
@@ -5935,7 +5791,6 @@
           "description": "Volumes to mount into the Step's filesystem. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.VolumeMount"
           },
           "x-kubernetes-list-type": "atomic",
@@ -5992,8 +5847,7 @@
         "beforeSteps": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -6024,7 +5878,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Task"
           }
         },
@@ -6065,7 +5918,6 @@
           "description": "Params contains the parameters used to identify the referenced Tekton resource. Example entries might include \"repo\" or \"path\" but the set of params ultimately depends on the chosen resolver.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Param"
           }
         },
@@ -6102,7 +5954,6 @@
           "description": "Properties is the JSON Schema properties to support key-value pairs results.",
           "type": "object",
           "additionalProperties": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.PropertySpec"
           }
         },
@@ -6179,7 +6030,6 @@
         "params": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Param"
           },
           "x-kubernetes-list-type": "atomic"
@@ -6207,7 +6057,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.TaskRun"
           }
         },
@@ -6303,13 +6152,12 @@
         "params": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Param"
           }
         },
         "podTemplate": {
           "description": "PodTemplate holds pod specific configuration",
-          "$ref": "#/definitions/dev.tekton.pod.Template"
+          "$ref": "#/definitions/dev.tekton.unversioned.Template"
         },
         "retries": {
           "description": "Retries represents how many times this TaskRun should be retried in the event of task failure.",
@@ -6324,7 +6172,6 @@
           "description": "Specs to apply to Sidecars in this TaskRun. If a field is specified in both a Sidecar and a SidecarSpec, the value from the SidecarSpec will be used. This field is only supported when the alpha feature gate is enabled.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.TaskRunSidecarSpec"
           },
           "x-kubernetes-list-type": "atomic"
@@ -6341,7 +6188,6 @@
           "description": "Specs to apply to Steps in this TaskRun. If a field is specified in both a Step and a StepSpec, the value from the StepSpec will be used. This field is only supported when the alpha feature gate is enabled.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.TaskRunStepSpec"
           },
           "x-kubernetes-list-type": "atomic"
@@ -6362,7 +6208,6 @@
           "description": "Workspaces is a list of WorkspaceBindings from volumes to workspaces.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.WorkspaceBinding"
           },
           "x-kubernetes-list-type": "atomic"
@@ -6387,8 +6232,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "artifacts": {
@@ -6403,7 +6247,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -6427,7 +6270,6 @@
           "description": "Results are the list of results written out by the task's containers",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.TaskRunResult"
           },
           "x-kubernetes-list-type": "atomic"
@@ -6436,7 +6278,6 @@
           "description": "RetriesStatus contains the history of TaskRunStatus in case of a retry in order to keep record of failures. All TaskRunStatus stored in RetriesStatus will have no date within the RetriesStatus as is redundant.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.TaskRunStatus"
           }
         },
@@ -6444,7 +6285,6 @@
           "description": "The list has one entry per sidecar in the manifest. Each entry is represents the imageid of the corresponding sidecar.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.SidecarState"
           },
           "x-kubernetes-list-type": "atomic"
@@ -6453,8 +6293,7 @@
           "description": "SpanContext contains tracing span context fields",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "startTime": {
@@ -6465,7 +6304,6 @@
           "description": "Steps describes the state of each build step container.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.StepState"
           },
           "x-kubernetes-list-type": "atomic"
@@ -6511,7 +6349,6 @@
           "description": "Results are the list of results written out by the task's containers",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.TaskRunResult"
           },
           "x-kubernetes-list-type": "atomic"
@@ -6520,7 +6357,6 @@
           "description": "RetriesStatus contains the history of TaskRunStatus in case of a retry in order to keep record of failures. All TaskRunStatus stored in RetriesStatus will have no date within the RetriesStatus as is redundant.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.TaskRunStatus"
           }
         },
@@ -6528,7 +6364,6 @@
           "description": "The list has one entry per sidecar in the manifest. Each entry is represents the imageid of the corresponding sidecar.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.SidecarState"
           },
           "x-kubernetes-list-type": "atomic"
@@ -6537,8 +6372,7 @@
           "description": "SpanContext contains tracing span context fields",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "startTime": {
@@ -6549,7 +6383,6 @@
           "description": "Steps describes the state of each build step container.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.StepState"
           },
           "x-kubernetes-list-type": "atomic"
@@ -6610,7 +6443,6 @@
           "description": "Params is a list of input parameters required to run the task. Params must be supplied as inputs in TaskRuns unless they declare a default value.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.ParamSpec"
           }
         },
@@ -6618,7 +6450,6 @@
           "description": "Results are values that this Task can output",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.TaskResult"
           },
           "x-kubernetes-list-type": "atomic"
@@ -6627,7 +6458,6 @@
           "description": "Sidecars are run alongside the Task's step containers. They begin before the steps start and end after the steps complete.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Sidecar"
           },
           "x-kubernetes-list-type": "atomic"
@@ -6640,7 +6470,6 @@
           "description": "Steps are the steps of the build; each step is run sequentially with the source mounted into /workspace.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.Step"
           },
           "x-kubernetes-list-type": "atomic"
@@ -6649,7 +6478,6 @@
           "description": "Volumes is a collection of volumes that are available to mount into the steps of the build. See Pod.spec.volumes (API version: v1)",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Volume"
           }
         },
@@ -6657,7 +6485,6 @@
           "description": "Workspaces are the volumes that this Task requires.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.WorkspaceDeclaration"
           },
           "x-kubernetes-list-type": "atomic"
@@ -6716,8 +6543,7 @@
           "description": "Values is an array of strings, which is compared against the input, for guard checking It must be non-empty",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         }
@@ -7005,7 +6831,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1alpha1.PipelineResource"
           }
         },
@@ -7041,7 +6866,6 @@
         "params": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1alpha1.ResourceParam"
           },
           "x-kubernetes-list-type": "atomic"
@@ -7050,7 +6874,6 @@
           "description": "Secrets to fetch to populate some of resource fields",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1alpha1.SecretParam"
           },
           "x-kubernetes-list-type": "atomic"
@@ -7211,7 +7034,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1alpha1.Run"
           }
         },
@@ -7266,13 +7088,12 @@
         "params": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Param"
           }
         },
         "podTemplate": {
           "description": "PodTemplate holds pod specific configuration",
-          "$ref": "#/definitions/dev.tekton.pod.Template"
+          "$ref": "#/definitions/dev.tekton.unversioned.Template"
         },
         "ref": {
           "$ref": "#/definitions/dev.tekton.v1beta1.TaskRef"
@@ -7306,7 +7127,6 @@
           "description": "Workspaces is a list of WorkspaceBindings from volumes to workspaces.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.WorkspaceBinding"
           }
         }
@@ -7327,8 +7147,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "completionTime": {
@@ -7339,7 +7158,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -7358,7 +7176,6 @@
           "description": "Results reports any output result values to be consumed by later tasks in a pipeline.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1alpha1.RunResult"
           }
         },
@@ -7366,7 +7183,6 @@
           "description": "RetriesStatus contains the history of RunStatus, in case of a retry.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1alpha1.RunStatus"
           }
         },
@@ -7399,7 +7215,6 @@
           "description": "Results reports any output result values to be consumed by later tasks in a pipeline.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1alpha1.RunResult"
           }
         },
@@ -7407,7 +7222,6 @@
           "description": "RetriesStatus contains the history of RunStatus, in case of a retry.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1alpha1.RunStatus"
           }
         },
@@ -7498,7 +7312,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1alpha1.StepAction"
           }
         },
@@ -7527,8 +7340,7 @@
           "description": "Arguments to the entrypoint. The image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -7536,8 +7348,7 @@
           "description": "Entrypoint array. Not executed within a shell. The image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -7549,7 +7360,6 @@
           "description": "List of environment variables to set in the container. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.EnvVar"
           },
           "x-kubernetes-list-type": "atomic",
@@ -7564,7 +7374,6 @@
           "description": "Params is a list of input parameters required to run the stepAction. Params must be supplied as inputs in Steps unless they declare a defaultvalue.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.ParamSpec"
           }
         },
@@ -7572,7 +7381,6 @@
           "description": "Results are values that this StepAction can output",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.StepResult"
           },
           "x-kubernetes-list-type": "atomic"
@@ -7589,7 +7397,6 @@
           "description": "Volumes to mount into the Step's filesystem. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.VolumeMount"
           },
           "x-kubernetes-list-type": "atomic",
@@ -7656,7 +7463,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1alpha1.VerificationPolicy"
           }
         },
@@ -7689,7 +7495,6 @@
           "description": "Authorities defines the rules for validating signatures.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1alpha1.Authority"
           }
         },
@@ -7701,7 +7506,6 @@
           "description": "Resources defines the patterns of resources sources that should be subject to this policy. For example, we may want to apply this Policy from a certain GitHub repo. Then the ResourcesPattern should be valid regex. E.g. If using gitresolver, and we want to config keys from a certain git repo. `ResourcesPattern` can be `https://github.com/tektoncd/catalog.git`, we will use regex to filter out those resources.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1alpha1.ResourcePattern"
           }
         }
@@ -7730,7 +7534,6 @@
           "description": "A collection of values related to the artifact",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.ArtifactValue"
           }
         }
@@ -7750,8 +7553,7 @@
         "digest": {
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "uri": {
@@ -7774,14 +7576,12 @@
         "inputs": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Artifact"
           }
         },
         "outputs": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Artifact"
           }
         }
@@ -7820,7 +7620,6 @@
           "description": "WhenExpressions is the list of checks guarding the execution of the PipelineTask",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.WhenExpression"
           },
           "x-kubernetes-list-type": "atomic"
@@ -7899,8 +7698,7 @@
           "description": "Digest is a collection of cryptographic digests for the contents of the artifact specified by URI. Example: {\"sha1\": \"f99d13e554ffcb696dee719fa85b695cb5b0f428\"}",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "entryPoint": {
@@ -7967,7 +7765,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.CustomRun"
           }
         },
@@ -8029,7 +7826,6 @@
         "params": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Param"
           }
         },
@@ -8058,7 +7854,6 @@
           "description": "Workspaces is a list of WorkspaceBindings from volumes to workspaces.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.WorkspaceBinding"
           },
           "x-kubernetes-list-type": "atomic"
@@ -8080,8 +7875,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "completionTime": {
@@ -8092,7 +7886,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -8111,7 +7904,6 @@
           "description": "Results reports any output result values to be consumed by later tasks in a pipeline.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.CustomRunResult"
           }
         },
@@ -8119,7 +7911,6 @@
           "description": "RetriesStatus contains the history of CustomRunStatus, in case of a retry. See CustomRun.status (API version: tekton.dev/v1beta1)",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.CustomRunStatus"
           }
         },
@@ -8152,7 +7943,6 @@
           "description": "Results reports any output result values to be consumed by later tasks in a pipeline.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.CustomRunResult"
           }
         },
@@ -8160,7 +7950,6 @@
           "description": "RetriesStatus contains the history of CustomRunStatus, in case of a retry. See CustomRun.status (API version: tekton.dev/v1beta1)",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.CustomRunStatus"
           }
         },
@@ -8230,7 +8019,6 @@
           "description": "Params is a list of input parameters required to run the task. Params must be supplied as inputs in TaskRuns unless they declare a default value.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.ParamSpec"
           }
         },
@@ -8242,7 +8030,6 @@
           "description": "Results are values that this Task can output",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.TaskResult"
           },
           "x-kubernetes-list-type": "atomic"
@@ -8251,7 +8038,6 @@
           "description": "Sidecars are run alongside the Task's step containers. They begin before the steps start and end after the steps complete.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Sidecar"
           },
           "x-kubernetes-list-type": "atomic"
@@ -8268,7 +8054,6 @@
           "description": "Steps are the steps of the build; each step is run sequentially with the source mounted into /workspace.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Step"
           },
           "x-kubernetes-list-type": "atomic"
@@ -8277,7 +8062,6 @@
           "description": "Volumes is a collection of volumes that are available to mount into the steps of the build. See Pod.spec.volumes (API version: v1)",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Volume"
           }
         },
@@ -8285,7 +8069,6 @@
           "description": "Workspaces are the volumes that this Task requires.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.WorkspaceDeclaration"
           },
           "x-kubernetes-list-type": "atomic"
@@ -8311,7 +8094,6 @@
           "description": "Params takes only `Parameters` of type `\"string\"` The names of the `params` must match the names of the `params` in the underlying `Task`",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Param"
           }
         }
@@ -8336,7 +8118,6 @@
         "stepsToAppend": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Step"
           },
           "x-kubernetes-list-type": "atomic"
@@ -8344,7 +8125,6 @@
         "stepsToPrepend": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Step"
           },
           "x-kubernetes-list-type": "atomic"
@@ -8352,7 +8132,6 @@
         "volumes": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Volume"
           },
           "x-kubernetes-list-type": "atomic"
@@ -8374,7 +8153,6 @@
           "description": "Include is a list of IncludeParams which allows passing in specific combinations of Parameters into the Matrix.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.IncludeParams"
           }
         },
@@ -8382,7 +8160,6 @@
           "description": "Params is a list of parameters used to fan out the pipelineTask Params takes only `Parameters` of type `\"array\"` Each array element is supplied to the `PipelineTask` by substituting `params` of type `\"string\"` in the underlying `Task`. The names of the `params` in the `Matrix` must match the names of the `params` in the underlying `Task` that they will be substituting.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Param"
           }
         }
@@ -8438,8 +8215,7 @@
           "description": "Enum declares a set of allowed param input values for tasks/pipelines that can be validated. If Enum is not set, no input validation is performed for the param.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "name": {
@@ -8451,7 +8227,6 @@
           "description": "Properties is the JSON Schema properties to support key-value pairs parameter.",
           "type": "object",
           "additionalProperties": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.PropertySpec"
           }
         },
@@ -8481,16 +8256,14 @@
         "ArrayVal": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
         "ObjectVal": {
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "StringVal": {
@@ -8586,7 +8359,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Pipeline"
           }
         },
@@ -8627,7 +8399,6 @@
           "description": "Params contains the parameters used to identify the referenced Tekton resource. Example entries might include \"repo\" or \"path\" but the set of params ultimately depends on the chosen resolver.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Param"
           }
         },
@@ -8772,7 +8543,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.PipelineRun"
           }
         },
@@ -8835,7 +8605,6 @@
           "description": "WhenExpressions is the list of checks guarding the execution of the PipelineTask",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.WhenExpression"
           },
           "x-kubernetes-list-type": "atomic"
@@ -8861,7 +8630,6 @@
           "description": "Params is a list of parameter names and values.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Param"
           }
         },
@@ -8874,13 +8642,12 @@
         },
         "podTemplate": {
           "description": "PodTemplate holds pod specific configuration",
-          "$ref": "#/definitions/dev.tekton.pod.Template"
+          "$ref": "#/definitions/dev.tekton.unversioned.Template"
         },
         "resources": {
           "description": "Resources is a list of bindings specifying which actual instances of PipelineResources to use for the resources the Pipeline has declared it needs.\n\nDeprecated: Unused, preserved only for backwards compatibility",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.PipelineResourceBinding"
           },
           "x-kubernetes-list-type": "atomic"
@@ -8896,7 +8663,6 @@
           "description": "TaskRunSpecs holds a set of runtime specs",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.PipelineTaskRunSpec"
           },
           "x-kubernetes-list-type": "atomic"
@@ -8913,7 +8679,6 @@
           "description": "Workspaces holds a set of workspace bindings that must match names with those declared in the pipeline.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.WorkspaceBinding"
           },
           "x-kubernetes-list-type": "atomic"
@@ -8935,15 +8700,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "childReferences": {
           "description": "list of TaskRun and Run names, PipelineTask names, and API versions/kinds for children of this PipelineRun.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.ChildStatusReference"
           },
           "x-kubernetes-list-type": "atomic"
@@ -8956,7 +8719,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -8975,7 +8737,6 @@
           "description": "PipelineResults are the list of results written out by the pipeline task's containers",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.PipelineRunResult"
           },
           "x-kubernetes-list-type": "atomic"
@@ -8999,7 +8760,6 @@
           "description": "list of tasks that were skipped due to when expressions evaluating to false",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.SkippedTask"
           },
           "x-kubernetes-list-type": "atomic"
@@ -9008,8 +8768,7 @@
           "description": "SpanContext contains tracing span context fields",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "startTime": {
@@ -9040,7 +8799,6 @@
           "description": "list of TaskRun and Run names, PipelineTask names, and API versions/kinds for children of this PipelineRun.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.ChildStatusReference"
           },
           "x-kubernetes-list-type": "atomic"
@@ -9057,7 +8815,6 @@
           "description": "PipelineResults are the list of results written out by the pipeline task's containers",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.PipelineRunResult"
           },
           "x-kubernetes-list-type": "atomic"
@@ -9081,7 +8838,6 @@
           "description": "list of tasks that were skipped due to when expressions evaluating to false",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.SkippedTask"
           },
           "x-kubernetes-list-type": "atomic"
@@ -9090,8 +8846,7 @@
           "description": "SpanContext contains tracing span context fields",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "startTime": {
@@ -9130,7 +8885,6 @@
           "description": "WhenExpressions is the list of checks guarding the execution of the PipelineTask",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.WhenExpression"
           },
           "x-kubernetes-list-type": "atomic"
@@ -9160,7 +8914,6 @@
           "description": "Finally declares the list of Tasks that execute just before leaving the Pipeline i.e. either after all Tasks are finished executing successfully or after a failure which would result in ending the Pipeline",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.PipelineTask"
           },
           "x-kubernetes-list-type": "atomic"
@@ -9169,7 +8922,6 @@
           "description": "Params declares a list of input parameters that must be supplied when this Pipeline is run.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.ParamSpec"
           }
         },
@@ -9177,7 +8929,6 @@
           "description": "Deprecated: Unused, preserved only for backwards compatibility",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.PipelineDeclaredResource"
           },
           "x-kubernetes-list-type": "atomic"
@@ -9186,7 +8937,6 @@
           "description": "Results are values that this pipeline can output once run",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.PipelineResult"
           },
           "x-kubernetes-list-type": "atomic"
@@ -9195,7 +8945,6 @@
           "description": "Tasks declares the graph of Tasks that execute when this Pipeline is run.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.PipelineTask"
           },
           "x-kubernetes-list-type": "atomic"
@@ -9204,7 +8953,6 @@
           "description": "Workspaces declares a set of named workspaces that are expected to be provided by a PipelineRun.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.PipelineWorkspaceDeclaration"
           },
           "x-kubernetes-list-type": "atomic"
@@ -9246,16 +8994,15 @@
           "description": "Parameters declares parameters passed to this task.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Param"
           }
         },
         "pipelineRef": {
-          "description": "PipelineRef is a reference to a pipeline definition Note: PipelineRef is in preview mode and not yet supported",
+          "description": "PipelineRef is a reference to a pipeline definition. This is an alpha field. You must set the \"enable-api-fields\" feature flag to \"alpha\" for this field to be supported. When enabled, the referenced Pipeline is executed as a child PipelineRun owned by the parent PipelineRun.",
           "$ref": "#/definitions/dev.tekton.v1beta1.PipelineRef"
         },
         "pipelineSpec": {
-          "description": "PipelineSpec is a specification of a pipeline Note: PipelineSpec is in preview mode and not yet supported Specifying PipelineSpec can be disabled by setting `disable-inline-spec` feature flag. See Pipeline.spec (API version: tekton.dev/v1beta1)",
+          "description": "PipelineSpec is a specification of a pipeline. This is an alpha field. You must set the \"enable-api-fields\" feature flag to \"alpha\" for this field to be supported. When enabled, the embedded Pipeline is executed as a child PipelineRun owned by the parent PipelineRun. Specifying PipelineSpec can be disabled by setting `disable-inline-spec` feature flag. See Pipeline.spec (API version: tekton.dev/v1beta1)",
           "$ref": "#/definitions/dev.tekton.v1beta1.PipelineSpec"
         },
         "resources": {
@@ -9271,8 +9018,7 @@
           "description": "RunAfter is the list of PipelineTask names that should be executed before this Task executes. (Used to force a specific ordering in graph execution.)",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -9292,7 +9038,6 @@
           "description": "WhenExpressions is a list of when expressions that need to be true for the task to run",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.WhenExpression"
           }
         },
@@ -9300,7 +9045,6 @@
           "description": "Workspaces maps workspaces from the pipeline spec to the workspaces declared in the Task.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.WorkspacePipelineTaskBinding"
           },
           "x-kubernetes-list-type": "atomic"
@@ -9326,8 +9070,7 @@
           "description": "From is the list of PipelineTask names that the resource has to come from. (Implies an ordering in the execution graph.)",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -9357,15 +9100,13 @@
         "annotations": {
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "labels": {
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -9437,7 +9178,6 @@
           "description": "Inputs holds the mapping from the PipelineResources declared in DeclaredPipelineResources to the input PipelineResources required by the Task.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.PipelineTaskInputResource"
           },
           "x-kubernetes-list-type": "atomic"
@@ -9446,7 +9186,6 @@
           "description": "Outputs holds the mapping from the PipelineResources declared in DeclaredPipelineResources to the input PipelineResources required by the Task.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.PipelineTaskOutputResource"
           },
           "x-kubernetes-list-type": "atomic"
@@ -9493,7 +9232,6 @@
         "sidecarOverrides": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.TaskRunSidecarOverride"
           },
           "x-kubernetes-list-type": "atomic"
@@ -9501,13 +9239,12 @@
         "stepOverrides": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.TaskRunStepOverride"
           },
           "x-kubernetes-list-type": "atomic"
         },
         "taskPodTemplate": {
-          "$ref": "#/definitions/dev.tekton.pod.Template"
+          "$ref": "#/definitions/dev.tekton.unversioned.Template"
         },
         "taskServiceAccountName": {
           "type": "string"
@@ -9607,7 +9344,6 @@
           "description": "Params contains the parameters used to identify the referenced Tekton resource. Example entries might include \"repo\" or \"path\" but the set of params ultimately depends on the chosen resolver.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Param"
           }
         },
@@ -9632,8 +9368,7 @@
           "description": "Digest is a collection of cryptographic digests for the contents of the artifact specified by URI. Example: {\"sha1\": \"f99d13e554ffcb696dee719fa85b695cb5b0f428\"}",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "entryPoint": {
@@ -9661,7 +9396,6 @@
           "description": "Params contains the parameters used to identify the referenced Tekton resource. Example entries might include \"repo\" or \"path\" but the set of params ultimately depends on the chosen resolver.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Param"
           }
         },
@@ -9724,8 +9458,7 @@
           "description": "Arguments to the entrypoint. The image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -9733,8 +9466,7 @@
           "description": "Entrypoint array. Not executed within a shell. The image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the Sidecar's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -9742,7 +9474,6 @@
           "description": "List of environment variables to set in the Sidecar. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.EnvVar"
           },
           "x-kubernetes-list-type": "atomic",
@@ -9753,7 +9484,6 @@
           "description": "List of sources to populate environment variables in the Sidecar. The keys defined within a source must be a C_IDENTIFIER. All invalid keys will be reported as an event when the Sidecar is starting. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.EnvFromSource"
           },
           "x-kubernetes-list-type": "atomic"
@@ -9783,7 +9513,6 @@
           "description": "List of ports to expose from the Sidecar. Exposing a port here gives the system additional information about the network connections a container uses, but is primarily informational. Not specifying a port here DOES NOT prevent that port from being exposed. Any port which is listening on the default \"0.0.0.0\" address inside a container will be accessible from the network. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.ContainerPort"
           },
           "x-kubernetes-list-map-keys": [
@@ -9843,7 +9572,6 @@
           "description": "volumeDevices is the list of block devices to be used by the Sidecar.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.VolumeDevice"
           },
           "x-kubernetes-list-type": "atomic",
@@ -9854,7 +9582,6 @@
           "description": "Volumes to mount into the Sidecar's filesystem. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.VolumeMount"
           },
           "x-kubernetes-list-type": "atomic",
@@ -9869,7 +9596,6 @@
           "description": "This is an alpha field. You must set the \"enable-api-fields\" feature flag to \"alpha\" for this field to be supported.\n\nWorkspaces is a list of workspaces from the Task that this Sidecar wants exclusive access to. Adding a workspace to this list means that any other Step or Sidecar that does not also request this Workspace will not have access to it.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.WorkspaceUsage"
           },
           "x-kubernetes-list-type": "atomic"
@@ -9939,7 +9665,6 @@
           "description": "WhenExpressions is the list of checks guarding the execution of the PipelineTask",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.WhenExpression"
           },
           "x-kubernetes-list-type": "atomic"
@@ -9964,8 +9689,7 @@
           "description": "Arguments to the entrypoint. The image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -9973,8 +9697,7 @@
           "description": "Entrypoint array. Not executed within a shell. The image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -9986,7 +9709,6 @@
           "description": "List of environment variables to set in the container. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.EnvVar"
           },
           "x-kubernetes-list-type": "atomic",
@@ -9997,7 +9719,6 @@
           "description": "List of sources to populate environment variables in the container. The keys defined within a source must be a C_IDENTIFIER. All invalid keys will be reported as an event when the container is starting. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.EnvFromSource"
           },
           "x-kubernetes-list-type": "atomic"
@@ -10031,7 +9752,6 @@
           "description": "Params declares parameters passed to this step action.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Param"
           }
         },
@@ -10039,7 +9759,6 @@
           "description": "List of ports to expose from the Step's container. Exposing a port here gives the system additional information about the network connections a container uses, but is primarily informational. Not specifying a port here DOES NOT prevent that port from being exposed. Any port which is listening on the default \"0.0.0.0\" address inside a container will be accessible from the network. Cannot be updated.\n\nDeprecated: This field will be removed in a future release.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.ContainerPort"
           },
           "x-kubernetes-list-map-keys": [
@@ -10067,7 +9786,6 @@
           "description": "Results declares StepResults produced by the Step.\n\nIt can be used in an inlined Step when used to store Results to $(step.results.resultName.path). It cannot be used when referencing StepActions using [v1beta1.Step.Ref]. The Results declared by the StepActions will be stored here instead.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.StepResult"
           },
           "x-kubernetes-list-type": "atomic"
@@ -10120,7 +9838,6 @@
           "description": "volumeDevices is the list of block devices to be used by the Step.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.VolumeDevice"
           },
           "x-kubernetes-list-type": "atomic",
@@ -10131,7 +9848,6 @@
           "description": "Volumes to mount into the Step's filesystem. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.VolumeMount"
           },
           "x-kubernetes-list-type": "atomic",
@@ -10141,7 +9857,6 @@
         "when": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.WhenExpression"
           }
         },
@@ -10153,7 +9868,6 @@
           "description": "This is an alpha field. You must set the \"enable-api-fields\" feature flag to \"alpha\" for this field to be supported.\n\nWorkspaces is a list of workspaces from the Task that this Step wants exclusive access to. Adding a workspace to this list means that any other Step or Sidecar that does not also request this Workspace will not have access to it.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.WorkspaceUsage"
           },
           "x-kubernetes-list-type": "atomic"
@@ -10211,7 +9925,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.StepAction"
           }
         },
@@ -10240,16 +9953,14 @@
           "description": "Arguments to the entrypoint. The image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "command": {
           "description": "Entrypoint array. Not executed within a shell. The image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -10261,7 +9972,6 @@
           "description": "List of environment variables to set in the container. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.EnvVar"
           },
           "x-kubernetes-list-type": "atomic",
@@ -10276,7 +9986,6 @@
           "description": "Params is a list of input parameters required to run the stepAction. Params must be supplied as inputs in Steps unless they declare a defaultvalue.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.ParamSpec"
           }
         },
@@ -10284,7 +9993,6 @@
           "description": "Results are values that this StepAction can output",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1.StepResult"
           },
           "x-kubernetes-list-type": "atomic"
@@ -10301,7 +10009,6 @@
           "description": "Volumes to mount into the Step's filesystem. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.VolumeMount"
           },
           "x-kubernetes-list-type": "atomic",
@@ -10351,7 +10058,6 @@
         "inputs": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Artifact"
           }
         },
@@ -10361,7 +10067,6 @@
         "outputs": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Artifact"
           }
         },
@@ -10371,7 +10076,6 @@
         "results": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.TaskRunResult"
           }
         },
@@ -10399,16 +10103,12 @@
     "dev.tekton.v1beta1.StepTemplate": {
       "description": "StepTemplate is a template for a Step",
       "type": "object",
-      "required": [
-        "name"
-      ],
       "properties": {
         "args": {
           "description": "Arguments to the entrypoint. The image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the Step's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -10416,8 +10116,7 @@
           "description": "Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the Step's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -10425,7 +10124,6 @@
           "description": "List of environment variables to set in the container. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.EnvVar"
           },
           "x-kubernetes-list-type": "atomic",
@@ -10436,7 +10134,6 @@
           "description": "List of sources to populate environment variables in the Step. The keys defined within a source must be a C_IDENTIFIER. All invalid keys will be reported as an event when the container is starting. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.EnvFromSource"
           },
           "x-kubernetes-list-type": "atomic"
@@ -10459,14 +10156,12 @@
         },
         "name": {
           "description": "Default name for each Step specified as a DNS_LABEL. Each Step in a Task must have a unique name. Cannot be updated.\n\nDeprecated: This field will be removed in a future release.",
-          "type": "string",
-          "default": ""
+          "type": "string"
         },
         "ports": {
           "description": "List of ports to expose from the Step's container. Exposing a port here gives the system additional information about the network connections a container uses, but is primarily informational. Not specifying a port here DOES NOT prevent that port from being exposed. Any port which is listening on the default \"0.0.0.0\" address inside a container will be accessible from the network. Cannot be updated.\n\nDeprecated: This field will be removed in a future release.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.ContainerPort"
           },
           "x-kubernetes-list-map-keys": [
@@ -10518,7 +10213,6 @@
           "description": "volumeDevices is the list of block devices to be used by the Step.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.VolumeDevice"
           },
           "x-kubernetes-list-type": "atomic",
@@ -10529,7 +10223,6 @@
           "description": "Volumes to mount into the Step's filesystem. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.VolumeMount"
           },
           "x-kubernetes-list-type": "atomic",
@@ -10586,8 +10279,7 @@
         "beforeSteps": {
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -10618,7 +10310,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Task"
           }
         },
@@ -10663,7 +10354,6 @@
           "description": "Params contains the parameters used to identify the referenced Tekton resource. Example entries might include \"repo\" or \"path\" but the set of params ultimately depends on the chosen resolver.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Param"
           }
         },
@@ -10731,8 +10421,7 @@
           "description": "Paths will probably be removed in #1284, and then PipelineResourceBinding can be used instead. The optional Path field corresponds to a path on disk at which the Resource can be found (used when providing the resource via mounted volume, overriding the default logic to fetch the Resource).",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         },
@@ -10761,7 +10450,6 @@
           "description": "Inputs holds the mapping from the PipelineResources declared in DeclaredPipelineResources to the input PipelineResources required by the Task.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.TaskResource"
           },
           "x-kubernetes-list-type": "atomic"
@@ -10770,7 +10458,6 @@
           "description": "Outputs holds the mapping from the PipelineResources declared in DeclaredPipelineResources to the input PipelineResources required by the Task.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.TaskResource"
           },
           "x-kubernetes-list-type": "atomic"
@@ -10804,7 +10491,6 @@
           "description": "Properties is the JSON Schema properties to support key-value pairs results.",
           "type": "object",
           "additionalProperties": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.PropertySpec"
           }
         },
@@ -10881,7 +10567,6 @@
         "params": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Param"
           },
           "x-kubernetes-list-type": "atomic"
@@ -10889,7 +10574,6 @@
         "resources": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.TaskResourceBinding"
           },
           "x-kubernetes-list-type": "atomic"
@@ -10917,7 +10601,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.TaskRun"
           }
         },
@@ -10945,7 +10628,6 @@
         "resources": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.TaskResourceBinding"
           },
           "x-kubernetes-list-type": "atomic"
@@ -10967,7 +10649,6 @@
           "description": "Inputs holds the inputs resources this task was invoked with",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.TaskResourceBinding"
           },
           "x-kubernetes-list-type": "atomic"
@@ -10976,7 +10657,6 @@
           "description": "Outputs holds the inputs resources this task was invoked with",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.TaskResourceBinding"
           },
           "x-kubernetes-list-type": "atomic"
@@ -11065,13 +10745,12 @@
         "params": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Param"
           }
         },
         "podTemplate": {
           "description": "PodTemplate holds pod specific configuration",
-          "$ref": "#/definitions/dev.tekton.pod.Template"
+          "$ref": "#/definitions/dev.tekton.unversioned.Template"
         },
         "resources": {
           "description": "Deprecated: Unused, preserved only for backwards compatibility",
@@ -11090,7 +10769,6 @@
           "description": "Overrides to apply to Sidecars in this TaskRun. If a field is specified in both a Sidecar and a SidecarOverride, the value from the SidecarOverride will be used. This field is only supported when the alpha feature gate is enabled.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.TaskRunSidecarOverride"
           },
           "x-kubernetes-list-type": "atomic"
@@ -11107,7 +10785,6 @@
           "description": "Overrides to apply to Steps in this TaskRun. If a field is specified in both a Step and a StepOverride, the value from the StepOverride will be used. This field is only supported when the alpha feature gate is enabled.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.TaskRunStepOverride"
           },
           "x-kubernetes-list-type": "atomic"
@@ -11128,7 +10805,6 @@
           "description": "Workspaces is a list of WorkspaceBindings from volumes to workspaces.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.WorkspaceBinding"
           },
           "x-kubernetes-list-type": "atomic"
@@ -11153,15 +10829,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "cloudEvents": {
           "description": "CloudEvents describe the state of each cloud event requested via a CloudEventResource.\n\nDeprecated: No content written to it. To be Removed (since v0.44.0). Use kubectl describe (CloudEventSent/CloudEventFailed k8s Events) or the tekton_events_sent_total Prometheus metric for delivery visibility instead.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.CloudEventDelivery"
           },
           "x-kubernetes-list-type": "atomic"
@@ -11174,7 +10848,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -11198,7 +10871,6 @@
           "description": "Results from Resources built during the TaskRun. This is tomb-stoned along with the removal of pipelineResources Deprecated: this field is not populated and is preserved only for backwards compatibility",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/com.github.tektoncd.pipeline.pkg.result.RunResult"
           },
           "x-kubernetes-list-type": "atomic"
@@ -11207,7 +10879,6 @@
           "description": "RetriesStatus contains the history of TaskRunStatus in case of a retry in order to keep record of failures. All TaskRunStatus stored in RetriesStatus will have no date within the RetriesStatus as is redundant. See TaskRun.status (API version: tekton.dev/v1beta1)",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.TaskRunStatus"
           }
         },
@@ -11215,7 +10886,6 @@
           "description": "The list has one entry per sidecar in the manifest. Each entry is represents the imageid of the corresponding sidecar.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.SidecarState"
           },
           "x-kubernetes-list-type": "atomic"
@@ -11224,8 +10894,7 @@
           "description": "SpanContext contains tracing span context fields",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "startTime": {
@@ -11236,7 +10905,6 @@
           "description": "Steps describes the state of each build step container.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.StepState"
           },
           "x-kubernetes-list-type": "atomic"
@@ -11245,7 +10913,6 @@
           "description": "TaskRunResults are the list of results written out by the task's containers",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.TaskRunResult"
           },
           "x-kubernetes-list-type": "atomic"
@@ -11274,7 +10941,6 @@
           "description": "CloudEvents describe the state of each cloud event requested via a CloudEventResource.\n\nDeprecated: No content written to it. To be Removed (since v0.44.0). Use kubectl describe (CloudEventSent/CloudEventFailed k8s Events) or the tekton_events_sent_total Prometheus metric for delivery visibility instead.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.CloudEventDelivery"
           },
           "x-kubernetes-list-type": "atomic"
@@ -11296,7 +10962,6 @@
           "description": "Results from Resources built during the TaskRun. This is tomb-stoned along with the removal of pipelineResources Deprecated: this field is not populated and is preserved only for backwards compatibility",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/com.github.tektoncd.pipeline.pkg.result.RunResult"
           },
           "x-kubernetes-list-type": "atomic"
@@ -11305,7 +10970,6 @@
           "description": "RetriesStatus contains the history of TaskRunStatus in case of a retry in order to keep record of failures. All TaskRunStatus stored in RetriesStatus will have no date within the RetriesStatus as is redundant. See TaskRun.status (API version: tekton.dev/v1beta1)",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.TaskRunStatus"
           }
         },
@@ -11313,7 +10977,6 @@
           "description": "The list has one entry per sidecar in the manifest. Each entry is represents the imageid of the corresponding sidecar.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.SidecarState"
           },
           "x-kubernetes-list-type": "atomic"
@@ -11322,8 +10985,7 @@
           "description": "SpanContext contains tracing span context fields",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "startTime": {
@@ -11334,7 +10996,6 @@
           "description": "Steps describes the state of each build step container.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.StepState"
           },
           "x-kubernetes-list-type": "atomic"
@@ -11343,7 +11004,6 @@
           "description": "TaskRunResults are the list of results written out by the task's containers",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.TaskRunResult"
           },
           "x-kubernetes-list-type": "atomic"
@@ -11404,7 +11064,6 @@
           "description": "Params is a list of input parameters required to run the task. Params must be supplied as inputs in TaskRuns unless they declare a default value.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.ParamSpec"
           }
         },
@@ -11416,7 +11075,6 @@
           "description": "Results are values that this Task can output",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.TaskResult"
           },
           "x-kubernetes-list-type": "atomic"
@@ -11425,7 +11083,6 @@
           "description": "Sidecars are run alongside the Task's step containers. They begin before the steps start and end after the steps complete.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Sidecar"
           },
           "x-kubernetes-list-type": "atomic"
@@ -11438,7 +11095,6 @@
           "description": "Steps are the steps of the build; each step is run sequentially with the source mounted into /workspace.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.Step"
           },
           "x-kubernetes-list-type": "atomic"
@@ -11447,7 +11103,6 @@
           "description": "Volumes is a collection of volumes that are available to mount into the steps of the build. See Pod.spec.volumes (API version: v1)",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Volume"
           }
         },
@@ -11455,7 +11110,6 @@
           "description": "Workspaces are the volumes that this Task requires.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.tekton.v1beta1.WorkspaceDeclaration"
           },
           "x-kubernetes-list-type": "atomic"
@@ -11514,8 +11168,7 @@
           "description": "Values is an array of strings, which is compared against the input, for guard checking It must be non-empty",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-list-type": "atomic"
         }
@@ -11693,8 +11346,7 @@
           "description": "Data contains the configuration data. Each key must consist of alphanumeric characters, '-', '_' or '.'. Values with non-UTF-8 byte sequences must use the BinaryData field. The keys stored in Data must not overlap with the keys in the BinaryData field, this is enforced during validation process.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "immutable": {

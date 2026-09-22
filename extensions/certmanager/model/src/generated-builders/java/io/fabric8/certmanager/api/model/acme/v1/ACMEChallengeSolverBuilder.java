@@ -25,7 +25,7 @@ public class ACMEChallengeSolverBuilder extends ACMEChallengeSolverFluent<ACMECh
   }
 
   public ACMEChallengeSolver build() {
-    ACMEChallengeSolver buildable = new ACMEChallengeSolver(fluent.buildDns01(), fluent.buildHttp01(), fluent.buildSelector());
+    ACMEChallengeSolver buildable = new ACMEChallengeSolver(fluent.buildDns01(), fluent.buildHttp01(), fluent.buildSelector(), fluent.getWaitInsteadOfSelfCheck());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -18,6 +18,7 @@ import java.util.Objects;
 public class TrafficPolicyRetryBudgetFluent<A extends io.fabric8.istio.api.api.networking.v1alpha3.TrafficPolicyRetryBudgetFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
+  private String budgetInterval;
   private Long minRetryConcurrency;
   private Double percent;
 
@@ -51,6 +52,7 @@ public class TrafficPolicyRetryBudgetFluent<A extends io.fabric8.istio.api.api.n
   protected void copyInstance(TrafficPolicyRetryBudget instance) {
     instance = instance != null ? instance : new TrafficPolicyRetryBudget();
     if (instance != null) {
+        this.withBudgetInterval(instance.getBudgetInterval());
         this.withMinRetryConcurrency(instance.getMinRetryConcurrency());
         this.withPercent(instance.getPercent());
         this.withAdditionalProperties(instance.getAdditionalProperties());
@@ -68,6 +70,9 @@ public class TrafficPolicyRetryBudgetFluent<A extends io.fabric8.istio.api.api.n
       return false;
     }
     TrafficPolicyRetryBudgetFluent that = (TrafficPolicyRetryBudgetFluent) o;
+    if (!(Objects.equals(budgetInterval, that.budgetInterval))) {
+      return false;
+    }
     if (!(Objects.equals(minRetryConcurrency, that.minRetryConcurrency))) {
       return false;
     }
@@ -84,6 +89,10 @@ public class TrafficPolicyRetryBudgetFluent<A extends io.fabric8.istio.api.api.n
     return this.additionalProperties;
   }
   
+  public String getBudgetInterval() {
+    return this.budgetInterval;
+  }
+  
   public Long getMinRetryConcurrency() {
     return this.minRetryConcurrency;
   }
@@ -96,6 +105,10 @@ public class TrafficPolicyRetryBudgetFluent<A extends io.fabric8.istio.api.api.n
     return this.additionalProperties != null;
   }
   
+  public boolean hasBudgetInterval() {
+    return this.budgetInterval != null;
+  }
+  
   public boolean hasMinRetryConcurrency() {
     return this.minRetryConcurrency != null;
   }
@@ -105,7 +118,7 @@ public class TrafficPolicyRetryBudgetFluent<A extends io.fabric8.istio.api.api.n
   }
   
   public int hashCode() {
-    return Objects.hash(minRetryConcurrency, percent, additionalProperties);
+    return Objects.hash(budgetInterval, minRetryConcurrency, percent, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -135,6 +148,11 @@ public class TrafficPolicyRetryBudgetFluent<A extends io.fabric8.istio.api.api.n
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
+    if (!(budgetInterval == null)) {
+        sb.append("budgetInterval:");
+        sb.append(budgetInterval);
+        sb.append(",");
+    }
     if (!(minRetryConcurrency == null)) {
         sb.append("minRetryConcurrency:");
         sb.append(minRetryConcurrency);
@@ -159,6 +177,11 @@ public class TrafficPolicyRetryBudgetFluent<A extends io.fabric8.istio.api.api.n
     } else {
       this.additionalProperties = new LinkedHashMap(additionalProperties);
     }
+    return (A) this;
+  }
+  
+  public A withBudgetInterval(String budgetInterval) {
+    this.budgetInterval = budgetInterval;
     return (A) this;
   }
   

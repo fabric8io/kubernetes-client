@@ -15,15 +15,15 @@
  */
 package io.fabric8.zjsonpatch;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -39,11 +39,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class JsonDiffTest {
 
-  private ObjectMapper objectMapper;
+  private JsonMapper objectMapper;
 
   @BeforeEach
   void setUp() {
-    objectMapper = new ObjectMapper();
+    objectMapper = new JsonMapper();
   }
 
   @Test
@@ -163,7 +163,7 @@ class JsonDiffTest {
     }
 
     @Test
-    public void testJsonDiffShowsDiffWhenSourceNodeIsNull() throws JsonProcessingException {
+    public void testJsonDiffShowsDiffWhenSourceNodeIsNull() throws JacksonException {
       String target = "{ \"K1\": {\"K2\": \"V1\"} }";
       JsonNode diff = JsonDiff.asJson(null, objectMapper.reader().readTree(target));
       assertEquals(1, diff.size());
@@ -175,7 +175,7 @@ class JsonDiffTest {
     }
 
     @Test
-    public void testJsonDiffShowsDiffWhenTargetNodeIsNullWithFlags() throws JsonProcessingException {
+    public void testJsonDiffShowsDiffWhenTargetNodeIsNullWithFlags() throws JacksonException {
       String source = "{ \"K1\": \"V1\" }";
       JsonNode sourceNode = objectMapper.reader().readTree(source);
       JsonNode diff = JsonDiff.asJson(sourceNode, null, EnumSet.of(DiffFlags.ADD_ORIGINAL_VALUE_ON_REPLACE));

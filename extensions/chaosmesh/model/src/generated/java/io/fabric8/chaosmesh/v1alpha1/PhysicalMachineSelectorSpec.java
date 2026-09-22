@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -20,6 +19,7 @@ import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -33,14 +33,16 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * PhysicalMachineSelectorSpec defines some selectors to select objects. If the all selectors are empty, all objects will be used in chaos experiment.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "annotationSelectors",
+    "expressionSelectors",
     "fieldSelectors",
     "labelSelectors",
     "namespaces",
@@ -74,6 +76,9 @@ public class PhysicalMachineSelectorSpec implements Editable<PhysicalMachineSele
     @JsonProperty("annotationSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> annotationSelectors = new LinkedHashMap<>();
+    @JsonProperty("expressionSelectors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<LabelSelectorRequirement> expressionSelectors = new ArrayList<>();
     @JsonProperty("fieldSelectors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> fieldSelectors = new LinkedHashMap<>();
@@ -95,9 +100,10 @@ public class PhysicalMachineSelectorSpec implements Editable<PhysicalMachineSele
     public PhysicalMachineSelectorSpec() {
     }
 
-    public PhysicalMachineSelectorSpec(Map<String, String> annotationSelectors, Map<String, String> fieldSelectors, Map<String, String> labelSelectors, List<String> namespaces, Map<String, List<String>> physicalMachines) {
+    public PhysicalMachineSelectorSpec(Map<String, String> annotationSelectors, List<LabelSelectorRequirement> expressionSelectors, Map<String, String> fieldSelectors, Map<String, String> labelSelectors, List<String> namespaces, Map<String, List<String>> physicalMachines) {
         super();
         this.annotationSelectors = annotationSelectors;
+        this.expressionSelectors = expressionSelectors;
         this.fieldSelectors = fieldSelectors;
         this.labelSelectors = labelSelectors;
         this.namespaces = namespaces;
@@ -119,6 +125,23 @@ public class PhysicalMachineSelectorSpec implements Editable<PhysicalMachineSele
     @JsonProperty("annotationSelectors")
     public void setAnnotationSelectors(Map<String, String> annotationSelectors) {
         this.annotationSelectors = annotationSelectors;
+    }
+
+    /**
+     * a slice of label selector expressions that can be used to select objects. A list of selectors based on set-based label expressions.
+     */
+    @JsonProperty("expressionSelectors")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<LabelSelectorRequirement> getExpressionSelectors() {
+        return expressionSelectors;
+    }
+
+    /**
+     * a slice of label selector expressions that can be used to select objects. A list of selectors based on set-based label expressions.
+     */
+    @JsonProperty("expressionSelectors")
+    public void setExpressionSelectors(List<LabelSelectorRequirement> expressionSelectors) {
+        this.expressionSelectors = expressionSelectors;
     }
 
     /**

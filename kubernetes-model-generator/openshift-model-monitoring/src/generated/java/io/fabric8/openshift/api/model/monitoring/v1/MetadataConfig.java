@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -30,11 +29,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * MetadataConfig configures the sending of series metadata to the remote storage.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "maxSamplesPerSend",
@@ -105,7 +105,7 @@ public class MetadataConfig implements Editable<MetadataConfigBuilder>, Kubernet
     }
 
     /**
-     * send defines whether metric metadata is sent to the remote storage or not.
+     * send defines whether metric metadata is sent to the remote storage or not.<br><p> <br><p> The setting is ignored when Remote Write message's version 2.0 is used.
      */
     @JsonProperty("send")
     public Boolean getSend() {
@@ -113,7 +113,7 @@ public class MetadataConfig implements Editable<MetadataConfigBuilder>, Kubernet
     }
 
     /**
-     * send defines whether metric metadata is sent to the remote storage or not.
+     * send defines whether metric metadata is sent to the remote storage or not.<br><p> <br><p> The setting is ignored when Remote Write message's version 2.0 is used.
      */
     @JsonProperty("send")
     public void setSend(Boolean send) {

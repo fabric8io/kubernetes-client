@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,10 +30,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "budgetInterval",
     "minRetryConcurrency",
     "percent"
 })
@@ -63,6 +64,8 @@ import lombok.experimental.Accessors;
 public class TrafficPolicyRetryBudget implements Editable<TrafficPolicyRetryBudgetBuilder>, KubernetesResource
 {
 
+    @JsonProperty("budgetInterval")
+    private String budgetInterval;
     @JsonProperty("minRetryConcurrency")
     private Long minRetryConcurrency;
     @JsonProperty("percent")
@@ -76,10 +79,21 @@ public class TrafficPolicyRetryBudget implements Editable<TrafficPolicyRetryBudg
     public TrafficPolicyRetryBudget() {
     }
 
-    public TrafficPolicyRetryBudget(Long minRetryConcurrency, Double percent) {
+    public TrafficPolicyRetryBudget(String budgetInterval, Long minRetryConcurrency, Double percent) {
         super();
+        this.budgetInterval = budgetInterval;
         this.minRetryConcurrency = minRetryConcurrency;
         this.percent = percent;
+    }
+
+    @JsonProperty("budgetInterval")
+    public String getBudgetInterval() {
+        return budgetInterval;
+    }
+
+    @JsonProperty("budgetInterval")
+    public void setBudgetInterval(String budgetInterval) {
+        this.budgetInterval = budgetInterval;
     }
 
     /**

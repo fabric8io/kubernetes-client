@@ -1,6 +1,5 @@
 package io.fabric8.openshift.api.model.installer.baremetal.v1;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.kubernetes.api.builder.BaseFluent;
 import io.fabric8.kubernetes.api.builder.Nested;
 import java.lang.Boolean;
@@ -12,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import tools.jackson.databind.JsonNode;
 
 /**
  * Generated

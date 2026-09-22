@@ -18,8 +18,7 @@
           "description": "Specifies the type of recommendations that will be computed (and possibly applied) by VPA. If not specified, the default of [ResourceCPU, ResourceMemory] will be used.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-patch-strategy": "merge"
         },
@@ -92,8 +91,7 @@
           "description": "Resources is a list of one or more resources that the condition applies to. If more than one resource is given, the EvictionRequirement is fulfilled if at least one resource meets `changeRequirement`.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -159,8 +157,7 @@
           "type": "object",
           "additionalProperties": {
             "type": "integer",
-            "format": "int64",
-            "default": 0
+            "format": "int64"
           }
         },
         "referenceTimestamp": {
@@ -189,7 +186,6 @@
           "description": "Per-container resource policies.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.autoscaling.v1.ContainerResourcePolicy"
           },
           "x-kubernetes-patch-merge-key": "containerName",
@@ -294,7 +290,6 @@
           "description": "Resources recommended by the autoscaler for each container.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.autoscaling.v1.RecommendedContainerResources"
           }
         }
@@ -412,7 +407,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.autoscaling.v1.VerticalPodAutoscalerCheckpoint"
           }
         },
@@ -557,7 +551,6 @@
           "description": "items is the list of vertical pod autoscaler objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.autoscaling.v1.VerticalPodAutoscaler"
           }
         },
@@ -647,7 +640,6 @@
           "description": "Conditions is the set of conditions required for this autoscaler to scale its target, and indicates whether or not those conditions are met.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.autoscaling.v1.VerticalPodAutoscalerCondition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -715,8 +707,7 @@
           "type": "object",
           "additionalProperties": {
             "type": "integer",
-            "format": "int64",
-            "default": 0
+            "format": "int64"
           }
         },
         "referenceTimestamp": {
@@ -745,7 +736,6 @@
           "description": "Per-container resource policies.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.autoscaling.v1beta1.ContainerResourcePolicy"
           },
           "x-kubernetes-patch-merge-key": "containerName",
@@ -833,7 +823,6 @@
           "description": "Resources recommended by the autoscaler for each container.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.autoscaling.v1beta1.RecommendedContainerResources"
           }
         }
@@ -936,7 +925,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.autoscaling.v1beta1.VerticalPodAutoscalerCheckpoint"
           }
         },
@@ -1076,7 +1064,6 @@
           "description": "items is the list of vertical pod autoscaler objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.autoscaling.v1beta1.VerticalPodAutoscaler"
           }
         },
@@ -1134,7 +1121,6 @@
           "description": "Conditions is the set of conditions required for this autoscaler to scale its target, and indicates whether or not those conditions are met.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.autoscaling.v1beta1.VerticalPodAutoscalerCondition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -1197,8 +1183,7 @@
           "type": "object",
           "additionalProperties": {
             "type": "integer",
-            "format": "int64",
-            "default": 0
+            "format": "int64"
           }
         },
         "referenceTimestamp": {
@@ -1227,7 +1212,6 @@
           "description": "Per-container resource policies.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.autoscaling.v1beta2.ContainerResourcePolicy"
           },
           "x-kubernetes-patch-merge-key": "containerName",
@@ -1315,7 +1299,6 @@
           "description": "Resources recommended by the autoscaler for each container.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.autoscaling.v1beta2.RecommendedContainerResources"
           }
         }
@@ -1416,7 +1399,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.autoscaling.v1beta2.VerticalPodAutoscalerCheckpoint"
           }
         },
@@ -1556,7 +1538,6 @@
           "description": "items is the list of vertical pod autoscaler objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.autoscaling.v1beta2.VerticalPodAutoscaler"
           }
         },
@@ -1614,7 +1595,6 @@
           "description": "Conditions is the set of conditions required for this autoscaler to scale its target, and indicates whether or not those conditions are met.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.autoscaling.v1beta2.VerticalPodAutoscalerCondition"
           },
           "x-kubernetes-patch-merge-key": "type",

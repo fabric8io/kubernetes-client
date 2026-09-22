@@ -16,8 +16,7 @@
           "description": "Bootstrap servers are the Kafka servers the consumer will connect to.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "net": {
@@ -80,7 +79,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.bindings.v1.KafkaBinding"
           }
         },
@@ -113,8 +111,7 @@
           "description": "Bootstrap servers are the Kafka servers the consumer will connect to.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "net": {
@@ -143,15 +140,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -329,7 +324,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.bindings.v1alpha1.GitHubBinding"
           }
         },
@@ -385,8 +379,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "auth": {
@@ -397,7 +390,6 @@
           "description": "CloudEventAttributes are the specific attributes that the Source uses as part of its CloudEvents.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.CloudEventAttributes"
           }
         },
@@ -405,7 +397,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -488,7 +479,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.bindings.v1alpha1.GitLabBinding"
           }
         },
@@ -544,8 +534,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "auth": {
@@ -556,7 +545,6 @@
           "description": "CloudEventAttributes are the specific attributes that the Source uses as part of its CloudEvents.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.CloudEventAttributes"
           }
         },
@@ -564,7 +552,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -623,8 +610,7 @@
           "description": "Bootstrap servers are the Kafka servers the consumer will connect to.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "net": {
@@ -687,7 +673,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.bindings.v1beta1.KafkaBinding"
           }
         },
@@ -720,8 +705,7 @@
           "description": "Bootstrap servers are the Kafka servers the consumer will connect to.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "net": {
@@ -750,15 +734,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -887,7 +869,6 @@
           "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
           }
         }
@@ -975,7 +956,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.AddressableType"
           }
         },
@@ -1004,7 +984,6 @@
           "description": "Policies holds the list of applied EventPolicies",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.AppliedEventPolicyRef"
           }
         }
@@ -1056,8 +1035,7 @@
           "description": "ServiceAccountNames is the list of names of the generated service accounts used for this components OIDC authentication. This list can have len() \u003e 1, when the component uses multiple identities (e.g. in case of a Parallel).",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -1132,7 +1110,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.AuthenticatableType"
           }
         },
@@ -1200,7 +1177,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.Binding"
           }
         },
@@ -1291,7 +1267,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.Channelable"
           }
         },
@@ -1324,7 +1299,6 @@
           "description": "This is the list of subscriptions for this subscribable.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.SubscriberSpec"
           },
           "x-kubernetes-patch-merge-key": "uid",
@@ -1351,7 +1325,6 @@
           "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
           }
         },
@@ -1359,15 +1332,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -1394,7 +1365,6 @@
           "description": "Policies holds the list of applied EventPolicies",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.AppliedEventPolicyRef"
           }
         },
@@ -1402,7 +1372,6 @@
           "description": "This is the list of subscription's statuses for this channel.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.SubscriberStatus"
           },
           "x-kubernetes-patch-merge-key": "uid",
@@ -1446,8 +1415,7 @@
           "description": "Extensions specify what attribute are added or overridden on the outbound event. Each `Extensions` key-value pair are set on the event as an attribute extension independently.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -1503,7 +1471,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.CronJob"
           }
         },
@@ -1710,7 +1677,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.KResource"
           }
         },
@@ -1775,7 +1741,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.WithPod"
           }
         },
@@ -1871,7 +1836,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.Source"
           }
         },
@@ -1921,8 +1885,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "auth": {
@@ -1933,7 +1896,6 @@
           "description": "CloudEventAttributes are the specific attributes that the Source uses as part of its CloudEvents.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.CloudEventAttributes"
           }
         },
@@ -1941,7 +1903,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -1981,15 +1942,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -2063,7 +2022,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.Subscribable"
           }
         },
@@ -2092,7 +2050,6 @@
           "description": "This is the list of subscriptions for this subscribable.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.SubscriberSpec"
           },
           "x-kubernetes-patch-merge-key": "uid",
@@ -2115,7 +2072,6 @@
           "description": "This is the list of subscription's statuses for this channel.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.SubscriberStatus"
           },
           "x-kubernetes-patch-merge-key": "uid",
@@ -2266,7 +2222,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.WithPod"
           }
         },
@@ -2316,7 +2271,6 @@
           "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1alpha1.Addressable"
           }
         }
@@ -2403,7 +2357,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1alpha1.AddressableType"
           }
         },
@@ -2471,7 +2424,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1alpha1.Binding"
           }
         },
@@ -2560,7 +2512,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1alpha1.LegacyTarget"
           }
         },
@@ -2608,7 +2559,6 @@
         "placements": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1alpha1.Placement"
           }
         }
@@ -2636,7 +2586,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1alpha1.Placeable"
           }
         },
@@ -2667,7 +2616,6 @@
         "placements": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1alpha1.Placement"
           }
         }
@@ -2780,7 +2728,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1alpha1.Target"
           }
         },
@@ -2845,7 +2792,6 @@
           "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1beta1.Addressable"
           }
         }
@@ -2929,7 +2875,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1beta1.AddressableType"
           }
         },
@@ -2997,7 +2942,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1beta1.Binding"
           }
         },
@@ -3088,7 +3032,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1beta1.Channelable"
           }
         },
@@ -3121,7 +3064,6 @@
           "description": "This is the list of subscriptions for this subscribable.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1beta1.SubscriberSpec"
           },
           "x-kubernetes-patch-merge-key": "uid",
@@ -3148,7 +3090,6 @@
           "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
           }
         },
@@ -3156,15 +3097,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -3183,7 +3122,6 @@
           "description": "This is the list of subscription's statuses for this channel.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1beta1.SubscriberStatus"
           },
           "x-kubernetes-patch-merge-key": "uid",
@@ -3206,8 +3144,7 @@
           "description": "Extensions specify what attribute are added or overridden on the outbound event. Each `Extensions` key-value pair are set on the event as an attribute extension independently.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -3354,7 +3291,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1beta1.KResource"
           }
         },
@@ -3427,7 +3363,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1beta1.Source"
           }
         },
@@ -3477,15 +3412,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -3517,15 +3450,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -3599,7 +3530,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1beta1.Subscribable"
           }
         },
@@ -3628,7 +3558,6 @@
           "description": "This is the list of subscriptions for this subscribable.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1beta1.SubscriberSpec"
           },
           "x-kubernetes-patch-merge-key": "uid",
@@ -3651,7 +3580,6 @@
           "description": "This is the list of subscription's statuses for this channel.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1beta1.SubscriberStatus"
           },
           "x-kubernetes-patch-merge-key": "uid",
@@ -4131,7 +4059,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.eventing.v1.Broker"
           }
         },
@@ -4184,7 +4111,6 @@
           "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
           }
         },
@@ -4192,15 +4118,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -4227,7 +4151,6 @@
           "description": "Policies holds the list of applied EventPolicies",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.AppliedEventPolicyRef"
           }
         }
@@ -4248,7 +4171,6 @@
           "description": "All evaluates to true if all the nested expressions evaluate to true. It must contain at least one filter expression.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.eventing.v1.SubscriptionsAPIFilter"
           }
         },
@@ -4256,7 +4178,6 @@
           "description": "Any evaluates to true if at least one of the nested expressions evaluates to true. It must contain at least one filter expression.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.eventing.v1.SubscriptionsAPIFilter"
           }
         },
@@ -4268,8 +4189,7 @@
           "description": "Exact evaluates to true if the values of the matching CloudEvents attributes MUST all exactly match with the associated value String specified (case-sensitive). The keys are the names of the CloudEvents attributes to be matched, and their values are the String values to use in the comparison. The attribute name and value specified in the filter express MUST NOT be empty strings.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "not": {
@@ -4280,16 +4200,14 @@
           "description": "Prefix evaluates to true if the values of the matching CloudEvents attributes MUST all start with the associated value String specified (case sensitive). The keys are the names of the CloudEvents attributes to be matched, and their values are the String values to use in the comparison. The attribute name and value specified in the filter express MUST NOT be empty strings.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "suffix": {
           "description": "Suffix evaluates to true if the values of the matching CloudEvents attributes MUST all end with the associated value String specified (case sensitive). The keys are the names of the CloudEvents attributes to be matched, and their values are the String values to use in the comparison. The attribute name and value specified in the filter express MUST NOT be empty strings.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -4343,8 +4261,7 @@
           "description": "Attributes filters events by exact match on event context attributes. Each key in the map is compared with the equivalent key in the event context. An event passes the filter if all values are equal to the specified values. Nested context attributes are not supported as keys. Only string values are supported.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -4370,7 +4287,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.eventing.v1.Trigger"
           }
         },
@@ -4417,7 +4333,6 @@
           "description": "Filters is an experimental field that conforms to the CNCF CloudEvents Subscriptions API. It's an array of filter expressions that evaluate to true or false. If any filter expression in the array evaluates to false, the event MUST NOT be sent to the Subscriber. If all the filter expressions in the array evaluate to true, the event MUST be attempted to be delivered. Absence of a filter or empty array implies a value of true. In the event of users specifying both Filter and Filters, then the latter will override the former. This will allow users to try out the effect of the new Filters field without compromising the existing attribute-based Filter and try it out on existing Trigger objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.eventing.v1.SubscriptionsAPIFilter"
           }
         },
@@ -4443,8 +4358,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "auth": {
@@ -4455,7 +4369,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -4598,7 +4511,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.eventing.v1alpha1.EventPolicy"
           }
         },
@@ -4634,7 +4546,6 @@
           "description": "matchExpressions is a list of label selector requirements. The requirements are ANDed.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelectorRequirement"
           },
           "x-kubernetes-list-type": "atomic"
@@ -4643,8 +4554,7 @@
           "description": "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -4663,7 +4573,6 @@
           "description": "Filters is the list of SubscriptoinsApi filters which determine whether or not the event is accepted. It is an array of filter expressions that evaluate to true or false. If any filter expression in the array evaluates to false, the event will not pass the target resource's ingress. Absence of any filters implies that the filters always evaluate to true.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.eventing.v1.SubscriptionsAPIFilter"
           }
         },
@@ -4671,7 +4580,6 @@
           "description": "From is the list of sources or oidc identities, which are allowed to send events to the targets (.spec.to).",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.eventing.v1alpha1.EventPolicySpecFrom"
           }
         },
@@ -4679,7 +4587,6 @@
           "description": "To lists all resources for which this policy applies. Resources in this list must act like an ingress and have an audience. The resources are part of the same namespace as the EventPolicy. An empty list means it applies to all resources in the EventPolicies namespace",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.eventing.v1alpha1.EventPolicySpecTo"
           }
         }
@@ -4740,15 +4647,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -4758,8 +4663,7 @@
           "description": "From is the list of resolved oidc identities from .spec.from",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "observedGeneration": {
@@ -4855,7 +4759,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.eventing.v1alpha1.EventTransform"
           }
         },
@@ -4911,7 +4814,6 @@
           "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
           }
         },
@@ -4919,8 +4821,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "auth": {
@@ -4931,7 +4832,6 @@
           "description": "CloudEventAttributes are the specific attributes that the Source uses as part of its CloudEvents.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.CloudEventAttributes"
           }
         },
@@ -4939,7 +4839,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -4958,7 +4857,6 @@
           "description": "Policies holds the list of applied EventPolicies",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.AppliedEventPolicyRef"
           }
         },
@@ -5079,7 +4977,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.eventing.v1alpha1.KafkaSink"
           }
         },
@@ -5116,8 +5013,7 @@
           "description": "Kafka Broker bootstrap servers.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "contentMode": {
@@ -5164,15 +5060,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -5187,7 +5081,6 @@
           "description": "Policies holds the list of applied EventPolicies",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.AppliedEventPolicyRef"
           }
         }
@@ -5269,7 +5162,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.eventing.v1alpha1.RequestReply"
           }
         },
@@ -5338,7 +5230,6 @@
           "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
           }
         },
@@ -5346,15 +5237,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -5374,7 +5263,6 @@
           "description": "Policies holds the list of applied EventPolicies",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.AppliedEventPolicyRef"
           }
         },
@@ -5477,7 +5365,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.eventing.v1beta1.EventType"
           }
         },
@@ -5550,15 +5437,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -5627,7 +5512,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.eventing.v1beta2.EventType"
           }
         },
@@ -5700,15 +5584,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -5807,7 +5689,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.eventing.v1beta3.EventType"
           }
         },
@@ -5838,7 +5719,6 @@
           "description": "Attributes is an array of CloudEvent attributes and extension attributes.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.eventing.v1beta3.EventAttributeDefinition"
           }
         },
@@ -5867,15 +5747,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -6035,7 +5913,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.flows.v1.Parallel"
           }
         },
@@ -6066,7 +5943,6 @@
           "description": "Branches is the list of Filter/Subscribers pairs.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.flows.v1.ParallelBranch"
           }
         },
@@ -6103,7 +5979,6 @@
           "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
           }
         },
@@ -6111,8 +5986,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "auth": {
@@ -6123,7 +5997,6 @@
           "description": "BranchStatuses is an array of corresponding to branch statuses. Matches the Spec.Branches array in the order.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.flows.v1.ParallelBranchStatus"
           }
         },
@@ -6131,7 +6004,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -6151,7 +6023,6 @@
           "description": "Policies holds the list of applied EventPolicies",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.AppliedEventPolicyRef"
           }
         }
@@ -6265,7 +6136,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.flows.v1.Sequence"
           }
         },
@@ -6304,7 +6174,6 @@
           "description": "Steps is the list of Destinations (processors / functions) that will be called in the order provided. Each step has its own delivery options",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.flows.v1.SequenceStep"
           }
         }
@@ -6330,8 +6199,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "auth": {
@@ -6342,7 +6210,6 @@
           "description": "ChannelStatuses is an array of corresponding Channel statuses. Matches the Spec.Steps array in the order.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.flows.v1.SequenceChannelStatus"
           }
         },
@@ -6350,7 +6217,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -6365,7 +6231,6 @@
           "description": "Policies holds the list of applied EventPolicies",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.AppliedEventPolicyRef"
           }
         },
@@ -6373,7 +6238,6 @@
           "description": "SubscriptionStatuses is an array of corresponding Subscription statuses. Matches the Spec.Steps array in the order.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.flows.v1.SequenceSubscriptionStatus"
           }
         }
@@ -6494,7 +6358,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.internal.autoscaling.v1alpha1.Metric"
           }
         },
@@ -6558,15 +6421,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -6636,7 +6497,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.internal.autoscaling.v1alpha1.PodAutoscaler"
           }
         },
@@ -6710,15 +6570,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -6805,7 +6663,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.internal.autoscaling.v1alpha1.PodScalable"
           }
         },
@@ -6916,7 +6773,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.internal.caching.v1alpha1.Image"
           }
         },
@@ -6953,7 +6809,6 @@
           "description": "ImagePullSecrets contains the names of the Kubernetes Secrets containing login information used by the Pods which will run this container.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
           }
         },
@@ -6978,15 +6833,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -7057,7 +6910,6 @@
           "description": "Items is the list of `Certificate`.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.internal.networking.v1alpha1.Certificate"
           }
         },
@@ -7091,8 +6943,7 @@
           "description": "DNSNames is a list of DNS names the Certificate could support. The wildcard format of DNSNames (e.g. *.default.example.com) is supported.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "domain": {
@@ -7121,15 +6972,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -7139,7 +6988,6 @@
           "description": "HTTP01Challenges is a list of HTTP01 challenges that need to be fulfilled in order to get the TLS certificate..",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.internal.networking.v1alpha1.HTTP01Challenge"
           }
         },
@@ -7207,7 +7055,6 @@
           "description": "Items is the list of ClusterDomainClaim objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.internal.networking.v1alpha1.ClusterDomainClaim"
           }
         },
@@ -7290,15 +7137,13 @@
           "description": "AppendHeaders allow specifying additional HTTP headers to add before forwarding a request to the destination service.\n\nNOTE: This differs from K8s Ingress which doesn't allow header appending.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "headers": {
           "description": "Headers defines header matching rules which is a map from a header name to HeaderMatch which specify a matching condition. When a request matched with all the header matching rules, the request is routed by the corresponding ingress rule. If it is empty, the headers are not used for matching",
           "type": "object",
           "additionalProperties": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.internal.networking.v1alpha1.HeaderMatch"
           }
         },
@@ -7314,7 +7159,6 @@
           "description": "Splits defines the referenced service endpoints to which the traffic will be forwarded to.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.internal.networking.v1alpha1.IngressBackendSplit"
           }
         }
@@ -7338,7 +7182,6 @@
           "description": "A collection of paths that map requests to backends.\n\nIf they are multiple matching paths, the first match takes precedence.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.internal.networking.v1alpha1.HTTPIngressPath"
           }
         }
@@ -7479,8 +7322,7 @@
           "description": "AppendHeaders allow specifying additional HTTP headers to add before forwarding a request to the destination service.\n\nNOTE: This differs from K8s Ingress which doesn't allow header appending.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "percent": {
@@ -7526,7 +7368,6 @@
           "description": "Items is the list of Ingress objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.internal.networking.v1alpha1.Ingress"
           }
         },
@@ -7556,8 +7397,7 @@
           "description": "Host is the fully qualified domain name of a network host, as defined by RFC 3986. Note the following deviations from the \"host\" part of the URI as defined in the RFC: 1. IPs are not allowed. Currently a rule value can only apply to the\n\t  IP in the Spec of the parent .\n2. The `:` delimiter is not respected because ports are not allowed.\n\t  Currently the port of an Ingress is implicitly :80 for http and\n\t  :443 for https.\nBoth these may change in the future. If the host is unspecified, the Ingress routes all traffic based on the specified IngressRuleValue. If multiple matching Hosts were provided, the first rule will take precedent.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "http": {
@@ -7589,7 +7429,6 @@
           "description": "A list of host rules used to configure the Ingress.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.internal.networking.v1alpha1.IngressRule"
           }
         },
@@ -7597,7 +7436,6 @@
           "description": "TLS configuration. Currently Ingress only supports a single TLS port: 443. If multiple members of this list specify different hosts, they will be multiplexed on the same port according to the hostname specified through the SNI TLS extension, if the ingress controller fulfilling the ingress supports SNI.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.internal.networking.v1alpha1.IngressTLS"
           }
         }
@@ -7618,15 +7456,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -7662,8 +7498,7 @@
           "description": "Hosts is a list of hosts included in the TLS certificate. The values in this list must match the name/s used in the tlsSecret. Defaults to the wildcard host setting for the loadbalancer controller fulfilling this Ingress, if left unspecified.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "secretName": {
@@ -7720,7 +7555,6 @@
           "description": "Ingress is a list containing ingress points for the load-balancer. Traffic intended for the service should be sent to these ingress points.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.internal.networking.v1alpha1.LoadBalancerIngressStatus"
           }
         }
@@ -7784,7 +7618,6 @@
           "description": "Items is the list of ServerlessService.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.internal.networking.v1alpha1.ServerlessService"
           }
         },
@@ -7850,15 +7683,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -7935,7 +7766,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.messaging.v1.Channel"
           }
         },
@@ -7972,7 +7802,6 @@
           "description": "This is the list of subscriptions for this subscribable.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.SubscriberSpec"
           },
           "x-kubernetes-patch-merge-key": "uid",
@@ -7999,7 +7828,6 @@
           "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
           }
         },
@@ -8007,8 +7835,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "channel": {
@@ -8019,7 +7846,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -8046,7 +7872,6 @@
           "description": "Policies holds the list of applied EventPolicies",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.AppliedEventPolicyRef"
           }
         },
@@ -8054,7 +7879,6 @@
           "description": "This is the list of subscription's statuses for this channel.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.SubscriberStatus"
           },
           "x-kubernetes-patch-merge-key": "uid",
@@ -8142,7 +7966,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.messaging.v1.InMemoryChannel"
           }
         },
@@ -8175,7 +7998,6 @@
           "description": "This is the list of subscriptions for this subscribable.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.SubscriberSpec"
           },
           "x-kubernetes-patch-merge-key": "uid",
@@ -8202,7 +8024,6 @@
           "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
           }
         },
@@ -8210,15 +8031,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -8245,7 +8064,6 @@
           "description": "Policies holds the list of applied EventPolicies",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.AppliedEventPolicyRef"
           }
         },
@@ -8253,7 +8071,6 @@
           "description": "This is the list of subscription's statuses for this channel.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.SubscriberStatus"
           },
           "x-kubernetes-patch-merge-key": "uid",
@@ -8317,7 +8134,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.messaging.v1.KafkaChannel"
           }
         },
@@ -8372,7 +8188,6 @@
           "description": "This is the list of subscriptions for this subscribable.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.SubscriberSpec"
           },
           "x-kubernetes-patch-merge-key": "uid",
@@ -8399,7 +8214,6 @@
           "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
           }
         },
@@ -8407,15 +8221,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -8442,7 +8254,6 @@
           "description": "Policies holds the list of applied EventPolicies",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.AppliedEventPolicyRef"
           }
         },
@@ -8450,7 +8261,6 @@
           "description": "This is the list of subscription's statuses for this channel.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.SubscriberStatus"
           },
           "x-kubernetes-patch-merge-key": "uid",
@@ -8517,7 +8327,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.messaging.v1.Subscription"
           }
         },
@@ -8579,8 +8388,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "auth": {
@@ -8591,7 +8399,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -8714,7 +8521,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.messaging.v1beta1.KafkaChannel"
           }
         },
@@ -8769,7 +8575,6 @@
           "description": "This is the list of subscriptions for this subscribable.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.SubscriberSpec"
           },
           "x-kubernetes-patch-merge-key": "uid",
@@ -8796,7 +8601,6 @@
           "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
           }
         },
@@ -8804,15 +8608,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -8839,7 +8641,6 @@
           "description": "Policies holds the list of applied EventPolicies",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.AppliedEventPolicyRef"
           }
         },
@@ -8847,7 +8648,6 @@
           "description": "This is the list of subscription's statuses for this channel.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.SubscriberStatus"
           },
           "x-kubernetes-patch-merge-key": "uid",
@@ -8945,8 +8745,7 @@
           "description": "Paths holds a list of paths to which this diagnostic pertains",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -9128,7 +8927,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.serving.v1.Configuration"
           }
         },
@@ -9175,15 +8973,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -9299,7 +9095,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.serving.v1.Revision"
           }
         },
@@ -9349,7 +9144,6 @@
           "description": "List of containers belonging to the pod. Containers cannot currently be added or removed. There must be at least one container in a Pod. Cannot be updated.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Container"
           },
           "x-kubernetes-list-map-keys": [
@@ -9375,7 +9169,6 @@
           "description": "List of ephemeral containers run in this pod. Ephemeral containers may be run in an existing pod to perform user-initiated actions such as debugging. This list cannot be specified when creating a pod, and it cannot be modified by updating the pod spec. In order to add an ephemeral container to an existing pod, use the pod's ephemeralcontainers subresource.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.EphemeralContainer"
           },
           "x-kubernetes-list-map-keys": [
@@ -9389,7 +9182,6 @@
           "description": "HostAliases is an optional list of hosts and IPs that will be injected into the pod's hosts file if specified.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.HostAlias"
           },
           "x-kubernetes-list-map-keys": [
@@ -9432,7 +9224,6 @@
           "description": "ImagePullSecrets is an optional list of references to secrets in the same namespace to use for pulling any of the images used by this PodSpec. If specified, these secrets will be passed to individual puller implementations for them to use. More info: https://kubernetes.io/docs/concepts/containers/images#specifying-imagepullsecrets-on-a-pod",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
           },
           "x-kubernetes-list-map-keys": [
@@ -9446,7 +9237,6 @@
           "description": "List of initialization containers belonging to the pod. Init containers are executed in order prior to containers being started. If any init container fails, the pod is considered to have failed and is handled according to its restartPolicy. The name for an init container or normal container must be unique among all containers. Init containers may not have Lifecycle actions, Readiness probes, Liveness probes, or Startup probes. The resourceRequirements of an init container are taken into account during scheduling by finding the highest request/limit for each resource type, and then using the max of that value or the sum of the normal containers. Limits are applied to init containers in a similar fashion. Init containers cannot currently be added or removed. Cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Container"
           },
           "x-kubernetes-list-map-keys": [
@@ -9464,8 +9254,7 @@
           "description": "NodeSelector is a selector which must be true for the pod to fit on a node. Selector which must match a node's labels for the pod to be scheduled on that node. More info: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           },
           "x-kubernetes-map-type": "atomic"
         },
@@ -9497,7 +9286,6 @@
           "description": "If specified, all readiness gates will be evaluated for pod readiness. A pod is ready when all its containers are ready AND all conditions specified in the readiness gates have status equal to \"True\" More info: https://git.k8s.io/enhancements/keps/sig-network/580-pod-readiness-gates",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.PodReadinessGate"
           },
           "x-kubernetes-list-type": "atomic"
@@ -9506,7 +9294,6 @@
           "description": "ResourceClaims defines which ResourceClaims must be allocated and reserved before the Pod is allowed to start. The resources will be made available to those containers which consume them by name.\n\nThis is a stable field but requires that the DynamicResourceAllocation feature gate is enabled.\n\nThis field is immutable.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.PodResourceClaim"
           },
           "x-kubernetes-list-map-keys": [
@@ -9541,7 +9328,6 @@
           "description": "SchedulingGates is an opaque list of values that if specified will block scheduling the pod. If schedulingGates is not empty, the pod will stay in the SchedulingGated state and the scheduler will not attempt to schedule the pod.\n\nSchedulingGates can only be set at pod creation time, and be removed only afterwards.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.PodSchedulingGate"
           },
           "x-kubernetes-list-map-keys": [
@@ -9589,7 +9375,6 @@
           "description": "If specified, the pod's tolerations.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Toleration"
           },
           "x-kubernetes-list-type": "atomic"
@@ -9598,7 +9383,6 @@
           "description": "TopologySpreadConstraints describes how a group of pods ought to spread across topology domains. Scheduler will schedule pods in a way which abides by the constraints. All topologySpreadConstraints are ANDed.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.TopologySpreadConstraint"
           },
           "x-kubernetes-list-map-keys": [
@@ -9613,7 +9397,6 @@
           "description": "List of volumes that can be mounted by containers belonging to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.api.core.v1.Volume"
           },
           "x-kubernetes-list-map-keys": [
@@ -9649,15 +9432,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -9667,7 +9448,6 @@
           "description": "ContainerStatuses is a slice of images present in .Spec.Container[*].Image to their respective digests and their container name. The digests are resolved during the creation of Revision. ContainerStatuses holds the container name and image digests for both serving and non serving containers. ref: https://bit.ly/image-digests",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.serving.v1.ContainerStatus"
           }
         },
@@ -9680,7 +9460,6 @@
           "description": "InitContainerStatuses is a slice of images present in .Spec.InitContainer[*].Image to their respective digests and their container name. The digests are resolved during the creation of Revision. ContainerStatuses holds the container name and image digests for both serving and non serving containers. ref: https://bit.ly/image-digests",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.serving.v1.ContainerStatus"
           }
         },
@@ -9773,7 +9552,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.serving.v1.Route"
           }
         },
@@ -9802,7 +9580,6 @@
           "description": "Traffic specifies how to distribute traffic over a collection of revisions and configurations.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.serving.v1.TrafficTarget"
           }
         }
@@ -9827,15 +9604,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -9850,7 +9625,6 @@
           "description": "Traffic holds the configured traffic distribution. These entries will always contain RevisionName references. When ConfigurationName appears in the spec, this will hold the LatestReadyRevisionName that we last observed.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.serving.v1.TrafficTarget"
           }
         },
@@ -9879,7 +9653,6 @@
           "description": "Traffic holds the configured traffic distribution. These entries will always contain RevisionName references. When ConfigurationName appears in the spec, this will hold the LatestReadyRevisionName that we last observed.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.serving.v1.TrafficTarget"
           }
         },
@@ -9944,7 +9717,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.serving.v1.Service"
           }
         },
@@ -9978,7 +9750,6 @@
           "description": "Traffic specifies how to distribute traffic over a collection of revisions and configurations.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.serving.v1.TrafficTarget"
           }
         }
@@ -10003,15 +9774,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -10034,7 +9803,6 @@
           "description": "Traffic holds the configured traffic distribution. These entries will always contain RevisionName references. When ConfigurationName appears in the spec, this will hold the LatestReadyRevisionName that we last observed.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.serving.v1.TrafficTarget"
           }
         },
@@ -10190,7 +9958,6 @@
           "description": "Items is the list of DomainMapping objects.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.serving.v1beta1.DomainMapping"
           }
         },
@@ -10249,15 +10016,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -10376,7 +10141,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.sinks.v1alpha1.IntegrationSink"
           }
         },
@@ -10427,7 +10191,6 @@
           "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
           }
         },
@@ -10435,15 +10198,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -10458,7 +10219,6 @@
           "description": "Policies holds the list of applied EventPolicies",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.AppliedEventPolicyRef"
           }
         }
@@ -10518,7 +10278,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.sinks.v1alpha1.JobSink"
           }
         },
@@ -10568,7 +10327,6 @@
           "description": "Addresses is a list of addresses for different protocols (HTTP and HTTPS) If Addresses is present, Address must be ignored by clients.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.Addressable"
           }
         },
@@ -10576,15 +10334,13 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "conditions": {
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -10603,7 +10359,6 @@
           "description": "Policies holds the list of applied EventPolicies",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.AppliedEventPolicyRef"
           }
         }
@@ -10799,7 +10554,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.sources.v1.ApiServerSource"
           }
         },
@@ -10835,7 +10589,6 @@
           "description": "Filters is an experimental field that conforms to the CNCF CloudEvents Subscriptions API. It's an array of filter expressions that evaluate to true or false. If any filter expression in the array evaluates to false, the event MUST NOT be sent to the Sink. If all the filter expressions in the array evaluate to true, the event MUST be attempted to be delivered. Absence of a filter or empty array implies a value of true.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.eventing.v1.SubscriptionsAPIFilter"
           }
         },
@@ -10855,7 +10608,6 @@
           "description": "Resource are the resources this source will track and send related lifecycle events from the Kubernetes ApiServer, with an optional label selector to help filter.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.sources.v1.APIVersionKindSelector"
           }
         },
@@ -10888,8 +10640,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "auth": {
@@ -10900,7 +10651,6 @@
           "description": "CloudEventAttributes are the specific attributes that the Source uses as part of its CloudEvents.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.CloudEventAttributes"
           }
         },
@@ -10908,7 +10658,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -10918,8 +10667,7 @@
           "description": "Namespaces show the namespaces currently watched by the ApiServerSource",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "observedGeneration": {
@@ -10995,7 +10743,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.sources.v1.ContainerSource"
           }
         },
@@ -11054,8 +10801,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "auth": {
@@ -11066,7 +10812,6 @@
           "description": "CloudEventAttributes are the specific attributes that the Source uses as part of its CloudEvents.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.CloudEventAttributes"
           }
         },
@@ -11074,7 +10819,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -11153,7 +10897,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.sources.v1.KafkaSource"
           }
         },
@@ -11186,8 +10929,7 @@
           "description": "Bootstrap servers are the Kafka servers the consumer will connect to.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "ceOverrides": {
@@ -11228,8 +10970,7 @@
           "description": "Topic topics to consume messages from",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -11249,8 +10990,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "auth": {
@@ -11261,7 +11001,6 @@
           "description": "CloudEventAttributes are the specific attributes that the Source uses as part of its CloudEvents.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.CloudEventAttributes"
           }
         },
@@ -11273,7 +11012,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -11296,7 +11034,6 @@
         "placements": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1alpha1.Placement"
           }
         },
@@ -11372,7 +11109,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.sources.v1.PingSource"
           }
         },
@@ -11443,8 +11179,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "auth": {
@@ -11455,7 +11190,6 @@
           "description": "CloudEventAttributes are the specific attributes that the Source uses as part of its CloudEvents.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.CloudEventAttributes"
           }
         },
@@ -11463,7 +11197,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -11546,7 +11279,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.sources.v1.SinkBinding"
           }
         },
@@ -11605,8 +11337,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "auth": {
@@ -11617,7 +11348,6 @@
           "description": "CloudEventAttributes are the specific attributes that the Source uses as part of its CloudEvents.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.CloudEventAttributes"
           }
         },
@@ -11625,7 +11355,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -11735,7 +11464,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.sources.v1alpha1.AwsSqsSource"
           }
         },
@@ -11767,8 +11495,7 @@
           "description": "Annotations to add to the pod, mostly used for Kube2IAM role",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "awsCredsSecret": {
@@ -11805,8 +11532,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "auth": {
@@ -11817,7 +11543,6 @@
           "description": "CloudEventAttributes are the specific attributes that the Source uses as part of its CloudEvents.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.CloudEventAttributes"
           }
         },
@@ -11825,7 +11550,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -11904,7 +11628,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.sources.v1alpha1.CouchDbSource"
           }
         },
@@ -11973,8 +11696,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "auth": {
@@ -11985,7 +11707,6 @@
           "description": "CloudEventAttributes are the specific attributes that the Source uses as part of its CloudEvents.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.CloudEventAttributes"
           }
         },
@@ -11993,7 +11714,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -12072,7 +11792,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.sources.v1alpha1.GitHubSource"
           }
         },
@@ -12116,8 +11835,7 @@
           "description": "EventType is the type of event to receive from GitHub. These correspond to the \"Webhook event name\" values listed at https://developer.github.com/v3/activity/events/types/ - ie \"pull_request\"",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "githubAPIURL": {
@@ -12164,8 +11882,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "auth": {
@@ -12176,7 +11893,6 @@
           "description": "CloudEventAttributes are the specific attributes that the Source uses as part of its CloudEvents.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.CloudEventAttributes"
           }
         },
@@ -12184,7 +11900,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -12267,7 +11982,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.sources.v1alpha1.GitLabSource"
           }
         },
@@ -12311,8 +12025,7 @@
           "description": "List of webhooks to enable on the selected GitLab project. Those correspond to the attributes enumerated at https://docs.gitlab.com/ee/api/projects.html#add-project-hook",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "projectUrl": {
@@ -12355,8 +12068,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "auth": {
@@ -12367,7 +12079,6 @@
           "description": "CloudEventAttributes are the specific attributes that the Source uses as part of its CloudEvents.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.CloudEventAttributes"
           }
         },
@@ -12375,7 +12086,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -12459,7 +12169,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.sources.v1alpha1.IntegrationSource"
           }
         },
@@ -12520,8 +12229,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "auth": {
@@ -12532,7 +12240,6 @@
           "description": "CloudEventAttributes are the specific attributes that the Source uses as part of its CloudEvents.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.CloudEventAttributes"
           }
         },
@@ -12540,7 +12247,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -12619,7 +12325,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.sources.v1alpha1.PrometheusSource"
           }
         },
@@ -12701,8 +12406,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "auth": {
@@ -12713,7 +12417,6 @@
           "description": "CloudEventAttributes are the specific attributes that the Source uses as part of its CloudEvents.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.CloudEventAttributes"
           }
         },
@@ -12721,7 +12424,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -12854,7 +12556,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.sources.v1beta1.KafkaSource"
           }
         },
@@ -12887,8 +12588,7 @@
           "description": "Bootstrap servers are the Kafka servers the consumer will connect to.",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "ceOverrides": {
@@ -12929,8 +12629,7 @@
           "description": "Topic topics to consume messages from",
           "type": "array",
           "items": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -12950,8 +12649,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "auth": {
@@ -12962,7 +12660,6 @@
           "description": "CloudEventAttributes are the specific attributes that the Source uses as part of its CloudEvents.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.CloudEventAttributes"
           }
         },
@@ -12974,7 +12671,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -12997,7 +12693,6 @@
         "placements": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1alpha1.Placement"
           }
         },
@@ -13073,7 +12768,6 @@
         "items": {
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.sources.v1beta2.PingSource"
           }
         },
@@ -13144,8 +12838,7 @@
           "description": "Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "auth": {
@@ -13156,7 +12849,6 @@
           "description": "CloudEventAttributes are the specific attributes that the Source uses as part of its CloudEvents.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.duck.v1.CloudEventAttributes"
           }
         },
@@ -13164,7 +12856,6 @@
           "description": "Conditions the latest available observations of a resource's current state.",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/dev.knative.pkg.apis.Condition"
           },
           "x-kubernetes-patch-merge-key": "type",
@@ -13285,8 +12976,7 @@
           "description": "Data contains the configuration data. Each key must consist of alphanumeric characters, '-', '_' or '.'. Values with non-UTF-8 byte sequences must use the BinaryData field. The keys stored in Data must not overlap with the keys in the BinaryData field, this is enforced during validation process.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         },
         "immutable": {
@@ -13311,37 +13001,53 @@
         "Scope": "Namespaced"
       }
     },
-    "io.k8s.api.core.v1.Endpoints": {
+    "io.k8s.api.discovery.v1.EndpointSlice": {
       "type": "object",
+      "required": [
+        "addressType",
+        "endpoints"
+      ],
       "properties": {
+        "addressType": {
+          "description": "addressType specifies the type of address carried by this EndpointSlice. All addresses in this slice must be the same type. This field is immutable after creation. The following address types are currently supported: * IPv4: Represents an IPv4 Address. * IPv6: Represents an IPv6 Address. * FQDN: Represents a Fully Qualified Domain Name. (Deprecated) The EndpointSlice controller only generates, and kube-proxy only processes, slices of addressType \"IPv4\" and \"IPv6\". No semantics are defined for the \"FQDN\" type.",
+          "type": "string",
+          "default": ""
+        },
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
           "type": "string"
+        },
+        "endpoints": {
+          "description": "endpoints is a list of unique endpoints in this slice. Each slice may include a maximum of 1000 endpoints.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.discovery.v1.Endpoint"
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "kind": {
           "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "Standard object's metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
-        "subsets": {
-          "description": "The set of all endpoints is the union of all subsets. Addresses are placed into subsets according to the IPs they share. A single address with multiple ports, some of which are ready and some of which are not (because they come from different containers) will result in the address being displayed in different subsets for the different ports. No address will appear in both Addresses and NotReadyAddresses in the same subset. Sets of addresses and ports that comprise a service.",
+        "ports": {
+          "description": "ports specifies the list of network ports exposed by each endpoint in this slice. Each port must have a unique name. Each slice may include a maximum of 100 ports. Services always have at least 1 port, so EndpointSlices generated by the EndpointSlice controller will likewise always have at least 1 port. EndpointSlices used for other purposes may have an empty ports list.",
           "type": "array",
           "items": {
-            "default": {},
-            "$ref": "#/definitions/io.k8s.api.core.v1.EndpointSubset"
+            "$ref": "#/definitions/io.k8s.api.discovery.v1.EndpointPort"
           },
           "x-kubernetes-list-type": "atomic"
         }
       },
       "x-fabric8-info": {
         "Type": "object",
-        "Group": "",
+        "Group": "discovery.k8s.io",
         "Version": "v1",
-        "Kind": "Endpoints",
+        "Kind": "EndpointSlice",
         "Scope": "Namespaced"
       }
     }
