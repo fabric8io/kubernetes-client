@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.http;
 
+import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.mockwebserver.DefaultMockServer;
 import io.fabric8.mockwebserver.MockWebServer;
 import io.fabric8.mockwebserver.http.MockResponse;
@@ -31,6 +33,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -214,6 +217,61 @@ public abstract class AbstractWebSocketSendReceiveTest {
             .as("the HttpClient implementation, not the listener, must answer the server's Close frame")
             .succeedsWithin(10, TimeUnit.SECONDS)
             .isEqualTo(1000);
+      }
+    }
+  }
+
+  @Test
+  @DisplayName("an idle WebSocket, also of a client derived with newBuilder, sends ping frames every Config#websocketPingInterval so idle-timeout proxies keep it open")
+  void idleWebSocketSendsPingsAtConfiguredInterval() throws Exception {
+    final CountDownLatch pings = new CountDownLatch(2);
+    try (MockWebServer mockWebServer = new MockWebServer()) {
+      // Given
+      mockWebServer.enqueue(new MockResponse().withWebSocketUpgrade(new WebSocketListener() {
+        @Override
+        public void onPing(io.fabric8.mockwebserver.http.WebSocket webSocket, byte[] payload) {
+          pings.countDown();
+        }
+      }));
+      // well above a loaded CI runner's pong round trip, OkHttp fails the socket if a pong misses the next ping
+      final Config config = new ConfigBuilder(Config.empty()).withWebsocketPingInterval(250L).build();
+      try (
+          HttpClient client = getHttpClientFactory().newBuilder(config).build();
+          HttpClient derivedClient = client.newBuilder().build()) {
+        // When
+        final WebSocket ws = derivedClient.newWebSocketBuilder()
+            .uri(mockWebServer.url("/").uri())
+            .buildAsync(new WebSocket.Listener() {
+            }).get(10L, TimeUnit.SECONDS);
+        // Then
+        assertThat(pings.await(10L, TimeUnit.SECONDS))
+            .as("the server must receive repeated pings on an otherwise idle WebSocket of a derived client")
+            .isTrue();
+        ws.sendClose(1000, "done");
+      }
+    }
+  }
+
+  @Test
+  @DisplayName("a WebSocket with pings enabled that the listener closes in onOpen still completes buildAsync")
+  void webSocketClosedInOnOpenWithPingsCompletes() throws Exception {
+    try (MockWebServer mockWebServer = new MockWebServer()) {
+      // Given
+      mockWebServer.enqueue(new MockResponse().withWebSocketUpgrade(new WebSocketListener() {
+      }));
+      final Config config = new ConfigBuilder(Config.empty()).withWebsocketPingInterval(250L).build();
+      try (HttpClient client = getHttpClientFactory().newBuilder(config).build()) {
+        // When
+        final CompletableFuture<WebSocket> ws = client.newWebSocketBuilder()
+            .uri(mockWebServer.url("/").uri())
+            .buildAsync(new WebSocket.Listener() {
+              @Override
+              public void onOpen(WebSocket webSocket) {
+                webSocket.sendClose(1000, "closing in onOpen");
+              }
+            });
+        // Then
+        assertThat(ws).succeedsWithin(10, TimeUnit.SECONDS);
       }
     }
   }

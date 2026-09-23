@@ -64,6 +64,8 @@ public class ServerWebSocketHandler implements Handler<ServerWebSocket> {
     serverWebSocket.frameHandler(frame -> {
       if (frame.isClose()) {
         wsListener.onClosing(mockWebSocket, frame.closeStatusCode(), frame.closeReason());
+      } else if (frame.isPing()) {
+        wsListener.onPing(mockWebSocket, frame.binaryData().getBytes());
       }
       serverWebSocket.fetch(1);
     });

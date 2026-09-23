@@ -98,6 +98,16 @@ public interface HttpClient extends AutoCloseable {
     Builder connectTimeout(long connectTimeout, TimeUnit unit);
 
     /**
+     * Interval at which open WebSockets send a ping frame, keeping otherwise idle connections (e.g. watches)
+     * alive through proxies and load balancers that close idle connections.
+     *
+     * @param websocketPingInterval the interval (whole milliseconds, at least one), zero or negative disables the pings
+     * @param unit the unit of the interval
+     * @return this builder
+     */
+    Builder websocketPingInterval(long websocketPingInterval, TimeUnit unit);
+
+    /**
      * {@inheritDoc}
      */
     @Override

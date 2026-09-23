@@ -46,6 +46,7 @@ import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
 import java.util.ServiceLoader;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -162,6 +163,34 @@ class HttpClientUtilsTest {
 
     // Then
     Mockito.verify(builder, Mockito.never()).tlsServerName(Mockito.anyString());
+  }
+
+  @Test
+  @DisplayName("applyCommonConfiguration, passes Config#websocketPingInterval to the builder")
+  void applyCommonConfigurationSetsWebsocketPingInterval() {
+    // Given
+    Config config = new ConfigBuilder().withMasterUrl("https://127.0.0.1:6443").withWebsocketPingInterval(1234L).build();
+    Builder builder = Mockito.mock(HttpClient.Builder.class, Mockito.RETURNS_SELF);
+
+    // When
+    HttpClientUtils.applyCommonConfiguration(config, builder, null);
+
+    // Then
+    Mockito.verify(builder).websocketPingInterval(1234L, TimeUnit.MILLISECONDS);
+  }
+
+  @Test
+  @DisplayName("applyCommonConfiguration, a zero Config#websocketPingInterval leaves WebSocket pings disabled")
+  void applyCommonConfigurationWithZeroWebsocketPingInterval() {
+    // Given
+    Config config = new ConfigBuilder().withMasterUrl("https://127.0.0.1:6443").withWebsocketPingInterval(0L).build();
+    Builder builder = Mockito.mock(HttpClient.Builder.class, Mockito.RETURNS_SELF);
+
+    // When
+    HttpClientUtils.applyCommonConfiguration(config, builder, null);
+
+    // Then
+    Mockito.verify(builder, Mockito.never()).websocketPingInterval(Mockito.anyLong(), Mockito.any());
   }
 
   @Test

@@ -23,7 +23,9 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -77,6 +79,32 @@ class StandardHttpClientBuilderTest {
     final TestStandardHttpClientBuilder builder = new TestStandardHttpClientFactory().newBuilder();
     builder.addPlainHttpProxyAuthInterceptor(false);
     assertThat(builder.getInterceptors()).doesNotContainKey("PROXY-AUTH");
+  }
+
+  @ParameterizedTest(name = "{0}")
+  @CsvSource({ "0", "-1" })
+  @DisplayName("websocketPingInterval, zero or negative disables WebSocket pings")
+  void websocketPingIntervalNotPositiveDisablesPings(long interval) {
+    final TestStandardHttpClientBuilder builder = new TestStandardHttpClientFactory().newBuilder()
+        .websocketPingInterval(5, TimeUnit.SECONDS)
+        .websocketPingInterval(interval, TimeUnit.SECONDS);
+    assertThat(builder.getWebsocketPingInterval()).isNull();
+  }
+
+  @Test
+  @DisplayName("websocketPingInterval, a sub-millisecond interval is raised to 1ms instead of a zero delay that would flood the socket")
+  void websocketPingIntervalSubMillisecondIsOneMillisecond() {
+    final TestStandardHttpClientBuilder builder = new TestStandardHttpClientFactory().newBuilder()
+        .websocketPingInterval(500, TimeUnit.MICROSECONDS);
+    assertThat(builder.getWebsocketPingInterval()).isEqualTo(Duration.ofMillis(1));
+  }
+
+  @Test
+  @DisplayName("websocketPingInterval, is kept by builders derived with copy")
+  void websocketPingIntervalSurvivesCopy() {
+    final TestStandardHttpClientBuilder builder = new TestStandardHttpClientFactory().newBuilder()
+        .websocketPingInterval(2, TimeUnit.SECONDS);
+    assertThat(builder.copy(null).getWebsocketPingInterval()).isEqualTo(Duration.ofSeconds(2));
   }
 
   private static TestStandardHttpClientBuilder builder(ProxyType proxyType, boolean webSocketsTunneled) {

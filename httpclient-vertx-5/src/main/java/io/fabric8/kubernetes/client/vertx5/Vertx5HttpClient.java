@@ -110,6 +110,10 @@ public class Vertx5HttpClient<F extends io.fabric8.kubernetes.client.http.HttpCl
         .connect(options)
         .onSuccess(ws -> {
           final Vertx5WebSocket ret = new Vertx5WebSocket(ws, listener);
+          // before initHandlers, the listener's onOpen may close the WebSocket and Vert.x rejects a closeHandler once closed
+          if (builder.getWebsocketPingInterval() != null) {
+            ret.startPings(vertx, builder.getWebsocketPingInterval());
+          }
           ret.initHandlers();
           response.complete(new WebSocketResponse(new WebSocketUpgradeResponse(request), ret));
         }).onFailure(t -> {

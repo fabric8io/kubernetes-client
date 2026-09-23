@@ -37,6 +37,7 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
 
   protected LinkedHashMap<String, Interceptor> interceptors = new LinkedHashMap<>();
   protected Duration connectTimeout;
+  protected Duration websocketPingInterval;
   protected SSLContext sslContext;
   protected String proxyAuthorization;
   protected InetSocketAddress proxyAddress;
@@ -63,6 +64,15 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
   @Override
   public T connectTimeout(long connectTimeout, TimeUnit unit) {
     this.connectTimeout = Duration.ofNanos(unit.toNanos(connectTimeout));
+    return (T) this;
+  }
+
+  @Override
+  public T websocketPingInterval(long websocketPingInterval, TimeUnit unit) {
+    // whole milliseconds, at least one: the clients schedule the pings in milliseconds
+    this.websocketPingInterval = websocketPingInterval > 0
+        ? Duration.ofMillis(Math.max(1L, unit.toMillis(websocketPingInterval)))
+        : null;
     return (T) this;
   }
 
@@ -150,6 +160,7 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
   public T copy(C client) {
     T copy = newInstance(clientFactory);
     copy.connectTimeout = this.connectTimeout;
+    copy.websocketPingInterval = this.websocketPingInterval;
     copy.sslContext = this.sslContext;
     copy.trustManagers = this.trustManagers;
     copy.keyManagers = this.keyManagers;

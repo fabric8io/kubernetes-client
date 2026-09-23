@@ -73,6 +73,9 @@ class OkHttpClientBuilderImpl
     if (connectTimeout != null) {
       builder.connectTimeout(this.connectTimeout);
     }
+    if (websocketPingInterval != null) {
+      builder.pingInterval(this.websocketPingInterval);
+    }
     if (sslContext != null) {
       X509TrustManager trustManager = null;
       if (trustManagers != null) {
